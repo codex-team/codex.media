@@ -1,0 +1,17 @@
+application/cache/*
+application/logs/*
+upload/*
+pma/*
+.DS_Store
+sftp-config.json
+.idea/.name
+*.xml
+*.iml
+*.sublime-project
+*.sublime-workspace
+.htaccess
+application/config/database.php*
+application/config/oauth.php*
+public/img/covers/*
+/nbproject/private/
+*~
