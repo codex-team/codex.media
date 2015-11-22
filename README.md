@@ -1,7 +1,3 @@
-specc.k
-=======
+CodeX Education 
 
-Dev. lab
-
-http://specc.ru
-__ -> 
+Platform for education organizations
