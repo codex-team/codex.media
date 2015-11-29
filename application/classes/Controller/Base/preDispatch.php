@@ -309,6 +309,9 @@ class Controller_Base_preDispatch extends Controller_Template
 
     public static function _redis()
     {
+        if ( !class_exists("Redis") ){
+            return null;
+        }
         $redis = new Redis();
         $redis->connect('127.0.0.1', 6379);
         $redis->auth('21gJs32hv3ks');
