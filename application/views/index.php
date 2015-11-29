@@ -41,10 +41,10 @@
                 </div>
             </a>
 
-            <? if ( $user !== FALSE ): ?>
-                <a class="user_panel cf" href="/user/profile/<?= $user->id ?>">
-                    <img src="http://placehold.it/20x20?text=O" />
-                    <?= $user->username; ?>
+            <? if ( $user->id ): ?>
+                <a class="user_panel cf" href="/user/<?= $user->id ?>">
+                    <img src="<?= $user->photo ?>" />
+                    <?= $user->real_name?>
                 </a>
             <? endif ?>
 
@@ -55,10 +55,10 @@
                 <? endforeach ?>
             </ul>
 
-            <? if ($user === FALSE): ?>
-                <a class="button green" href="/user/login">Войти на сайт</a>
+            <? if (!$user->id): ?>
+                <a class="button green" href="/login">Войти на сайт</a>
             <? else: ?>
-                <a class="button logout" href="/user/logout">Выйти</a>
+                <a class="button logout" href="/logout">Выйти</a>
             <? endif ?>
 
 
@@ -85,6 +85,8 @@
         <div class="page_wrap">
             <?= $content ?>
         </div>
+
+
     </div>
 
     <div id="utils" class="hidden">
@@ -94,10 +96,16 @@
         </form>
     </div>
 
+
+
+
+
     <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
+
         <!-- Yandex.Metrika counter -->
 
         <!-- /Yandex.Metrika counter -->
+
     <? endif; ?>
 </body>
 </html>
