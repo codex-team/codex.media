@@ -2,25 +2,18 @@
 
 class Controller_Base_preDispatch extends Controller_Template
 {
-
+    /**
+     *  Default template
+     */
     public $template = 'index';
 
+    /**
+     *  Container for template params
+     */
     public $view = array();
 
-    /**
-     * The before() method is called before your controller action.
-     * In our template controller we override this method so that we can
-     * set up default values. These variables are then available to our
-     * controllers if they need to be modified.
-     */
     public function before()
     {
-        // if ( Kohana::$environment === Kohana::PRODUCTION ) {
-        //     if ( (Arr::get($_SERVER, 'SERVER_NAME') != 'start.siliconrus.com') && (Arr::get($_SERVER, 'SERVER_NAME') != 'spark.ru') && (Arr::get($_SERVER, 'SERVER_NAME') != 'stage.spark.ru') ) {
-        //         exit();
-        //     }
-        // }
-
         if ($this->_ajax())  {
             $this->template = 'ajax';
             $this->ajax     = TRUE;
@@ -31,14 +24,12 @@ class Controller_Base_preDispatch extends Controller_Template
         // XSS clean in POST and GET requests
         self::XSSfilter();
 
-
+        // load site params
+        $config = Kohana::$config->load('main');
         $session = $this->session = Session::instance();
 
-        // $this->stats = new Model_Stats();
-        // View::set_global('stats', $this->stats);
-
-        $GLOBALS['SITE_NAME']   = "332 школа";
-        $GLOBALS['SITE_SLOGAN'] = "Официальный сайт";
+        $GLOBALS['SITE_NAME']   = $config['site']['name'];
+        $GLOBALS['SITE_SLOGAN'] = $config['site']['slogan'];
 
         // global action
         $GLOBALS['FROM_ACTION'] = $this->request->action();
@@ -54,14 +45,8 @@ class Controller_Base_preDispatch extends Controller_Template
         $this->memcache = $memcache = Cache::instance('memcache');
         View::set_global('memcache', $memcache);
 
-        // $this->email = Messages::instance('Email');
-
-        // auth
-        $uid  = self::checkUserAuth();
-        $user = $uid ? new Model_User($uid) : new Model_User();
+        $this->user = ( Auth::instance()->get_user() !== NULL) ? Auth::instance()->get_user() : FALSE;
         
-        $this->user = $user;
-
         View::set_global('user', $this->user);
 
         if ($this->auto_render) {
@@ -76,43 +61,8 @@ class Controller_Base_preDispatch extends Controller_Template
         }
     }
 
-    public function checkUserAuth()
-    {
-        $uid = Cookie::get('uid', '');
-        $hr  = Cookie::get('hr', '');
-
-        if ($hr != sha1('dfhgga23'.$uid.'dfhshgf23')) {            
-            
-            if ($hr) {
-                Cookie::delete('uid');
-                Cookie::delete('hr');
-                $this->redirect('login');
-            }
-
-            return FALSE;
-
-        } else {
-            return $uid;
-        }
-    }
-
-
-
-
-
-
-
-    /**
-     * The after() method is called after your controller action.
-     * In our template controller we override this method so that we can
-     * make any last minute modifications to the template before anything
-     * is rendered.
-     */
     public function after()
     {
-        // echo View::factory('profiler/stats');
-
-
         if ($this->auto_render) {
             if ( $this->title ) {
                 $this->template->title = $this->title;
