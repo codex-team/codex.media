@@ -1,7 +1,7 @@
 <div class="social_auth">
 	Вы можете войти на сайт через аккаунт ВКонтакте
 	<div class="social_buttons">
-	    <a class="button main" href="/login/vk"><i class="pic vk"></i>Войти через VK.com</a>
+	    <a class="button main" href="/auth/vk"><i class="pic vk"></i>Войти через VK.com</a>
     </div>
 </div>
 

@@ -56,7 +56,7 @@
             </ul>
 
             <? if (!$user->id): ?>
-                <a class="button green" href="/login">Войти на сайт</a>
+                <a class="button green" href="/auth">Войти на сайт</a>
             <? else: ?>
                 <a class="button logout" href="/logout">Выйти</a>
             <? endif ?>

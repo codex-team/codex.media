@@ -21,23 +21,6 @@
     <div class="fl_r page_right_col">
         <a class="banner" href="">Banner 200x240</a>
 
-        <div name="spark_widget" data-type="blog" data-key="35"></div>
-        <script>
-           !(function(d){
-              if ( !d.getElementById('spark_widgets_instance') ) {
-                  var tag   = d.createElement( 'script' );
-                  tag.id    = 'spark_widgets_instance';
-                  tag.async = !0;
-                  // tag.src   = 'http://172.16.214.129/public/js/widgets/spark.js';
-                  tag.src   = '//spark.ru/public/js/widgets/spark.js';
-                  var f = d.getElementsByTagName( 'script' );
-                          ( f.length )
-                              ? f[0].parentNode.insertBefore( tag, f[0] )
-                              : d.head.appendChild( tag );
-              } else { window.sparkWidgets && sparkWidgets.init(); };
-           })(document);
-        </script>
-
 
     </div>
     <div class="page_left_col">
