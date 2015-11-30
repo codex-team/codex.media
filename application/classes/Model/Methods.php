@@ -16,8 +16,8 @@ class Model_Methods extends Model
         's'  => array(true , 50  ),
     );
 
-	/** 
-	*	Site Methods Model 
+	/**
+	*	Site Methods Model
 	*/
 
 
@@ -25,7 +25,7 @@ class Model_Methods extends Model
     {
 
         $pages = DB::select()->from('pages')->where('status', '=', $status);
-        
+
         if ($type) $pages->where('type', '=', $type);
         if ($limit) $pages->limit($limit);
         if ($offset) $pages->offset($offset);
@@ -45,7 +45,7 @@ class Model_Methods extends Model
         } elseif ($uri) {
             $page->where('uri', '=', $uri);
         }
-        
+
         return current($page->limit(1)->cached(10)->execute()->as_array());
 
     }
@@ -118,8 +118,8 @@ class Model_Methods extends Model
             $comments->where('status','=',$status);
         } else {
             $comments->where('status','<',2);
-        }       
-        
+        }
+
         $comments->order_by('id','asc');
 
         if ($cached) {
@@ -175,7 +175,7 @@ class Model_Methods extends Model
             if ( $short_month ){
                 return $this->rusDate("j M Y в H:i", $timestamp);
             } else {
-                return $this->rusDate("j F Y в H:i", $timestamp);                
+                return $this->rusDate("j F Y в H:i", $timestamp);
             }
         } elseif ( $time > Date::MONTH && $time < Date::YEAR ) {
             return round($time / Date::MONTH) . ' ' . self::num_decline(round($time / Date::MONTH), 'месяц','месяца','месяцев') .  ' назад';
@@ -215,8 +215,8 @@ class Model_Methods extends Model
             } else {
                 return round($time / Date::DAY) . ' дн.';
             }
-            
-        }        
+
+        }
     }
 
     public function rusDate()
@@ -305,7 +305,7 @@ class Model_Methods extends Model
 
         // $string = 'You <br> gonna be <h2>all right</h2><img src="/public/img/favicon.png" /> So go take <a href="/">down</a> the cross.';
         // $limit = 30;
-        
+
         $inside_tag  = $inside_close_tag = $insede_alone_tag = $tag_opened = false;
         $char = $ret = '';
         $real_count = 0; // Количество обычных символов (не в тегах), к которому нам и надо стремиться
@@ -314,13 +314,13 @@ class Model_Methods extends Model
         // echo 'Char number -> char number without tags -> Char ; Parameters <br>';
 
         for ( $i = 0 ; $i < strlen($string); $i++ ){
-            
+
             $char = mb_substr( $string , $i , 1 ) ;
             // echo  $i . '  -> ' . $real_count . '   ->   \'' . $char . '\'' . ' : ';
-            
+
             if ( $char == '<' ){
 
-                $inside_tag = true; 
+                $inside_tag = true;
                 // echo ' opened!'; echo $tag_opened ? ' [tag opened] ' : ' [not tag opened] ' ;
 
                 $ret .= $char;        // 1 - символ открытия тэга. Нужен
@@ -329,7 +329,7 @@ class Model_Methods extends Model
 
                 if ( $tag_opened && mb_substr( $string ,  $i + 1 , 1 ) == '/' ){
 
-                    $inside_close_tag = true; 
+                    $inside_close_tag = true;
                     // echo " inside_close_tag";
 
                 } elseif (  stripos( $substr , 'img') !== false || stripos( $substr , 'br') !== false || stripos( $substr , 'hr') !== false ) {
@@ -357,7 +357,7 @@ class Model_Methods extends Model
                     $insede_alone_tag = false;
                     $inside_close_tag = false;
 
-                } 
+                }
 
                 // echo $tag_opened ? 'tag opened' : 'not tag opened' ;
 
@@ -367,10 +367,10 @@ class Model_Methods extends Model
                     // echo '<br> STOPPED AFTER CLOSED TAG';
                     break;
 
-                } 
+                }
 
 
-            } else {    
+            } else {
 
                     if ( ! $tag_opened ){
 
@@ -378,7 +378,7 @@ class Model_Methods extends Model
 
                             // echo " in tag ";
                             $ret .= $char; // 2 - символы внутри тэга. Нужны
-                        
+
                         } else {
 
                             // echo('*');
@@ -387,7 +387,7 @@ class Model_Methods extends Model
 
                                     $real_count++;
                                     $ret .= $char;     // 3 - Обычные сиволы - не внутри тэга и открытых тегов нет.
-                                    
+
                                 } else {
 
                                     if ( $char != ' ' && $char != '\n'){ // даем закончить слово
@@ -417,7 +417,7 @@ class Model_Methods extends Model
                         } else {
 
                             $real_count++;
-                            
+
                         }
 
                         $ret .= $char; // Сиволы до закрытия тегаи. Берем всегда, независимо от лимита.
@@ -427,7 +427,7 @@ class Model_Methods extends Model
             }
 
             // echo '<br>';
-            
+
         }
 
         // echo Debug::vars( $ret );
@@ -443,7 +443,7 @@ class Model_Methods extends Model
         // Find and replace all http/https/ftp/ftps links that are not part of an existing html anchor
         // $text = preg_replace_callback('~\b(?<!href="|">)(?:ht|f)tps?://[-.a-zA-Z#\d\&\?=\/%а-яА-Я]+~i', 'self::_auto_link_urls_callback1', $text);
         $text = preg_replace_callback('~\b(?<!href="|">)(?:ht|f)tps?://[-\w\.#\d\&\?=\/%\:_]+\b~i', 'self::_auto_link_urls_callback1', $text);
-     
+
         // Find and replace all naked www.links.com (without http://)
         return preg_replace_callback('~\b(?<!://|">)www\.[-a-zA-Z\d]+\.[a-z]{2,6}[-\w\/\?=&%\d#\:_]*\b~i', 'self::_auto_link_urls_callback2', $text);
     }
@@ -488,7 +488,7 @@ class Model_Methods extends Model
     {
         return preg_match('/^(?:ht|f)tps?:\/\//', $string) ? $string : 'http://' . $string;
     }
-    
+
     public function encryptId( $id )
     {
         return ($id + 19) * 354 - 1912;
@@ -508,9 +508,9 @@ class Model_Methods extends Model
         if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
 
         if (!is_dir($path)) mkdir($path);
-  
+
         if ( $file = Upload::save($file, NULL, $path) ){
-            
+
             $filename = uniqid("", false).'.jpg';
 
             $image = Image::factory($file);
@@ -524,42 +524,42 @@ class Model_Methods extends Model
                 $image->background('#fff');
 
                 // Вырезание квадрата
-                if ( $isSquare ){                     
+                if ( $isSquare ){
 
                     if ( $image->width >= $image->height ) {
                         $image->resize( NULL , $height, true );
                     } else {
                         $image->resize( $width , NULL, true );
                     }
-                    
+
                     $image->crop( $width, $height );
 
                     /**
-                    *   Для работы с этим методом нужно перекомпилировать php c bundled GD 
+                    *   Для работы с этим методом нужно перекомпилировать php c bundled GD
                     *   http://www.maxiwebs.co.uk/gd-bundled/compilation.php
                     *   http://www.howtoforge.com/recompiling-php5-with-bundled-support-for-gd-on-ubuntu
                     */
-                    
+
                     // $image->sharpen(1.5);
 
                 } else {
 
                     if ( $image->width > $width || $image->height > $height  ) {
-                        $image->resize( $width , $height , true );                        
+                        $image->resize( $width , $height , true );
                     }
-                
+
                 }
 
                 $image->save($path . $prefix . '_' . $filename);
 
             }
- 
+
             // Delete the temporary file
             unlink($file);
- 
+
             return $filename;
         }
- 
+
         return FALSE;
     }
 
@@ -568,21 +568,21 @@ class Model_Methods extends Model
         /**
         *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
         */
-        
+
 
         if (!is_dir($path)) mkdir($path);
 
         $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         $filename = uniqid() . '.' . $ext;
-  
+
         if ( $file = Upload::save($file, $filename, $path) ){
-            
+
             // Delete the temporary file
             unlink($file);
- 
+
             return $filename;
         }
- 
+
         return FALSE;
     }
 

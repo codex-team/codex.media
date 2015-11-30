@@ -3,42 +3,40 @@
 class Model_User extends Model_preDispatch
 {
     public $id            = 0;
-    public $username      = '';
-    public $real_name     = '';
+    public $name     = '';
     public $password      = '';
     public $photo         = '';
     public $photo_medium  = '';
     public $photo_big     = '';
     public $email         = '';
-    
+
     public $twitter       = '';
     public $twitter_name  = '';
     public $vk            = '';
     public $vk_name       = '';
     public $facebook      = '';
     public $facebook_name = '';
-    
+
     public $status        = 0;
-    
+
     public $isMe          = true;
-    
+
     public $isOnline      = 0;
     public $lastOnline    = 0;
 
     public function __construct($uid = null)
     {
-        parent::__construct();        
+        parent::__construct();
         if ( !$uid ) return;
 
-        $user = $this->getUserInfo($uid);        
-        
+        $user = $this->getUserInfo($uid);
+
         if ($user) {
-            
+
             $this->id        = $user['id'];
-            $this->username  = strip_tags($user['username']);
-            $this->real_name = strip_tags($user['real_name']);
+            $this->name = strip_tags($user['name']);
             $this->password  = $user['password'];
-            
+
             $this->photo         = trim($user['photo'])          ? strip_tags($user['photo'])         : '/public/img/default_ava_small.png' ;
             $this->photo_medium  = trim($user['photo_medium'])   ? strip_tags($user['photo_medium'])  : '/public/img/default_ava.png';
             $this->photo_big     = trim($user['photo_big'])      ? strip_tags($user['photo_big'])     : '/public/img/default_ava_big.png';
@@ -55,10 +53,20 @@ class Model_User extends Model_preDispatch
 
             $this->isOnline = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
             $this->lastOnline = self::getLastOnlineTimestamp();
-            
-            if (!$user || $user['id'] != (int)Cookie::get('uid', '')) $this->isMe = false;
+
+            if (!$user || $user['id'] != (int)Cookie::get(Controller_Auth_Base::COOKIE_USER_ID, '')) $this->isMe = false;
         }
     }
+
+    /** Check for user emain uniqueness */
+    public function hasUniqueEmail($email)
+    {
+        $arr = DB::select('id')->from('users')->where('email', '=', $email)->limit(1)->execute()->current();
+        if (!$arr) return true;
+        return false;
+    }
+
+
 
     public function getLastOnlineTimestamp()
     {
@@ -128,9 +136,9 @@ class Model_User extends Model_preDispatch
 
         if ( $string ){
 
-            $users = DB::select( 'id', 'real_name', 'photo' )
+            $users = DB::select( 'id', 'name', 'photo' )
                             ->from('users')
-                            ->where( 'real_name' , 'LIKE' , '%' . $string . '%' )
+                            ->where( 'name' , 'LIKE' , '%' . $string . '%' )
                             ->or_where( 'twitter_name' , 'LIKE' , '%' . $string . '%' )
                             ->or_where( 'twitter' , 'LIKE' , '%' . $string . '%' )
                             ->or_where( 'vk_name' , 'LIKE' , '%' . $string . '%' )
@@ -139,7 +147,7 @@ class Model_User extends Model_preDispatch
                             ->cached( Date::DAY * 5 )
                             ->execute()
                             ->as_array();
-        
+
         } else {
 
             return false;
