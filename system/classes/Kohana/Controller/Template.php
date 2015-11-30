@@ -10,61 +10,48 @@
  */
 abstract class Kohana_Controller_Template extends Controller {
 
-	/**
-	 * @var  View  page template
-	 */
-	public $template = 'template';
+    /**
+     * @var  View  page template
+     */
+    public $template = 'template';
 
-	/**
-	 * @var  boolean  auto render template
-	 **/
-	public $auto_render = TRUE;
+    /**
+     * @var  boolean  auto render template
+     **/
+    public $auto_render = TRUE;
 
-	public $ajax        = FALSE;
-	public $url         = NULL;
-	public $title       = '';
+    public $url         = NULL;
+    public $title       = '';
+    public $description = '';
 
 
-	/**
-	 * Loads the template [View] object.
-	 */
-	public function before()
-	{
-		parent::before();
+    /**
+     * Loads the template [View] object.
+     */
+    public function before()
+    {
+        parent::before();
 
-		$this->response->protocol($this->request->protocol());
+        $this->response->protocol($this->request->protocol());
 
-        if ($this->ajax){
-            $this->response->headers('Content-Type', 'application/json; charset=utf-8;');
+        if ($this->auto_render === TRUE)
+        {
+            // Load the template
+            $this->template = View::factory($this->template);
+        }
+    }
+
+    /**
+     * Assigns the template [View] as the request response.
+     */
+    public function after()
+    {
+        if ($this->auto_render === TRUE)
+        {
+            $this->response->body($this->template->render());
         }
 
-
-		if ($this->auto_render === TRUE)
-		{
-			// Load the template
-			$this->template = View::factory($this->template);
-		}
-	}
-
-	/**
-	 * Assigns the template [View] as the request response.
-	 */
-	public function after()
-	{
-		if ($this->auto_render === TRUE)
-		{
-            if (!$this->ajax) {
-			    $this->response->body($this->template->render());
-            } else {
-                $arr = array();
-				$arr['url']     = $this->url ? $this->url : $this->request->detect_uri();
-				$arr['title']   = $this->title ? $this->title : '';
-				$arr['content'] = $this->template->render();
-				$this->response->body(json_encode($arr));
-            }
-		}
-
-		parent::after();
-	}
+        parent::after();
+    }
 
 } // End Controller_Template
