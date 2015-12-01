@@ -184,9 +184,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         if (!$code) {
             $redirect = $vk->getCode($state);
         } else {
-            // login | attach
-            //$state  = Arr::get($_GET, 'state', '');
-
             $response = $vk->auth($code);
             $userdata = $vk->getUserInfo($response->user_id);
 
