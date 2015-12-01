@@ -13,7 +13,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     public function action_auth()
     {
         /** If user is already logged in, redirects to the '/' */
-        if ($this->user->id){ $this->redirect('/user/'.$this->user->id); return; }
+        //if ($this->user->id){ $this->redirect('/user/'.$this->user->id); return; }
 
         /** Remember $_GET 'redirect' param if need */
         if ($redirect = Arr::get($_GET, 'redirect')) {
@@ -22,11 +22,19 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
         /** To handle login/signup form submitting */
         $action        = Arr::get($_POST, 'action');
+        $state         = Arr::get($_GET, 'state', false);
+        $method        = $this->request->param('method');
         $authSucceeded = FALSE;
 
         if ($action) switch ($action) {
             case 'login' : $authSucceeded = $this->login(); break;
             case 'signup': $authSucceeded = $this->signup(); break;
+        }
+
+        if ($method) switch ($method) {
+            case 'vk'       : $authSucceeded = $this->login_vk($state); break;
+            case 'facebook' : $authSucceeded = $this->login_fb(); break;
+            case 'twitter'  : $authSucceeded = $this->login_tw(); break;
         }
 
         /** Redirect user after succeeded auth */
@@ -162,6 +170,96 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
         }
     }
+
+    /**
+     *  Login with vk.com
+     *  @author Demyashev Alexander
+     */
+    public function login_vk($state="login")
+    {
+        $vk     = Model::factory('Social_Vk');
+        $code   = Arr::get($_GET, 'code', '');
+        $action = Arr::get($_GET, 'action', '');
+
+        if (!$code) {
+            $redirect = $vk->getCode($state);
+        } else {
+            // login | attach
+            $state  = Arr::get($_GET, 'state', '');
+
+            $response = $vk->auth($code);
+            $userdata = $vk->getUserInfo($response->user_id);
+
+            $user_to_db = array(
+                'name'          => $userdata->first_name,
+                'vk_id'         => $userdata->uid,
+                'vk_name'       => "{$userdata->last_name} {$userdata->first_name}",
+                'vk_uri'        => $userdata->domain,
+                'photo'         => $userdata->photo_50,
+                'photo_medium'  => $userdata->photo_100,
+                'photo_big'     => $userdata->photo_max
+            );
+ 
+            if ($state == "login") {
+
+                $userFound = Dao_User::select('id')
+                    ->where('vk_id',  '=', $userdata->uid)
+                    ->where('vk_uri', '=', $userdata->domain)
+                    ->limit(1)
+                    ->execute();
+
+                if ($userFound) {
+                    parent::updateUser( $userFound['id'], $user_to_db );
+                    parent::initAuthSession($userFound['id'], true);
+                    return TRUE;
+                }
+                else {
+                    $userId = parent::insertUser( $user_to_db );
+                    parent::initAuthSession($userId, true);
+                    return TRUE;
+                }
+            } elseif ($state == "attach") {
+                if ($userId = parent::checkAuth() ) {
+                    parent::updateUser( $userId, $user_to_db );
+                    return TRUE;
+                } else {
+                    $this->view['login_error_text'] = 'Не удалось прикрепить профиль соцсети';
+                    return FALSE;
+                }
+
+            } elseif ($state == "remove") {
+                 $user_to_db = array(
+                    'vk_id'         => NULL,
+                    'vk_name'       => NULL,
+                    'vk_uri'        => NULL,
+                    'photo'         => NULL,
+                    'photo_medium'  => NULL,
+                    'photo_big'     => NULL
+                );
+
+                if ($userId = parent::checkAuth() ) {
+                    parent::updateUser( $userId, $user_to_db );
+                    return TRUE;
+                } else {
+                    $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети';
+                    return FALSE;
+                }
+            }
+
+        }
+    }
+
+    /**
+     *  Login with facebook.com
+     *  @author Demyashev Alexander
+     */
+    public function login_fb() {}
+
+    /**
+     *  Login with twitter.com
+     *  @author Demyashev Alexander
+     */
+    public function login_tw() {}
 
     /**
     * Checks for login form filled correctly

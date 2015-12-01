@@ -68,6 +68,18 @@ class Controller_Auth_Base extends Controller_Base_preDispatch {
         return $user->execute();
     }
 
+    /**
+     *  Update user fields
+     *  @author Alexander Demyashev
+     *  @return bool
+     */
+    protected static function updateUser($user_id, $fields)
+    {
+        $user = Dao_User::update()->where('id', '=', $user_id);
+        foreach ($fields as $name => $value) $user->set($name, $value);
+        return $user->execute();
+    }
+
 
     /**
     * Checks user's authentication by session-cookie and uid-cookie
