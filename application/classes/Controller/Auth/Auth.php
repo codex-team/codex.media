@@ -22,7 +22,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
         /** To handle login/signup form submitting */
         $action        = Arr::get($_POST, 'action');
-        $state         = Arr::get($_GET, 'state', false);
         $method        = $this->request->param('method');
         $authSucceeded = FALSE;
 
@@ -32,7 +31,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         }
 
         if ($method) switch ($method) {
-            case 'vk'       : $authSucceeded = $this->login_vk($state); break;
+            case 'vk'       : $authSucceeded = $this->login_vk(); break;
             case 'facebook' : $authSucceeded = $this->login_fb(); break;
             case 'twitter'  : $authSucceeded = $this->login_tw(); break;
         }
@@ -175,17 +174,18 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
      *  Login with vk.com
      *  @author Demyashev Alexander
      */
-    public function login_vk($state="login")
+    public function login_vk()
     {
         $vk     = Model::factory('Social_Vk');
         $code   = Arr::get($_GET, 'code', '');
         $action = Arr::get($_GET, 'action', '');
+        $state  = Arr::get($_GET, 'state', 'login');
 
         if (!$code) {
             $redirect = $vk->getCode($state);
         } else {
             // login | attach
-            $state  = Arr::get($_GET, 'state', '');
+            //$state  = Arr::get($_GET, 'state', '');
 
             $response = $vk->auth($code);
             $userdata = $vk->getUserInfo($response->user_id);
