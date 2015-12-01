@@ -228,10 +228,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                  $user_to_db = array(
                     'vk_id'         => NULL,
                     'vk_name'       => NULL,
-                    'vk_uri'        => NULL,
-                    'photo'         => NULL,
-                    'photo_medium'  => NULL,
-                    'photo_big'     => NULL
+                    'vk_uri'        => NULL
                 );
 
                 if ($userId = parent::checkAuth() ) {
