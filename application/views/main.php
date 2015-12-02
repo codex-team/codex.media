@@ -44,7 +44,7 @@
             <? if ( $user->id ): ?>
                 <a class="user_panel cf" href="/user/<?= $user->id ?>">
                     <img src="<?= $user->photo ?>" />
-                    <?= $user->real_name?>
+                    <?= $user->name?>
                 </a>
             <? endif ?>
 
@@ -56,7 +56,7 @@
             </ul>
 
             <? if (!$user->id): ?>
-                <a class="button green" href="/login">Войти на сайт</a>
+                <a class="button green" href="/auth">Войти на сайт</a>
             <? else: ?>
                 <a class="button logout" href="/logout">Выйти</a>
             <? endif ?>

@@ -126,6 +126,10 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: #
 input:focus::-moz-placeholder, textarea:focus::-moz-placeholder {opacity: .1 !important; transition: all 200ms ease}
 input:focus::-webkit-input-placeholder, textarea:focus::-webkit-input-placeholder { opacity: .1 !important; }
 
+.input.error input{
+    background: #FDD3D3
+}
+
 .select{position: relative; overflow: hidden;}
 .select:before{
     content: '';
@@ -233,7 +237,7 @@ input:focus::-webkit-input-placeholder, textarea:focus::-webkit-input-placeholde
 .info_block{
     padding: 15px 20px;
     font-size: 15px;
-    background: #C4E2FE;    
+    background: #C4E2FE;
     color: #377AC1;
     border-radius: 2px;
 }
@@ -258,8 +262,8 @@ h3{
 .button:hover{background: #DEE0E3; color: #7A838C}
 .button.green{background: #0ea164; color: #fff;}
 .button.green:hover{background: #108857;}
-.button.main, input[type="submit"]{background: #258FFF; color: #fff;}
-.button.main:hover, input[type="submit"]:hover{background: #1F77D5; color: #B3DAFF}
+.button.main, input[type="submit"]{background: #548AD2; color: #fff;}
+.button.main:hover, input[type="submit"]:hover{background: #3D77C3; color: #fff}
 
 .button.loading:after{
     content: '●●●';
@@ -308,7 +312,7 @@ h3{
 /********/
 html{overflow-y: scroll;}
 body{
-    background: #232628; 
+    background: #232628;
     margin: 0 auto; overflow-x: hidden;
     color: #eee;
     font-size: 14px;
@@ -372,7 +376,7 @@ aside .user_panel img{
 
 footer.site_footer{
     display: block;
-    position: absolute; 
+    position: absolute;
     bottom: 0; left: 0;
     color: #707980;
     font-size: 11px;
@@ -549,7 +553,7 @@ article time{color: #b6b6b6;}
 
 .page_form .redactor_editor, .page_content{
     font-family: 'PT Serif';
-    font-size: 17px;    
+    font-size: 17px;
     line-height: 1.5em;
 }
 
@@ -767,14 +771,14 @@ article time{color: #b6b6b6;}
 
     .show_only_in_mobile{ visibility: visible !important; }
 
-   
+
 
 
 }
 
 @media all and (-webkit-min-device-pixel-ratio: 1.5){
 
-   
+
 
 
 }

@@ -1,5 +1,29 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+
+
+
+
+
+
+
+
+
+
+/**
+* @deprecated with Auth/Base & Auth/Auth
+*/
+
+
+
+
+
+
+
+
+
+
+
 class Controller_Auth_Login extends Controller_Base_preDispatch {
 
     const LOGIN_MAX_TRYING     = 5;
@@ -52,7 +76,7 @@ class Controller_Auth_Login extends Controller_Base_preDispatch {
     public function action_login()
     {
         $this->template->title = 'Вход';
-        
+
         if ($this->user->id) $this->redirect('/');
 
 
@@ -63,10 +87,10 @@ class Controller_Auth_Login extends Controller_Base_preDispatch {
 
         $session  = Session::instance();
         $redirect = Arr::get($_GET, 'redirect');
-        
+
         if ($redirect) $session->set('redirect', $redirect);
 
-        
+
 
         $this->view['login_trying'] = (int)$this->memcache->get('error_login:'.Request::$client_ip, 0);
 
@@ -74,9 +98,9 @@ class Controller_Auth_Login extends Controller_Base_preDispatch {
 
             $email         = $_POST['email'];
             $password      = $_POST['password'];
-            
-            $hash_password = sha1(self::LOGIN_PASSWORD_SALT1 . $password . self::LOGIN_PASSWORD_SALT2);            
-            
+
+            $hash_password = sha1(self::LOGIN_PASSWORD_SALT1 . $password . self::LOGIN_PASSWORD_SALT2);
+
             $find_user     = Dao_User::select()->where('email', $email)->where('password', $hash_password)->execute();
 
             if ($find_user) {

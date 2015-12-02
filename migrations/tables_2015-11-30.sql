@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `files` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_removed` tinyint(1) NOT NULL DEFAULT '0',
   `status` tinyint(3) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `author` int(10) unsigned NOT NULL,
   `is_menu_item` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `pages`
@@ -94,20 +94,62 @@ ALTER TABLE `files`
 ALTER TABLE `pages`
  ADD PRIMARY KEY (`id`), ADD KEY `type` (`type`,`id_parent`), ADD KEY `id_parent` (`id_parent`), ADD KEY `type_2` (`type`);
 
---
--- AUTO_INCREMENT for dumped tables
---
+
+
+
+
+
+-- --------------------------------------------------------
 
 --
--- AUTO_INCREMENT for table `files`
+-- Table structure for table `users_sessions`
 --
-ALTER TABLE `files`
-MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE IF NOT EXISTS `users_sessions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned NOT NULL,
+  `cookie` varchar(100) NOT NULL,
+  `dt_start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dt_access` timestamp NULL DEFAULT NULL,
+  `dt_close` timestamp NULL DEFAULT NULL,
+  `useragent` text NOT NULL,
+  `social_provider` tinyint(3) unsigned DEFAULT NULL COMMENT '1 - vk, 2 - fb , 3- tw',
+  `ip` bigint(11) NOT NULL DEFAULT '0',
+  `autologin` smallint(4) DEFAULT NULL COMMENT 'autologin type',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+
+
 --
--- AUTO_INCREMENT for table `pages`
+-- Table structure for table `users`
 --
-ALTER TABLE `pages`
-MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(64) DEFAULT NULL,
+  `bio` text,
+  `photo` varchar(255) DEFAULT NULL,
+  `photo_medium` varchar(255) DEFAULT NULL,
+  `photo_big` varchar(255) DEFAULT NULL,
+
+  `twitter` varchar(255) DEFAULT NULL,
+  `twitter_name` varchar(255) DEFAULT NULL,
+  `twitter_username` varchar(255) DEFAULT NULL,
+  `vk` varchar(255) DEFAULT NULL,
+  `vk_name` varchar(255) DEFAULT NULL,
+  `vk_username` varchar(255) DEFAULT NULL,
+  `facebook` varchar(255) DEFAULT NULL,
+  `facebook_name` varchar(255) DEFAULT NULL,
+  `facebook_username` varchar(255) DEFAULT NULL,
+
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `dt_reg` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  `is_removed` tinyint(1) NOT NULL DEFAULT '0',
+  `telegram_chat_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

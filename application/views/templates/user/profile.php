@@ -3,10 +3,10 @@
 		<img src="<?= $viewUser->photo_medium ?>" />
 	</div>
 	<h1 class="name">
-		<?= $viewUser->real_name ?>
+		<?= $viewUser->name ?>
 	</h1>
 	<? if ($viewUser->vk): ?>
-		<a href="//vk.com/id<?= $viewUser->vk ?>" target="_blank"><?= $viewUser->vk_name ? $viewUser->vk_name : 'id' . $viewUser->vk ?></a>		
+		<a href="//vk.com/id<?= $viewUser->vk ?>" target="_blank"><?= $viewUser->vk_name ? $viewUser->vk_name : 'id' . $viewUser->vk ?></a>
 	<? endif ?>
 </div>
 <? if ($success): ?>
@@ -25,7 +25,7 @@
 	<? else: ?>
 		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=unban">Разблокировать пользователя</a>
 	<? endif ?>
-	
+
 </div>
 <?/*
 	<div class="extra_settings mt30">
@@ -33,7 +33,7 @@
 		<div class="form_error m20_0 hide" id="pageFileError">Превышен допустимый размер файла - 30 мб</div>
 		<div class="form_error m20_0 hide" id="entityError">Файл слишком большой</div>
 		<div class="add_file_form clear">
-		    
+
 		    <form onerror="alert('form');" class="ajaxfree" id="submitPageFile" method="post" enctype="multipart/form-data" target="transport" action="/ajax/file_transport" accept-charset="utf-8">
 
 		    	<?= Form::hidden('csrf', Security::token()); ?>
@@ -51,9 +51,9 @@
 
 			</form>
 		</div>
-	
+
 		<table class="page_files">
-			<? if (isset($files) && $files): ?>			
+			<? if (isset($files) && $files): ?>
 				<? foreach ($files as $file): ?>
 					<?= View::factory('templates/admin/file_row' , array('file' => $file) );?>
 				<? endforeach ?>
@@ -76,8 +76,8 @@
 		                block.html(input).data("toggled", true);
 		                input.focus();
 		            }
-		        });		        
-		        
+		        });
+
 		        function submitTitle( fid, title , block ){
 
 		            simpleAjax.call({
