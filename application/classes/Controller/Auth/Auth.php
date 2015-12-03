@@ -171,8 +171,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     }
 
     /**
-     *  Login with vk.com
+     *  Login with vk.com. Return auth status: true or false
      *  @author Demyashev Alexander
+     *  @return bool $status
      */
     public function login_vk()
     {
@@ -188,7 +189,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
             $userdata = $vk->getUserInfo($response->user_id);
 
             $user_to_db = array(
-                'name'          => $userdata->first_name,
+                'name'          => "{$userdata->last_name} {$userdata->first_name}",
                 'vk_id'         => $userdata->uid,
                 'vk_name'       => "{$userdata->last_name} {$userdata->first_name}",
                 'vk_uri'        => $userdata->domain,
@@ -196,50 +197,80 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                 'photo_medium'  => $userdata->photo_100,
                 'photo_big'     => $userdata->photo_max
             );
- 
-            if ($state == "login") {
-
-                $userFound = Dao_User::select('id')
-                    ->where('vk_id',  '=', $userdata->uid)
-                    ->where('vk_uri', '=', $userdata->domain)
-                    ->limit(1)
-                    ->execute();
-
-                if ($userFound) {
-                    parent::updateUser( $userFound['id'], $user_to_db );
-                    parent::initAuthSession($userFound['id'], true);
-                    return TRUE;
-                }
-                else {
-                    $userId = parent::insertUser( $user_to_db );
-                    parent::initAuthSession($userId, true);
-                    return TRUE;
-                }
-            } elseif ($state == "attach") {
-                if ($userId = parent::checkAuth() ) {
-                    parent::updateUser( $userId, $user_to_db );
-                    return TRUE;
-                } else {
-                    $this->view['login_error_text'] = 'Не удалось прикрепить профиль соцсети';
-                    return FALSE;
-                }
-
-            } elseif ($state == "remove") {
-                 $user_to_db = array(
-                    'vk_id'         => NULL,
-                    'vk_name'       => NULL,
-                    'vk_uri'        => NULL
-                );
-
-                if ($userId = parent::checkAuth() ) {
-                    parent::updateUser( $userId, $user_to_db );
-                    return TRUE;
-                } else {
-                    $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети';
-                    return FALSE;
-                }
+            
+            /**
+             *  What to do with vk response data?
+             *  @var string $state  
+             */
+            if ($state) switch ($state) {
+                case 'login'  : $status = $this->login_vk_insert($user_to_db); break;
+                case 'attach' : $status = $this->login_vk_attach($user_to_db); break;
+                case 'remove' : $status = $this->login_vk_remove(); break;
             }
 
+            return $status;
+        }
+    }
+
+    /**
+     *  Create profile on site with only vk info
+     *  @param  array     $userdata
+     *  @see    config/social.php for second param for initAuthSession() [0,1,2]
+     *  @author Demyashev Alexander
+     */
+    public function login_vk_insert($userdata) {
+        $userFound = Dao_User::select('id')
+            ->where('vk_id',  '=', $userdata['vk_id'])
+            ->limit(1)
+            ->execute();
+
+        if ($userFound) {
+            Model::factory('User')->updateUser($userFound['id'], $userdata);
+            //parent::updateUser( $userFound['id'], $userdata );
+            parent::initAuthSession($userFound['id'], 0);
+            return TRUE;
+        }
+        else {
+            $userId = parent::insertUser( $userdata );
+            parent::initAuthSession($userId, 0);
+            return TRUE;
+        }
+    }
+
+    /**
+     *  Attach vk profile to site user's profile
+     *  @param  array     $userdata
+     *  @author Demyashev Alexander
+     */
+    public function login_vk_attach($userdata) {
+        if ($userId = parent::checkAuth() ) {
+            Model::factory('User')->updateUser($userId, $userdata);
+            // parent::updateUser( $userId, $userdata );
+            return TRUE;
+        } else {
+            $this->view['login_error_text'] = 'Не удалось прикрепить профиль соцсети';
+            return FALSE;
+        }
+    }
+
+    /**
+     *  Remove vk profile from site user's profile
+     *  @author Demyashev Alexander
+     */
+    public function login_vk_remove() {
+        $user_to_db = array(
+            'vk_id'         => NULL,
+            'vk_name'       => NULL,
+            'vk_uri'        => NULL
+        );
+
+        if ($userId = parent::checkAuth() ) {
+            Model::factory('User')->updateUser($userId, $user_to_db);
+            // parent::updateUser( $userId, $user_to_db );
+            return TRUE;
+        } else {
+            $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети';
+            return FALSE;
         }
     }
 

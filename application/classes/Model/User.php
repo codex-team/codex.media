@@ -68,7 +68,17 @@ class Model_User extends Model_preDispatch
         return false;
     }
 
-
+    /**
+     *  Update user fields
+     *  @author Alexander Demyashev
+     *  @return bool
+     */
+    public function updateUser($user_id, $fields)
+    {
+        $user = Dao_User::update()->where('id', '=', $user_id);
+        foreach ($fields as $name => $value) $user->set($name, $value);
+        return $user->execute();
+    }
 
     public function getLastOnlineTimestamp()
     {

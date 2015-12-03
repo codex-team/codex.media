@@ -16,7 +16,7 @@
 <? endif; ?>
 <div class="profile_panel clear">
 
-	<? if (!$viewUser->vk_id): ?>
+	<? if (!$viewUser->vk_id && $viewUser->email): ?>
 	<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
 	<? else: ?>
 	<a class="button" href="/auth/vk?state=remove">Открепить профиль ВК</a>
