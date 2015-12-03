@@ -78,7 +78,7 @@
                 'password_repeat' => array(
                     'label' => 'Повторите пароль',
                     'type'  => 'password',
-                    'class' => empty($signup_error_fields['password_repeat']) ? '_hide' : '',
+                    'class' => empty($signup_error_fields['password_repeat']) ? '_hide mb30' : '',
                     'id' => 'password_repeat'
                 )
             ); ?>

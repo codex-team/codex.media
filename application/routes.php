@@ -70,7 +70,7 @@ Route::set('PAGE_FILES_EDITING', 'ajax/edit_file/<type>')->defaults(array(
 
 
 /** Auth */
-Route::set('AUTH_PAGE', 'auth(/method)')->defaults(array(
+Route::set('AUTH_PAGE', 'auth(/<method>)')->defaults(array(
     'controller' => 'auth_auth',
     'action' => 'auth'
 ));

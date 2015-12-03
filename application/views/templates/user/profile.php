@@ -5,8 +5,8 @@
 	<h1 class="name">
 		<?= $viewUser->name ?>
 	</h1>
-	<? if ($viewUser->vk): ?>
-		<a href="//vk.com/id<?= $viewUser->vk ?>" target="_blank"><?= $viewUser->vk_name ? $viewUser->vk_name : 'id' . $viewUser->vk ?></a>
+	<? if ($viewUser->vk_id): ?>
+		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank"><?= $viewUser->vk_name ? $viewUser->vk_name : $viewUser->vk_uri ?></a>
 	<? endif ?>
 </div>
 <? if ($success): ?>
@@ -15,6 +15,14 @@
 	</div>
 <? endif; ?>
 <div class="profile_panel clear">
+
+	<? if (!$viewUser->vk_id && $viewUser->email): ?>
+	<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
+	<? else: ?>
+	<a class="button" href="/auth/vk?state=remove">Открепить профиль ВК</a>
+	<? endif; ?>
+
+
 	<? if ($viewUser->status != 1 ): ?>
 		<a class="button" href="/user/<?= $viewUser->id ?>?act=rise">Активировать аккаунт преподавателя</a>
 	<? else: ?>
