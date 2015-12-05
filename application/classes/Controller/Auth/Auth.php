@@ -263,7 +263,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                     break;
 
                 case 'attach':
-                    unset($user_to_db['email'])
+                    unset($user_to_db['email']);
                     $status = $this->social_attach($user_to_db);
                     break;
 
