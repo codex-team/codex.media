@@ -31,9 +31,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         }
 
         if ($method) switch ($method) {
-            case 'vk'       : $authSucceeded = $this->login_vk(); break;
-            case 'facebook' : $authSucceeded = $this->login_fb(); break;
-            case 'twitter'  : $authSucceeded = $this->login_tw(); break;
+            case 'vk' : $authSucceeded = $this->login_vk(); break;
+            case 'fb' : $authSucceeded = $this->login_fb(); break;
+            case 'tw' : $authSucceeded = $this->login_tw(); break;
         }
 
         /** Redirect user after succeeded auth */
@@ -190,6 +190,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
             $user_to_db = array(
                 'name'          => "{$userdata->last_name} {$userdata->first_name}",
+                'email'         => $response->email,
                 'vk_id'         => $userdata->uid,
                 'vk_name'       => "{$userdata->last_name} {$userdata->first_name}",
                 'vk_uri'        => $userdata->domain,
@@ -199,13 +200,22 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
             );
             
             /**
-             *  What to do with vk response data?
+             *  What to do with response data?
              *  @var string $state  
              */
             if ($state) switch ($state) {
-                case 'login'  : $status = $this->login_vk_insert($user_to_db); break;
-                case 'attach' : $status = $this->login_vk_attach($user_to_db); break;
-                case 'remove' : $status = $this->login_vk_remove(); break;
+                case 'login':
+                    $status = $this->social_insert('vk', $user_to_db);
+                    break;
+
+                case 'attach':
+                    unset($user_to_db['email']);
+                    $status = $this->social_attach($user_to_db);
+                    break;
+
+                case 'remove': 
+                    $status = $this->social_remove('vk');
+                    break;
             }
 
             return $status;
@@ -213,20 +223,127 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     }
 
     /**
-     *  Create profile on site with only vk info
+     *  Login with facebook.com
+     *  @author Demyashev Alexander
+     */
+    public function login_fb() {
+        $fb     = Model::factory('Social_Fb');
+        $code   = Arr::get($_GET, 'code', '');
+        $state  = Arr::get($_GET, 'state', 'login');
+
+        if (Arr::get($_GET, 'error')) {
+            $this->view['login_error_text'] = Arr::get($_GET, 'error_description', '');
+            return FALSE;
+        }
+
+        if (!$code) {
+            $fb->auth($state);
+        } else {
+            $response = $fb->getToken($code);
+            $userdata = $fb->getUser($response->access_token);
+
+            $user_to_db = array(
+                'name'          => $userdata->name,
+                'email'         => $userdata->email,
+                'facebook'      => $userdata->id,
+                'facebook_name' => $userdata->name,
+                'facebook_username' => NULL,
+                'photo'         => $userdata->picture['100'],
+                'photo_medium'  => $userdata->picture['200'],
+                'photo_big'     => $userdata->picture['500']
+            );
+
+            /**
+             *  What to do with response data?
+             *  @var string $state  
+             */
+            if ($state) switch ($state) {
+                case 'login':
+                    $status = $this->social_insert('fb', $user_to_db);
+                    break;
+
+                case 'attach':
+                    unset($user_to_db['email'])
+                    $status = $this->social_attach($user_to_db);
+                    break;
+
+                case 'remove':
+                    $status = $this->social_remove('fb');
+                    break;
+            }
+
+            return $status;
+        }
+        
+    }
+
+    /**
+     *  Login with twitter.com
+     *  @author Demyashev Alexander
+     */
+    public function login_tw() {
+
+        $state  = Arr::get($_GET, 'state', 'login');
+        
+        $tw = Model::factory("Social_Tw");
+        $userdata = $tw->get('account/verify_credentials');
+
+        // 'include_email' Use of this parameter requires whitelisting.
+        $user_to_db = array(
+            'name'            => $userdata->name,
+            'email'           => NULL,
+            'twitter'         => $userdata->id_str,
+            'twitter_name'    => $userdata->name,
+            'twitter_username'=> $userdata->screen_name,
+            'photo'           => $userdata->profile_image_url_https,
+            'photo_medium'    => $userdata->profile_image_url_https,
+            'photo_big'       => $userdata->profile_image_url_https
+        );
+
+        /**
+         *  What to do with response data?
+         *  @var string $state  
+         */
+        if ($state) switch ($state) {
+            case 'login': 
+                $status = $this->social_insert('tw', $user_to_db); 
+                break;
+
+            case 'attach': 
+                unset($user_to_db['email']); 
+                $status = $this->social_attach($user_to_db); 
+                break;
+
+            case 'remove': 
+                $status = $this->social_remove('tw'); 
+                break;
+        }
+
+        return $status;
+    }
+
+    /**
+     *  Create profile on site with only social info
+     *  @param  string    $social    # vk, tw, fb
      *  @param  array     $userdata
      *  @see    config/social.php for second param for initAuthSession() [0,1,2]
      *  @author Demyashev Alexander
      */
-    public function login_vk_insert($userdata) {
+    private function social_insert($social, $userdata)
+    {
+        switch ($social) {
+            case 'vk': $field = "vk_id"; break;
+            case 'fb': $field = "facebook"; break;
+            case 'tw': $field = "twitter"; break;
+        }
+
         $userFound = Dao_User::select('id')
-            ->where('vk_id',  '=', $userdata['vk_id'])
+            ->where($field,  '=', $userdata[$field])
             ->limit(1)
             ->execute();
 
         if ($userFound) {
             Model::factory('User')->updateUser($userFound['id'], $userdata);
-            //parent::updateUser( $userFound['id'], $userdata );
             parent::initAuthSession($userFound['id'], 0);
             return TRUE;
         }
@@ -238,14 +355,14 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     }
 
     /**
-     *  Attach vk profile to site user's profile
+     *  Attach social profile to site user's profile
      *  @param  array     $userdata
      *  @author Demyashev Alexander
      */
-    public function login_vk_attach($userdata) {
+    private function social_attach($userdata) {
+
         if ($userId = parent::checkAuth() ) {
             Model::factory('User')->updateUser($userId, $userdata);
-            // parent::updateUser( $userId, $userdata );
             return TRUE;
         } else {
             $this->view['login_error_text'] = 'Не удалось прикрепить профиль соцсети';
@@ -254,37 +371,25 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     }
 
     /**
-     *  Remove vk profile from site user's profile
+     *  Remove social profile from site user's profile
      *  @author Demyashev Alexander
      */
-    public function login_vk_remove() {
-        $user_to_db = array(
-            'vk_id'         => NULL,
-            'vk_name'       => NULL,
-            'vk_uri'        => NULL
-        );
+    private function social_remove($social) {
+
+        switch ($social) {
+            case 'vk': $user_to_db = array('vk_id'=> NULL,'vk_name'=> NULL,'vk_uri'=> NULL); break;
+            case 'fb': $user_to_db = array('facebook'=> NULL,'facebook_username'=> NULL,'facebook_name'=> NULL); break;
+            case 'tw': $user_to_db = array('twitter'=> NULL,'twitter_name'=> NULL,'twitter_username'=> NULL); break;
+        }
 
         if ($userId = parent::checkAuth() ) {
             Model::factory('User')->updateUser($userId, $user_to_db);
-            // parent::updateUser( $userId, $user_to_db );
             return TRUE;
         } else {
             $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети';
             return FALSE;
         }
     }
-
-    /**
-     *  Login with facebook.com
-     *  @author Demyashev Alexander
-     */
-    public function login_fb() {}
-
-    /**
-     *  Login with twitter.com
-     *  @author Demyashev Alexander
-     */
-    public function login_tw() {}
 
     /**
     * Checks for login form filled correctly

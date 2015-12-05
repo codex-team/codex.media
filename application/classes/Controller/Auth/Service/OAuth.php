@@ -42,9 +42,9 @@ class OAuthToken {
      */
     function to_string() {
         return "oauth_token=" .
-                     OAuthUtil::urlencode_rfc3986($this->key) .
-                     "&oauth_token_secret=" .
-                     OAuthUtil::urlencode_rfc3986($this->secret);
+            OAuthUtil::urlencode_rfc3986($this->key) .
+            "&oauth_token_secret=" .
+            OAuthUtil::urlencode_rfc3986($this->secret);
     }
 
     function __toString() {
@@ -90,9 +90,9 @@ abstract class OAuthSignatureMethod {
 }
 
 /**
- * The HMAC-SHA1 signature method uses the HMAC-SHA1 signature algorithm as defined in [RFC2104] 
- * where the Signature Base String is the text and the key is the concatenated values (each first 
- * encoded per Parameter Encoding) of the Consumer Secret and Token Secret, separated by an '&' 
+ * The HMAC-SHA1 signature method uses the HMAC-SHA1 signature algorithm as defined in [RFC2104]
+ * where the Signature Base String is the text and the key is the concatenated values (each first
+ * encoded per Parameter Encoding) of the Consumer Secret and Token Secret, separated by an '&'
  * character (ASCII code 38) even if empty.
  *   - Chapter 9.2 ("HMAC-SHA1")
  */
@@ -118,7 +118,7 @@ class OAuthSignatureMethod_HMAC_SHA1 extends OAuthSignatureMethod {
 }
 
 /**
- * The PLAINTEXT method does not provide any security protection and SHOULD only be used 
+ * The PLAINTEXT method does not provide any security protection and SHOULD only be used
  * over a secure channel such as HTTPS. It does not use the Signature Base String.
  *   - Chapter 9.4 ("PLAINTEXT")
  */
@@ -128,8 +128,8 @@ class OAuthSignatureMethod_PLAINTEXT extends OAuthSignatureMethod {
     }
 
     /**
-     * oauth_signature is set to the concatenated encoded values of the Consumer Secret and 
-     * Token Secret, separated by a '&' character (ASCII code 38), even if either secret is 
+     * oauth_signature is set to the concatenated encoded values of the Consumer Secret and
+     * Token Secret, separated by a '&' character (ASCII code 38), even if either secret is
      * empty. The result MUST be encoded again.
      *   - Chapter 9.4.1 ("Generating Signatures")
      *
@@ -151,10 +151,10 @@ class OAuthSignatureMethod_PLAINTEXT extends OAuthSignatureMethod {
 }
 
 /**
- * The RSA-SHA1 signature method uses the RSASSA-PKCS1-v1_5 signature algorithm as defined in 
- * [RFC3447] section 8.2 (more simply known as PKCS#1), using SHA-1 as the hash function for 
- * EMSA-PKCS1-v1_5. It is assumed that the Consumer has provided its RSA public key in a 
- * verified way to the Service Provider, in a manner which is beyond the scope of this 
+ * The RSA-SHA1 signature method uses the RSASSA-PKCS1-v1_5 signature algorithm as defined in
+ * [RFC3447] section 8.2 (more simply known as PKCS#1), using SHA-1 as the hash function for
+ * EMSA-PKCS1-v1_5. It is assumed that the Consumer has provided its RSA public key in a
+ * verified way to the Service Provider, in a manner which is beyond the scope of this
  * specification.
  *   - Chapter 9.3 ("RSA-SHA1")
  */
@@ -240,13 +240,13 @@ class OAuthRequest {
      */
     public static function from_request($http_method=NULL, $http_url=NULL, $parameters=NULL) {
         $scheme = (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")
-                            ? 'http'
-                            : 'https';
+            ? 'http'
+            : 'https';
         @$http_url or $http_url = $scheme .
-                                                            '://' . $_SERVER['HTTP_HOST'] .
-                                                            ':' .
-                                                            $_SERVER['SERVER_PORT'] .
-                                                            $_SERVER['REQUEST_URI'];
+            '://' . $_SERVER['HTTP_HOST'] .
+            ':' .
+            $_SERVER['SERVER_PORT'] .
+            $_SERVER['REQUEST_URI'];
         @$http_method or $http_method = $_SERVER['REQUEST_METHOD'];
 
         // We weren't handed any parameters, so let's find the ones relevant to
@@ -263,9 +263,9 @@ class OAuthRequest {
             // It's a POST request of the proper content-type, so parse POST
             // parameters and add those overriding any duplicates from GET
             if ($http_method == "POST"
-                    && @strstr($request_headers["Content-Type"],
-                                         "application/x-www-form-urlencoded")
-                    ) {
+                && @strstr($request_headers["Content-Type"],
+                    "application/x-www-form-urlencoded")
+            ) {
                 $post_data = OAuthUtil::parse_parameters(
                     file_get_contents(self::$POST_INPUT)
                 );
@@ -292,9 +292,9 @@ class OAuthRequest {
     public static function from_consumer_and_token($consumer, $token, $http_method, $http_url, $parameters=NULL) {
         @$parameters or $parameters = array();
         $defaults = array("oauth_version" => OAuthRequest::$version,
-                                            "oauth_nonce" => OAuthRequest::generate_nonce(),
-                                            "oauth_timestamp" => OAuthRequest::generate_timestamp(),
-                                            "oauth_consumer_key" => $consumer->key);
+            "oauth_nonce" => OAuthRequest::generate_nonce(),
+            "oauth_timestamp" => OAuthRequest::generate_timestamp(),
+            "oauth_consumer_key" => $consumer->key);
         if ($token)
             $defaults['oauth_token'] = $token->key;
 
@@ -388,7 +388,7 @@ class OAuthRequest {
         $port or $port = ($scheme == 'https') ? '443' : '80';
 
         if (($scheme == 'https' && $port != '443')
-                || ($scheme == 'http' && $port != '80')) {
+            || ($scheme == 'http' && $port != '80')) {
             $host = "$host:$port";
         }
         return "$scheme://$host$path";
@@ -418,7 +418,7 @@ class OAuthRequest {
      */
     public function to_header($realm=null) {
         $first = true;
-    if($realm) {
+        if($realm) {
             $out = 'Authorization: OAuth realm="' . OAuthUtil::urlencode_rfc3986($realm) . '"';
             $first = false;
         } else
@@ -432,9 +432,9 @@ class OAuthRequest {
             }
             $out .= ($first) ? ' ' : ',';
             $out .= OAuthUtil::urlencode_rfc3986($k) .
-                            '="' .
-                            OAuthUtil::urlencode_rfc3986($v) .
-                            '"';
+                '="' .
+                OAuthUtil::urlencode_rfc3986($v) .
+                '"';
             $first = false;
         }
         return $out;
@@ -556,7 +556,7 @@ class OAuthServer {
     private function get_version(&$request) {
         $version = $request->get_parameter("oauth_version");
         if (!$version) {
-            // Service Providers MUST assume the protocol version to be 1.0 if this parameter is not present. 
+            // Service Providers MUST assume the protocol version to be 1.0 if this parameter is not present.
             // Chapter 7.0 ("Accessing Protected Ressources")
             $version = '1.0';
         }
@@ -571,7 +571,7 @@ class OAuthServer {
      */
     private function get_signature_method(&$request) {
         $signature_method =
-                @$request->get_parameter("oauth_signature_method");
+            @$request->get_parameter("oauth_signature_method");
 
         if (!$signature_method) {
             // According to chapter 7 ("Accessing Protected Ressources") the signature-method
@@ -580,11 +580,11 @@ class OAuthServer {
         }
 
         if (!in_array($signature_method,
-                                    array_keys($this->signature_methods))) {
+            array_keys($this->signature_methods))) {
             throw new OAuthException(
                 "Signature method '$signature_method' not supported " .
-                "try one of the following: " .
-                implode(", ", array_keys($this->signature_methods))
+                    "try one of the following: " .
+                    implode(", ", array_keys($this->signature_methods))
             );
         }
         return $this->signature_methods[$signature_method];
@@ -656,7 +656,7 @@ class OAuthServer {
             throw new OAuthException(
                 'Missing timestamp parameter. The parameter is required'
             );
-        
+
         // verify that timestamp is recentish
         $now = time();
         if (abs($now - $timestamp) > $this->timestamp_threshold) {
@@ -717,18 +717,18 @@ class OAuthDataStore {
 
 class OAuthUtil {
     public static function urlencode_rfc3986($input) {
-    if (is_array($input)) {
-        return array_map(array('OAuthUtil', 'urlencode_rfc3986'), $input);
-    } else if (is_scalar($input)) {
-        return str_replace(
-            '+',
-            ' ',
-            str_replace('%7E', '~', rawurlencode($input))
-        );
-    } else {
-        return '';
+        if (is_array($input)) {
+            return array_map(array('OAuthUtil', 'urlencode_rfc3986'), $input);
+        } else if (is_scalar($input)) {
+            return str_replace(
+                '+',
+                ' ',
+                str_replace('%7E', '~', rawurlencode($input))
+            );
+        } else {
+            return '';
+        }
     }
-}
 
 
     // This decode function isn't taking into consideration the above
@@ -776,10 +776,10 @@ class OAuthUtil {
             $out = array();
             foreach( $headers AS $key => $value ) {
                 $key = str_replace(
-                        " ",
-                        "-",
-                        ucwords(strtolower(str_replace("-", " ", $key)))
-                    );
+                    " ",
+                    "-",
+                    ucwords(strtolower(str_replace("-", " ", $key)))
+                );
                 $out[$key] = $value;
             }
         } else {
@@ -870,245 +870,3 @@ class OAuthUtil {
         return implode('&', $pairs);
     }
 }
-
-
-/*
- * Abraham Williams (abraham@abrah.am) http://abrah.am
- *
- * The first PHP Library to support OAuth for Twitter's REST API.
- */
-class Model_Social_Tw extends Model_preDispatch {
-    /* Contains the last HTTP status code returned. */
-    public $http_code;
-    /* Contains the last API call. */
-    public $url;
-    /* Set up the API root URL. */
-    public $host = "https://api.twitter.com/1.1/";
-    /* Set timeout default. */
-    public $timeout = 30;
-    /* Set connect timeout. */
-    public $connecttimeout = 30; 
-    /* Verify SSL Cert. */
-    public $ssl_verifypeer = FALSE;
-    /* Respons format. */
-    public $format = 'json';
-    /* Decode returned json data. */
-    public $decode_json = TRUE;
-    /* Contains the last HTTP headers returned. */
-    public $http_info;
-    /* Set the useragnet. */
-    public $useragent = 'TwitterOAuth v0.2.0-beta2';
-    /* Immediately retry the API call if the response was not successful. */
-    //public $retry = TRUE;
-
-
-
-
-    /**
-     * Set API URLS
-     */
-    function accessTokenURL()  { return 'https://api.twitter.com/oauth/access_token'; }
-    function authenticateURL() { return 'https://twitter.com/oauth/authenticate'; }
-    function authorizeURL()    { return 'https://twitter.com/oauth/authorize'; }
-    function requestTokenURL() { return 'https://api.twitter.com/oauth/request_token'; }
-
-    /**
-     * Debug helpers
-     */
-    function lastStatusCode() { return $this->http_status; }
-    function lastAPICall() { return $this->last_api_call; }
-
-    /**
-     * construct TwitterOAuth object
-     */
-    function __construct() {
-        $settings = Kohana::$config->load('social.tw');
-
-        $this->sha1_method = new OAuthSignatureMethod_HMAC_SHA1();
-        $this->consumer = new OAuthConsumer($settings['consumer_key'], $settings['consumer_secret']);
-        if (!empty($settings['access_token']) && !empty($settings['secret_token'])) {
-            $this->token = new OAuthConsumer($settings['access_token'], $settings['secret_token']);
-        } else {
-            $this->token = NULL;
-        }
-    }
-
-
-    /**
-     * Get a request_token from Twitter
-     *
-     * @returns a key/value array containing oauth_token and oauth_token_secret
-     */
-    function getRequestToken($oauth_callback = NULL) {
-        $parameters = array();
-        if (!empty($oauth_callback)) {
-            $parameters['oauth_callback'] = $oauth_callback;
-        } 
-        $request = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);
-        $token = OAuthUtil::parse_parameters($request);
-        $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
-        return $token;
-    }
-
-    /**
-     * Get the authorize URL
-     *
-     * @returns a string
-     */
-    function getAuthorizeURL($token, $sign_in_with_twitter = TRUE) {
-        if (is_array($token)) {
-            $token = $token['oauth_token'];
-        }
-        if (empty($sign_in_with_twitter)) {
-            return $this->authorizeURL() . "?oauth_token={$token}";
-        } else {
-             return $this->authenticateURL() . "?oauth_token={$token}";
-        }
-    }
-
-    /**
-     * Exchange request token and secret for an access token and
-     * secret, to sign API calls.
-     *
-     * @returns array("oauth_token" => "the-access-token",
-     *                "oauth_token_secret" => "the-access-secret",
-     *                "user_id" => "9436992",
-     *                "screen_name" => "abraham")
-     */
-    function getAccessToken($oauth_verifier = FALSE) {
-        $parameters = array();
-        if (!empty($oauth_verifier)) {
-            $parameters['oauth_verifier'] = $oauth_verifier;
-        }
-        $request = $this->oAuthRequest($this->accessTokenURL(), 'GET', $parameters);
-        $token = OAuthUtil::parse_parameters($request);
-        $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
-        return $token;
-    }
-
-    /**
-     * One time exchange of username and password for access token and secret.
-     *
-     * @returns array("oauth_token" => "the-access-token",
-     *                "oauth_token_secret" => "the-access-secret",
-     *                "user_id" => "9436992",
-     *                "screen_name" => "abraham",
-     *                "x_auth_expires" => "0")
-     */  
-    function getXAuthToken($username, $password) {
-        $parameters = array();
-        $parameters['x_auth_username'] = $username;
-        $parameters['x_auth_password'] = $password;
-        $parameters['x_auth_mode'] = 'client_auth';
-        $request = $this->oAuthRequest($this->accessTokenURL(), 'POST', $parameters);
-        $token = OAuthUtil::parse_parameters($request);
-        $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
-        return $token;
-    }
-
-    /**
-     * GET wrapper for oAuthRequest.
-     */
-    function get($url, $parameters = array()) {
-        $response = $this->oAuthRequest($url, 'GET', $parameters);
-        if ($this->format === 'json' && $this->decode_json) {
-            return json_decode($response);
-        }
-        return $response;
-    }
-    
-    /**
-     * POST wrapper for oAuthRequest.
-     */
-    function post($url, $parameters = array()) {
-        $response = $this->oAuthRequest($url, 'POST', $parameters);
-        if ($this->format === 'json' && $this->decode_json) {
-            return json_decode($response);
-        }
-        return $response;
-    }
-
-    /**
-     * DELETE wrapper for oAuthReqeust.
-     */
-    function delete($url, $parameters = array()) {
-        $response = $this->oAuthRequest($url, 'DELETE', $parameters);
-        if ($this->format === 'json' && $this->decode_json) {
-            return json_decode($response);
-        }
-        return $response;
-    }
-
-    /**
-     * Format and sign an OAuth / API request
-     */
-    function oAuthRequest($url, $method, $parameters) {
-        if (strrpos($url, 'https://') !== 0 && strrpos($url, 'http://') !== 0) {
-            $url = "{$this->host}{$url}.{$this->format}";
-        }
-        $request = OAuthRequest::from_consumer_and_token($this->consumer, $this->token, $method, $url, $parameters);
-        $request->sign_request($this->sha1_method, $this->consumer, $this->token);
-        switch ($method) {
-        case 'GET':
-            return $this->http($request->to_url(), 'GET');
-        default:
-            return $this->http($request->get_normalized_http_url(), $method, $request->to_postdata());
-        }
-    }
-
-    /**
-     * Make an HTTP request
-     *
-     * @return API results
-     */
-    function http($url, $method, $postfields = NULL) {
-        $this->http_info = array();
-        $ci = curl_init();
-        /* Curl settings */
-        curl_setopt($ci, CURLOPT_USERAGENT, $this->useragent);
-        curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, $this->connecttimeout);
-        curl_setopt($ci, CURLOPT_TIMEOUT, $this->timeout);
-        curl_setopt($ci, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ci, CURLOPT_HTTPHEADER, array('Expect:'));
-        curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, $this->ssl_verifypeer);
-        curl_setopt($ci, CURLOPT_HEADERFUNCTION, array($this, 'getHeader'));
-        curl_setopt($ci, CURLOPT_HEADER, FALSE);
-
-        switch ($method) {
-            case 'POST':
-                curl_setopt($ci, CURLOPT_POST, TRUE);
-                if (!empty($postfields)) {
-                    curl_setopt($ci, CURLOPT_POSTFIELDS, $postfields);
-                }
-                break;
-            case 'DELETE':
-                curl_setopt($ci, CURLOPT_CUSTOMREQUEST, 'DELETE');
-                if (!empty($postfields)) {
-                    $url = "{$url}?{$postfields}";
-                }
-        }
-
-        curl_setopt($ci, CURLOPT_URL, $url);
-        $response = curl_exec($ci);
-        $this->http_code = curl_getinfo($ci, CURLINFO_HTTP_CODE);
-        $this->http_info = array_merge($this->http_info, curl_getinfo($ci));
-        $this->url = $url;
-        curl_close ($ci);
-        return $response;
-    }
-
-    /**
-     * Get the header info to store.
-     */
-    function getHeader($ch, $header) {
-        $i = strpos($header, ':');
-        if (!empty($i)) {
-            $key = str_replace('-', '_', strtolower(substr($header, 0, $i)));
-            $value = trim(substr($header, $i + 2));
-            $this->http_header[$key] = $value;
-        }
-        return strlen($header);
-    }
-}
-
-?>

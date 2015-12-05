@@ -7,6 +7,12 @@
 	</h1>
 	<? if ($viewUser->vk_id): ?>
 		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank"><?= $viewUser->vk_name ? $viewUser->vk_name : $viewUser->vk_uri ?></a>
+	<? endif; ?>
+	<? if ($viewUser->facebook): ?>
+		<a href="//fb.com/<?= $viewUser->facebook ?>" target="_blank"><?= $viewUser->facebook_name ? $viewUser->facebook_name : $viewUser->name ?></a>
+	<? endif ?>
+	<? if ($viewUser->twitter): ?>
+		<a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank"><?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?></a>
 	<? endif ?>
 </div>
 <? if ($success): ?>
@@ -16,10 +22,22 @@
 <? endif; ?>
 <div class="profile_panel clear">
 
-	<? if (!$viewUser->vk_id && $viewUser->email): ?>
+	<? if (!$viewUser->vk_id): ?>
 	<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
 	<? else: ?>
 	<a class="button" href="/auth/vk?state=remove">Открепить профиль ВК</a>
+	<? endif; ?>
+
+	<? if (!$viewUser->facebook): ?>
+	<a class="button" href="/auth/fb?state=attach">Прикрепить профиль FB</a>
+	<? else: ?>
+	<a class="button" href="/auth/fb?state=remove">Открепить профиль FB</a>
+	<? endif; ?>
+
+	<? if (!$viewUser->twitter): ?>
+	<a class="button" href="/auth/tw?state=attach">Прикрепить профиль TW</a>
+	<? else: ?>
+	<a class="button" href="/auth/tw?state=remove">Открепить профиль TW</a>
 	<? endif; ?>
 
 
