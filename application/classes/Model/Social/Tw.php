@@ -1,8 +1,10 @@
 <?php
-// vim: foldmethod=marker
-
-/* Generic exception class
+/**
+ *  The first PHP Library to support OAuth for Twitter's REST API
+ *  @author Abraham Williams (abraham@abrah.am) http://abrah.am
  */
+
+/* Generic exception class */
 class OAuthException extends Exception {
     // pass
 }
@@ -871,12 +873,6 @@ class OAuthUtil {
     }
 }
 
-
-/*
- * Abraham Williams (abraham@abrah.am) http://abrah.am
- *
- * The first PHP Library to support OAuth for Twitter's REST API.
- */
 class Model_Social_Tw extends Model_preDispatch {
     /* Contains the last HTTP status code returned. */
     public $http_code;

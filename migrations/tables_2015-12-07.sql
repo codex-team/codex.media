@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 05 2015 г., 12:07
+-- Время создания: Дек 07 2015 г., 12:48
 -- Версия сервера: 5.5.45
 -- Версия PHP: 5.4.44
 
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `twitter` varchar(255) DEFAULT NULL,
   `twitter_name` varchar(255) DEFAULT NULL,
   `twitter_username` varchar(255) DEFAULT NULL,
-  `vk_id` varchar(255) DEFAULT NULL,
+  `vk` varchar(255) DEFAULT NULL,
   `vk_name` varchar(255) DEFAULT NULL,
   `vk_uri` varchar(255) DEFAULT NULL,
   `facebook` varchar(255) DEFAULT NULL,
@@ -122,13 +122,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `is_removed` tinyint(1) NOT NULL DEFAULT '0',
   `telegram_chat_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Очистить таблицу перед добавлением данных `users`
 --
 
 TRUNCATE TABLE `users`;
+--
+-- Дамп данных таблицы `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `bio`, `photo`, `photo_medium`, `photo_big`, `twitter`, `twitter_name`, `twitter_username`, `vk`, `vk_name`, `vk_uri`, `facebook`, `facebook_name`, `facebook_username`, `status`, `dt_reg`, `is_removed`, `telegram_chat_id`) VALUES
+(1, 'Demyashev', 'alexander.demyashev@gmail.com', NULL, NULL, 'https://pbs.twimg.com/profile_images/538315265373532160/kDAPAuNz_normal.jpeg', 'https://pbs.twimg.com/profile_images/538315265373532160/kDAPAuNz_normal.jpeg', 'https://pbs.twimg.com/profile_images/538315265373532160/kDAPAuNz_normal.jpeg', '449259184', 'Demyashev', 'demyashev', NULL, NULL, NULL, '537635946399287', 'Alexander  Demyashev', NULL, 0, '2015-12-05 09:22:58', 0, NULL),
+(2, 'Демяшев Александр', 'alexander.demyashev@gmail.com', NULL, NULL, 'https://pp.vk.me/c628824/v628824063/1d9a9/kZZdvzGvbd4.jpg', 'https://pp.vk.me/c628824/v628824063/1d9a8/ay53WBkItoU.jpg', 'https://pp.vk.me/c628824/v628824063/1d9a7/Wbt2vs32wo0.jpg', NULL, NULL, NULL, '40474063', 'Демяшев Александр', 'demyashev', NULL, NULL, NULL, 0, '2015-12-07 06:10:14', 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -148,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `users_sessions` (
   `autologin` smallint(4) DEFAULT NULL COMMENT 'autologin type',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Очистить таблицу перед добавлением данных `users_sessions`
@@ -161,7 +169,8 @@ TRUNCATE TABLE `users_sessions`;
 
 INSERT INTO `users_sessions` (`id`, `uid`, `cookie`, `dt_start`, `dt_access`, `dt_close`, `useragent`, `social_provider`, `ip`, `autologin`) VALUES
 (7, 1, '8fc2980487a006e553e4c0eb17d20c67ee255921aea6d7ab6a0cbcbf1d32510f', '2015-12-01 19:54:25', '2015-12-01 19:54:25', NULL, 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36', NULL, 2130706433, NULL),
-(10, 6, '550878e9ff570c726c09d55841537aea9ac43ee500710b4ea1405699a14356d9', '2015-12-05 08:29:25', '2015-12-05 08:29:25', NULL, 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36', NULL, 2130706433, NULL);
+(11, 1, '6954d112a661a08991f8254cc529756b616a6f27eb558f02213d5c6b67232c14', '2015-12-05 09:22:58', '2015-12-05 09:22:58', NULL, 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36', NULL, 2130706433, NULL),
+(12, 2, 'b8ee3412e5f54a07fe877d6df696bf7295923dcd6b7fb3db209032b0632d5a97', '2015-12-07 06:10:14', '2015-12-07 06:10:14', NULL, 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36', NULL, 2130706433, NULL);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

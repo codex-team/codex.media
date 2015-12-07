@@ -191,7 +191,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
             $user_to_db = array(
                 'name'          => "{$userdata->last_name} {$userdata->first_name}",
                 'email'         => $response->email,
-                'vk_id'         => $userdata->uid,
+                'vk'            => $userdata->uid,
                 'vk_name'       => "{$userdata->last_name} {$userdata->first_name}",
                 'vk_uri'        => $userdata->domain,
                 'photo'         => $userdata->photo_50,
@@ -332,9 +332,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     private function social_insert($social, $userdata)
     {
         switch ($social) {
-            case 'vk': $field = "vk_id"; break;
-            case 'fb': $field = "facebook"; break;
-            case 'tw': $field = "twitter"; break;
+            case 'vk': $field = "vk";       $social_id = 0; break;
+            case 'fb': $field = "facebook"; $social_id = 1; break;
+            case 'tw': $field = "twitter";  $social_id = 2; break;
         }
 
         $userFound = Dao_User::select('id')
@@ -344,12 +344,12 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
         if ($userFound) {
             Model::factory('User')->updateUser($userFound['id'], $userdata);
-            parent::initAuthSession($userFound['id'], 0);
+            parent::initAuthSession($userFound['id'], $social_id);
             return TRUE;
         }
         else {
             $userId = parent::insertUser( $userdata );
-            parent::initAuthSession($userId, 0);
+            parent::initAuthSession($userId, $social_id);
             return TRUE;
         }
     }
@@ -377,13 +377,13 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     private function social_remove($social) {
 
         switch ($social) {
-            case 'vk': $user_to_db = array('vk_id'=> NULL,'vk_name'=> NULL,'vk_uri'=> NULL); break;
-            case 'fb': $user_to_db = array('facebook'=> NULL,'facebook_username'=> NULL,'facebook_name'=> NULL); break;
-            case 'tw': $user_to_db = array('twitter'=> NULL,'twitter_name'=> NULL,'twitter_username'=> NULL); break;
+            case 'vk': $fieldsToClean = array('vk'=> NULL,'vk_name'=> NULL,'vk_uri'=> NULL); break;
+            case 'fb': $fieldsToClean = array('facebook'=> NULL,'facebook_username'=> NULL,'facebook_name'=> NULL); break;
+            case 'tw': $fieldsToClean = array('twitter'=> NULL,'twitter_name'=> NULL,'twitter_username'=> NULL); break;
         }
 
         if ($userId = parent::checkAuth() ) {
-            Model::factory('User')->updateUser($userId, $user_to_db);
+            Model::factory('User')->updateUser($userId, $fieldsToClean);
             return TRUE;
         } else {
             $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети';

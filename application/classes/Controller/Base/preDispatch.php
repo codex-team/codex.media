@@ -30,9 +30,11 @@ class Controller_Base_preDispatch extends Controller_Template
 
         parent::before();
 
-        $GLOBALS['SITE_NAME']        = "SPARK";
-        $GLOBALS['SITE_SLOGAN']      = "Тусовка технологических проектов";
-        $GLOBALS['SITE_DESCRIPTION'] = "сообщество IT-проектов для обмена опытом и поиска инвестиций";
+        $site = Kohana::$config->load('main.site');
+
+        $GLOBALS['SITE_NAME']        = $site['name'];
+        $GLOBALS['SITE_SLOGAN']      = $site['slogan'];
+        $GLOBALS['SITE_DESCRIPTION'] = $site['description'];
         $GLOBALS['FROM_ACTION']      = $this->request->action();
 
         // XSS clean in POST and GET requests
