@@ -19,7 +19,7 @@ class Model_Social_Fb extends Model_preDispatch
      */
     public function auth($state) {
 
-        $settings = Kohana::$config->load('social.fb');
+        $settings = Kohana::$config->load('social.facebook');
 
         $uri = "{$this->url_dialog}" .
             "?client_id={$settings['client_id']}" .
@@ -34,7 +34,7 @@ class Model_Social_Fb extends Model_preDispatch
 
     public function getToken($code) {
 
-        $settings = Kohana::$config->load('social.fb');
+        $settings = Kohana::$config->load('social.facebook');
         
         $uri = "{$this->url_token}" .
             "?client_id={$settings['client_id']}" .

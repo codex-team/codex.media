@@ -3,19 +3,22 @@
 return array
 (
     'vk' => array(
+        'type'          => 1,
         'client_id'     => '5171042',
         'client_secret' => '4V4V7Ql3OcFVHaIpHS6y',
         'redirect_uri'  => 'http'.((Arr::get($_SERVER, 'HTTPS')) ? 's' : '').'://'.Arr::get($_SERVER, 'SERVER_NAME').'/auth/vk',
         'scopes'        => 'email,offline',
     ),
-    'fb' => array(
-        'client_id' => '706927366073496',
+    'facebook' => array(
+        'type'         => 2,
+        'client_id'    => '706927366073496',
         'client_secret'=> 'c46963a4b38ea4c1118a46abf41a145e',
         'response_type'=> 'code',
-        'scope' => 'email',
+        'scope'        => 'email',
         'redirect_uri' =>  'http'. ((Arr::get($_SERVER, 'HTTPS')) ? 's' : '') .'://'.Arr::get($_SERVER, 'SERVER_NAME').'/auth/fb',
     ),
-    'tw' => array(
+    'twitter' => array(
+        'type'           => 3,
         'consumer_key'   => 'YX0ETqtsCJFT7SmfKKmrgSzXo',
         'consumer_secret'=>'TqZE8mg1WBzBg5q4jZhHoQ9KZshJVthxEVKgNA25jG9vobPwJP',
         'access_token'   => '449259184-OFowTSaY7LLqf4AxnLpJJ3gYalc1yDgE6z9sX6X9',

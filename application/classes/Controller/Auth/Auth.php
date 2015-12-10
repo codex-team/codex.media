@@ -259,7 +259,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
              */
             if ($state) switch ($state) {
                 case 'login':
-                    $status = $this->social_insert('fb', $user_to_db);
+                    $status = $this->social_insert('facebook', $user_to_db);
                     break;
 
                 case 'attach':
@@ -268,7 +268,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                     break;
 
                 case 'remove':
-                    $status = $this->social_remove('fb');
+                    $status = $this->social_remove('facebook');
                     break;
             }
 
@@ -306,7 +306,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
          */
         if ($state) switch ($state) {
             case 'login': 
-                $status = $this->social_insert('tw', $user_to_db); 
+                $status = $this->social_insert('twitter', $user_to_db); 
                 break;
 
             case 'attach': 
@@ -315,7 +315,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                 break;
 
             case 'remove': 
-                $status = $this->social_remove('tw'); 
+                $status = $this->social_remove('twitter'); 
                 break;
         }
 
@@ -324,32 +324,28 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
     /**
      *  Create profile on site with only social info
-     *  @param  string    $social    # vk, tw, fb
+     *  @param  string    $social    # vk, twitter, facebook
      *  @param  array     $userdata
      *  @see    config/social.php for second param for initAuthSession() [0,1,2]
      *  @author Demyashev Alexander
      */
     private function social_insert($social, $userdata)
-    {
-        switch ($social) {
-            case 'vk': $field = "vk";       $social_id = 0; break;
-            case 'fb': $field = "facebook"; $social_id = 1; break;
-            case 'tw': $field = "twitter";  $social_id = 2; break;
-        }
+    {  
+        $social_cfg = Kohana::$config->load('social')->$social;
 
         $userFound = Dao_User::select('id')
-            ->where($field,  '=', $userdata[$field])
+            ->where($social,  '=', $userdata[$social])
             ->limit(1)
             ->execute();
 
         if ($userFound) {
             Model::factory('User')->updateUser($userFound['id'], $userdata);
-            parent::initAuthSession($userFound['id'], $social_id);
+            parent::initAuthSession($userFound['id'], $social_cfg['type']);
             return TRUE;
         }
         else {
             $userId = parent::insertUser( $userdata );
-            parent::initAuthSession($userId, $social_id);
+            parent::initAuthSession($userId, $social_cfg['type']);
             return TRUE;
         }
     }
@@ -377,9 +373,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     private function social_remove($social) {
 
         switch ($social) {
-            case 'vk': $fieldsToClean = array('vk'=> NULL,'vk_name'=> NULL,'vk_uri'=> NULL); break;
-            case 'fb': $fieldsToClean = array('facebook'=> NULL,'facebook_username'=> NULL,'facebook_name'=> NULL); break;
-            case 'tw': $fieldsToClean = array('twitter'=> NULL,'twitter_name'=> NULL,'twitter_username'=> NULL); break;
+            case 'vk':       $fieldsToClean = array('vk'=> NULL,'vk_name'=> NULL,'vk_uri'=> NULL); break;
+            case 'facebook': $fieldsToClean = array('facebook'=> NULL,'facebook_username'=> NULL,'facebook_name'=> NULL); break;
+            case 'twitter':  $fieldsToClean = array('twitter'=> NULL,'twitter_name'=> NULL,'twitter_username'=> NULL); break;
         }
 
         if ($userId = parent::checkAuth() ) {

@@ -918,7 +918,7 @@ class Model_Social_Tw extends Model_preDispatch {
      * construct TwitterOAuth object
      */
     function __construct() {
-        $settings = Kohana::$config->load('social.tw');
+        $settings = Kohana::$config->load('social.twitter');
 
         $this->sha1_method = new OAuthSignatureMethod_HMAC_SHA1();
         $this->consumer = new OAuthConsumer($settings['consumer_key'], $settings['consumer_secret']);
