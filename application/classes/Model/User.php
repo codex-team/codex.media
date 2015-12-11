@@ -12,7 +12,8 @@ class Model_User extends Model_preDispatch
 
     public $twitter       = '';
     public $twitter_name  = '';
-    public $vk_id         = '';
+    public $twitter_username  = '';
+    public $vk            = '';
     public $vk_name       = '';
     public $vk_uri        = '';
     public $facebook      = '';
@@ -34,22 +35,23 @@ class Model_User extends Model_preDispatch
 
         if ($user) {
 
-            $this->id            = $user['id'];
-            $this->name          = strip_tags($user['name']);
-            $this->password      = $user['password'];
+            $this->id               = $user['id'];
+            $this->name             = strip_tags($user['name']);
+            $this->password         = $user['password'];
 
-            $this->photo         = trim($user['photo'])          ? strip_tags($user['photo'])         : '/public/img/default_ava_small.png' ;
-            $this->photo_medium  = trim($user['photo_medium'])   ? strip_tags($user['photo_medium'])  : '/public/img/default_ava.png';
-            $this->photo_big     = trim($user['photo_big'])      ? strip_tags($user['photo_big'])     : '/public/img/default_ava_big.png';
+            $this->photo            = trim($user['photo'])          ? strip_tags($user['photo'])         : '/public/img/default_ava_small.png' ;
+            $this->photo_medium     = trim($user['photo_medium'])   ? strip_tags($user['photo_medium'])  : '/public/img/default_ava.png';
+            $this->photo_big        = trim($user['photo_big'])      ? strip_tags($user['photo_big'])     : '/public/img/default_ava_big.png';
 
-            $this->email         = strip_tags($user['email']);
-            $this->twitter       = strip_tags($user['twitter']);
-            $this->twitter_name  = strip_tags($user['twitter_name']);
-            $this->vk_id         = strip_tags($user['vk_id']);
-            $this->vk_uri        = strip_tags($user['vk_uri']); 
-            $this->vk_name       = strip_tags($user['vk_name']);
-            $this->facebook      = strip_tags($user['facebook']);
-            $this->facebook_name = strip_tags($user['facebook_name']);
+            $this->email            = strip_tags($user['email']);
+            $this->twitter          = strip_tags($user['twitter']);
+            $this->twitter_name     = strip_tags($user['twitter_name']);
+            $this->twitter_username = strip_tags($user['twitter_username']);
+            $this->vk               = strip_tags($user['vk']);
+            $this->vk_uri           = strip_tags($user['vk_uri']); 
+            $this->vk_name          = strip_tags($user['vk_name']);
+            $this->facebook         = strip_tags($user['facebook']);
+            $this->facebook_name    = strip_tags($user['facebook_name']);
 
             $this->status = $user['status'];
 
