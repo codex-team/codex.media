@@ -3,7 +3,7 @@
 		<img src="<?= $viewUser->photo_medium ?>" />
 	</div>
 	<h1 class="name">
-		<?= $viewUser->name ?>
+		<?= $viewUser->name ?> <? if ($viewUser->status == 1 ){ echo "[преподаватель]"; } ?>
 	</h1>
 	<? if ($viewUser->vk): ?>
 		<a href="//vk.com/id<?= $viewUser->vk ?>" target="_blank"><?= $viewUser->vk_name ? $viewUser->vk_name : 'id' . $viewUser->vk ?></a>

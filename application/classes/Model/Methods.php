@@ -64,20 +64,71 @@ class Model_Methods extends Model
         return $query->where('id','=',$id)->execute();
     }
 
+    public function SiteInfo($info = 0){
+
+        if (!$info) {
+            $info = DB::select()
+                ->from('site_info')
+                ->execute()
+                ->as_array();
+
+            $info = $info[0];
+        } else {
+            $query = DB::update('site_info');
+            foreach ($info as $name => $value) {
+                $query->set(array($name => $value));
+            }
+            $query->execute();
+        }
+
+        $this->title        = $info['title'];
+        $this->full_name    = $info['full_name'];
+        $this->description  = $info['description'];
+
+        $this->address      = $info['address'];
+        $this->phone        = $info['phone'];
+        $this->fax          = $info['fax'];
+        $this->email        = $info['email'];
+
+        $this->logo         = $info['logo'];
+
+        return $this;
+
+    }
+
 
     public function getSiteMenu()
     {
-        return DB::select('id','uri','title')->from('pages')->where('status', '=', 0)->where('is_menu_item','=',1)->order_by('id','ASC')->cached(Date::MINUTE*5)->execute()->as_array();
+        return DB::select('id','uri','title')
+                ->from('pages')
+                ->where('status', '=', 0)
+                ->where('is_menu_item','=',1)
+                ->order_by('id','ASC')
+                ->cached(Date::MINUTE*5)
+                ->execute()
+                ->as_array();
     }
     public function getChildrenPagesByParent( $id_parent )
     {
-        return DB::select('id','uri','title')->from('pages')->where('status', '=', 0)->where('id_parent','=', $id_parent)->order_by('id','ASC')->cached(Date::MINUTE*1)->execute()->as_array();
+        return DB::select('id','uri','title')
+                ->from('pages')
+                ->where('status', '=', 0)
+                ->where('id_parent','=', $id_parent)
+                ->order_by('id','ASC')
+                ->cached(Date::MINUTE*1)
+                ->execute()
+                ->as_array();
     }
 
 
     public function getUsers()
     {
-        return DB::select()->from('users')->order_by('id','desc')->cached(Date::MINUTE*1)->execute()->as_array();
+        return DB::select()
+                ->from('users')
+                ->order_by('id','desc')
+                ->cached(Date::MINUTE*1)
+                ->execute()
+                ->as_array();
     }
 
 
@@ -88,7 +139,13 @@ class Model_Methods extends Model
 
     public function getPageFiles( $page_id )
     {
-        return DB::select()->from('files')->where('page','=', $page_id)->where('status', '=', 0)->order_by('id','DESC')->execute()->as_array();
+        return DB::select()
+                ->from('files')
+                ->where('page','=', $page_id)
+                ->where('status', '=', 0)
+                ->order_by('id','DESC')
+                ->execute()
+                ->as_array();
     }
     public function updateFile( $id,  $fields ){
 

@@ -3,7 +3,7 @@
 class Model_User extends Model_preDispatch
 {
     public $id            = 0;
-    public $name     = '';
+    public $name          = '';
     public $password      = '';
     public $photo         = '';
     public $photo_medium  = '';

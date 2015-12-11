@@ -3,7 +3,7 @@
 class Controller_Admin extends Controller_Base_preDispatch
 {
 
-    public static $categories = array('pages', 'page', 'index' , 'news', 'users' , 'parser');
+    public static $categories = array('pages', 'page', 'index', 'news', 'users', 'parser', 'base');
 
     public function action_index()
     {
@@ -19,6 +19,7 @@ class Controller_Admin extends Controller_Base_preDispatch
             case 'pages'  : $form_saved = self::pages( Controller_Pages::TYPE_PAGE ); break;
             case 'news'   : $form_saved = self::pages( Controller_Pages::TYPE_NEWS ); break;
             case 'users'  : self::users(); break;
+            case 'base'   : self::base(); break;
             case 'parser' : self::parser(); break;
             case 'index'  : default : self::adminIndexPage();
         }
@@ -35,13 +36,35 @@ class Controller_Admin extends Controller_Base_preDispatch
 
     public function adminIndexPage()
     {
-
         $this->view['category'] = 'index';
     }
 
     public function users()
     {
         $this->view['users'] = $this->methods->getUsers();
+    }
+
+    public function base()
+    {
+
+        if ( Security::check(Arr::get($_POST, 'csrf')) ){
+
+            $data = array(
+                'title'         => Arr::get($_POST, 'title'),
+                'full_name'     => Arr::get($_POST, 'full_name'),
+                'description'   => Arr::get($_POST, 'description'),
+                'address'       => Arr::get($_POST, 'address'),
+                'phone'         => Arr::get($_POST, 'phone'),
+                'fax'           => Arr::get($_POST, 'fax'),
+                'email'         => Arr::get($_POST, 'email'),
+                'logo'          => Arr::get($_POST, 'logo'),
+            );
+
+            $this->methods->SiteInfo($data);
+
+        }
+
+        $this->view['category'] = 'base';
     }
 
     public function pageForm()
