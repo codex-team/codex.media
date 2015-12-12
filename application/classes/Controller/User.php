@@ -14,7 +14,7 @@ class Controller_User extends Controller_Base_preDispatch
 
         switch ($act) {
         	case 'rise'    : $this->view['success'] = $viewUser->setUserStatus(1); break;
-        	case 'ban'     : $this->view['success'] = $viewUser->setUserStatus(2); break;
+        	case 'ban'     : $this->view['success'] = $viewUser->setUserStatus(-1); break;
         	case 'degrade' :
         	case 'unban'   : $this->view['success'] = $viewUser->setUserStatus(0); break;
         }
