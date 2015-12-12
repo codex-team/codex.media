@@ -36,7 +36,7 @@
             <a class="main_logo clear" href="/">
                 <i class="spb_shield fl_l"></i>
                 <div class="r_col">
-                    <?= $site_info->title ?>
+                    <?= nl2br($site_info->title) ?>
                 </div>
             </a>
 

@@ -6,7 +6,7 @@
             <a href="/lessons">идет 2 урок</a>
         </div>
     </div>
-    Приветствуем на официальном сайте школы №332 Санкт-Петербурга
+    <?= $site_info->description ?>
 </div>
 
 <div class="recommend_block">

@@ -9,7 +9,8 @@
 
 	<h4>Title</h4>
 	<div class="input_text mb30">
-		<input type="text" name="title" value="<?= $site_info->title ?>" />
+		<?/* <input type="text" name="title" value="<?= $site_info->title ?>" /> */?>
+		<textarea name="title"><?= $site_info->title ?></textarea>
 	</div>
 
 	<h4>Full name</h4>
