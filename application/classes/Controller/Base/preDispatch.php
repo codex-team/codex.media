@@ -30,9 +30,9 @@ class Controller_Base_preDispatch extends Controller_Template
 
         parent::before();
 
-        $GLOBALS['SITE_NAME']        = "SPARK";
-        $GLOBALS['SITE_SLOGAN']      = "Тусовка технологических проектов";
-        $GLOBALS['SITE_DESCRIPTION'] = "сообщество IT-проектов для обмена опытом и поиска инвестиций";
+        $GLOBALS['SITE_NAME']        = "Школа 332";
+        $GLOBALS['SITE_SLOGAN']      = "официальный сайт";
+        $GLOBALS['SITE_DESCRIPTION'] = "сайт нового поколения для образовательных учреждений";
         $GLOBALS['FROM_ACTION']      = $this->request->action();
 
         // XSS clean in POST and GET requests
