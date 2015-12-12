@@ -30,7 +30,6 @@ class Controller_Base_preDispatch extends Controller_Template
 
         parent::before();
 
-
         $site = Kohana::$config->load('main.site');
 
         $GLOBALS['SITE_NAME']        = $site['name'];
