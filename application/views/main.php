@@ -43,7 +43,7 @@
             <? if ( $user->id ): ?>
                 <a class="user_panel cf" href="/user/<?= $user->id ?>">
                     <img src="<?= $user->photo ?>" />
-                    <?= $user->name?>
+                    <?= $user->name ?>
                 </a>
             <? endif ?>
 

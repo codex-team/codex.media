@@ -68,7 +68,6 @@ class Controller_Auth_Base extends Controller_Base_preDispatch {
         return $user->execute();
     }
 
-
     /**
     * Checks user's authentication by session-cookie and uid-cookie
     * @return int|bool - UserId or FALSE

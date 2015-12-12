@@ -1,7 +1,9 @@
 <div class="social_auth">
-	Вы можете войти на сайт через аккаунт ВКонтакте
+	Вы можете войти на сайт через аккаунт ВКонтакте, Facebook или Twitter
 	<div class="social_buttons">
-	    <a class="button main" href="/auth/vk"><i class="pic vk"></i>Войти через VK.com</a>
+	    <a class="button main" href="/auth/vk"><i class="pic vk"></i>Войти через ВКонтакте</a>
+        <a class="button main" href="/auth/fb"><i class="pic fb"></i>Войти через Facebook</a>
+        <a class="button main" href="/auth/tw"><i class="pic tw"></i>Войти через Twitter</a>
     </div>
 </div>
 
@@ -78,7 +80,7 @@
                 'password_repeat' => array(
                     'label' => 'Повторите пароль',
                     'type'  => 'password',
-                    'class' => empty($signup_error_fields['password_repeat']) ? '_hide' : '',
+                    'class' => empty($signup_error_fields['password_repeat']) ? '_hide mb30' : '',
                     'id' => 'password_repeat'
                 )
             ); ?>
