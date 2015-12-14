@@ -2,29 +2,29 @@
 
 class Model_User extends Model_preDispatch
 {
-    public $id            = 0;
-    public $name          = '';
-    public $password      = '';
-    public $photo         = '';
-    public $photo_medium  = '';
-    public $photo_big     = '';
-    public $email         = '';
+    public $id                  = 0;
+    public $name                = '';
+    public $password            = '';
+    public $photo               = '';
+    public $photo_medium        = '';
+    public $photo_big           = '';
+    public $email               = '';
 
-    public $twitter       = '';
-    public $twitter_name  = '';
-    public $twitter_username  = '';
-    public $vk            = '';
-    public $vk_name       = '';
-    public $vk_uri        = '';
-    public $facebook      = '';
-    public $facebook_name = '';
+    public $twitter             = '';
+    public $twitter_name        = '';
+    public $twitter_username    = '';
+    public $vk                  = '';
+    public $vk_name             = '';
+    public $vk_uri              = '';
+    public $facebook            = '';
+    public $facebook_name       = '';
 
-    public $status        = 0;
+    public $status              = 0;
 
-    public $isMe          = true;
+    public $isMe                = true;
 
-    public $isOnline      = 0;
-    public $lastOnline    = 0;
+    public $isOnline            = 0;
+    public $lastOnline          = 0;
 
     public function __construct($uid = null)
     {
@@ -53,10 +53,10 @@ class Model_User extends Model_preDispatch
             $this->facebook         = strip_tags($user['facebook']);
             $this->facebook_name    = strip_tags($user['facebook_name']);
 
-            $this->status = $user['status'];
+            $this->status           = $user['status'];
 
-            $this->isOnline = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
-            $this->lastOnline = self::getLastOnlineTimestamp();
+            $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
+            $this->lastOnline       = self::getLastOnlineTimestamp();
 
             if (!$user || $user['id'] != (int)Cookie::get(Controller_Auth_Base::COOKIE_USER_ID, '')) $this->isMe = false;
         }

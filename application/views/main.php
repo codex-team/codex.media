@@ -36,7 +36,8 @@
             <a class="main_logo clear" href="/">
                 <i class="spb_shield fl_l"></i>
                 <div class="r_col">
-                    <?= nl2br($site_info->title) ?>
+                    <?= $site_info->title ?><br>
+                    <?= $site_info->city ?>
                 </div>
             </a>
 
@@ -53,6 +54,12 @@
                     <li><a href="/page/<?= $item['uri'] ? $item['uri'] : $item['id'] ?>"><?= $item['title'] ?></a></li>
                 <? endforeach ?>
             </ul>
+
+            <? /*if (TRUE): ?>
+                <a class="button green" href="/admin/news/new">Добавить новость</a>
+                <a class="button green" href="/admin/pages/new">Создать страницу</a>
+                <a class="button green" href="/admin/files/new">Загрузить файл</a>
+            <? endif*/ ?>
 
             <? if (!$user->id): ?>
                 <a class="button green" href="/auth">Войти на сайт</a>

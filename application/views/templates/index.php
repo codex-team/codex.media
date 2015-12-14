@@ -36,7 +36,7 @@
             <? foreach($pages as $page): ?>
 
                 <article class="post">
-                    <h2><a href=""><?= $page['title'] ?></a></h2>
+                    <h2><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h2>
                     <div class="body">
                         <?= $page['content'] ?>
                     </div>

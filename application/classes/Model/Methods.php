@@ -55,6 +55,7 @@ class Model_Methods extends Model
         return DB::insert( 'pages' , array_keys($fields) )->values(array_values($fields))->execute();
 
     }
+
     public function updatePage( $id,  $fields ){
 
         $query = DB::update( 'pages' );
@@ -64,28 +65,39 @@ class Model_Methods extends Model
         return $query->where('id','=',$id)->execute();
     }
 
+
+    /**
+     * Get or update site main information
+     *
+     * @author Taly
+     * @param int $info         if exist then update
+     * @return $this            return global var $site_info
+     * @throws Kohana_Exception
+     */
     public function SiteInfo($info = 0){
 
         if (!$info) {
             $info = DB::select()
                 ->from('site_info')
+                ->order_by('id','DESC')
+                ->limit(1)
                 ->execute()
                 ->as_array();
 
             $info = $info[0];
         } else {
-            $query = DB::update('site_info');
-            foreach ($info as $name => $value) {
-                $query->set(array($name => $value));
-            }
-            $query->execute();
+            DB::insert('site_info', array_keys($info))
+                ->values(array_values($info))
+                ->execute();
         }
 
         $this->title        = $info['title'];
+        $this->city         = $info['city'];
         $this->full_name    = $info['full_name'];
         $this->description  = $info['description'];
 
         $this->address      = $info['address'];
+        $this->coordinates  = $info['coordinates'];
         $this->phone        = $info['phone'];
         $this->fax          = $info['fax'];
         $this->email        = $info['email'];
@@ -95,7 +107,6 @@ class Model_Methods extends Model
         return $this;
 
     }
-
 
     public function getSiteMenu()
     {
@@ -108,6 +119,7 @@ class Model_Methods extends Model
                 ->execute()
                 ->as_array();
     }
+
     public function getChildrenPagesByParent( $id_parent )
     {
         return DB::select('id','uri','title')
@@ -147,22 +159,15 @@ class Model_Methods extends Model
                 ->execute()
                 ->as_array();
     }
-    public function updateFile( $id,  $fields ){
 
+    public function updateFile( $id,  $fields )
+    {
         $query = DB::update( 'files' );
         foreach ($fields as $name => $value) {
             $query->set(array($name => $value));
         }
         return $query->where('id','=',$id)->execute();
     }
-
-
-
-
-
-
-
-
 
 
     public function getComments($type, $target, $status = null, $cached = false )
@@ -206,6 +211,11 @@ class Model_Methods extends Model
         if ( !$isAdmin ) $result->where('uid', '=', $uid);
         return $result->execute() ? true : false ;
 
+    }
+
+    public function getCommentsCount($type, $target)
+    {
+        return (int)DB::select('id')->from('comments')->where('type','=',$type)->where('target','=',$target)->cached(Date::MINUTE / 4)->execute()->count();
     }
 
     public function getBlogPostComments($pid, $status = null, $feed = false, $cached = false)
@@ -534,11 +544,6 @@ class Model_Methods extends Model
         $result = View::factory('/share/buttons', $data)->render();
 
         return $result;
-    }
-
-    public function getCommentsCount($type, $target)
-    {
-        return (int)DB::select('id')->from('comments')->where('type','=',$type)->where('target','=',$target)->cached(Date::MINUTE / 4)->execute()->count();
     }
 
     public function makeCorrectUrl( $string )

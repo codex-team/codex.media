@@ -9,8 +9,12 @@
 
 	<h4>Title</h4>
 	<div class="input_text mb30">
-		<?/* <input type="text" name="title" value="<?= $site_info->title ?>" /> */?>
-		<textarea name="title"><?= $site_info->title ?></textarea>
+		<input type="text" name="title" value="<?= $site_info->title ?>" />
+	</div>
+
+	<h4>City</h4>
+	<div class="input_text mb30">
+		<input type="text" name="city" value="<?= $site_info->city ?>" />
 	</div>
 
 	<h4>Full name</h4>
@@ -26,6 +30,11 @@
 	<h4>Address</h4>
 	<div class="input_text mb30">
 		<input type="text" name="address" value="<?= $site_info->address ?>" />
+	</div>
+
+	<h4>Coordinates</h4>
+	<div class="input_text mb30">
+		<input type="text" name="coordinates" value="<?= $site_info->coordinates ?>" />
 	</div>
 
 	<? /*<div class="w50 fl_l"> */ ?>

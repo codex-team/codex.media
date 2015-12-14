@@ -51,9 +51,11 @@ class Controller_Admin extends Controller_Base_preDispatch
 
             $data = array(
                 'title'         => Arr::get($_POST, 'title'),
+                'city'          => Arr::get($_POST, 'city'),
                 'full_name'     => Arr::get($_POST, 'full_name'),
                 'description'   => Arr::get($_POST, 'description'),
                 'address'       => Arr::get($_POST, 'address'),
+                'coordinates'          => Arr::get($_POST, 'coordinates'),
                 'phone'         => Arr::get($_POST, 'phone'),
                 'fax'           => Arr::get($_POST, 'fax'),
                 'email'         => Arr::get($_POST, 'email'),
@@ -139,7 +141,7 @@ class Controller_Admin extends Controller_Base_preDispatch
         $page_id   = (int)Arr::get($_POST , 'page_id' , 0);
         $csrf      = Arr::get($_POST , 'csrf' , false);
         $title     = Arr::get($_POST , 'title' , 0);
-        $file     = Arr::get($_FILES, 'file');
+        $file      = Arr::get($_FILES, 'file');
 
 
         if ( $page_id ){

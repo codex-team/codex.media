@@ -19,11 +19,13 @@
 
 		var w_height = $(window).height();
 		$('#map').css('height', w_height );
-		<?
-			$lat = 59.919041;
-			$lon = 30.4875325;
+		<? /*
+			#$lat = 59.919041;
+			#$lon = 30.4875325;
 		?>
-		user.initialize_GoogleMap( document.getElementById('map') , <?= $lat ?>, <?= $lon ?>, false , false , false );
+		<!-- user.initialize_GoogleMap( document.getElementById('map') , <?= $lat ?>, <?= $lon ?>, false , false , false ); */
+		?>
+		user.initialize_GoogleMap( document.getElementById('map') , <?= $site_info->coordinates ?>, false , false , false );
 
 	});
 

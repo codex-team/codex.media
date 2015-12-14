@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2015 at 08:59 AM
+-- Generation Time: Dec 14, 2015 at 08:02 PM
 -- Server version: 5.6.27
 -- PHP Version: 5.5.30
 
@@ -26,7 +26,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `files`
 --
 
-CREATE TABLE `files` (
+DROP TABLE IF EXISTS `files`;
+CREATE TABLE IF NOT EXISTS `files` (
   `id` int(10) UNSIGNED NOT NULL,
   `page` int(10) UNSIGNED NOT NULL,
   `filename` varchar(100) NOT NULL,
@@ -36,7 +37,8 @@ CREATE TABLE `files` (
   `extension` varchar(5) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_removed` tinyint(1) NOT NULL DEFAULT '0',
-  `status` tinyint(3) DEFAULT '0'
+  `status` tinyint(3) DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -45,8 +47,9 @@ CREATE TABLE `files` (
 -- Table structure for table `pages`
 --
 
-CREATE TABLE `pages` (
-  `id` int(11) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `pages`;
+CREATE TABLE IF NOT EXISTS `pages` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `type` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0 - show, 1 - hide , 2 - removed',
   `id_parent` int(10) UNSIGNED NOT NULL DEFAULT '0',
@@ -56,16 +59,18 @@ CREATE TABLE `pages` (
   `html_content` text,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `author` int(10) UNSIGNED NOT NULL,
-  `is_menu_item` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `is_menu_item` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `type` (`type`,`id_parent`),
+  KEY `id_parent` (`id_parent`),
+  KEY `type_2` (`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `pages`
 --
 
 INSERT INTO `pages` (`id`, `type`, `status`, `id_parent`, `uri`, `title`, `content`, `html_content`, `date`, `author`, `is_menu_item`) VALUES
-(1, 1, 0, 0, NULL, 'ss', 'ss', NULL, '2014-04-30 15:25:13', 1, 0),
-(8, 1, 0, 0, NULL, 'adad', 'adad', NULL, '2014-04-30 15:35:19', 1, 0),
 (12, 1, 0, 0, '', 'Общественные наблюдатели', '		Уважаемые родители, зарегистрированные в качестве общественных наблюдаталей на экзаменах! просим вас ознакомиться с презентацией "Общественный наблюдатель" и подойти к Александре Васильевне Ивановой для заключительной консультации.	', '					', '2014-04-30 15:39:03', 1, 0),
 (13, 1, 0, 0, 'about', 'О школе', '<h3>Директор школы, Красюк Светлана Ивановна:</h3>Мы стремимся к тому, чтобы наша школа была 	<ul><li> школой, отношения в которой складываются на взаимном уважении учащихся и учителей, на уважении личности</li><li>школой без опасности, ориентированной на сохранение и укрепление здоровья детей, развитие их личностного потенциала</li><li>школой воспитания петербуржца, который является носителем традиций нашего города</li><li>школой,  которая дает учащимся фундаментальное образование;  учителя  школы  отличаются высокой культурой и высоким уровнем  профессионализма</li><li>школой, в которой всем - и взрослым, и детям - тепло и уютно, потому что у этой школы добрая душа.</li></ul><br />', '', '2014-05-05 09:39:08', 1, 1),
 (14, 1, 0, 0, 'parents', 'Родителям', 'adad', '', '2014-05-05 09:49:13', 1, 1),
@@ -84,141 +89,29 @@ INSERT INTO `pages` (`id`, `type`, `status`, `id_parent`, `uri`, `title`, `conte
 -- Table structure for table `site_info`
 --
 
-CREATE TABLE `site_info` (
-  `title` text,
+DROP TABLE IF EXISTS `site_info`;
+CREATE TABLE IF NOT EXISTS `site_info` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) DEFAULT NULL,
+  `city` varchar(50) DEFAULT NULL,
   `full_name` varchar(70) DEFAULT NULL,
   `description` varchar(140) DEFAULT NULL,
   `address` varchar(140) DEFAULT NULL,
+  `coordinates` varchar(30) DEFAULT NULL,
   `phone` varchar(40) DEFAULT NULL,
   `fax` varchar(40) DEFAULT NULL,
   `email` varchar(40) DEFAULT NULL,
-  `logo` varchar(40) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `logo` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `site_info`
 --
 
-INSERT INTO `site_info` (`title`, `full_name`, `description`, `address`, `phone`, `fax`, `email`, `logo`) VALUES
-('332 школа\nСанкт-Петербург', 'ГБОУ СОШ №332 Невского района', 'Приветствуем на официальном сайте школы №332 Санкт-Петербурга', '193312 Санкт-Петербург, Товарищеский пр., д. 10, корп. 2', '580-89-08; 584-54-98', '580-82-49', 'spb_school332@mail.ru', '');
+INSERT INTO `site_info` (`id`, `title`, `city`, `full_name`, `description`, `address`, `coordinates`, `phone`, `fax`, `email`, `logo`) VALUES
+(1, '332 школа', 'Санкт-Петербург', 'ГБОУ СОШ №332 Невского района', 'Приветствуем на официальном сайте школы №332 Санкт-Петербурга', '193312 Санкт-Петербург, Товарищеский пр., д. 10, корп. 2', '59.919041, 30.4875325', '580-89-08; 584-54-98', '580-82-49', 'spb_school332@mail.ru', '');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` varchar(64) DEFAULT NULL,
-  `bio` text,
-  `photo` varchar(255) DEFAULT NULL,
-  `photo_medium` varchar(255) DEFAULT NULL,
-  `photo_big` varchar(255) DEFAULT NULL,
-  `twitter` varchar(255) DEFAULT NULL,
-  `twitter_name` varchar(255) DEFAULT NULL,
-  `twitter_username` varchar(255) DEFAULT NULL,
-  `vk` varchar(255) DEFAULT NULL,
-  `vk_name` varchar(255) DEFAULT NULL,
-  `vk_uri` varchar(255) DEFAULT NULL,
-  `facebook` varchar(255) DEFAULT NULL,
-  `facebook_name` varchar(255) DEFAULT NULL,
-  `facebook_username` varchar(255) DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '0',
-  `dt_reg` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `is_removed` tinyint(1) NOT NULL DEFAULT '0',
-  `telegram_chat_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `bio`, `photo`, `photo_medium`, `photo_big`, `twitter`, `twitter_name`, `twitter_username`, `vk`, `vk_name`, `vk_uri`, `facebook`, `facebook_name`, `facebook_username`, `status`, `dt_reg`, `is_removed`, `telegram_chat_id`) VALUES
-(1, 'Demyashev', 'alexander.demyashev@gmail.com', NULL, NULL, 'https://pbs.twimg.com/profile_images/538315265373532160/kDAPAuNz_normal.jpeg', 'https://pbs.twimg.com/profile_images/538315265373532160/kDAPAuNz_normal.jpeg', 'https://pbs.twimg.com/profile_images/538315265373532160/kDAPAuNz_normal.jpeg', '449259184', 'Demyashev', 'demyashev', NULL, NULL, NULL, '537635946399287', 'Alexander  Demyashev', NULL, 0, '2015-12-05 09:22:58', 0, NULL),
-(2, 'Демяшев Александр', 'alexander.demyashev@gmail.com', NULL, NULL, 'https://pp.vk.me/c628824/v628824063/1d9a9/kZZdvzGvbd4.jpg', 'https://pp.vk.me/c628824/v628824063/1d9a8/ay53WBkItoU.jpg', 'https://pp.vk.me/c628824/v628824063/1d9a7/Wbt2vs32wo0.jpg', NULL, NULL, NULL, '40474063', 'Демяшев Александр', 'demyashev', NULL, NULL, NULL, 0, '2015-12-07 06:10:14', 0, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users_sessions`
---
-
-CREATE TABLE `users_sessions` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `uid` int(10) UNSIGNED NOT NULL,
-  `cookie` varchar(100) NOT NULL,
-  `dt_start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `dt_access` timestamp NULL DEFAULT NULL,
-  `dt_close` timestamp NULL DEFAULT NULL,
-  `useragent` text NOT NULL,
-  `social_provider` tinyint(3) UNSIGNED DEFAULT NULL COMMENT '1 - vk, 2 - fb , 3- tw',
-  `ip` bigint(11) NOT NULL DEFAULT '0',
-  `autologin` smallint(4) DEFAULT NULL COMMENT 'autologin type'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `users_sessions`
---
-
-INSERT INTO `users_sessions` (`id`, `uid`, `cookie`, `dt_start`, `dt_access`, `dt_close`, `useragent`, `social_provider`, `ip`, `autologin`) VALUES
-(7, 1, '8fc2980487a006e553e4c0eb17d20c67ee255921aea6d7ab6a0cbcbf1d32510f', '2015-12-01 19:54:25', '2015-12-01 19:54:25', NULL, 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36', NULL, 2130706433, NULL),
-(11, 1, '6954d112a661a08991f8254cc529756b616a6f27eb558f02213d5c6b67232c14', '2015-12-05 09:22:58', '2015-12-05 09:22:58', NULL, 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36', NULL, 2130706433, NULL),
-(12, 2, 'b8ee3412e5f54a07fe877d6df696bf7295923dcd6b7fb3db209032b0632d5a97', '2015-12-07 06:10:14', '2015-12-07 06:10:14', NULL, 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36', NULL, 2130706433, NULL);
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `files`
---
-ALTER TABLE `files`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `pages`
---
-ALTER TABLE `pages`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `type` (`type`,`id_parent`),
-  ADD KEY `id_parent` (`id_parent`),
-  ADD KEY `type_2` (`type`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users_sessions`
---
-ALTER TABLE `users_sessions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `uid` (`uid`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `pages`
---
-ALTER TABLE `pages`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `users_sessions`
---
-ALTER TABLE `users_sessions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
