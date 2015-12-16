@@ -48,7 +48,7 @@ class Model_User extends Model_preDispatch
             $this->twitter_name     = strip_tags($user['twitter_name']);
             $this->twitter_username = strip_tags($user['twitter_username']);
             $this->vk               = strip_tags($user['vk']);
-            $this->vk_uri           = strip_tags($user['vk_uri']); 
+            $this->vk_uri           = strip_tags($user['vk_uri']);
             $this->vk_name          = strip_tags($user['vk_name']);
             $this->facebook         = strip_tags($user['facebook']);
             $this->facebook_name    = strip_tags($user['facebook_name']);
@@ -92,7 +92,7 @@ class Model_User extends Model_preDispatch
         if ($update) {
             Kohana_Cache::instance('memcache')->delete('user_model:' . $uid);
         } else {
-            if ($cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
+            if (false && $cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
                 return $cache;
             } else {
                 $user_model = DB::select()->from('users')->where('id', '=', $uid)->limit(1)->execute()->current();
