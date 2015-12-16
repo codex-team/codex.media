@@ -178,4 +178,13 @@ class Model_User extends Model_preDispatch
         return DB::update('users')->set(array('status' => $status))->where('id','=', $this->id)->execute();
     }
 
+    public function getUserPages($user_id, $type = 1)
+    {
+        $pages = DB::select()->from('pages')
+                    ->where('author', '=', $user_id)
+                    ->where('type', '=', $type);
+
+        return $pages->order_by('id','DESC')->execute()->as_array();
+    }
+
 }

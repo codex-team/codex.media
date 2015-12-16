@@ -6,8 +6,9 @@
 		<?= $viewUser->name ?>
 		<?
 			switch ($viewUser->status){
-				case '1' : echo "[преподаватель]"; break;
-				case '-1' : echo "[заблокирован]"; break;
+				case '2' 	: echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
+				case '1' 	: echo "[преподаватель]"; break;
+				case '-1' 	: echo "[заблокирован]"; break;
 		   	}
 		?>
 	</h1>
@@ -27,6 +28,16 @@
 	</div>
 <? endif; ?>
 <div class="profile_panel clear">
+	<? if ($viewUser->status != 1 ): ?>
+		<a class="button" href="/user/<?= $viewUser->id ?>?act=rise">Активировать аккаунт преподавателя</a>
+	<? else: ?>
+		<a class="button" href="/user/<?= $viewUser->id ?>?act=degrade">Отключить аккаунт преподавателя</a>
+	<? endif ?>
+	<? if ($viewUser->status != -1 ): ?>
+		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=ban">Заблокировать пользователя</a>
+	<? else: ?>
+		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=unban">Разблокировать пользователя</a>
+	<? endif ?>
 	<? if (!$viewUser->vk && $viewUser->email): ?>
 		<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
 	<? else: ?>
@@ -42,16 +53,14 @@
 	<? else: ?>
 		<a class="button" href="/auth/tw?state=remove">Открепить профиль TW</a>
 	<? endif; ?>
-	<? if ($viewUser->status != 1 ): ?>
-		<a class="button" href="/user/<?= $viewUser->id ?>?act=rise">Активировать аккаунт преподавателя</a>
-	<? else: ?>
-		<a class="button" href="/user/<?= $viewUser->id ?>?act=degrade">Отключить аккаунт преподавателя</a>
-	<? endif ?>
-	<? if ($viewUser->status != -1 ): ?>
-		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=ban">Заблокировать пользователя</a>
-	<? else: ?>
-		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=unban">Разблокировать пользователя</a>
-	<? endif ?>
+
+
+	<h2>Мои страницы</h2>
+	<ul>
+	<? foreach ($userPages as $page): ?>
+		<li><h3><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h3></li>
+	<? endforeach; ?>
+	</ul>
 </div>
 <?/*
 	<div class="extra_settings mt30">

@@ -7,6 +7,9 @@ class Controller_Admin extends Controller_Base_preDispatch
 
     public function action_index()
     {
+        if (!$this->user->id){
+            $this->redirect('/');
+        }
         
         $this->title = $this->view['title'] = 'Панель управления сайтом';
         
@@ -55,7 +58,7 @@ class Controller_Admin extends Controller_Base_preDispatch
                 'full_name'     => Arr::get($_POST, 'full_name'),
                 'description'   => Arr::get($_POST, 'description'),
                 'address'       => Arr::get($_POST, 'address'),
-                'coordinates'          => Arr::get($_POST, 'coordinates'),
+                'coordinates'   => Arr::get($_POST, 'coordinates'),
                 'phone'         => Arr::get($_POST, 'phone'),
                 'fax'           => Arr::get($_POST, 'fax'),
                 'email'         => Arr::get($_POST, 'email'),
@@ -79,7 +82,7 @@ class Controller_Admin extends Controller_Base_preDispatch
 
             $data = array(
                 'type'         => $type,
-                'author'       => 1 ,
+                'author'       => $this->user->id ,
                 'id_parent'    => (int)Arr::get($_POST, 'id_parent' , 0),
                 'title'        => Arr::get($_POST, 'title'),
                 'content'      => Arr::get($_POST, 'content'),

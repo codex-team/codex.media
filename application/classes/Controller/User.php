@@ -19,9 +19,7 @@ class Controller_User extends Controller_Base_preDispatch
         	case 'unban'   : $this->view['success'] = $viewUser->setUserStatus(0); break;
         }
 
-
-
-
+        $this->view['userPages'] = $viewUser->getUserPages($uid);
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/user/profile', $this->view);
