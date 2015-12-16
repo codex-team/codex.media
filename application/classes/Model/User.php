@@ -48,7 +48,7 @@ class Model_User extends Model_preDispatch
             $this->twitter_name     = strip_tags($user['twitter_name']);
             $this->twitter_username = strip_tags($user['twitter_username']);
             $this->vk               = strip_tags($user['vk']);
-            $this->vk_uri           = strip_tags($user['vk_uri']); 
+            $this->vk_uri           = strip_tags($user['vk_uri']);
             $this->vk_name          = strip_tags($user['vk_name']);
             $this->facebook         = strip_tags($user['facebook']);
             $this->facebook_name    = strip_tags($user['facebook_name']);
