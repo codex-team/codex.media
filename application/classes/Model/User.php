@@ -92,7 +92,7 @@ class Model_User extends Model_preDispatch
         if ($update) {
             Kohana_Cache::instance('memcache')->delete('user_model:' . $uid);
         } else {
-            if (false && $cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
+            if ($cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
                 return $cache;
             } else {
                 $user_model = DB::select()->from('users')->where('id', '=', $uid)->limit(1)->execute()->current();
