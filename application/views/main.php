@@ -55,11 +55,13 @@
                 <? endforeach ?>
             </ul>
 
-            <? /*if (TRUE): ?>
-                <a class="button green" href="/admin/news/new">Добавить новость</a>
+            <? if ($user->status > 0): ?>
+                <? if ($user->status > 1): ?>
+                    <a class="button green" href="/admin/news/new">Добавить новость</a>
+                <? endif ?>
                 <a class="button green" href="/admin/pages/new">Создать страницу</a>
                 <a class="button green" href="/admin/files/new">Загрузить файл</a>
-            <? endif*/ ?>
+            <? endif ?>
 
             <? if (!$user->id): ?>
                 <a class="button green" href="/auth">Войти на сайт</a>

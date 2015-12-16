@@ -33,7 +33,7 @@
 
         <div class="news">
 
-            <? foreach($pages as $page): ?>
+            <? foreach ($pages as $page): ?>
 
                 <article class="post">
                     <h2><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h2>

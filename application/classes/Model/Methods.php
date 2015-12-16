@@ -170,17 +170,13 @@ class Model_Methods extends Model
     }
 
 
-    public function getComments($type, $target, $status = null, $cached = false )
+    public function getComments($page, $status = null, $cached = false )
     {
-        if ( (int)$target < 1 ) return array();
+        if ( (int)$page < 1 ) return array();
 
-        $comments = DB::select()->from('comments')->where('type', '=', $type)->where('target', '=', $target);
-
-        if ( $status !== null ) {
-            $comments->where('status','=',$status);
-        } else {
-            $comments->where('status','<',2);
-        }
+        $comments = DB::select()->from('comments')
+                    ->where('page', '=', $page)
+                    ->where('is_removed', '=', 0);
 
         $comments->order_by('id','asc');
 
@@ -223,6 +219,93 @@ class Model_Methods extends Model
         return self::getComments( Controller_Comments::COMMENTS_TYPE_BLOG , $pid );
     }
 
+
+    public function saveImage( $file , $path )
+    {
+        /**
+         *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
+         */
+
+        if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
+
+        if (!is_dir($path)) mkdir($path);
+
+        if ( $file = Upload::save($file, NULL, $path) ){
+
+            $filename = uniqid("", false).'.jpg';
+
+            $image = Image::factory($file);
+
+            foreach ($this->IMAGE_SIZES_CONFIG as $prefix => $sizes) {
+
+                $isSquare = !!$sizes[0];
+                $width    = $sizes[1];
+                $height   = !$isSquare ? $sizes[2] : $width;
+
+                $image->background('#fff');
+
+                // Вырезание квадрата
+                if ( $isSquare ){
+
+                    if ( $image->width >= $image->height ) {
+                        $image->resize( NULL , $height, true );
+                    } else {
+                        $image->resize( $width , NULL, true );
+                    }
+
+                    $image->crop( $width, $height );
+
+                    /**
+                     *   Для работы с этим методом нужно перекомпилировать php c bundled GD
+                     *   http://www.maxiwebs.co.uk/gd-bundled/compilation.php
+                     *   http://www.howtoforge.com/recompiling-php5-with-bundled-support-for-gd-on-ubuntu
+                     */
+
+                    // $image->sharpen(1.5);
+
+                } else {
+
+                    if ( $image->width > $width || $image->height > $height  ) {
+                        $image->resize( $width , $height , true );
+                    }
+
+                }
+
+                $image->save($path . $prefix . '_' . $filename);
+
+            }
+
+            // Delete the temporary file
+            unlink($file);
+
+            return $filename;
+        }
+
+        return FALSE;
+    }
+
+    public function saveFile( $file , $path )
+    {
+        /**
+         *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
+         */
+
+
+        if (!is_dir($path)) mkdir($path);
+
+        $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $filename = uniqid() . '.' . $ext;
+
+        if ( $file = Upload::save($file, $filename, $path) ){
+
+            // Delete the temporary file
+            unlink($file);
+
+            return $filename;
+        }
+
+        return FALSE;
+    }
 
 
     /* Надо будет выпилить - устаревает функция */
@@ -551,101 +634,17 @@ class Model_Methods extends Model
         return preg_match('/^(?:ht|f)tps?:\/\//', $string) ? $string : 'http://' . $string;
     }
 
+
     public function encryptId( $id )
     {
         return ($id + 19) * 354 - 1912;
     }
+
     public function decryptId( $cryptedId )
     {
         return ($cryptedId + 1912) / 354 - 19;
     }
 
 
-    public function saveImage( $file , $path )
-    {
-        /**
-        *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
-        */
-
-        if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
-
-        if (!is_dir($path)) mkdir($path);
-
-        if ( $file = Upload::save($file, NULL, $path) ){
-
-            $filename = uniqid("", false).'.jpg';
-
-            $image = Image::factory($file);
-
-            foreach ($this->IMAGE_SIZES_CONFIG as $prefix => $sizes) {
-
-                $isSquare = !!$sizes[0];
-                $width    = $sizes[1];
-                $height   = !$isSquare ? $sizes[2] : $width;
-
-                $image->background('#fff');
-
-                // Вырезание квадрата
-                if ( $isSquare ){
-
-                    if ( $image->width >= $image->height ) {
-                        $image->resize( NULL , $height, true );
-                    } else {
-                        $image->resize( $width , NULL, true );
-                    }
-
-                    $image->crop( $width, $height );
-
-                    /**
-                    *   Для работы с этим методом нужно перекомпилировать php c bundled GD
-                    *   http://www.maxiwebs.co.uk/gd-bundled/compilation.php
-                    *   http://www.howtoforge.com/recompiling-php5-with-bundled-support-for-gd-on-ubuntu
-                    */
-
-                    // $image->sharpen(1.5);
-
-                } else {
-
-                    if ( $image->width > $width || $image->height > $height  ) {
-                        $image->resize( $width , $height , true );
-                    }
-
-                }
-
-                $image->save($path . $prefix . '_' . $filename);
-
-            }
-
-            // Delete the temporary file
-            unlink($file);
-
-            return $filename;
-        }
-
-        return FALSE;
-    }
-
-    public function saveFile( $file , $path )
-    {
-        /**
-        *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
-        */
-
-
-        if (!is_dir($path)) mkdir($path);
-
-        $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $filename = uniqid() . '.' . $ext;
-
-        if ( $file = Upload::save($file, $filename, $path) ){
-
-            // Delete the temporary file
-            unlink($file);
-
-            return $filename;
-        }
-
-        return FALSE;
-    }
 
 }
