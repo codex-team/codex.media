@@ -178,6 +178,15 @@ class Model_User extends Model_preDispatch
         return DB::update('users')->set(array('status' => $status))->where('id','=', $this->id)->execute();
     }
 
+    /**
+     * Get user's pages
+     *
+     * @author taly
+     *
+     * @param int $user_id          user id
+     * @param int $type             type of pages
+     * @return array
+     */
     public function getUserPages($user_id, $type = 1)
     {
         $pages = DB::select()->from('pages')

@@ -70,9 +70,9 @@ class Model_Methods extends Model
      * Get or update site main information
      *
      * @author Taly
+     *
      * @param int $info         if exist then update
-     * @return $this            return global var $site_info
-     * @throws Kohana_Exception
+     * @return array $this            returns array for global var $site_info
      */
     public function SiteInfo($info = 0){
 
@@ -81,6 +81,7 @@ class Model_Methods extends Model
                 ->from('site_info')
                 ->order_by('id','DESC')
                 ->limit(1)
+                ->cached(Date::MINUTE*5)
                 ->execute()
                 ->as_array();
 
@@ -633,18 +634,5 @@ class Model_Methods extends Model
     {
         return preg_match('/^(?:ht|f)tps?:\/\//', $string) ? $string : 'http://' . $string;
     }
-
-
-    public function encryptId( $id )
-    {
-        return ($id + 19) * 354 - 1912;
-    }
-
-    public function decryptId( $cryptedId )
-    {
-        return ($cryptedId + 1912) / 354 - 19;
-    }
-
-
 
 }

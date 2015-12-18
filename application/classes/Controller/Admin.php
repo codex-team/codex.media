@@ -22,7 +22,7 @@ class Controller_Admin extends Controller_Base_preDispatch
             case 'pages'  : $form_saved = self::pages( Controller_Pages::TYPE_PAGE ); break;
             case 'news'   : $form_saved = self::pages( Controller_Pages::TYPE_NEWS ); break;
             case 'users'  : self::users(); break;
-            case 'base'   : self::base(); break;
+            case 'base'   : self::site_settings(); break;
             case 'parser' : self::parser(); break;
             case 'index'  : default : self::adminIndexPage();
         }
@@ -47,7 +47,11 @@ class Controller_Admin extends Controller_Base_preDispatch
         $this->view['users'] = $this->methods->getUsers();
     }
 
-    public function base()
+    /**
+     *
+     * @author taly
+     */
+    public function site_settings()
     {
 
         if ( Security::check(Arr::get($_POST, 'csrf')) ){
