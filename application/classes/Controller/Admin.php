@@ -69,7 +69,7 @@ class Controller_Admin extends Controller_Base_preDispatch
                 'logo'          => Arr::get($_POST, 'logo'),
             );
 
-            $this->methods->siteInfo($data);
+            $this->methods->saveSiteInfo($data);
 
         }
 

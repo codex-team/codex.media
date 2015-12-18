@@ -74,23 +74,17 @@ class Model_Methods extends Model
      * @param int $info         if exist then update
      * @return array $this            returns array for global var $site_info
      */
-    public function siteInfo($info = 0){
+    public function getSiteInfo(){
 
-        if (!$info) {
-            $info = DB::select()
-                ->from('site_info')
-                ->order_by('id','DESC')
-                ->limit(1)
-                ->cached(Date::MINUTE*5)
-                ->execute()
-                ->as_array();
+        $info = DB::select()
+            ->from('site_info')
+            ->order_by('id','DESC')
+            ->limit(1)
+            ->cached(Date::DAY)
+            ->execute()
+            ->as_array();
 
-            $info = $info[0];
-        } else {
-            DB::insert('site_info', array_keys($info))
-                ->values(array_values($info))
-                ->execute();
-        }
+        $info = $info[0];
 
         $this->title        = $info['title'];
         $this->city         = $info['city'];
@@ -107,6 +101,19 @@ class Model_Methods extends Model
 
         return $this;
 
+    }
+
+    public function saveSiteInfo($info)
+    {
+        if ($info) {
+            DB::insert('site_info', array_keys($info))
+                ->values(array_values($info))
+                ->execute();
+
+            return $this->getSiteInfo();
+        }
+
+        return FALSE;
     }
 
     public function getSiteMenu()
