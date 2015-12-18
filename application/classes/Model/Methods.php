@@ -74,7 +74,7 @@ class Model_Methods extends Model
      * @param int $info         if exist then update
      * @return array $this            returns array for global var $site_info
      */
-    public function SiteInfo($info = 0){
+    public function siteInfo($info = 0){
 
         if (!$info) {
             $info = DB::select()
