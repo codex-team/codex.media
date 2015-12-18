@@ -4,6 +4,13 @@
 	</div>
 	<h1 class="name">
 		<?= $viewUser->name ?>
+		<?
+			switch ($viewUser->status){
+				case Controller_User::USER_STATUS_ADMIN 	: echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
+				case Controller_User::USER_STATUS_TEACHER 	: echo "[преподаватель]"; break;
+				case Controller_User::USER_STATUS_BANNED 	: echo "[заблокирован]"; break;
+		   	}
+		?>
 	</h1>
 	<? if ($viewUser->vk): ?>
 		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank"><?= $viewUser->vk_name ? $viewUser->vk_name : $viewUser->vk_uri ?></a>
@@ -21,6 +28,16 @@
 	</div>
 <? endif; ?>
 <div class="profile_panel clear">
+	<? if ($viewUser->status < Controller_User::USER_STATUS_TEACHER ): ?>
+		<a class="button" href="/user/<?= $viewUser->id ?>?act=rise">Активировать аккаунт преподавателя</a>
+	<? else: ?>
+		<a class="button" href="/user/<?= $viewUser->id ?>?act=degrade">Отключить аккаунт преподавателя</a>
+	<? endif ?>
+	<? if ($viewUser->status !=  Controller_User::USER_STATUS_BANNED ): ?>
+		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=ban">Заблокировать пользователя</a>
+	<? else: ?>
+		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=unban">Разблокировать пользователя</a>
+	<? endif ?>
 	<? if (!$viewUser->vk && $viewUser->email): ?>
 		<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
 	<? else: ?>
@@ -36,16 +53,14 @@
 	<? else: ?>
 		<a class="button" href="/auth/tw?state=remove">Открепить профиль TW</a>
 	<? endif; ?>
-	<? if ($viewUser->status != 1 ): ?>
-		<a class="button" href="/user/<?= $viewUser->id ?>?act=rise">Активировать аккаунт преподавателя</a>
-	<? else: ?>
-		<a class="button" href="/user/<?= $viewUser->id ?>?act=degrade">Отключить аккаунт преподавателя</a>
-	<? endif ?>
-	<? if ($viewUser->status != 1 ): ?>
-		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=ban">Заблокировать пользователя</a>
-	<? else: ?>
-		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=unban">Разблокировать пользователя</a>
-	<? endif ?>
+
+
+	<h2>Мои страницы</h2>
+	<ul>
+	<? foreach ($userPages as $page): ?>
+		<li><h3><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h3></li>
+	<? endforeach; ?>
+	</ul>
 </div>
 <?/*
 	<div class="extra_settings mt30">

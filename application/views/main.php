@@ -36,8 +36,8 @@
             <a class="main_logo clear" href="/">
                 <i class="spb_shield fl_l"></i>
                 <div class="r_col">
-                    332 школа<br/>
-                    Санкт-Петербурга
+                    <?= $site_info->title ?><br>
+                    <?= $site_info->city ?>
                 </div>
             </a>
 
@@ -67,16 +67,16 @@
             </ul>
 
             <footer class="site_footer">
-                <p>ГБОУ СОШ №332 Невского района</p>
-                <p><a href="/contacts">
-                    193312 Санкт-Петербург, <br/>
-                    Товарищеский пр., д. 10, корп. 2
+                <p><?= $site_info->full_name ?></p>
+                <p>
+                    <a href="/contacts">
+                        <?= $site_info->address ?>
                     </a>
                 </p>
                 <p>
-                    Телефон: 580-89-08; 584-54-98<br />
-                    Факс: 580-82-49<br />
-                    Почта: spb_school332@mail.ru
+                    Телефон:&nbsp;<?= $site_info->phone ?><br />
+                    Факс:&nbsp;<?= $site_info->fax ?><br />
+                    Почта:&nbsp;<?= $site_info->email ?>
                 </p>
             </footer>
 

@@ -71,9 +71,12 @@ class Controller_Base_preDispatch extends Controller_Template
 
     private function setGlobals()
     {
+
         // methods
         $this->methods = new Model_Methods();
         View::set_global('methods', $this->methods);
+
+        View::set_global('site_info', $this->methods->getSiteInfo());
 
         // modules
         $this->redis = $this->_redis();

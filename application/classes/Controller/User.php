@@ -3,6 +3,12 @@
 class Controller_User extends Controller_Base_preDispatch
 {
 
+    const USER_STATUS_ADMIN     = 2;
+    const USER_STATUS_TEACHER   = 1;
+    const USER_STATUS_STUDENT   = 0;
+    const USER_STATUS_BANNED    = -1;
+
+
     public function action_profile()
     {
         $uid = $this->request->param('id');
@@ -13,15 +19,13 @@ class Controller_User extends Controller_Base_preDispatch
         $viewUser = new Model_User($uid);
 
         switch ($act) {
-        	case 'rise'    : $this->view['success'] = $viewUser->setUserStatus(1); break;
-        	case 'ban'     : $this->view['success'] = $viewUser->setUserStatus(2); break;
+        	case 'rise'    : $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_TEACHER); break;
+        	case 'ban'     : $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED); break;
         	case 'degrade' :
-        	case 'unban'   : $this->view['success'] = $viewUser->setUserStatus(0); break;
-        }
+        	case 'unban'   : $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED); break;
 
 
-
-
+        $this->view['userPages'] = $viewUser->getUserPages($uid);
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/user/profile', $this->view);

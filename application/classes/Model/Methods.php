@@ -20,7 +20,6 @@ class Model_Methods extends Model
 	*	Site Methods Model
 	*/
 
-
     public function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0)
     {
 
@@ -55,6 +54,7 @@ class Model_Methods extends Model
         return DB::insert( 'pages' , array_keys($fields) )->values(array_values($fields))->execute();
 
     }
+
     public function updatePage( $id,  $fields ){
 
         $query = DB::update( 'pages' );
@@ -65,19 +65,83 @@ class Model_Methods extends Model
     }
 
 
+    /**
+     * Get or update site main information
+     *
+     * @author Taly
+     *
+     * @param int $info         if exist then update
+     * @return array $this            returns array for global var $site_info
+     */
+    public function getSiteInfo(){
+
+        $info = DB::select()
+            ->from('site_info')
+            ->order_by('id','DESC')
+            ->limit(1)
+            ->cached(Date::DAY)
+            ->execute()
+            ->current();
+
+        $this->title        = $info['title'];
+        $this->city         = $info['city'];
+        $this->full_name    = $info['full_name'];
+        $this->description  = $info['description'];
+
+        $this->address      = $info['address'];
+        $this->coordinates  = $info['coordinates'];
+        $this->phone        = $info['phone'];
+        $this->fax          = $info['fax'];
+        $this->email        = $info['email'];
+
+        $this->logo         = $info['logo'];
+
+        return $this;
+
+    }
+
+    public function saveSiteInfo($info)
+    {
+        DB::insert('site_info', array_keys($info))
+                ->values(array_values($info))
+                ->execute();
+
+        return $this->getSiteInfo();
+    }
+
     public function getSiteMenu()
     {
-        return DB::select('id','uri','title')->from('pages')->where('status', '=', 0)->where('is_menu_item','=',1)->order_by('id','ASC')->cached(Date::MINUTE*5)->execute()->as_array();
+        return DB::select('id','uri','title')
+                ->from('pages')
+                ->where('status', '=', 0)
+                ->where('is_menu_item','=',1)
+                ->order_by('id','ASC')
+                ->cached(Date::MINUTE*5)
+                ->execute()
+                ->as_array();
     }
+
     public function getChildrenPagesByParent( $id_parent )
     {
-        return DB::select('id','uri','title')->from('pages')->where('status', '=', 0)->where('id_parent','=', $id_parent)->order_by('id','ASC')->cached(Date::MINUTE*1)->execute()->as_array();
+        return DB::select('id','uri','title')
+                ->from('pages')
+                ->where('status', '=', 0)
+                ->where('id_parent','=', $id_parent)
+                ->order_by('id','ASC')
+                ->cached(Date::MINUTE*1)
+                ->execute()
+                ->as_array();
     }
 
 
     public function getUsers()
     {
-        return DB::select()->from('users')->order_by('id','desc')->cached(Date::MINUTE*1)->execute()->as_array();
+        return DB::select()
+                ->from('users')
+                ->order_by('id','desc')
+                ->cached(Date::MINUTE*1)
+                ->execute()
+                ->as_array();
     }
 
 
@@ -88,10 +152,17 @@ class Model_Methods extends Model
 
     public function getPageFiles( $page_id )
     {
-        return DB::select()->from('files')->where('page','=', $page_id)->where('status', '=', 0)->order_by('id','DESC')->execute()->as_array();
+        return DB::select()
+                ->from('files')
+                ->where('page','=', $page_id)
+                ->where('status', '=', 0)
+                ->order_by('id','DESC')
+                ->execute()
+                ->as_array();
     }
-    public function updateFile( $id,  $fields ){
 
+    public function updateFile( $id,  $fields )
+    {
         $query = DB::update( 'files' );
         foreach ($fields as $name => $value) {
             $query->set(array($name => $value));
@@ -100,25 +171,13 @@ class Model_Methods extends Model
     }
 
 
-
-
-
-
-
-
-
-
-    public function getComments($type, $target, $status = null, $cached = false )
+    public function getComments($page, $status = null, $cached = false )
     {
-        if ( (int)$target < 1 ) return array();
+        if ( (int)$page < 1 ) return array();
 
-        $comments = DB::select()->from('comments')->where('type', '=', $type)->where('target', '=', $target);
-
-        if ( $status !== null ) {
-            $comments->where('status','=',$status);
-        } else {
-            $comments->where('status','<',2);
-        }
+        $comments = DB::select()->from('comments')
+                    ->where('page', '=', $page)
+                    ->where('is_removed', '=', 0);
 
         $comments->order_by('id','asc');
 
@@ -151,11 +210,103 @@ class Model_Methods extends Model
 
     }
 
+    public function getCommentsCount($type, $target)
+    {
+        return (int)DB::select('id')->from('comments')->where('type','=',$type)->where('target','=',$target)->cached(Date::MINUTE / 4)->execute()->count();
+    }
+
     public function getBlogPostComments($pid, $status = null, $feed = false, $cached = false)
     {
         return self::getComments( Controller_Comments::COMMENTS_TYPE_BLOG , $pid );
     }
 
+
+    public function saveImage( $file , $path )
+    {
+        /**
+         *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
+         */
+
+        if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
+
+        if (!is_dir($path)) mkdir($path);
+
+        if ( $file = Upload::save($file, NULL, $path) ){
+
+            $filename = uniqid("", false).'.jpg';
+
+            $image = Image::factory($file);
+
+            foreach ($this->IMAGE_SIZES_CONFIG as $prefix => $sizes) {
+
+                $isSquare = !!$sizes[0];
+                $width    = $sizes[1];
+                $height   = !$isSquare ? $sizes[2] : $width;
+
+                $image->background('#fff');
+
+                // Вырезание квадрата
+                if ( $isSquare ){
+
+                    if ( $image->width >= $image->height ) {
+                        $image->resize( NULL , $height, true );
+                    } else {
+                        $image->resize( $width , NULL, true );
+                    }
+
+                    $image->crop( $width, $height );
+
+                    /**
+                     *   Для работы с этим методом нужно перекомпилировать php c bundled GD
+                     *   http://www.maxiwebs.co.uk/gd-bundled/compilation.php
+                     *   http://www.howtoforge.com/recompiling-php5-with-bundled-support-for-gd-on-ubuntu
+                     */
+
+                    // $image->sharpen(1.5);
+
+                } else {
+
+                    if ( $image->width > $width || $image->height > $height  ) {
+                        $image->resize( $width , $height , true );
+                    }
+
+                }
+
+                $image->save($path . $prefix . '_' . $filename);
+
+            }
+
+            // Delete the temporary file
+            unlink($file);
+
+            return $filename;
+        }
+
+        return FALSE;
+    }
+
+    public function saveFile( $file , $path )
+    {
+        /**
+         *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
+         */
+
+
+        if (!is_dir($path)) mkdir($path);
+
+        $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $filename = uniqid() . '.' . $ext;
+
+        if ( $file = Upload::save($file, $filename, $path) ){
+
+            // Delete the temporary file
+            unlink($file);
+
+            return $filename;
+        }
+
+        return FALSE;
+    }
 
 
     /* Надо будет выпилить - устаревает функция */
@@ -479,111 +630,9 @@ class Model_Methods extends Model
         return $result;
     }
 
-    public function getCommentsCount($type, $target)
-    {
-        return (int)DB::select('id')->from('comments')->where('type','=',$type)->where('target','=',$target)->cached(Date::MINUTE / 4)->execute()->count();
-    }
-
     public function makeCorrectUrl( $string )
     {
         return preg_match('/^(?:ht|f)tps?:\/\//', $string) ? $string : 'http://' . $string;
-    }
-
-    public function encryptId( $id )
-    {
-        return ($id + 19) * 354 - 1912;
-    }
-    public function decryptId( $cryptedId )
-    {
-        return ($cryptedId + 1912) / 354 - 19;
-    }
-
-
-    public function saveImage( $file , $path )
-    {
-        /**
-        *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
-        */
-
-        if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
-
-        if (!is_dir($path)) mkdir($path);
-
-        if ( $file = Upload::save($file, NULL, $path) ){
-
-            $filename = uniqid("", false).'.jpg';
-
-            $image = Image::factory($file);
-
-            foreach ($this->IMAGE_SIZES_CONFIG as $prefix => $sizes) {
-
-                $isSquare = !!$sizes[0];
-                $width    = $sizes[1];
-                $height   = !$isSquare ? $sizes[2] : $width;
-
-                $image->background('#fff');
-
-                // Вырезание квадрата
-                if ( $isSquare ){
-
-                    if ( $image->width >= $image->height ) {
-                        $image->resize( NULL , $height, true );
-                    } else {
-                        $image->resize( $width , NULL, true );
-                    }
-
-                    $image->crop( $width, $height );
-
-                    /**
-                    *   Для работы с этим методом нужно перекомпилировать php c bundled GD
-                    *   http://www.maxiwebs.co.uk/gd-bundled/compilation.php
-                    *   http://www.howtoforge.com/recompiling-php5-with-bundled-support-for-gd-on-ubuntu
-                    */
-
-                    // $image->sharpen(1.5);
-
-                } else {
-
-                    if ( $image->width > $width || $image->height > $height  ) {
-                        $image->resize( $width , $height , true );
-                    }
-
-                }
-
-                $image->save($path . $prefix . '_' . $filename);
-
-            }
-
-            // Delete the temporary file
-            unlink($file);
-
-            return $filename;
-        }
-
-        return FALSE;
-    }
-
-    public function saveFile( $file , $path )
-    {
-        /**
-        *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
-        */
-
-
-        if (!is_dir($path)) mkdir($path);
-
-        $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $filename = uniqid() . '.' . $ext;
-
-        if ( $file = Upload::save($file, $filename, $path) ){
-
-            // Delete the temporary file
-            unlink($file);
-
-            return $filename;
-        }
-
-        return FALSE;
     }
 
 }

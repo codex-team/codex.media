@@ -3,10 +3,13 @@
 class Controller_Admin extends Controller_Base_preDispatch
 {
 
-    public static $categories = array('pages', 'page', 'index' , 'news', 'users' , 'parser');
+    public static $categories = array('pages', 'page', 'index', 'news', 'users', 'parser', 'base');
 
     public function action_index()
     {
+        if (!$this->user->id){
+            $this->redirect('/');
+        }
         
         $this->title = $this->view['title'] = 'Панель управления сайтом';
         
@@ -19,6 +22,7 @@ class Controller_Admin extends Controller_Base_preDispatch
             case 'pages'  : $form_saved = self::pages( Controller_Pages::TYPE_PAGE ); break;
             case 'news'   : $form_saved = self::pages( Controller_Pages::TYPE_NEWS ); break;
             case 'users'  : self::users(); break;
+            case 'base'   : self::siteSettings(); break;
             case 'parser' : self::parser(); break;
             case 'index'  : default : self::adminIndexPage();
         }
@@ -35,13 +39,41 @@ class Controller_Admin extends Controller_Base_preDispatch
 
     public function adminIndexPage()
     {
-
         $this->view['category'] = 'index';
     }
 
     public function users()
     {
         $this->view['users'] = $this->methods->getUsers();
+    }
+
+    /**
+     *
+     * @author taly
+     */
+    public function siteSettings()
+    {
+
+        if ( Security::check(Arr::get($_POST, 'csrf')) ){
+
+            $data = array(
+                'title'         => Arr::get($_POST, 'title'),
+                'city'          => Arr::get($_POST, 'city'),
+                'full_name'     => Arr::get($_POST, 'full_name'),
+                'description'   => Arr::get($_POST, 'description'),
+                'address'       => Arr::get($_POST, 'address'),
+                'coordinates'   => Arr::get($_POST, 'coordinates'),
+                'phone'         => Arr::get($_POST, 'phone'),
+                'fax'           => Arr::get($_POST, 'fax'),
+                'email'         => Arr::get($_POST, 'email'),
+                'logo'          => Arr::get($_POST, 'logo'),
+            );
+
+            $this->methods->saveSiteInfo($data);
+
+        }
+
+        $this->view['category'] = 'base';
     }
 
     public function pageForm()
@@ -54,7 +86,7 @@ class Controller_Admin extends Controller_Base_preDispatch
 
             $data = array(
                 'type'         => $type,
-                'author'       => 1 ,
+                'author'       => $this->user->id ,
                 'id_parent'    => (int)Arr::get($_POST, 'id_parent' , 0),
                 'title'        => Arr::get($_POST, 'title'),
                 'content'      => Arr::get($_POST, 'content'),
@@ -116,7 +148,7 @@ class Controller_Admin extends Controller_Base_preDispatch
         $page_id   = (int)Arr::get($_POST , 'page_id' , 0);
         $csrf      = Arr::get($_POST , 'csrf' , false);
         $title     = Arr::get($_POST , 'title' , 0);
-        $file     = Arr::get($_FILES, 'file');
+        $file      = Arr::get($_FILES, 'file');
 
 
         if ( $page_id ){
