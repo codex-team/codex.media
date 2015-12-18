@@ -187,7 +187,7 @@ class Model_User extends Model_preDispatch
      * @param int $type             type of pages
      * @return array
      */
-    public function getUserPages($user_id, $type = 1)
+    public function getUserPages($user_id, $type = Controller_Pages::TYPE_NEWS)
     {
         $pages = DB::select()->from('pages')
                     ->where('author', '=', $user_id)

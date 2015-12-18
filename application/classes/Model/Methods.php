@@ -20,7 +20,6 @@ class Model_Methods extends Model
 	*	Site Methods Model
 	*/
 
-
     public function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0)
     {
 
