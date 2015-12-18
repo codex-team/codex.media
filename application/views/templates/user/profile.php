@@ -6,9 +6,9 @@
 		<?= $viewUser->name ?>
 		<?
 			switch ($viewUser->status){
-				case '2' 	: echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
-				case '1' 	: echo "[преподаватель]"; break;
-				case '-1' 	: echo "[заблокирован]"; break;
+				case Controller_User::USER_STATUS_ADMIN 	: echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
+				case Controller_User::USER_STATUS_TEACHER 	: echo "[преподаватель]"; break;
+				case Controller_User::USER_STATUS_BANNED 	: echo "[заблокирован]"; break;
 		   	}
 		?>
 	</h1>
@@ -28,12 +28,12 @@
 	</div>
 <? endif; ?>
 <div class="profile_panel clear">
-	<? if ($viewUser->status != 1 ): ?>
+	<? if ($viewUser->status < Controller_User::USER_STATUS_TEACHER ): ?>
 		<a class="button" href="/user/<?= $viewUser->id ?>?act=rise">Активировать аккаунт преподавателя</a>
 	<? else: ?>
 		<a class="button" href="/user/<?= $viewUser->id ?>?act=degrade">Отключить аккаунт преподавателя</a>
 	<? endif ?>
-	<? if ($viewUser->status != -1 ): ?>
+	<? if ($viewUser->status !=  Controller_User::USER_STATUS_BANNED ): ?>
 		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=ban">Заблокировать пользователя</a>
 	<? else: ?>
 		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=unban">Разблокировать пользователя</a>
