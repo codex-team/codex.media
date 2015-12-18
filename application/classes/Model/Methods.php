@@ -82,9 +82,7 @@ class Model_Methods extends Model
             ->limit(1)
             ->cached(Date::DAY)
             ->execute()
-            ->as_array();
-
-        $info = $info[0];
+            ->current();
 
         $this->title        = $info['title'];
         $this->city         = $info['city'];
@@ -105,15 +103,11 @@ class Model_Methods extends Model
 
     public function saveSiteInfo($info)
     {
-        if ($info) {
-            DB::insert('site_info', array_keys($info))
+        DB::insert('site_info', array_keys($info))
                 ->values(array_values($info))
                 ->execute();
 
-            return $this->getSiteInfo();
-        }
-
-        return FALSE;
+        return $this->getSiteInfo();
     }
 
     public function getSiteMenu()
