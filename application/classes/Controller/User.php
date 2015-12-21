@@ -19,11 +19,17 @@ class Controller_User extends Controller_Base_preDispatch
         $viewUser = new Model_User($uid);
 
         switch ($act) {
-        	case 'rise'    : $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_TEACHER); break;
-        	case 'ban'     : $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED); break;
-        	case 'degrade' :
-        	case 'unban'   : $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED); break;
-
+            case 'rise'    :
+                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_TEACHER);
+                break;
+            case 'ban'     :
+                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED);
+                break;
+            case 'degrade' :
+            case 'unban'   :
+                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED);
+                break;
+        }
 
         $this->view['userPages'] = $viewUser->getUserPages($uid);
         $this->view['viewUser']  = $viewUser;
