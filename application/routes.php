@@ -14,7 +14,7 @@
 $DIGIT = '\d+';
 $STRING = '[-a-z\d]+';
 
-Route::set('index', '')->defaults(array(
+Route::set('INDEX', '')->defaults(array(
     'controller' => 'index',
     'action' => 'index'
 ));
@@ -29,12 +29,10 @@ Route::set('PROFILE', 'user/<id>', array( 'id' => $DIGIT ))->defaults(array(
     'action' => 'profile'
 ));
 
-Route::set('Contacts', 'contacts')->defaults(array(
+Route::set('CONTACTS', 'contacts')->defaults(array(
     'controller' => 'index',
     'action' => 'contacts'
 ));
-
-
 
 
 /**
