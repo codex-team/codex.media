@@ -20,6 +20,8 @@
 		<? endforeach ?>
 	</ul>
 <? endif; ?>
+
+<a class="button green" href="/page/add?type=<?= Controller_Pages::TYPE_PAGE ?>&parent=<?= $page['id'] ?>">Добавить страницу</a>
 <? if (isset($files) && $files): ?>
 	<table class="page_files inpage">
 		<? foreach ($files as $file): ?>

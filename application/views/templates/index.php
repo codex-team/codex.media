@@ -33,6 +33,8 @@
 
         <div class="news">
 
+            <a class="button green" href="/page/add?type=<?= Controller_Pages::TYPE_NEWS ?>">Добавить новость</a>
+
             <? foreach ($pages as $page): ?>
 
                 <article class="post">

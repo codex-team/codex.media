@@ -57,6 +57,7 @@
 
 	<h2>Мои страницы</h2>
 	<ul>
+		<a class="button green" href="/page/add?type=<?= Controller_Pages::TYPE_PAGE ?>&parent=0">Создать страницу</a>
 	<? foreach ($userPages as $page): ?>
 		<li><h3><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h3></li>
 	<? endforeach; ?>
