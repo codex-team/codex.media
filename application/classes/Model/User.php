@@ -185,13 +185,15 @@ class Model_User extends Model_preDispatch
      *
      * @param int $user_id          user id
      * @param int $type             type of pages
+     * @param int $id_parent        parent of pages
      * @return array
      */
-    public function getUserPages($user_id, $type = Controller_Pages::TYPE_NEWS)
+    public function getUserPages($user_id, $type = Controller_Pages::TYPE_PAGE, $id_parent = 0)
     {
         $pages = DB::select()->from('pages')
                     ->where('author', '=', $user_id)
-                    ->where('type', '=', $type);
+                    ->where('type', '=', $type)
+                    ->where('id_parent', '=', $id_parent);
 
         return $pages->order_by('id','DESC')->execute()->as_array();
     }
