@@ -1,6 +1,23 @@
+<div>
+<? # блок навигации для возврата к родительской странице ?>
+<? if($parent): ?>
+	<a href="/page/<?= $parent['id'] ?>"><?= $parent['title'] ?></a>
+<? else: ?>
+	<? if($page['type'] == Controller_Pages::TYPE_NEWS || $page['is_menu_item'] == 1): ?>
+		<a href="/">Главная страница</a>
+	<? else: ?>
+		<a href="/user/<?= $page['author'] ?>">К профилю автора</a>
+	<? endif ?>
+<? endif ?>
+</div>
+
 <h1 class="page_title">
 	<?= $page['title'] ?>
 </h1>
+<? if($user->status == Controller_User::USER_STATUS_ADMIN || $user->id == $page['author']): ?>
+<a href="/page/edit?id=<?= $page['id'] ?>">Редактировать</a>
+<a href="/page/delete?id=<?= $page['id'] ?>">Удалить</a>
+<? endif ?>
 
 <? if ($page['content']): ?>
 	<div class="page_content">
@@ -21,7 +38,9 @@
 	</ul>
 <? endif; ?>
 
-<a class="button green" href="/page/add?type=<?= Controller_Pages::TYPE_PAGE ?>&parent=<?= $page['id'] ?>">Добавить страницу</a>
+<? if($user->status == Controller_User::USER_STATUS_ADMIN || $user->id == $page['author']): ?>
+	<a class="button green" href="/page/add?type=<?= Controller_Pages::TYPE_PAGE ?>&parent=<?= $page['id'] ?>">Добавить страницу</a>
+<? endif ?>
 <? if (isset($files) && $files): ?>
 	<table class="page_files inpage">
 		<? foreach ($files as $file): ?>
