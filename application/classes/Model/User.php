@@ -138,10 +138,10 @@ class Model_User extends Model_preDispatch
     }
 
 
-    public function isAdmin()
+    public function isAdmin($status = Controller_User::USER_STATUS_ADMIN)
     {
         if (!$this->id) return false;
-        if (array_search($this->id, $this->admins) !== false) return true;
+        if ($this->status >= $status) return true;
         return false;
     }
 
