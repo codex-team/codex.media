@@ -28,16 +28,19 @@
 	</div>
 <? endif; ?>
 <div class="profile_panel clear">
-	<? if ($viewUser->status < Controller_User::USER_STATUS_TEACHER ): ?>
-		<a class="button" href="/user/<?= $viewUser->id ?>?act=rise">Активировать аккаунт преподавателя</a>
-	<? else: ?>
-		<a class="button" href="/user/<?= $viewUser->id ?>?act=degrade">Отключить аккаунт преподавателя</a>
+	<? if ($user->status == Controller_User::USER_STATUS_ADMIN): ?>
+		<? if ($viewUser->status < Controller_User::USER_STATUS_TEACHER ): ?>
+			<a class="button" href="/user/<?= $viewUser->id ?>?act=rise">Активировать аккаунт преподавателя</a>
+		<? else: ?>
+			<a class="button" href="/user/<?= $viewUser->id ?>?act=degrade">Отключить аккаунт преподавателя</a>
+		<? endif ?>
+		<? if ($viewUser->status !=  Controller_User::USER_STATUS_BANNED ): ?>
+			<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=ban">Заблокировать пользователя</a>
+		<? else: ?>
+			<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=unban">Разблокировать пользователя</a>
+		<? endif ?>
 	<? endif ?>
-	<? if ($viewUser->status !=  Controller_User::USER_STATUS_BANNED ): ?>
-		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=ban">Заблокировать пользователя</a>
-	<? else: ?>
-		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=unban">Разблокировать пользователя</a>
-	<? endif ?>
+
 	<? if (!$viewUser->vk && $viewUser->email): ?>
 		<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
 	<? else: ?>
@@ -55,12 +58,18 @@
 	<? endif; ?>
 
 
-	<h2>Мои страницы</h2>
+	<h2>Страницы пользователя</h2>
 	<ul>
+	<? if($user->id == $viewUser->id && $user->status > Controller_User::USER_STATUS_STUDENT): ?>
 		<a class="button green" href="/page/add?type=<?= Controller_Pages::TYPE_PAGE ?>&parent=0">Создать страницу</a>
-	<? foreach ($userPages as $page): ?>
-		<li><h3><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h3></li>
-	<? endforeach; ?>
+	<? endif?>
+	<? if ($userPages): ?>
+		<? foreach ($userPages as $page): ?>
+			<li><h3><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h3></li>
+		<? endforeach; ?>
+	<? else: ?>
+		<li>Пусто</li>
+	<? endif ?>
 	</ul>
 </div>
 <?/*
