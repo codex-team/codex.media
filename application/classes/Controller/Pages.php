@@ -8,15 +8,20 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function action_page()
     {
+
+
         $id = $this->request->param('id');
         $uri = $this->request->param('uri');
 
         switch ($uri) {
-            case 'add'  :
-            case 'edit' :
+            case 'add'      :
+            case 'edit'     :
                 self::add_page();
                 break;
-            default     :
+            case 'delete'   :
+                self::delete_page();
+                break;
+            default         :
                 self::get_page($id, $uri);
         }
 
@@ -24,21 +29,29 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function add_page()
     {
-        if (!$this->user->id) {
+        if (!$this->user->id && !$this->user->isAdmin(Controller_User::USER_STATUS_TEACHER)) {
             $this->redirect('/');
         }
 
-
         $this->view['page'] = FALSE;
 
+        $page_id = Arr::get($_GET, 'id', FALSE);
         $this->view['page_type'] = Arr::get($_GET, 'type', FALSE);
-        $this->view['page_parent'] = Arr::get($_GET, 'parent', FALSE);
+
+        $page_parent = Arr::get($_GET, 'parent', FALSE);
+        $this->view['page_parent'] = $page_parent;
+        if ($page_parent != '0')
+        {
+            $page_parent_author = $this->methods->getPage($page_parent)['author'];
+
+            if ($page_parent_author != $this->user->id && !$this->user->isAdmin()) {
+                $this->redirect('/');
+            }
+        }
 
         $this->view['category'] = 'index';
 
         $form_saved = FALSE;
-
-        # TODO: проверка и код для редактирования уже существующей страницы
 
         if (Security::check(Arr::get($_POST, 'csrf'))) {
             $form_saved = self::pageForm();
@@ -46,11 +59,38 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $this->view['form_saved'] = $form_saved;
 
-        if ($this->view['page_type']) {
+        if ($this->view['page_type'] || $page_id) {
+            if ($page_id) {
+                $this->view['page'] = $this->methods->getPage($page_id);
+            }
             $this->template->content = View::factory('templates/page_form', $this->view);
+
         } else {
             $this->redirect('/');
         }
+    }
+
+    public function delete_page()
+    {
+        $page_id = Arr::get($_GET, 'id', FALSE);
+        $page = $this->methods->getPage($page_id);
+
+        if ($this->user->isAdmin() || $this->user->id == $page['author']) {
+            $this->methods->deletePage($page_id);
+        }
+
+        if ($page['type'] == Controller_Pages::TYPE_NEWS)
+        {
+            $url = '/';
+        } else {
+            if ($page['id_parent'] != '0'){
+                $url = '/page/' . $page['id_parent'];
+            } else {
+                $url = '/user/' . $page['author'];
+            }
+        }
+
+        $this->redirect($url);
     }
 
     public function get_page($id, $uri)
@@ -63,6 +103,11 @@ class Controller_Pages extends Controller_Base_preDispatch
             $this->view['files'] = $this->methods->getPageFiles($page['id']);
 
             $this->view['page']['childrens'] = $this->methods->getChildrenPagesByParent($page['id']);
+
+            $this->view['parent'] = FALSE;
+            if ($page['id_parent']) {
+                $this->view['parent'] = $this->methods->getPage($page['id_parent']);
+            }
 
             $this->template->content = View::factory('templates/page', $this->view);
 
@@ -96,11 +141,13 @@ class Controller_Pages extends Controller_Base_preDispatch
 
                 if ($id) {
                     $page = $this->methods->updatePage($id, $data);
+                    $url = '/page/' . $id;
                 } else {
                     $page = $this->methods->newPage($data);
+                    $url = '/page/' . $page[0];
                 }
 
-                $url = '/page/' . $page[0];
+
                 $this->redirect($url);
 
             } else {
