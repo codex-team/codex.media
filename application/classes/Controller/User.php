@@ -12,23 +12,27 @@ class Controller_User extends Controller_Base_preDispatch
     public function action_profile()
     {
         $uid = $this->request->param('id');
+
         $act = Arr::get($_GET, 'act');
 
         $this->view['success'] = FALSE;
 
         $viewUser = new Model_User($uid);
 
-        switch ($act) {
-            case 'rise'    :
-                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_TEACHER);
-                break;
-            case 'ban'     :
-                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED);
-                break;
-            case 'degrade' :
-            case 'unban'   :
-                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED);
-                break;
+        if ($this->user->isAdmin() && $act)
+        {
+            switch ($act) {
+                case 'rise'    :
+                    $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_TEACHER);
+                    break;
+                case 'ban'     :
+                    $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED);
+                    break;
+                case 'degrade' :
+                case 'unban'   :
+                    $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_STUDENT);
+                    break;
+            }
         }
 
         $this->view['userPages'] = $viewUser->getUserPages($uid);
