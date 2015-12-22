@@ -2,13 +2,12 @@
 
 class Controller_Pages extends Controller_Base_preDispatch
 {
-    const TYPE_PAGE = 1;
-    const TYPE_NEWS = 2;
-    const TYPE_BLOG = 3;
+    const TYPE_SITE_PAGE = 1;
+    const TYPE_SITE_NEWS = 2;
+    const TYPE_USER_PAGE = 3;
 
     public function action_page()
     {
-
 
         $id = $this->request->param('id');
         $uri = $this->request->param('uri');
@@ -22,7 +21,7 @@ class Controller_Pages extends Controller_Base_preDispatch
                 self::delete_page();
                 break;
             default         :
-                self::get_page($id, $uri);
+                self::show_page($id, $uri);
         }
 
     }
@@ -32,8 +31,6 @@ class Controller_Pages extends Controller_Base_preDispatch
         if (!$this->user->id && !$this->user->isAdmin(Controller_User::USER_STATUS_TEACHER)) {
             $this->redirect('/');
         }
-
-        $this->view['page'] = FALSE;
 
         $page_id = Arr::get($_GET, 'id', FALSE);
         $this->view['page_type'] = Arr::get($_GET, 'type', FALSE);
@@ -49,25 +46,21 @@ class Controller_Pages extends Controller_Base_preDispatch
             }
         }
 
-        $this->view['category'] = 'index';
-
         $form_saved = FALSE;
-
         if (Security::check(Arr::get($_POST, 'csrf'))) {
-            $form_saved = self::pageForm();
+            $form_saved = self::save_form();
         }
-
         $this->view['form_saved'] = $form_saved;
 
-        if ($this->view['page_type'] || $page_id) {
-            if ($page_id) {
-                $this->view['page'] = $this->methods->getPage($page_id);
-            }
-            $this->template->content = View::factory('templates/page_form', $this->view);
-
-        } else {
+        if (!($this->view['page_type'] || $page_id)){
             $this->redirect('/');
+        } elseif ($page_id) {
+            $this->view['page'] = $this->methods->getPage($page_id);
+        } else {
+            $this->view['page'] = FALSE;
         }
+
+        $this->template->content = View::factory('templates/page_form', $this->view);
     }
 
     public function delete_page()
@@ -79,21 +72,18 @@ class Controller_Pages extends Controller_Base_preDispatch
             $this->methods->deletePage($page_id);
         }
 
-        if ($page['type'] == Controller_Pages::TYPE_NEWS)
-        {
+        if ($page['type'] == Controller_Pages::TYPE_SITE_NEWS){
             $url = '/';
+        } elseif ($page['id_parent'] != '0'){
+            $url = '/page/' . $page['id_parent'];
         } else {
-            if ($page['id_parent'] != '0'){
-                $url = '/page/' . $page['id_parent'];
-            } else {
-                $url = '/user/' . $page['author'];
-            }
+            $url = '/user/' . $page['author'];
         }
 
         $this->redirect($url);
     }
 
-    public function get_page($id, $uri)
+    public function show_page($id, $uri)
     {
         $page = $this->methods->getPage($id, $uri);
 
@@ -117,7 +107,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     }
 
-    public function pageForm()
+    public function save_form()
     {
 
         $type = (int)Arr::get($_POST, 'type');
@@ -125,14 +115,14 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         if ($type && Security::check(Arr::get($_POST, 'csrf'))) {
             $data = array(
-                'type' => $type,
-                'author' => $this->user->id,
-                'id_parent' => (int)Arr::get($_POST, 'id_parent', 0),
-                'title' => Arr::get($_POST, 'title'),
-                'content' => Arr::get($_POST, 'content'),
-                'uri' => Arr::get($_POST, 'uri', NULL),
-                'html_content' => Arr::get($_POST, 'html_content', NULL),
-                'is_menu_item' => Arr::get($_POST, 'is_menu_item', 0),
+                'type'          => $type,
+                'author'        => $this->user->id,
+                'id_parent'     => (int)Arr::get($_POST, 'id_parent', 0),
+                'title'         => Arr::get($_POST, 'title'),
+                'content'       => Arr::get($_POST, 'content'),
+                'uri'           => Arr::get($_POST, 'uri', NULL),
+                'html_content'  => Arr::get($_POST, 'html_content', NULL),
+                'is_menu_item'  => Arr::get($_POST, 'is_menu_item', 0),
             );
 
             if ($data['title']) {

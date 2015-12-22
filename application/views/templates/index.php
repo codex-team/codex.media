@@ -34,7 +34,7 @@
         <div class="news">
 
             <? if($user->status == Controller_User::USER_STATUS_ADMIN): ?>
-                <a class="button green" href="/page/add?type=<?= Controller_Pages::TYPE_NEWS ?>">Добавить новость</a>
+                <a class="button green" href="/page/add?type=<?= Controller_Pages::TYPE_SITE_NEWS ?>">Добавить новость</a>
             <? endif ?>
 
             <? foreach ($pages as $page): ?>

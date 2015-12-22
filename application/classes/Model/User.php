@@ -152,7 +152,7 @@ class Model_User extends Model_preDispatch
         return false;
     }
 
-    
+
     public function searchUsersByString( $string , $limit = 10 )
     {
 

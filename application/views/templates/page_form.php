@@ -5,18 +5,10 @@
 		Создание
 	<? endif;?>
 	<? switch ($page_type) {
-		case Controller_Pages::TYPE_PAGE : echo 'страницы'; break;
-		case Controller_Pages::TYPE_NEWS : echo 'новости'; break;
+		case Controller_Pages::TYPE_SITE_PAGE : echo 'страницы'; break;
+		case Controller_Pages::TYPE_SITE_NEWS : echo 'новости'; break;
 	} ?>
 </h1>
-
-<? if ($form_saved): ?>
-	<div class="form_saved">Изменения сохранены</div>
-<? endif ?>
-<? if (isset($error) && $error): ?>
-	<div class="form_error"><?= $error ?></div>
-<? endif ?>
-<? if ( in_array($category, Controller_Admin::$categories) ): ?>
 
 
 	<div class="page_form">
@@ -43,12 +35,6 @@
 					<div class="checkbox dark">
 						<i><input type="checkbox" id="is_menu_item" name="is_menu_item" value="1" <?= isset($page['is_menu_item']) && $page['is_menu_item'] == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') ?>/></i>
 						<label for="is_menu_item">Вынести в меню</label>
-					</div>
-					<div class="hide">
-						<h4 class="mt30">HTML content</h4>
-					<textarea name="html_content" class="redactor extra" rows="7">
-						<?= isset($page['html_content']) ? $page['html_content'] : Arr::get($_POST, 'html_content' , '') ?>
-					</textarea>
 					</div>
 				</div>
 			<? endif ?>
@@ -155,7 +141,6 @@
 
 	</div>
 
-<? endif; ?>
 
 
 
