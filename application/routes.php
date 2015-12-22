@@ -19,10 +19,31 @@ Route::set('INDEX', '')->defaults(array(
     'action' => 'index'
 ));
 
-Route::set('VIEW_PAGE', 'page/(<id>)(<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING ))->defaults(array(
+
+/**
+ *  Pages section
+ */
+Route::set('ADD_NEWS_PAGE', 'news/add')->defaults(array(
     'controller' => 'pages',
-    'action' => 'page'
+    'action' => 'news_add'
 ));
+
+Route::set('NEW_BOOK', 'page/add')->defaults(array(
+    'controller' => 'pages',
+    'action' => 'page_add'
+));
+
+Route::set('NEW_PAGE', 'page/<id>/<uri>/add-page', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'subpage_add'
+));
+
+Route::set('PAGE', 'page/<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'page_show'
+));
+
+
 
 Route::set('PROFILE', 'user/<id>', array( 'id' => $DIGIT ))->defaults(array(
     'controller' => 'user',
