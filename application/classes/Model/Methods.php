@@ -45,7 +45,7 @@ class Model_Methods extends Model
             $page->where('uri', '=', $uri);
         }
 
-        return current($page->limit(1)->cached(10)->execute()->as_array());
+        return current($page->limit(1)->cached(0)->execute()->as_array());
 
     }
 
@@ -62,6 +62,13 @@ class Model_Methods extends Model
             $query->set(array($name => $value));
         }
         return $query->where('id','=',$id)->execute();
+    }
+
+    public function deletePage($id)
+    {
+        return DB::delete('pages')
+                ->where('id', '=', $id)
+                ->execute();
     }
 
 
@@ -116,7 +123,7 @@ class Model_Methods extends Model
                 ->where('status', '=', 0)
                 ->where('is_menu_item','=',1)
                 ->order_by('id','ASC')
-                ->cached(Date::MINUTE*5)
+                ->cached(Date::MINUTE*0)
                 ->execute()
                 ->as_array();
     }
@@ -128,7 +135,7 @@ class Model_Methods extends Model
                 ->where('status', '=', 0)
                 ->where('id_parent','=', $id_parent)
                 ->order_by('id','ASC')
-                ->cached(Date::MINUTE*1)
+                ->cached(Date::MINUTE*0)
                 ->execute()
                 ->as_array();
     }
