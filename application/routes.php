@@ -38,6 +38,11 @@ Route::set('NEW_PAGE', 'page/<id>/<uri>/add-page', array( 'id' => $DIGIT , 'uri'
     'action' => 'subpage_add'
 ));
 
+Route::set('EDIT_PAGE', 'page/<id>/<uri>/edit', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'page_edit'
+));
+
 Route::set('PAGE', 'page/<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
     'action' => 'page_show'
