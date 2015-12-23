@@ -11,13 +11,13 @@ class Controller_User extends Controller_Base_preDispatch
 
     public function action_profile()
     {
-        $uid = $this->request->param('id');
+        $user_id = $this->request->param('id');
 
         $act = Arr::get($_GET, 'act');
 
         $this->view['success'] = FALSE;
 
-        $viewUser = new Model_User($uid);
+        $viewUser = new Model_User($user_id);
 
         if ($this->user->isAdmin() && $act)
         {
@@ -36,7 +36,7 @@ class Controller_User extends Controller_Base_preDispatch
         }
 
         $this->user->isTeacher   = $this->user->isTeacher();
-        $this->view['userPages'] = $viewUser->getUserPages($uid);
+        $this->view['userPages'] = $viewUser->getUserPages($user_id);
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/user/profile', $this->view);
