@@ -60,11 +60,11 @@
 	<h2>Страницы пользователя</h2>
 	<ul>
 	<? if($user->id == $viewUser->id && $user->status > Controller_User::USER_STATUS_STUDENT): ?>
-		<a class="button green" href="/page/add?type=<?= Controller_Pages::TYPE_SITE_PAGE ?>&parent=0">Создать страницу</a>
+		<a class="button green" href="/page/add">Создать страницу</a>
 	<? endif?>
 	<? if ($userPages): ?>
 		<? foreach ($userPages as $page): ?>
-			<li><h3><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h3></li>
+			<li><h3><a href="/page/<?= $page['id'] ?>/<?= $page['uri'] ?>"><?= $page['title'] ?></a></h3></li>
 		<? endforeach; ?>
 	<? else: ?>
 		пользователь пока еще не создал ни одной страницы
