@@ -35,11 +35,11 @@ class Controller_User extends Controller_Base_preDispatch
             }
         }
 
+        $this->user->isTeacher   = $this->user->isTeacher();
         $this->view['userPages'] = $viewUser->getUserPages($uid);
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/user/profile', $this->view);
-
 
     }
 

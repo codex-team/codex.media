@@ -59,7 +59,7 @@
 
 	<h2>Страницы пользователя</h2>
 	<ul>
-	<? if($user->id == $viewUser->id && $user->status > Controller_User::USER_STATUS_STUDENT): ?>
+	<? if($user->id == $viewUser->id && $user->isTeacher): ?>
 		<a class="button green" href="/page/add">Создать страницу</a>
 	<? endif?>
 	<? if ($userPages): ?>
