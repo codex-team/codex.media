@@ -45,7 +45,7 @@ Route::set('EDIT_PAGE', 'page/<id>/<uri>/edit', array( 'id' => $DIGIT , 'uri' =>
 
 Route::set('PAGE', 'page/<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
-    'action' => 'page_show'
+    'action' => 'show_page'
 ));
 
 
