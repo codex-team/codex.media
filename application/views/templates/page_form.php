@@ -15,26 +15,26 @@
 
 		<form action="/page/add" method="post">
 
-			<?= Form::hidden('csrf', Security::token()); ?>
-			<?= Form::hidden('type', isset($page['type']) && $page['type'] ? $page['type'] : '3' ); ?>
-			<?= Form::hidden('id', isset($page['id']) ? $page['id'] : '' ); ?>
-			<?= Form::hidden('id_parent', isset($page['id_parent']) ? $page['id_parent'] : '0' ); ?>
+			<?= Form::hidden('csrf', 		Security::token()); ?>
+			<?= Form::hidden('type', 		Arr::get($page, 'type', Arr::get($_POST, 'type', Controller_Pages::TYPE_USER_PAGE))); ?>
+			<?= Form::hidden('id', 			Arr::get($page, 'id',  '')); ?>
+			<?= Form::hidden('id_parent', 	Arr::get($page, 'id_parent', '0')); ?>
 
 			<h4>Заголовок</h4>
 			<div class="input_text mb30">
-				<input type="text" name="title" value="<?= isset($page['title']) ? $page['title'] : Arr::get($_POST, 'title' , '') ?>" />
+				<input type="text" name="title" value="<?= Arr::get($page, 'title', Arr::get($_POST, 'title' , '')) ?>" />
 			</div>
 
 			<div class="clear">
 				<h4>URI</h4>
 				<div class="input_text mb30">
-					<input type="text" onkeydown="user.inputFilter($(this))" name="uri" value="<?= isset($page['uri']) ? $page['uri'] : Arr::get($_POST, 'uri' , '') ?>" />
+					<input type="text" onkeydown="user.inputFilter($(this))" name="uri" value="<?= Arr::get($page, 'uri', Arr::get($_POST, 'uri' , '')) ?>" />
 				</div>
 			</div>
 
 			<h4>Содержание</h4>
 			<textarea name="content" class="redactor" rows="7" >
-				<?= isset($page['content']) ? $page['content'] : Arr::get($_POST, 'content' , '') ?>
+				<?= Arr::get($page, 'content', Arr::get($_POST, 'content' , '')) ?>
 			</textarea>
 
 			<? if ($user->status == Controller_User::USER_STATUS_ADMIN): ?>
