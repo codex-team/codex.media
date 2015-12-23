@@ -6,67 +6,133 @@ class Controller_Pages extends Controller_Base_preDispatch
     const TYPE_SITE_NEWS = 2;
     const TYPE_USER_PAGE = 3;
 
-    public function action_page()
+
+    public function action_page_show()
     {
 
         $id = $this->request->param('id');
         $uri = $this->request->param('uri');
 
-        switch ($uri) {
-            case 'add'      :
-            case 'edit'     :
-                self::add_page();
-                break;
-            case 'delete'   :
-                self::delete_page();
-                break;
-            default         :
-                self::show_page($id, $uri);
+        $page = $this->methods->getPage($id, $uri);
+
+        if ($page['title']) {
+
+            if (!$uri)
+            {
+                $this->redirect('/page/' . $page['id'] . '/' . $page['uri']);
+            }
+
+            $page['parent'] = 0;
+            if ($page['id_parent']) {
+                $page['parent'] = $this->methods->getPage($page['id_parent']);
+            }
+
+            $page['childrens']  = $this->methods->getChildrenPagesByParent($page['id']);
+
+            $this->view['page'] = $page;
+            $this->view['files'] = $this->methods->getPageFiles($page['id']);
+            $this->template->content = View::factory('templates/page', $this->view);
+
         }
+    }
+
+    public function action_news_add()
+    {
+        if (!$this->user->isAdmin()) {
+            $this->redirect('/');
+        }
+
+        $page['type'] = Controller_Pages::TYPE_SITE_NEWS;
+
+        $page['parent'] = '0';
+
+        if (Security::check(Arr::get($_POST, 'csrf'))) {
+            self::save_form();
+        }
+
+        $this->view['page']     = $page;
+        $this->template->content = View::factory('templates/page_form', $this->view);
 
     }
 
-    public function add_page()
+    public function action_page_add()
     {
-        if (!$this->user->id && !$this->user->isAdmin(Controller_User::USER_STATUS_TEACHER)) {
+        if (!$this->user->isTeacher()) {
             $this->redirect('/');
         }
 
-        $page_id = Arr::get($_GET, 'id', FALSE);
-        $this->view['page_type'] = Arr::get($_GET, 'type', FALSE);
+        $page['type'] = Controller_Pages::TYPE_USER_PAGE;
 
-        $page_parent = Arr::get($_GET, 'parent', FALSE);
-        $this->view['page_parent'] = $page_parent;
-        if ($page_parent != '0')
-        {
-            $page_parent_author = $this->methods->getPage($page_parent)['author'];
+        $page['parent'] = '0';
 
-            if ($page_parent_author != $this->user->id && !$this->user->isAdmin()) {
-                $this->redirect('/');
-            }
-        }
-
-        $form_saved = FALSE;
         if (Security::check(Arr::get($_POST, 'csrf'))) {
-            $form_saved = self::save_form();
-        }
-        $this->view['form_saved'] = $form_saved;
-
-        if (!($this->view['page_type'] || $page_id)){
-            $this->redirect('/');
-        } elseif ($page_id) {
-            $this->view['page'] = $this->methods->getPage($page_id);
-        } else {
-            $this->view['page'] = FALSE;
+            self::save_form();
         }
 
+        $this->view['page']     = $page;
         $this->template->content = View::factory('templates/page_form', $this->view);
     }
 
-    public function delete_page()
+    public function action_subpage_add()
     {
-        $page_id = Arr::get($_GET, 'id', FALSE);
-        $page = $this->methods->getPage($page_id);
+        if (!$this->user->isTeacher()) {
+            $this->redirect('/');
+        }
+
+        $parent_id = $this->request->param('id');
+        $page['id_parent'] = $parent_id;
+        if ($page['id_parent']) {
+            $page['parent'] = $this->methods->getPage($page['id_parent']);
+
+            switch ($page['parent']['type'])
+            {
+                case Controller_Pages::TYPE_USER_PAGE :
+                            $page_type = Controller_Pages::TYPE_USER_PAGE; break;
+                default :   $page_type = Controller_Pages::TYPE_SITE_PAGE;
+            }
+            $page['type'] = $page_type;
+        }
+
+        if (Security::check(Arr::get($_POST, 'csrf'))) {
+            self::save_form();
+        }
+
+        $this->view['page']     = $page;
+        $this->template->content = View::factory('templates/page_form', $this->view);
+    }
+
+    public function action_page_edit()
+    {
+        if (!$this->user->isTeacher()) {
+            $this->redirect('/');
+        }
+
+        $id = $this->request->param('id');
+        $page = $this->methods->getPage($id);
+
+//        $page['parent'] = Arr::get($_GET, 'parent', FALSE);
+//        if ($page['parent'] != '0')
+//        {
+//            $page_parent_author = $this->methods->getPage($page['parent'])['author'];
+//            if ($page_parent_author != $this->user->id && !$this->user->isAdmin()) {
+//                $this->redirect('/');
+//            }
+//        }
+
+        if (Security::check(Arr::get($_POST, 'csrf'))) {
+            self::save_form();
+        }
+
+        $this->view['page'] = $page;
+        $this->template->content = View::factory('templates/page_form', $this->view);
+    }
+
+    public function delete()
+    {
+        $page_id = $this->request->param('id');
+        $uri = $this->request->param('uri');
+
+        $page = $this->methods->getPage($page_id, $uri);
 
         if ($this->user->isAdmin() || $this->user->id == $page['author']) {
             $this->methods->deletePage($page_id);
@@ -83,52 +149,25 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->redirect($url);
     }
 
-    public function show_page($id, $uri)
-    {
-        $page = $this->methods->getPage($id, $uri);
-
-        if ($page) {
-
-            $this->view['page'] = $page;
-            $this->view['files'] = $this->methods->getPageFiles($page['id']);
-
-            $this->view['page']['childrens'] = $this->methods->getChildrenPagesByParent($page['id']);
-
-            $this->view['parent'] = FALSE;
-            if ($page['id_parent']) {
-                $this->view['parent'] = $this->methods->getPage($page['id_parent']);
-            }
-
-            $this->template->content = View::factory('templates/page', $this->view);
-
-        } else {
-            $this->redirect('/');
-        }
-
-    }
-
     public function save_form()
     {
+        $id     = (int)Arr::get($_POST, 'id');
+        $type   = (int)Arr::get($_POST, 'type');
 
-        $type = (int)Arr::get($_POST, 'type');
-        $id = (int)Arr::get($_POST, 'id');
-
-        if ($type && Security::check(Arr::get($_POST, 'csrf'))) {
+        if ($type) {
             $data = array(
                 'type'          => $type,
                 'author'        => $this->user->id,
                 'id_parent'     => (int)Arr::get($_POST, 'id_parent', 0),
                 'title'         => Arr::get($_POST, 'title'),
                 'content'       => Arr::get($_POST, 'content'),
-                'uri'           => Arr::get($_POST, 'uri', NULL),
+                'uri'           => Arr::get($_POST, 'uri', 'seturi'),
                 'html_content'  => Arr::get($_POST, 'html_content', NULL),
                 'is_menu_item'  => Arr::get($_POST, 'is_menu_item', 0),
             );
 
-            if ($data['title']) {
-
-                $this->view['category'] = 'pages';
-
+            if ($data['title'])
+            {
                 if ($id) {
                     $page = $this->methods->updatePage($id, $data);
                     $url = '/page/' . $id;
@@ -137,12 +176,9 @@ class Controller_Pages extends Controller_Base_preDispatch
                     $url = '/page/' . $page[0];
                 }
 
-
                 $this->redirect($url);
-
             } else {
 
-                $this->view['error'] = 'Укажите название страницы';
                 return FALSE;
 
             }
