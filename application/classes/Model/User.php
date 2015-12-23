@@ -186,17 +186,8 @@ class Model_User extends Model_preDispatch
         return DB::update('users')->set(array('status' => $status))->where('id','=', $this->id)->execute();
     }
 
-    /**
-     * Get user's pages
-     *
-     * @author taly
-     *
-     * @param int $user_id          user id
-     * @param int $type             type of pages
-     * @param int $id_parent        parent of pages
-     * @return array
-     */
-    public function getUserPages($user_id, $type = Controller_Pages::TYPE_SITE_PAGE, $id_parent = 0)
+
+    public function getUserPages($user_id, $type = Controller_Pages::TYPE_USER_PAGE, $id_parent = 0)
     {
         $pages = DB::select()->from('pages')
                     ->where('author', '=', $user_id)
