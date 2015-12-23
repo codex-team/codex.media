@@ -101,7 +101,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->template->content = View::factory('templates/page_form', $this->view);
     }
 
-    public function action_page_edit()
+    public function action_edit()
     {
         if (!$this->user->isTeacher()) {
             $this->redirect('/');
