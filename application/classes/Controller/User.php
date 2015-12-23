@@ -3,10 +3,10 @@
 class Controller_User extends Controller_Base_preDispatch
 {
 
-    const USER_STATUS_ADMIN     = 2;
-    const USER_STATUS_TEACHER   = 1;
-    const USER_STATUS_STUDENT   = 0;
-    const USER_STATUS_BANNED    = -1;
+    const USER_STATUS_ADMIN         = 2;
+    const USER_STATUS_TEACHER       = 1;
+    const USER_STATUS_REGISTERED    = 0;
+    const USER_STATUS_BANNED        = -1;
 
 
     public function action_profile()
@@ -30,7 +30,7 @@ class Controller_User extends Controller_Base_preDispatch
                     break;
                 case 'degrade' :
                 case 'unban'   :
-                    $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_STUDENT);
+                    $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_REGISTERED);
                     break;
             }
         }
