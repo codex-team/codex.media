@@ -34,9 +34,33 @@
 	</table>
 <? endif; ?>
 <div class="page_comments">
+
+	<h3>Комментарии</h3>
+	<? if ($comments): ?>
+		<? foreach ($comments as $comment): ?>
+			<div>
+				<b>
+					<?=	Model_Comments::getAuthor($comment->parent_id) ?>
+				</b>
+				<p><?= $comment->text ?></p>
+				<i>
+					<?= $comment->dt_create ?> 
+					<? if ($comment->parent_id != 0): ?>
+						to <?= $comment->parent_author ?>
+					<? endif; ?>
+				</i>
+			</div>
+		<? endforeach; ?>
+	<? else: ?>
+		<p>Нет комментариев.</p>
+	<? endif; ?>
+
+
 	Комментировать
-	<form action="/addcomment" class="add_comment_form mt20">
+	<form action="/page/13/addcomment" class="add_comment_form mt20">
 		<textarea name="text" rows="6"></textarea>
+		<input type="submit" value="Оставить комментарий" />
+		<input type="hidden" name="page_id" value="<?= $page['id'] ?>">
 	</form>
 </div>
 

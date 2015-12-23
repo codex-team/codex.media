@@ -81,6 +81,21 @@ Route::set('LOGOUT', 'logout')->defaults(array(
 ));
 
 
+/** Comments */
+
+Route::set('ADD_COMMENT_SCRIPT', 'page(/<id>)(/<uri>)/addcomment', array( 'id' => $DIGIT , 'uri' => $STRING ))->defaults(array(
+    'controller' => 'comments',
+    'action' => 'add'
+));
+
+Route::set('DEL_COMMENT_SCRIPT', 'page/(<id>)(<uri>)/delcomment/<comment_id>', array(
+    'comment_id'    => $DIGIT, 
+    'id'            => $DIGIT, 
+    'uri'           => $STRING ))->defaults(array(
+    'controller' => 'comments',
+    'action' => 'delete'
+));
+
 
 
 

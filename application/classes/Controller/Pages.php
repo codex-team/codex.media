@@ -19,6 +19,8 @@ class Controller_Pages extends Controller_Base_preDispatch
             $this->view['files'] = $this->methods->getPageFiles( $page['id'] );
 
             $this->view['page']['childrens'] = $this->methods->getChildrenPagesByParent( $page['id'] );
+
+            $this->view['comments'] = Model_Comments::getByPageId($page['id']);
             
             $this->template->content = View::factory('templates/page',  $this->view);
         
