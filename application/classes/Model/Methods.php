@@ -20,7 +20,7 @@ class Model_Methods extends Model
 	*	Site Methods Model
 	*/
 
-    public function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0)
+    public static function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0, $author='*')
     {
 
         $pages = DB::select()->from('pages')->where('status', '=', $status);
@@ -28,6 +28,7 @@ class Model_Methods extends Model
         if ($type) $pages->where('type', '=', $type);
         if ($limit) $pages->limit($limit);
         if ($offset) $pages->offset($offset);
+        if ($author) $pages->and_where('author', '=', $author);
 
         return $pages->order_by('id','DESC')->execute()->as_array();
 
