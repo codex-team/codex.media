@@ -13,33 +13,44 @@ class Controller_User extends Controller_Base_preDispatch
     {
         $user_id = $this->request->param('id');
 
+
         $act = Arr::get($_GET, 'act');
 
-        $this->view['success'] = FALSE;
 
         $viewUser = new Model_User($user_id);
 
-        if ($this->user->isAdmin() && $act)
-        {
-            switch ($act) {
-                case 'rise'    :
-                    $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_TEACHER);
-                    break;
-                case 'ban'     :
-                    $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED);
-                    break;
-                case 'degrade' :
-                case 'unban'   :
-                    $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_REGISTERED);
-                    break;
-            }
-        }
+        if ($this->user->isAdmin() && $act):
+            $success = $this->set_user_status($act, $viewUser);
+            $viewUser = new Model_User($user_id);
+        endif;
+
 
         $this->user->isTeacher   = $this->user->isTeacher();
         $this->view['userPages'] = $viewUser->getUserPages($user_id);
         $this->view['viewUser']  = $viewUser;
+        $this->view['success']   = isset($success) ? TRUE : FALSE;
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/user/profile', $this->view);
+
+    }
+
+    public function set_user_status($act, $viewUser)
+    {
+        switch ($act)
+        {
+            case 'rise'    :
+                return $viewUser->setUserStatus(self::USER_STATUS_TEACHER);
+                break;
+            case 'ban'     :
+                return $viewUser->setUserStatus(self::USER_STATUS_BANNED);
+                break;
+            case 'degrade' :
+            case 'unban'   :
+                return $viewUser->setUserStatus(self::USER_STATUS_REGISTERED);
+                break;
+        }
+
+        return FALSE;
 
     }
 
