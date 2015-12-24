@@ -14,27 +14,51 @@
 $DIGIT = '\d+';
 $STRING = '[-a-z\d]+';
 
-Route::set('index', '')->defaults(array(
+Route::set('INDEX', '')->defaults(array(
     'controller' => 'index',
     'action' => 'index'
 ));
 
-Route::set('VIEW_PAGE', 'page/(<id>)(<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING ))->defaults(array(
+
+/**
+ *  Pages section
+ */
+Route::set('ADD_NEWS_PAGE', 'news/add')->defaults(array(
     'controller' => 'pages',
-    'action' => 'page'
+    'action' => 'news_add'
 ));
+
+Route::set('NEW_BOOK', 'page/add')->defaults(array(
+    'controller' => 'pages',
+    'action' => 'page_add'
+));
+
+Route::set('NEW_PAGE', 'page/<id>/<uri>/add-page', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'subpage_add'
+));
+
+Route::set('EDIT_PAGE', 'page/<id>/<uri>/edit', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'edit'
+));
+
+Route::set('PAGE', 'page/<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'show_page'
+));
+
+
 
 Route::set('PROFILE', 'user/<id>', array( 'id' => $DIGIT ))->defaults(array(
     'controller' => 'user',
     'action' => 'profile'
 ));
 
-Route::set('Contacts', 'contacts')->defaults(array(
+Route::set('CONTACTS', 'contacts')->defaults(array(
     'controller' => 'index',
     'action' => 'contacts'
 ));
-
-
 
 
 /**
