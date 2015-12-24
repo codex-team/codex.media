@@ -57,9 +57,13 @@
 
 	<h2>Мои страницы</h2>
 	<ul>
-	<? foreach ($userPages as $page): ?>
-		<li><h3><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h3></li>
-	<? endforeach; ?>
+	<? if (($userPages != NULL) && !empty($userPages)) : ?>
+		<? foreach ($userPages as $page): ?>
+			<li><h2><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h2></li>
+		<? endforeach; ?>
+	<? else: ?>
+	<h2>К сожалению у вас нет созданных страниц</h2>
+	<? endif; ?>
 	</ul>
 </div>
 <?/*

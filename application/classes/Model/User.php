@@ -140,9 +140,13 @@ class Model_User extends Model_preDispatch
 
     public function isAdmin()
     {
-        if (!$this->id) return false;
-        if (array_search($this->id, $this->admins) !== false) return true;
-        return false;
+        if (($this->id) && ($this->status != 0))
+        {
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 
     public function searchUsersByString( $string , $limit = 10 )

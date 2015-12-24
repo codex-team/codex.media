@@ -114,7 +114,7 @@ class Controller_Admin extends Controller_Base_preDispatch
         }
     }
 
-    public function pages( $page_type = NULL)
+    public static function pages( $page_type = NULL)
     {
         $pageId = $this->view['pageId'] = $this->request->param('id');
         $pages  = $this->methods->getPages( $page_type );

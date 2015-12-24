@@ -30,8 +30,8 @@ class Controller_User extends Controller_Base_preDispatch
                 $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED);
                 break;
         }
-
-        $this->view['userPages'] = $viewUser->getUserPages($uid);
+        $this->view['userPages'] = NULL;
+        if ($viewUser->isAdmin()) $this->view['userPages'] = Model_Methods::getPages(0,0,0,0,$uid);
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/user/profile', $this->view);
