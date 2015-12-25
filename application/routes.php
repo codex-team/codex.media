@@ -107,15 +107,12 @@ Route::set('LOGOUT', 'logout')->defaults(array(
 
 /** Comments */
 
-Route::set('ADD_COMMENT_SCRIPT', 'page/addcomment(/<id>)(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING ))->defaults(array(
+Route::set('ADD_COMMENT_SCRIPT', 'page/<id>/addcomment', array( 'id' => $DIGIT ))->defaults(array(
     'controller' => 'comments',
     'action' => 'add'
 ));
 
-Route::set('DEL_COMMENT_SCRIPT', 'page/(<id>)(<uri>)/delcomment/<comment_id>', array(
-    'comment_id'    => $DIGIT, 
-    'id'            => $DIGIT, 
-    'uri'           => $STRING ))->defaults(array(
+Route::set('DEL_COMMENT_SCRIPT', 'page/<id>/delcomment', array('id' => $DIGIT ))->defaults(array(
     'controller' => 'comments',
     'action' => 'delete'
 ));
