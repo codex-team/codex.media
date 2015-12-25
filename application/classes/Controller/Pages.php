@@ -130,24 +130,22 @@ class Controller_Pages extends Controller_Base_preDispatch
         $type   = (int)Arr::get($_POST, 'type');
 
         if ($type) {
-            $data = array(
-                'type'          => $type,
-                'author'        => $this->user->id,
-                'id_parent'     => (int)Arr::get($_POST, 'id_parent', 0),
-                'title'         => Arr::get($_POST, 'title'),
-                'content'       => Arr::get($_POST, 'content'),
-                'uri'           => Arr::get($_POST, 'uri', 'seturi'),
-                'html_content'  => Arr::get($_POST, 'html_content', NULL),
-                'is_menu_item'  => Arr::get($_POST, 'is_menu_item', 0),
-            );
+            $page = new Model_Page();
+            $page->type          = $type;
+            $page->author        =  $this->user->id;
+            $page->id_parent     = (int)Arr::get($_POST, 'id_parent', 0);
+            $page->title         = Arr::get($_POST, 'title');
+            $page->content       = Arr::get($_POST, 'content');
+            $page->is_menu_item  = Arr::get($_POST, 'is_menu_item', 0);
 
-            if ($data['title'])
+
+            if ($page->title)
             {
                 if ($id) {
-                    $page = $this->methods->updatePage($id, $data);
+                    //$page->update();
                     $url = '/page/' . $id;
                 } else {
-                    $page = $this->methods->newPage($data);
+                    $page->insert();
                     $url = '/page/' . $page[0];
                 }
 

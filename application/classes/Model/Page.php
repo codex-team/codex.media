@@ -41,12 +41,12 @@ class Model_Page extends Model_preDispatch
     public function insert()
     {
         $page = DB::insert('pages')
-            ->set('type', $this->type)
-            ->set('id_parent', $this->id_parent)
-            ->set('author', $this->author)
-            ->set('title', $this->title)
-            ->set('content', $this->content)
-            ->set('is_menu_item', $this->is_menu_item)
+            ->set('type',           $this->type)
+            ->set('id_parent',      $this->id_parent)
+            ->set('author',         $this->author)
+            ->set('title',          $this->title)
+            ->set('content',        $this->content)
+            ->set('is_menu_item',   $this->is_menu_item)
             ->execute();
 
         if ($page)
@@ -55,12 +55,12 @@ class Model_Page extends Model_preDispatch
         }
     }
 
-    public function update($page_id, $fields)
-    {
-        $page = DB::update()->where('id', '=', $page_id);
-        foreach ($fields as $name => $value) $page->set($name, $value);
-        return $page->execute();
-    }
+//    public function update($page_id, $fields)
+//    {
+//        $page = DB::update()->where('id', '=', $page_id);
+//        foreach ($fields as $name => $value) $page->set($name, $value);
+//        return $page->execute();
+//    }
 
     public static function get($id = 0)
     {

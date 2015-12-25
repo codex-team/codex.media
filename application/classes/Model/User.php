@@ -199,9 +199,10 @@ class Model_User extends Model_preDispatch
                     ->where('type', '=', $type)
                     ->where('id_parent', '=', $id_parent)
                     ->order_by('id','DESC')
-                    ->cached(Date::MINUTE*0);
+                    ->cached(Date::MINUTE*0)
+                    ->execute();
 
-        return $pages->execute()->as_array();
+        return Model_Page::rowsToModels($pages);
     }
 
 }
