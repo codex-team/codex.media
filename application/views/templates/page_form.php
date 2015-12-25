@@ -15,25 +15,18 @@
 	<form action="/page/add" method="post">
 
 		<?= Form::hidden('csrf', Security::token()); ?>
-		<?= Form::hidden('type', Arr::get($page, 'type', Arr::get($_POST, 'type', Controller_Pages::TYPE_USER_PAGE))); ?>
-		<?= Form::hidden('id', Arr::get($page, 'id',  '')); ?>
-		<?= Form::hidden('id_parent', Arr::get($page, 'id_parent', '0')); ?>
+		<?= Form::hidden('type', $page->type); ?>
+		<?= Form::hidden('id', $page->id); ?>
+		<?= Form::hidden('id_parent', $page->id_parent); ?>
 
 		<h4>Заголовок</h4>
 		<div class="input_text mb30">
-			<input type="text" name="title" value="<?= Arr::get($page, 'title', Arr::get($_POST, 'title' , '')) ?>" />
-		</div>
-
-		<div class="clear">
-			<h4>URI</h4>
-			<div class="input_text mb30">
-				<input type="text" onkeydown="user.inputFilter($(this))" name="uri" value="<?= Arr::get($page, 'uri', Arr::get($_POST, 'uri' , '')) ?>" />
-			</div>
+			<input type="text" name="title" value="<?= $page->title ?>" />
 		</div>
 
 		<h4>Содержание</h4>
 			<textarea name="content" class="redactor" rows="7" >
-				<?= Arr::get($page, 'content', Arr::get($_POST, 'content' , '')) ?>
+				<?= $page->content ?>
 			</textarea>
 
 		<? if ($user->status == Controller_User::USER_STATUS_ADMIN): ?>
