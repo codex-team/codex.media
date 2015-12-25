@@ -10,9 +10,9 @@ class Controller_Comments extends Controller_Base_preDispatch
         
         $target = $comment->page_id;
 
-        $comment->page_id 	= Arr::get($_GET, 'page_id');
-        $comment->text 		= Arr::get($_GET, 'text');
-        $comment->parent_id	= Arr::get($_GET, 'parent_id', '0');
+        $comment->page_id 	= Arr::get($_POST, 'page_id');
+        $comment->text 		= Arr::get($_POST, 'text');
+        $comment->parent_id	= Arr::get($_POST, 'parent_id', '0');
         $comment->user_id	= $this->user->id;
 
         /**
@@ -32,6 +32,8 @@ class Controller_Comments extends Controller_Base_preDispatch
         $comment->root_id = 0;
 
         $comment->insert();
+
+        $this->redirect('/page/'.$comment->page_id);
     }
 
 }

@@ -57,7 +57,7 @@
 
 
 	Комментировать
-	<form action="/page/<?= $page['id'] ?>/addcomment" class="add_comment_form mt20">
+	<form action="/page/<?= $page['id'] ?>/addcomment" method="POST" class="add_comment_form mt20">
 		<textarea name="text" rows="6"></textarea>
 		<input type="hidden" name="page_id" value="<?= $page['id'] ?>">
 		<input type="submit" value="Оставить комментарий" />
