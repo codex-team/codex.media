@@ -196,6 +196,7 @@ class Model_User extends Model_preDispatch
     {
         $pages = DB::select()->from('pages')
                     ->where('author', '=', $user_id)
+                    ->where('status', '=', 0)
                     ->where('type', '=', $type)
                     ->where('id_parent', '=', $id_parent)
                     ->order_by('id','DESC')
