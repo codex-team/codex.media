@@ -43,6 +43,11 @@ Route::set('EDIT_PAGE', 'page/<id>/<uri>/edit', array( 'id' => $DIGIT , 'uri' =>
     'action' => 'edit'
 ));
 
+Route::set('DELETE_PAGE', 'page/<id>/<uri>/delete', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'delete'
+));
+
 Route::set('PAGE', 'page/<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
     'action' => 'show_page'
