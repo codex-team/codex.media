@@ -21,6 +21,10 @@
 	<? if ($viewUser->twitter): ?>
 		<a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank"><?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?></a>
 	<? endif ?>
+	<br />
+	<? if ($viewUser->isMe): ?>
+    	<a href="/user/settings">Настройки профиля</a>
+    <? endif; ?>
 </div>
 <? if ($success): ?>
 	<div class="info_block align_c">
@@ -28,34 +32,7 @@
 	</div>
 <? endif; ?>
 <div class="profile_panel clear">
-	<? if ($viewUser->status < Controller_User::USER_STATUS_TEACHER ): ?>
-		<a class="button" href="/user/<?= $viewUser->id ?>?act=rise">Активировать аккаунт преподавателя</a>
-	<? else: ?>
-		<a class="button" href="/user/<?= $viewUser->id ?>?act=degrade">Отключить аккаунт преподавателя</a>
-	<? endif ?>
-	<? if ($viewUser->status !=  Controller_User::USER_STATUS_BANNED ): ?>
-		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=ban">Заблокировать пользователя</a>
-	<? else: ?>
-		<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=unban">Разблокировать пользователя</a>
-	<? endif ?>
-	<? if (!$viewUser->vk && $viewUser->email): ?>
-		<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
-	<? else: ?>
-		<a class="button" href="/auth/vk?state=remove">Открепить профиль ВК</a>
-	<? endif; ?>
-	<? if (!$viewUser->facebook && $viewUser->email): ?>
-		<a class="button" href="/auth/fb?state=attach">Прикрепить профиль FB</a>
-	<? else: ?>
-		<a class="button" href="/auth/fb?state=remove">Открепить профиль FB</a>
-	<? endif; ?>
-	<? if (!$viewUser->twitter && $viewUser->email): ?>
-		<a class="button" href="/auth/tw?state=attach">Прикрепить профиль TW</a>
-	<? else: ?>
-		<a class="button" href="/auth/tw?state=remove">Открепить профиль TW</a>
-	<? endif; ?>
-
-
-	<h2>Мои страницы</h2>
+    <h2>Мои страницы</h2>
 	<ul>
 	<? foreach ($userPages as $page): ?>
 		<li><h3><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h3></li>

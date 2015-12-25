@@ -29,6 +29,11 @@ Route::set('PROFILE', 'user/<id>', array( 'id' => $DIGIT ))->defaults(array(
     'action' => 'profile'
 ));
 
+Route::set('PROFILE_SETTINGS', 'user/settings')->defaults(array(
+    'controller' => 'user',
+    'action' => 'settings'
+));
+
 Route::set('Contacts', 'contacts')->defaults(array(
     'controller' => 'index',
     'action' => 'contacts'

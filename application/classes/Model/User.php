@@ -72,15 +72,21 @@ class Model_User extends Model_preDispatch
 
     /**
      *  Update user fields
-     *  @author Alexander Demyashev
+     *  @author Alexander Demyashev, Vladislav Tretyak
      *  @return bool
      */
     public function updateUser($user_id, $fields)
     {
         $user = Dao_User::update()->where('id', '=', $user_id);
         foreach ($fields as $name => $value) $user->set($name, $value);
-        return $user->execute();
-    }
+        $result = $user->execute();
+        
+        Kohana_Cache::instance('memcache')->delete('user_model:' . $this->id);
+        $user_model = DB::select()->from('users')->where('id', '=', $this->id)->limit(1)->execute()->current();
+        Kohana_Cache::instance('memcache')->set('user_model:' . $this->id, $user_model, Date::DAY);
+        
+        return $result;
+      }
 
     public function getLastOnlineTimestamp()
     {
@@ -89,8 +95,15 @@ class Model_User extends Model_preDispatch
 
     public function getUserInfo($uid, $update = false)
     {
-        if ($update) {
+      if ($update) {
             Kohana_Cache::instance('memcache')->delete('user_model:' . $uid);
+            $user_model = DB::select()->from('users')->where('id', '=', $uid)->limit(1)->execute()->current();
+            
+            if ($user_model){
+                Kohana_Cache::instance('memcache')->set('user_model:' . $uid, $user_model, Date::DAY);
+            }
+            
+            return $user_model;
         } else {
             if ($cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
                 return $cache;
@@ -108,9 +121,30 @@ class Model_User extends Model_preDispatch
         Cookie::set('uid', $id, Date::MONTH);
         Cookie::set('hr', sha1('dfhgga23'.$id.'dfhshgf23'), Date::MONTH);
     }
-
-
-    public function saveAvatar($file)
+    
+    public function saveAvatar($file, $path)
+    {
+        $model = new Model_Methods();
+        $files = $model->saveImage($file, $path);
+        
+        $arr = DB::update('users')->set(array('photo' => $files['s_'], 
+        'photo_medium' => $files['m_'], 
+        'photo_big' => $files['b_']))->where('id', '=', $this->id)->execute();
+        
+        if ($arr) {
+            $this->photo = $files['s_'];
+            $this->photo_medium = $files['m_'];
+            $this->photo_big = $files['b_'];
+            $this->getUserInfo($this->id, true);
+            return true;
+        } else { 
+            return false; 
+        }          
+    }
+    
+    
+    //TODO Model_Image
+    /*public function saveAvatar($inputName, $dir = "profile/", $fileTypes = array('jpg', 'jpeg', 'png'), $maxFileSize = 2097152)
     {
         if ($file && $file['tmp_name']) {
             $img = new Model_Image($file['tmp_name']);
@@ -126,7 +160,7 @@ class Model_User extends Model_preDispatch
             $img->best_fit(400,400)->save('upload/profile/l_'.$file_name);
             $img->square_crop(100)->save('upload/profile/m_'.$file_name);
             $img->square_crop(50)->save('upload/profile/s_'.$file_name);
-
+        
             $arr = DB::update('users')->set(array('photo' => 'upload/profile/s_'.$file_name, 'photo_medium' => 'upload/profile/m_'.$file_name, 'photo_big' => 'upload/profile/l_'.$file_name))->where('id', '=', $this->id)->execute();
             if ($arr) {
                 $this->photo = 'upload/profile/s_'.$file_name;
@@ -135,7 +169,7 @@ class Model_User extends Model_preDispatch
                 $this->getUserInfo($this->id, true);
             }
         }
-    }
+    }*/
 
 
     public function isAdmin()
@@ -194,6 +228,38 @@ class Model_User extends Model_preDispatch
                     ->where('type', '=', $type);
 
         return $pages->order_by('id','DESC')->execute()->as_array();
+    }    
+    
+    /**
+    * Метод заносит переданные данные о юзере в модель и базу
+    * @param $fields - ассоциативный массив "название поля" - "значение"
+    */
+    public function edit($fields = array())
+    {
+        // занесение данных в модель
+        foreach ($fields as $key => $value) {
+            $this->$key = $value;
+        }
+        
+        // занесения данных в бд
+        return $this->updateUser($this->id, $fields);
     }
-
+    
+    public function updatePassword($newPassword, $repeatPassword)
+    {
+        $newPassword = hash('sha256', Controller_Auth_Base::AUTH_PASSWORD_SALT . $newPassword );
+        $repeatPassword = hash('sha256', Controller_Auth_Base::AUTH_PASSWORD_SALT . $repeatPassword );
+        
+        if ( !empty($newPassword && !empty($repeatPassword && $newPassword == $repeatPassword))){            
+            $this->edit(array('password' => $newPassword));
+            return true;
+        } else {
+            return false;
+        }  
+    }
 }
+
+
+
+
+

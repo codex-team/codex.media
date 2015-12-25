@@ -226,6 +226,7 @@ class Model_Methods extends Model
         /**
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
+        $files = array();
 
         if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
 
@@ -271,15 +272,16 @@ class Model_Methods extends Model
                     }
 
                 }
-
-                $image->save($path . $prefix . '_' . $filename);
-
+                
+                $fullPath = $path . $prefix . '_' . $filename;
+                $image->save($fullPath);
+                $files[$prefix.'_'] = $fullPath;
             }
 
             // Delete the temporary file
             unlink($file);
 
-            return $filename;
+            return $files;
         }
 
         return FALSE;
