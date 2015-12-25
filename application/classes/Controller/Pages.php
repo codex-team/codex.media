@@ -14,7 +14,6 @@ class Controller_Pages extends Controller_Base_preDispatch
         $uri = $this->request->param('uri');
 
         $page = Model_Page::get($id);
-
         if ($page->title)
         {
             if (!$uri)
@@ -24,15 +23,17 @@ class Controller_Pages extends Controller_Base_preDispatch
 
             if ($page->id_parent)
             {
-                $page->parent = new Model_Page($page->id_parent);
+                $page->parent = Model_Page::get($page->id_parent);
             }
 
             $page->childrens  = Model_Page::getChildrenPagesByParent($page->id);
 
             $this->view['page']      = $page;
-            //$this->view['files']     = $this->methods->getPageFiles($page->id);
+            $this->view['files']     = $this->methods->getPageFiles($page->id);
             $this->template->content = View::factory('templates/page', $this->view);
 
+        } else {
+            # TODO ошибка: статья не найдена
         }
     }
 
@@ -40,6 +41,7 @@ class Controller_Pages extends Controller_Base_preDispatch
     {
         if (!$this->user->isAdmin()) {
             $this->redirect('/');
+            # TODO ошибка: недостаточно прав
         }
 
         $page = new Model_Page();
@@ -59,6 +61,7 @@ class Controller_Pages extends Controller_Base_preDispatch
     public function action_page_add()
     {
         if (!$this->user->isTeacher) {
+            # TODO ошибка: недостаточно прав
             $this->redirect('/');
         }
 
@@ -78,6 +81,7 @@ class Controller_Pages extends Controller_Base_preDispatch
     public function action_subpage_add()
     {
         if (!$this->user->isTeacher) {
+            # TODO ошибка: недостаточно прав
             $this->redirect('/');
         }
 
@@ -109,11 +113,12 @@ class Controller_Pages extends Controller_Base_preDispatch
     public function action_edit()
     {
         if (!$this->user->isTeacher) {
+            # TODO ошибка: недостаточно прав
             $this->redirect('/');
         }
 
         $id = $this->request->param('id');
-        $page = new Model_Page($id);
+        $page = Model_Page::get($id);
 
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
@@ -124,6 +129,34 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->template->content = View::factory('templates/page_form', $this->view);
     }
 
+    public function action_delete()
+    {
+        if (!$this->user->isTeacher) {
+            # TODO ошибка: недостаточно прав
+            $this->redirect('/');
+        }
+
+        $id = $this->request->param('id');
+        $page = Model_Page::get($id);
+
+        if ($this->user->isAdmin || $this->user-id == $page->author) {
+            $page->delete();
+
+            if ($page->id_parent != 0) {
+                $url = '/page/' . $page->id_parent;
+            } elseif ($page->type != Controller_Pages::TYPE_SITE_NEWS) {
+                $url = '/user/' . $page->author;
+            } else {
+                $url = '/';
+            }
+        } else {
+            $url = '/';
+            # TODO ошибка: недостаточно прав
+        }
+
+        $this->redirect($url);
+    }
+
     public function save_form()
     {
         $id     = (int)Arr::get($_POST, 'id');
@@ -132,27 +165,28 @@ class Controller_Pages extends Controller_Base_preDispatch
         if ($type) {
             $page = new Model_Page();
             $page->type          = $type;
-            $page->author        =  $this->user->id;
+            $page->author        = $this->user->id;
             $page->id_parent     = (int)Arr::get($_POST, 'id_parent', 0);
             $page->title         = Arr::get($_POST, 'title');
             $page->content       = Arr::get($_POST, 'content');
             $page->is_menu_item  = Arr::get($_POST, 'is_menu_item', 0);
 
-
             if ($page->title)
             {
                 if ($id) {
-                    //$page->update();
+                    $page->id = $id;
+                    $page->update();
                     $url = '/page/' . $id;
                 } else {
-                    $page->insert();
-                    $url = '/page/' . $page[0];
+                    $page = $page->insert();
+                    $url = '/page/' . $page->id;
                 }
-
                 $this->redirect($url);
+
             } else {
 
                 return FALSE;
+                # TODO ошибка: отсутствует заголовок
 
             }
         }

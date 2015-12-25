@@ -17,6 +17,7 @@
 
 <? if($user->status == Controller_User::USER_STATUS_ADMIN || $user->id == $page->author): ?>
 	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/edit">Редактировать</a>
+	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/delete">Удалить</a>
 <? endif ?>
 
 <? if ($page->content): ?>
@@ -28,7 +29,7 @@
 <? if ($page->childrens): ?>
 	<ul class="page_childrens childrens_underpage">
 		<? foreach ($page->childrens as $children): ?>
-			<li><a href="/page/<?= $children['id'] ?>/<?= $children['uri'] ?>"><?= $children['title'] ?></a></li>
+			<li><a href="/page/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
 		<? endforeach ?>
 	</ul>
 <? endif; ?>

@@ -16,61 +16,6 @@ class Model_Methods extends Model
         's'  => array(true , 50  ),
     );
 
-	/**
-	*	Site Methods Model
-	*/
-
-//    public function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0)
-//    {
-//
-//        $pages = DB::select()->from('pages')->where('status', '=', $status);
-//
-//        if ($type) $pages->where('type', '=', $type);
-//        if ($limit) $pages->limit($limit);
-//        if ($offset) $pages->offset($offset);
-//
-//        return $pages->order_by('id','DESC')->execute()->as_array();
-//
-//    }
-
-//    public function getPage($id = NULL , $uri = NULL)
-//    {
-//        if ( !$id && !$uri ) return array();
-//
-//        $page = DB::select()->from('pages');
-//
-//        if ($id) {
-//            $page->where('id', '=', $id);
-//        } elseif ($uri) {
-//            $page->where('uri', '=', $uri);
-//        }
-//
-//        return current($page->limit(1)->cached(0)->execute()->as_array());
-//
-//    }
-
-//    public function newPage( $fields ){
-//
-//        return DB::insert( 'pages' , array_keys($fields) )->values(array_values($fields))->execute();
-//
-//    }
-//
-//    public function updatePage( $id,  $fields ){
-//
-//        $query = DB::update( 'pages' );
-//        foreach ($fields as $name => $value) {
-//            $query->set(array($name => $value));
-//        }
-//        return $query->where('id','=',$id)->execute();
-//    }
-//
-//    public function deletePage($id)
-//    {
-//        return DB::delete('pages')
-//                ->where('id', '=', $id)
-//                ->execute();
-//    }
-
 
     /**
      * Get or update site main information
@@ -118,7 +63,7 @@ class Model_Methods extends Model
 
     public function getSiteMenu()
     {
-        return DB::select('id','uri','title')
+        $menu_pages = DB::select()
                 ->from('pages')
                 ->where('status', '=', 0)
                 ->where('is_menu_item','=',1)
@@ -126,6 +71,8 @@ class Model_Methods extends Model
                 ->cached(Date::MINUTE*0)
                 ->execute()
                 ->as_array();
+
+        return Model_Page::rowsToModels($menu_pages);
     }
 
 
