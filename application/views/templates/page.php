@@ -1,40 +1,40 @@
 <div>
 <? # блок навигации для возврата к родительской странице ?>
-<? if($page['parent']): ?>
-	<a href="/page/<?= $page['parent']['id'] ?>/<?= $page['parent']['uri']?>"><?= $page['parent']['title'] ?></a>
+<? if($page->parent): ?>
+	<a href="/page/<?= $page->parent->id ?>/<?= $page->parent->uri ?>"><?= $page->parent->title ?></a>
 <? else: ?>
-	<? if($page['type'] != Controller_Pages::TYPE_USER_PAGE || $page['is_menu_item'] == 1): ?>
+	<? if($page->type != Controller_Pages::TYPE_USER_PAGE || $page->is_menu_item == 1): ?>
 		<a href="/">Главная страница</a>
 	<? else: ?>
-		<a href="/user/<?= $page['author'] ?>">К профилю автора</a>
+		<a href="/user/<?= $page->author ?>">К профилю автора</a>
 	<? endif ?>
 <? endif ?>
 </div>
 
 <h1 class="page_title">
-	<?= $page['title'] ?>
+	<?= $page->title ?>
 </h1>
 
-<? if($user->status == Controller_User::USER_STATUS_ADMIN || $user->id == $page['author']): ?>
-	<a href="/page/<?= $page['id'] ?>/<?= $page['uri'] ?>/edit">Редактировать</a>
+<? if($user->status == Controller_User::USER_STATUS_ADMIN || $user->id == $page->author): ?>
+	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/edit">Редактировать</a>
 <? endif ?>
 
-<? if ($page['content']): ?>
+<? if ($page->content): ?>
 	<div class="page_content">
-		<?= $page['content'] ?>
+		<?= $page->content ?>
 	</div>	
 <? endif ?>
 
-<? if ($page['childrens']): ?>
+<? if ($page->childrens): ?>
 	<ul class="page_childrens childrens_underpage">
-		<? foreach ($page['childrens'] as $children): ?>
+		<? foreach ($page->childrens as $children): ?>
 			<li><a href="/page/<?= $children['id'] ?>/<?= $children['uri'] ?>"><?= $children['title'] ?></a></li>
 		<? endforeach ?>
 	</ul>
 <? endif; ?>
 
-<? if($user->status == Controller_User::USER_STATUS_ADMIN || $user->id == $page['author']): ?>
-	<a class="button green" href="/page/<?= $page['id'] ?>/<?= $page['uri'] ?>/add-page">Добавить страницу</a>
+<? if($user->status == Controller_User::USER_STATUS_ADMIN || $user->id == $page->author): ?>
+	<a class="button green" href="/page/<?= $page->id ?>/<?= $page->uri ?>/add-page">Добавить страницу</a>
 <? endif ?>
 <? if (isset($files) && $files): ?>
 	<table class="page_files inpage">

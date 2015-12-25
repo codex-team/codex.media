@@ -64,7 +64,7 @@
 	<? endif?>
 	<? if ($userPages): ?>
 		<? foreach ($userPages as $page): ?>
-			<li><h3><a href="/page/<?= $page['id'] ?>/<?= $page['uri'] ?>"><?= $page['title'] ?></a></h3></li>
+			<li><h3><a href="/page/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h3></li>
 		<? endforeach; ?>
 	<? else: ?>
 		пользователь пока еще не создал ни одной страницы

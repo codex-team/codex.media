@@ -1,10 +1,10 @@
 <h1 class="site_category_title">
-	<? if ( isset($page['id']) ):?>
+	<? if ( isset($page->id) ):?>
 		Редактирование
 	<? else:?>
 		Создание
 	<? endif;?>
-	<? switch ($page['type']) {
+	<? switch ($page->type) {
 		case Controller_Pages::TYPE_SITE_PAGE : echo 'страницы'; break;
 		case Controller_Pages::TYPE_SITE_NEWS : echo 'новости'; break;
 	} ?>
@@ -39,7 +39,7 @@
 		<? if ($user->status == Controller_User::USER_STATUS_ADMIN): ?>
 			<div class="extra_settings mb30">
 				<div class="checkbox dark">
-					<i><input type="checkbox" id="is_menu_item" name="is_menu_item" value="1" <?= isset($page['is_menu_item']) && $page['is_menu_item'] == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') # TODO ?>/></i>
+					<i><input type="checkbox" id="is_menu_item" name="is_menu_item" value="1" <?= isset($page->is_menu_item) && $page->is_menu_item == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') ?>/></i>
 					<label for="is_menu_item">Вынести в меню</label>
 				</div>
 			</div>
@@ -58,9 +58,9 @@
 			<form onerror="alert('form');" class="ajaxfree" id="submitPageFile" method="post" enctype="multipart/form-data" target="transport" action="/ajax/file_transport" accept-charset="utf-8">
 
 				<?= Form::hidden('csrf', Security::token()); ?>
-				<?= Form::hidden('page_id', isset($page['id']) ? $page['id'] : '0' ); # TODO ?>
+				<?= Form::hidden('page_id', isset($page->id) ? $page->id : '0' ); # TODO ?>
 
-				<div id="submit_file_button" class="fl_r button main hide" onclick="callback.savePageFile($(this))" data-id="<?= isset($page['id']) ? $page['id'] : '0' ?>" data-loading-text="Загрузка">Сохранить файл</div>
+				<div id="submit_file_button" class="fl_r button main hide" onclick="callback.savePageFile($(this))" data-id="<?= isset($page->id) ? $page->id : '0' ?>" data-loading-text="Загрузка">Сохранить файл</div>
 				<div class="input_text fl_l"><input id="pageFileTitle" name="title" type="text" autocomplete="0" placeholder="Название" / ></div>
 
 				<div class="r_col">

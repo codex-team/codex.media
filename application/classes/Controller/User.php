@@ -16,16 +16,14 @@ class Controller_User extends Controller_Base_preDispatch
 
         $act = Arr::get($_GET, 'act');
 
-
         $viewUser = new Model_User($user_id);
 
-        if ($this->user->isAdmin() && $act):
+        if ($this->user->isAdmin && $act):
             $success = $this->set_user_status($act, $viewUser);
             $viewUser = new Model_User($user_id);
         endif;
 
 
-        $this->user->isTeacher   = $this->user->isTeacher();
         $this->view['userPages'] = $viewUser->getUserPages($user_id);
         $this->view['viewUser']  = $viewUser;
         $this->view['success']   = isset($success) ? TRUE : FALSE;

@@ -22,6 +22,8 @@ class Model_User extends Model_preDispatch
     public $status              = 0;
 
     public $isMe                = true;
+    public $isTeacher           = false;
+    public $isAdmin             = false;
 
     public $isOnline            = 0;
     public $lastOnline          = 0;
@@ -54,6 +56,9 @@ class Model_User extends Model_preDispatch
             $this->facebook_name    = strip_tags($user['facebook_name']);
 
             $this->status           = $user['status'];
+
+            $this->isTeacher        = $this->isTeacher();
+            $this->isAdmin          = $this->isAdmin();
 
             $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
             $this->lastOnline       = self::getLastOnlineTimestamp();

@@ -13,26 +13,24 @@ class Controller_Pages extends Controller_Base_preDispatch
         $id = $this->request->param('id');
         $uri = $this->request->param('uri');
 
-        $page = $this->methods->getPage($id);
+        $page = new Model_Page($id);
 
-        if ($page['title'])
+        if ($page->title)
         {
             if (!$uri)
             {
-                $this->redirect('/page/' . $page['id'] . '/' . $page['uri']);
+                $this->redirect('/page/' . $page->id . '/' . $page->uri);
             }
 
-            $page['parent'] = array();
-
-            if ($page['id_parent'])
+            if ($page->id_parent)
             {
-                $page['parent'] = $this->methods->getPage($page['id_parent']);
+                $page->parent = new Model_Page($page->id_parent);
             }
 
-            $page['childrens']  = $this->methods->getChildrenPagesByParent($page['id']);
+            $page->childrens  = $this->methods->getChildrenPagesByParent($page->id);
 
             $this->view['page']      = $page;
-            $this->view['files']     = $this->methods->getPageFiles($page['id']);
+            $this->view['files']     = $this->methods->getPageFiles($page->id);
             $this->template->content = View::factory('templates/page', $this->view);
 
         } else {
@@ -49,9 +47,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $page = array();
 
-        $page['type'] = Controller_Pages::TYPE_SITE_NEWS;
-
-        $page['parent'] = array();
+        $page->type = Controller_Pages::TYPE_SITE_NEWS;
 
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
@@ -65,7 +61,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function action_page_add()
     {
-        if (!$this->user->isTeacher()) {
+        if (!$this->user->isTeacher) {
             $this->redirect('/');
         }
 
@@ -86,7 +82,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function action_subpage_add()
     {
-        if (!$this->user->isTeacher()) {
+        if (!$this->user->isTeacher) {
             $this->redirect('/');
         }
 
@@ -118,12 +114,12 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function action_edit()
     {
-        if (!$this->user->isTeacher()) {
+        if (!$this->user->isTeacher) {
             $this->redirect('/');
         }
 
         $id = $this->request->param('id');
-        $page = $this->methods->getPage($id);
+        $page = new Model_Page($id);
 
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
@@ -141,7 +137,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $page = $this->methods->getPage($page_id, $uri);
 
-        if ($this->user->isAdmin() || $this->user->id == $page['author']) {
+        if ($this->user->isAdmin || $this->user->id == $page['author']) {
             $this->methods->deletePage($page_id);
         }
 

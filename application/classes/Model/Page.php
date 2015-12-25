@@ -54,7 +54,7 @@ class Model_Page extends Model_preDispatch
     public function getPageUri()
     {
         # todo
-        return 'uripage';
+        return 'uri-page';
     }
 
 }
