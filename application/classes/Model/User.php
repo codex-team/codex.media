@@ -137,7 +137,7 @@ class Model_User extends Model_preDispatch
     
     
     //TODO Model_Image
-    /*public function saveAvatar($inputName, $dir = "profile/", $fileTypes = array('jpg', 'jpeg', 'png'), $maxFileSize = 2097152)
+    public function saveAvatarOld($inputName, $dir = "profile/", $fileTypes = array('jpg', 'jpeg', 'png'), $maxFileSize = 2097152)
     {
         if ($file && $file['tmp_name']) {
             $img = new Model_Image($file['tmp_name']);
@@ -153,7 +153,7 @@ class Model_User extends Model_preDispatch
             $img->best_fit(400,400)->save('upload/profile/l_'.$file_name);
             $img->square_crop(100)->save('upload/profile/m_'.$file_name);
             $img->square_crop(50)->save('upload/profile/s_'.$file_name);
-        
+
             $arr = DB::update('users')->set(array('photo' => 'upload/profile/s_'.$file_name, 'photo_medium' => 'upload/profile/m_'.$file_name, 'photo_big' => 'upload/profile/l_'.$file_name))->where('id', '=', $this->id)->execute();
             if ($arr) {
                 $this->photo = 'upload/profile/s_'.$file_name;
@@ -162,7 +162,7 @@ class Model_User extends Model_preDispatch
                 $this->getUserInfo($this->id, true);
             }
         }
-    }*/
+    }
 
 
     public function isAdmin()
@@ -223,8 +223,3 @@ class Model_User extends Model_preDispatch
         return $pages->order_by('id','DESC')->execute()->as_array();
     }
 }
-
-
-
-
-

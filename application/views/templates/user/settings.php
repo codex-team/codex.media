@@ -1,4 +1,3 @@
-<//?= Debug::vars($viewUser);?>
 <div class="user_page">
 	<div class="ava">
 		<img src="<?= $viewUser->photo_medium ?>" />
@@ -36,6 +35,11 @@
 		Обновления сохранены
 	</div>
 <? endif; ?>
+<? if ($error): ?>
+    <div class="info_block align_c" style="background-color:#EBA4B5; color:#F7053E;">
+        <?= $error; ?>
+    </div>
+<? endif; ?>
 <div class="profile_panel clear">
     <div class="fl_l left">
         <form class="ajaxfree" method="POST" action="user/settings" enctype="multipart/form-data">
@@ -53,14 +57,20 @@
                 <label for="phone_number">Номер телефона</label>
                 <input type="text" name="phone_number" id="phone_number" value="<?= $viewUser->phone; ?>">
             </div>
-            <label for="login_password">Новый пароль</label>
-            <div class="input mb5">
-                <input type="password" name="new_password" id="login_password">
-            </div>
-            <label for="repeat_password">Повторите пароль</label>
-            <div class="input mb5">
-                <input type="password" name="repeat_password" id="repeat_password">
-            </div>
+            <? if (!$viewUser->vk && !$viewUser->twitter && !$viewUser->facebook):?>
+                <label for="current_password">Текущий пароль</label>
+                <div class="input type mb5">
+                    <input type="password" name="current_password" id="current_password">
+                </div>
+                <label for="login_password">Новый пароль</label>
+                <div class="input mb5">
+                    <input type="password" name="new_password" id="login_password">
+                </div>
+                <label for="repeat_password">Повторите пароль</label>
+                <div class="input mb5">
+                    <input type="password" name="repeat_password" id="repeat_password">
+                </div>
+            <? endif; ?>
             <div class="input mb5">
                 <input type="submit" name="submit" value="Сохранить" >
             </div>             
@@ -96,12 +106,3 @@
     <? endif; ?>
     </div>
 </div>
-
-
-
-
-
-
-
-
-

@@ -42,17 +42,24 @@ class Controller_User extends Controller_Base_preDispatch
     public function action_settings()
     {
         $succesResult = false;
+        $error = '';
         $csrfToken = Arr::get($_POST, 'csrf');
         
         if (Security::check($csrfToken)){
             
-            $newEmail       = Arr::get($_POST, 'new_email');
-            $newPassword    = Arr::get($_POST, 'new_password');
-            $repeatPassword = Arr::get($_POST, 'repeat_password');
-            $newPhone       = Arr::get($_POST, 'phone_number');
-            $newAva         = Arr::get($_FILES, 'new_ava');
+            $newEmail        = Arr::get($_POST, 'new_email');
+            $currentPassword = Arr::get($_POST, 'current_password');
+            $newPassword     = Arr::get($_POST, 'new_password');
+            $repeatPassword  = Arr::get($_POST, 'repeat_password');
+            $newPhone        = Arr::get($_POST, 'phone_number');
+            $newAva          = Arr::get($_FILES, 'new_ava');
             
-            $newPassword = ($newPassword == $repeatPassword) ? $newPassword : '';
+            $currentPassword = hash('sha256', Controller_Auth_Base::AUTH_PASSWORD_SALT . $currentPassword);
+
+            if ($newPassword == '' || $newPassword != $repeatPassword || $currentPassword != $this->user->password){
+                $newPassword = '';
+                $error = 'Пароли не совпадают, либо введен неправильный текущий пароль.';                
+            }
             
             if (Upload::valid($newAva) && Upload::not_empty($newAva) && Upload::size($newAva, '8M')){
                 $this->user->saveAvatar($newAva, 'upload/profile/');
@@ -62,31 +69,28 @@ class Controller_User extends Controller_Base_preDispatch
                 'email'    => $newEmail,
                 'password' => $newPassword,
                 'phone'    => $newPhone);
-                
+
+            //если пустое поле, то не заносим его в базу и модель, за исключением телефона    
             foreach ($fields as $key => $value){
                 if (!$value && $key != 'phone') unset($fields[$key]);
             }
             
             if ($fields){
                 if ($this->user->updateUser($this->user->id, $fields)){
-                    $succesResult = true;
+                    $succesResult = (!$error) ? true : false;
                 }
             }            
         }
         
-        //создаем модель, чтобы обновить кэш и сразу вывести изменения
+        //создаем объект модели, чтобы обновить кэш и сразу вывести изменения
         $viewUser = new Model_User($this->user->id);
         
         if ($viewUser->id != 0){
             $this->view['viewUser']  = $viewUser;
+            $this->view['error']     = $error;
             $this->view['success']   = $succesResult;
             $this->view['userPages'] = $viewUser->getUserPages($viewUser->id);
             $this->template->content = View::factory('/templates/user/settings', $this->view);
         }
     }
 }
-
-
-
-
-

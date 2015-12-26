@@ -1,4 +1,3 @@
-<?//= Debug::vars($viewUser); ?>
 <div class="user_page">
 	<div class="ava">
 		<img src="<?= $viewUser->photo_medium ?>" />
