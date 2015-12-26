@@ -27,10 +27,10 @@ class Controller_User extends Controller_Base_preDispatch
                 break;
             case 'degrade' :
             case 'unban'   :
-                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED);
+                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_STUDENT);
                 break;
         }
-
+        
         $this->view['userPages'] = $viewUser->getUserPages($uid);
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
@@ -41,42 +41,47 @@ class Controller_User extends Controller_Base_preDispatch
 
     public function action_settings()
     {
+        $succesResult = false;
         $csrfToken = Arr::get($_POST, 'csrf');
-        if(!Security::check($csrfToken)){
         
-            $viewUser = $this->user;
-            if ($viewUser->id != 0){
-                $this->view['viewUser'] = $viewUser;
-                $this->view['success'] = false;
-                $this->view['userPages'] = $viewUser->getUserPages($viewUser->id);
-                $this->template->content = View::factory('/templates/user/settings', $this->view);
-                
-            } else { $this->redirect('/'); }
-        } else { 
+        if (Security::check($csrfToken)){
             
-            if (Arr::get($_POST, 'submit_email')){
-                $newEmail = Arr::get($_POST, 'new_email');
-                
-                if (!empty($newEmail)){
-                    $this->user->edit(array('email' => $newEmail));
-                    $this->view['success'] = true;
-                }
+            $newEmail       = Arr::get($_POST, 'new_email');
+            $newPassword    = Arr::get($_POST, 'new_password');
+            $repeatPassword = Arr::get($_POST, 'repeat_password');
+            $newPhone       = Arr::get($_POST, 'phone_number');
+            $newAva         = Arr::get($_FILES, 'new_ava');
+            
+            $newPassword = ($newPassword == $repeatPassword) ? $newPassword : '';
+            
+            if (Upload::valid($newAva) && Upload::not_empty($newAva) && Upload::size($newAva, '8M')){
+                $this->user->saveAvatar($newAva, 'upload/profile/');
             }
-            if (Arr::get($_POST, 'submit_password')){
-                $newPassword = Arr::get($_POST, 'new_password');
-                $repeatPassword = Arr::get($_POST, 'repeat_password');
+            
+            $fields = array(
+                'email'    => $newEmail,
+                'password' => $newPassword,
+                'phone'    => $newPhone);
                 
-                //TODO красивый вывод об ошибке               
-                $this->user->updatePassword($newPassword, $repeatPassword);
-            }         
-            if (Arr::get($_POST, 'submit_ava')){
-                $file = Arr::get($_FILES, 'new_ava');
-                
-                if (Upload::valid($file) && Upload::not_empty($file) && Upload::size($file, '8M')){
-                    $correctSaveImage = $this->user->saveAvatar($file, 'upload/profile/');
-                }
+            foreach ($fields as $key => $value){
+                if (!$value && $key != 'phone') unset($fields[$key]);
             }
-            $this->redirect('user/settings');
+            
+            if ($fields){
+                if ($this->user->updateUser($this->user->id, $fields)){
+                    $succesResult = true;
+                }
+            }            
+        }
+        
+        //создаем модель, чтобы обновить кэш и сразу вывести изменения
+        $viewUser = new Model_User($this->user->id);
+        
+        if ($viewUser->id != 0){
+            $this->view['viewUser']  = $viewUser;
+            $this->view['success']   = $succesResult;
+            $this->view['userPages'] = $viewUser->getUserPages($viewUser->id);
+            $this->template->content = View::factory('/templates/user/settings', $this->view);
         }
     }
 }

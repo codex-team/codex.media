@@ -1,3 +1,4 @@
+<?//= Debug::vars($viewUser); ?>
 <div class="user_page">
 	<div class="ava">
 		<img src="<?= $viewUser->photo_medium ?>" />
@@ -12,6 +13,14 @@
 		   	}
 		?>
 	</h1>
+	<ul style="color:white;">
+	    <? if ($viewUser->email): ?>
+    	    <li>Email: <?= $viewUser->email; ?></li>
+    	<? endif; ?>
+    	<? if ($viewUser->phone): ?>
+    	    <li>Телефон: <?= $viewUser->phone; ?></li>
+	    <? endif; ?>
+	</ul>
 	<? if ($viewUser->vk): ?>
 		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank"><?= $viewUser->vk_name ? $viewUser->vk_name : $viewUser->vk_uri ?></a>
 	<? endif; ?>

@@ -9,7 +9,8 @@ class Model_User extends Model_preDispatch
     public $photo_medium        = '';
     public $photo_big           = '';
     public $email               = '';
-
+    public $phone               = '';
+    
     public $twitter             = '';
     public $twitter_name        = '';
     public $twitter_username    = '';
@@ -42,7 +43,8 @@ class Model_User extends Model_preDispatch
             $this->photo            = trim($user['photo'])          ? strip_tags($user['photo'])         : '/public/img/default_ava_small.png' ;
             $this->photo_medium     = trim($user['photo_medium'])   ? strip_tags($user['photo_medium'])  : '/public/img/default_ava.png';
             $this->photo_big        = trim($user['photo_big'])      ? strip_tags($user['photo_big'])     : '/public/img/default_ava_big.png';
-
+            
+            $this->phone            = strip_tags($user['phone']);
             $this->email            = strip_tags($user['email']);
             $this->twitter          = strip_tags($user['twitter']);
             $this->twitter_name     = strip_tags($user['twitter_name']);
@@ -78,12 +80,17 @@ class Model_User extends Model_preDispatch
     public function updateUser($user_id, $fields)
     {
         $user = Dao_User::update()->where('id', '=', $user_id);
-        foreach ($fields as $name => $value) $user->set($name, $value);
+        
+        foreach ($fields as $name => $value) {
+            if ($name == 'password'){
+                $value = hash('sha256', Controller_Auth_Base::AUTH_PASSWORD_SALT . $value);
+            }            
+            $user->set($name, $value);
+        }
+        
         $result = $user->execute();
         
         Kohana_Cache::instance('memcache')->delete('user_model:' . $this->id);
-        $user_model = DB::select()->from('users')->where('id', '=', $this->id)->limit(1)->execute()->current();
-        Kohana_Cache::instance('memcache')->set('user_model:' . $this->id, $user_model, Date::DAY);
         
         return $result;
       }
@@ -95,23 +102,16 @@ class Model_User extends Model_preDispatch
 
     public function getUserInfo($uid, $update = false)
     {
-      if ($update) {
+        if ($update) {
             Kohana_Cache::instance('memcache')->delete('user_model:' . $uid);
-            $user_model = DB::select()->from('users')->where('id', '=', $uid)->limit(1)->execute()->current();
-            
-            if ($user_model){
-                Kohana_Cache::instance('memcache')->set('user_model:' . $uid, $user_model, Date::DAY);
-            }
-            
-            return $user_model;
+        }
+        
+        if ($cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
+            return $cache;
         } else {
-            if ($cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
-                return $cache;
-            } else {
-                $user_model = DB::select()->from('users')->where('id', '=', $uid)->limit(1)->execute()->current();
-                Kohana_Cache::instance('memcache')->set('user_model:' . $uid, $user_model, Date::DAY);
-                return $user_model;
-            }
+            $user_model = DB::select()->from('users')->where('id', '=', $uid)->limit(1)->execute()->current();
+            Kohana_Cache::instance('memcache')->set('user_model:' . $uid, $user_model, Date::DAY);
+            return $user_model;
         }
     }
 
@@ -127,19 +127,12 @@ class Model_User extends Model_preDispatch
         $model = new Model_Methods();
         $files = $model->saveImage($file, $path);
         
-        $arr = DB::update('users')->set(array('photo' => $files['s_'], 
-        'photo_medium' => $files['m_'], 
-        'photo_big' => $files['b_']))->where('id', '=', $this->id)->execute();
-        
-        if ($arr) {
-            $this->photo = $files['s_'];
-            $this->photo_medium = $files['m_'];
-            $this->photo_big = $files['b_'];
-            $this->getUserInfo($this->id, true);
-            return true;
-        } else { 
-            return false; 
-        }          
+        $fields = array(
+            'photo'        => $files['s_'], 
+            'photo_medium' => $files['m_'], 
+            'photo_big'    => $files['b_']);
+            
+        $this->updateUser($this->id, $fields);  
     }
     
     
@@ -209,7 +202,7 @@ class Model_User extends Model_preDispatch
 
     public function setUserStatus($status)
     {
-        return DB::update('users')->set(array('status' => $status))->where('id','=', $this->id)->execute();
+        return $this->updateUser($this->id, array('status' => $status));
     }
 
     /**
@@ -228,34 +221,6 @@ class Model_User extends Model_preDispatch
                     ->where('type', '=', $type);
 
         return $pages->order_by('id','DESC')->execute()->as_array();
-    }    
-    
-    /**
-    * Метод заносит переданные данные о юзере в модель и базу
-    * @param $fields - ассоциативный массив "название поля" - "значение"
-    */
-    public function edit($fields = array())
-    {
-        // занесение данных в модель
-        foreach ($fields as $key => $value) {
-            $this->$key = $value;
-        }
-        
-        // занесения данных в бд
-        return $this->updateUser($this->id, $fields);
-    }
-    
-    public function updatePassword($newPassword, $repeatPassword)
-    {
-        $newPassword = hash('sha256', Controller_Auth_Base::AUTH_PASSWORD_SALT . $newPassword );
-        $repeatPassword = hash('sha256', Controller_Auth_Base::AUTH_PASSWORD_SALT . $repeatPassword );
-        
-        if ( !empty($newPassword && !empty($repeatPassword && $newPassword == $repeatPassword))){            
-            $this->edit(array('password' => $newPassword));
-            return true;
-        } else {
-            return false;
-        }  
     }
 }
 

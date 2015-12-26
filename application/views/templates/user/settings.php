@@ -4,7 +4,7 @@
 		<img src="<?= $viewUser->photo_medium ?>" />
 	</div>
 	<h1 class="name">
-		<?= $viewUser->name ?>
+		<a href="user/<?= $viewUser->id ?>"><?= $viewUser->name ?></a>
 		<?
 			switch ($viewUser->status){
 				case Controller_User::USER_STATUS_ADMIN 	: echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
@@ -13,6 +13,14 @@
 		   	}
 		?>
 	</h1>
+	<ul style="color:white;">
+	    <? if ($viewUser->email): ?>
+    	    <li>Email: <?= $viewUser->email; ?></li>
+    	<? endif; ?>
+    	<? if ($viewUser->phone): ?>
+    	    <li>Телефон: <?= $viewUser->phone; ?></li>
+	    <? endif; ?>
+	</ul>
 	<? if ($viewUser->vk): ?>
 		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank"><?= $viewUser->vk_name ? $viewUser->vk_name : $viewUser->vk_uri ?></a>
 	<? endif; ?>
@@ -37,34 +45,25 @@
             <div class="input mb5">
                 <input type="file" name="new_ava">
             </div>
+            <label for="login_email">Email</label>
             <div class="input mb5">
-                <input type="submit" name="submit_ava" value="Изменить аву">
-            </div>
-            <label for="login_email">Поменять Email</label>
-            <div class="input mb5">
-                <input type="text" name="new_email" id="login_email">
+                <input type="email" name="new_email" id="login_email" value="<?= $viewUser->email; ?>">
             </div>
             <div class="input mb5">
-                <input type="submit" name="submit_email" value="Сохранить">
-            </div>  
-            <label for="login_password">Пароль</label>
+                <label for="phone_number">Номер телефона</label>
+                <input type="text" name="phone_number" id="phone_number" value="<?= $viewUser->phone; ?>">
+            </div>
+            <label for="login_password">Новый пароль</label>
             <div class="input mb5">
-                <input type="text" name="new_password" id="login_password">
+                <input type="password" name="new_password" id="login_password">
             </div>
             <label for="repeat_password">Повторите пароль</label>
             <div class="input mb5">
-                <input type="text" name="repeat_password" id="repeat_password">
+                <input type="password" name="repeat_password" id="repeat_password">
             </div>
             <div class="input mb5">
-                <input type="submit" name="submit_password" value="Сохранить" >
-            </div>
-            <? if ($viewUser->status == 1): ?>
-                <div class="Input mb5">
-                    <label for="phone_number">Номер телефона</label>
-                    <input type="text" name="phone_number" id="phone_number">
-                    <input type="submit" name="submit_phone_number" value="Сохранить">
-                </div>
-            <? endif; ?>              
+                <input type="submit" name="submit" value="Сохранить" >
+            </div>             
         </form>
     </div>
     <div class="right">
