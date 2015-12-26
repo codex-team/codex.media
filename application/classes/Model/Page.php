@@ -138,10 +138,13 @@ class Model_Page extends Model_preDispatch
         return self::rowsToModels($query);
     }
 
-    public static function getPageUri()
+    public function getPageUri()
     {
-        # TODO сделать функцию
-        return 'uri-page';
+        $title = $this->title;
+
+        $title = Model_Methods::rus2translit($title);
+
+        return strtolower($title);
     }
 
 }
