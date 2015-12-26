@@ -114,36 +114,33 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function action_edit()
     {
-        if (!$this->user->isTeacher) {
-            # TODO ошибка: недостаточно прав
-            $this->redirect('/');
-        }
-
         $id = $this->request->param('id');
         $page = Model_Page::get($id);
 
-        if (Security::check(Arr::get($_POST, 'csrf')))
+        if ($this->user->isAdmin || $this->user-id == $page->author)
         {
-            self::save_form();
-        }
+            if (Security::check(Arr::get($_POST, 'csrf'))) {
+                self::save_form();
+            }
 
-        $this->view['page']      = $page;
-        $this->template->content = View::factory('templates/page_form', $this->view);
+            $this->view['page'] = $page;
+            $this->template->content = View::factory('templates/page_form', $this->view);
+        } else {
+            # TODO ошибка: недостаточно прав
+            $this->redirect('/');
+        }
     }
 
     public function action_delete()
     {
-        if (!$this->user->isTeacher) {
-            # TODO ошибка: недостаточно прав
-            $this->redirect('/');
-        }
-
         $id = $this->request->param('id');
         $page = Model_Page::get($id);
 
-        if ($this->user->isAdmin || $this->user-id == $page->author) {
+        if ($this->user->isAdmin || $this->user-id == $page->author)
+        {
             $page->delete();
 
+            # правила редиректа
             if ($page->id_parent != 0) {
                 $url = '/page/' . $page->id_parent;
             } elseif ($page->type != Controller_Pages::TYPE_SITE_NEWS) {
