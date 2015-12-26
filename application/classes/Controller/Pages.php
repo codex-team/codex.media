@@ -18,6 +18,8 @@ class Controller_Pages extends Controller_Base_preDispatch
         {
             if (!$uri)
             {
+                # если адрес без uri /page/24
+                # то редирект на страницу вида /page/24/o-shkole
                 $this->redirect('/page/' . $page->id . '/' . $page->uri);
             }
 
@@ -40,8 +42,8 @@ class Controller_Pages extends Controller_Base_preDispatch
     public function action_news_add()
     {
         if (!$this->user->isAdmin()) {
-            $this->redirect('/');
             # TODO ошибка: недостаточно прав
+            $this->redirect('/');
         }
 
         $page = new Model_Page();
@@ -150,8 +152,8 @@ class Controller_Pages extends Controller_Base_preDispatch
                 $url = '/';
             }
         } else {
-            $url = '/';
             # TODO ошибка: недостаточно прав
+            $url = '/';
         }
 
         $this->redirect($url);
