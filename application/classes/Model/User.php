@@ -107,6 +107,21 @@ class Model_User extends Model_preDispatch
         }
     }
 
+    public function getUserPages($user_id, $type = Controller_Pages::TYPE_USER_PAGE, $id_parent = 0)
+{
+    $pages = DB::select()->from('pages')
+        ->where('author', '=', $user_id)
+        ->where('status', '=', 0)
+        ->where('type', '=', $type)
+        ->where('id_parent', '=', $id_parent)
+        ->order_by('id','DESC')
+        ->cached(Date::MINUTE*0)
+        ->execute();
+
+    return Model_Page::rowsToModels($pages);
+}
+
+
     public function setAuthCookie($id)
     {
         $id = (int)$id;
@@ -142,22 +157,6 @@ class Model_User extends Model_preDispatch
         }
     }
 
-
-    public function isAdmin()
-    {
-        if (!$this->id) return false;
-        if ($this->status == Controller_User::USER_STATUS_ADMIN) return true;
-        return false;
-    }
-
-    public function isTeacher()
-    {
-        if (!$this->id) return false;
-        if ($this->status >= Controller_User::USER_STATUS_TEACHER) return true;
-        return false;
-    }
-
-
     public function searchUsersByString( $string , $limit = 10 )
     {
 
@@ -191,19 +190,18 @@ class Model_User extends Model_preDispatch
         return DB::update('users')->set(array('status' => $status))->where('id','=', $this->id)->execute();
     }
 
-
-    public function getUserPages($user_id, $type = Controller_Pages::TYPE_USER_PAGE, $id_parent = 0)
+    public function isAdmin()
     {
-        $pages = DB::select()->from('pages')
-                    ->where('author', '=', $user_id)
-                    ->where('status', '=', 0)
-                    ->where('type', '=', $type)
-                    ->where('id_parent', '=', $id_parent)
-                    ->order_by('id','DESC')
-                    ->cached(Date::MINUTE*0)
-                    ->execute();
+        if (!$this->id) return false;
+        if ($this->status == Controller_User::USER_STATUS_ADMIN) return true;
+        return false;
+    }
 
-        return Model_Page::rowsToModels($pages);
+    public function isTeacher()
+    {
+        if (!$this->id) return false;
+        if ($this->status >= Controller_User::USER_STATUS_TEACHER) return true;
+        return false;
     }
 
 }
