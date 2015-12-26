@@ -27,10 +27,10 @@ class Controller_User extends Controller_Base_preDispatch
                 break;
             case 'degrade' :
             case 'unban'   :
-                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_STUDENT);
+                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED);
                 break;
         }
-        
+
         $this->view['userPages'] = $viewUser->getUserPages($uid);
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
