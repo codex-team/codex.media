@@ -33,7 +33,7 @@
 
         <div class="news">
 
-            <? if($user->status == Controller_User::USER_STATUS_ADMIN): ?>
+            <? if($user->status == Model_User::USER_STATUS_ADMIN): ?>
                 <a class="button green" href="/news/add">Добавить новость</a>
             <? endif ?>
 

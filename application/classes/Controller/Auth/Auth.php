@@ -148,7 +148,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         if (self::checkUserLogin($loginForm)) {
 
             $passwordHash = parent::createPasswordHash($loginForm['password']);
-            $userFound    = Dao_User::select()
+            $userFound    = Dao_Users::select()
                                 ->where('email', '=', $loginForm['email'])
                                 ->where('password', '=', $passwordHash)
                                 ->limit(1)
@@ -333,13 +333,13 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     {  
         $social_cfg = Kohana::$config->load('social')->$social;
 
-        $userFound = Dao_User::select('id')
+        $userFound = Dao_Users::select('id')
             ->where($social,  '=', $userdata[$social])
             ->limit(1)
             ->execute();
 
         if ($userFound) {
-            Model::factory('User')->updateUser($userFound['id'], $userdata);
+            Model::factory('User')->update($userFound['id'], $userdata);
             parent::initAuthSession($userFound['id'], $social_cfg['type']);
             return TRUE;
         }
@@ -358,7 +358,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     private function social_attach($userdata) {
 
         if ($userId = parent::checkAuth() ) {
-            Model::factory('User')->updateUser($userId, $userdata);
+            Model::factory('User')->update($userId, $userdata);
             return TRUE;
         } else {
             $this->view['login_error_text'] = 'Не удалось прикрепить профиль соцсети';
@@ -379,7 +379,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         }
 
         if ($userId = parent::checkAuth() ) {
-            Model::factory('User')->updateUser($userId, $fieldsToClean);
+            Model::factory('User')->update($userId, $fieldsToClean);
             return TRUE;
         } else {
             $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети';

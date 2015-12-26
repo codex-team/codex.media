@@ -5,7 +5,7 @@ class Controller_Index extends Controller_Base_preDispatch
 
     public function action_index()
     {
-        $this->view['pages'] = Model_Page::getPages(Controller_Pages::TYPE_SITE_NEWS, 10);
+        $this->view['pages'] = Model_Page::getPages(Model_Page::TYPE_SITE_NEWS, 10);
         $this->template->content = View::factory('templates/index', $this->view);
     }
     public function action_contacts()

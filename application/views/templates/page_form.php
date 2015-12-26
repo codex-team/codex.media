@@ -5,8 +5,8 @@
 		Создание
 	<? endif;?>
 	<? switch ($page->type) {
-		case Controller_Pages::TYPE_SITE_PAGE : echo 'страницы'; break;
-		case Controller_Pages::TYPE_SITE_NEWS : echo 'новости'; break;
+		case Model_Page::TYPE_SITE_PAGE : echo 'страницы'; break;
+		case Model_Page::TYPE_SITE_NEWS : echo 'новости'; break;
 	} ?>
 </h1>
 
@@ -29,7 +29,7 @@
 				<?= $page->content ?>
 			</textarea>
 
-		<? if ($user->status == Controller_User::USER_STATUS_ADMIN): ?>
+		<? if ($user->status == Model_User::USER_STATUS_ADMIN): ?>
 			<div class="extra_settings mb30">
 				<div class="checkbox dark">
 					<i><input type="checkbox" id="is_menu_item" name="is_menu_item" value="1" <?= isset($page->is_menu_item) && $page->is_menu_item == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') ?>/></i>

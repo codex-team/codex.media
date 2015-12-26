@@ -2,9 +2,6 @@
 
 class Controller_Pages extends Controller_Base_preDispatch
 {
-    const TYPE_SITE_PAGE = 1;
-    const TYPE_SITE_NEWS = 2;
-    const TYPE_USER_PAGE = 3;
 
 
     public function action_show_page()
@@ -48,7 +45,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $page = new Model_Page();
 
-        $page->type = Controller_Pages::TYPE_SITE_NEWS;
+        $page->type = Model_Page::TYPE_SITE_NEWS;
 
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
@@ -69,7 +66,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $page = new Model_Page();
 
-        $page->type = Controller_Pages::TYPE_USER_PAGE;
+        $page->type = Model_Page::TYPE_USER_PAGE;
 
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
@@ -96,9 +93,9 @@ class Controller_Pages extends Controller_Base_preDispatch
 
             switch ($page->parent->type)
             {
-                case Controller_Pages::TYPE_USER_PAGE :
-                            $page_type = Controller_Pages::TYPE_USER_PAGE; break;
-                default :   $page_type = Controller_Pages::TYPE_SITE_PAGE;
+                case Model_Page::TYPE_USER_PAGE :
+                            $page_type = Model_Page::TYPE_USER_PAGE; break;
+                default :   $page_type = Model_Page::TYPE_SITE_PAGE;
             }
             $page->type = $page_type;
         }
@@ -143,7 +140,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             # правила редиректа
             if ($page->id_parent != 0) {
                 $url = '/page/' . $page->id_parent;
-            } elseif ($page->type != Controller_Pages::TYPE_SITE_NEWS) {
+            } elseif ($page->type != Model_Page::TYPE_SITE_NEWS) {
                 $url = '/user/' . $page->author;
             } else {
                 $url = '/';
@@ -164,7 +161,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         if ($type) {
             $page = new Model_Page();
             $page->type          = $type;
-            $page->author        = $this->user->id;
+            $page->author        = $this->user;
             $page->id_parent     = (int)Arr::get($_POST, 'id_parent', 0);
             $page->title         = Arr::get($_POST, 'title');
             $page->content       = Arr::get($_POST, 'content');

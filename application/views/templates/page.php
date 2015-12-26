@@ -3,10 +3,10 @@
 <? if($page->parent): ?>
 	<a href="/page/<?= $page->parent->id ?>/<?= $page->parent->uri ?>"><?= $page->parent->title ?></a>
 <? else: ?>
-	<? if($page->type != Controller_Pages::TYPE_USER_PAGE || $page->is_menu_item == 1): ?>
+	<? if($page->type != Model_Page::TYPE_USER_PAGE || $page->is_menu_item == 1): ?>
 		<a href="/">Главная страница</a>
 	<? else: ?>
-		<a href="/user/<?= $page->author ?>">К профилю автора</a>
+		<a href="/user/<?= $page->author->id ?>">К профилю автора</a>
 	<? endif ?>
 <? endif ?>
 </div>
@@ -15,7 +15,7 @@
 	<?= $page->title ?>
 </h1>
 
-<? if($user->status == Controller_User::USER_STATUS_ADMIN || $user->id == $page->author): ?>
+<? if($user->status == Model_User::USER_STATUS_ADMIN || $user->id == $page->author->id): ?>
 	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/edit">Редактировать</a>
 	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/delete">Удалить</a>
 <? endif ?>
@@ -34,7 +34,7 @@
 	</ul>
 <? endif; ?>
 
-<? if($user->status == Controller_User::USER_STATUS_ADMIN || $user->id == $page->author): ?>
+<? if($user->status == Model_User::USER_STATUS_ADMIN || $page->author->isMe): ?>
 	<a class="button green" href="/page/<?= $page->id ?>/<?= $page->uri ?>/add-page">Добавить страницу</a>
 <? endif ?>
 <? if (isset($files) && $files): ?>

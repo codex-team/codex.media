@@ -19,8 +19,8 @@ class Controller_Admin extends Controller_Base_preDispatch
         $form_saved = FALSE;
 
         switch ($page) {
-            case 'pages'  : $form_saved = self::pages( Controller_Pages::TYPE_SITE_PAGE ); break;
-            case 'news'   : $form_saved = self::pages( Controller_Pages::TYPE_SITE_NEWS ); break;
+            case 'pages'  : $form_saved = self::pages(Model_Page::TYPE_SITE_PAGE); break;
+            case 'news'   : $form_saved = self::pages(Model_Page::TYPE_SITE_NEWS); break;
             case 'users'  : self::users(); break;
             case 'base'   : self::siteSettings(); break;
             case 'parser' : self::parser(); break;

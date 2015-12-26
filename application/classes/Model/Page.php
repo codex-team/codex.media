@@ -2,6 +2,7 @@
 
 class Model_Page extends Model_preDispatch
 {
+
     public $id              = 0;
     public $type            = '';
     public $status          = '';
@@ -11,10 +12,12 @@ class Model_Page extends Model_preDispatch
     public $date            = '';
     public $author          = '';
     public $is_menu_item    = '';
-
     public $uri             = '';
-
     public $parent;
+
+    const TYPE_SITE_PAGE = 1;
+    const TYPE_SITE_NEWS = 2;
+    const TYPE_USER_PAGE = 3;
 
     public function __construct(){}
 
@@ -29,10 +32,10 @@ class Model_Page extends Model_preDispatch
             $this->title           = $page_row['title'];
             $this->content         = $page_row['content'];
             $this->date            = $page_row['date'];
-            $this->author          = $page_row['author'];
             $this->is_menu_item    = $page_row['is_menu_item'];
 
             $this->uri             = self::getPageUri();
+            $this->author          = Model_User::get($page_row['author']);
         }
 
         return $this;
@@ -40,53 +43,52 @@ class Model_Page extends Model_preDispatch
 
     public function insert()
     {
-        $page = DB::insert('pages', array('type', 'author', 'id_parent', 'title', 'content', 'is_menu_item'))
-            ->values(array(
-                    $this->type,
-                    $this->author,
-                    $this->id_parent,
-                    $this->title,
-                    $this->content,
-                    $this->is_menu_item
-                    ))
-            ->execute();
+        $page =  Dao_Pages::insert()
+                    ->set('type',           $this->type)
+                    ->set('author',         $this->author->id)
+                    ->set('id_parent',      $this->id_parent)
+                    ->set('title',          $this->title)
+                    ->set('content',        $this->content)
+                    ->set('is_menu_item',   $this->is_menu_item)
+                    ->clearcache()
+                    ->execute();
 
         if ($page)
         {
-            return $this->get($page[0]);
+            return $this->get($page);
         }
     }
 
     public function update()
     {
-        return DB::update('pages')->where('id', '=', $this->id)->set(array(
-            'id'            => $this->id,
-            'type'          => $this->type,
-            'author'        => $this->author,
-            'id_parent'     => $this->id_parent,
-            'title'         => $this->title,
-            'content'       => $this->content,
-            'is_menu_item'  => $this->is_menu_item,
-            ))->execute();
+         return Dao_Pages::update()
+                    ->where('id', '=', $this->id)
+                    ->set('id',             $this->id)
+                    ->set('type',           $this->type)
+                    ->set('author',         $this->author->id)
+                    ->set('id_parent',      $this->id_parent)
+                    ->set('title',          $this->title)
+                    ->set('content',        $this->content)
+                    ->set('is_menu_item',   $this->is_menu_item)
+                    ->execute();
     }
 
     public function delete()
     {
-        DB::update('pages')->where('id', '=', $this->id)
-                ->set(array('status' => 2))
-                ->execute();
+        Dao_Pages::update()
+            ->where('id', '=', $this->id)
+            ->set('status', 2)
+            ->execute();
 
         return true;
     }
 
     public static function get($id = 0)
     {
-        $page = DB::select()
-            ->from('pages')
-            ->where('id', '=', $id)
-            ->limit(1)
-            ->execute()
-            ->current();
+        $page = Dao_Pages::select()
+                    ->where('id', '=', $id)
+                    ->limit(1)
+                    ->execute();
 
         $model = new Model_Page();
 
@@ -95,13 +97,13 @@ class Model_Page extends Model_preDispatch
 
     public static function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0)
     {
-        $pages_query = DB::select()->from('pages')->where('status', '=', $status);
+        $pages_query = Dao_Pages::select()->where('status', '=', $status);
 
         if ($type)      $pages_query->where('type', '=', $type);
         if ($limit)     $pages_query->limit($limit);
         if ($offset)    $pages_query->offset($offset);
 
-        $pages_rows = $pages_query->order_by('id','DESC')->execute()->as_array();
+        $pages_rows = $pages_query->order_by('id','DESC')->execute();
 
         return self::rowsToModels($pages_rows);
     }
@@ -127,13 +129,11 @@ class Model_Page extends Model_preDispatch
 
     public static function getChildrenPagesByParent( $id_parent )
     {
-        $query = DB::select()
-            ->from('pages')
+        $query = Dao_Pages::select()
             ->where('status', '=', 0)
             ->where('id_parent','=', $id_parent)
             ->order_by('id','ASC')
-            ->execute()
-            ->as_array();
+            ->execute();
 
         return self::rowsToModels($query);
     }
