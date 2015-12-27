@@ -123,63 +123,20 @@ class Model_User extends Model_preDispatch
         Cookie::set('hr', sha1('dfhgga23'.$id.'dfhshgf23'), Date::MONTH);
     }
 
-
-    public function saveAvatar($file)
+    public function setUserStatus($status)
     {
-        if ($file && $file['tmp_name']) {
-            $img = new Model_Image($file['tmp_name']);
+        $this->status = $status;
 
-            if (!$img) {
-                return false;
-            }
+        Dao_Users::update()
+            ->where('id', '=', $this->id)
+            ->set('status', $status)
+            ->execute();
 
-            if(!is_dir('upload/profile/'))
-                mkdir('upload/profile/');
+        $this->isTeacher        = $this->isTeacher();
+        $this->isAdmin          = $this->isAdmin();
 
-            $file_name = uniqid("", false).'.jpg';
-            $img->best_fit(400,400)->save('upload/profile/l_'.$file_name);
-            $img->square_crop(100)->save('upload/profile/m_'.$file_name);
-            $img->square_crop(50)->save('upload/profile/s_'.$file_name);
 
-            $arr = DB::update('users')->set(array('photo' => 'upload/profile/s_'.$file_name, 'photo_medium' => 'upload/profile/m_'.$file_name, 'photo_big' => 'upload/profile/l_'.$file_name))->where('id', '=', $this->id)->execute();
-            if ($arr) {
-                $this->photo = 'upload/profile/s_'.$file_name;
-                $this->photo_medium = 'upload/profile/m_'.$file_name;
-                $this->photo_big = 'upload/profile/l_'.$file_name;
-                $this->getUserInfo($this->id, true);
-            }
-        }
-    }
-
-    public function setUserStatus($act)
-    {
-
-        switch ($act) {
-            case 'rise'    :
-                $status = Model_User::USER_STATUS_TEACHER;
-                break;
-            case 'ban'     :
-                $status = Model_User::USER_STATUS_BANNED;
-                break;
-            case 'degrade' :
-            case 'unban'   :
-                $status = Model_User::USER_STATUS_REGISTERED;
-                break;
-            default        :
-                $status = FALSE;
-        }
-
-        if ($status)
-        {
-            $this->status = $status;
-
-            return Dao_Users::update()
-                ->where('id', '=', $this->id)
-                ->set('status', $status)
-                ->execute();
-        }
-
-        return FALSE;
+        return true;
     }
 
     public function isAdmin()
@@ -197,39 +154,11 @@ class Model_User extends Model_preDispatch
     }
 
 
-    public function searchUsersByString( $string , $limit = 10 )
-    {
-
-        if ( $string ){
-
-            $users = DB::select( 'id', 'name', 'photo' )
-                ->from('users')
-                ->where( 'name' , 'LIKE' , '%' . $string . '%' )
-                ->or_where( 'twitter_name' , 'LIKE' , '%' . $string . '%' )
-                ->or_where( 'twitter' , 'LIKE' , '%' . $string . '%' )
-                ->or_where( 'vk_name' , 'LIKE' , '%' . $string . '%' )
-                ->or_where( 'facebook_name' , 'LIKE' , '%' . $string . '%' )
-                ->limit(  $limit  )
-                ->cached( Date::DAY * 5 )
-                ->execute()
-                ->as_array();
-
-        } else {
-
-            return false;
-
-        }
-
-        if ($users) return $users;
-        return array();
-    }
-
-
     public function getUserPages($id_parent = 0)
     {
         $pages = Dao_Pages::select()
                     ->where('author', '=', $this->id)
-                    ->where('status', '=', 0)
+                    ->where('status', '=', Model_Page::STATUS_SHOWING_PAGE)
                     ->where('type', '=', Model_Page::TYPE_USER_PAGE)
                     ->where('id_parent', '=', $id_parent)
                     ->order_by('id','DESC')
