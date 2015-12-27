@@ -30,14 +30,14 @@
 <div class="profile_panel clear">
 	<? if ($user->isAdmin): ?>
 		<? if (!$viewUser->isTeacher): ?>
-			<a class="button" href="/user/<?= $viewUser->id ?>?act=rise">Активировать аккаунт преподавателя</a>
+			<a class="button" href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a>
 		<? else: ?>
-			<a class="button" href="/user/<?= $viewUser->id ?>?act=degrade">Отключить аккаунт преподавателя</a>
+			<a class="button" href="/user/<?= $viewUser->id ?>?newStatus=student">Отключить аккаунт преподавателя</a>
 		<? endif ?>
 		<? if ($viewUser->status !=  Model_User::USER_STATUS_BANNED ): ?>
-			<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=ban">Заблокировать пользователя</a>
+			<a class="button fl_r" href="/user/<?= $viewUser->id ?>?newStatus=banned">Заблокировать пользователя</a>
 		<? else: ?>
-			<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=unban">Разблокировать пользователя</a>
+			<a class="button fl_r" href="/user/<?= $viewUser->id ?>?newStatus=student">Разблокировать пользователя</a>
 		<? endif ?>
 	<? endif ?>
 
