@@ -16,7 +16,6 @@
 </h1>
 
 <? if($user->status == Model_User::USER_STATUS_ADMIN || $user->id == $page->author->id): ?>
-	<?= $page->author->id ?>
 	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/edit">Редактировать</a>
 	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/delete">Удалить</a>
 <? endif ?>
