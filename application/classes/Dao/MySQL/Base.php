@@ -147,15 +147,6 @@ class Dao_MySQL_Base {
         return $this;
     }
     
-    public function getCacheByKey($key = null){
-        $memcache = $this->getMemcacheInstance();
-        
-        if ($key){
-            $full_key = $this->cache_key .':'. $key;
-            return $memcache->get($full_key);
-        }
-    }
-    
     private function getCacheKey()
     {
         return 't:' . $this->table.
