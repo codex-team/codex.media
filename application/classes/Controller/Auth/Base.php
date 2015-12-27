@@ -9,22 +9,22 @@ class Controller_Auth_Base extends Controller_Base_preDispatch {
     const COOKIE_SESSION = 'sid';
 
     /**
-     * Generates crypted password
-     * @param string $password - original user password from input
-     * @return string password hash
-     * @author Savchenko Petr (vk.com/specc)
-     */
+    * Generates crypted password
+    * @param string $password - original user password from input
+    * @return string password hash
+    * @author Savchenko Petr (vk.com/specc)
+    */
     public static function createPasswordHash( $password )
     {
         return hash('sha256', self::AUTH_PASSWORD_SALT . $password );
     }
 
     /**
-     * Opens user authentication session
-     * @param int $uid
-     * @param int $socialProvider - type of social provider ( get from config/social )
-     * @author Savchenko Petr (vk.com/specc)
-     */
+    * Opens user authentication session
+    * @param int $uid
+    * @param int $socialProvider - type of social provider ( get from config/social )
+    * @author Savchenko Petr (vk.com/specc)
+    */
     protected static function initAuthSession($uid , $socialProvider = 0, $autoLoginType = 0)
     {
         if (!$uid) return;
@@ -39,11 +39,11 @@ class Controller_Auth_Base extends Controller_Base_preDispatch {
         }
 
         $authSession->set('uid', $uid)
-            ->set('cookie', $sessionCookie)
-            ->set('useragent', Request::$user_agent)
-            ->set('ip', ip2long(Request::$client_ip))
-            ->set('dt_access' , DB::expr('now()'))
-            ->clearcache($uid);
+                    ->set('cookie', $sessionCookie)
+                    ->set('useragent', Request::$user_agent)
+                    ->set('ip', ip2long(Request::$client_ip))
+                    ->set('dt_access' , DB::expr('now()'))
+                    ->clearcache($uid);
 
         if ($socialProvider) $authSession->set('social_provider', $socialProvider);
         if ($autoLoginType) $authSession->set('autologin', $autoLoginType);
@@ -57,10 +57,10 @@ class Controller_Auth_Base extends Controller_Base_preDispatch {
     }
 
     /**
-     * Inserts new user into DB. Calls from signup or social-auth.
-     * @return int $uid - inserted user id
-     * @author Savchenko Petr (vk.com/specc)
-     */
+    * Inserts new user into DB. Calls from signup or social-auth.
+    * @return int $uid - inserted user id
+    * @author Savchenko Petr (vk.com/specc)
+    */
     protected static function insertUser($fields)
     {
         $user = Dao_Users::insert();
@@ -69,10 +69,10 @@ class Controller_Auth_Base extends Controller_Base_preDispatch {
     }
 
     /**
-     * Checks user's authentication by session-cookie and uid-cookie
-     * @return int|bool - UserId or FALSE
-     * @author Savchenko Petr (vk.com/specc)
-     */
+    * Checks user's authentication by session-cookie and uid-cookie
+    * @return int|bool - UserId or FALSE
+    * @author Savchenko Petr (vk.com/specc)
+    */
     public static function checkAuth()
     {
         $uid          = (int)Cookie::get(self::COOKIE_USER_ID, '');
@@ -99,9 +99,9 @@ class Controller_Auth_Base extends Controller_Base_preDispatch {
     }
 
     /**
-     * Removes auth session by id, uid or cookie
-     * @author Savchenko Petr (vk.com/specc)
-     */
+    * Removes auth session by id, uid or cookie
+    * @author Savchenko Petr (vk.com/specc)
+    */
     public static function deleteSession($id = false , $uid = false, $sid = false)
     {
         if (!$id && !$uid && !$sid) {
@@ -120,9 +120,9 @@ class Controller_Auth_Base extends Controller_Base_preDispatch {
     }
 
     /**
-     * @todo: save session-id to prolongate auth-session with login
-     * @author Savchenko Petr (vk.com/specc)
-     */
+    * @todo: save session-id to prolongate auth-session with login
+    * @author Savchenko Petr (vk.com/specc)
+    */
     protected static function clearAuthCookie()
     {
         Cookie::delete(self::COOKIE_USER_ID);
