@@ -19,6 +19,10 @@ class Model_Page extends Model_preDispatch
     const TYPE_SITE_NEWS = 2;
     const TYPE_USER_PAGE = 3;
 
+    const STATUS_SHOWING_PAGE = 0;
+    const STATUS_HIDDEN_PAGE  = 1;
+    const STATUS_REMOVED_PAGE = 2;
+
     public function __construct(){}
 
     private function fillByRow($page_row)
@@ -77,7 +81,7 @@ class Model_Page extends Model_preDispatch
     {
         Dao_Pages::update()
             ->where('id', '=', $this->id)
-            ->set('status', 2)
+            ->set('status', self::STATUS_REMOVED_PAGE)
             ->clearcache('page:' . $this->id)
             ->execute();
 
@@ -132,7 +136,7 @@ class Model_Page extends Model_preDispatch
     public static function getChildrenPagesByParent( $id_parent )
     {
         $query = Dao_Pages::select()
-            ->where('status', '=', 0)
+            ->where('status', '=', self::STATUS_SHOWING_PAGE)
             ->where('id_parent','=', $id_parent)
             ->order_by('id','ASC')
             ->execute();
