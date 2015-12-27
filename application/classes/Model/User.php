@@ -39,7 +39,7 @@ class Model_User extends Model_preDispatch
         parent::__construct();
         if ( !$uid ) return;
 
-        $user = $this->getUserInfo($uid);
+        $user = self::get($uid);
 
         self::fillByRow($user);
     }
@@ -90,7 +90,11 @@ class Model_User extends Model_preDispatch
 
     public function get($id)
     {
-        $user = $this->getUserInfo($id);
+        $user = Dao_Users::select()
+                    ->where('id', '=', $id)
+                    ->limit(1)
+                    ->cached(Date::DAY, 'user:' . $id)
+                    ->execute();
 
         return self::fillByRow($user);
     }
@@ -98,7 +102,8 @@ class Model_User extends Model_preDispatch
     public function updateUser($user_id, $fields)
     {
         $user = Dao_Users::update()
-                ->where('id', '=', $user_id);
+                ->where('id', '=', $user_id)
+                ->clearcache('user:' . $user_id);
 
         foreach ($fields as $name => $value) $user->set($name, $value);
 
@@ -110,23 +115,6 @@ class Model_User extends Model_preDispatch
         return (int)$this->redis->get('user:'.$this->id.':online:timestamp');
     }
 
-    public function getUserInfo($uid, $update = false)
-    {
-        if ($update) {
-            Kohana_Cache::instance('memcache')->delete('user_model:' . $uid);
-        } else {
-            if ($cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
-                return $cache;
-            } else {
-                $user_model = Dao_Users::select()
-                                    ->where('id', '=', $uid)
-                                    ->limit(1)
-                                    ->execute();
-                Kohana_Cache::instance('memcache')->set('user_model:' . $uid, $user_model, Date::DAY);
-                return $user_model;
-            }
-        }
-    }
 
     public function setAuthCookie($id)
     {

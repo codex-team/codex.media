@@ -50,7 +50,6 @@ class Model_Page extends Model_preDispatch
                     ->set('title',          $this->title)
                     ->set('content',        $this->content)
                     ->set('is_menu_item',   $this->is_menu_item)
-                    ->clearcache()
                     ->execute();
 
         if ($page)
@@ -70,6 +69,7 @@ class Model_Page extends Model_preDispatch
                     ->set('title',          $this->title)
                     ->set('content',        $this->content)
                     ->set('is_menu_item',   $this->is_menu_item)
+                    ->clearcache('page:' . $this->id)
                     ->execute();
     }
 
@@ -78,6 +78,7 @@ class Model_Page extends Model_preDispatch
         Dao_Pages::update()
             ->where('id', '=', $this->id)
             ->set('status', 2)
+            ->clearcache('page:' . $this->id)
             ->execute();
 
         return true;
@@ -88,6 +89,7 @@ class Model_Page extends Model_preDispatch
         $page = Dao_Pages::select()
                     ->where('id', '=', $id)
                     ->limit(1)
+                    ->cached(Date::MINUTE * 30, 'page:' . $id)
                     ->execute();
 
         $model = new Model_Page();
