@@ -53,18 +53,22 @@ class Controller_User extends Controller_Base_preDispatch
             $repeatPassword  = Arr::get($_POST, 'repeat_password');
             $newPhone        = Arr::get($_POST, 'phone_number');
             $newAva          = Arr::get($_FILES, 'new_ava');
-            
-            $currentPassword = hash('sha256', Controller_Auth_Base::AUTH_PASSWORD_SALT . $currentPassword);
 
-            if ($newPassword == '' || $newPassword != $repeatPassword || $currentPassword != $this->user->password){
+
+            if ($newPassword != $repeatPassword){
                 $newPassword = '';
-                $error = 'Пароли не совпадают, либо введен неправильный текущий пароль.';                
+                $error = 'Пароли не совпадают. ';
             }
-            
+
+            if ($currentPassword){
+                $currentPassword = hash('sha256', Controller_Auth_Base::AUTH_PASSWORD_SALT . $currentPassword);
+                $error = ($currentPassword != $this->user->password) ? $error . 'Неправильный текущий пароль.': '';
+            }
+
             if (Upload::valid($newAva) && Upload::not_empty($newAva) && Upload::size($newAva, '8M')){
                 $this->user->saveAvatar($newAva, 'upload/profile/');
             }
-            
+
             $fields = array(
                 'email'    => $newEmail,
                 'password' => $newPassword,
@@ -74,7 +78,7 @@ class Controller_User extends Controller_Base_preDispatch
             foreach ($fields as $key => $value){
                 if (!$value && $key != 'phone') unset($fields[$key]);
             }
-            
+
             if ($fields){
                 if ($this->user->updateUser($this->user->id, $fields)){
                     $succesResult = (!$error) ? true : false;

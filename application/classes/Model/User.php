@@ -33,7 +33,7 @@ class Model_User extends Model_preDispatch
         if ( !$uid ) return;
 
         $user = $this->getUserInfo($uid);
-
+        
         if ($user) {
 
             $this->id               = $user['id'];
@@ -79,8 +79,8 @@ class Model_User extends Model_preDispatch
      */
     public function updateUser($user_id, $fields)
     {
-        $user = Dao_User::update()->where('id', '=', $user_id);
-        
+        $user = Dao_User::update()->where('id', '=', $user_id)->clearcache($user_id);
+
         foreach ($fields as $name => $value) {
             if ($name == 'password'){
                 $value = hash('sha256', Controller_Auth_Base::AUTH_PASSWORD_SALT . $value);
@@ -89,9 +89,7 @@ class Model_User extends Model_preDispatch
         }
         
         $result = $user->execute();
-        
-        Kohana_Cache::instance('memcache')->delete('user_model:' . $this->id);
-        
+
         return $result;
       }
 
@@ -103,14 +101,13 @@ class Model_User extends Model_preDispatch
     public function getUserInfo($uid, $update = false)
     {
         if ($update) {
-            Kohana_Cache::instance('memcache')->delete('user_model:' . $uid);
+            Dao_User::update()->where('id', '=', $uid)->clearcache($uid);
         }
         
-        if ($cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
+        if ($cache = Dao_User::select()->getCacheByKey($uid)){
             return $cache;
         } else {
-            $user_model = DB::select()->from('users')->where('id', '=', $uid)->limit(1)->execute()->current();
-            Kohana_Cache::instance('memcache')->set('user_model:' . $uid, $user_model, Date::DAY);
+            $user_model = Dao_User::select()->where('id', '=', $uid)->cached($uid)->limit(1)->execute();
             return $user_model;
         }
     }
