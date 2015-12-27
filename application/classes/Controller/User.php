@@ -61,8 +61,9 @@ class Controller_User extends Controller_Base_preDispatch
             }
 
             if ($currentPassword){
-                $currentPassword = hash('sha256', Controller_Auth_Base::AUTH_PASSWORD_SALT . $currentPassword);
+                $currentPassword = Controller_Auth_Base::createPasswordHash($currentPassword);
                 $error = ($currentPassword != $this->user->password) ? $error . 'Неправильный текущий пароль.': '';
+                $newPassword = '';
             }
 
             if (Upload::valid($newAva) && Upload::not_empty($newAva) && Upload::size($newAva, '8M')){
@@ -78,7 +79,7 @@ class Controller_User extends Controller_Base_preDispatch
             foreach ($fields as $key => $value){
                 if (!$value && $key != 'phone') unset($fields[$key]);
             }
-
+            var_dump($fields);
             if ($fields){
                 if ($this->user->updateUser($this->user->id, $fields)){
                     $succesResult = (!$error) ? true : false;

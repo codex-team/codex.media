@@ -100,16 +100,7 @@ class Model_User extends Model_preDispatch
 
     public function getUserInfo($uid, $update = false)
     {
-        if ($update) {
-            Dao_User::update()->where('id', '=', $uid)->clearcache($uid)->execute();
-        }
-        
-        if ($cache = Dao_User::select()->where('id', '=', $uid)->limit(1)->execute()){
-            return $cache;
-        } else {
-            $user_model = Dao_User::select()->where('id', '=', $uid)->cached(10*Date::MINUTE, $uid)->limit(1)->execute();
-            return $user_model;
-        }
+        return Dao_User::select()->where('id', '=', $uid)->limit(1)->cached(Date::DAY, $uid)->execute();
     }
 
     public function setAuthCookie($id)
