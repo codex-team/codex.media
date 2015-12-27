@@ -578,27 +578,4 @@ class Model_Methods extends Model
         return $tmp;
     }
 
-    public static function tg($err)
-    {
-        $token = '147992940:AAEYBzvyiv4_-hspXxD2tcZKNkl6614QjwI';
-        $chat_id = '44841343';
-
-        $text = $err;
-
-        $url = 'https://api.telegram.org/bot' . $token . '/sendMessage';
-
-        $params = array(
-            'chat_id' => $chat_id,
-            'text' => $text
-        );
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_exec($ch);
-        curl_close($ch);
-
-        return true;
-    }
-
 }
