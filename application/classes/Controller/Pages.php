@@ -6,7 +6,6 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function action_show_page()
     {
-
         $id = $this->request->param('id');
         $uri = $this->request->param('uri');
 
@@ -15,8 +14,6 @@ class Controller_Pages extends Controller_Base_preDispatch
         {
             if (!$uri)
             {
-                # если адрес без uri /page/24
-                # то редирект на страницу вида /page/24/o-shkole
                 $this->redirect('/page/' . $page->id . '/' . $page->uri);
             }
 
@@ -114,7 +111,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         $id = $this->request->param('id');
         $page = Model_Page::get($id);
 
-        if ($this->user->isAdmin || $this->user-id == $page->author)
+        if ($this->user->isAdmin || $this->user->id == $page->author->id)
         {
             if (Security::check(Arr::get($_POST, 'csrf'))) {
                 self::save_form();
@@ -133,7 +130,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         $id = $this->request->param('id');
         $page = Model_Page::get($id);
 
-        if ($this->user->isAdmin || $this->user-id == $page->author)
+        if ($this->user->isAdmin || $this->user->id == $page->author->id)
         {
             $page->delete();
 
@@ -141,7 +138,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             if ($page->id_parent != 0) {
                 $url = '/page/' . $page->id_parent;
             } elseif ($page->type != Model_Page::TYPE_SITE_NEWS) {
-                $url = '/user/' . $page->author;
+                $url = '/user/' . $page->author->id;
             } else {
                 $url = '/';
             }

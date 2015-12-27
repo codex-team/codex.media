@@ -16,6 +16,7 @@
 </h1>
 
 <? if($user->status == Model_User::USER_STATUS_ADMIN || $user->id == $page->author->id): ?>
+	<?= $page->author->id ?>
 	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/edit">Редактировать</a>
 	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/delete">Удалить</a>
 <? endif ?>
@@ -34,7 +35,7 @@
 	</ul>
 <? endif; ?>
 
-<? if($user->status == Model_User::USER_STATUS_ADMIN || $page->author->isMe): ?>
+<? if($user->status == Model_User::USER_STATUS_ADMIN || $user->id == $page->author->id): ?>
 	<a class="button green" href="/page/<?= $page->id ?>/<?= $page->uri ?>/add-page">Добавить страницу</a>
 <? endif ?>
 <? if (isset($files) && $files): ?>

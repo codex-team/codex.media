@@ -9,7 +9,7 @@ class Controller_User extends Controller_Base_preDispatch
 
         $act = Arr::get($_GET, 'act');
 
-        $viewUser = Model_User::get($user_id);
+        $viewUser = new Model_User($user_id);
 
         if ($this->user->isAdmin && $act) {
             $success = $viewUser->setUserStatus($act);

@@ -2,6 +2,7 @@
 
 class Model_User extends Model_preDispatch
 {
+
     public $id                  = 0;
     public $name                = '';
     public $password            = '';
@@ -28,21 +29,25 @@ class Model_User extends Model_preDispatch
     public $isOnline            = 0;
     public $lastOnline          = 0;
 
-
     const USER_STATUS_ADMIN         = 2;
     const USER_STATUS_TEACHER       = 1;
     const USER_STATUS_REGISTERED    = 0;
     const USER_STATUS_BANNED        = -1;
 
+    public function __construct($uid = null)
+    {
+        parent::__construct();
+        if ( !$uid ) return;
 
-    public function __construct(){}
+        $user = $this->getUserInfo($uid);
+
+        self::fillByRow($user);
+    }
 
     public function fillByRow($user)
     {
-        parent::__construct();
+        if ($user) {
 
-        if (!empty($user))
-        {
             $this->id               = $user['id'];
             $this->name             = strip_tags($user['name']);
             $this->password         = $user['password'];
@@ -62,7 +67,6 @@ class Model_User extends Model_preDispatch
             $this->facebook_name    = strip_tags($user['facebook_name']);
 
             $this->status           = $user['status'];
-
             $this->isTeacher        = $this->isTeacher();
             $this->isAdmin          = $this->isAdmin();
 
@@ -71,50 +75,7 @@ class Model_User extends Model_preDispatch
 
             if (!$user || $user['id'] != (int)Cookie::get(Controller_Auth_Base::COOKIE_USER_ID, '')) $this->isMe = false;
         }
-
-        return $this;
     }
-
-    public static function get($id = 0)
-    {
-        $user = Dao_Users::select()
-                    ->where('id', '=', $id)
-                    ->limit(1)
-                    ->execute();
-
-        $model = new Model_User();
-
-        return $model->fillByRow($user);
-    }
-
-    public function update($user_id, $fields)
-    {
-        $user = Dao_Users::update()
-            ->where('id', '=', $user_id);
-
-        foreach ($fields as $name => $value) $user->set($name, $value);
-
-        return $user->execute();
-    }
-
-    public function rowsToModels($user_rows)
-    {
-        $users = array();
-
-        if (!empty($user_rows))
-        {
-            foreach ($user_rows as $user_row)
-            {
-                $user = new Model_User();
-                
-                $user->fillByRow($user_row);
-
-                array_push($users, $user);
-            }
-
-        }
-    }
-
 
     /** Check for user emain uniqueness */
     public function hasUniqueEmail($email)
@@ -127,27 +88,45 @@ class Model_User extends Model_preDispatch
         return false;
     }
 
+    public function get($id)
+    {
+        $user = $this->getUserInfo($id);
+
+        return self::fillByRow($user);
+    }
+
+    public function updateUser($user_id, $fields)
+    {
+        $user = Dao_Users::update()
+                ->where('id', '=', $user_id);
+
+        foreach ($fields as $name => $value) $user->set($name, $value);
+
+        return $user->execute();
+    }
+
     public function getLastOnlineTimestamp()
     {
         return (int)$this->redis->get('user:'.$this->id.':online:timestamp');
     }
 
-
-    public function getUserPages($id_parent = 0)
+    public function getUserInfo($uid, $update = false)
     {
-        var_dump($this);
-
-        $pages = Dao_Pages::select()
-                    ->where('author', '=', $this->id)
-                    ->where('status', '=', 0)
-                    ->where('type', '=', Model_Page::TYPE_USER_PAGE)
-                    ->where('id_parent', '=', $id_parent)
-                    ->order_by('id','DESC')
-                    ->execute();
-
-        return Model_Page::rowsToModels($pages);
+        if ($update) {
+            Kohana_Cache::instance('memcache')->delete('user_model:' . $uid);
+        } else {
+            if ($cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
+                return $cache;
+            } else {
+                $user_model = Dao_Users::select()
+                                    ->where('id', '=', $uid)
+                                    ->limit(1)
+                                    ->execute();
+                Kohana_Cache::instance('memcache')->set('user_model:' . $uid, $user_model, Date::DAY);
+                return $user_model;
+            }
+        }
     }
-
 
     public function setAuthCookie($id)
     {
@@ -157,38 +136,37 @@ class Model_User extends Model_preDispatch
     }
 
 
-//    public function searchUsersByString( $string , $limit = 10 )
-//    {
-//
-//        if ( $string ){
-//
-//            $users = Dao_Users::select()
-//                            ->where( 'name' , 'LIKE' , '%' . $string . '%' )
-//                            ->or_where( 'twitter_name' , 'LIKE' , '%' . $string . '%' )
-//                            ->or_where( 'twitter' , 'LIKE' , '%' . $string . '%' )
-//                            ->or_where( 'vk_name' , 'LIKE' , '%' . $string . '%' )
-//                            ->or_where( 'facebook_name' , 'LIKE' , '%' . $string . '%' )
-//                            ->limit(  $limit  )
-//                            ->cached( Date::DAY * 5 )
-//                            ->execute()
-//                            ->as_array();
-//
-//        } else {
-//
-//            return false;
-//
-//        }
-//
-//        if ($users) return $users;
-//        return array();
-//    }
+    public function saveAvatar($file)
+    {
+        if ($file && $file['tmp_name']) {
+            $img = new Model_Image($file['tmp_name']);
 
+            if (!$img) {
+                return false;
+            }
+
+            if(!is_dir('upload/profile/'))
+                mkdir('upload/profile/');
+
+            $file_name = uniqid("", false).'.jpg';
+            $img->best_fit(400,400)->save('upload/profile/l_'.$file_name);
+            $img->square_crop(100)->save('upload/profile/m_'.$file_name);
+            $img->square_crop(50)->save('upload/profile/s_'.$file_name);
+
+            $arr = DB::update('users')->set(array('photo' => 'upload/profile/s_'.$file_name, 'photo_medium' => 'upload/profile/m_'.$file_name, 'photo_big' => 'upload/profile/l_'.$file_name))->where('id', '=', $this->id)->execute();
+            if ($arr) {
+                $this->photo = 'upload/profile/s_'.$file_name;
+                $this->photo_medium = 'upload/profile/m_'.$file_name;
+                $this->photo_big = 'upload/profile/l_'.$file_name;
+                $this->getUserInfo($this->id, true);
+            }
+        }
+    }
 
     public function setUserStatus($act)
     {
 
-        switch ($act)
-        {
+        switch ($act) {
             case 'rise'    :
                 $status = Model_User::USER_STATUS_TEACHER;
                 break;
@@ -231,31 +209,45 @@ class Model_User extends Model_preDispatch
     }
 
 
-//    public function saveAvatar($file)
-//    {
-//        if ($file && $file['tmp_name']) {
-//            $img = new Model_Image($file['tmp_name']);
-//
-//            if (!$img) {
-//                return false;
-//            }
-//
-//            if(!is_dir('upload/profile/'))
-//                mkdir('upload/profile/');
-//
-//            $file_name = uniqid("", false).'.jpg';
-//            $img->best_fit(400,400)->save('upload/profile/l_'.$file_name);
-//            $img->square_crop(100)->save('upload/profile/m_'.$file_name);
-//            $img->square_crop(50)->save('upload/profile/s_'.$file_name);
-//
-//            $arr = DB::update('users')->set(array('photo' => 'upload/profile/s_'.$file_name, 'photo_medium' => 'upload/profile/m_'.$file_name, 'photo_big' => 'upload/profile/l_'.$file_name))->where('id', '=', $this->id)->execute();
-//            if ($arr) {
-//                $this->photo = 'upload/profile/s_'.$file_name;
-//                $this->photo_medium = 'upload/profile/m_'.$file_name;
-//                $this->photo_big = 'upload/profile/l_'.$file_name;
-//                $this->getUserInfo($this->id, true);
-//            }
-//        }
-//    }
+    public function searchUsersByString( $string , $limit = 10 )
+    {
+
+        if ( $string ){
+
+            $users = DB::select( 'id', 'name', 'photo' )
+                ->from('users')
+                ->where( 'name' , 'LIKE' , '%' . $string . '%' )
+                ->or_where( 'twitter_name' , 'LIKE' , '%' . $string . '%' )
+                ->or_where( 'twitter' , 'LIKE' , '%' . $string . '%' )
+                ->or_where( 'vk_name' , 'LIKE' , '%' . $string . '%' )
+                ->or_where( 'facebook_name' , 'LIKE' , '%' . $string . '%' )
+                ->limit(  $limit  )
+                ->cached( Date::DAY * 5 )
+                ->execute()
+                ->as_array();
+
+        } else {
+
+            return false;
+
+        }
+
+        if ($users) return $users;
+        return array();
+    }
+
+
+    public function getUserPages($id_parent = 0)
+    {
+        $pages = Dao_Pages::select()
+                    ->where('author', '=', $this->id)
+                    ->where('status', '=', 0)
+                    ->where('type', '=', Model_Page::TYPE_USER_PAGE)
+                    ->where('id_parent', '=', $id_parent)
+                    ->order_by('id','DESC')
+                    ->execute();
+
+        return Model_Page::rowsToModels($pages);
+    }
 
 }

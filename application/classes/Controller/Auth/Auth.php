@@ -6,10 +6,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     const URL_TO_REDIRECT_AFTER_SUCCES_AUTH = '/';
 
     /**
-    * Auth page.
-    * Both 2 form: login and signup handlers here.
-    * @author Savchenko Petr (vk.com/specc)
-    */
+     * Auth page.
+     * Both 2 form: login and signup handlers here.
+     * @author Savchenko Petr (vk.com/specc)
+     */
     public function action_auth()
     {
         /** If user is already logged in, redirects to the '/' */
@@ -50,10 +50,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     }
 
     /**
-    * Users registration method
-    * @return bool - signup result status
-    * @author Savchenko Petr (vk.com/specc)
-    */
+     * Users registration method
+     * @return bool - signup result status
+     * @author Savchenko Petr (vk.com/specc)
+     */
     public function signup()
     {
         $signupForm = array(
@@ -85,11 +85,11 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
 
     /**
-    * Checks for correct-filling form
-    * Fills $this->view['signup_error_fields'] with errors texts
-    * @return bool - checking result
-    * @author Savchenko Petr (vk.com/specc)
-    */
+     * Checks for correct-filling form
+     * Fills $this->view['signup_error_fields'] with errors texts
+     * @return bool - checking result
+     * @author Savchenko Petr (vk.com/specc)
+     */
     protected function checkSignupFields( $fields )
     {
         /** Check for CSRF token*/
@@ -135,9 +135,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
 
     /**
-    * Login method
-    * @author Savchenko Petr (vk.com/specc)
-    */
+     * Login method
+     * @author Savchenko Petr (vk.com/specc)
+     */
     public function login()
     {
         $loginForm = array(
@@ -148,11 +148,11 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         if (self::checkUserLogin($loginForm)) {
 
             $passwordHash = parent::createPasswordHash($loginForm['password']);
-            $userFound    = Dao_Users::select()
-                                ->where('email', '=', $loginForm['email'])
-                                ->where('password', '=', $passwordHash)
-                                ->limit(1)
-                                ->execute();
+            $userFound    = Dao_User::select()
+                ->where('email', '=', $loginForm['email'])
+                ->where('password', '=', $passwordHash)
+                ->limit(1)
+                ->execute();
 
             if ($userFound) {
 
@@ -198,10 +198,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                 'photo_medium'  => $userdata->photo_100,
                 'photo_big'     => $userdata->photo_max
             );
-            
+
             /**
              *  What to do with response data?
-             *  @var string $state  
+             *  @var string $state
              */
             if ($state) switch ($state) {
                 case 'login':
@@ -213,7 +213,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                     $status = $this->social_attach($user_to_db);
                     break;
 
-                case 'remove': 
+                case 'remove':
                     $status = $this->social_remove('vk');
                     break;
             }
@@ -255,7 +255,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
             /**
              *  What to do with response data?
-             *  @var string $state  
+             *  @var string $state
              */
             if ($state) switch ($state) {
                 case 'login':
@@ -274,7 +274,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
             return $status;
         }
-        
+
     }
 
     /**
@@ -284,7 +284,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     public function login_tw() {
 
         $state  = Arr::get($_GET, 'state', 'login');
-        
+
         $tw = Model::factory("Social_Tw");
         $userdata = $tw->get('account/verify_credentials');
 
@@ -302,20 +302,20 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
         /**
          *  What to do with response data?
-         *  @var string $state  
+         *  @var string $state
          */
         if ($state) switch ($state) {
-            case 'login': 
-                $status = $this->social_insert('twitter', $user_to_db); 
+            case 'login':
+                $status = $this->social_insert('twitter', $user_to_db);
                 break;
 
-            case 'attach': 
-                unset($user_to_db['email']); 
-                $status = $this->social_attach($user_to_db); 
+            case 'attach':
+                unset($user_to_db['email']);
+                $status = $this->social_attach($user_to_db);
                 break;
 
-            case 'remove': 
-                $status = $this->social_remove('twitter'); 
+            case 'remove':
+                $status = $this->social_remove('twitter');
                 break;
         }
 
@@ -330,7 +330,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
      *  @author Demyashev Alexander
      */
     private function social_insert($social, $userdata)
-    {  
+    {
         $social_cfg = Kohana::$config->load('social')->$social;
 
         $userFound = Dao_Users::select('id')
@@ -339,7 +339,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
             ->execute();
 
         if ($userFound) {
-            Model::factory('User')->update($userFound['id'], $userdata);
+            Model::factory('User')->updateUser($userFound['id'], $userdata);
             parent::initAuthSession($userFound['id'], $social_cfg['type']);
             return TRUE;
         }
@@ -358,7 +358,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     private function social_attach($userdata) {
 
         if ($userId = parent::checkAuth() ) {
-            Model::factory('User')->update($userId, $userdata);
+            Model::factory('User')->updateUser($userId, $userdata);
             return TRUE;
         } else {
             $this->view['login_error_text'] = 'Не удалось прикрепить профиль соцсети';
@@ -379,7 +379,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         }
 
         if ($userId = parent::checkAuth() ) {
-            Model::factory('User')->update($userId, $fieldsToClean);
+            Model::factory('User')->updateUser($userId, $fieldsToClean);
             return TRUE;
         } else {
             $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети';
@@ -388,10 +388,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     }
 
     /**
-    * Checks for login form filled correctly
-    * @return bool
-    * @author Savchenko Petr (vk.com/specc)
-    */
+     * Checks for login form filled correctly
+     * @return bool
+     * @author Savchenko Petr (vk.com/specc)
+     */
     protected function checkUserLogin( $fields )
     {
         /** Check for CSRF token*/
@@ -415,8 +415,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
 
     /**
-    * Action for /logout route
-    */
+     * Action for /logout route
+     */
     public function action_logout()
     {
         parent::deleteSession();

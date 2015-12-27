@@ -35,7 +35,7 @@ class Model_Page extends Model_preDispatch
             $this->is_menu_item    = $page_row['is_menu_item'];
 
             $this->uri             = self::getPageUri();
-            $this->author          = Model_User::get($page_row['author']);
+            $this->author          = new Model_User($page_row['author']);
         }
 
         return $this;
