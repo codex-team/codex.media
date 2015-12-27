@@ -7,12 +7,12 @@ class Controller_User extends Controller_Base_preDispatch
     {
         $user_id = $this->request->param('id');
 
-        $act = Arr::get($_GET, 'act');
+        $act = Arr::get($_GET, 'newStatus');
 
         $viewUser = new Model_User($user_id);
 
         if ($this->user->isAdmin && $act) {
-            $success = $viewUser->setUserStatus($act);
+            $success = self::set_user_status($viewUser, $act);
         }
 
         $this->view['userPages'] = $viewUser->getUserPages();
@@ -21,6 +21,24 @@ class Controller_User extends Controller_Base_preDispatch
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/user/profile', $this->view);
 
+    }
+
+    public function set_user_status($viewUser, $act)
+    {
+        switch ($act) {
+            case 'teacher'    :
+                $status = Model_User::USER_STATUS_TEACHER;
+                break;
+            case 'banned'     :
+                $status = Model_User::USER_STATUS_BANNED;
+                break;
+            case 'student'   :
+                $status = Model_User::USER_STATUS_REGISTERED;
+                break;
+            default        :
+                return FALSE;
+        }
+        return $viewUser->setUserStatus($status);
     }
 
 }
