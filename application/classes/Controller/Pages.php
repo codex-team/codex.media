@@ -46,7 +46,12 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
-            self::save_form();
+            $url = self::form_to_model();
+
+            if ($url)
+            {
+                $this->redirect($url);
+            }
         }
 
         $this->view['page']      = $page;
@@ -67,7 +72,12 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
-            self::save_form();
+            $url = self::form_to_model();
+
+            if ($url)
+            {
+                $this->redirect($url);
+            }
         }
 
         $this->view['page']      = $page;
@@ -99,7 +109,12 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
-            self::save_form();
+            $url = self::form_to_model();
+
+            if ($url)
+            {
+                $this->redirect($url);
+            }
         }
 
         $this->view['page']      = $page;
@@ -113,8 +128,14 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         if ($this->user->isAdmin || $this->user->id == $page->author->id)
         {
-            if (Security::check(Arr::get($_POST, 'csrf'))) {
-                self::save_form();
+            if (Security::check(Arr::get($_POST, 'csrf')))
+            {
+                $url = self::form_to_model();
+                
+                if ($url)
+                {
+                    $this->redirect($url);
+                }    
             }
 
             $this->view['page'] = $page;
@@ -150,7 +171,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->redirect($url);
     }
 
-    public function save_form()
+    public function form_to_model()
     {
         $id     = (int)Arr::get($_POST, 'id');
         $type   = (int)Arr::get($_POST, 'type');
@@ -164,24 +185,32 @@ class Controller_Pages extends Controller_Base_preDispatch
             $page->content       = Arr::get($_POST, 'content');
             $page->is_menu_item  = Arr::get($_POST, 'is_menu_item', 0);
 
-            if ($page->title)
-            {
-                if ($id) {
-                    $page->id = $id;
-                    $page->update();
-                    $url = '/page/' . $id;
-                } else {
-                    $page = $page->insert();
-                    $url = '/page/' . $page->id;
-                }
-                $this->redirect($url);
-
+            if ($page->title) {
+                return self::save_page($page, $id);
             } else {
-
                 return FALSE;
                 # TODO ошибка: отсутствует заголовок
-
             }
+        } else {
+            return FALSE;
+            # TODO ошибка: отсутствует тип страницы
         }
+        
     }
+    
+    public function save_page($page, $id)
+    {
+        if ($id) {
+            $page->id = $id;
+            $page->update();
+            $url = '/page/' . $id;
+        } else {
+            $page = $page->insert();
+            $url = '/page/' . $page->id;
+        }
+        
+        return $url;
+    }
+
+
 }
