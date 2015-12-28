@@ -87,6 +87,49 @@ class Model_Methods extends Model
     }
 
 
+    public function getComments($page, $status = null, $cached = false )
+    {
+        if ( (int)$page < 1 ) return array();
+        $comments = DB::select()->from('comments')
+            ->where('page', '=', $page)
+            ->where('is_removed', '=', 0);
+        $comments->order_by('id','asc');
+        if ($cached) {
+            $comments->cached(Date::MINUTE*5);
+        }
+        $comments = $comments->execute()->as_array();
+        if ($comments) return $comments;
+        return array();
+    }
+
+    public function getCommentById( $id )
+    {
+        return DB::select()->from('comments')->where('id', '=', $id)->where('status', '<', 2)->execute()->current();
+    }
+
+    public function addComment( $data )
+    {
+        return DB::insert('comments', array_keys($data))->values(array_values($data))->execute();
+    }
+
+    public function removeComment( $uid , $id , $isAdmin = false )
+    {
+        $result = DB::delete('comments')->where('id', '=', $id);
+        if ( !$isAdmin ) $result->where('uid', '=', $uid);
+        return $result->execute() ? true : false ;
+    }
+
+    public function getCommentsCount($type, $target)
+    {
+        return (int)DB::select('id')->from('comments')->where('type','=',$type)->where('target','=',$target)->cached(Date::MINUTE / 4)->execute()->count();
+    }
+
+    public function getBlogPostComments($pid, $status = null, $feed = false, $cached = false)
+    {
+        return self::getComments( Controller_Comments::COMMENTS_TYPE_BLOG , $pid );
+    }
+
+
     public function addFileToPage( $fields )
     {
         return current(DB::insert( 'files' , array_keys($fields) )->values(array_values($fields))->execute());
