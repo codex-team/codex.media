@@ -13,7 +13,7 @@ class Controller_Comments extends Controller_Base_preDispatch
         $comment->page_id 	= Arr::get($_POST, 'page_id');
         $comment->text 		= Arr::get($_POST, 'text');
         $comment->parent_id	= Arr::get($_POST, 'parent_id', '0');
-        $comment->user_id	= $this->user->id;
+        $comment->author	= $this->user->id;
 
         /**
          * Определяет уровень комментария.

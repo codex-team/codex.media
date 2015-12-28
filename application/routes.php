@@ -107,7 +107,7 @@ Route::set('LOGOUT', 'logout')->defaults(array(
 
 /** Comments */
 
-Route::set('ADD_COMMENT_SCRIPT', 'page/<id>/addcomment', array( 'id' => $DIGIT ))->defaults(array(
+Route::set('ADD_COMMENT_SCRIPT', 'page/addcomment')->defaults(array(
     'controller' => 'comments',
     'action' => 'add'
 ));

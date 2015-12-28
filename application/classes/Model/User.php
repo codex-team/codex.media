@@ -87,21 +87,11 @@ class Model_User extends Model_preDispatch
         return (int)$this->redis->get('user:'.$this->id.':online:timestamp');
     }
 
-    public function getUserInfo($uid, $update = false)
+    public function getUserInfo($uid, $update = false) 
     {
-        if ($update) {
-            Kohana_Cache::instance('memcache')->delete('user_model:' . $uid);
-        } else {
-            if ($cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
-                return $cache;
-            } else {
-                $user_model = DB::select()->from('users')->where('id', '=', $uid)->limit(1)->execute()->current();
-                Kohana_Cache::instance('memcache')->set('user_model:' . $uid, $user_model, Date::DAY);
-                return $user_model;
-            }
-        }
+        return Dao_User::select()->where('id', '=', $uid)->limit(1)->cached(Date::DAY, $uid)->execute(); 
     }
-
+    
     public function setAuthCookie($id)
     {
         $id = (int)$id;

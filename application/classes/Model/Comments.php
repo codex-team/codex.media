@@ -11,7 +11,8 @@ Class Model_Comments extends Model
 	public $parent_id;
 	public $dt_create;
 	public $is_removed;
-	PUBLIC $parent_author;
+	public $author_name;
+	public $parent_name;
 
 	public function __construct()
 	{
@@ -27,6 +28,8 @@ Class Model_Comments extends Model
 
 		$model = new Model_Comments();
 
+		var_dump($comment_row);
+
 		return $model->fillByRow($comment_row);
 	}
 
@@ -41,10 +44,11 @@ Class Model_Comments extends Model
 
 		if ($idAndRowAffected) {
 			$comment = DB::select()
-							->from('comments')
-							->where('id', '=', $idAndRowAffected)
-			                ->execute()
-			                ->current();
+				->from('comments')
+				->where('id', '=', $idAndRowAffected[0])
+				->execute()
+				->current();
+
 			$this->fillByRow($comment);
 		}
 	}
@@ -65,8 +69,8 @@ Class Model_Comments extends Model
             $this->parent_id    = $comment_row['parent_id'];
             $this->dt_create    = $comment_row['dt_create'];
             $this->is_removed   = $comment_row['is_removed'];   
-
-            $this->parent_author = self::getAuthor($comment_row['parent_id']);
+            $this->author_name  = self::getAuthor($comment_row['author']);
+            $this->parent_name  = self::getAuthor($comment_row['parent_id']);
         }
 
         return $this;
@@ -98,9 +102,8 @@ Class Model_Comments extends Model
 
     public static function getAuthor($id)
     {
-    	$model_user = new Model_User();
-        $user_info = $model_user->getUserInfo($id);
-        return $user_info['name'];
+    	$model_user = new Model_User($id);
+        return $model_user->name;
     }
 
 }
