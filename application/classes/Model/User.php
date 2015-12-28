@@ -22,7 +22,7 @@ class Model_User extends Model_preDispatch
 
     public $status              = 0;
 
-    public $isMe                = true;
+    public $isMe                = false;
     public $isTeacher           = false;
     public $isAdmin             = false;
 
@@ -93,7 +93,7 @@ class Model_User extends Model_preDispatch
         $user = Dao_Users::select()
                     ->where('id', '=', $id)
                     ->limit(1)
-                    ->cached(Date::DAY, 'user:' . $id)
+                    ->cached(Date::HOUR, 'user:' . $id)
                     ->execute();
 
         return self::fillByRow($user);
