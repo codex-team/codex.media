@@ -12,12 +12,11 @@ class Controller_User extends Controller_Base_preDispatch
         $viewUser = new Model_User($user_id);
 
         if ($this->user->isAdmin && $act) {
-            $success = self::set_user_status($viewUser, $act);
+            $this->view['success'] = self::set_user_status($viewUser, $act);
         }
 
         $this->view['userPages'] = $viewUser->getUserPages();
         $this->view['viewUser']  = $viewUser;
-        $this->view['success']   = isset($success) ? TRUE : FALSE;
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/user/profile', $this->view);
 
@@ -32,7 +31,7 @@ class Controller_User extends Controller_Base_preDispatch
             case 'banned'     :
                 $status = Model_User::USER_STATUS_BANNED;
                 break;
-            case 'student'   :
+            case 'registered'   :
                 $status = Model_User::USER_STATUS_REGISTERED;
                 break;
             default        :
