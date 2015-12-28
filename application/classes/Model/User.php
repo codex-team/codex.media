@@ -87,21 +87,11 @@ class Model_User extends Model_preDispatch
         return (int)$this->redis->get('user:'.$this->id.':online:timestamp');
     }
 
-    public function getUserInfo($uid, $update = false)
+    public function getUserInfo($uid, $update = false) 
     {
-        if ($update) {
-            Kohana_Cache::instance('memcache')->delete('user_model:' . $uid);
-        } else {
-            if ($cache = Kohana_Cache::instance('memcache')->get('user_model:' . $uid)) {
-                return $cache;
-            } else {
-                $user_model = DB::select()->from('users')->where('id', '=', $uid)->limit(1)->execute()->current();
-                Kohana_Cache::instance('memcache')->set('user_model:' . $uid, $user_model, Date::DAY);
-                return $user_model;
-            }
-        }
+        return Dao_User::select()->where('id', '=', $uid)->limit(1)->cached(Date::DAY, $uid)->execute(); 
     }
-
+    
     public function setAuthCookie($id)
     {
         $id = (int)$id;
@@ -141,9 +131,17 @@ class Model_User extends Model_preDispatch
     public function isAdmin()
     {
         if (!$this->id) return false;
-        if (array_search($this->id, $this->admins) !== false) return true;
+        if ($this->status == Controller_User::USER_STATUS_ADMIN) return true;
         return false;
     }
+
+    public function isTeacher()
+    {
+        if (!$this->id) return false;
+        if ($this->status >= Controller_User::USER_STATUS_TEACHER) return true;
+        return false;
+    }
+
 
     public function searchUsersByString( $string , $limit = 10 )
     {
@@ -178,22 +176,17 @@ class Model_User extends Model_preDispatch
         return DB::update('users')->set(array('status' => $status))->where('id','=', $this->id)->execute();
     }
 
-    /**
-     * Get user's pages
-     *
-     * @author taly
-     *
-     * @param int $user_id          user id
-     * @param int $type             type of pages
-     * @return array
-     */
-    public function getUserPages($user_id, $type = Controller_Pages::TYPE_NEWS)
+
+    public function getUserPages($user_id, $type = Controller_Pages::TYPE_USER_PAGE, $id_parent = 0)
     {
         $pages = DB::select()->from('pages')
                     ->where('author', '=', $user_id)
-                    ->where('type', '=', $type);
+                    ->where('type', '=', $type)
+                    ->where('id_parent', '=', $id_parent)
+                    ->order_by('id','DESC')
+                    ->cached(Date::MINUTE*0);
 
-        return $pages->order_by('id','DESC')->execute()->as_array();
+        return $pages->execute()->as_array();
     }
 
 }

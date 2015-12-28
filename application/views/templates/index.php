@@ -13,7 +13,7 @@
     Рекомендуем
     <a href="">Прием в ОУ</a>
     <a href="">Расписание уроков</a>
-    <a href="/page/files">Файлообменник</a>
+    <a href="/page/22">Файлообменник</a>
 </div>
 
 <div class="clear">
@@ -26,17 +26,21 @@
     <div class="page_left_col">
 
         <div class="official_links">
-            <a href="/page/official-docs">Официальные документы</a>
+            <a href="">Официальные документы</a>
             <a href="">Приемные часы администрации</a>
         </div>
 
 
         <div class="news">
 
+            <? if($user->status == Controller_User::USER_STATUS_ADMIN): ?>
+                <a class="button green" href="/news/add">Добавить новость</a>
+            <? endif ?>
+
             <? foreach ($pages as $page): ?>
 
                 <article class="post">
-                    <h2><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h2>
+                    <h2><a href="/page/<?= $page['id'] ?>/<?= $page['uri'] ?>"><?= $page['title'] ?></a></h2>
                     <div class="body">
                         <?= $page['content'] ?>
                     </div>
