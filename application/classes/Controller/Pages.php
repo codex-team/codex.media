@@ -2,9 +2,6 @@
 
 class Controller_Pages extends Controller_Base_preDispatch
 {
-    const TYPE_SITE_PAGE = 1;
-    const TYPE_SITE_NEWS = 2;
-    const TYPE_USER_PAGE = 3;
 
 
     public function action_show_page()
@@ -12,50 +9,50 @@ class Controller_Pages extends Controller_Base_preDispatch
         $id = $this->request->param('id');
         $uri = $this->request->param('uri');
 
-        $page = $this->methods->getPage($id);
-
-        if ($page['title'])
+        $page = Model_Page::get($id);
+        if ($page->title)
         {
             if (!$uri)
             {
-                $this->redirect('/page/' . $page['id'] . '/' . $page['uri']);
+                $this->redirect('/page/' . $page->id . '/' . $page->uri);
             }
 
-            $page['parent'] = array();
-
-            if ($page['id_parent'])
+            if ($page->id_parent)
             {
-                $page['parent'] = $this->methods->getPage($page['id_parent']);
+                $page->parent = Model_Page::get($page->id_parent);
             }
 
-            $page['childrens']  = $this->methods->getChildrenPagesByParent($page['id']);
+            $page->childrens  = Model_Page::getChildrenPagesByParent($page->id);
 
             $this->view['comments']  = Model_Comments::getByPageId($id);
             $this->view['page']      = $page;
-            $this->view['files']     = $this->methods->getPageFiles($page['id']);
+            $this->view['files']     = $this->methods->getPageFiles($page->id);
             $this->template->content = View::factory('templates/page', $this->view);
 
         } else {
-            # 404
-            $this->redirect('/');
+            # TODO ошибка: статья не найдена
         }
     }
 
     public function action_news_add()
     {
         if (!$this->user->isAdmin()) {
+            # TODO ошибка: недостаточно прав
             $this->redirect('/');
         }
 
-        $page = array();
+        $page = new Model_Page();
 
-        $page['type'] = Controller_Pages::TYPE_SITE_NEWS;
-
-        $page['parent'] = array();
+        $page->type = Model_Page::TYPE_SITE_NEWS;
 
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
-            self::save_form();
+            $url = self::form_to_model();
+
+            if ($url)
+            {
+                $this->redirect($url);
+            }
         }
 
         $this->view['page']      = $page;
@@ -65,19 +62,23 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function action_page_add()
     {
-        if (!$this->user->isTeacher()) {
+        if (!$this->user->isTeacher) {
+            # TODO ошибка: недостаточно прав
             $this->redirect('/');
         }
 
-        $page = array();
+        $page = new Model_Page();
 
-        $page['type'] = Controller_Pages::TYPE_USER_PAGE;
-
-        $page['parent'] = array();
+        $page->type = Model_Page::TYPE_USER_PAGE;
 
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
-            self::save_form();
+            $url = self::form_to_model();
+
+            if ($url)
+            {
+                $this->redirect($url);
+            }
         }
 
         $this->view['page']      = $page;
@@ -86,30 +87,35 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function action_subpage_add()
     {
-        if (!$this->user->isTeacher()) {
+        if (!$this->user->isTeacher) {
+            # TODO ошибка: недостаточно прав
             $this->redirect('/');
         }
 
-        $page = array();
-        $parent_id = $this->request->param('id');
-        $page['id_parent'] = $parent_id;
+        $page = new Model_Page();
+        $page->id_parent = $this->request->param('id');
 
-        if ($page['id_parent'])
+        if ($page->id_parent)
         {
-            $page['parent'] = $this->methods->getPage($page['id_parent']);
+            $page->parent = Model_Page::get($page->id_parent);
 
-            switch ($page['parent']['type'])
+            switch ($page->parent->type)
             {
-                case Controller_Pages::TYPE_USER_PAGE :
-                            $page_type = Controller_Pages::TYPE_USER_PAGE; break;
-                default :   $page_type = Controller_Pages::TYPE_SITE_PAGE;
+                case Model_Page::TYPE_USER_PAGE :
+                            $page_type = Model_Page::TYPE_USER_PAGE; break;
+                default :   $page_type = Model_Page::TYPE_SITE_PAGE;
             }
-            $page['type'] = $page_type;
+            $page->type = $page_type;
         }
 
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
-            self::save_form();
+            $url = self::form_to_model();
+
+            if ($url)
+            {
+                $this->redirect($url);
+            }
         }
 
         $this->view['page']      = $page;
@@ -118,77 +124,94 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function action_edit()
     {
-        if (!$this->user->isTeacher()) {
+        $id = $this->request->param('id');
+        $page = Model_Page::get($id);
+
+        if ($this->user->isAdmin || $this->user->id == $page->author->id)
+        {
+            if (Security::check(Arr::get($_POST, 'csrf')))
+            {
+                $url = self::form_to_model();
+                
+                if ($url)
+                {
+                    $this->redirect($url);
+                }    
+            }
+
+            $this->view['page'] = $page;
+            $this->template->content = View::factory('templates/page_form', $this->view);
+        } else {
+            # TODO ошибка: недостаточно прав
             $this->redirect('/');
         }
-
-        $id = $this->request->param('id');
-        $page = $this->methods->getPage($id);
-
-        if (Security::check(Arr::get($_POST, 'csrf')))
-        {
-            self::save_form();
-        }
-
-        $this->view['page']      = $page;
-        $this->template->content = View::factory('templates/page_form', $this->view);
     }
 
-    public function delete()
+    public function action_delete()
     {
-        $page_id = $this->request->param('id');
-        $uri = $this->request->param('uri');
+        $id = $this->request->param('id');
+        $page = Model_Page::get($id);
 
-        $page = $this->methods->getPage($page_id, $uri);
+        if ($this->user->isAdmin || $this->user->id == $page->author->id)
+        {
+            $page->delete();
 
-        if ($this->user->isAdmin() || $this->user->id == $page['author']) {
-            $this->methods->deletePage($page_id);
-        }
-
-        if ($page['type'] == Controller_Pages::TYPE_SITE_NEWS){
-            $url = '/';
-        } elseif ($page['id_parent'] != '0'){
-            $url = '/page/' . $page['id_parent'];
+            # правила редиректа
+            if ($page->id_parent != 0) {
+                $url = '/page/' . $page->id_parent;
+            } elseif ($page->type != Model_Page::TYPE_SITE_NEWS) {
+                $url = '/user/' . $page->author->id;
+            } else {
+                $url = '/';
+            }
         } else {
-            $url = '/user/' . $page['author'];
+            # TODO ошибка: недостаточно прав
+            $url = '/';
         }
 
         $this->redirect($url);
     }
 
-    public function save_form()
+    public function form_to_model()
     {
         $id     = (int)Arr::get($_POST, 'id');
         $type   = (int)Arr::get($_POST, 'type');
 
         if ($type) {
-            $data = array(
-                'type'          => $type,
-                'author'        => $this->user->id,
-                'id_parent'     => (int)Arr::get($_POST, 'id_parent', 0),
-                'title'         => Arr::get($_POST, 'title'),
-                'content'       => Arr::get($_POST, 'content'),
-                'uri'           => Arr::get($_POST, 'uri', 'seturi'),
-                'html_content'  => Arr::get($_POST, 'html_content', NULL),
-                'is_menu_item'  => Arr::get($_POST, 'is_menu_item', 0),
-            );
+            $page = new Model_Page();
+            $page->type          = $type;
+            $page->author        = $this->user;
+            $page->id_parent     = (int)Arr::get($_POST, 'id_parent', 0);
+            $page->title         = Arr::get($_POST, 'title');
+            $page->content       = Arr::get($_POST, 'content');
+            $page->is_menu_item  = Arr::get($_POST, 'is_menu_item', 0);
 
-            if ($data['title'])
-            {
-                if ($id) {
-                    $page = $this->methods->updatePage($id, $data);
-                    $url = '/page/' . $id;
-                } else {
-                    $page = $this->methods->newPage($data);
-                    $url = '/page/' . $page[0];
-                }
-
-                $this->redirect($url);
+            if ($page->title) {
+                return self::save_page($page, $id);
             } else {
-
                 return FALSE;
-
+                # TODO ошибка: отсутствует заголовок
             }
+        } else {
+            return FALSE;
+            # TODO ошибка: отсутствует тип страницы
         }
+        
     }
+    
+    public function save_page($page, $id)
+    {
+        if ($id) {
+            $page->id = $id;
+            $page->update();
+            $url = '/page/' . $id;
+        } else {
+            $page = $page->insert();
+            $url = '/page/' . $page->id;
+        }
+        
+        return $url;
+    }
+
+
 }

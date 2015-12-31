@@ -33,18 +33,18 @@
 
         <div class="news">
 
-            <? if($user->status == Controller_User::USER_STATUS_ADMIN): ?>
+            <? if($user->status == Model_User::USER_STATUS_ADMIN): ?>
                 <a class="button green" href="/news/add">Добавить новость</a>
             <? endif ?>
 
             <? foreach ($pages as $page): ?>
 
                 <article class="post">
-                    <h2><a href="/page/<?= $page['id'] ?>/<?= $page['uri'] ?>"><?= $page['title'] ?></a></h2>
+                    <h2><a href="/page/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h2>
                     <div class="body">
-                        <?= $page['content'] ?>
+                        <?= $page->content ?>
                     </div>
-                    <time><?= date_format(date_create($page['date']), 'd F Y, G:i') ?></time>
+                    <time><?= date_format(date_create($page->date), 'd F Y, G:i') ?></time>
                 </article>
 
             <? endforeach; ?>

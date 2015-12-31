@@ -3,55 +3,41 @@
 class Controller_User extends Controller_Base_preDispatch
 {
 
-    const USER_STATUS_ADMIN         = 2;
-    const USER_STATUS_TEACHER       = 1;
-    const USER_STATUS_REGISTERED    = 0;
-    const USER_STATUS_BANNED        = -1;
-
-
     public function action_profile()
     {
         $user_id = $this->request->param('id');
 
-
-        $act = Arr::get($_GET, 'act');
-
+        $act = Arr::get($_GET, 'newStatus');
 
         $viewUser = new Model_User($user_id);
 
-        if ($this->user->isAdmin() && $act):
-            $success = $this->set_user_status($act, $viewUser);
-            $viewUser = new Model_User($user_id);
-        endif;
+        if ($this->user->isAdmin && $act) {
+            $this->view['success'] = self::set_user_status($viewUser, $act);
+        }
 
-
-        $this->user->isTeacher   = $this->user->isTeacher();
-        $this->view['userPages'] = $viewUser->getUserPages($user_id);
+        $this->view['userPages'] = $viewUser->getUserPages();
         $this->view['viewUser']  = $viewUser;
-        $this->view['success']   = isset($success) ? TRUE : FALSE;
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/user/profile', $this->view);
 
     }
 
-    public function set_user_status($act, $viewUser)
+    public function set_user_status($viewUser, $act)
     {
-        switch ($act)
-        {
-            case 'rise'    :
-                return $viewUser->setUserStatus(self::USER_STATUS_TEACHER);
+        switch ($act) {
+            case 'teacher'    :
+                $status = Model_User::USER_STATUS_TEACHER;
                 break;
-            case 'ban'     :
-                return $viewUser->setUserStatus(self::USER_STATUS_BANNED);
+            case 'banned'     :
+                $status = Model_User::USER_STATUS_BANNED;
                 break;
-            case 'degrade' :
-            case 'unban'   :
-                return $viewUser->setUserStatus(self::USER_STATUS_REGISTERED);
+            case 'registered'   :
+                $status = Model_User::USER_STATUS_REGISTERED;
                 break;
+            default        :
+                return FALSE;
         }
-
-        return FALSE;
-
+        return $viewUser->setUserStatus($status);
     }
 
 }

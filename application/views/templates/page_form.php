@@ -1,12 +1,12 @@
 <h1 class="site_category_title">
-	<? if ( isset($page['id']) ):?>
+	<? if ( isset($page->id) ):?>
 		Редактирование
 	<? else:?>
 		Создание
 	<? endif;?>
-	<? switch ($page['type']) {
-		case Controller_Pages::TYPE_SITE_PAGE : echo 'страницы'; break;
-		case Controller_Pages::TYPE_SITE_NEWS : echo 'новости'; break;
+	<? switch ($page->type) {
+		case Model_Page::TYPE_SITE_PAGE : echo 'страницы'; break;
+		case Model_Page::TYPE_SITE_NEWS : echo 'новости'; break;
 	} ?>
 </h1>
 
@@ -15,31 +15,24 @@
 	<form action="/page/add" method="post">
 
 		<?= Form::hidden('csrf', Security::token()); ?>
-		<?= Form::hidden('type', Arr::get($page, 'type', Arr::get($_POST, 'type', Controller_Pages::TYPE_USER_PAGE))); ?>
-		<?= Form::hidden('id', Arr::get($page, 'id',  '')); ?>
-		<?= Form::hidden('id_parent', Arr::get($page, 'id_parent', '0')); ?>
+		<?= Form::hidden('type', $page->type); ?>
+		<?= Form::hidden('id', $page->id); ?>
+		<?= Form::hidden('id_parent', $page->id_parent); ?>
 
 		<h4>Заголовок</h4>
 		<div class="input_text mb30">
-			<input type="text" name="title" value="<?= Arr::get($page, 'title', Arr::get($_POST, 'title' , '')) ?>" />
-		</div>
-
-		<div class="clear">
-			<h4>URI</h4>
-			<div class="input_text mb30">
-				<input type="text" onkeydown="user.inputFilter($(this))" name="uri" value="<?= Arr::get($page, 'uri', Arr::get($_POST, 'uri' , '')) ?>" />
-			</div>
+			<input type="text" name="title" value="<?= $page->title ?>" />
 		</div>
 
 		<h4>Содержание</h4>
 			<textarea name="content" class="redactor" rows="7" >
-				<?= Arr::get($page, 'content', Arr::get($_POST, 'content' , '')) ?>
+				<?= $page->content ?>
 			</textarea>
 
-		<? if ($user->status == Controller_User::USER_STATUS_ADMIN): ?>
+		<? if ($user->status == Model_User::USER_STATUS_ADMIN): ?>
 			<div class="extra_settings mb30">
 				<div class="checkbox dark">
-					<i><input type="checkbox" id="is_menu_item" name="is_menu_item" value="1" <?= isset($page['is_menu_item']) && $page['is_menu_item'] == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') # TODO ?>/></i>
+					<i><input type="checkbox" id="is_menu_item" name="is_menu_item" value="1" <?= isset($page->is_menu_item) && $page->is_menu_item == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') ?>/></i>
 					<label for="is_menu_item">Вынести в меню</label>
 				</div>
 			</div>
@@ -58,9 +51,9 @@
 			<form onerror="alert('form');" class="ajaxfree" id="submitPageFile" method="post" enctype="multipart/form-data" target="transport" action="/ajax/file_transport" accept-charset="utf-8">
 
 				<?= Form::hidden('csrf', Security::token()); ?>
-				<?= Form::hidden('page_id', isset($page['id']) ? $page['id'] : '0' ); # TODO ?>
+				<?= Form::hidden('page_id', isset($page->id) ? $page->id : '0' ); # TODO ?>
 
-				<div id="submit_file_button" class="fl_r button main hide" onclick="callback.savePageFile($(this))" data-id="<?= isset($page['id']) ? $page['id'] : '0' ?>" data-loading-text="Загрузка">Сохранить файл</div>
+				<div id="submit_file_button" class="fl_r button main hide" onclick="callback.savePageFile($(this))" data-id="<?= isset($page->id) ? $page->id : '0' ?>" data-loading-text="Загрузка">Сохранить файл</div>
 				<div class="input_text fl_l"><input id="pageFileTitle" name="title" type="text" autocomplete="0" placeholder="Название" / ></div>
 
 				<div class="r_col">
