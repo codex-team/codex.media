@@ -33,5 +33,16 @@ class Controller_Comments extends Controller_Base_preDispatch
 
         $this->redirect('/page/'.$comment->page_id);
     }
+    
+    public function action_delete()
+    {
+        $comment_id = $this->request->param('comment_id');
+
+        $comment = Model_Comment::get($comment_id);
+
+        $article_id = $comment->delete_comment($this->user);
+
+        $this->redirect('/article/' . $article_id);
+    }
 
 }

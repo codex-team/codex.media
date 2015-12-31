@@ -101,12 +101,38 @@ Class Model_Comments extends Model_preDispatch
 
         return $comments;
     }
-
+    
+    /**
+     * Получаем имя автора по id.
+     */
     public static function getAuthor($id)
     {
         $model_user = new Model_User($id);
         return $model_user->name;
     }
+    
+    /**
+     * Удаляем комментарий и все его подкомментарии
+     */
+    public function delete_comment($user)
+    {
+        // получаем id статьи для редиректа
+        $comment = Dao_Comments::select('*')->where('id', '=', $this->id)->execute();
+        $page_id = $comment[0]['page_id'];
+
+        if ($this->user_id == $user->id)
+        {
+            Dao_Comments::update()
+                ->where('id', '=', $this->id)
+                ->where('parent_id', '=', $this->id)
+                ->set('is_removed', 1)
+                ->execute(); 
+        }
+
+        return $page_id;
+
+    }
+
 
 }
 

@@ -25,9 +25,9 @@
 		<?= $page->content ?>
 	</div>	
 <? endif ?>
-<? if ($page['html_content']): ?>
+<? if ($page->html_content): ?>
 	<div class="page_content">
-		<?= $page['html_content'] ?>
+		<?= $page->html_content ?>
 	</div>	
 <? endif ?>
 
@@ -77,6 +77,11 @@
 	                            document.getElementById('comment_head').innerHTML='Ваш ответ на комментарий пользователя <?= $comment->author_name ?>';">
 	                	[ответить]
 	                </a>
+                    <? if ($user->id == $comments['author']): ?>
+                        <a href="/page/<?= $page->id ?>/<?= $page->uri ?>/delete-comment">
+                            [удалить]
+                        </a>
+                    <? endif; ?>
 				</div>
 			<? endforeach; ?>
 		<? else: ?>
@@ -84,9 +89,9 @@
 		<? endif; ?>
 
 		<h2 id="comment_head">Оставьте комментарий:</h2>
-		<form action="/page/<?= $page['id'] ?>/<?= $page['uri'] ?>/add-comment" method="POST" class="add_comment_form mt20">
+		<form action="/page/<?= $page->id ?>/<?= $page->uri ?>/add-comment" method="POST" class="add_comment_form mt20">
 			<textarea name="text" rows="6"></textarea>
-			<input type="hidden" name="page_id" value="<?= $page['id'] ?>">
+			<input type="hidden" name="page_id" value="<?= $page->id ?>">
 			<input type="hidden" name="parent_id" value="0" id="answer_to_comment"/>
 			<input type="submit" value="Оставить комментарий" />
 		</form>
