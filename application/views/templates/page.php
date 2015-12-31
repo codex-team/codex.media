@@ -1,7 +1,7 @@
 <div>
 <? # блок навигации для возврата к родительской странице ?>
 <? if($page->parent): ?>
-	<a href="/page/<?= $page->parent->id ?>/<?= $page->parent->uri ?>"><?= $page->parent->title ?></a>
+	<a href="/<?= $page->parent->id ?>/<?= $page->parent->uri ?>"><?= $page->parent->title ?></a>
 <? else: ?>
 	<? if($page->type != Model_Page::TYPE_USER_PAGE || $page->is_menu_item == 1): ?>
 		<a href="/">Главная страница</a>
@@ -16,8 +16,8 @@
 </h1>
 
 <? if($user->status == Model_User::USER_STATUS_ADMIN || $user->id == $page->author->id): ?>
-	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/edit">Редактировать</a>
-	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/delete">Удалить</a>
+	<a href="/<?= $page->id ?>/<?= $page->uri ?>/edit">Редактировать</a>
+	<a href="/<?= $page->id ?>/<?= $page->uri ?>/delete">Удалить</a>
 <? endif ?>
 
 <? if ($page->content): ?>
@@ -29,13 +29,13 @@
 <? if ($page->childrens): ?>
 	<ul class="page_childrens childrens_underpage">
 		<? foreach ($page->childrens as $children): ?>
-			<li><a href="/page/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
+			<li><a href="/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
 		<? endforeach ?>
 	</ul>
 <? endif; ?>
 
 <? if($user->status == Model_User::USER_STATUS_ADMIN || $user->id == $page->author->id): ?>
-	<a class="button green" href="/page/<?= $page->id ?>/<?= $page->uri ?>/add-page">Добавить страницу</a>
+	<a class="button green" href="/<?= $page->id ?>/<?= $page->uri ?>/add-page">Добавить страницу</a>
 <? endif ?>
 <? if (isset($files) && $files): ?>
 	<table class="page_files inpage">
@@ -50,6 +50,7 @@
 		<? endforeach ?>
 	</table>
 <? endif; ?>
+
 <div class="page_comments">
 	Комментировать
 	<form action="/addcomment" class="add_comment_form mt20">

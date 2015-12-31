@@ -23,32 +23,28 @@ Route::set('INDEX', '')->defaults(array(
 /**
  *  Pages section
  */
-Route::set('ADD_NEWS_PAGE', 'news/add')->defaults(array(
+
+Route::set('NEW', 'add-<type>', array( 'type' => 'page|news' ))->defaults(array(
     'controller' => 'pages',
-    'action' => 'news_add'
+    'action' => 'add_new'
 ));
 
-Route::set('NEW_BOOK', 'page/add')->defaults(array(
+Route::set('NEW_SUBPAGE', '<id>/<uri>/add-page', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
-    'action' => 'page_add'
+    'action' => 'add_new'
 ));
 
-Route::set('NEW_PAGE', 'page/<id>/<uri>/add-page', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
-    'controller' => 'pages',
-    'action' => 'subpage_add'
-));
-
-Route::set('EDIT_PAGE', 'page/<id>/<uri>/edit', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+Route::set('EDIT_PAGE', '<id>/<uri>/edit', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
     'action' => 'edit'
 ));
 
-Route::set('DELETE_PAGE', 'page/<id>/<uri>/delete', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+Route::set('DELETE_PAGE', '<id>/<uri>/delete', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
     'action' => 'delete'
 ));
 
-Route::set('PAGE', 'page/<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+Route::set('PAGE', '<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
     'action' => 'show_page'
 ));

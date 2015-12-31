@@ -1,5 +1,5 @@
 <h1 class="site_category_title">
-	<? if ( isset($page->id) ):?>
+	<? if (isset($page->id) && $page->id):?>
 		Редактирование
 	<? else:?>
 		Создание
@@ -12,7 +12,15 @@
 
 <div class="page_form">
 
-	<form action="/page/add" method="post">
+	<form action="<? if (isset($page->id) && $page->id): ?>
+						/<?= $page->id ?>/<?= $page->uri ?>/edit
+				  <? else: ?>
+				  	<? if (isset($page->parent->id) && $page->parent->id != 0) : ?>
+				 		/<?= $page->parent->id ?>/<?= $page->parent->uri ?>/add-page
+				  	<? else: ?>
+				  		/add-page
+				  	<? endif; ?>
+				  <? endif; ?>" method="post">
 
 		<?= Form::hidden('csrf', Security::token()); ?>
 		<?= Form::hidden('type', $page->type); ?>
