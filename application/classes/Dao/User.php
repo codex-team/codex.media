@@ -2,7 +2,7 @@
 
 class Dao_User extends Dao_MySQL_Base {
 
-    protected $cache_key = 'user_model';
+    protected $cache_key = 'Dao_User';
 
     protected $table = 'users';
 
