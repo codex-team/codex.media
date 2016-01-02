@@ -142,15 +142,13 @@ class Model_User extends Model_preDispatch
     public function isAdmin()
     {
         if (!$this->id) return false;
-        if ($this->status == self::USER_STATUS_ADMIN) return true;
-        return false;
+        return $this->status == self::USER_STATUS_ADMIN;
     }
 
     public function isTeacher()
     {
         if (!$this->id) return false;
-        if ($this->status >= self::USER_STATUS_TEACHER) return true;
-        return false;
+        return $this->status >= self::USER_STATUS_TEACHER;
     }
 
 

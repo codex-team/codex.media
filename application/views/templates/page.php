@@ -7,8 +7,7 @@
 	<? endif ?>
 	<? foreach ($navigation as $navig_page): ?>
 	» <a <? if ($navig_page->id != $page->id): ?>href="/p/<?= $navig_page->id ?>/<?= $navig_page->uri ?>"<? endif ?> >
-			<?= $navig_page->title ?>
-	  </a>
+			<?= $navig_page->title ?></a>
 	<? endforeach ?>
 </div>
 

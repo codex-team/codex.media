@@ -21,11 +21,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
             $page->childrens  = Model_Page::getChildrenPagesByParent($page->id);
 
-            if ($this->user->isAdmin || $this->user->id == $page->author->id){
-                $this->view['can_modify_this_page'] = true;
-            }else{
-                $this->view['can_modify_this_page'] = false;
-            }
+            $this->view['can_modify_this_page'] = $this->user->isAdmin || $this->user->id == $page->author->id;
 
             $this->view['navigation'] = self::get_navigation_path_array($page->id);
             $this->view['page']       = $page;
