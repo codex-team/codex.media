@@ -9,6 +9,8 @@ class Controller_Pages extends Controller_Base_preDispatch
         $id = $this->request->param('id');
         $uri = $this->request->param('uri');
 
+
+
         $page = Model_Page::get($id);
         if ($page->title)
         {
@@ -16,10 +18,16 @@ class Controller_Pages extends Controller_Base_preDispatch
             {
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
             }
-            
+
             $page->childrens  = Model_Page::getChildrenPagesByParent($page->id);
 
-            $this->view['navigation'] = self::get_navigation_array($page->id);
+            if ($this->user->isAdmin || $this->user->id == $page->author->id){
+                $this->view['can_modify_this_page'] = true;
+            }else{
+                $this->view['can_modify_this_page'] = false;
+            }
+
+            $this->view['navigation'] = self::get_navigation_path_array($page->id);
             $this->view['page']       = $page;
             $this->view['files']      = $this->methods->getPageFiles($page->id);
             $this->template->content  = View::factory('templates/page', $this->view);
@@ -140,27 +148,29 @@ class Controller_Pages extends Controller_Base_preDispatch
         {
             $page->parent = Model_Page::get($page->id_parent);
 
-            switch ($page->parent->type)
-            {
-                case Model_Page::TYPE_USER_PAGE :
-                    return Model_Page::TYPE_USER_PAGE;
-                default :
-                    return Model_Page::TYPE_SITE_PAGE;
+            if ($page->parent->type == Model_Page::TYPE_USER_PAGE){
+                return Model_Page::TYPE_USER_PAGE;
+            } else {
+                return Model_Page::TYPE_SITE_PAGE;
             }
-
         } else {
-
-            switch ($type) {
-                case 'news' :
-                    return Model_Page::TYPE_SITE_NEWS;
-                case 'page' :
-                default :
-                    return Model_Page::TYPE_USER_PAGE;
+            if ($type == 'page'){
+                return Model_Page::TYPE_USER_PAGE;
+            } else {
+                return Model_Page::TYPE_SITE_NEWS;
             }
         }
     }
 
-    public function get_navigation_array($id)
+    /**
+     * Function for getting path from root (main page or user's page) to this page
+     * Returns array of Pages
+     *
+     * @author Taly
+     * @param $id               this page id
+     * @return array            array of objects, parent pages from root + this page
+     */
+    public function get_navigation_path_array($id)
     {
         $navig_array = array();
 

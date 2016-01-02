@@ -10,9 +10,9 @@ class Model_Page extends Model_preDispatch
     public $title           = '';
     public $content         = '';
     public $date            = '';
-    public $author          = '';
     public $is_menu_item    = '';
     public $uri             = '';
+    public $author;
     public $parent;
 
     const TYPE_SITE_PAGE = 1;

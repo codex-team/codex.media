@@ -22,7 +22,7 @@
 		<a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank"><?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?></a>
 	<? endif ?>
 </div>
-<? if (isset($success) && $success): ?>
+<? if (isset($setUserStatus) && $setUserStatus): ?>
 	<div class="info_block align_c">
 		Обновления сохранены
 	</div>
