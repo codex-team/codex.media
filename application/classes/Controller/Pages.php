@@ -117,14 +117,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             $page->parent = Model_Page::get($page->id_parent);
             $page->delete();
 
-            # правила редиректа
-            if ($page->id_parent != 0) {
-                $url = '/p/' . $page->parent->id . '/' . $page->parent->uri;
-            } elseif ($page->type != Model_Page::TYPE_SITE_NEWS) {
-                $url = '/user/' . $page->author->id;
-            } else {
-                $url = '/';
-            }
+            $url = self::get_url_to_parent_page($page);
 
         } else {
 
@@ -209,6 +202,17 @@ class Controller_Pages extends Controller_Base_preDispatch
         }
 
         return $page;
+    }
+
+    public function get_url_to_parent_page($page)
+    {
+        if ($page->id_parent != 0) {
+            return '/p/' . $page->parent->id . '/' . $page->parent->uri;
+        } elseif ($page->type != Model_Page::TYPE_SITE_NEWS) {
+            return '/user/' . $page->author->id;
+        } else {
+            return '/';
+        }
     }
 
     public function error_page($error_text)
