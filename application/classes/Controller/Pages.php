@@ -16,15 +16,13 @@ class Controller_Pages extends Controller_Base_preDispatch
             {
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
             }
-
-            $navigation = self::get_navigation_array($page->id);
-
+            
             $page->childrens  = Model_Page::getChildrenPagesByParent($page->id);
 
-            $this->view['navigation'] = $navigation;
-            $this->view['page']      = $page;
-            $this->view['files']     = $this->methods->getPageFiles($page->id);
-            $this->template->content = View::factory('templates/page', $this->view);
+            $this->view['navigation'] = self::get_navigation_array($page->id);
+            $this->view['page']       = $page;
+            $this->view['files']      = $this->methods->getPageFiles($page->id);
+            $this->template->content  = View::factory('templates/page', $this->view);
 
         } else {
 
