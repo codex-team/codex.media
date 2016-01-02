@@ -54,6 +54,8 @@ class Controller_Pages extends Controller_Base_preDispatch
             return FALSE;
         }
 
+        $errors = array();
+
         if (Security::check(Arr::get($_POST, 'csrf')))
         {
             $page = self::get_form();
@@ -62,10 +64,13 @@ class Controller_Pages extends Controller_Base_preDispatch
             {
                 $page = self::save_page($page);
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
+            } else {
+                $errors['title'] = 'Заголовок страницы не может быть пустым';
             }
         }
 
         $this->view['page']      = $page;
+        $this->view['errors']    = $errors;
         $this->template->content = View::factory('templates/page_form', $this->view);
     }
 
@@ -73,6 +78,8 @@ class Controller_Pages extends Controller_Base_preDispatch
     {
         $id = $this->request->param('id');
         $page = Model_Page::get($id);
+
+        $errors = array();
 
         if ($this->user->isAdmin || $this->user->id == $page->author->id)
         {
@@ -84,10 +91,13 @@ class Controller_Pages extends Controller_Base_preDispatch
                 {
                     $page = self::save_page($page);
                     $this->redirect('/p/' . $page->id . '/' . $page->uri);
+                } else {
+                    $errors['title'] = 'Заголовок страницы не может быть пустым';
                 }
             }
 
-            $this->view['page'] = $page;
+            $this->view['page']      = $page;
+            $this->view['errors']    = $errors;
             $this->template->content = View::factory('templates/page_form', $this->view);
 
         } else {

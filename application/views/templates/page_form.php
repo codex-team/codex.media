@@ -13,9 +13,9 @@
 
 <div class="page_form">
 
-	<? if (!$page->title): ?>
+	<? if (isset($errors['title']) &&  $errors['title']): ?>
 		<div class="form_error align_c">
-			Заголовок страницы не может быть пустым
+			<?= $errors['title'] ?>
 		</div>
 		<br>
 	<? endif; ?>
