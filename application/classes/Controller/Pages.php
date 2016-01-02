@@ -9,9 +9,8 @@ class Controller_Pages extends Controller_Base_preDispatch
         $id = $this->request->param('id');
         $uri = $this->request->param('uri');
 
+        $page = new Model_Page($id);
 
-
-        $page = Model_Page::get($id);
         if ($page->title)
         {
             if (!$uri)
@@ -66,7 +65,9 @@ class Controller_Pages extends Controller_Base_preDispatch
             {
                 $page = self::save_page($page);
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
+
             } else {
+
                 $errors['title'] = 'Заголовок страницы не может быть пустым';
             }
         }
@@ -79,7 +80,7 @@ class Controller_Pages extends Controller_Base_preDispatch
     public function action_edit_page()
     {
         $id = $this->request->param('id');
-        $page = Model_Page::get($id);
+        $page = new Model_Page($id);
 
         $errors = array();
 
@@ -112,11 +113,11 @@ class Controller_Pages extends Controller_Base_preDispatch
     public function action_delete_page()
     {
         $id = $this->request->param('id');
-        $page = Model_Page::get($id);
+        $page = new Model_Page($id);
 
         if ($this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher))
         {
-            $page->parent = Model_Page::get($page->id_parent);
+            $page->parent = new Model_Page($page->id_parent);
             $page->delete();
 
             $url = self::get_url_to_parent_page($page);
@@ -140,20 +141,18 @@ class Controller_Pages extends Controller_Base_preDispatch
      */
     public function set_page_type($type, $page)
     {
-        if ($page->id_parent)
+        if ($type == 'news')
         {
-            $page->parent = Model_Page::get($page->id_parent);
+            return Model_Page::TYPE_SITE_NEWS;
 
-            if ($page->parent->type == Model_Page::TYPE_USER_PAGE){
+        } else {
+
+            $page->parent = new Model_Page($page->id_parent);
+
+            if ($page->parent->type == Model_Page::TYPE_USER_PAGE || $page->parent->id == 0){
                 return Model_Page::TYPE_USER_PAGE;
             } else {
                 return Model_Page::TYPE_SITE_PAGE;
-            }
-        } else {
-            if ($type == 'page'){
-                return Model_Page::TYPE_USER_PAGE;
-            } else {
-                return Model_Page::TYPE_SITE_NEWS;
             }
         }
     }
@@ -172,7 +171,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         while ($id != 0)
         {
-            $page = Model_Page::get($id);
+            $page = new Model_Page($id);
 
             array_unshift($navig_array, $page);
 

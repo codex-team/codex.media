@@ -23,7 +23,14 @@ class Model_Page extends Model_preDispatch
     const STATUS_HIDDEN_PAGE  = 1;
     const STATUS_REMOVED_PAGE = 2;
 
-    public function __construct(){}
+    public function __construct($id = 0)
+    {
+        if ( !$id ) return;
+
+        $page = self::get($id);
+
+        self::fillByRow($page);
+    }
 
     private function fillByRow($page_row)
     {
@@ -38,7 +45,7 @@ class Model_Page extends Model_preDispatch
             $this->date            = $page_row['date'];
             $this->is_menu_item    = $page_row['is_menu_item'];
 
-            $this->uri             = self::getPageUri();
+            $this->uri             = $this->getPageUri();
             $this->author          = new Model_User($page_row['author']);
         }
 
@@ -58,7 +65,7 @@ class Model_Page extends Model_preDispatch
 
         if ($page)
         {
-            return $this->get($page);
+            return new Model_Page($page);
         }
     }
 
@@ -85,7 +92,7 @@ class Model_Page extends Model_preDispatch
             ->clearcache('page:' . $this->id)
             ->execute();
 
-        $childrens = self::getChildrenPagesByParent($this->id);
+        $childrens = $this->getChildrenPagesByParent($this->id);
 
         foreach ($childrens as $page) {
             $page->delete();
@@ -94,17 +101,13 @@ class Model_Page extends Model_preDispatch
         return true;
     }
 
-    public static function get($id = 0)
+    public function get($id = 0)
     {
-        $page = Dao_Pages::select()
+        return Dao_Pages::select()
                     ->where('id', '=', $id)
                     ->limit(1)
                     ->cached(Date::MINUTE * 30, 'page:' . $id)
                     ->execute();
-
-        $model = new Model_Page();
-
-        return $model->fillByRow($page);
     }
 
     public static function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0)

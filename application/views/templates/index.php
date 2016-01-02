@@ -13,7 +13,7 @@
     Рекомендуем
     <a href="">Прием в ОУ</a>
     <a href="">Расписание уроков</a>
-    <a href="/p/22">Файлообменник</a>
+    <a href="/p/22/fayloobmennik">Файлообменник</a>
 </div>
 
 <div class="clear">
