@@ -85,6 +85,12 @@ class Model_Page extends Model_preDispatch
             ->clearcache('page:' . $this->id)
             ->execute();
 
+        $childrens = self::getChildrenPagesByParent($this->id);
+
+        foreach ($childrens as $page) {
+            $page->delete();
+        }
+
         return true;
     }
 

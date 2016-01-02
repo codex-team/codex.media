@@ -24,27 +24,27 @@ Route::set('INDEX', '')->defaults(array(
  *  Pages section
  */
 
-Route::set('NEW', 'add-<type>', array( 'type' => 'page|news' ))->defaults(array(
+#Route::set('NEW', 'p/add-<type>', array( 'type' => 'page|news' ))->defaults(array(
+#    'controller' => 'pages',
+#    'action' => 'add_new'
+#));
+
+Route::set('NEW_PAGE', 'p/(<id>(/<uri>/))add-<type>', array( 'id' => $DIGIT , 'uri' => $STRING, 'type' => 'page|news' ))->defaults(array(
     'controller' => 'pages',
-    'action' => 'add_new'
+    'action' => 'add_page'
 ));
 
-Route::set('NEW_SUBPAGE', '<id>/<uri>/add-page', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+Route::set('EDIT_PAGE', 'p/<id>/<uri>/edit', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
-    'action' => 'add_new'
+    'action' => 'edit_page'
 ));
 
-Route::set('EDIT_PAGE', '<id>/<uri>/edit', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+Route::set('DELETE_PAGE', 'p/<id>/<uri>/delete', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
-    'action' => 'edit'
+    'action' => 'delete_page'
 ));
 
-Route::set('DELETE_PAGE', '<id>/<uri>/delete', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
-    'controller' => 'pages',
-    'action' => 'delete'
-));
-
-Route::set('PAGE', '<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+Route::set('PAGE', 'p/<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
     'action' => 'show_page'
 ));

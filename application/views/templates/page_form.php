@@ -4,21 +4,29 @@
 	<? else:?>
 		Создание
 	<? endif;?>
-	<? switch ($page->type) {
-		case Model_Page::TYPE_SITE_PAGE : echo 'страницы'; break;
-		case Model_Page::TYPE_SITE_NEWS : echo 'новости'; break;
-	} ?>
+	<? if ($page->type == Model_Page::TYPE_SITE_NEWS): ?>
+		новости
+	<? else: ?>
+		страницы
+	<? endif ?>
 </h1>
 
 <div class="page_form">
 
+	<? if (!$page->title): ?>
+		<div class="form_error align_c">
+			Заголовок страницы не может быть пустым
+		</div>
+		<br>
+	<? endif; ?>
+
 	<form action="<? if (isset($page->id) && $page->id): ?>
-						/<?= $page->id ?>/<?= $page->uri ?>/edit
+						/p/<?= $page->id ?>/<? if ($page->uri != ''): echo $page->uri; else: echo 'no-title'; endif ?>/edit
 				  <? else: ?>
 				  	<? if (isset($page->parent->id) && $page->parent->id != 0) : ?>
-				 		/<?= $page->parent->id ?>/<?= $page->parent->uri ?>/add-page
+				 		/p/<?= $page->parent->id ?>/<?= $page->parent->uri ?>/add-page
 				  	<? else: ?>
-				  		/add-page
+				  		/p/add-page
 				  	<? endif; ?>
 				  <? endif; ?>" method="post">
 

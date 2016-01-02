@@ -14,16 +14,14 @@ class Controller_Pages extends Controller_Base_preDispatch
         {
             if (!$uri)
             {
-                $this->redirect('/' . $page->id . '/' . $page->uri);
+                $this->redirect('/p/' . $page->id . '/' . $page->uri);
             }
 
-            if ($page->id_parent)
-            {
-                $page->parent = Model_Page::get($page->id_parent);
-            }
+            $navigation = self::get_navigation_array($page->id);
 
             $page->childrens  = Model_Page::getChildrenPagesByParent($page->id);
 
+            $this->view['navigation'] = $navigation;
             $this->view['page']      = $page;
             $this->view['files']     = $this->methods->getPageFiles($page->id);
             $this->template->content = View::factory('templates/page', $this->view);
@@ -35,49 +33,24 @@ class Controller_Pages extends Controller_Base_preDispatch
         }
     }
 
-    public function action_add_new()
+    public function action_add_page()
     {
         if (!$this->user->isTeacher())
         {
-            self::error_page('Недостаточно прав для совершения данного действия');
+            self::error_page('Недостаточно прав для создания страницы');
             return FALSE;
         }
 
         $page = new Model_Page();
 
-        $type = $this->request->param('type');
+        $param_type = $this->request->param('type');
+        $page->id_parent = $this->request->param('id');
 
-        if (isset($type))
-        {
-            switch ($this->request->param('type')) {
-                case 'news' :
-                    $page->type = Model_Page::TYPE_SITE_NEWS;
-                    break;
-                case 'page' :
-                default :
-                    $page->type = Model_Page::TYPE_USER_PAGE;
-            }
-        } else {
-
-            $page->id_parent = $this->request->param('id');
-
-            if ($page->id_parent)
-            {
-                $page->parent = Model_Page::get($page->id_parent);
-
-                switch ($page->parent->type)
-                {
-                    case Model_Page::TYPE_USER_PAGE :
-                                $page_type = Model_Page::TYPE_USER_PAGE; break;
-                    default :   $page_type = Model_Page::TYPE_SITE_PAGE;
-                }
-                $page->type = $page_type;
-            }
-        }
+        $page->type = self::set_page_type($param_type, $page);
 
         if (!$this->user->isAdmin() && $page->type != Model_Page::TYPE_USER_PAGE)
         {
-            self::error_page('Недостаточно прав для совершения данного действия');
+            self::error_page('Недостаточно прав для создания новости или страницы сайта');
             return FALSE;
         }
 
@@ -85,11 +58,10 @@ class Controller_Pages extends Controller_Base_preDispatch
         {
             $page = self::get_form();
 
-            if ($page->title && $page->type)
+            if ($page->title)
             {
-                $this->redirect(self::save_page($page));
-            } else {
-                $page->uri = 'no-title';
+                $page = self::save_page($page);
+                $this->redirect('/p/' . $page->id . '/' . $page->uri);
             }
         }
 
@@ -97,7 +69,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->template->content = View::factory('templates/page_form', $this->view);
     }
 
-    public function action_edit()
+    public function action_edit_page()
     {
         $id = $this->request->param('id');
         $page = Model_Page::get($id);
@@ -108,49 +80,99 @@ class Controller_Pages extends Controller_Base_preDispatch
             {
                 $page = self::get_form();
 
-                if ($page->title && $page->type)
+                if ($page->title)
                 {
-                    $this->redirect(self::save_page($page));
-                } else {
-                    $page->uri = 'no-title';
+                    $page = self::save_page($page);
+                    $this->redirect('/p/' . $page->id . '/' . $page->uri);
                 }
             }
 
             $this->view['page'] = $page;
             $this->template->content = View::factory('templates/page_form', $this->view);
+
         } else {
 
-            self::error_page('Недостаточно прав для совершения данного действия');
+            self::error_page('Недостаточно прав для редактирования страницы');
             return FALSE;
-
         }
     }
 
-    public function action_delete()
+    public function action_delete_page()
     {
         $id = $this->request->param('id');
         $page = Model_Page::get($id);
 
         if ($this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher))
         {
+            $page->parent = Model_Page::get($page->id_parent);
             $page->delete();
 
             # правила редиректа
             if ($page->id_parent != 0) {
-                $url = '/' . $page->id_parent;
+                $url = '/p/' . $page->parent->id . '/' . $page->parent->uri;
             } elseif ($page->type != Model_Page::TYPE_SITE_NEWS) {
                 $url = '/user/' . $page->author->id;
             } else {
                 $url = '/';
             }
+
         } else {
 
-            self::error_page('Недостаточно прав для совершения данного действия');
+            self::error_page('Недостаточно прав для удаления страницы');
             return FALSE;
-
         }
 
         $this->redirect($url);
+    }
+
+    /**
+     * Returns new page's type
+     *
+     * @author              Taly
+     * @param $type         var $type from params request
+     * @param $page         object Model_Page
+     * @return int          page's type
+     */
+    public function set_page_type($type, $page)
+    {
+        if ($page->id_parent)
+        {
+            $page->parent = Model_Page::get($page->id_parent);
+
+            switch ($page->parent->type)
+            {
+                case Model_Page::TYPE_USER_PAGE :
+                    return Model_Page::TYPE_USER_PAGE;
+                default :
+                    return Model_Page::TYPE_SITE_PAGE;
+            }
+
+        } else {
+
+            switch ($type) {
+                case 'news' :
+                    return Model_Page::TYPE_SITE_NEWS;
+                case 'page' :
+                default :
+                    return Model_Page::TYPE_USER_PAGE;
+            }
+        }
+    }
+
+    public function get_navigation_array($id)
+    {
+        $navig_array = array();
+
+        while ($id != 0)
+        {
+            $page = Model_Page::get($id);
+
+            array_unshift($navig_array, $page);
+
+            $id = $page->id_parent;
+        }
+
+        return $navig_array;
     }
 
     public function get_form()
@@ -167,7 +189,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         return $page;
     }
-    
+
     public function save_page($page)
     {
         if ($page->id) {
@@ -175,8 +197,8 @@ class Controller_Pages extends Controller_Base_preDispatch
         } else {
             $page = $page->insert();
         }
-        
-        return '/' . $page->id;
+
+        return $page;
     }
 
     public function error_page($error_text)

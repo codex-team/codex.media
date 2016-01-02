@@ -13,7 +13,7 @@
     Рекомендуем
     <a href="">Прием в ОУ</a>
     <a href="">Расписание уроков</a>
-    <a href="/22">Файлообменник</a>
+    <a href="/p/22">Файлообменник</a>
 </div>
 
 <div class="clear">
@@ -34,13 +34,15 @@
         <div class="news">
 
             <? if($user->status == Model_User::USER_STATUS_ADMIN): ?>
-                <a class="button green" href="/add-news">Добавить новость</a>
+                <article class="post">
+                    <a class="button green" href="/p/add-news">Добавить новость</a>
+                </article>
             <? endif ?>
 
             <? foreach ($pages as $page): ?>
 
                 <article class="post">
-                    <h2><a href="/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h2>
+                    <h2><a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h2>
                     <div class="body">
                         <?= $page->content ?>
                     </div>

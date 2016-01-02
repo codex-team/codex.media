@@ -60,11 +60,11 @@
 	<h2>Страницы пользователя</h2>
 	<ul>
 	<? if($user->id == $viewUser->id && $user->isTeacher): ?>
-		<a class="button green" href="/add-page">Создать страницу</a>
+		<a class="button green" href="/p/add-page">Создать страницу</a>
 	<? endif?>
 	<? if ($userPages): ?>
 		<? foreach ($userPages as $page): ?>
-			<li><h3><a href="/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h3></li>
+			<li><h3><a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h3></li>
 		<? endforeach; ?>
 	<? else: ?>
 		пользователь пока еще не создал ни одной страницы
