@@ -6,7 +6,7 @@
 		<?= $viewUser->name ?>
 		<?
 			switch ($viewUser->status){
-				case Model_User::USER_STATUS_ADMIN 	: echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
+				case Model_User::USER_STATUS_ADMIN 	    : echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
 				case Model_User::USER_STATUS_TEACHER 	: echo "[преподаватель]"; break;
 				case Model_User::USER_STATUS_BANNED 	: echo "[заблокирован]"; break;
 		   	}
