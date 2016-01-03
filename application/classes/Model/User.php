@@ -73,7 +73,7 @@ class Model_User extends Model_preDispatch
             $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
             $this->lastOnline       = self::getLastOnlineTimestamp();
 
-            if (!$user || $user['id'] != (int)Cookie::get(Controller_Auth_Base::COOKIE_USER_ID, '')) $this->isMe = false;
+            $this->isMe = $user['id'] == (int)Cookie::get(Controller_Auth_Base::COOKIE_USER_ID, '');
         }
     }
 

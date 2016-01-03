@@ -42,7 +42,7 @@
 		<? endif ?>
 	<? endif ?>
 
-	<? if ($user->id == $viewUser->id): ?>
+	<? if ($viewUser->isMe): ?>
 		<? if (!$viewUser->vk && $viewUser->email): ?>
 			<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
 		<? else: ?>
@@ -62,7 +62,7 @@
 
 	<h2>Страницы пользователя</h2>
 	<ul>
-	<? if($user->id == $viewUser->id && $user->isTeacher): ?>
+	<? if($viewUser->isMe && $user->isTeacher): ?>
 		<li><a class="button green" href="/p/add-page">Создать страницу</a></li>
 	<? endif?>
 	<? if ($userPages): ?>
