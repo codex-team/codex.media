@@ -66,7 +66,7 @@
 							пользователю <?= $comment->parent_name ?>
 						<? endif; ?>
 					</i>
-					<a onclick="document.getElementById('answer_to_comment').value='<?= $comment->author ?>';
+					<a onclick="document.getElementById('answer_to_comment').value='<?= $comment->id ?>';
 	                            document.getElementById('comment_head').innerHTML='Ваш ответ на комментарий пользователя <?= $comment->author_name ?>';">
 	                	[ответить]
 	                </a>
@@ -92,12 +92,3 @@
 		<p>Комментарии доступны только зарегистрированным пользователям.</p>
 	<? endif; ?>
 </div>
-
-<? if ($user->id): ?>
-	<div class="page_comments">
-		Комментировать
-		<form action="/addcomment" class="add_comment_form mt20">
-			<textarea name="text" rows="6"></textarea>
-		</form>
-	</div>
-<? endif ?>

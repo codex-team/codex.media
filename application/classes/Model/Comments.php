@@ -24,7 +24,7 @@ Class Model_Comments extends Model_preDispatch
 	 */	
 	public static function get($id = 0)
 	{
-		$comment_row = Dao_Comments::select()->where('id', '=', $id);
+		$comment_row = Dao_Comments::select()->where('id', '=', $id)->limit(1)->execute();
 
 		$model = new Model_Comments();
 
@@ -71,7 +71,7 @@ Class Model_Comments extends Model_preDispatch
             $this->dt_create    = $comment_row['dt_create'];
             $this->is_removed   = $comment_row['is_removed'];   
             $this->author_name  = self::getAuthor($comment_row['author']);
-            $this->parent_name  = self::getAuthor($comment_row['parent_id']);
+            $this->parent_name  = self::getAuthorByCommentId($comment_row['parent_id']);
         }
 
         return $this;
@@ -111,19 +111,33 @@ Class Model_Comments extends Model_preDispatch
         return $model_user->name;
     }
     
+     /**
+     * Получаем имя автора по id комментария.
+     */
+    public static function getAuthorByCommentId($id)
+    {
+        $comment = self::get($id);
+        
+        return self::getAuthor($comment->author);
+    }
+    
     /**
      * Удаляем комментарий и все его подкомментарии
      */
     public function delete_comment($user)
     {
         // получаем id статьи для редиректа
-        $comment = Dao_Comments::select('*')->where('id', '=', $this->id)->execute();
-        $page_id = $comment[0]['page_id'];
+        $comment = Dao_Comments::select()->where('id', '=', $this->id)->limit(1)->execute();
+        $page_id = $comment['page_id'];
 
         if ($this->author == $user->id)
         {
             Dao_Comments::update()
                 ->where('id', '=', $this->id)
+                ->set('is_removed', 1)
+                ->execute(); 
+            
+            Dao_Comments::update()
                 ->where('parent_id', '=', $this->id)
                 ->set('is_removed', 1)
                 ->execute(); 

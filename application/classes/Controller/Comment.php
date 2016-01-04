@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Comments extends Controller_Base_preDispatch
+class Controller_Comment extends Controller_Base_preDispatch
 {
 
 	public function action_add()
@@ -30,8 +30,10 @@ class Controller_Comments extends Controller_Base_preDispatch
         $comment->root_id = 0;
 
         $comment->insert();
+        
+        $page = new Model_Page($comment->page_id);
 
-        $this->redirect('/page/'.$comment->page_id);
+        $this->redirect('/p/'.$page->id.'/'.$page->uri);
     }
     
     public function action_delete()
@@ -41,8 +43,10 @@ class Controller_Comments extends Controller_Base_preDispatch
         $comment = Model_Comments::get($comment_id);
 
         $article_id = $comment->delete_comment($this->user);
+        
+        $page = new Model_Page($comment->page_id);
 
-        $this->redirect('/article/' . $article_id);
+        $this->redirect('/p/'.$page->id.'/'.$page->uri);
     }
 
 }
