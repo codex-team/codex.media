@@ -7,12 +7,13 @@ class Controller_User extends Controller_Base_preDispatch
     {
         $user_id = $this->request->param('id');
 
-        $act = Arr::get($_GET, 'newStatus');
+        $new_status = Arr::get($_GET, 'newStatus');
 
         $viewUser = new Model_User($user_id);
 
-        if ($this->user->isAdmin && $act) {
-            $this->view['success'] = self::set_user_status($viewUser, $act);
+        if ($this->user->isAdmin && $new_status)
+        {
+            $this->view['setUserStatus'] = self::set_user_status($viewUser, $new_status);
         }
 
         $this->view['userPages'] = $viewUser->getUserPages();

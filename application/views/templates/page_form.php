@@ -1,18 +1,34 @@
 <h1 class="site_category_title">
-	<? if ( isset($page->id) ):?>
+	<? if (isset($page->id) && $page->id):?>
 		Редактирование
 	<? else:?>
 		Создание
 	<? endif;?>
-	<? switch ($page->type) {
-		case Model_Page::TYPE_SITE_PAGE : echo 'страницы'; break;
-		case Model_Page::TYPE_SITE_NEWS : echo 'новости'; break;
-	} ?>
+	<? if ($page->type == Model_Page::TYPE_SITE_NEWS): ?>
+		новости
+	<? else: ?>
+		страницы
+	<? endif ?>
 </h1>
 
 <div class="page_form">
 
-	<form action="/page/add" method="post">
+	<? if (isset($errors['title']) &&  $errors['title']): ?>
+		<div class="form_error align_c">
+			<?= $errors['title'] ?>
+		</div>
+		<br>
+	<? endif; ?>
+
+	<form action="<? if (isset($page->id) && $page->id): ?>
+						/p/<?= $page->id ?>/<? if ($page->uri != ''): echo $page->uri; else: echo 'no-title'; endif ?>/edit
+				  <? else: ?>
+				  	<? if (isset($page->parent->id) && $page->parent->id != 0) : ?>
+				 		/p/<?= $page->parent->id ?>/<?= $page->parent->uri ?>/add-page
+				  	<? else: ?>
+				  		/p/add-page
+				  	<? endif; ?>
+				  <? endif; ?>" method="post">
 
 		<?= Form::hidden('csrf', Security::token()); ?>
 		<?= Form::hidden('type', $page->type); ?>

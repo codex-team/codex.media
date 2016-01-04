@@ -1,47 +1,40 @@
 <div>
-<? # блок навигации для возврата к родительской странице ?>
-<? if($page->parent): ?>
-	<a href="/page/<?= $page->parent->id ?>/<?= $page->parent->uri ?>"><?= $page->parent->title ?></a>
-<? else: ?>
-	<? if($page->type != Model_Page::TYPE_USER_PAGE || $page->is_menu_item == 1): ?>
+	<? # блок навигации ?>
+	<? if($navigation[0]->type != Model_Page::TYPE_USER_PAGE || $navigation[0]->is_menu_item == 1): ?>
 		<a href="/">Главная страница</a>
 	<? else: ?>
-		<a href="/user/<?= $page->author->id ?>">К профилю автора</a>
+		<a href="/user/<?= $page->author->id ?>"><?= $page->author->name ?></a>
 	<? endif ?>
-<? endif ?>
+	<? foreach ($navigation as $navig_page): ?>
+	» <a <? if ($navig_page->id != $page->id): ?>href="/p/<?= $navig_page->id ?>/<?= $navig_page->uri ?>"<? endif ?> >
+			<?= $navig_page->title ?></a>
+	<? endforeach ?>
 </div>
 
 <h1 class="page_title">
 	<?= $page->title ?>
 </h1>
 
-<? if($user->status == Model_User::USER_STATUS_ADMIN || $user->id == $page->author->id): ?>
-	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/edit">Редактировать</a>
-	<a href="/page/<?= $page->id ?>/<?= $page->uri ?>/delete">Удалить</a>
-<? endif ?>
+<div class="page_content">
+	<?= $page->content ?>
+	<? if ($page->content): echo "<br>"; endif ?>
+	<? if($can_modify_this_page): ?>
+		<a class="button green" href="/p/<?= $page->id ?>/<?= $page->uri ?>/edit">Редактировать</a>
+		<a class="button gray" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete">Удалить</a>
+	<? endif ?>
+</div>
 
-<? if ($page->content): ?>
-	<div class="page_content">
-		<?= $page->content ?>
-	</div>	
-<? endif ?>
-<? if ($page->html_content): ?>
-	<div class="page_content">
-		<?= $page->html_content ?>
-	</div>	
-<? endif ?>
-
-<? if ($page->childrens): ?>
+<?  ?>
+<? if ($page->childrens || $can_modify_this_page): ?>
 	<ul class="page_childrens childrens_underpage">
 		<? foreach ($page->childrens as $children): ?>
-			<li><a href="/page/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
+			<li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
 		<? endforeach ?>
+		<? if($can_modify_this_page): ?>
+			<li><a class="button green" href="/p/<?= $page->id ?>/<?= $page->uri ?>/add-page">Добавить страницу</a></li>
+		<? endif ?>
 	</ul>
 <? endif; ?>
-
-<? if($user->status == Model_User::USER_STATUS_ADMIN || $user->id == $page->author->id): ?>
-	<a class="button green" href="/page/<?= $page->id ?>/<?= $page->uri ?>/add-page">Добавить страницу</a>
-<? endif ?>
 
 <? if (isset($files) && $files): ?>
 	<table class="page_files inpage">
@@ -100,3 +93,11 @@
 	<? endif; ?>
 </div>
 
+<? if ($user->id): ?>
+	<div class="page_comments">
+		Комментировать
+		<form action="/addcomment" class="add_comment_form mt20">
+			<textarea name="text" rows="6"></textarea>
+		</form>
+	</div>
+<? endif ?>

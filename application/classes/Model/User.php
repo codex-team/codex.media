@@ -73,7 +73,7 @@ class Model_User extends Model_preDispatch
             $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
             $this->lastOnline       = self::getLastOnlineTimestamp();
 
-            if (!$user || $user['id'] != (int)Cookie::get(Controller_Auth_Base::COOKIE_USER_ID, '')) $this->isMe = false;
+            $this->isMe = $user['id'] == (int)Cookie::get(Controller_Auth_Base::COOKIE_USER_ID, '');
         }
     }
 
@@ -141,15 +141,13 @@ class Model_User extends Model_preDispatch
     public function isAdmin()
     {
         if (!$this->id) return false;
-        if ($this->status == self::USER_STATUS_ADMIN) return true;
-        return false;
+        return $this->status == self::USER_STATUS_ADMIN;
     }
 
     public function isTeacher()
     {
         if (!$this->id) return false;
-        if ($this->status >= self::USER_STATUS_TEACHER) return true;
-        return false;
+        return $this->status >= self::USER_STATUS_TEACHER;
     }
 
 

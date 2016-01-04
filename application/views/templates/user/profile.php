@@ -6,7 +6,7 @@
 		<?= $viewUser->name ?>
 		<?
 			switch ($viewUser->status){
-				case Model_User::USER_STATUS_ADMIN 	: echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
+				case Model_User::USER_STATUS_ADMIN 	    : echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
 				case Model_User::USER_STATUS_TEACHER 	: echo "[преподаватель]"; break;
 				case Model_User::USER_STATUS_BANNED 	: echo "[заблокирован]"; break;
 		   	}
@@ -22,12 +22,13 @@
 		<a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank"><?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?></a>
 	<? endif ?>
 </div>
-<? if (isset($success) && $success): ?>
+<? if (isset($setUserStatus) && $setUserStatus): ?>
 	<div class="info_block align_c">
 		Обновления сохранены
 	</div>
 <? endif; ?>
 <div class="profile_panel clear">
+
 	<? if ($user->isAdmin): ?>
 		<? if (!$viewUser->isTeacher): ?>
 			<a class="button" href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a>
@@ -41,30 +42,32 @@
 		<? endif ?>
 	<? endif ?>
 
-	<? if (!$viewUser->vk && $viewUser->email): ?>
-		<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
-	<? else: ?>
-		<a class="button" href="/auth/vk?state=remove">Открепить профиль ВК</a>
-	<? endif; ?>
-	<? if (!$viewUser->facebook && $viewUser->email): ?>
-		<a class="button" href="/auth/fb?state=attach">Прикрепить профиль FB</a>
-	<? else: ?>
-		<a class="button" href="/auth/fb?state=remove">Открепить профиль FB</a>
-	<? endif; ?>
-	<? if (!$viewUser->twitter && $viewUser->email): ?>
-		<a class="button" href="/auth/tw?state=attach">Прикрепить профиль TW</a>
-	<? else: ?>
-		<a class="button" href="/auth/tw?state=remove">Открепить профиль TW</a>
-	<? endif; ?>
+	<? if ($viewUser->isMe): ?>
+		<? if (!$viewUser->vk && $viewUser->email): ?>
+			<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
+		<? else: ?>
+			<a class="button" href="/auth/vk?state=remove">Открепить профиль ВК</a>
+		<? endif; ?>
+		<? if (!$viewUser->facebook && $viewUser->email): ?>
+			<a class="button" href="/auth/fb?state=attach">Прикрепить профиль FB</a>
+		<? else: ?>
+			<a class="button" href="/auth/fb?state=remove">Открепить профиль FB</a>
+		<? endif; ?>
+		<? if (!$viewUser->twitter && $viewUser->email): ?>
+			<a class="button" href="/auth/tw?state=attach">Прикрепить профиль TW</a>
+		<? else: ?>
+			<a class="button" href="/auth/tw?state=remove">Открепить профиль TW</a>
+		<? endif ?>
+	<? endif ?>
 
 	<h2>Страницы пользователя</h2>
 	<ul>
-	<? if($user->id == $viewUser->id && $user->isTeacher): ?>
-		<a class="button green" href="/page/add">Создать страницу</a>
+	<? if($viewUser->isMe && $user->isTeacher): ?>
+		<li><a class="button green" href="/p/add-page">Создать страницу</a></li>
 	<? endif?>
 	<? if ($userPages): ?>
 		<? foreach ($userPages as $page): ?>
-			<li><h3><a href="/page/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h3></li>
+			<li><h3><a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h3></li>
 		<? endforeach; ?>
 	<? else: ?>
 		пользователь пока еще не создал ни одной страницы
