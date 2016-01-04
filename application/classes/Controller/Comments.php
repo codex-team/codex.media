@@ -38,7 +38,7 @@ class Controller_Comments extends Controller_Base_preDispatch
     {
         $comment_id = $this->request->param('comment_id');
 
-        $comment = Model_Comment::get($comment_id);
+        $comment = Model_Comments::get($comment_id);
 
         $article_id = $comment->delete_comment($this->user);
 

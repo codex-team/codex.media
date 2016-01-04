@@ -22,9 +22,9 @@ Class Model_Comments extends Model_preDispatch
 	 * Возвращает комментарий с указанным id из БД.
 	 * Иначе возвращает пустой комментарий с id = 0.
 	 */	
-	public function get()
+	public static function get($id = 0)
 	{
-		$comment_row = Dao_Comments::select()->where('id', '=', $this->id);
+		$comment_row = Dao_Comments::select()->where('id', '=', $id);
 
 		$model = new Model_Comments();
 
@@ -120,7 +120,7 @@ Class Model_Comments extends Model_preDispatch
         $comment = Dao_Comments::select('*')->where('id', '=', $this->id)->execute();
         $page_id = $comment[0]['page_id'];
 
-        if ($this->user_id == $user->id)
+        if ($this->author == $user->id)
         {
             Dao_Comments::update()
                 ->where('id', '=', $this->id)
