@@ -52,7 +52,7 @@
 <div class="page_comments">
 
 	<h3>Комментарии</h3>
-	<? if($user->id != 0): ?>
+	<? if($user->id): ?>
 		<? if ($comments): ?>
 			<? foreach ($comments as $comment): ?>
 				<div>
@@ -70,7 +70,7 @@
 	                            document.getElementById('comment_head').innerHTML='Ваш ответ на комментарий пользователя <?= $comment->author_name ?>';">
 	                	[ответить]
 	                </a>
-                    <? if ($user->id == $comment->author): ?>
+                    <? if ($user->id == $comment->author || $user->isAdmin): ?>
                         <a href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             [удалить]
                         </a>
