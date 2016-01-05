@@ -130,6 +130,7 @@ class Model_User extends Model_preDispatch
         Dao_Users::update()
             ->where('id', '=', $this->id)
             ->set('status', $status)
+            ->clearcache('user:' . $this->id)
             ->execute();
 
         $this->isTeacher        = $this->isTeacher();

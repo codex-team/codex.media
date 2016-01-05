@@ -42,24 +42,6 @@
 		<? endif ?>
 	<? endif ?>
 
-	<? if ($viewUser->isMe): ?>
-		<? if (!$viewUser->vk && $viewUser->email): ?>
-			<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
-		<? else: ?>
-			<a class="button" href="/auth/vk?state=remove">Открепить профиль ВК</a>
-		<? endif; ?>
-		<? if (!$viewUser->facebook && $viewUser->email): ?>
-			<a class="button" href="/auth/fb?state=attach">Прикрепить профиль FB</a>
-		<? else: ?>
-			<a class="button" href="/auth/fb?state=remove">Открепить профиль FB</a>
-		<? endif; ?>
-		<? if (!$viewUser->twitter && $viewUser->email): ?>
-			<a class="button" href="/auth/tw?state=attach">Прикрепить профиль TW</a>
-		<? else: ?>
-			<a class="button" href="/auth/tw?state=remove">Открепить профиль TW</a>
-		<? endif ?>
-	<? endif ?>
-
 	<h2>Страницы пользователя</h2>
 	<ul>
 	<? if($viewUser->isMe && $user->isTeacher): ?>
