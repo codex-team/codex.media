@@ -13,7 +13,7 @@ class Controller_User extends Controller_Base_preDispatch
 
         if ($this->user->isAdmin && $new_status)
         {
-            $this->view['setUserStatus'] = self::set_user_status($viewUser, $new_status);
+            $this->view['setUserStatus'] = $viewUser->setUserStatus(self::translate_user_status($new_status));
         }
 
         $this->view['userPages'] = $viewUser->getUserPages();
@@ -23,7 +23,7 @@ class Controller_User extends Controller_Base_preDispatch
 
     }
 
-    public function set_user_status($viewUser, $act)
+    public function translate_user_status($act)
     {
         switch ($act) {
             case 'teacher'    :
@@ -38,7 +38,7 @@ class Controller_User extends Controller_Base_preDispatch
             default        :
                 return FALSE;
         }
-        return $viewUser->setUserStatus($status);
+        return $status;
     }
 
 }

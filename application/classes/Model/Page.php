@@ -84,7 +84,7 @@ class Model_Page extends Model_preDispatch
                     ->execute();
     }
 
-    public function delete()
+    public function setAsRemoved()
     {
         Dao_Pages::update()
             ->where('id', '=', $this->id)
@@ -95,7 +95,7 @@ class Model_Page extends Model_preDispatch
         $childrens = $this->getChildrenPagesByParent($this->id);
 
         foreach ($childrens as $page) {
-            $page->delete();
+            $page->setAsRemoved();
         }
 
         return true;

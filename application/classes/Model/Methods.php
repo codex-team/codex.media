@@ -599,26 +599,18 @@ class Model_Methods extends Model
             'Ч' => 'Ch',  'Ш' => 'Sh',  'Щ' => 'Sch',
             'Ь' => "",    'Ы' => 'Y',   'Ъ' => "",
             'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
-            ' ' => '-',   '-' => '-',   '-' => '-',    '.' => '-',
+            ' ' => '-',   '-' => '-',   '–' => '-',    '.' => '-',
             ',' => '-',   '\'' => '',   '\"' => '',    '(' => '-', ')' => '-',
             '?' => '-',   '#' => '-',   '$' => '-',    '!' => '-',
             '@' => '-',   '%' => '-',   '&' => '-',    '*' => '-',
             '`' => '-',   '\\' => '-',  '/' => '-'
         );
         // translit
-        $tmp = strtr($string, $converter);
-        // remove underline from begin and end of line
-        $tmp = trim($tmp, "-");
-        // replace lines
-        $tmp = strtr($tmp, array(
-            "--"    => "-",
-            "---"   => "-",
-            "----"  => "-",
-            "-----" => "-",
-            "------" => "-",
-        ));
+        $converted_string = strtr($string, $converter);
 
-        return $tmp;
+        $converted_string = trim(preg_replace('/-{2,}/', '-', $converted_string) , '-');
+
+        return $converted_string;
     }
 
 }

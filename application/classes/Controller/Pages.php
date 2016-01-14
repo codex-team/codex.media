@@ -13,14 +13,14 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         if ($page->title)
         {
-            if (!$uri)
+            if ($uri != $page->uri)
             {
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
             }
 
             $page->childrens  = Model_Page::getChildrenPagesByParent($page->id);
 
-            $this->view['can_modify_this_page'] = $this->user->isAdmin || $this->user->id == $page->author->id;
+            $this->view['can_modify_this_page'] = $this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher);
             
             $this->view['comments']   = Model_Comments::getByPageId($id);
             $this->view['navigation'] = self::get_navigation_path_array($page->id);
@@ -85,7 +85,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $errors = array();
 
-        if ($this->user->isAdmin || $this->user->id == $page->author->id)
+        if ($this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher))
         {
             if (Security::check(Arr::get($_POST, 'csrf')))
             {
@@ -119,7 +119,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         if ($this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher))
         {
             $page->parent = new Model_Page($page->id_parent);
-            $page->delete();
+            $page->setAsRemoved();
 
             $url = self::get_url_to_parent_page($page);
 
