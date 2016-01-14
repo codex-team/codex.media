@@ -8,7 +8,7 @@ class Controller_Comment extends Controller_Base_preDispatch
 
         $comment = new Model_Comments();
 
-        $comment->page_id   = Arr::get($_POST, 'page_id');
+        $comment->page_id   = $this->request->param('id');
         $comment->text      = Arr::get($_POST, 'text');
         $comment->parent_id = Arr::get($_POST, 'parent_id', '0');
         $comment->author    = $this->user->id;
