@@ -14,27 +14,52 @@
 $DIGIT = '\d+';
 $STRING = '[-a-z\d]+';
 
-Route::set('index', '')->defaults(array(
+Route::set('INDEX', '')->defaults(array(
     'controller' => 'index',
     'action' => 'index'
 ));
 
-Route::set('VIEW_PAGE', 'page/(<id>)(<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING ))->defaults(array(
+
+/**
+ *  Pages section
+ */
+
+#Route::set('NEW', 'p/add-<type>', array( 'type' => 'page|news' ))->defaults(array(
+#    'controller' => 'pages',
+#    'action' => 'add_new'
+#));
+
+Route::set('NEW_PAGE', 'p/(<id>(/<uri>/))add-<type>', array( 'id' => $DIGIT , 'uri' => $STRING, 'type' => 'page|news' ))->defaults(array(
     'controller' => 'pages',
-    'action' => 'page'
+    'action' => 'add_page'
 ));
+
+Route::set('EDIT_PAGE', 'p/<id>/<uri>/edit', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'edit_page'
+));
+
+Route::set('DELETE_PAGE', 'p/<id>/<uri>/delete', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'delete_page'
+));
+
+Route::set('PAGE', 'p/<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'show_page'
+));
+
+
 
 Route::set('PROFILE', 'user/<id>', array( 'id' => $DIGIT ))->defaults(array(
     'controller' => 'user',
     'action' => 'profile'
 ));
 
-Route::set('Contacts', 'contacts')->defaults(array(
+Route::set('CONTACTS', 'contacts')->defaults(array(
     'controller' => 'index',
     'action' => 'contacts'
 ));
-
-
 
 
 /**

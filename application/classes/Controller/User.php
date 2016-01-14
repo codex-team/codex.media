@@ -3,40 +3,42 @@
 class Controller_User extends Controller_Base_preDispatch
 {
 
-    const USER_STATUS_ADMIN     = 2;
-    const USER_STATUS_TEACHER   = 1;
-    const USER_STATUS_STUDENT   = 0;
-    const USER_STATUS_BANNED    = -1;
-
-
     public function action_profile()
     {
-        $uid = $this->request->param('id');
-        $act = Arr::get($_GET, 'act');
+        $user_id = $this->request->param('id');
 
-        $this->view['success'] = FALSE;
+        $new_status = Arr::get($_GET, 'newStatus');
 
-        $viewUser = new Model_User($uid);
+        $viewUser = new Model_User($user_id);
 
-        switch ($act) {
-            case 'rise'    :
-                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_TEACHER);
-                break;
-            case 'ban'     :
-                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED);
-                break;
-            case 'degrade' :
-            case 'unban'   :
-                $this->view['success'] = $viewUser->setUserStatus(self::USER_STATUS_BANNED);
-                break;
+        if ($this->user->isAdmin && $new_status)
+        {
+            $this->view['setUserStatus'] = $viewUser->setUserStatus(self::translate_user_status($new_status));
         }
 
-        $this->view['userPages'] = $viewUser->getUserPages($uid);
+        $this->view['userPages'] = $viewUser->getUserPages();
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/user/profile', $this->view);
 
+    }
 
+    public function translate_user_status($act)
+    {
+        switch ($act) {
+            case 'teacher'    :
+                $status = Model_User::USER_STATUS_TEACHER;
+                break;
+            case 'banned'     :
+                $status = Model_User::USER_STATUS_BANNED;
+                break;
+            case 'registered'   :
+                $status = Model_User::USER_STATUS_REGISTERED;
+                break;
+            default        :
+                return FALSE;
+        }
+        return $status;
     }
 
 }

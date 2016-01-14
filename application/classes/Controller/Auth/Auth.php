@@ -148,7 +148,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         if (self::checkUserLogin($loginForm)) {
 
             $passwordHash = parent::createPasswordHash($loginForm['password']);
-            $userFound    = Dao_User::select()
+            $userFound    = Dao_Users::select()
                                 ->where('email', '=', $loginForm['email'])
                                 ->where('password', '=', $passwordHash)
                                 ->limit(1)
@@ -333,7 +333,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     {  
         $social_cfg = Kohana::$config->load('social')->$social;
 
-        $userFound = Dao_User::select('id')
+        $userFound = Dao_Users::select('id')
             ->where($social,  '=', $userdata[$social])
             ->limit(1)
             ->execute();
