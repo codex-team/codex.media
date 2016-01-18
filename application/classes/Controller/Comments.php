@@ -1,12 +1,12 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Comment extends Controller_Base_preDispatch
+class Controller_Comments extends Controller_Base_preDispatch
 {
 
 	public function action_add()
     {
 
-        $comment = new Model_Comments();
+        $comment = new Model_Comment();
         
         $page = new Model_Page($this->request->param('id'));
         
@@ -21,7 +21,7 @@ class Controller_Comment extends Controller_Base_preDispatch
              * @author Vitaly Guryn
              */
             /*if ($comment->parent_id != 0){
-                $parent_comment = Model_Comments::get($comment->parent_id);
+                $parent_comment = Model_Comment::get($comment->parent_id);
                 if ($parent_comment->parent_id != 0) {
                     $comment->root_id = $parent_comment->root_id;
                 } else {
@@ -42,7 +42,7 @@ class Controller_Comment extends Controller_Base_preDispatch
     {
         $comment_id = $this->request->param('comment_id');
 
-        $comment = Model_Comments::get($comment_id);
+        $comment = Model_Comment::get($comment_id);
 
         $article_id = $comment->delete_comment($this->user);
         

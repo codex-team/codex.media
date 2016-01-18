@@ -22,7 +22,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
             $this->view['can_modify_this_page'] = $this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher);
             
-            $this->view['comments']   = Model_Comments::getByPageId($id);
+            $this->view['comments']   = Model_Comment::getByPageId($id);
             $this->view['navigation'] = self::get_navigation_path_array($page->id);
             $this->view['page']       = $page;
             $this->view['files']      = $this->methods->getPageFiles($page->id);

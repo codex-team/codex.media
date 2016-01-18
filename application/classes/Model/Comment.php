@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
-Class Model_Comments extends Model_preDispatch
+Class Model_Comment extends Model_preDispatch
 {
 	public $id;
 	public $author;
@@ -26,7 +26,7 @@ Class Model_Comments extends Model_preDispatch
 	{
 		$comment_row = Dao_Comments::select()->where('id', '=', $id)->limit(1)->execute();
 
-		$model = new Model_Comments();
+		$model = new Model_Comment();
 
 		return $model->fillByRow($comment_row);
 	}
@@ -90,7 +90,7 @@ Class Model_Comments extends Model_preDispatch
             
             if ($comment_rows) {
                 foreach ($comment_rows as $comment_row) {
-                    $comment = new Model_Comments();
+                    $comment = new Model_Comment();
 
                     $comment->fillByRow($comment_row);
 
