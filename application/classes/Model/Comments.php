@@ -37,12 +37,12 @@ Class Model_Comments extends Model_preDispatch
 	public function insert()
 	{
         $idAndRowAffected = Dao_Comments::insert()
-                                ->set('author',     $this->author)
-                                ->set('text',       $this->text)
-                                ->set('page_id',    $this->page_id)
-                                ->set('root_id',    $this->root_id)
-                                ->set('parent_id',  $this->parent_id)
-                                ->execute();
+                ->set('author',    $this->author)
+                ->set('text',      $this->text)
+                ->set('page_id',   $this->page_id)
+                ->set('root_id',   $this->root_id)
+                ->set('parent_id', $this->parent_id)
+                ->execute();
         
 		if ($idAndRowAffected) {
 			$comment = Dao_Comments::select()
@@ -61,17 +61,17 @@ Class Model_Comments extends Model_preDispatch
 	{
 		if (!empty($comment_row['id'])) {
 
-            $this->id           = $comment_row['id'];
-            $this->author       = $comment_row['author'];
-            $this->status       = $comment_row['status'];
-            $this->text         = $comment_row['text'];
-            $this->page_id      = $comment_row['page_id'];
-            $this->root_id      = $comment_row['root_id'];
-            $this->parent_id    = $comment_row['parent_id'];
-            $this->dt_create    = $comment_row['dt_create'];
-            $this->is_removed   = $comment_row['is_removed'];   
-            $this->author_name  = self::getAuthor($comment_row['author']);
-            $this->parent_name  = self::getAuthorByCommentId($comment_row['parent_id']);
+            $this->id          = $comment_row['id'];
+            $this->author      = $comment_row['author'];
+            $this->status      = $comment_row['status'];
+            $this->text        = $comment_row['text'];
+            $this->page_id     = $comment_row['page_id'];
+            $this->root_id     = $comment_row['root_id'];
+            $this->parent_id   = $comment_row['parent_id'];
+            $this->dt_create   = $comment_row['dt_create'];
+            $this->is_removed  = $comment_row['is_removed'];   
+            $this->author_name = self::getAuthor($comment_row['author']);
+            $this->parent_name = self::getAuthorByCommentId($comment_row['parent_id']);
         }
 
         return $this;
