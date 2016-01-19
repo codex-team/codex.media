@@ -116,7 +116,8 @@ Route::set('ADD_COMMENT_SCRIPT', 'p/<id>/<uri>/add-comment', array( 'id' => $DIG
 Route::set('DEL_COMMENT_SCRIPT', 'p/<id>/<uri>/delete-comment/<comment_id>', array( 
     'id' => $DIGIT, 
     'uri' => $STRING,
-    'comment_id' => $DIGIT))->defaults(array(
+    'comment_id' => $DIGIT))
+    ->defaults(array(
     'controller' => 'comments',
     'action' => 'delete'
 ));

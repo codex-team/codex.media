@@ -46,9 +46,9 @@ Class Model_Comment extends Model_preDispatch
         
 		if ($idAndRowAffected) {
 			$comment = Dao_Comments::select()
-				->where('id', '=', $idAndRowAffected[0])
+                ->where('id', '=', $idAndRowAffected[0])
                 ->limit(1)
-				->execute();
+                ->execute();
 
 			$this->fillByRow($comment);
 		}
@@ -57,10 +57,9 @@ Class Model_Comment extends Model_preDispatch
 	/** 
 	 * Заполняет объект строкой из БД.
 	 */
-	private function fillByRow($comment_row)
+    private function fillByRow($comment_row)
 	{
-		if (!empty($comment_row['id'])) {
-
+        if (!empty($comment_row['id'])) {
             $this->id          = $comment_row['id'];
             $this->author      = $comment_row['author'];
             $this->status      = $comment_row['status'];
@@ -103,11 +102,11 @@ Class Model_Comment extends Model_preDispatch
     }
     
     /**
-     * Получаем имя автора по id.
+     * Получаем имя автора по его id.
      */
-    public static function getAuthor($id)
+    public static function getAuthor($user_id)
     {
-        $model_user = new Model_User($id);
+        $model_user = new Model_User($user_id);
         return $model_user->name;
     }
     
@@ -126,11 +125,8 @@ Class Model_Comment extends Model_preDispatch
      */
     public function delete_comment($user)
     {
-        // получаем id статьи для редиректа
-        $comment = Dao_Comments::select()->where('id', '=', $this->id)->limit(1)->execute();
-        $page_id = $comment['page_id'];
 
-        if ($this->author == $user->id)
+        if ($this->author == $user->id || $user->isAdmin)
         {
             Dao_Comments::update()
                 ->where('id', '=', $this->id)
@@ -142,8 +138,6 @@ Class Model_Comment extends Model_preDispatch
                 ->set('is_removed', 1)
                 ->execute(); 
         }
-
-        return $page_id;
 
     }
 

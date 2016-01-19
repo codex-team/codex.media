@@ -3,34 +3,19 @@
 class Controller_Comments extends Controller_Base_preDispatch
 {
 
-	public function action_add()
+    public function action_add()
     {
 
         $comment = new Model_Comment();
         
         $page = new Model_Page($this->request->param('id'));
         
-        if ($page->id != 0) {
+        if ($page->id != 0 && $this->user->id !=0) {
             $comment->page_id   = $this->request->param('id');
             $comment->text      = Arr::get($_POST, 'text');
             $comment->parent_id = Arr::get($_POST, 'parent_id', '0');
             $comment->author    = $this->user->id;
-
-            /**
-             * Определяет уровень комментария.
-             * @author Vitaly Guryn
-             */
-            /*if ($comment->parent_id != 0){
-                $parent_comment = Model_Comment::get($comment->parent_id);
-                if ($parent_comment->parent_id != 0) {
-                    $comment->root_id = $parent_comment->root_id;
-                } else {
-                    $comment->root_id = $parent_comment->id;
-                }
-            } else {
-                $comment->root_id = 0;
-            }*/
-            $comment->root_id = 0;
+            $comment->root_id   = 0;
 
             $comment->insert();
         }
@@ -44,7 +29,7 @@ class Controller_Comments extends Controller_Base_preDispatch
 
         $comment = Model_Comment::get($comment_id);
 
-        $article_id = $comment->delete_comment($this->user);
+        $comment->delete_comment($this->user);
         
         $page = new Model_Page($comment->page_id);
 
