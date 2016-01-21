@@ -37,20 +37,20 @@ Class Model_Comment extends Model_preDispatch
 	public function insert()
 	{
         $idAndRowAffected = Dao_Comments::insert()
-                ->set('author',    $this->author)
-                ->set('text',      $this->text)
-                ->set('page_id',   $this->page_id)
-                ->set('root_id',   $this->root_id)
-                ->set('parent_id', $this->parent_id)
-                ->execute();
+            ->set('author',    $this->author)
+            ->set('text',      $this->text)
+            ->set('page_id',   $this->page_id)
+            ->set('root_id',   $this->root_id)
+            ->set('parent_id', $this->parent_id)
+            ->execute();
         
-		if ($idAndRowAffected) {
+        if ($idAndRowAffected) {
             $comment = Dao_Comments::select()
                 ->where('id', '=', $idAndRowAffected[0])
                 ->limit(1)
                 ->execute();
-
-			$this->fillByRow($comment);
+            
+            $this->fillByRow($comment);
 		}
 	}
 
@@ -72,11 +72,11 @@ Class Model_Comment extends Model_preDispatch
             $this->author_name = self::getAuthor($comment_row['author']);
             $this->parent_name = self::getAuthorByCommentId($comment_row['parent_id']);
         }
-
+        
         return $this;
 	}
 
-	public static function getByPageId($page_id)
+	public static function getCommentsByPageId($page_id)
     {
         $comments = array();
 
@@ -116,7 +116,6 @@ Class Model_Comment extends Model_preDispatch
     public static function getAuthorByCommentId($id)
     {
         $comment = self::get($id);
-        
         return self::getAuthor($comment->author);
     }
     
