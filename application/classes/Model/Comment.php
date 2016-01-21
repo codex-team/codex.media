@@ -45,7 +45,7 @@ Class Model_Comment extends Model_preDispatch
                 ->execute();
         
 		if ($idAndRowAffected) {
-			$comment = Dao_Comments::select()
+            $comment = Dao_Comments::select()
                 ->where('id', '=', $idAndRowAffected[0])
                 ->limit(1)
                 ->execute();
@@ -123,7 +123,7 @@ Class Model_Comment extends Model_preDispatch
     /**
      * Удаляем комментарий и все его подкомментарии
      */
-    public function delete_comment($user)
+    public function delete($user)
     {
 
         if ($this->author == $user->id || $user->isAdmin)

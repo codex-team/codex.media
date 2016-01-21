@@ -29,7 +29,7 @@ class Controller_Comments extends Controller_Base_preDispatch
 
         $comment = Model_Comment::get($comment_id);
 
-        $comment->delete_comment($this->user);
+        $comment->delete($this->user);
         
         $page = new Model_Page($comment->page_id);
 
