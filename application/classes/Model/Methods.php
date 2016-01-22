@@ -27,13 +27,11 @@ class Model_Methods extends Model
      */
     public function getSiteInfo(){
 
-        $info = DB::select()
-            ->from('site_info')
-            ->order_by('id','DESC')
+        $info = Dao_SiteInfo::select()
+            ->order_by('id', 'DESC')
             ->limit(1)
-            ->cached(Date::DAY)
-            ->execute()
-            ->current();
+            ->cached(Date::DAY, 'site_info')
+            ->execute();
 
         $this->title        = $info['title'];
         $this->city         = $info['city'];
@@ -54,23 +52,24 @@ class Model_Methods extends Model
 
     public function saveSiteInfo($info)
     {
-        DB::insert('site_info', array_keys($info))
-                ->values(array_values($info))
-                ->execute();
+        $db_request = Dao_SiteInfo::insert()
+            ->clearcache('site_info');
+
+        foreach ($info as $name => $value) $db_request->set($name, $value);
+
+        $db_request->execute();
 
         return $this->getSiteInfo();
     }
 
     public function getSiteMenu()
     {
-        $menu_pages = DB::select()
-                ->from('pages')
-                ->where('status', '=', 0)
-                ->where('is_menu_item','=',1)
-                ->order_by('id','ASC')
-                ->cached(Date::MINUTE*0)
-                ->execute()
-                ->as_array();
+        $menu_pages = Dao_Pages::select()
+            ->where('status', '=', 0)
+            ->where('is_menu_item', '=', 1)
+            ->order_by('id', 'ASC')
+            ->cached(Date::MINUTE*5, 'site_menu')
+            ->execute();
 
         return Model_Page::rowsToModels($menu_pages);
     }
