@@ -53,7 +53,7 @@ Class Model_Comment extends Model_preDispatch
                 ->execute();
             
             $this->fillByRow($comment);
-		}
+        }
     }
 
 	/** 
