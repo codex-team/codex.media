@@ -2,40 +2,42 @@
 
 Class Model_Comment extends Model_preDispatch
 {
-	public $id;
-	public $author;
-	public $status;
-	public $text;
-	public $page_id;
-	public $root_id;
-	public $parent_id;
-	public $dt_create;
-	public $is_removed;
-	public $author_name;
-	public $parent_name;
-
-	public function __construct()
-	{
-	}
+    public $id;
+    public $author;
+    public $status;
+    public $text;
+    public $page_id;
+    public $root_id;
+    public $parent_id;
+    public $dt_create;
+    public $is_removed;
+    public $author_name;
+    public $parent_name;
+    
+    public function __construct()
+    {
+    }
 
 	/** 
 	 * Возвращает комментарий с указанным id из БД.
 	 * Иначе возвращает пустой комментарий с id = 0.
 	 */	
-	public static function get($id = 0)
-	{
-		$comment_row = Dao_Comments::select()->where('id', '=', $id)->limit(1)->execute();
-
-		$model = new Model_Comment();
-
-		return $model->fillByRow($comment_row);
-	}
+    public static function get($id = 0)
+    {
+        $comment_row = Dao_Comments::select()
+            ->where('id', '=', $id)
+            ->limit(1)->execute();
+        
+        $model = new Model_Comment();
+        
+        return $model->fillByRow($comment_row);
+    }
 
 	/** 
 	 * Добавляет комментарий в БД.
 	 */	
-	public function insert()
-	{
+    public function insert()
+    {
         $idAndRowAffected = Dao_Comments::insert()
             ->set('author',    $this->author)
             ->set('text',      $this->text)
@@ -58,7 +60,7 @@ Class Model_Comment extends Model_preDispatch
 	 * Заполняет объект строкой из БД.
 	 */
     private function fillByRow($comment_row)
-	{
+    {
         if (!empty($comment_row['id'])) {
             $this->id          = $comment_row['id'];
             $this->author      = $comment_row['author'];
@@ -74,9 +76,9 @@ Class Model_Comment extends Model_preDispatch
         }
         
         return $this;
-	}
-
-	public static function getCommentsByPageId($page_id)
+    }
+    
+    public static function getCommentsByPageId($page_id)
     {
         $comments = array();
 
@@ -124,15 +126,15 @@ Class Model_Comment extends Model_preDispatch
      */
     public function delete()
     {
-            Dao_Comments::update()
-                ->where('id', '=', $this->id)
-                ->set('is_removed', 1)
-                ->execute(); 
+        Dao_Comments::update()
+            ->where('id', '=', $this->id)
+            ->set('is_removed', 1)
+            ->execute(); 
             
-            Dao_Comments::update()
-                ->where('parent_id', '=', $this->id)
-                ->set('is_removed', 1)
-                ->execute(); 
+        Dao_Comments::update()
+            ->where('parent_id', '=', $this->id)
+            ->set('is_removed', 1)
+            ->execute(); 
     }
 
 
