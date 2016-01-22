@@ -6,9 +6,9 @@
 		<?= $viewUser->name ?>
 		<?
 			switch ($viewUser->status){
-				case Controller_User::USER_STATUS_ADMIN 	: echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
-				case Controller_User::USER_STATUS_TEACHER 	: echo "[преподаватель]"; break;
-				case Controller_User::USER_STATUS_BANNED 	: echo "[заблокирован]"; break;
+				case Model_User::USER_STATUS_ADMIN 	    : echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
+				case Model_User::USER_STATUS_TEACHER 	: echo "[преподаватель]"; break;
+				case Model_User::USER_STATUS_BANNED 	: echo "[заблокирован]"; break;
 		   	}
 		?>
 	</h1>
@@ -34,18 +34,44 @@
     	<a href="/user/settings">Настройки профиля</a>
     <? endif; ?>
 </div>
-<? if ($success): ?>
+<? if (isset($setUserStatus) && $setUserStatus): ?>
 	<div class="info_block align_c">
 		Обновления сохранены
 	</div>
 <? endif; ?>
 <div class="profile_panel clear">
+<<<<<<< HEAD
     <h2>Мои страницы</h2>
+=======
+
+	<? if ($user->isAdmin): ?>
+		<? if (!$viewUser->isTeacher): ?>
+			<a class="button" href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a>
+		<? else: ?>
+			<a class="button" href="/user/<?= $viewUser->id ?>?newStatus=registered">Отключить аккаунт преподавателя</a>
+		<? endif ?>
+		<? if ($viewUser->status !=  Model_User::USER_STATUS_BANNED ): ?>
+			<a class="button fl_r" href="/user/<?= $viewUser->id ?>?newStatus=banned">Заблокировать пользователя</a>
+		<? else: ?>
+			<a class="button fl_r" href="/user/<?= $viewUser->id ?>?newStatus=registered">Разблокировать пользователя</a>
+		<? endif ?>
+	<? endif ?>
+
+	<h2>Страницы пользователя</h2>
+>>>>>>> a5fc4851e63e978866a3bc1bcc1758f4446a7ad6
 	<ul>
-	<? foreach ($userPages as $page): ?>
-		<li><h3><a href="/page/<?= $page['id'] ?>"><?= $page['title'] ?></a></h3></li>
-	<? endforeach; ?>
+	<? if($viewUser->isMe && $user->isTeacher): ?>
+		<li><a class="button green" href="/p/add-page">Создать страницу</a></li>
+	<? endif?>
+	<? if ($userPages): ?>
+		<? foreach ($userPages as $page): ?>
+			<li><h3><a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h3></li>
+		<? endforeach; ?>
+	<? else: ?>
+		пользователь пока еще не создал ни одной страницы
+	<? endif ?>
 	</ul>
+<<<<<<< HEAD
 </div>
 <?/*
 	<div class="extra_settings mt30">
@@ -144,3 +170,6 @@
 	</div>
 
 	*/ ?>
+=======
+</div>
+>>>>>>> a5fc4851e63e978866a3bc1bcc1758f4446a7ad6

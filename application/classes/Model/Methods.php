@@ -16,54 +16,6 @@ class Model_Methods extends Model
         's'  => array(true , 50  ),
     );
 
-	/**
-	*	Site Methods Model
-	*/
-
-    public function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0)
-    {
-
-        $pages = DB::select()->from('pages')->where('status', '=', $status);
-
-        if ($type) $pages->where('type', '=', $type);
-        if ($limit) $pages->limit($limit);
-        if ($offset) $pages->offset($offset);
-
-        return $pages->order_by('id','DESC')->execute()->as_array();
-
-    }
-
-    public function getPage($id = NULL , $uri = NULL)
-    {
-        if ( !$id && !$uri ) return array();
-
-        $page = DB::select()->from('pages');
-
-        if ($id) {
-            $page->where('id', '=', $id);
-        } elseif ($uri) {
-            $page->where('uri', '=', $uri);
-        }
-
-        return current($page->limit(1)->cached(10)->execute()->as_array());
-
-    }
-
-    public function newPage( $fields ){
-
-        return DB::insert( 'pages' , array_keys($fields) )->values(array_values($fields))->execute();
-
-    }
-
-    public function updatePage( $id,  $fields ){
-
-        $query = DB::update( 'pages' );
-        foreach ($fields as $name => $value) {
-            $query->set(array($name => $value));
-        }
-        return $query->where('id','=',$id)->execute();
-    }
-
 
     /**
      * Get or update site main information
@@ -111,26 +63,16 @@ class Model_Methods extends Model
 
     public function getSiteMenu()
     {
-        return DB::select('id','uri','title')
+        $menu_pages = DB::select()
                 ->from('pages')
                 ->where('status', '=', 0)
                 ->where('is_menu_item','=',1)
                 ->order_by('id','ASC')
-                ->cached(Date::MINUTE*5)
+                ->cached(Date::MINUTE*0)
                 ->execute()
                 ->as_array();
-    }
 
-    public function getChildrenPagesByParent( $id_parent )
-    {
-        return DB::select('id','uri','title')
-                ->from('pages')
-                ->where('status', '=', 0)
-                ->where('id_parent','=', $id_parent)
-                ->order_by('id','ASC')
-                ->cached(Date::MINUTE*1)
-                ->execute()
-                ->as_array();
+        return Model_Page::rowsToModels($menu_pages);
     }
 
 
@@ -142,6 +84,49 @@ class Model_Methods extends Model
                 ->cached(Date::MINUTE*1)
                 ->execute()
                 ->as_array();
+    }
+
+
+    public function getComments($page, $status = null, $cached = false )
+    {
+        if ( (int)$page < 1 ) return array();
+        $comments = DB::select()->from('comments')
+            ->where('page', '=', $page)
+            ->where('is_removed', '=', 0);
+        $comments->order_by('id','asc');
+        if ($cached) {
+            $comments->cached(Date::MINUTE*5);
+        }
+        $comments = $comments->execute()->as_array();
+        if ($comments) return $comments;
+        return array();
+    }
+
+    public function getCommentById( $id )
+    {
+        return DB::select()->from('comments')->where('id', '=', $id)->where('status', '<', 2)->execute()->current();
+    }
+
+    public function addComment( $data )
+    {
+        return DB::insert('comments', array_keys($data))->values(array_values($data))->execute();
+    }
+
+    public function removeComment( $uid , $id , $isAdmin = false )
+    {
+        $result = DB::delete('comments')->where('id', '=', $id);
+        if ( !$isAdmin ) $result->where('uid', '=', $uid);
+        return $result->execute() ? true : false ;
+    }
+
+    public function getCommentsCount($type, $target)
+    {
+        return (int)DB::select('id')->from('comments')->where('type','=',$type)->where('target','=',$target)->cached(Date::MINUTE / 4)->execute()->count();
+    }
+
+    public function getBlogPostComments($pid, $status = null, $feed = false, $cached = false)
+    {
+        return self::getComments( Controller_Comments::COMMENTS_TYPE_BLOG , $pid );
     }
 
 
@@ -168,56 +153,6 @@ class Model_Methods extends Model
             $query->set(array($name => $value));
         }
         return $query->where('id','=',$id)->execute();
-    }
-
-
-    public function getComments($page, $status = null, $cached = false )
-    {
-        if ( (int)$page < 1 ) return array();
-
-        $comments = DB::select()->from('comments')
-                    ->where('page', '=', $page)
-                    ->where('is_removed', '=', 0);
-
-        $comments->order_by('id','asc');
-
-        if ($cached) {
-            $comments->cached(Date::MINUTE*5);
-        }
-
-        $comments = $comments->execute()->as_array();
-
-        if ($comments) return $comments;
-        return array();
-    }
-
-    public function getCommentById( $id )
-    {
-         return DB::select()->from('comments')->where('id', '=', $id)->where('status', '<', 2)->execute()->current();
-    }
-
-    public function addComment( $data )
-    {
-        return DB::insert('comments', array_keys($data))->values(array_values($data))->execute();
-    }
-
-    public function removeComment( $uid , $id , $isAdmin = false )
-    {
-        $result = DB::delete('comments')->where('id', '=', $id);
-
-        if ( !$isAdmin ) $result->where('uid', '=', $uid);
-        return $result->execute() ? true : false ;
-
-    }
-
-    public function getCommentsCount($type, $target)
-    {
-        return (int)DB::select('id')->from('comments')->where('type','=',$type)->where('target','=',$target)->cached(Date::MINUTE / 4)->execute()->count();
-    }
-
-    public function getBlogPostComments($pid, $status = null, $feed = false, $cached = false)
-    {
-        return self::getComments( Controller_Comments::COMMENTS_TYPE_BLOG , $pid );
     }
 
 
@@ -637,4 +572,51 @@ class Model_Methods extends Model
         return preg_match('/^(?:ht|f)tps?:\/\//', $string) ? $string : 'http://' . $string;
     }
 
+<<<<<<< HEAD
 }
+=======
+    /**
+     * Транслитерация кириллицы
+     * @param string $string - строка с киррилицей
+     */
+    public static function rus2translit($string) {
+        $converter = array(
+            'а' => 'a',   'б' => 'b',   'в' => 'v',
+            'г' => 'g',   'д' => 'd',   'е' => 'e',
+            'ё' => 'e',   'ж' => 'zh',  'з' => 'z',
+            'и' => 'i',   'й' => 'y',   'к' => 'k',
+            'л' => 'l',   'м' => 'm',   'н' => 'n',
+            'о' => 'o',   'п' => 'p',   'р' => 'r',
+            'с' => 's',   'т' => 't',   'у' => 'u',
+            'ф' => 'f',   'х' => 'h',   'ц' => 'c',
+            'ч' => 'ch',  'ш' => 'sh',  'щ' => 'sch',
+            'ь' => "",    'ы' => 'y',   'ъ' => "",
+            'э' => 'e',   'ю' => 'yu',  'я' => 'ya',
+
+            'А' => 'A',   'Б' => 'B',   'В' => 'V',
+            'Г' => 'G',   'Д' => 'D',   'Е' => 'E',
+            'Ё' => 'E',   'Ж' => 'Zh',  'З' => 'Z',
+            'И' => 'I',   'Й' => 'Y',   'К' => 'K',
+            'Л' => 'L',   'М' => 'M',   'Н' => 'N',
+            'О' => 'O',   'П' => 'P',   'Р' => 'R',
+            'С' => 'S',   'Т' => 'T',   'У' => 'U',
+            'Ф' => 'F',   'Х' => 'H',   'Ц' => 'C',
+            'Ч' => 'Ch',  'Ш' => 'Sh',  'Щ' => 'Sch',
+            'Ь' => "",    'Ы' => 'Y',   'Ъ' => "",
+            'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
+            ' ' => '-',   '-' => '-',   '–' => '-',    '.' => '-',
+            ',' => '-',   '\'' => '',   '\"' => '',    '(' => '-', ')' => '-',
+            '?' => '-',   '#' => '-',   '$' => '-',    '!' => '-',
+            '@' => '-',   '%' => '-',   '&' => '-',    '*' => '-',
+            '`' => '-',   '\\' => '-',  '/' => '-'
+        );
+        // translit
+        $converted_string = strtr($string, $converter);
+
+        $converted_string = trim(preg_replace('/-{2,}/', '-', $converted_string) , '-');
+
+        return $converted_string;
+    }
+
+}
+>>>>>>> a5fc4851e63e978866a3bc1bcc1758f4446a7ad6

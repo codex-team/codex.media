@@ -63,7 +63,7 @@ class Controller_Auth_Base extends Controller_Base_preDispatch {
     */
     protected static function insertUser($fields)
     {
-        $user = Dao_User::insert();
+        $user = Dao_Users::insert();
         foreach ($fields as $name => $value) $user->set($name, $value);
         return $user->execute();
     }

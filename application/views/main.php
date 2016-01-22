@@ -51,7 +51,7 @@
             <ul class="menu">
                 <? $menu = $methods->getSiteMenu(); ?>
                 <? foreach ($menu as $item): ?>
-                    <li><a href="/page/<?= $item['uri'] ? $item['uri'] : $item['id'] ?>"><?= $item['title'] ?></a></li>
+                    <li><a href="/p/<?= $item->id ?>/<?= $item->uri ?>"><?= $item->title ?></a></li>
                 <? endforeach ?>
             </ul>
 
