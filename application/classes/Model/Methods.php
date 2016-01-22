@@ -156,6 +156,7 @@ class Model_Methods extends Model
     }
 
 
+
     public function saveImage( $file , $path )
     {
         /**
@@ -572,9 +573,6 @@ class Model_Methods extends Model
         return preg_match('/^(?:ht|f)tps?:\/\//', $string) ? $string : 'http://' . $string;
     }
 
-<<<<<<< HEAD
-}
-=======
     /**
      * Транслитерация кириллицы
      * @param string $string - строка с киррилицей
@@ -619,4 +617,3 @@ class Model_Methods extends Model
     }
 
 }
->>>>>>> a5fc4851e63e978866a3bc1bcc1758f4446a7ad6

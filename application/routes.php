@@ -56,16 +56,7 @@ Route::set('PROFILE', 'user/<id>', array( 'id' => $DIGIT ))->defaults(array(
     'action' => 'profile'
 ));
 
-<<<<<<< HEAD
-Route::set('PROFILE_SETTINGS', 'user/settings')->defaults(array(
-    'controller' => 'user',
-    'action' => 'settings'
-));
-
-Route::set('Contacts', 'contacts')->defaults(array(
-=======
 Route::set('CONTACTS', 'contacts')->defaults(array(
->>>>>>> a5fc4851e63e978866a3bc1bcc1758f4446a7ad6
     'controller' => 'index',
     'action' => 'contacts'
 ));
@@ -114,7 +105,10 @@ Route::set('LOGOUT', 'logout')->defaults(array(
     'action' => 'logout'
 ));
 
-
+Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
+    'controller' => 'user',
+    'action' => 'settings'
+));
 
 
 
