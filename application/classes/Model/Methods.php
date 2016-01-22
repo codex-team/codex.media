@@ -52,14 +52,13 @@ class Model_Methods extends Model
 
     public function saveSiteInfo($info)
     {
-        $db_request = Dao_SiteInfo::insert()
-            ->clearcache('site_info');
+        $db_request = Dao_SiteInfo::insert()->clearcache('site_info');
 
         foreach ($info as $name => $value) $db_request->set($name, $value);
 
         $db_request->execute();
 
-        return $this->getSiteInfo();
+        return True;
     }
 
     public function getSiteMenu()
