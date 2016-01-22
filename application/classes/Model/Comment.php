@@ -122,11 +122,8 @@ Class Model_Comment extends Model_preDispatch
     /**
      * Удаляем комментарий и все его подкомментарии
      */
-    public function delete($user)
+    public function delete()
     {
-
-        if ($this->author == $user->id || $user->isAdmin)
-        {
             Dao_Comments::update()
                 ->where('id', '=', $this->id)
                 ->set('is_removed', 1)
@@ -136,8 +133,6 @@ Class Model_Comment extends Model_preDispatch
                 ->where('parent_id', '=', $this->id)
                 ->set('is_removed', 1)
                 ->execute(); 
-        }
-
     }
 
 

@@ -29,7 +29,10 @@ class Controller_Comments extends Controller_Base_preDispatch
 
         $comment = Model_Comment::get($comment_id);
 
-        $comment->delete($this->user);
+        if ($comment->author == $this->user->id || $this->user->isAdmin)
+        {
+            $comment->delete();
+        }
         
         $page = new Model_Page($comment->page_id);
 
