@@ -54,7 +54,7 @@ Class Model_Comment extends Model_preDispatch
             
             $this->fillByRow($comment);
 		}
-	}
+    }
 
 	/** 
 	 * Заполняет объект строкой из БД.
