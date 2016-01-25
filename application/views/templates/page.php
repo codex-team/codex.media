@@ -67,8 +67,7 @@
                         <? endif; ?>
                     </i>
                     <a onclick="document.getElementById('answer_to_comment').value='<?= $comment->id ?>';
-                                document.getElementById('comment_head').innerHTML='Ваш ответ на комментарий пользователя 
-                                <?= $comment->author_name ?>';">
+                                document.getElementById('comment_head').innerHTML='Ваш ответ на комментарий пользователя <?= $comment->author_name ?>';">
                         [ответить]
                     </a>
                     <? if ($user->id == $comment->author || $user->isAdmin): ?>
