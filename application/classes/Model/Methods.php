@@ -207,15 +207,11 @@ class Model_Methods extends Model
 
                 }
                 
-                $fullPath = $path . $prefix . '_' . $filename;
-                $image->save($fullPath);
-                $files[$prefix.'_'] = $fullPath;
+                $image->save($path . $prefix . '_' . $filename);
             }
-
             // Delete the temporary file
             unlink($file);
-
-            return $files;
+            return $filename;
         }
 
         return FALSE;

@@ -54,7 +54,7 @@ class Controller_User extends Controller_Base_preDispatch
             $newPassword     = trim(Arr::get($_POST, 'new_password'));
             $repeatPassword  = trim(Arr::get($_POST, 'repeat_password'));
             $newPhone        = trim(Arr::get($_POST, 'phone_number'));
-            $newAva          = trim(Arr::get($_FILES, 'new_ava'));
+            $newAva          = Arr::get($_FILES, 'new_ava');
 
 
             if ($newPassword != $repeatPassword){

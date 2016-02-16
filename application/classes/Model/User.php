@@ -145,12 +145,13 @@ class Model_User extends Model_preDispatch
     public function saveAvatar($file, $path)
     {
         $model = new Model_Methods();
-        $files = $model->saveImage($file, $path);
+        $filename = $model->saveImage($file, $path);
         
         $fields = array(
-            'photo'        => $files['s_'], 
-            'photo_medium' => $files['m_'], 
-            'photo_big'    => $files['b_']);
+            'photo'        => $path . 's_' . $filename, 
+            'photo_medium' => $path . 'm_' . $filename, 
+            'photo_big'    => $path . 'b_' . $filename
+            );
             
         $this->updateUser($this->id, $fields);  
     }
