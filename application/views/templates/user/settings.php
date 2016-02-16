@@ -1,11 +1,11 @@
 <div class="user_page">
 	<div class="ava">
-		<img src="<?= $viewUser->photo_medium ?>" />
+		<img src="<?= $user->photo_medium ?>" />
 	</div>
 	<h1 class="name">
-		<a href="user/<?= $viewUser->id ?>"><?= $viewUser->name ?></a>
+		<a href="user/<?= $user->id ?>"><?= $user->name ?></a>
 		<?
-			switch ($viewUser->status){
+			switch ($user->status){
 				case Model_User::USER_STATUS_ADMIN 	    : echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
 				case Model_User::USER_STATUS_TEACHER 	: echo "[преподаватель]"; break;
 				case Model_User::USER_STATUS_BANNED 	: echo "[заблокирован]"; break;
@@ -13,21 +13,21 @@
 		?>
 	</h1>
 	<ul style="color:white;">
-	    <? if ($viewUser->email): ?>
-    	    <li>Email: <?= $viewUser->email; ?></li>
+	    <? if ($user->email): ?>
+    	    <li>Email: <?= $user->email; ?></li>
     	<? endif; ?>
-    	<? if ($viewUser->phone): ?>
-    	    <li>Телефон: <?= $viewUser->phone; ?></li>
+    	<? if ($user->phone): ?>
+    	    <li>Телефон: <?= $user->phone; ?></li>
 	    <? endif; ?>
 	</ul>
-	<? if ($viewUser->vk): ?>
-		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank"><?= $viewUser->vk_name ? $viewUser->vk_name : $viewUser->vk_uri ?></a>
+	<? if ($user->vk): ?>
+		<a href="//vk.com/<?= $user->vk_uri ?>" target="_blank"><?= $user->vk_name ? $user->vk_name : $user->vk_uri ?></a>
 	<? endif; ?>
-	<? if ($viewUser->facebook): ?>
-		<a href="//fb.com/<?= $viewUser->facebook ?>" target="_blank"><?= $viewUser->facebook_name ? $viewUser->facebook_name : $viewUser->name ?></a>
+	<? if ($user->facebook): ?>
+		<a href="//fb.com/<?= $user->facebook ?>" target="_blank"><?= $user->facebook_name ? $user->facebook_name : $user->name ?></a>
 	<? endif ?>
-	<? if ($viewUser->twitter): ?>
-		<a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank"><?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?></a>
+	<? if ($user->twitter): ?>
+		<a href="//twitter.com/<?= $user->twitter_username ?>" target="_blank"><?= $user->twitter_name ? $user->twitter_name : $user->name ?></a>
 	<? endif ?>
 </div>
 <? if ($success): ?>
@@ -53,13 +53,13 @@
             </div>
             <label for="login_email">Email</label>
             <div class="input mb5">
-                <input type="email" name="new_email" id="login_email" value="<?= $viewUser->email; ?>">
+                <input type="email" name="new_email" id="login_email" value="<?= $user->email; ?>">
             </div>
             <div class="input mb5">
                 <label for="phone_number">Номер телефона</label>
-                <input type="text" name="phone_number" id="phone_number" value="<?= $viewUser->phone; ?>">
+                <input type="text" name="phone_number" id="phone_number" value="<?= $user->phone; ?>">
             </div>
-            <? if (!$viewUser->vk && !$viewUser->twitter && !$viewUser->facebook):?>
+            <? if (!$user->vk && !$user->twitter && !$user->facebook):?>
                 <label for="current_password">Текущий пароль</label>
                 <div class="input type mb5">
                     <input type="password" name="current_password" id="current_password">
@@ -79,28 +79,28 @@
         </form>
     </div>
     <div class="right">
-    <? if ($viewUser->isMe): ?>
-	    <? if ($viewUser->status < Model_User::USER_STATUS_TEACHER ): ?>
-		    <a class="button" href="/user/<?= $viewUser->id ?>?act=rise">Активировать аккаунт преподавателя</a>
+    <? if ($user->isMe): ?>
+	    <? if ($user->status < Model_User::USER_STATUS_TEACHER ): ?>
+		    <a class="button" href="/user/<?= $user->id ?>?act=rise">Активировать аккаунт преподавателя</a>
 	    <? else: ?>
-	    	<a class="button" href="/user/<?= $viewUser->id ?>?act=degrade">Отключить аккаунт преподавателя</a>
+	    	<a class="button" href="/user/<?= $user->id ?>?act=degrade">Отключить аккаунт преподавателя</a>
 	    <? endif ?>
-	    <? if ($viewUser->status !=  Model_User::USER_STATUS_BANNED ): ?>
-	    	<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=ban">Заблокировать пользователя</a>
+	    <? if ($user->status !=  Model_User::USER_STATUS_BANNED ): ?>
+	    	<a class="button fl_r" href="/user/<?= $user->id ?>?act=ban">Заблокировать пользователя</a>
 	    <? else: ?>
-	    	<a class="button fl_r" href="/user/<?= $viewUser->id ?>?act=unban">Разблокировать пользователя</a>
+	    	<a class="button fl_r" href="/user/<?= $user->id ?>?act=unban">Разблокировать пользователя</a>
 	    <? endif ?>
-	    <? if (!$viewUser->vk && $viewUser->email): ?>
+	    <? if (!$user->vk && $user->email): ?>
 	    	<a class="button" href="/auth/vk?state=attach">Прикрепить профиль ВК</a>
 	    <? else: ?>
 	    	<a class="button" href="/auth/vk?state=remove">Открепить профиль ВК</a>
 	    <? endif; ?>
-	    <? if (!$viewUser->facebook && $viewUser->email): ?>
+	    <? if (!$user->facebook && $user->email): ?>
 	    	<a class="button" href="/auth/fb?state=attach">Прикрепить профиль FB</a>
 	    <? else: ?>
 	    	<a class="button" href="/auth/fb?state=remove">Открепить профиль FB</a>
 	    <? endif; ?>
-	    <? if (!$viewUser->twitter && $viewUser->email): ?>
+	    <? if (!$user->twitter && $user->email): ?>
 	    	<a class="button" href="/auth/tw?state=attach">Прикрепить профиль TW</a>
 	    <? else: ?>
 	    	<a class="button" href="/auth/tw?state=remove">Открепить профиль TW</a

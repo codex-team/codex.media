@@ -46,9 +46,9 @@ class Controller_User extends Controller_Base_preDispatch
         $succesResult = false;
         $error = array();
         $csrfToken = Arr::get($_POST, 'csrf');
-        
-        if (Security::check($csrfToken)){
-            
+
+        if (Security::check($csrfToken)) {
+
             $newEmail        = trim(Arr::get($_POST, 'new_email'));
             $currentPassword = trim(Arr::get($_POST, 'current_password'));
             $newPassword     = trim(Arr::get($_POST, 'new_password'));
@@ -56,48 +56,44 @@ class Controller_User extends Controller_Base_preDispatch
             $newPhone        = trim(Arr::get($_POST, 'phone_number'));
             $newAva          = Arr::get($_FILES, 'new_ava');
 
+            $hashedCurrentPassword = Controller_Auth_Base::createPasswordHash($currentPassword);
 
-            if ($newPassword != $repeatPassword){
+            if ($hashedCurrentPassword != $this->user->password && $currentPassword) {
+                $error['currPassError'] = 'Неправильный текущий пароль.';
+                $newPassword = '';
+            }
+
+            if ($newPassword != $repeatPassword) {
                 $newPassword = '';
                 $error['passError'] = 'Пароли не совпадают.';
             }
 
-            if ($currentPassword){
-                $currentPassword = Controller_Auth_Base::createPasswordHash($currentPassword);
-                if ($currentPassword != $this->user->password) {
-                    $error['currPassError'] = 'Неправильный текущий пароль.';
-                    $newPassword = '';
-                }
-            }
-
-            if (Upload::valid($newAva) && Upload::not_empty($newAva) && Upload::size($newAva, '8M')){
+            if (Upload::valid($newAva) && Upload::not_empty($newAva) && Upload::size($newAva, '8M')) {
                 $this->user->saveAvatar($newAva, 'upload/profile/');
             }
 
             $fields = array(
                 'email'    => $newEmail,
-                'password' => Controller_Auth_Base::createPasswordHash($newPassword),
                 'phone'    => $newPhone);
 
+            if (!$error) {
+                $fields['password'] = Controller_Auth_Base::createPasswordHash($newPassword);
+            }
+
             //если пустое поле, то не заносим его в базу и модель, за исключением телефона    
-            foreach ($fields as $key => $value){
+            foreach ($fields as $key => $value) {
                 if (!$value && $key != 'phone') unset($fields[$key]);
             }
 
-            if ($fields){
-                if ( $this->user->updateUser($this->user->id, $fields) ){
-                    $succesResult = (!$error) ? true : false;
-                }
-            }            
+            if ( $this->user->updateUser($this->user->id, $fields) ) {
+                $succesResult = (!$error) ? true : false;
+            }
         }
-        
-        //создаем объект модели, чтобы обновить кэш и сразу вывести изменения
-        $viewUser = new Model_User($this->user->id);
-        
-        $this->view['viewUser']  = $viewUser;
+
         $this->view['error']     = $error;
         $this->view['success']   = $succesResult;
-        $this->view['userPages'] = $viewUser->getUserPages($viewUser->id);
+        $this->view['userPages'] = $this->user->getUserPages($this->user->id);
+
         $this->template->content = View::factory('/templates/user/settings', $this->view);
     }
 }
