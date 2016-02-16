@@ -317,11 +317,11 @@ h3{
 
 @font-face {
   font-family: 'codex-edu';
-  src: url('../fonts/codex-edu.eot?85817324');
-  src: url('../fonts/codex-edu.eot?85817324#iefix') format('embedded-opentype'),
-       url('../fonts/codex-edu.woff?85817324') format('woff'),
-       url('../fonts/codex-edu.ttf?85817324') format('truetype'),
-       url('../fonts/codex-edu.svg?85817324#codex-edu') format('svg');
+  src: url('../fonts/codex-edu.eot?54592952');
+  src: url('../fonts/codex-edu.eot?54592952#iefix') format('embedded-opentype'),
+       url('../fonts/codex-edu.woff?54592952') format('woff'),
+       url('../fonts/codex-edu.ttf?54592952') format('truetype'),
+       url('../fonts/codex-edu.svg?54592952#codex-edu') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -387,7 +387,7 @@ h3{
 .icon-twitter:before { content: '\e80d'; } /* '' */
 .icon-book-open:before { content: '\e80e'; } /* '' */
 .icon-cog:before { content: '\e80f'; } /* '' */
-
+.icon-pin-outline:before { content: '\e810'; } /* '' */
 
 
 
@@ -493,40 +493,85 @@ footer.site_footer p{margin: 15px 25px}
     padding: 40px 50px;
     border-bottom: 2px solid #dae0e8;
 }
-.news .body{
-    font-size: 16px;
-    line-height: 1.5em;
-}
-.news h3{
-    font-size: 1.75em;
-    margin-bottom: 25px;
-}
-.news h3 a{
-    color: inherit;
-    text-decoration: none;
-}
-.news time{
-    display: inline-block;
-    color: #b6b6b6;
-    margin-bottom: 7px;
-}
-.news .footer{
-    margin-top: 25px;
-    font-size: 1.15em;
-}
-    .news .footer a{
-        display: inline-block;
+    .news .body{
+        font-size: 16px;
+        line-height: 1.5em;
+    }
+    .news h3{
+        font-size: 1.75em;
+        margin-bottom: 25px;
+    }
+    .news h3 a{
+        color: inherit;
         text-decoration: none;
-        margin-right: 25px;
-        color: #878e98;
     }
-        .news .footer a:hover{
-            text-decoration: underline;
+    .news time{
+        display: inline-block;
+        color: #b6b6b6;
+        margin-bottom: 7px;
+    }
+    .news .footer{
+        margin-top: 25px;
+        font-size: 1.15em;
+    }
+        .news .footer a{
+            display: inline-block;
+            text-decoration: none;
+            margin-right: 25px;
+            color: #878e98;
         }
-    .news .footer .read_more{
-        color: #1b9a7e;
-        font-weight: bold;
+            .news .footer a:hover{
+                text-decoration: underline;
+            }
+        .news .footer .read_more{
+            color: #1b9a7e;
+            font-weight: bold;
+        }
+
+.news .rich_view{
+    position: relative;
+    padding: 60px 50px;
+    margin-top: -2px;
+    background: #212a39;
+    color: #fff;
+    border-bottom-color: #10151d;
+}
+    .news .rich_view:after{
+        font-family: 'codex-edu';
+        display: block;
+        content: '\e810';
+        color: #565E77;
+        position: absolute;
+        right: 50px;
+        top: 65px;
+        font-size: 20px;
     }
+    .news .rich_view time{
+        color: #69758A;
+    }
+    .news .rich_view .body{
+        color: #747E92;
+    }
+    .news .rich_view h3{
+        font-size: 48px;
+        margin-bottom: 130px;
+    }
+    .news .rich_view h3 > a:hover{
+        text-decoration: underline;
+    }
+    .news .rich_view .read_more{
+        display: inline-block;
+        padding: 13px 25px;
+        margin-right: 55px;
+        border-radius: 2px;
+        background: #2a8d72;
+        color: #fff;
+        font-weight: normal;
+    }
+        .news .rich_view .read_more:hover{
+            text-decoration: none;
+            background: #206959;
+        }
 
 
 
