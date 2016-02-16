@@ -11,6 +11,8 @@ class Model_Page extends Model_preDispatch
     public $content         = '';
     public $date            = '';
     public $is_menu_item    = '';
+    public $rich_view       = 0;
+    public $dt_pin;
     public $uri             = '';
     public $author;
     public $parent;
@@ -44,6 +46,8 @@ class Model_Page extends Model_preDispatch
             $this->content         = $page_row['content'];
             $this->date            = $page_row['date'];
             $this->is_menu_item    = $page_row['is_menu_item'];
+            $this->rich_view       = $page_row['rich_view'];
+            $this->dt_pin          = $page_row['dt_pin'];
 
             $this->uri             = $this->getPageUri();
             $this->author          = new Model_User($page_row['author']);
@@ -61,6 +65,8 @@ class Model_Page extends Model_preDispatch
                     ->set('title',          $this->title)
                     ->set('content',        $this->content)
                     ->set('is_menu_item',   $this->is_menu_item)
+                    ->set('rich_view',      $this->rich_view)
+                    ->set('dt_pin',         $this->dt_pin)
                     ->execute();
 
         if ($page)
@@ -80,6 +86,8 @@ class Model_Page extends Model_preDispatch
                     ->set('title',          $this->title)
                     ->set('content',        $this->content)
                     ->set('is_menu_item',   $this->is_menu_item)
+                    ->set('rich_view',      $this->rich_view)
+                    ->set('dt_pin',         $this->dt_pin)
                     ->clearcache('page:' . $this->id)
                     ->execute();
     }
@@ -110,13 +118,14 @@ class Model_Page extends Model_preDispatch
                     ->execute();
     }
 
-    public static function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0)
+    public static function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0, $pinned_news = false )
     {
         $pages_query = Dao_Pages::select()->where('status', '=', $status);
 
-        if ($type)      $pages_query->where('type', '=', $type);
-        if ($limit)     $pages_query->limit($limit);
-        if ($offset)    $pages_query->offset($offset);
+        if ($type)          $pages_query->where('type', '=', $type);
+        if ($limit)         $pages_query->limit($limit);
+        if ($offset)        $pages_query->offset($offset);
+        if ($pinned_news)   $pages_query->order_by('dt_pin', 'DESC');
 
         $pages_rows = $pages_query->order_by('id','DESC')->execute();
 
