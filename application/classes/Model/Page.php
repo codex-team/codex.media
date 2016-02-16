@@ -118,7 +118,7 @@ class Model_Page extends Model_preDispatch
                     ->execute();
     }
 
-    public static function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0, $pinned_news = false)
+    public static function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0, $pinned_news = false )
     {
         $pages_query = Dao_Pages::select()->where('status', '=', $status);
 
