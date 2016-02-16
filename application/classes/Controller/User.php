@@ -94,12 +94,10 @@ class Controller_User extends Controller_Base_preDispatch
         //создаем объект модели, чтобы обновить кэш и сразу вывести изменения
         $viewUser = new Model_User($this->user->id);
         
-        if ($viewUser->id != 0){
-            $this->view['viewUser']  = $viewUser;
-            $this->view['error']     = $error;
-            $this->view['success']   = $succesResult;
-            $this->view['userPages'] = $viewUser->getUserPages($viewUser->id);
-            $this->template->content = View::factory('/templates/user/settings', $this->view);
-        }
+        $this->view['viewUser']  = $viewUser;
+        $this->view['error']     = $error;
+        $this->view['success']   = $succesResult;
+        $this->view['userPages'] = $viewUser->getUserPages($viewUser->id);
+        $this->template->content = View::factory('/templates/user/settings', $this->view);
     }
 }

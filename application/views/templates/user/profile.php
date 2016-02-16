@@ -30,7 +30,7 @@
 		<a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank"><?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?></a>
 	<? endif ?>
 	<br />
-	<? if ($viewUser->isMe): ?>
+    <? if ($viewUser->isMe): ?>
     	<a href="/user/settings">Настройки профиля</a>
     <? endif; ?>
 </div>

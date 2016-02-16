@@ -47,7 +47,6 @@ define('EXT', '.php');
  */
 error_reporting(E_ALL | E_STRICT);
 
-
 /**
  * End of standard configuration! Changing any of the code below should only be
  * attempted by those with a working knowledge of Kohana internals.

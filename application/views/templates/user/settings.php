@@ -44,7 +44,7 @@
 <? endif; ?>
 <div class="profile_panel clear">
     <div class="fl_l left">
-        <form class="ajaxfree" method="POST" action="user/settings" enctype="multipart/form-data">
+        <form method="POST" action="user/settings" enctype="multipart/form-data">
         
             <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
             
