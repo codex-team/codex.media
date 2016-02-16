@@ -146,7 +146,7 @@ class Dao_MySQL_Base {
 
         return $this;
     }
-    
+
     private function getCacheKey()
     {
         return 't:' . $this->table.

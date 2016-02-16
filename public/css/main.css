@@ -693,10 +693,10 @@ article time{color: #b6b6b6;}
 .profile_panel{
     padding: 30px;
 }
-.profile_panel .right{
-    padding-left: 300px;
-    
-}
+
+    .profile_panel .right{
+        padding-left: 300px;    
+    }
 .contacts_map{position: relative;}
 .contacts_map .text_wrap{
     z-index: 2;

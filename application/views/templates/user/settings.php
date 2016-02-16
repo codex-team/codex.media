@@ -37,7 +37,9 @@
 <? endif; ?>
 <? if ($error): ?>
     <div class="info_block align_c" style="background-color:#EBA4B5; color:#F7053E;">
-        <?= $error; ?>
+        <? foreach ($error as $info): ?>
+            <?= $info; ?>
+        <? endforeach; ?>
     </div>
 <? endif; ?>
 <div class="profile_panel clear">

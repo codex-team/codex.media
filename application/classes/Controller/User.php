@@ -44,28 +44,30 @@ class Controller_User extends Controller_Base_preDispatch
     public function action_settings()
     {
         $succesResult = false;
-        $error = '';
+        $error = array();
         $csrfToken = Arr::get($_POST, 'csrf');
         
         if (Security::check($csrfToken)){
             
-            $newEmail        = Arr::get($_POST, 'new_email');
-            $currentPassword = Arr::get($_POST, 'current_password');
-            $newPassword     = Arr::get($_POST, 'new_password');
-            $repeatPassword  = Arr::get($_POST, 'repeat_password');
-            $newPhone        = Arr::get($_POST, 'phone_number');
-            $newAva          = Arr::get($_FILES, 'new_ava');
+            $newEmail        = trim(Arr::get($_POST, 'new_email'));
+            $currentPassword = trim(Arr::get($_POST, 'current_password'));
+            $newPassword     = trim(Arr::get($_POST, 'new_password'));
+            $repeatPassword  = trim(Arr::get($_POST, 'repeat_password'));
+            $newPhone        = trim(Arr::get($_POST, 'phone_number'));
+            $newAva          = trim(Arr::get($_FILES, 'new_ava'));
 
 
             if ($newPassword != $repeatPassword){
                 $newPassword = '';
-                $error = 'Пароли не совпадают. ';
+                $error['passError'] = 'Пароли не совпадают.';
             }
 
             if ($currentPassword){
                 $currentPassword = Controller_Auth_Base::createPasswordHash($currentPassword);
-                $error = ($currentPassword != $this->user->password) ? $error . 'Неправильный текущий пароль.': '';
-                $newPassword = '';
+                if ($currentPassword != $this->user->password) {
+                    $error['currPassError'] = 'Неправильный текущий пароль.';
+                    $newPassword = '';
+                }
             }
 
             if (Upload::valid($newAva) && Upload::not_empty($newAva) && Upload::size($newAva, '8M')){
@@ -74,7 +76,7 @@ class Controller_User extends Controller_Base_preDispatch
 
             $fields = array(
                 'email'    => $newEmail,
-                'password' => $newPassword,
+                'password' => Controller_Auth_Base::createPasswordHash($newPassword),
                 'phone'    => $newPhone);
 
             //если пустое поле, то не заносим его в базу и модель, за исключением телефона    
