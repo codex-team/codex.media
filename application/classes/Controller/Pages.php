@@ -192,6 +192,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         $page->title         = Arr::get($_POST, 'title', '');
         $page->content       = Arr::get($_POST, 'content', '');
         $page->is_menu_item  = Arr::get($_POST, 'is_menu_item', 0);
+        $page->rich_view     = Arr::get($_POST, 'rich_view', 0);
 
         return $page;
     }

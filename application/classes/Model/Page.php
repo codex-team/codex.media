@@ -11,6 +11,7 @@ class Model_Page extends Model_preDispatch
     public $content         = '';
     public $date            = '';
     public $is_menu_item    = '';
+    public $rich_view       = 0;
     public $uri             = '';
     public $author;
     public $parent;
@@ -44,6 +45,7 @@ class Model_Page extends Model_preDispatch
             $this->content         = $page_row['content'];
             $this->date            = $page_row['date'];
             $this->is_menu_item    = $page_row['is_menu_item'];
+            $this->rich_view       = $page_row['rich_view'];
 
             $this->uri             = $this->getPageUri();
             $this->author          = new Model_User($page_row['author']);
@@ -61,6 +63,7 @@ class Model_Page extends Model_preDispatch
                     ->set('title',          $this->title)
                     ->set('content',        $this->content)
                     ->set('is_menu_item',   $this->is_menu_item)
+                    ->set('rich_view',      $this->rich_view)
                     ->execute();
 
         if ($page)
@@ -80,6 +83,7 @@ class Model_Page extends Model_preDispatch
                     ->set('title',          $this->title)
                     ->set('content',        $this->content)
                     ->set('is_menu_item',   $this->is_menu_item)
+                    ->set('rich_view',      $this->rich_view)
                     ->clearcache('page:' . $this->id)
                     ->execute();
     }

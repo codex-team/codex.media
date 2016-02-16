@@ -51,6 +51,11 @@
 					<i><input type="checkbox" id="is_menu_item" name="is_menu_item" value="1" <?= isset($page->is_menu_item) && $page->is_menu_item == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') ?>/></i>
 					<label for="is_menu_item">Вынести в меню</label>
 				</div>
+
+				<div class="checkbox dark">
+					<i><input type="checkbox" id="rich_view" name="rich_view" value="1" <?= isset($page->rich_view) && $page->rich_view == 1 ? 'checked="checked"' : Arr::get($_POST, 'rich_view' , '') ?>/></i>
+					<label for="rich_view">Важная новость</label>
+				</div>
 			</div>
 		<? endif ?>
 
