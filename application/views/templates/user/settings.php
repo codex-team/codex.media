@@ -5,11 +5,11 @@
 	<h1 class="name">
 		<a href="user/<?= $user->id ?>"><?= $user->name ?></a>
 		<?
-			switch ($user->status){
-				case Model_User::USER_STATUS_ADMIN 	    : echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
-				case Model_User::USER_STATUS_TEACHER 	: echo "[преподаватель]"; break;
-				case Model_User::USER_STATUS_BANNED 	: echo "[заблокирован]"; break;
-		   	}
+            switch ($user->status){
+                case Model_User::USER_STATUS_ADMIN 	    : echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
+                case Model_User::USER_STATUS_TEACHER 	: echo "[преподаватель]"; break;
+                case Model_User::USER_STATUS_BANNED 	: echo "[заблокирован]"; break;
+            }
 		?>
 	</h1>
 	<ul style="color:white;">
