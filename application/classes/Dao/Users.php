@@ -7,4 +7,3 @@ class Dao_Users extends Dao_MySQL_Base {
     protected $table = 'users';
 
 }
-
