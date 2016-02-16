@@ -193,10 +193,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         $page->content       = Arr::get($_POST, 'content', '');
         $page->is_menu_item  = Arr::get($_POST, 'is_menu_item', 0);
         $page->rich_view     = Arr::get($_POST, 'rich_view', 0);
-        $page->dt_pin        = Arr::get($_POST, 'dt_pin', '');
-
-        #if(Arr::get($_POST, 'pin_news', 0))
-        #    $page->dt_pin = date('Y-m-d H:i:s');
+        $page->dt_pin        = Arr::get($_POST, 'dt_pin');
 
         return $page;
     }
