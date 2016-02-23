@@ -87,6 +87,7 @@ class Model_Page extends Model_preDispatch
                     ->where('id', '=', $this->id)
                     ->set('id',             $this->id)
                     ->set('type',           $this->type)
+                    ->set('status',         $this->status)
                     ->set('author',         $this->author->id)
                     ->set('id_parent',      $this->id_parent)
                     ->set('title',          $this->title)
@@ -96,6 +97,10 @@ class Model_Page extends Model_preDispatch
                     ->set('dt_pin',         $this->dt_pin)
                     ->clearcache('page:' . $this->id);
 
+        /*
+        *  Only admins can add news to the site menu.
+        *  We should clear cache for getting menu updates.
+        */           
         if ($this->author->isAdmin)
         {
             $page->clearcache('site_menu');
@@ -106,18 +111,9 @@ class Model_Page extends Model_preDispatch
 
     public function setAsRemoved()
     {
-        $page = Dao_Pages::update()
-            ->where('id', '=', $this->id)
-            ->set('status', self::STATUS_REMOVED_PAGE)
-            ->clearcache('page:' . $this->id);
             
-
-        if ($this->author->isAdmin)
-        {
-            $page->clearcache('site_menu');
-        }    
-
-        $page->execute();
+        $this->status = self::STATUS_REMOVED_PAGE;
+        $this->update();
 
         $childrens = $this->getChildrenPagesByParent($this->id);
 
