@@ -10,6 +10,7 @@ class Model_User extends Model_preDispatch
     public $photo_medium        = '';
     public $photo_big           = '';
     public $email               = '';
+    public $phone               = '';
 
     public $twitter             = '';
     public $twitter_name        = '';
@@ -65,7 +66,8 @@ class Model_User extends Model_preDispatch
             $this->vk_name          = strip_tags($user['vk_name']);
             $this->facebook         = strip_tags($user['facebook']);
             $this->facebook_name    = strip_tags($user['facebook_name']);
-
+            $this->phone            = $user['phone'];
+            
             $this->status           = $user['status'];
             $this->isTeacher        = $this->isTeacher();
             $this->isAdmin          = $this->isAdmin();
@@ -138,6 +140,20 @@ class Model_User extends Model_preDispatch
 
 
         return true;
+    }
+    
+    public function saveAvatar($file, $path)
+    {
+        $model = new Model_Methods();
+        $filename = $model->saveImage($file, $path);
+        
+        $fields = array(
+            'photo'        => $path . 's_' . $filename, 
+            'photo_medium' => $path . 'm_' . $filename, 
+            'photo_big'    => $path . 'b_' . $filename
+            );
+            
+        $this->updateUser($this->id, $fields);  
     }
 
     public function isAdmin()

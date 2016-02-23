@@ -12,6 +12,14 @@
 		   	}
 		?>
 	</h1>
+	<ul style="color:white;">
+	    <? if ($viewUser->email): ?>
+    	    <li>Email: <?= $viewUser->email; ?></li>
+    	<? endif; ?>
+    	<? if ($viewUser->phone): ?>
+    	    <li>Телефон: <?= $viewUser->phone; ?></li>
+	    <? endif; ?>
+	</ul>
 	<? if ($viewUser->vk): ?>
 		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank"><?= $viewUser->vk_name ? $viewUser->vk_name : $viewUser->vk_uri ?></a>
 	<? endif; ?>
@@ -21,6 +29,10 @@
 	<? if ($viewUser->twitter): ?>
 		<a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank"><?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?></a>
 	<? endif ?>
+	<br />
+    <? if ($viewUser->isMe): ?>
+    	<a href="/user/settings">Настройки профиля</a>
+    <? endif; ?>
 </div>
 <? if (isset($setUserStatus) && $setUserStatus): ?>
 	<div class="info_block align_c">
@@ -28,21 +40,8 @@
 	</div>
 <? endif; ?>
 <div class="profile_panel clear">
+    <h2>Мои страницы</h2>
 
-	<? if ($user->isAdmin): ?>
-		<? if (!$viewUser->isTeacher): ?>
-			<a class="button" href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a>
-		<? else: ?>
-			<a class="button" href="/user/<?= $viewUser->id ?>?newStatus=registered">Отключить аккаунт преподавателя</a>
-		<? endif ?>
-		<? if ($viewUser->status !=  Model_User::USER_STATUS_BANNED ): ?>
-			<a class="button fl_r" href="/user/<?= $viewUser->id ?>?newStatus=banned">Заблокировать пользователя</a>
-		<? else: ?>
-			<a class="button fl_r" href="/user/<?= $viewUser->id ?>?newStatus=registered">Разблокировать пользователя</a>
-		<? endif ?>
-	<? endif ?>
-
-	<h2>Страницы пользователя</h2>
 	<ul>
 	<? if($viewUser->isMe && $user->isTeacher): ?>
 		<li><a class="button green" href="/p/add-page">Создать страницу</a></li>
