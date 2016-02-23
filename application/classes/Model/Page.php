@@ -66,8 +66,14 @@ class Model_Page extends Model_preDispatch
                     ->set('content',        $this->content)
                     ->set('is_menu_item',   $this->is_menu_item)
                     ->set('rich_view',      $this->rich_view)
-                    ->set('dt_pin',         $this->dt_pin)
-                    ->execute();
+                    ->set('dt_pin',         $this->dt_pin);
+
+        if ($this->is_menu_item)
+        {
+            $page->clearcache('site_menu');
+        }
+
+        $page = $page->execute();
 
         if ($page)
         {
@@ -77,10 +83,11 @@ class Model_Page extends Model_preDispatch
 
     public function update()
     {
-         return Dao_Pages::update()
+        $page = Dao_Pages::update()
                     ->where('id', '=', $this->id)
                     ->set('id',             $this->id)
                     ->set('type',           $this->type)
+                    ->set('status',         $this->status)
                     ->set('author',         $this->author->id)
                     ->set('id_parent',      $this->id_parent)
                     ->set('title',          $this->title)
@@ -88,17 +95,25 @@ class Model_Page extends Model_preDispatch
                     ->set('is_menu_item',   $this->is_menu_item)
                     ->set('rich_view',      $this->rich_view)
                     ->set('dt_pin',         $this->dt_pin)
-                    ->clearcache('page:' . $this->id)
-                    ->execute();
+                    ->clearcache('page:' . $this->id);
+
+        /*
+        *  Only admins can add news to the site menu.
+        *  We should clear cache for getting menu updates.
+        */           
+        if ($this->author->isAdmin)
+        {
+            $page->clearcache('site_menu');
+        }
+
+        return $page->execute();            
     }
 
     public function setAsRemoved()
     {
-        Dao_Pages::update()
-            ->where('id', '=', $this->id)
-            ->set('status', self::STATUS_REMOVED_PAGE)
-            ->clearcache('page:' . $this->id)
-            ->execute();
+            
+        $this->status = self::STATUS_REMOVED_PAGE;
+        $this->update();
 
         $childrens = $this->getChildrenPagesByParent($this->id);
 
