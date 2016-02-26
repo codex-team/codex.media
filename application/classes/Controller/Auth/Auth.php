@@ -33,7 +33,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         if ($method) switch ($method) {
             case 'vk' : $authSucceeded = $this->login_vk(); break;
             case 'fb' : $authSucceeded = $this->login_fb(); break;
-            // case 'tw' : $authSucceeded = $this->login_tw(); break;
+            case 'tw' : $authSucceeded = $this->login_tw(); break;
         }
 
         /** Redirect user after succeeded auth */
@@ -283,43 +283,86 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
      */
     public function login_tw() {
 
-        $state  = Arr::get($_GET, 'state', 'login');
-        
-        $tw = Model::factory("Social_Tw");
-        $userdata = $tw->get('account/verify_credentials');
+        $session = Session::instance();
 
-        // 'include_email' Use of this parameter requires whitelisting.
-        $user_to_db = array(
-            'name'            => $userdata->name,
-            'email'           => NULL,
-            'twitter'         => $userdata->id_str,
-            'twitter_name'    => $userdata->name,
-            'twitter_username'=> $userdata->screen_name,
-            'photo'           => $userdata->profile_image_url_https,
-            'photo_medium'    => $userdata->profile_image_url_https,
-            'photo_big'       => $userdata->profile_image_url_https
-        );
+        $settings = Kohana::$config->load('social.twitter');
 
-        /**
-         *  What to do with response data?
-         *  @var string $state  
-         */
-        if ($state) switch ($state) {
-            case 'login': 
-                $status = $this->social_insert('twitter', $user_to_db); 
-                break;
+        $state              = Arr::get($_GET, 'state', 'login');
+        $oauth_verifier     = Arr::get($_GET, 'oauth_verifier', '');
+        $oauth_token        = $session->get('oauth_token', '');
+        $oauth_token_secret = $session->get('oauth_token_secret', '');
 
-            case 'attach': 
-                unset($user_to_db['email']); 
-                $status = $this->social_attach($user_to_db); 
-                break;
+        if(!empty($oauth_verifier) && !empty($oauth_token) && !empty($oauth_token_secret)) {
+           
+            $twitteroauth = new Model_Social_Tw(
+                $settings['consumer_key'], 
+                $settings['consumer_secret'], 
+                $oauth_token, 
+                $oauth_token_secret
+            );
 
-            case 'remove': 
-                $status = $this->social_remove('twitter'); 
-                break;
+            $access_token = $twitteroauth->getAccessToken($_GET['oauth_verifier']);
+            
+            $session->set('access_token',  $access_token);
+
+            $userdata = $twitteroauth->get('account/verify_credentials');
+            
+            // 'include_email' Use of this parameter requires whitelisting.
+            $user_to_db = array(
+                'name'            => $userdata->name,
+                'email'           => NULL,
+                'twitter'         => $userdata->id_str,
+                'twitter_name'    => $userdata->name,
+                'twitter_username'=> $userdata->screen_name,
+                'photo'           => $userdata->profile_image_url_https,
+                'photo_medium'    => $userdata->profile_image_url_https,
+                'photo_big'       => $userdata->profile_image_url_https
+            );
+
+            /**
+             *  What to do with response data?
+             *  @var string $state  
+             */
+            if ($state) switch ($state) {
+                case 'login':
+                    $status = $this->social_insert('twitter', $user_to_db);
+                    break;
+
+                case 'attach':
+                    unset($user_to_db['email']);
+                    $status = $this->social_attach($user_to_db);
+                    break;
+
+                case 'remove':
+                    $status = $this->social_remove('twitter');
+                    break;
+            }
+
+            return $status;
+
+        } else {
+            
+            $twitteroauth = new Model_Social_Tw($settings['consumer_key'], $settings['consumer_secret']);
+
+            $request_token = $twitteroauth->getRequestToken( $settings['redirect_uri'] );
+
+            $session->set('oauth_token', $request_token['oauth_token']);
+            $session->set('oauth_token_secret', $request_token['oauth_token_secret']);
+
+            if($twitteroauth->http_code==200){
+
+                $url = $twitteroauth->getAuthorizeURL($request_token['oauth_token']);
+                header('Location: '. $url);
+                exit();
+            
+            } else {
+
+                throw new Exception("Authorisation failed", 1);
+
+            }
+
+
         }
-
-        return $status;
     }
 
     /**
