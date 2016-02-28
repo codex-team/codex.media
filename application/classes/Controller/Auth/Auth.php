@@ -297,7 +297,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
         if( $twitter_oauthdata ) {
 
-            $userdata = $this->login_tw_handle( $oauth_verifier, $oauth_token, $oauth_token_secret, $session);
+            $userdata = $this->login_tw_getUserData( $oauth_verifier, $oauth_token, $oauth_token_secret, $session);
             
             // 'include_email' Use of this parameter requires whitelisting.
             $user_to_db = array(
@@ -335,7 +335,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         } else {
 
             // if we do not have data from Twitter
-            return $this->login_tw_getData( $session );
+            return $this->login_tw_getRequestToken( $session );
         }
     }
 
@@ -350,7 +350,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
      * @param  object   $session
      * @return array    $userdata
      */
-    private function login_tw_handle( $oauth_verifier, $oauth_token, $oauth_token_secret, $session ) {
+    private function login_tw_getUserData( $oauth_verifier, $oauth_token, $oauth_token_secret, $session ) {
         
         $settings = Kohana::$config->load('social.twitter');
         
@@ -374,7 +374,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
      * @param  object   $session
      * @return bool     FALSE or REDIRECT (30x http code)
      */
-    private function login_tw_getData( $session ) {
+    private function login_tw_getRequestToken( $session ) {
 
         $settings = Kohana::$config->load('social.twitter');
 
