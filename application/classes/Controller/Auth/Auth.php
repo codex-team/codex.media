@@ -285,27 +285,19 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
         $session = Session::instance();
 
-        $settings = Kohana::$config->load('social.twitter');
-
         $state              = Arr::get($_GET, 'state', 'login');
         $oauth_verifier     = Arr::get($_GET, 'oauth_verifier', '');
         $oauth_token        = $session->get('oauth_token', '');
         $oauth_token_secret = $session->get('oauth_token_secret', '');
 
-        if(!empty($oauth_verifier) && !empty($oauth_token) && !empty($oauth_token_secret)) {
-           
-            $twitteroauth = new Model_Social_Tw(
-                $settings['consumer_key'], 
-                $settings['consumer_secret'], 
-                $oauth_token, 
-                $oauth_token_secret
-            );
+        // if was redirect from twitter and him send us auth data
+        $twitter_oauthdata   = !empty($oauth_verifier) 
+                            && !empty($oauth_token) 
+                            && !empty($oauth_token_secret);
 
-            $access_token = $twitteroauth->getAccessToken($_GET['oauth_verifier']);
-            
-            $session->set('access_token',  $access_token);
+        if( $twitter_oauthdata ) {
 
-            $userdata = $twitteroauth->get('account/verify_credentials');
+            $userdata = $this->login_tw_handle( $oauth_verifier, $oauth_token, $oauth_token_secret, $session);
             
             // 'include_email' Use of this parameter requires whitelisting.
             $user_to_db = array(
@@ -341,28 +333,77 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
             return $status;
 
         } else {
-            
-            $twitteroauth = new Model_Social_Tw($settings['consumer_key'], $settings['consumer_secret']);
 
-            $request_token = $twitteroauth->getRequestToken( $settings['redirect_uri'] );
-
-            $session->set('oauth_token', $request_token['oauth_token']);
-            $session->set('oauth_token_secret', $request_token['oauth_token_secret']);
-
-            if($twitteroauth->http_code==200){
-
-                $url = $twitteroauth->getAuthorizeURL($request_token['oauth_token']);
-                header('Location: '. $url);
-                exit();
-            
-            } else {
-
-                throw new Exception("Authorisation failed", 1);
-
-            }
-
-
+            // if we do not have data from Twitter
+            return $this->login_tw_getData( $session );
         }
+    }
+
+    /**
+     * Get userdata from twitter profile with oauth_verifier token
+     *
+     * @author Alexander Demyashev <alexander.demyashev@gmail.com>
+     * 
+     * @param  string   $oauth_verifier
+     * @param  string   $oauth_token
+     * @param  string   $oauth_token_secret
+     * @param  object   $session
+     * @return array    $userdata
+     */
+    private function login_tw_handle( $oauth_verifier, $oauth_token, $oauth_token_secret, $session ) {
+        
+        $settings = Kohana::$config->load('social.twitter');
+        
+        $twitteroauth = new Model_Social_Tw(
+            $settings['consumer_key'], 
+            $settings['consumer_secret'], 
+            $oauth_token, 
+            $oauth_token_secret
+        );
+
+        $access_token = $twitteroauth->getAccessToken( $oauth_verifier );
+        
+        $session->set('access_token',  $access_token);
+
+        return $twitteroauth->get('account/verify_credentials');
+    }
+
+    /**
+     * Get oauth_verifier code from twitter in order to 
+     * @author Alexander Demyashev <alexander.demyashev@gmail.com>
+     * @param  object   $session
+     * @return bool     FALSE or REDIRECT (30x http code)
+     */
+    private function login_tw_getData( $session ) {
+
+        $settings = Kohana::$config->load('social.twitter');
+
+        $twitteroauth = new Model_Social_Tw(
+            $settings['consumer_key'], 
+            $settings['consumer_secret']
+        );
+
+        $request_token = $twitteroauth->getRequestToken( $settings['redirect_uri'] );
+
+        $session->set('oauth_token', $request_token['oauth_token']);
+        $session->set('oauth_token_secret', $request_token['oauth_token_secret']);
+
+        if($twitteroauth->http_code==200){
+
+            $url = $twitteroauth->getAuthorizeURL($request_token['oauth_token']);
+            $twitteroauth->redirect($url);
+        
+        } else {
+
+            $log = Log::instance();
+            $log->add(Log::ERROR, 'Twitter authorisation failed: :uid', array(
+                 ':uid'  => $this->user->id
+            ));
+            $log->write();
+
+            return FALSE;
+        }
+
     }
 
     /**

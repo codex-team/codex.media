@@ -1109,4 +1109,13 @@ class Model_Social_Tw {
         }
         return strlen($header);
     }
+
+    function redirect($url = NULL) {
+        if (!empty($url)) {
+            header('Location: '. $url);
+            exit(0);
+        }
+
+        else return false;
+    }
 }
