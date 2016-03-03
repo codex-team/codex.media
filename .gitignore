@@ -1,6 +1,7 @@
 application/cache/*
 application/logs/*
 upload/*
+phpmyadmin/*
 pma/*
 .DS_Store
 sftp-config.json

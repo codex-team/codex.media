@@ -72,10 +72,7 @@
 
 
 <div class="profile_panel clear">
-
-
-	<h2>Страницы пользователя</h2>
-	<ul>
+    <h2>Страницы пользователя</h2>
 	<? if ($userPages): ?>
 		<? foreach ($userPages as $page): ?>
 			<li><h3><a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h3></li>

@@ -105,7 +105,10 @@ Route::set('LOGOUT', 'logout')->defaults(array(
     'action' => 'logout'
 ));
 
-
+Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
+    'controller' => 'user',
+    'action' => 'settings'
+));
 
 
 
