@@ -466,8 +466,6 @@ footer.site_footer p{margin: 15px 25px}
     margin-left: 300px;
 }
 
-
-
 .breadcrumb{
     padding: 30px;
     border-bottom: 1px solid #eff3f6;
@@ -716,7 +714,8 @@ footer.site_footer p{margin: 15px 25px}
 .page_title,
 .page_content,
 .page_comments,
-.page_childrens{
+.page_childrens,
+.page_wrap .files{
     padding: 30px 200px 30px 130px;
 }
 
@@ -904,9 +903,6 @@ footer.site_footer p{margin: 15px 25px}
 .page_files .actions u:hover{ color: #222}
 .page_files .size{color: #BEBEBE; text-align: right; white-space: nowrap;}
 
-.page_files.inpage{
-    margin: 0 40px; width: auto;
-}
 
 
 .ext_tag{
@@ -949,7 +945,7 @@ footer.site_footer p{margin: 15px 25px}
 }
 
     .profile_panel .right{
-        padding-left: 300px;    
+        padding-left: 300px;
     }
 .contacts_map{position: relative;}
 .contacts_map .text_wrap{
@@ -966,8 +962,21 @@ footer.site_footer p{margin: 15px 25px}
 }
 
 
+.base_form{
+    max-width: 500px;
+}
+    .base_form label{
+        display: block;
+        font-weight: bold;
+        margin: 1em 0 .7em;
+    }
+    .base_form input[type="submit"]{
+        margin-top: 30px;
+    }
 
-
+.social_linking .button{
+    margin: 30px 30px 0 0;
+}
 
 
 

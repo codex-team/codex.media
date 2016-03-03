@@ -51,27 +51,18 @@ class Model_User extends Model_preDispatch
     {
         if ($user) {
 
-            $this->id               = $user['id'];
-            $this->name             = strip_tags($user['name']);
-            $this->password         = $user['password'];
+            /** Fill model by DB row */
+            foreach ($user as $field => $value) {
+                if (property_exists($this, $field)) {
+                    $this->$field = $value;
+                }
+            }
 
-            $this->photo            = trim($user['photo'])          ? strip_tags($user['photo'])         : '/public/img/default_ava_small.png' ;
-            $this->photo_medium     = trim($user['photo_medium'])   ? strip_tags($user['photo_medium'])  : '/public/img/default_ava.png';
-            $this->photo_big        = trim($user['photo_big'])      ? strip_tags($user['photo_big'])     : '/public/img/default_ava_big.png';
+            if (!$this->photo)        $this->photo        = '/public/img/default_ava_small.png';
+            if (!$this->photo_medium) $this->photo_medium = '/public/img/default_ava.png';
+            if (!$this->photo_big)    $this->photo_big    = '/public/img/default_ava_big.png';
 
-            $this->email            = strip_tags($user['email']);
-            $this->twitter          = strip_tags($user['twitter']);
-            $this->twitter_name     = strip_tags($user['twitter_name']);
-            $this->twitter_username = strip_tags($user['twitter_username']);
-            $this->vk               = strip_tags($user['vk']);
-            $this->vk_uri           = strip_tags($user['vk_uri']);
-            $this->vk_name          = strip_tags($user['vk_name']);
-            $this->facebook         = strip_tags($user['facebook']);
-            $this->facebook_name    = strip_tags($user['facebook_name']);
-            $this->phone            = $user['phone'];
-            
-            $this->status           = $user['status'];
-            $this->dt_reg           = $user['dt_reg'];
+
             $this->isTeacher        = $this->isTeacher();
             $this->isAdmin          = $this->isAdmin();
 
@@ -110,7 +101,7 @@ class Model_User extends Model_preDispatch
                 ->where('id', '=', $user_id)
                 ->clearcache('user:' . $user_id);
 
-        foreach ($fields as $name => $value) $user->set($name, $value);
+        foreach ($fields as $name => $value) $user->set($name, trim(htmlspecialchars($value)));
 
         return $user->execute();
     }
@@ -144,19 +135,19 @@ class Model_User extends Model_preDispatch
 
         return true;
     }
-    
+
     public function saveAvatar($file, $path)
     {
         $model = new Model_Methods();
         $filename = $model->saveImage($file, $path);
-        
+
         $fields = array(
-            'photo'        => $path . 's_' . $filename, 
-            'photo_medium' => $path . 'm_' . $filename, 
+            'photo'        => $path . 's_' . $filename,
+            'photo_medium' => $path . 'm_' . $filename,
             'photo_big'    => $path . 'b_' . $filename
             );
-            
-        $this->updateUser($this->id, $fields);  
+
+        $this->updateUser($this->id, $fields);
     }
 
     public function isAdmin()

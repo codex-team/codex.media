@@ -51,11 +51,11 @@
         </span>
     <? endif?>
     <? if ($user->isAdmin): ?>
-        <a class="textbutton fl_r" href="/user/settings"><i class="icon-vcard"></i> Действия</a>
+        <span class="textbutton pointer fl_r" onclick="document.getElementById('pageAction').classList.toggle('hide')"><i class="icon-vcard"></i> Действия</span>
     <? endif ?>
 </div>
 <? if ($user->isAdmin): ?>
-    <ul class="action_line page_actions">
+    <ul class="action_line page_actions hide" id="pageAction">
         <? if (!$viewUser->isTeacher): ?>
             <li><a href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a></li>
         <? else: ?>
@@ -73,12 +73,14 @@
 
 <div class="profile_panel clear">
     <h2>Страницы пользователя</h2>
+
 	<? if ($userPages): ?>
-		<? foreach ($userPages as $page): ?>
-			<li><h3><a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h3></li>
-		<? endforeach; ?>
+        <ul>
+    		<? foreach ($userPages as $page): ?>
+    			<li><h3><a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h3></li>
+    		<? endforeach; ?>
+        </ul>
 	<? else: ?>
 		пользователь пока еще не создал ни одной страницы
 	<? endif ?>
-	</ul>
 </div>
