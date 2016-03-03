@@ -1,11 +1,9 @@
+<? if($user->status == Model_User::USER_STATUS_ADMIN): ?>
+    <div class="breadcrumb">
+        <a class="button green" href="/p/add-news">Добавить новость</a>
+    </div>
+<? endif ?>
 <div class="news">
-
-    <? if($user->status == Model_User::USER_STATUS_ADMIN): ?>
-        <article class="post">
-            <a class="button green" href="/p/add-news">Добавить новость</a>
-        </article>
-    <? endif ?>
-
     <? foreach ($pages as $page): ?>
 
         <article class="post <?= $page->rich_view ? 'rich_view' : '' ?>">

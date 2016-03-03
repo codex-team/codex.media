@@ -22,6 +22,8 @@ class Model_User extends Model_preDispatch
 
     public $status              = 0;
 
+    public $dt_reg              = null;
+
     public $isMe                = false;
     public $isTeacher           = false;
     public $isAdmin             = false;
@@ -67,6 +69,7 @@ class Model_User extends Model_preDispatch
             $this->facebook_name    = strip_tags($user['facebook_name']);
 
             $this->status           = $user['status'];
+            $this->dt_reg           = $user['dt_reg'];
             $this->isTeacher        = $this->isTeacher();
             $this->isAdmin          = $this->isAdmin();
 

@@ -3,9 +3,9 @@
     <h1 class="title">Войти на сайт</h1>
     <div class="desc">Вы можете войти на сайт через аккаунт в социальной сети</div>
 
-    <a class="button vk" href="/auth/vk"><i class="icon-vkontakte"></i>ВКонтакте</a>
-    <a class="button facebook" href="/auth/fb"><i class="icon-facebook"></i>Facebook</a>
-    <a class="button twitter" href="/auth/tw"><i class="icon-twitter"></i>Twitter</a>
+    <a class="button iconic vk" href="/auth/vk"><i class="icon-vkontakte"></i>ВКонтакте</a>
+    <a class="button iconic facebook" href="/auth/fb"><i class="icon-facebook"></i>Facebook</a>
+    <a class="button iconic twitter" href="/auth/tw"><i class="icon-twitter"></i>Twitter</a>
 
 </div>
 
