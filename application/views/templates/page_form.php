@@ -1,15 +1,13 @@
-<h1 class="site_category_title">
-	<? if (isset($page->id) && $page->id):?>
-		Редактирование
-	<? else:?>
-		Создание
-	<? endif;?>
-	<? if ($page->type == Model_Page::TYPE_SITE_NEWS): ?>
-		новости
-	<? else: ?>
-		страницы
-	<? endif ?>
-</h1>
+<div class="breadcrumb">
+
+    <a class="nav_chain" href="/">Главная</a> »
+    <span class="nav_chain">
+        <?= isset($page->id) && $page->id ? 'Редактирование' : 'Создание' ?>
+        <?= $page->type == Model_Page::TYPE_SITE_NEWS ? 'новости' : 'страницы' ?>
+    </span>
+
+</div>
+
 
 <div class="page_form">
 

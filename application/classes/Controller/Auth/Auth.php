@@ -182,6 +182,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         $action = Arr::get($_GET, 'action', '');
         $state  = Arr::get($_GET, 'state', 'login');
 
+        if ( $state == 'remove' ) return $this->social_remove('vk');
+
         if (!$code) {
             $redirect = $vk->getCode($state);
         } else {
@@ -212,10 +214,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                     unset($user_to_db['email']);
                     $status = $this->social_attach($user_to_db);
                     break;
-
-                case 'remove': 
-                    $status = $this->social_remove('vk');
-                    break;
             }
 
             return $status;
@@ -235,6 +233,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
             $this->view['login_error_text'] = Arr::get($_GET, 'error_description', '');
             return FALSE;
         }
+
+        if ( $state == 'remove' ) return $this->social_remove('facebook');
 
         if (!$code) {
             $fb->auth($state);
@@ -266,10 +266,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                     unset($user_to_db['email']);
                     $status = $this->social_attach($user_to_db);
                     break;
-
-                case 'remove':
-                    $status = $this->social_remove('facebook');
-                    break;
             }
 
             return $status;
@@ -289,6 +285,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         $oauth_verifier     = Arr::get($_GET, 'oauth_verifier', '');
         $oauth_token        = $session->get('oauth_token', '');
         $oauth_token_secret = $session->get('oauth_token_secret', '');
+
+        if ($state == 'remove') return $this->social_remove('twitter');
 
         //If there was a redirect from twitter and it sent us some auth data
         $twitter_initiated = !empty($oauth_verifier) 
@@ -323,10 +321,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                 case 'attach':
                     unset($user_to_db['email']);
                     $status = $this->social_attach($user_to_db);
-                    break;
-
-                case 'remove':
-                    $status = $this->social_remove('twitter');
                     break;
             }
 
@@ -458,9 +452,16 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
             case 'twitter':  $fieldsToClean = array('twitter'=> NULL,'twitter_name'=> NULL,'twitter_username'=> NULL); break;
         }
 
-        if ($userId = parent::checkAuth() ) {
-            Model::factory('User')->updateUser($userId, $fieldsToClean);
-            return TRUE;
+        if ( $userId = parent::checkAuth() ) {
+
+            if ( TRUE == parent::rightToUnbindSocial( $userId ) ) {
+                Model::factory('User')->updateUser($userId, $fieldsToClean);
+                return TRUE;
+            } else {
+                $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети, т.к. это ваша последняя возможность авторизации на сайте';
+                return FALSE;
+            }
+    
         } else {
             $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети';
             return FALSE;

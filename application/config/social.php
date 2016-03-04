@@ -4,8 +4,8 @@ return array
 (
     'vk' => array(
         'type'          => 1,
-        'client_id'     => '5171042',
-        'client_secret' => '4V4V7Ql3OcFVHaIpHS6y',
+        'client_id'     => '5313285',
+        'client_secret' => '9VYBUy1aQLomWyrlhSX4',
         'redirect_uri'  => 'http'.((Arr::get($_SERVER, 'HTTPS')) ? 's' : '').'://'.Arr::get($_SERVER, 'SERVER_NAME').'/auth/vk',
         'scopes'        => 'email,offline',
     ),
