@@ -24,10 +24,10 @@ class Controller_Parser extends Controller_Base_preDispatch {
             $doc->recover = true;
             $doc->strictErrorChecking = false;
 
-            $doc->loadHTML($page);
+            // $doc->loadHTML($page);
 
-            // $encoding = mb_detect_encoding($page);
-            // $doc->loadHTML(mb_convert_encoding($page, 'HTML-ENTITIES', $encoding));
+            $encoding = mb_detect_encoding($page);
+            $doc->loadHTML(mb_convert_encoding($page, 'HTML-ENTITIES', $encoding));
 
             libxml_clear_errors();
 
