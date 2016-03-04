@@ -538,21 +538,23 @@ footer.site_footer p{margin: 15px 25px}
         }
 
 .news .rich_view{
-    position: relative;
     padding: 60px 55px;
     margin-top: -1px;
     border: 5px solid #F1F2F5;
 }
-    .news .rich_view:after{
-        font-family: 'codex-edu';
-        display: block;
-        content: '\e810';
-        color: #E3E5EA;
-        position: absolute;
-        right: 50px;
-        top: 50px;
-        font-size: 20px;
+    .news .pinned{
+        position: relative;
     }
+        .news .pinned::after{
+            font-family: 'codex-edu';
+            display: block;
+            content: '\e810';
+            color: #E3E5EA;
+            position: absolute;
+            right: 50px;
+            top: 50px;
+            font-size: 20px;
+        }
     .news .rich_view time{
         /*color: #69758A;*/
     }

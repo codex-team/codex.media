@@ -6,7 +6,7 @@
 <div class="news">
     <? foreach ($pages as $page): ?>
 
-        <article class="post <?= $page->rich_view ? 'rich_view' : '' ?>">
+        <article class="post <?= $page->rich_view ? 'rich_view' : '' ?> <?= $page->dt_pin ? 'pinned' : '' ?>">
             <time><?= date_format(date_create($page->date), 'd F Y, G:i') ?></time>
             <h3>
                 <a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a>
