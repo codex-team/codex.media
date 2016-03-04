@@ -1,5 +1,5 @@
 <div class="contacts_map">
-	<div id="map" style="height: 500px; margin-top: 2px;z-index: 1"></div>
+	<div id="map" style="height: 500px;z-index: 1"></div>
 	<div class="text_wrap">
 		<div class="text">
 			<li><?= $site_info->address ?></li>

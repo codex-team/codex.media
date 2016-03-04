@@ -1,54 +1,66 @@
-<div>
-	<? # блок навигации ?>
-	<? if($navigation[0]->type != Model_Page::TYPE_USER_PAGE || $navigation[0]->is_menu_item == 1): ?>
-		<a href="/">Главная страница</a>
-	<? else: ?>
-		<a href="/user/<?= $page->author->id ?>"><?= $page->author->name ?></a>
-	<? endif ?>
-	<? foreach ($navigation as $navig_page): ?>
-	» <a <? if ($navig_page->id != $page->id): ?>href="/p/<?= $navig_page->id ?>/<?= $navig_page->uri ?>"<? endif ?> >
-			<?= $navig_page->title ?></a>
-	<? endforeach ?>
+<div class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+
+    <? if($navigation[0]->type != Model_Page::TYPE_USER_PAGE || $navigation[0]->is_menu_item == 1): ?>
+        <a class="nav_chain" href="/" itemprop="url"><span itemprop="title">Главная</span></a>
+    <? else: ?>
+        <a class="nav_chain" href="/user/<?= $page->author->id ?>" itemprop="url"><span itemprop="title"><?= $page->author->name ?></span></a>
+    <? endif ?>
+
+    <? foreach ($navigation as $navig_page): ?> »
+        <? if ($navig_page->id != $page->id): ?>
+            <a href="/p/<?= $navig_page->id ?>/<?= $navig_page->uri ?>" itemprop="title" class="nav_chain">
+                <?= $navig_page->title ?>
+            </a>
+        <? else: ?>
+            <span itemprop="title" class="nav_chain">
+                <?= $navig_page->title ?>
+            </span>
+        <? endif ?>
+    <? endforeach ?>
+
+    <? if( $can_modify_this_page ): ?>
+        <div class="fl_r actions">
+            <a class="textbutton" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
+            <a class="button iconic green" href="/p/<?= $page->id ?>/<?= $page->uri ?>/edit"><i class="icon-pencil"></i> Редактировать</a>
+        </div>
+    <? endif ?>
+
 </div>
 
 <h1 class="page_title">
 	<?= $page->title ?>
 </h1>
-
-
-<div class="page_content">
+<article class="page_content">
 	<?= $page->content ?>
-	<? if ($page->content): echo "<br>"; endif ?>
-	<? if($can_modify_this_page): ?>
-		<a class="button green" href="/p/<?= $page->id ?>/<?= $page->uri ?>/edit">Редактировать</a>
-		<a class="button gray" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete">Удалить</a>
-	<? endif ?>
-</div>
+</article>
 
-<?  ?>
-<? if ($page->childrens || $can_modify_this_page): ?>
-	<ul class="page_childrens childrens_underpage">
-		<? foreach ($page->childrens as $children): ?>
-			<li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
-		<? endforeach ?>
-		<? if($can_modify_this_page): ?>
-			<li><a class="button green" href="/p/<?= $page->id ?>/<?= $page->uri ?>/add-page">Добавить страницу</a></li>
-		<? endif ?>
-	</ul>
+<? if ($page->childrens): ?>
+    <ul class="page_childrens clear">
+        <? foreach ($page->childrens as $children): ?>
+            <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
+        <? endforeach ?>
+    </ul>
 <? endif; ?>
-
+<? if ( $can_modify_this_page ): ?>
+    <a class="button iconic green add_children_btn" href="/p/<?= $page->id ?>/<?= $page->uri ?>/add-page">
+        <i class="icon-plus"></i>
+        Вложенная страница
+    </a>
+<? endif; ?>
 <? if (isset($files) && $files): ?>
-	<table class="page_files inpage">
-		<? foreach ($files as $file): ?>
-			<tr>
-				<td class="ext"><span class="ext_tag"><?= $file['extension'] ?></span></td>
-				<td class="title"><?= $file['title'] ?></td>
-				<td>
-					<p class="size"><?= (int)$file['size'] < 1000 ? $file['size'] . PHP_EOL . 'КБ' : ceil($file['size'] / 1000) . PHP_EOL . 'МБ' ?></p>
-				</td>
-			</tr>
-		<? endforeach ?>
-	</table>
+    <div class="files">
+    	<table class="page_files">
+    		<? foreach ($files as $file): ?>
+    			<tr>
+    				<td class="ext"><span class="ext_tag"><?= $file['extension'] ?></span></td>
+    				<td class="title"><?= $file['title'] ?></td>
+    				<td>
+    					<p class="size"><?= (int)$file['size'] < 1000 ? $file['size'] . PHP_EOL . 'КБ' : ceil($file['size'] / 1000) . PHP_EOL . 'МБ' ?></p>
+    				</td>
+    			</tr>
+    		<? endforeach ?>
+    	</table>
+    </div>
 <? endif; ?>
 
 <? if ($user->id): ?>
