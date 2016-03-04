@@ -35,6 +35,12 @@
 		<?= Form::hidden('id', $page->id); ?>
 		<?= Form::hidden('id_parent', $page->id_parent); ?>
 
+		<h4>Импортивать страницу</h4>
+		<div class="input_text mb30">
+			<input type="text" name="url" />
+			<button></button>
+		</div>	
+
 		<h4>Заголовок</h4>
 		<div class="input_text mb30">
 			<input type="text" name="title" value="<?= $page->title ?>" />
@@ -165,8 +171,6 @@
 
 
 </div>
-
-
 
 
 
