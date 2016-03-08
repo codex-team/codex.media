@@ -26,6 +26,8 @@
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <script src="/public/js/main.js?v=<?= time() ?>"></script>
+    
+    <script src="/public/js/comment.js"></script>
 
 </head>
 <body>

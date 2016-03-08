@@ -70,36 +70,39 @@
             <? foreach ($comments as $comment): ?>
                 <div>
                     <img src="<?= $comment->author_photo ?>">
-                    <b>
-                        <?= $comment->author_name ?>
-                    </b>
-                    <p><?= $comment->text ?></p>
-                    <i>
-                        <?= $comment->dt_create ?> 
-                        <? if ($comment->parent_id != 0): ?>
-                            пользователю <?= $comment->parent_name ?>
-                        <? endif; ?>
-                    </i>
-                    <a onclick="document.getElementById('answer_to_comment').value='<?= $comment->id ?>';
-                                document.getElementById('comment_head').innerHTML='Ваш ответ на комментарий пользователя <?= $comment->author_name ?>';">
-                        [ответить]
-                    </a>
-                    <? if ($user->id == $comment->author || $user->isAdmin): ?>
-                        <a href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
-                            [удалить]
+                    <div>
+                        <h4>
+                            <?= $comment->author_name ?>
+                        </h4>
+                        <span>
+                            <? if ($comment->parent_id != 0): ?>
+                                пользователю <?= $comment->parent_name ?>
+                            <? endif; ?>
+                        </span>
+                        <time>
+                            <?= date_format(date_create($comment->dt_create), 'd F') ?>
+                        </time>
+                        <p><?= $comment->text ?></p>
+                        <a onclick="answer(<?= $comment->id ?>, '<?= $comment->author_name ?>')">
+                            Ответить
                         </a>
-                    <? endif; ?>
+                        <? if ($user->id == $comment->author || $user->isAdmin): ?>
+                            <a href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
+                                Удалить
+                            </a>
+                        <? endif; ?>
+                    </div>
                 </div>
             <? endforeach; ?>
         <? else: ?>
             <p>Нет комментариев.</p>
         <? endif; ?>
     
-        <h2 id="comment_head">Оставьте комментарий:</h2>
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" method="POST" class="add_comment_form mt20">
             <textarea name="text" rows="6"></textarea>
             <input type="hidden" name="parent_id" value="0" id="answer_to_comment"/>
-            <input type="submit" value="Оставить комментарий" />
+            <input id="comment_button" type="submit" value="Оставить комментарий" />
+            <span id="comment_answer"></span>
         </form>
     <? else: ?>
         <p>Комментарии доступны только зарегистрированным пользователям.</p>
