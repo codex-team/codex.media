@@ -1,15 +1,13 @@
-<h1 class="site_category_title">
-	<? if (isset($page->id) && $page->id):?>
-		Редактирование
-	<? else:?>
-		Создание
-	<? endif;?>
-	<? if ($page->type == Model_Page::TYPE_SITE_NEWS): ?>
-		новости
-	<? else: ?>
-		страницы
-	<? endif ?>
-</h1>
+<div class="breadcrumb">
+
+    <a class="nav_chain" href="/">Главная</a> »
+    <span class="nav_chain">
+        <?= isset($page->id) && $page->id ? 'Редактирование' : 'Создание' ?>
+        <?= $page->type == Model_Page::TYPE_SITE_NEWS ? 'новости' : 'страницы' ?>
+    </span>
+
+</div>
+
 
 <div class="page_form">
 
@@ -47,10 +45,20 @@
 
 		<? if ($user->status == Model_User::USER_STATUS_ADMIN): ?>
 			<div class="extra_settings mb30">
-				<div class="checkbox dark">
+				<div class="checkbox dark <?= $page->is_menu_item ? 'checked' : '' ?>">
 					<i><input type="checkbox" id="is_menu_item" name="is_menu_item" value="1" <?= isset($page->is_menu_item) && $page->is_menu_item == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') ?>/></i>
 					<label for="is_menu_item">Вынести в меню</label>
 				</div>
+				<? if ($page->type == Model_Page::TYPE_SITE_NEWS): ?>
+					<div class="checkbox dark <?= $page->rich_view ? 'checked' : '' ?>">
+						<i><input type="checkbox" id="rich_view" name="rich_view" value="1" <?= isset($page->rich_view) && $page->rich_view == 1 ? 'checked="checked"' : Arr::get($_POST, 'rich_view' , '') ?>/></i>
+						<label for="rich_view">Важная новость</label>
+					</div>
+					<div class="checkbox dark <?= $page->dt_pin ? 'checked' : '' ?>">
+						<i><input type="checkbox" id="dt_pin" name="dt_pin" value="<?= $page->dt_pin ? $page->dt_pin : date('Y-m-d H:i:s') ?>" <?= isset($page->dt_pin) ? 'checked="checked"' : '' ?>/></i>
+						<label for="dt_pin">Закрепить новость</label>
+					</div>
+				<? endif ?>
 			</div>
 		<? endif ?>
 
