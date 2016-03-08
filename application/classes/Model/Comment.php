@@ -12,6 +12,7 @@ Class Model_Comment extends Model_preDispatch
     public $dt_create;
     public $is_removed;
     public $author_name;
+    public $author_photo;
     public $parent_name;
     
     public function __construct()
@@ -62,6 +63,7 @@ Class Model_Comment extends Model_preDispatch
     private function fillByRow($comment_row)
     {
         if (!empty($comment_row['id'])) {
+            $author            = self::getAuthor($comment_row['author']);
             $this->id          = $comment_row['id'];
             $this->author      = $comment_row['author'];
             $this->status      = $comment_row['status'];
@@ -71,7 +73,8 @@ Class Model_Comment extends Model_preDispatch
             $this->parent_id   = $comment_row['parent_id'];
             $this->dt_create   = $comment_row['dt_create'];
             $this->is_removed  = $comment_row['is_removed'];   
-            $this->author_name = self::getAuthor($comment_row['author']);
+            $this->author_name = $author[0];
+            $this->author_photo = $author[1];
             $this->parent_name = self::getAuthorByCommentId($comment_row['parent_id']);
         }
         
@@ -104,21 +107,23 @@ Class Model_Comment extends Model_preDispatch
     }
     
     /**
-     * Получаем имя автора по его id.
+     * Получаем имя и фото автора по его id.
      */
     public static function getAuthor($user_id)
     {
         $model_user = new Model_User($user_id);
-        return $model_user->name;
+        $author = array($model_user->name, $model_user->photo);
+        return $author;
     }
     
      /**
-     * Получаем имя автора по id комментария.
+     * Получаем имя и фото автора по id комментария.
      */
     public static function getAuthorByCommentId($id)
     {
         $comment = self::get($id);
-        return self::getAuthor($comment->author);
+        $author = self::getAuthor($comment->author);
+        return $author[0];
     }
     
     /**

@@ -69,6 +69,7 @@
         <? if ($comments): ?>
             <? foreach ($comments as $comment): ?>
                 <div>
+                    <img src="<?= $comment->author_photo ?>">
                     <b>
                         <?= $comment->author_name ?>
                     </b>
