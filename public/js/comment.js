@@ -3,7 +3,7 @@ function answer(comment_id, author) {
     if (is_answer != comment_id) {
         document.getElementById('answer_to_comment').value=comment_id;
         document.getElementById('comment_button').value='Ответить';
-        document.getElementById('comment_answer').innerHTML='пользователю ' + author;
+        document.getElementById('comment_answer').innerHTML='пользователю ' + '<b>' + author + '</b>';
     } else {
         document.getElementById('answer_to_comment').value=0;
         document.getElementById('comment_button').value='Оставить комментарий';

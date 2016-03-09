@@ -68,30 +68,38 @@
 	<? if($user->id): ?>
         <? if ($comments): ?>
             <? foreach ($comments as $comment): ?>
-                <div>
-                    <img src="<?= $comment->author_photo ?>">
-                    <div>
+                <? if ($comment->parent_id != 0): ?>
+                    <div class="comment_wrapper answer_wrapper">
+                <? else: ?>
+                    <div class="comment_wrapper">
+                <? endif; ?>
+                    <img class="comment_left" src="<?= $comment->author_photo ?>">
+                    <div class="comment_right">
                         <h4>
                             <?= $comment->author_name ?>
+                            <?= $comment->id ?>
                         </h4>
-                        <span>
+                        <span class="to_user">
                             <? if ($comment->parent_id != 0): ?>
-                                пользователю <?= $comment->parent_name ?>
+                                <img src="/public/img/answer_arrow.png"> 
+                                <?= $comment->parent_id ?>
                             <? endif; ?>
                         </span>
                         <time>
-                            <?= date_format(date_create($comment->dt_create), 'd F') ?>
+                            <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
                         </time>
                         <p><?= $comment->text ?></p>
-                        <a onclick="answer(<?= $comment->id ?>, '<?= $comment->author_name ?>')">
+                        <a class="answer" onclick="answer(<?= $comment->id ?>, '<?= $comment->author_name ?>')">
+                            <img src="/public/img/reply_icon.png">
                             Ответить
                         </a>
                         <? if ($user->id == $comment->author || $user->isAdmin): ?>
-                            <a href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
+                            <a class="delete" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                                 Удалить
                             </a>
                         <? endif; ?>
                     </div>
+                    <div class="clearfix"></div>
                 </div>
             <? endforeach; ?>
         <? else: ?>

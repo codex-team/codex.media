@@ -84,6 +84,8 @@ Class Model_Comment extends Model_preDispatch
     public static function getCommentsByPageId($page_id)
     {
         $comments = array();
+        
+        $comments_tree = array();
 
         if (!empty($page_id)) {
             $comment_rows = Dao_Comments::select()
@@ -98,12 +100,22 @@ Class Model_Comment extends Model_preDispatch
 
                     $comment->fillByRow($comment_row);
 
-                    array_push($comments, $comment);
+                    array_push($comments, $comment);                    
+                }
+                
+                foreach ($comments as $comment) {
+                    if (!in_array($comment, $comments_tree))
+                        array_push($comments_tree, $comment);
+                    
+                    foreach ($comments as $comment_second) {
+                        if ($comment_second->parent_id == $comment->id)
+                            array_push($comments_tree, $comment_second);
+                    }
                 }
             }
         }
 
-        return $comments;
+        return $comments_tree;
     }
     
     /**
