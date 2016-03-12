@@ -77,19 +77,20 @@
                     <div class="comment_right">
                         <h4>
                             <?= $comment->author_name ?>
-                            <?= $comment->id ?>
                         </h4>
                         <span class="to_user">
                             <? if ($comment->parent_id != 0): ?>
                                 <img src="/public/img/answer_arrow.png"> 
-                                <?= $comment->parent_id ?>
+                                <?= $comment->parent_name ?>
                             <? endif; ?>
                         </span>
                         <time>
                             <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
                         </time>
                         <p><?= $comment->text ?></p>
-                        <a class="answer" onclick="answer(<?= $comment->id ?>, '<?= $comment->author_name ?>')">
+                        <a class="answer" onclick="answer(<?= $comment->id ?>, 
+                                                          <?= $comment->root_id ?>,
+                                                          '<?= $comment->author_name ?>')">
                             <img src="/public/img/reply_icon.png">
                             Ответить
                         </a>
@@ -107,9 +108,10 @@
         <? endif; ?>
     
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" method="POST" class="add_comment_form mt20">
-            <textarea name="text" rows="6"></textarea>
-            <input type="hidden" name="parent_id" value="0" id="answer_to_comment"/>
-            <input id="comment_button" type="submit" value="Оставить комментарий" />
+            <textarea oninput="enable_button()" id="text_field" name="text" rows="6"></textarea>
+            <input type="hidden" name="parent_id" value="0" id="parent_id"/>
+            <input type="hidden" name="root_id" value="0" id="root_id"/>
+            <input id="comment_button" disabled type="submit" value="Оставить комментарий" />
             <span id="comment_answer"></span>
         </form>
     <? else: ?>
