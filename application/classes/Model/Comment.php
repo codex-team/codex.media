@@ -43,18 +43,26 @@ Class Model_Comment extends Model_preDispatch
             ->set('author',    $this->author)
             ->set('text',      $this->text)
             ->set('page_id',   $this->page_id)
-            ->set('root_id',   $this->root_id)
             ->set('parent_id', $this->parent_id)
+            ->set('root_id',   $this->root_id)
             ->execute();
         
-        if ($idAndRowAffected) {
-            $comment = Dao_Comments::select()
-                ->where('id', '=', $idAndRowAffected[0])
-                ->limit(1)
-                ->execute();
-            
-            $this->fillByRow($comment);
-        }
+        $thisId = Dao_Comments::select()
+            ->order_by('id', 'DESC')
+            ->limit(1)
+            ->execute();
+        
+        if ($this->root_id == 0)
+            Dao_Comments::update()
+                ->where('id', '=', $thisId['id'])
+                ->set('root_id', $thisId['id'])
+                ->execute(); 
+        
+        if ($idAndRowAffected)
+            return true;
+        else
+            return false;
+        
     }
 
     /*
@@ -84,14 +92,12 @@ Class Model_Comment extends Model_preDispatch
     public static function getCommentsByPageId($page_id)
     {
         $comments = array();
-        
-        $comments_tree = array();
 
         if (!empty($page_id)) {
             $comment_rows = Dao_Comments::select()
                 ->where('page_id', '=', $page_id)
                 ->where('is_removed', '=', 0)
-                ->order_by('id', 'ASC')
+                ->order_by('root_id', 'ASC')
                 ->execute();
             
             if ($comment_rows) {
@@ -102,20 +108,10 @@ Class Model_Comment extends Model_preDispatch
 
                     array_push($comments, $comment);                    
                 }
-                
-                foreach ($comments as $comment) {
-                    if (!in_array($comment, $comments_tree))
-                        array_push($comments_tree, $comment);
-                    
-                    foreach ($comments as $comment_second) {
-                        if ($comment_second->parent_id == $comment->id)
-                            array_push($comments_tree, $comment_second);
-                    }
-                }
             }
         }
 
-        return $comments_tree;
+        return $comments;
     }
     
     /*
