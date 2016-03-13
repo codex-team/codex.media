@@ -12,7 +12,7 @@ class Controller_Comments extends Controller_Base_preDispatch
         
         $text = Arr::get($_POST, 'text');
         
-        if ($page->id != 0 && $this->user->id !=0 && $text != '') {
+        if ($page->id != 0 && $this->user->id !=0 && preg_match('/[0-9a-zA-Z\,\.\?\!]/', $text)) {
             $comment->page_id   = $this->request->param('id');
             $comment->text      = $text;
             $comment->parent_id = Arr::get($_POST, 'parent_id', '0');

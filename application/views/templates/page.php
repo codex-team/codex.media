@@ -89,8 +89,8 @@
                         </time>
                         <p><?= $comment->text ?></p>
                         <a class="answer" onclick="answer(<?= $comment->id ?>, 
-                                                          <?= $comment->root_id ?>,
-                                                          '<?= $comment->author_name ?>')">
+                                                   <?= $comment->root_id ?>,
+                                                   '<?= $comment->author_name ?>')">
                             <img src="/public/img/reply_icon.png">
                             Ответить
                         </a>
