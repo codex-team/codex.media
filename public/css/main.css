@@ -1162,7 +1162,7 @@ footer.site_footer p{margin: 15px 25px}
 
     .delete { text-decoration: none; }
 
-.add_comment_form textarea{
+.comment_form textarea{
     margin-top: 34px;
     margin-bottom: 32px;
     box-sizing: border-box;
@@ -1171,16 +1171,16 @@ footer.site_footer p{margin: 15px 25px}
     font-size: 16px;
 }
 
-.add_comment_form input[type="submit"] {
+.comment_form input[type="submit"] {
     background: #2aae91;
     margin-right: 15px;
 }
 
-.add_comment_form span { font-size: 16px; }
+.comment_form span { font-size: 16px; }
 
-.add_comment_form input[type="submit"] { transition: all 200ms ease; }
+.comment_form input[type="submit"] { transition: all 200ms ease; }
 
-.add_comment_form input[type="submit"]:disabled {
+.comment_form input[type="submit"]:disabled {
     background: #D7D7D7;
     cursor: default;
 }

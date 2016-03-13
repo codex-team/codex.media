@@ -62,16 +62,16 @@
     	</table>
     </div>
 <? endif; ?>
-<div class="page_comments">
+<div class="page_comments" id="page_comments">
 
 	<h3>Комментарии</h3>
 	<? if($user->id): ?>
         <? if ($comments): ?>
             <? foreach ($comments as $comment): ?>
                 <? if ($comment->parent_id != 0): ?>
-                    <div class="comment_wrapper answer_wrapper">
+                    <div class="comment_wrapper answer_wrapper" id="comment_<?= $comment->id ?>">
                 <? else: ?>
-                    <div class="comment_wrapper">
+                    <div class="comment_wrapper" id="comment_<?= $comment->id ?>">
                 <? endif; ?>
                     <img class="comment_left" src="<?= $comment->author_photo ?>">
                     <div class="comment_right">
@@ -107,7 +107,7 @@
             <p>Нет комментариев.</p>
         <? endif; ?>
     
-        <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" method="POST" class="add_comment_form mt20">
+        <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
             <textarea oninput="enable_button()" id="text_field" name="text" rows="6"></textarea>
             <input type="hidden" name="parent_id" value="0" id="parent_id"/>
             <input type="hidden" name="root_id" value="0" id="root_id"/>
