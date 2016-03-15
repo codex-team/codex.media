@@ -108,7 +108,7 @@
         <? endif; ?>
     
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
-            <textarea oninput="enable_button()" id="text_field" name="text" rows="6"></textarea>
+            <textarea oninput="enable_button()" id="text_field" name="text_field" rows="6"></textarea>
             <input type="hidden" name="parent_id" value="0" id="parent_id"/>
             <input type="hidden" name="root_id" value="0" id="root_id"/>
             <input id="comment_button" disabled type="submit" value="Оставить комментарий" />
