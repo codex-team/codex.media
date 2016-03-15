@@ -37,12 +37,12 @@ function answer(comment_id, root_id, author) {
 }
 
 /*
-** Отключаем кнопку submit, если поле пустое
+** Отключаем кнопку submit, если поле пустое или поле только с пробелами
 */
 
   function enable_button() {
     var field_value = document.getElementById("text_field").value;
-    if (field_value.length > 0 && /\w+|\.|\,|\!|\?/i.test(field_value))
+    if (field_value.length > 0 && /\S+/i.test(field_value))
         document.getElementById('comment_button').disabled = false;
     else
         document.getElementById('comment_button').disabled = true;
