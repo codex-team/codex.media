@@ -11,6 +11,12 @@
 
 <div class="page_form">
 
+	<div class="extra_settings">
+		<h4>Импортивать страницу</h4>
+		<input type="text" name="url" />
+		<button onclick='getPage(document.getElementsByName("url")[0].value)'>GET PAGE</button>
+	</div>
+
 	<? if (isset($errors['title']) &&  $errors['title']): ?>
 		<div class="form_error align_c">
 			<?= $errors['title'] ?>
@@ -32,12 +38,6 @@
 		<?= Form::hidden('type', $page->type); ?>
 		<?= Form::hidden('id', $page->id); ?>
 		<?= Form::hidden('id_parent', $page->id_parent); ?>
-
-		<h4>Импортивать страницу</h4>
-		<div class="input_text mb30">
-			<input type="text" name="url" />
-			<button></button>
-		</div>	
 
 		<h4>Заголовок</h4>
 		<div class="input_text mb30">
@@ -162,12 +162,27 @@
 						}
 					});
 				}
+
+				function getPage( url ){
+
+					simpleAjax.call({
+						type: 'get',
+						url: '/ajax/get_page',
+						data: { 'url' : url },
+						success: function(response){
+							if (response.result) {
+								document.getElementsByName('title')[0].setAttribute('value', response.title);
+								document.getElementsByName('content')[0].value 						= response.article;
+								document.getElementsByClassName('redactor_redactor')[0].innerHTML 	= response.article;
+							}else{
+								// error message
+							}
+						}
+					});
+				}
 			</script>
 		</table>
-
 	</div>
-
-
 </div>
 
 

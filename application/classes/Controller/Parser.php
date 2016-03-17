@@ -5,14 +5,7 @@ class Controller_Parser extends Controller_Base_preDispatch {
     public function action_get_page()
     {
         $url = Arr::get($_GET, 'url', '');
-
-        // ############################################################
-        // echo '<form action="/ajax/get_page/" method="GET">';
-        // echo '<input type="text" name="url" value="' . $url . '" style="width:100%" />';
-        // echo '<button type="submit">load</button>';
-        // echo '</form>';
-        // echo '<hr>';
-        // ############################################################
+        $response = array("result" => "error");
 
         if ($url)
         {
@@ -24,8 +17,6 @@ class Controller_Parser extends Controller_Base_preDispatch {
             $doc->recover = true;
             $doc->strictErrorChecking = false;
 
-            // $doc->loadHTML($page);
-
             $encoding = mb_detect_encoding($page);
             $doc->loadHTML(mb_convert_encoding($page, 'HTML-ENTITIES', $encoding));
 
@@ -34,9 +25,17 @@ class Controller_Parser extends Controller_Base_preDispatch {
             $return = [
                 'title'     => self::getTitle($doc),
                 'article'   => self::getArticleText($doc)
-                ];
+                ];   
 
-            echo Debug::vars( $return );
+            if ($return) {
+                $response['result']     = 'ok';
+                $response['title']      = $return['title'];
+                $response['article']    = $return['article'];  
+            }
+            
+            $this->auto_render = false;
+            $this->response->headers('Content-Type', 'application/json; charset=utf-8');
+            $this->response->body( @json_encode($response) );
         }
     }
 
