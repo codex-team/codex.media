@@ -112,7 +112,8 @@
             <input type="hidden" name="parent_id" value="0" id="parent_id"/>
             <input type="hidden" name="root_id" value="0" id="root_id"/>
             <input id="comment_button" disabled type="submit" value="Оставить комментарий" />
-            <span id="comment_answer"></span>
+            <span id="comment_answer" class="comment_answer"></span>
+            <span class="cancel_answer" id="cancel_answer" onclick="close_answer()"></span>
         </form>
     <? else: ?>
         <p>Комментарии доступны только зарегистрированным пользователям.</p>

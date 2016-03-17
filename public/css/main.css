@@ -1178,11 +1178,22 @@ footer.site_footer p{margin: 15px 25px}
 
 .comment_form span { font-size: 16px; }
 
-.comment_form input[type="submit"] { transition: all 200ms ease; }
+.comment_form input[type="submit"] { 
+    transition: all 200ms ease; 
+    background: #58A3E0;
+}
 
 .comment_form input[type="submit"]:disabled {
-    background: #D7D7D7;
+    opacity: .4;
     cursor: default;
+}
+
+.comment_answer { color: #8c8f92; }
+
+.cancel_answer { 
+    color: #8c8f92; 
+    margin-left: 10px;
+    cursor: pointer;
 }
 
 
