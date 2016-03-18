@@ -1097,5 +1097,103 @@ footer.site_footer p{margin: 15px 25px}
     -webkit-animation-iteration-count: 1; -moz-animation-iteration-count: 1; -o-animation-iteration-count: 1; animation-iteration-count: 1;
 }
 
+/*
+** Стили комментариев
+*/
+.comment_wrapper { margin-top: 34px; }
+
+    .answer_wrapper { margin-left: 70px; }
+
+.comment_left, .comment_right {
+    vertical-align: top;
+    position: relative;
+}
+
+    .comment_left {
+        border-radius: 2px;
+        display: inline-block;
+        width: 42px;
+    }
+
+.comment_right h4, .to_user { display: inline; }
+
+    .comment_right {
+        width: 100%;
+        display: inline-block;
+        padding-left: 70px;
+        margin-top: -42px;
+        box-sizing: border-box;
+    }
+
+        .comment_right h4 { font-size: 16px; }
+
+        .comment_right p {
+            margin-top: 11px;
+            font-size: 16px;
+            margin-bottom: 17px;
+            line-height: 1.4em;
+        }
+
+        .comment_right time {
+            position: absolute;
+            right: 0;
+            display: inline;
+            font-size: 14px;
+            color: #8c8f92;
+        }
+
+    .to_user { font-size: 14px; }
+    
+        .to_user img {
+            height: 8px;
+            margin: -1px 10px 0 10px;
+        }
+
+    .answer, .delete, .to_user{ color: #8c8f92; }
+
+    .answer, .delete { font-size: 15px; }
+
+    .answer { margin-right: 24px; }
+
+        .answer img {
+            height: 10px;
+            margin-right: 5px;
+        }
+
+    .delete { text-decoration: none; }
+
+.comment_form textarea{
+    margin-top: 34px;
+    margin-bottom: 32px;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    resize: none;
+    font-size: 16px;
+}
+
+.comment_form input[type="submit"] {
+    background: #2aae91;
+    margin-right: 15px;
+}
+
+.comment_form span { font-size: 16px; }
+
+.comment_form input[type="submit"] { 
+    transition: all 200ms ease; 
+    background: #58A3E0;
+}
+
+.comment_form input[type="submit"]:disabled {
+    opacity: .4;
+    cursor: default;
+}
+
+.comment_answer { color: #8c8f92; }
+
+.cancel_answer { 
+    color: #8c8f92; 
+    margin-left: 10px;
+    cursor: pointer;
+}
 
 

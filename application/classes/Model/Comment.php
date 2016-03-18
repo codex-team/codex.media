@@ -19,10 +19,10 @@ Class Model_Comment extends Model_preDispatch
     {
     }
 
-	/** 
-	 * Возвращает комментарий с указанным id из БД.
-	 * Иначе возвращает пустой комментарий с id = 0.
-	 */	
+    /* 
+    ** Возвращает комментарий с указанным id из БД.
+    ** Иначе возвращает пустой комментарий с id = 0.
+    */	
     public static function get($id = 0)
     {
         $comment_row = Dao_Comments::select()
@@ -34,32 +34,40 @@ Class Model_Comment extends Model_preDispatch
         return $model->fillByRow($comment_row);
     }
 
-	/** 
-	 * Добавляет комментарий в БД.
-	 */	
+    /* 
+    ** Добавляет комментарий в БД.
+    */	
     public function insert()
     {
         $idAndRowAffected = Dao_Comments::insert()
             ->set('author',    $this->author)
             ->set('text',      $this->text)
             ->set('page_id',   $this->page_id)
-            ->set('root_id',   $this->root_id)
             ->set('parent_id', $this->parent_id)
+            ->set('root_id',   $this->root_id)
             ->execute();
         
-        if ($idAndRowAffected) {
-            $comment = Dao_Comments::select()
-                ->where('id', '=', $idAndRowAffected[0])
-                ->limit(1)
-                ->execute();
-            
-            $this->fillByRow($comment);
-        }
+        $thisId = Dao_Comments::select()
+            ->order_by('id', 'DESC')
+            ->limit(1)
+            ->execute();
+        
+        if ($this->root_id == 0)
+            Dao_Comments::update()
+                ->where('id', '=', $thisId['id'])
+                ->set('root_id', $thisId['id'])
+                ->execute(); 
+        
+        if ($idAndRowAffected)
+            return true;
+        else
+            return false;
+        
     }
 
-	/** 
-	 * Заполняет объект строкой из БД.
-	 */
+    /*
+    ** Заполняет объект строкой из БД.
+    */
     private function fillByRow($comment_row)
     {
         if (!empty($comment_row['id'])) {
@@ -89,7 +97,7 @@ Class Model_Comment extends Model_preDispatch
             $comment_rows = Dao_Comments::select()
                 ->where('page_id', '=', $page_id)
                 ->where('is_removed', '=', 0)
-                ->order_by('id', 'ASC')
+                ->order_by('root_id', 'ASC')
                 ->execute();
             
             if ($comment_rows) {
@@ -98,7 +106,7 @@ Class Model_Comment extends Model_preDispatch
 
                     $comment->fillByRow($comment_row);
 
-                    array_push($comments, $comment);
+                    array_push($comments, $comment);                    
                 }
             }
         }
@@ -106,9 +114,9 @@ Class Model_Comment extends Model_preDispatch
         return $comments;
     }
     
-    /**
-     * Получаем имя и фото автора по его id.
-     */
+    /*
+    ** Получаем имя и фото автора по его id.
+    */
     public static function getAuthor($user_id)
     {
         $model_user = new Model_User($user_id);
@@ -116,9 +124,9 @@ Class Model_Comment extends Model_preDispatch
         return $author;
     }
     
-     /**
-     * Получаем имя и фото автора по id комментария.
-     */
+    /*
+    ** Получаем имя и фото автора по id комментария.
+    */
     public static function getAuthorByCommentId($id)
     {
         $comment = self::get($id);
@@ -126,9 +134,9 @@ Class Model_Comment extends Model_preDispatch
         return $author[0];
     }
     
-    /**
-     * Удаляем комментарий и все его подкомментарии
-     */
+    /*
+    ** Удаляем комментарий и все его подкомментарии
+    */
     public function delete()
     {
         Dao_Comments::update()
