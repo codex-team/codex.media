@@ -49,15 +49,6 @@ Class Model_Comment extends Model_preDispatch
             ->set('parent_id', $this->parent_id)
             ->clearcache('page:' . $this->page_id)
             ->execute();
-        
-        if ($idAndRowAffected) {
-            $comment = Dao_Comments::select()
-                ->where('id', '=', $idAndRowAffected[0])
-                ->limit(1)
-                ->execute();
-            
-            $this->fillByRow($comment);
-        }
     }
 
 	/** 

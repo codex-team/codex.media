@@ -10,7 +10,9 @@ class Controller_Comments extends Controller_Base_preDispatch
         
         $page = new Model_Page($this->request->param('id'));
         
-        if ($page->id != 0 && $this->user->id !=0) {
+        $text = trim(Arr::get($_POST, 'text_field'));
+        
+        if ($page->id != 0 && $this->user->id !=0 && $text != "") {
             $comment->page_id   = $this->request->param('id');
             $comment->text      = Arr::get($_POST, 'text');
             $comment->parent_id = Arr::get($_POST, 'parent_id', '0');
