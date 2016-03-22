@@ -127,12 +127,12 @@ Class Model_Comment extends Model_preDispatch
         Dao_Comments::update()
             ->where('id', '=', $this->id)
             ->set('is_removed', 1)
+            ->clearcache('page:' . $this->page_id)
             ->execute(); 
             
         Dao_Comments::update()
             ->where('parent_id', '=', $this->id)
             ->set('is_removed', 1)
-            ->clearcache('page:' . $this->page_id)
             ->execute(); 
     }
 
