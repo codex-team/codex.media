@@ -27,7 +27,9 @@ Class Model_Comment extends Model_preDispatch
     {
         $comment_row = Dao_Comments::select()
             ->where('id', '=', $id)
-            ->limit(1)->execute();
+            ->limit(1)
+            ->cached(Date::MINUTE * 30, 'page:' . $this->page_id)
+            ->execute();
         
         $model = new Model_Comment();
         
@@ -45,6 +47,7 @@ Class Model_Comment extends Model_preDispatch
             ->set('page_id',   $this->page_id)
             ->set('root_id',   $this->root_id)
             ->set('parent_id', $this->parent_id)
+            ->clearcache('page:' . $this->page_id)
             ->execute();
         
         if ($idAndRowAffected) {
@@ -85,21 +88,20 @@ Class Model_Comment extends Model_preDispatch
     {
         $comments = array();
 
-        if (!empty($page_id)) {
-            $comment_rows = Dao_Comments::select()
-                ->where('page_id', '=', $page_id)
-                ->where('is_removed', '=', 0)
-                ->order_by('id', 'ASC')
-                ->execute();
+        $comment_rows = Dao_Comments::select()
+            ->where('page_id', '=', $page_id)
+            ->where('is_removed', '=', 0)
+            ->order_by('id', 'ASC')
+            ->cached(Date::MINUTE * 20, 'page:' . $page_id)
+            ->execute();
             
-            if ($comment_rows) {
-                foreach ($comment_rows as $comment_row) {
-                    $comment = new Model_Comment();
+        if ($comment_rows) {
+            foreach ($comment_rows as $comment_row) {
+                $comment = new Model_Comment();
 
-                    $comment->fillByRow($comment_row);
+                $comment->fillByRow($comment_row);
 
-                    array_push($comments, $comment);
-                }
+                array_push($comments, $comment);
             }
         }
 
@@ -117,7 +119,7 @@ Class Model_Comment extends Model_preDispatch
     }
     
      /**
-     * Получаем имя и фото автора по id комментария.
+     * Получаем имя автора по id комментария.
      */
     public static function getAuthorByCommentId($id)
     {
@@ -139,6 +141,7 @@ Class Model_Comment extends Model_preDispatch
         Dao_Comments::update()
             ->where('parent_id', '=', $this->id)
             ->set('is_removed', 1)
+            ->clearcache('page:' . $this->page_id)
             ->execute(); 
     }
 
