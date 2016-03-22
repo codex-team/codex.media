@@ -57,19 +57,20 @@ Class Model_Comment extends Model_preDispatch
     private function fillByRow($comment_row)
     {
         if (!empty($comment_row['id'])) {
-            $author            = self::getAuthor($comment_row['author']);
-            $this->id          = $comment_row['id'];
-            $this->author      = $comment_row['author'];
-            $this->status      = $comment_row['status'];
-            $this->text        = $comment_row['text'];
-            $this->page_id     = $comment_row['page_id'];
-            $this->root_id     = $comment_row['root_id'];
-            $this->parent_id   = $comment_row['parent_id'];
-            $this->dt_create   = $comment_row['dt_create'];
-            $this->is_removed  = $comment_row['is_removed'];   
-            $this->author_name = $author[0];
-            $this->author_photo = $author[1];
-            $this->parent_name = self::getAuthorByCommentId($comment_row['parent_id']);
+            $author = self::getAuthor($comment_row['author']);
+            
+            $this->id           = $comment_row['id'];
+            $this->author       = $comment_row['author'];
+            $this->status       = $comment_row['status'];
+            $this->text         = $comment_row['text'];
+            $this->page_id      = $comment_row['page_id'];
+            $this->root_id      = $comment_row['root_id'];
+            $this->parent_id    = $comment_row['parent_id'];
+            $this->dt_create    = $comment_row['dt_create'];
+            $this->is_removed   = $comment_row['is_removed'];   
+            $this->author_name  = $author['name'];
+            $this->author_photo = $author['photo'];
+            $this->parent_name  = self::getAuthorByCommentId($comment_row['parent_id']);
         }
         
         return $this;
@@ -105,7 +106,7 @@ Class Model_Comment extends Model_preDispatch
     public static function getAuthor($user_id)
     {
         $model_user = new Model_User($user_id);
-        $author = array($model_user->name, $model_user->photo);
+        $author = array("name" => $model_user->name, "photo" => $model_user->photo);
         return $author;
     }
     
