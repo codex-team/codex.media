@@ -103,7 +103,7 @@
                 </div>
             <? endforeach; ?>
         <? else: ?>
-            <p>Нет комментариев.</p>
+            <p>Присоединяйтесь к сообществу, чтобы оставлять комментарии</p>
         <? endif; ?>
     
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
