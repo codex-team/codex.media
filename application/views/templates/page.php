@@ -63,24 +63,22 @@
     </div>
 <? endif; ?>
 <div class="page_comments" id="page_comments">
-
-	<h3>Комментарии</h3>
-	<? if($user->id): ?>
+    
+    <h3>Комментарии</h3>
+    <? if($user->id): ?>
         <? if ($comments): ?>
             <? foreach ($comments as $comment): ?>
-                <? if ($comment->parent_comment->id != 0): ?>
-                    <div class="comment_wrapper answer_wrapper" id="comment_<?= $comment->id ?>">
-                <? else: ?>
-                    <div class="comment_wrapper" id="comment_<?= $comment->id ?>">
-                <? endif; ?>
+                <div class="comment_wrapper <?= $comment->parent_comment->id ? 'answer_wrapper' : '' ?>" 
+                     id="comment_<?= $comment->id ?>">
                     <img class="comment_left" src="<?= $comment->author->photo ?>">
                     <div class="comment_right">
-                        <h4>
+                        <b>
                             <?= $comment->author->name ?>
-                        </h4>
+                        </b>
                         <? if ($comment->parent_comment->id != 0): ?>
                             <span class="to_user">
-                                <img src="/public/img/answer_arrow.png"> 
+                                <!-- Временная заглушка вместо шрифтовой иконки -->
+                                <div class="dummy_icon"></div>
                                 <?= $comment->parent_comment->author->name ?>
                             </span>
                         <? endif; ?>
@@ -91,7 +89,8 @@
                         <a class="answer_button" onclick="answer(<?= $comment->id ?>, 
                                                    <?= $comment->root_id ?>,
                                                    '<?= $comment->author->name ?>')">
-                            <img src="/public/img/reply_icon.png">
+                            <!-- Временная заглушка вместо шрифтовой иконки -->
+                            <div class="dummy_icon"></div>
                             Ответить
                         </a>
                         <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
