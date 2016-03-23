@@ -1104,7 +1104,8 @@ footer.site_footer p{margin: 15px 25px}
 
     .answer_wrapper { margin-left: 70px; }
 
-.comment_left, .comment_right {
+.comment_left, 
+.comment_right {
     vertical-align: top;
     position: relative;
 }
@@ -1115,7 +1116,8 @@ footer.site_footer p{margin: 15px 25px}
         width: 42px;
     }
 
-.comment_right b, .to_user { display: inline; }
+.comment_right b, 
+.to_user { display: inline; }
 
     .comment_right {
         width: 100%;
@@ -1162,9 +1164,12 @@ footer.site_footer p{margin: 15px 25px}
             margin-right: 5px;
         }
 
-    .answer_button, .delete_button, .to_user{ color: #8c8f92; }
+    .answer_button, 
+    .delete_button, 
+    .to_user{ color: #8c8f92; }
 
-    .answer_button, .delete_button { font-size: 15px; }
+    .answer_button, 
+    .delete_button { font-size: 15px; }
 
     .answer_button { margin-right: 24px; }
 
@@ -1183,15 +1188,11 @@ footer.site_footer p{margin: 15px 25px}
         font-size: 16px;
     }
 
-    .comment_form input[type="submit"] {
-        background: #2aae91;
-        margin-right: 15px;
-    }
-
     .comment_form span { font-size: 16px; }
 
     .comment_form input[type="submit"] { 
-        transition: all 200ms ease; 
+        transition: opacity 200ms ease; 
+        margin-right: 15px;
         background: #58A3E0;
     }
 
