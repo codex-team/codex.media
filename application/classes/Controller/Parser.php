@@ -5,11 +5,11 @@ class Controller_Parser extends Controller_Base_preDispatch {
     public function action_get_page()
     {
         $url = Arr::get($_GET, 'url', '');
-        $response = array("result" => "error");
+        $response = array("result" => "error", "title" => "", "article" => "");
 
         if ($url)
         {
-            $page   = self::htmlRequest($url);
+            $page   = self::getPageHtmlByUrl($url);
 
             $doc = new DOMDocument();
             libxml_use_internal_errors(true);
@@ -22,27 +22,23 @@ class Controller_Parser extends Controller_Base_preDispatch {
 
             libxml_clear_errors();
 
-            $return = [
-                'title'     => self::getTitle($doc),
-                'article'   => self::getArticleText($doc)
-                ];   
+            $response['title']      = self::getTitle($doc);
+            $response['article']    = self::getArticleText($doc);  
 
-            if ($return) {
+            if ($response['title'] != $response['article']) {
                 $response['result']     = 'ok';
-                $response['title']      = $return['title'];
-                $response['article']    = $return['article'];  
             }
-            
-            $this->auto_render = false;
-            $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-            $this->response->body( @json_encode($response) );
         }
+
+        $this->auto_render = false;
+        $this->response->headers('Content-Type', 'application/json; charset=utf-8');
+        $this->response->body( @json_encode($response) );
     }
 
     /**
     * Получаем код страницы
     */
-    public function htmlRequest($url)
+    public function getPageHtmlByUrl($url)
     {
         $ch = curl_init();
 
@@ -87,23 +83,6 @@ class Controller_Parser extends Controller_Base_preDispatch {
         $pageTitle = trim($pageTitle);
 
         return $pageTitle;
-    }
-
-    /*
-    * Получаем тело страницы
-    */
-    public function _getBody($doc)
-    {
-        $pageArticle    = '';
-        $article        = $doc->getElementsByTagName('article');
-
-        if ($article->length) {
-            $pageArticle = $article->item(0)->nodeValue;
-        }
-
-        $pageArticle = trim($pageArticle);
-
-        return $pageArticle;
     }
 
     /*
