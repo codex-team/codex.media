@@ -24,6 +24,7 @@ function answer(comment_id, root_id, author) {
     document.getElementById('text_field').rows          = 4;
     form.classList.add('answer_form');
     document.getElementById('comment_' + comment_id).appendChild(form);
+    document.getElementById('text_field').focus();
 }
 
 /*
@@ -40,6 +41,7 @@ function close_answer() {
     document.getElementById('cancel_answer').innerHTML  = '';
     document.getElementById('text_field').rows          = 6;
     document.getElementById('page_comments').appendChild(form);
+    form.classList.remove('answer_form');
 }
 
 /*
