@@ -49,8 +49,8 @@ function close_answer() {
 */
 
   function enable_button() {
-    var field_value = document.getElementById("text_field").value;
-    if (field_value.length > 0 && /\S+/i.test(field_value)) {
+    var field_value = document.getElementById("text_field").value.trim();
+    if (field_value) {
         document.getElementById('comment_button').disabled = false;
     } else {
         document.getElementById('comment_button').disabled = true;
