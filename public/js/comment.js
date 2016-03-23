@@ -21,7 +21,8 @@ function answer(comment_id, root_id, author) {
     document.getElementById('comment_button').value     = 'Ответить';
     document.getElementById('comment_answer').innerHTML = 'пользователю ' + '<b>' + author + '</b>';
     document.getElementById('cancel_answer').innerHTML  = '<i class="icon-cancel"></i>';
-    document.getElementById('text_field').rows          = 5;
+    document.getElementById('text_field').rows          = 4;
+    form.classList.add('answer_form');
     document.getElementById('comment_' + comment_id).appendChild(form);
 }
 

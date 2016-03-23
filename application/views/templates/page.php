@@ -78,29 +78,29 @@
                         <h4>
                             <?= $comment->author->name ?>
                         </h4>
-                        <span class="to_user">
-                            <? if ($comment->parent_comment->id != 0): ?>
+                        <? if ($comment->parent_comment->id != 0): ?>
+                            <span class="to_user">
                                 <img src="/public/img/answer_arrow.png"> 
                                 <?= $comment->parent_comment->author->name ?>
-                            <? endif; ?>
-                        </span>
+                            </span>
+                        <? endif; ?>
                         <time>
                             <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
                         </time>
                         <p><?= $comment->text ?></p>
-                        <a class="answer" onclick="answer(<?= $comment->id ?>, 
+                        <a class="answer_button" onclick="answer(<?= $comment->id ?>, 
                                                    <?= $comment->root_id ?>,
                                                    '<?= $comment->author->name ?>')">
                             <img src="/public/img/reply_icon.png">
                             Ответить
                         </a>
                         <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
-                            <a class="delete" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
+                            <a class="delete_button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                                 Удалить
                             </a>
                         <? endif; ?>
                     </div>
-                    <div class="clearfix"></div>
+                    
                 </div>
             <? endforeach; ?>
         <? else: ?>
