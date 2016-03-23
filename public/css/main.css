@@ -1142,7 +1142,18 @@ footer.site_footer p{margin: 15px 25px}
             color: #8c8f92;
         }
 
-    .to_user { font-size: 14px; }
+        .comment_right .answer_button, 
+        .comment_right .delete_button, 
+        .to_user { color: #8c8f92; }
+
+        .comment_right .answer_button, 
+        .comment_right .delete_button { font-size: 15px; }
+
+        .comment_right .answer_button { margin-right: 24px; }
+
+        .comment_right .delete_button { text-decoration: none; }
+
+        .to_user { font-size: 14px; }
 
     .dummy_icon {
         border-radius: 20px;
@@ -1156,22 +1167,11 @@ footer.site_footer p{margin: 15px 25px}
             margin: -1px 10px 0 10px;
         }
 
-        .answer_button .dummy_icon {
+        .comment_right .answer_button .dummy_icon {
             height: 10px;
             width: 10px;
             margin-right: 5px;
         }
-
-    .answer_button, 
-    .delete_button, 
-    .to_user{ color: #8c8f92; }
-
-    .answer_button, 
-    .delete_button { font-size: 15px; }
-
-    .answer_button { margin-right: 24px; }
-
-    .delete_button { text-decoration: none; }
 
 .comment_form {
     width: 100%;
