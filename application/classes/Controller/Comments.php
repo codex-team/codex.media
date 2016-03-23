@@ -12,18 +12,31 @@ class Controller_Comments extends Controller_Base_preDispatch
         
         $text = trim(Arr::get($_POST, 'text_field'));
         
-        if ($page->id != 0 && $this->user->id !=0 && $text != "") {
+        /*
+        ** Checking for existing page
+        */
+        if (!$page->id) { $error = 'Wrong page id'; goto finish; }
+
+        /*
+        ** Checking for authorized user 
+        */
+        if (!$this->user->id) { $error = 'Access denied'; goto finish; }
+
+        /*
+        ** Checking for existing text 
+        */
+        if (!$text) { $error = 'Text is incorrect'; goto finish; }
             
-            $comment->page_id              = $this->request->param('id');
-            $comment->text                 = $text;
-            $comment->parent_comment['id'] = Arr::get($_POST, 'parent_id', '0');
-            $comment->author['id']         = $this->user->id;
-            $comment->root_id              = Arr::get($_POST, 'root_id', '0');
+        $comment->page_id              = $this->request->param('id');
+        $comment->text                 = $text;
+        $comment->parent_comment['id'] = Arr::get($_POST, 'parent_id', '0');
+        $comment->author['id']         = $this->user->id;
+        $comment->root_id              = Arr::get($_POST, 'root_id', '0');
 
-            $comment->insert();
-        }
+        $comment->insert();
 
-        $this->redirect('/p/'.$page->id.'/'.$page->uri);
+        finish:
+        $this->redirect( '/p/' . $page->id . '/' . $page->uri . '?error=' . $error );
     }
     
     public function action_delete()
