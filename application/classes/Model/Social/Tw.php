@@ -1,4 +1,11 @@
 <?php
+
+/*
+ * Abraham Williams (abraham@abrah.am) http://abrah.am
+ *
+ * The first PHP Library to support OAuth for Twitter's REST API.
+ */
+
 /**
  *  The first PHP Library to support OAuth for Twitter's REST API
  *  @author Abraham Williams (abraham@abrah.am) http://abrah.am
@@ -873,7 +880,10 @@ class OAuthUtil {
     }
 }
 
-class Model_Social_Tw extends Model_preDispatch {
+/**
+ * Twitter OAuth class
+ */
+class Model_Social_Tw {
     /* Contains the last HTTP status code returned. */
     public $http_code;
     /* Contains the last API call. */
@@ -883,9 +893,9 @@ class Model_Social_Tw extends Model_preDispatch {
     /* Set timeout default. */
     public $timeout = 30;
     /* Set connect timeout. */
-    public $connecttimeout = 30; 
+    public $connecttimeout = 30;
     /* Verify SSL Cert. */
-    public $ssl_verifypeer = FALSE;
+    public $ssl_verifypeer = TRUE;
     /* Respons format. */
     public $format = 'json';
     /* Decode returned json data. */
@@ -904,8 +914,8 @@ class Model_Social_Tw extends Model_preDispatch {
      * Set API URLS
      */
     function accessTokenURL()  { return 'https://api.twitter.com/oauth/access_token'; }
-    function authenticateURL() { return 'https://twitter.com/oauth/authenticate'; }
-    function authorizeURL()    { return 'https://twitter.com/oauth/authorize'; }
+    function authenticateURL() { return 'https://api.twitter.com/oauth/authenticate'; }
+    function authorizeURL()    { return 'https://api.twitter.com/oauth/authorize'; }
     function requestTokenURL() { return 'https://api.twitter.com/oauth/request_token'; }
 
     /**
@@ -917,13 +927,11 @@ class Model_Social_Tw extends Model_preDispatch {
     /**
      * construct TwitterOAuth object
      */
-    function __construct() {
-        $settings = Kohana::$config->load('social.twitter');
-
+    function __construct($consumer_key, $consumer_secret, $oauth_token = NULL, $oauth_token_secret = NULL) {
         $this->sha1_method = new OAuthSignatureMethod_HMAC_SHA1();
-        $this->consumer = new OAuthConsumer($settings['consumer_key'], $settings['consumer_secret']);
-        if (!empty($settings['access_token']) && !empty($settings['secret_token'])) {
-            $this->token = new OAuthConsumer($settings['access_token'], $settings['secret_token']);
+        $this->consumer = new OAuthConsumer($consumer_key, $consumer_secret);
+        if (!empty($oauth_token) && !empty($oauth_token_secret)) {
+            $this->token = new OAuthConsumer($oauth_token, $oauth_token_secret);
         } else {
             $this->token = NULL;
         }
@@ -935,14 +943,12 @@ class Model_Social_Tw extends Model_preDispatch {
      *
      * @returns a key/value array containing oauth_token and oauth_token_secret
      */
-    function getRequestToken($oauth_callback = NULL) {
+    function getRequestToken($oauth_callback) {
         $parameters = array();
-        if (!empty($oauth_callback)) {
-            $parameters['oauth_callback'] = $oauth_callback;
-        } 
+        $parameters['oauth_callback'] = $oauth_callback;
         $request = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);
         $token = OAuthUtil::parse_parameters($request);
-        $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
+        $this->token = new OAuthConsumer(Arr::get($token, 'oauth_token'), Arr::get($token, 'oauth_token_secret'));
         return $token;
     }
 
@@ -958,7 +964,7 @@ class Model_Social_Tw extends Model_preDispatch {
         if (empty($sign_in_with_twitter)) {
             return $this->authorizeURL() . "?oauth_token={$token}";
         } else {
-             return $this->authenticateURL() . "?oauth_token={$token}";
+            return $this->authenticateURL() . "?oauth_token={$token}";
         }
     }
 
@@ -971,11 +977,9 @@ class Model_Social_Tw extends Model_preDispatch {
      *                "user_id" => "9436992",
      *                "screen_name" => "abraham")
      */
-    function getAccessToken($oauth_verifier = FALSE) {
+    function getAccessToken($oauth_verifier) {
         $parameters = array();
-        if (!empty($oauth_verifier)) {
-            $parameters['oauth_verifier'] = $oauth_verifier;
-        }
+        $parameters['oauth_verifier'] = $oauth_verifier;
         $request = $this->oAuthRequest($this->accessTokenURL(), 'GET', $parameters);
         $token = OAuthUtil::parse_parameters($request);
         $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
@@ -990,7 +994,7 @@ class Model_Social_Tw extends Model_preDispatch {
      *                "user_id" => "9436992",
      *                "screen_name" => "abraham",
      *                "x_auth_expires" => "0")
-     */  
+     */
     function getXAuthToken($username, $password) {
         $parameters = array();
         $parameters['x_auth_username'] = $username;
@@ -1012,7 +1016,7 @@ class Model_Social_Tw extends Model_preDispatch {
         }
         return $response;
     }
-    
+
     /**
      * POST wrapper for oAuthRequest.
      */
@@ -1045,10 +1049,10 @@ class Model_Social_Tw extends Model_preDispatch {
         $request = OAuthRequest::from_consumer_and_token($this->consumer, $this->token, $method, $url, $parameters);
         $request->sign_request($this->sha1_method, $this->consumer, $this->token);
         switch ($method) {
-        case 'GET':
-            return $this->http($request->to_url(), 'GET');
-        default:
-            return $this->http($request->get_normalized_http_url(), $method, $request->to_postdata());
+            case 'GET':
+                return $this->http($request->to_url(), 'GET');
+            default:
+                return $this->http($request->get_normalized_http_url(), $method, $request->to_postdata());
         }
     }
 
@@ -1106,5 +1110,3 @@ class Model_Social_Tw extends Model_preDispatch {
         return strlen($header);
     }
 }
-
-?>

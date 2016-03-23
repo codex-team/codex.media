@@ -55,20 +55,20 @@
 
         <div class="social_linking">
 
-            <? if (!$user->vk && $user->email): ?>
+            <? if ( $user->vk == ( NULL || '' ) ): ?>
                 <a class="button iconic" href="/auth/vk?state=attach"><i class="icon-vkontakte"></i> Прикрепить профиль ВКонтакте</a>
             <? else: ?>
                 <a class="button iconic" href="/auth/vk?state=remove"><i class="icon-vkontakte"></i> Открепить профиль ВКонтакте</a>
             <? endif; ?>
-            <? if (!$user->facebook && $user->email): ?>
+            <? if ( $user->facebook == ( NULL || '' ) ): ?>
                 <a class="button iconic" href="/auth/fb?state=attach"><i class="icon-facebook"></i> Прикрепить профиль Facebook</a>
             <? else: ?>
                 <a class="button iconic" href="/auth/fb?state=remove"><i class="icon-facebook"></i> Открепить профиль Facebook</a>
             <? endif; ?>
-            <? if (!$user->twitter && $user->email): ?>
+            <? if ( $user->twitter == ( NULL || '' ) ): ?>
                 <a class="button iconic" href="/auth/tw?state=attach"><i class="icon-twitter"></i> Прикрепить профиль Twitter</a>
             <? else: ?>
-                <a class="button iconic" href="/auth/tw?state=remove"><i class="icon-twitter"></i> Открепить профиль Twitter</a
+                <a class="button iconic" href="/auth/tw?state=remove"><i class="icon-twitter"></i> Открепить профиль Twitter</a>
             <? endif; ?>
 
         </div>
