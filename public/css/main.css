@@ -1120,11 +1120,9 @@ footer.site_footer p{margin: 15px 25px}
 .to_user { display: inline; }
 
     .comment_right {
-        width: 100%;
+        width: calc(100% - 66px);
         display: inline-block;
-        padding-left: 66px;
-        margin-top: -42px;
-        box-sizing: border-box;
+        margin-left: 20px;
     }
 
         .comment_right b { font-size: 16px; }
@@ -1175,9 +1173,14 @@ footer.site_footer p{margin: 15px 25px}
 
     .delete_button { text-decoration: none; }
 
-.comment_form { box-sizing: border-box; }
+.comment_form {
+    width: 100%;
+}
     
-    .answer_form { padding-left: 66px;}
+    .answer_form { 
+        width: calc(100% - 66px);
+        margin-left: 66px;
+    }
 
     .comment_form textarea{
         margin-top: 34px;
