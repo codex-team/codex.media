@@ -2711,3 +2711,38 @@ $(document).ready(function(){
     /************************************************/
 
 });
+
+/**
+ * Parser code
+ * @author Taly Guryn
+ */
+function parserImportPage( url ) {
+
+    simpleAjax.call({
+        type: 'get',
+        url: '/ajax/get_page',
+        data: { 'url' : url },
+        success: function(response){
+            
+            if (response.result == 'ok') {
+            
+                var title = document.getElementById('page_form_title');
+                title.value = response.title;
+
+                var content = document.getElementById('page_form_content');
+                content.value = response.article;
+
+                // while we have no own editor, we should use this getting element
+                // cause I can't edit code for external editor
+                document.getElementsByClassName('redactor_redactor')[0].innerHTML   = response.article;
+
+            } else {
+
+                CLIENT.showException('Не удалось импортировать страницу');
+                
+            }
+        }
+    });
+
+}
+
