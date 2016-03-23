@@ -4,16 +4,12 @@ Class Model_Comment extends Model_preDispatch
 {
     public $id;
     public $author;
-    public $status;
     public $text;
     public $page_id;
     public $root_id;
-    public $parent_id;
+    public $parent_comment;
     public $dt_create;
     public $is_removed;
-    public $author_name;
-    public $author_photo;
-    public $parent_name;
     
     public function __construct()
     {
@@ -28,7 +24,7 @@ Class Model_Comment extends Model_preDispatch
         $comment_row = Dao_Comments::select()
             ->where('id', '=', $id)
             ->limit(1)
-            ->cached(Date::MINUTE * 30, 'page:' . $this->page_id)
+            ->cached(Date::MINUTE * 30, 'comment:' . $id)
             ->execute();
         
         $model = new Model_Comment();
@@ -42,11 +38,11 @@ Class Model_Comment extends Model_preDispatch
     public function insert()
     {
         $idAndRowAffected = Dao_Comments::insert()
-            ->set('author',    $this->author)
+            ->set('author',    $this->author['id'])
             ->set('text',      $this->text)
             ->set('page_id',   $this->page_id)
             ->set('root_id',   $this->root_id)
-            ->set('parent_id', $this->parent_id)
+            ->set('parent_id', $this->parent_comment['id'])
             ->clearcache('page:' . $this->page_id)
             ->execute();
     }
@@ -57,20 +53,15 @@ Class Model_Comment extends Model_preDispatch
     private function fillByRow($comment_row)
     {
         if (!empty($comment_row['id'])) {
-            $author = self::getAuthor($comment_row['author']);
             
-            $this->id           = $comment_row['id'];
-            $this->author       = $comment_row['author'];
-            $this->status       = $comment_row['status'];
-            $this->text         = $comment_row['text'];
-            $this->page_id      = $comment_row['page_id'];
-            $this->root_id      = $comment_row['root_id'];
-            $this->parent_id    = $comment_row['parent_id'];
-            $this->dt_create    = $comment_row['dt_create'];
-            $this->is_removed   = $comment_row['is_removed'];   
-            $this->author_name  = $author['name'];
-            $this->author_photo = $author['photo'];
-            $this->parent_name  = self::getAuthorByCommentId($comment_row['parent_id']);
+            $this->id             = $comment_row['id'];
+            $this->author         = new Model_User($comment_row['author']);
+            $this->text           = $comment_row['text'];
+            $this->page_id        = $comment_row['page_id'];
+            $this->root_id        = $comment_row['root_id'];
+            $this->parent_comment = self::get($comment_row['parent_id']);
+            $this->dt_create      = $comment_row['dt_create'];
+            $this->is_removed     = $comment_row['is_removed'];
         }
         
         return $this;
@@ -98,26 +89,6 @@ Class Model_Comment extends Model_preDispatch
         }
 
         return $comments;
-    }
-    
-    /**
-     * Получаем имя и фото автора по его id.
-     */
-    public static function getAuthor($user_id)
-    {
-        $model_user = new Model_User($user_id);
-        $author = array("name" => $model_user->name, "photo" => $model_user->photo);
-        return $author;
-    }
-    
-     /**
-     * Получаем имя автора по id комментария.
-     */
-    public static function getAuthorByCommentId($id)
-    {
-        $comment = self::get($id);
-        $author = self::getAuthor($comment->author);
-        return $author[0];
     }
     
     /**

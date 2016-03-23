@@ -10,14 +10,15 @@ class Controller_Comments extends Controller_Base_preDispatch
         
         $page = new Model_Page($this->request->param('id'));
         
-        $text = trim(Arr::get($_POST, 'text_field'));
+        $text = trim(Arr::get($_POST, 'text'));
         
         if ($page->id != 0 && $this->user->id !=0 && $text != "") {
-            $comment->page_id   = $this->request->param('id');
-            $comment->text      = Arr::get($_POST, 'text');
-            $comment->parent_id = Arr::get($_POST, 'parent_id', '0');
-            $comment->author    = $this->user->id;
-            $comment->root_id   = 0;
+            
+            $comment->page_id              = $this->request->param('id');
+            $comment->text                 = $text;
+            $comment->parent_comment['id'] = Arr::get($_POST, 'parent_id', '0');
+            $comment->author['id']         = $this->user->id;
+            $comment->root_id              = 0;
 
             $comment->insert();
         }

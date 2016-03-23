@@ -69,22 +69,22 @@
         <? if ($comments): ?>
             <? foreach ($comments as $comment): ?>
                 <div>
-                    <img src="<?= $comment->author_photo ?>">
+                    <img src="<?= $comment->author->photo ?>">
                     <b>
-                        <?= $comment->author_name ?>
+                        <?= $comment->author->name ?>
                     </b>
                     <p><?= $comment->text ?></p>
                     <i>
                         <?= $comment->dt_create ?> 
-                        <? if ($comment->parent_id != 0): ?>
-                            пользователю <?= $comment->parent_name ?>
+                        <? if ($comment->parent_comment->id != 0): ?>
+                            пользователю <?= $comment->parent_comment->author->name ?>
                         <? endif; ?>
                     </i>
                     <a onclick="document.getElementById('answer_to_comment').value='<?= $comment->id ?>';
-                                document.getElementById('comment_head').innerHTML='Ваш ответ на комментарий пользователя <?= $comment->author_name ?>';">
+                                document.getElementById('comment_head').innerHTML='Ваш ответ на комментарий пользователя <?= $comment->author->name ?>';">
                         [ответить]
                     </a>
-                    <? if ($user->id == $comment->author || $user->isAdmin): ?>
+                    <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
                         <a href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             [удалить]
                         </a>
