@@ -601,9 +601,11 @@ class Model_Methods extends Model
         // translit
         $converted_string = strtr($string, $converter);
 
-        $converted_string = preg_replace("/[^0-9a-zA-Z-_ ]/i", "", $converted_string);
+        $converted_string = preg_replace("/[^0-9a-zA-Z]/", "-", $converted_string);
 
-        $converted_string = trim(str_replace(" ", "-", $converted_string), '-');
+        $converted_string = preg_replace('/-{2,}/', '-', $converted_string);
+
+        $converted_string = trim($converted_string, '-');
 
         return $converted_string;
     }
