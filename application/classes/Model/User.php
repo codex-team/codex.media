@@ -111,7 +111,7 @@ class Model_User extends Model_preDispatch
         return (int)$this->redis->get('user:'.$this->id.':online:timestamp');
     }
 
-    
+
     public function setAuthCookie($id)
     {
         $id = (int)$id;
