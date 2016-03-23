@@ -1187,7 +1187,7 @@ footer.site_footer p{margin: 15px 25px}
         margin-bottom: 32px;
         box-sizing: border-box;
         padding: 14px 16px;
-        resize: none;
+        resize: vertical;
         font-size: 16px;
     }
 
