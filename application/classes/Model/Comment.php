@@ -57,10 +57,11 @@ Class Model_Comment extends Model_preDispatch
                 ->set('root_id', $thisId['id'])
                 ->execute(); 
         
-        if ($idAndRowAffected)
+        if ($idAndRowAffected) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     /*
