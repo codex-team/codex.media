@@ -33,7 +33,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         if ($method) switch ($method) {
             case 'vk' : $authSucceeded = $this->login_vk(); break;
             case 'fb' : $authSucceeded = $this->login_fb(); break;
-            case 'tw' : $authSucceeded = $this->login_tw(); break;
+            // case 'tw' : $authSucceeded = $this->login_tw(); break;
         }
 
         /** Redirect user after succeeded auth */

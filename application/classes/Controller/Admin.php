@@ -69,8 +69,10 @@ class Controller_Admin extends Controller_Base_preDispatch
                 'logo'          => Arr::get($_POST, 'logo'),
             );
 
-            $this->methods->saveSiteInfo($data);
-
+            if ($this->methods->saveSiteInfo($data))
+            {
+                $this->view['site_info'] = $this->methods->getSiteInfo();
+            }
         }
 
         $this->view['category'] = 'base';

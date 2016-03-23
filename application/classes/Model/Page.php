@@ -11,6 +11,8 @@ class Model_Page extends Model_preDispatch
     public $content         = '';
     public $date            = '';
     public $is_menu_item    = '';
+    public $rich_view       = 0;
+    public $dt_pin;
     public $uri             = '';
     public $author;
     public $parent;
@@ -44,6 +46,8 @@ class Model_Page extends Model_preDispatch
             $this->content         = $page_row['content'];
             $this->date            = $page_row['date'];
             $this->is_menu_item    = $page_row['is_menu_item'];
+            $this->rich_view       = $page_row['rich_view'];
+            $this->dt_pin          = $page_row['dt_pin'];
 
             $this->uri             = $this->getPageUri();
             $this->author          = new Model_User($page_row['author']);
@@ -61,7 +65,15 @@ class Model_Page extends Model_preDispatch
                     ->set('title',          $this->title)
                     ->set('content',        $this->content)
                     ->set('is_menu_item',   $this->is_menu_item)
-                    ->execute();
+                    ->set('rich_view',      $this->rich_view)
+                    ->set('dt_pin',         $this->dt_pin);
+
+        if ($this->is_menu_item)
+        {
+            $page->clearcache('site_menu');
+        }
+
+        $page = $page->execute();
 
         if ($page)
         {
@@ -71,26 +83,37 @@ class Model_Page extends Model_preDispatch
 
     public function update()
     {
-         return Dao_Pages::update()
+        $page = Dao_Pages::update()
                     ->where('id', '=', $this->id)
                     ->set('id',             $this->id)
                     ->set('type',           $this->type)
+                    ->set('status',         $this->status)
                     ->set('author',         $this->author->id)
                     ->set('id_parent',      $this->id_parent)
                     ->set('title',          $this->title)
                     ->set('content',        $this->content)
                     ->set('is_menu_item',   $this->is_menu_item)
-                    ->clearcache('page:' . $this->id)
-                    ->execute();
+                    ->set('rich_view',      $this->rich_view)
+                    ->set('dt_pin',         $this->dt_pin)
+                    ->clearcache('page:' . $this->id);
+
+        /*
+        *  Only admins can add news to the site menu.
+        *  We should clear cache for getting menu updates.
+        */           
+        if ($this->author->isAdmin)
+        {
+            $page->clearcache('site_menu');
+        }
+
+        return $page->execute();            
     }
 
     public function setAsRemoved()
     {
-        Dao_Pages::update()
-            ->where('id', '=', $this->id)
-            ->set('status', self::STATUS_REMOVED_PAGE)
-            ->clearcache('page:' . $this->id)
-            ->execute();
+            
+        $this->status = self::STATUS_REMOVED_PAGE;
+        $this->update();
 
         $childrens = $this->getChildrenPagesByParent($this->id);
 
@@ -110,13 +133,14 @@ class Model_Page extends Model_preDispatch
                     ->execute();
     }
 
-    public static function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0)
+    public static function getPages( $type = 0, $limit = 0, $offset = 0, $status = 0, $pinned_news = false )
     {
         $pages_query = Dao_Pages::select()->where('status', '=', $status);
 
-        if ($type)      $pages_query->where('type', '=', $type);
-        if ($limit)     $pages_query->limit($limit);
-        if ($offset)    $pages_query->offset($offset);
+        if ($type)          $pages_query->where('type', '=', $type);
+        if ($limit)         $pages_query->limit($limit);
+        if ($offset)        $pages_query->offset($offset);
+        if ($pinned_news)   $pages_query->order_by('dt_pin', 'DESC');
 
         $pages_rows = $pages_query->order_by('id','DESC')->execute();
 
@@ -161,5 +185,4 @@ class Model_Page extends Model_preDispatch
 
         return strtolower($title);
     }
-
 }

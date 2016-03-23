@@ -26,6 +26,8 @@
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <script src="/public/js/main.js?v=<?= time() ?>"></script>
+    
+    <script src="/public/js/comment.js"></script>
 
 </head>
 <body>
@@ -42,6 +44,9 @@
             </a>
 
             <? if ( $user->id ): ?>
+                <a class="fl_r logout" href="/logout" data-title="Выйти">
+                    <i class="icon-logout"></i>
+                </a>
                 <a class="user_panel cf" href="/user/<?= $user->id ?>">
                     <img src="<?= $user->photo ?>" />
                     <?= $user->name ?>
@@ -57,8 +62,6 @@
 
             <? if (!$user->id): ?>
                 <a class="button green" href="/auth">Войти на сайт</a>
-            <? else: ?>
-                <a class="button logout" href="/logout">Выйти</a>
             <? endif ?>
 
 

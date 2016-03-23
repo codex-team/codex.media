@@ -21,7 +21,8 @@ class Controller_Pages extends Controller_Base_preDispatch
             $page->childrens  = Model_Page::getChildrenPagesByParent($page->id);
 
             $this->view['can_modify_this_page'] = $this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher);
-
+            
+            $this->view['comments']   = Model_Comment::getCommentsByPageId($id);
             $this->view['navigation'] = self::get_navigation_path_array($page->id);
             $this->view['page']       = $page;
             $this->view['files']      = $this->methods->getPageFiles($page->id);
@@ -192,6 +193,8 @@ class Controller_Pages extends Controller_Base_preDispatch
         $page->title         = Arr::get($_POST, 'title', '');
         $page->content       = Arr::get($_POST, 'content', '');
         $page->is_menu_item  = Arr::get($_POST, 'is_menu_item', 0);
+        $page->rich_view     = Arr::get($_POST, 'rich_view', 0);
+        $page->dt_pin        = Arr::get($_POST, 'dt_pin');
 
         return $page;
     }

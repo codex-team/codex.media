@@ -55,6 +55,12 @@ Route::set('PROFILE', 'user/<id>', array( 'id' => $DIGIT ))->defaults(array(
     'controller' => 'user',
     'action' => 'profile'
 ));
+Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
+    'controller' => 'user',
+    'action' => 'settings'
+));
+
+
 
 Route::set('CONTACTS', 'contacts')->defaults(array(
     'controller' => 'index',
@@ -106,6 +112,21 @@ Route::set('LOGOUT', 'logout')->defaults(array(
 ));
 
 
+/** Comments */
+
+Route::set('ADD_COMMENT_SCRIPT', 'p/<id>/<uri>/add-comment', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'comments',
+    'action' => 'add'
+));
+
+Route::set('DEL_COMMENT_SCRIPT', 'p/<id>/<uri>/delete-comment/<comment_id>', array( 
+        'id'         => $DIGIT, 
+        'uri'        => $STRING,
+        'comment_id' => $DIGIT))
+    ->defaults(array(
+        'controller' => 'comments',
+        'action'     => 'delete'
+));
 
 
 

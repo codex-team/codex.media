@@ -1,61 +1,121 @@
-<div>
-	<? # блок навигации ?>
-	<? if($navigation[0]->type != Model_Page::TYPE_USER_PAGE || $navigation[0]->is_menu_item == 1): ?>
-		<a href="/">Главная страница</a>
-	<? else: ?>
-		<a href="/user/<?= $page->author->id ?>"><?= $page->author->name ?></a>
-	<? endif ?>
-	<? foreach ($navigation as $navig_page): ?>
-	» <a <? if ($navig_page->id != $page->id): ?>href="/p/<?= $navig_page->id ?>/<?= $navig_page->uri ?>"<? endif ?> >
-			<?= $navig_page->title ?></a>
-	<? endforeach ?>
+<div class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+
+    <? if($navigation[0]->type != Model_Page::TYPE_USER_PAGE || $navigation[0]->is_menu_item == 1): ?>
+        <a class="nav_chain" href="/" itemprop="url"><span itemprop="title">Главная</span></a>
+    <? else: ?>
+        <a class="nav_chain" href="/user/<?= $page->author->id ?>" itemprop="url"><span itemprop="title"><?= $page->author->name ?></span></a>
+    <? endif ?>
+
+    <? foreach ($navigation as $navig_page): ?> »
+        <? if ($navig_page->id != $page->id): ?>
+            <a href="/p/<?= $navig_page->id ?>/<?= $navig_page->uri ?>" itemprop="title" class="nav_chain">
+                <?= $navig_page->title ?>
+            </a>
+        <? else: ?>
+            <span itemprop="title" class="nav_chain">
+                <?= $navig_page->title ?>
+            </span>
+        <? endif ?>
+    <? endforeach ?>
+
+    <? if( $can_modify_this_page ): ?>
+        <div class="fl_r actions">
+            <a class="textbutton" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
+            <a class="button iconic green" href="/p/<?= $page->id ?>/<?= $page->uri ?>/edit"><i class="icon-pencil"></i> Редактировать</a>
+        </div>
+    <? endif ?>
+
 </div>
 
 <h1 class="page_title">
 	<?= $page->title ?>
 </h1>
-
-
-<div class="page_content">
+<article class="page_content">
 	<?= $page->content ?>
-	<? if ($page->content): echo "<br>"; endif ?>
-	<? if($can_modify_this_page): ?>
-		<a class="button green" href="/p/<?= $page->id ?>/<?= $page->uri ?>/edit">Редактировать</a>
-		<a class="button gray" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete">Удалить</a>
-	<? endif ?>
-</div>
+</article>
 
-<?  ?>
-<? if ($page->childrens || $can_modify_this_page): ?>
-	<ul class="page_childrens childrens_underpage">
-		<? foreach ($page->childrens as $children): ?>
-			<li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
-		<? endforeach ?>
-		<? if($can_modify_this_page): ?>
-			<li><a class="button green" href="/p/<?= $page->id ?>/<?= $page->uri ?>/add-page">Добавить страницу</a></li>
-		<? endif ?>
-	</ul>
+<? if ($page->childrens): ?>
+    <ul class="page_childrens clear">
+        <? foreach ($page->childrens as $children): ?>
+            <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
+        <? endforeach ?>
+    </ul>
 <? endif; ?>
-
+<? if ( $can_modify_this_page ): ?>
+    <a class="button iconic green add_children_btn" href="/p/<?= $page->id ?>/<?= $page->uri ?>/add-page">
+        <i class="icon-plus"></i>
+        Вложенная страница
+    </a>
+<? endif; ?>
 <? if (isset($files) && $files): ?>
-	<table class="page_files inpage">
-		<? foreach ($files as $file): ?>
-			<tr>
-				<td class="ext"><span class="ext_tag"><?= $file['extension'] ?></span></td>
-				<td class="title"><?= $file['title'] ?></td>
-				<td>
-					<p class="size"><?= (int)$file['size'] < 1000 ? $file['size'] . PHP_EOL . 'КБ' : ceil($file['size'] / 1000) . PHP_EOL . 'МБ' ?></p>
-				</td>
-			</tr>
-		<? endforeach ?>
-	</table>
+    <div class="files">
+    	<table class="page_files">
+    		<? foreach ($files as $file): ?>
+    			<tr>
+    				<td class="ext"><span class="ext_tag"><?= $file['extension'] ?></span></td>
+    				<td class="title"><?= $file['title'] ?></td>
+    				<td>
+    					<p class="size"><?= (int)$file['size'] < 1000 ? $file['size'] . PHP_EOL . 'КБ' : ceil($file['size'] / 1000) . PHP_EOL . 'МБ' ?></p>
+    				</td>
+    			</tr>
+    		<? endforeach ?>
+    	</table>
+    </div>
 <? endif; ?>
+<div class="page_comments" id="page_comments">
 
-<? if ($user->id): ?>
-	<div class="page_comments">
-		Комментировать
-		<form action="/addcomment" class="add_comment_form mt20">
-			<textarea name="text" rows="6"></textarea>
-		</form>
-	</div>
-<? endif ?>
+	<h3>Комментарии</h3>
+	<? if($user->id): ?>
+        <? if ($comments): ?>
+            <? foreach ($comments as $comment): ?>
+                <? if ($comment->parent_comment->id != 0): ?>
+                    <div class="comment_wrapper answer_wrapper" id="comment_<?= $comment->id ?>">
+                <? else: ?>
+                    <div class="comment_wrapper" id="comment_<?= $comment->id ?>">
+                <? endif; ?>
+                    <img class="comment_left" src="<?= $comment->author->photo ?>">
+                    <div class="comment_right">
+                        <h4>
+                            <?= $comment->author->name ?>
+                        </h4>
+                        <? if ($comment->parent_comment->id != 0): ?>
+                            <span class="to_user">
+                                <img src="/public/img/answer_arrow.png"> 
+                                <?= $comment->parent_comment->author->name ?>
+                            </span>
+                        <? endif; ?>
+                        <time>
+                            <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
+                        </time>
+                        <p><?= $comment->text ?></p>
+                        <a class="answer_button" onclick="answer(<?= $comment->id ?>, 
+                                                   <?= $comment->root_id ?>,
+                                                   '<?= $comment->author->name ?>')">
+                            <img src="/public/img/reply_icon.png">
+                            Ответить
+                        </a>
+                        <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
+                            <a class="delete_button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
+                                Удалить
+                            </a>
+                        <? endif; ?>
+                    </div>
+                    
+                </div>
+            <? endforeach; ?>
+        <? else: ?>
+            <p>Нет комментариев.</p>
+        <? endif; ?>
+    
+        <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
+            <textarea oninput="enable_button()" id="text_field" name="text_field" rows="6"></textarea>
+            <input type="hidden" name="parent_id" value="0" id="parent_id"/>
+            <input type="hidden" name="root_id" value="0" id="root_id"/>
+            <input id="comment_button" disabled type="submit" value="Оставить комментарий" />
+            <span id="comment_answer" class="comment_answer"></span>
+            <span class="cancel_answer" id="cancel_answer" onclick="close_answer()"></span>
+        </form>
+    <? else: ?>
+        <p>Комментарии доступны только зарегистрированным пользователям.</p>
+    <? endif; ?>
+</div>
