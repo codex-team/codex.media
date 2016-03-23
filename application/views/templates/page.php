@@ -62,44 +62,58 @@
     	</table>
     </div>
 <? endif; ?>
-<div class="page_comments">
+<div class="page_comments" id="page_comments">
 
 	<h3>Комментарии</h3>
 	<? if($user->id): ?>
         <? if ($comments): ?>
             <? foreach ($comments as $comment): ?>
-                <div>
-                    <img src="<?= $comment->author->photo ?>">
-                    <b>
-                        <?= $comment->author->name ?>
-                    </b>
-                    <p><?= $comment->text ?></p>
-                    <i>
-                        <?= $comment->dt_create ?> 
-                        <? if ($comment->parent_comment->id != 0): ?>
-                            пользователю <?= $comment->parent_comment->author->name ?>
-                        <? endif; ?>
-                    </i>
-                    <a onclick="document.getElementById('answer_to_comment').value='<?= $comment->id ?>';
-                                document.getElementById('comment_head').innerHTML='Ваш ответ на комментарий пользователя <?= $comment->author->name ?>';">
-                        [ответить]
-                    </a>
-                    <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
-                        <a href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
-                            [удалить]
+                <? if ($comment->parent_comment->id != 0): ?>
+                    <div class="comment_wrapper answer_wrapper" id="comment_<?= $comment->id ?>">
+                <? else: ?>
+                    <div class="comment_wrapper" id="comment_<?= $comment->id ?>">
+                <? endif; ?>
+                    <img class="comment_left" src="<?= $comment->author->photo ?>">
+                    <div class="comment_right">
+                        <h4>
+                            <?= $comment->author->name ?>
+                        </h4>
+                        <span class="to_user">
+                            <? if ($comment->parent_comment->id != 0): ?>
+                                <img src="/public/img/answer_arrow.png"> 
+                                <?= $comment->parent_comment->author->name ?>
+                            <? endif; ?>
+                        </span>
+                        <time>
+                            <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
+                        </time>
+                        <p><?= $comment->text ?></p>
+                        <a class="answer" onclick="answer(<?= $comment->id ?>, 
+                                                   <?= $comment->root_id ?>,
+                                                   '<?= $comment->author->name ?>')">
+                            <img src="/public/img/reply_icon.png">
+                            Ответить
                         </a>
-                    <? endif; ?>
+                        <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
+                            <a class="delete" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
+                                Удалить
+                            </a>
+                        <? endif; ?>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
             <? endforeach; ?>
         <? else: ?>
             <p>Нет комментариев.</p>
         <? endif; ?>
     
-        <h2 id="comment_head">Оставьте комментарий:</h2>
-        <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" method="POST" class="add_comment_form mt20">
-            <textarea name="text" rows="6"></textarea>
-            <input type="hidden" name="parent_id" value="0" id="answer_to_comment"/>
-            <input type="submit" value="Оставить комментарий" />
+        <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
+            <textarea oninput="enable_button()" id="text_field" name="text_field" rows="6"></textarea>
+            <input type="hidden" name="parent_id" value="0" id="parent_id"/>
+            <input type="hidden" name="root_id" value="0" id="root_id"/>
+            <input id="comment_button" disabled type="submit" value="Оставить комментарий" />
+            <span id="comment_answer" class="comment_answer"></span>
+            <span class="cancel_answer" id="cancel_answer" onclick="close_answer()"></span>
         </form>
     <? else: ?>
         <p>Комментарии доступны только зарегистрированным пользователям.</p>

@@ -114,7 +114,7 @@ class Controller_Base_preDispatch extends Controller_Template
     */
     public function XSSfilter()
     {
-        $exceptions     = array( 'long_desc' , 'blog_text', 'long_description' , 'content' ); // Исключения для полей с визуальным редактором
+        $exceptions     = array( 'long_desc' , 'blog_text', 'long_description' , 'content'); // Исключения для полей с визуальным редактором
 
         foreach ($_POST as $key => $value){
 

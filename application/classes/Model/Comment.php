@@ -15,10 +15,10 @@ Class Model_Comment extends Model_preDispatch
     {
     }
 
-	/** 
-	 * Возвращает комментарий с указанным id из БД.
-	 * Иначе возвращает пустой комментарий с id = 0.
-	 */	
+    /* 
+    ** Возвращает комментарий с указанным id из БД.
+    ** Иначе возвращает пустой комментарий с id = 0.
+    */	
     public static function get($id = 0)
     {
         $comment_row = Dao_Comments::select()
@@ -32,9 +32,9 @@ Class Model_Comment extends Model_preDispatch
         return $model->fillByRow($comment_row);
     }
 
-	/** 
-	 * Добавляет комментарий в БД.
-	 */	
+    /* 
+    ** Добавляет комментарий в БД.
+    */	
     public function insert()
     {
         $idAndRowAffected = Dao_Comments::insert()
@@ -45,11 +45,27 @@ Class Model_Comment extends Model_preDispatch
             ->set('parent_id', $this->parent_comment['id'])
             ->clearcache('page:' . $this->page_id)
             ->execute();
+        
+        $thisId = Dao_Comments::select()
+            ->order_by('id', 'DESC')
+            ->limit(1)
+            ->execute();
+        
+        if ($this->root_id == 0)
+            Dao_Comments::update()
+                ->where('id', '=', $thisId['id'])
+                ->set('root_id', $thisId['id'])
+                ->execute(); 
+        
+        if ($idAndRowAffected)
+            return true;
+        else
+            return false;
     }
 
-	/** 
-	 * Заполняет объект строкой из БД.
-	 */
+    /*
+    ** Заполняет объект строкой из БД.
+    */
     private function fillByRow($comment_row)
     {
         if (!empty($comment_row['id'])) {
@@ -74,10 +90,10 @@ Class Model_Comment extends Model_preDispatch
         $comment_rows = Dao_Comments::select()
             ->where('page_id', '=', $page_id)
             ->where('is_removed', '=', 0)
-            ->order_by('id', 'ASC')
+            ->order_by('root_id', 'ASC')
             ->cached(Date::MINUTE * 20, 'page:' . $page_id)
             ->execute();
-            
+        
         if ($comment_rows) {
             foreach ($comment_rows as $comment_row) {
                 $comment = new Model_Comment();
@@ -90,10 +106,10 @@ Class Model_Comment extends Model_preDispatch
 
         return $comments;
     }
-    
-    /**
-     * Удаляем комментарий и все его подкомментарии
-     */
+
+    /*
+    ** Удаляем комментарий и все его подкомментарии
+    */
     public function delete()
     {
         Dao_Comments::update()
