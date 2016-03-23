@@ -32,7 +32,7 @@ class Controller_Comments extends Controller_Base_preDispatch
 
         $comment = Model_Comment::get($comment_id);
 
-        if ($comment->author == $this->user->id || $this->user->isAdmin)
+        if ($comment->author->id == $this->user->id || $this->user->isAdmin)
         {
             $comment->delete();
         }
