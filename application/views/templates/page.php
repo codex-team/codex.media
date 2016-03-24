@@ -86,9 +86,9 @@
                             <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
                         </time>
                         <p><?= $comment->text ?></p>
-                        <a class="answer_button" onclick="answer(<?= $comment->id ?>, 
-                                                   <?= $comment->root_id ?>,
-                                                   '<?= $comment->author->name ?>')">
+                        <a class="answer_button" onclick="comments.answer(<?= $comment->id ?>, 
+                                                                          <?= $comment->root_id ?>,
+                                                                          '<?= $comment->author->name ?>')">
                             <!-- Временная заглушка вместо шрифтовой иконки -->
                             <div class="dummy_icon"></div>
                             Ответить
@@ -108,12 +108,12 @@
     
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
             <?= Form::hidden('csrf', Security::token()); ?>
-            <textarea oninput="enable_button()" id="text_field" name="text_field" rows="6"></textarea>
+            <textarea oninput="comments.enable_button()" id="text_field" name="text_field" rows="6"></textarea>
             <input type="hidden" name="parent_id" value="0" id="parent_id"/>
             <input type="hidden" name="root_id" value="0" id="root_id"/>
             <input id="comment_button" disabled type="submit" value="Оставить комментарий" />
             <span id="comment_answer" class="comment_answer"></span>
-            <span class="cancel_answer" id="cancel_answer" onclick="close_answer()"></span>
+            <span class="cancel_answer" id="cancel_answer" onclick="comments.close_answer()"></span>
         </form>
     <? else: ?>
         <p>Комментарии доступны только зарегистрированным пользователям.</p>
