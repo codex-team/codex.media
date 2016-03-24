@@ -46,15 +46,10 @@ Class Model_Comment extends Model_preDispatch
             ->clearcache('page:' . $this->page_id)
             ->execute();
         
-        $thisId = Dao_Comments::select()
-            ->order_by('id', 'DESC')
-            ->limit(1)
-            ->execute();
-        
         if ($this->root_id == 0)
             Dao_Comments::update()
-                ->where('id', '=', $thisId['id'])
-                ->set('root_id', $thisId['id'])
+                ->where('id', '=', $idAndRowAffected)
+                ->set('root_id', $idAndRowAffected)
                 ->execute(); 
         
         if ($idAndRowAffected) {
@@ -71,13 +66,13 @@ Class Model_Comment extends Model_preDispatch
     {
         if (!empty($comment_row['id'])) {
             
-            $this->id             = $comment_row['id'];
-            $this->author         = new Model_User($comment_row['author']);
-            $this->text           = $comment_row['text'];
-            $this->page_id        = $comment_row['page_id'];
-            $this->root_id        = $comment_row['root_id'];
-            $this->dt_create      = $comment_row['dt_create'];
-            $this->is_removed     = $comment_row['is_removed'];
+            $this->id         = $comment_row['id'];
+            $this->author     = new Model_User($comment_row['author']);
+            $this->text       = $comment_row['text'];
+            $this->page_id    = $comment_row['page_id'];
+            $this->root_id    = $comment_row['root_id'];
+            $this->dt_create  = $comment_row['dt_create'];
+            $this->is_removed = $comment_row['is_removed'];
         }
         
         return $this;
