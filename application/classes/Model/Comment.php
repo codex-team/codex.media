@@ -139,6 +139,11 @@ Class Model_Comment extends Model_preDispatch
             ->where('root_id', '=', $this->id)
             ->set('is_removed', 1)
             ->execute(); 
+        
+        Dao_Comments::update()
+            ->where('parent_id', '=', $this->id)
+            ->set('is_removed', 1)
+            ->execute(); 
     }
 
 
