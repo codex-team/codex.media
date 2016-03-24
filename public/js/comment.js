@@ -1,17 +1,17 @@
 var comments = (function() {
     return {
-        /*
-        **  Очищаем textarea после перезагрузки
-        */
+        /**
+         *  Очищаем textarea после перезагрузки
+         */
 
         clear_textarea: function() {
             document.getElementById("text_field").value = "";
             document.getElementById('comment_button').disabled = true;
         },
 
-        /*
-        ** Оформляем комментарий как ответ
-        */
+        /**
+         * Оформляем комментарий как ответ
+         */
 
         answer: function(comment_id, root_id, author) {
             var form = document.getElementById('comment_form');
@@ -27,9 +27,9 @@ var comments = (function() {
             document.getElementById('text_field').focus();
         },
 
-        /*
-        ** Возвращаем исходный стиль комментария
-        */
+        /**
+         * Возвращаем исходный стиль комментария
+         */
 
         close_answer: function() {
             var form = document.getElementById('comment_form');
@@ -44,9 +44,9 @@ var comments = (function() {
             form.classList.remove('answer_form');
         },
 
-        /*
-        ** Отключаем кнопку submit, если поле пустое или поле только с пробелами
-        */
+        /**
+         * Отключаем кнопку submit, если поле пустое или поле только с пробелами
+         */
 
         enable_button: function() {
             var field_value = document.getElementById("text_field").value.trim();
