@@ -107,6 +107,7 @@ Class Model_Comment extends Model_preDispatch
                 foreach ($comment_rows as $parent_row) {
                     if ($parent_row['id'] == $comment_row['parent_id']) {
                         $parent = self::getParentFromCommentsArray($parent_row);
+                        break;
                     }                        
                 }
                     
