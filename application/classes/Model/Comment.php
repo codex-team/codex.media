@@ -46,17 +46,14 @@ Class Model_Comment extends Model_preDispatch
             ->clearcache('page:' . $this->page_id)
             ->execute();
         
-        if ($this->root_id == 0)
+        if ($this->root_id == 0) {
             Dao_Comments::update()
                 ->where('id', '=', $idAndRowAffected)
                 ->set('root_id', $idAndRowAffected)
                 ->execute(); 
-        
-        if ($idAndRowAffected) {
-            return true;
-        } else {
-            return false;
         }
+        
+        return $idAndRowAffected;
     }
 
     /**
@@ -78,6 +75,20 @@ Class Model_Comment extends Model_preDispatch
         return $this;
     }
     
+    private static function getParentFromCommentsArray($parent_row)
+    {
+        $parent = array(
+            "id"         => $parent_row['id'],
+            "author"     => new Model_User($parent_row['author']),
+            "text"       => $parent_row['text'],
+            "root_id"    => $parent_row['root_id'],
+            "dt_create"  => $parent_row['dt_create'],
+            "is_removed" => $parent_row['is_removed']
+        );
+        
+        return $parent;
+    }
+    
     public static function getCommentsByPageId($page_id)
     {
         $comments = array();
@@ -91,18 +102,11 @@ Class Model_Comment extends Model_preDispatch
         
         if ($comment_rows) {
             foreach ($comment_rows as $comment_row) {
-                $parent = [];
+                $parent = array();
                 
                 foreach ($comment_rows as $parent_row) {
                     if ($parent_row['id'] == $comment_row['parent_id']) {
-                        $parent = [
-                            "id"         => $parent_row['id'],
-                            "author"     => new Model_User($parent_row['author']),
-                            "text"       => $parent_row['text'],
-                            "root_id"    => $parent_row['root_id'],
-                            "dt_create"  => $parent_row['dt_create'],
-                            "is_removed" => $parent_row['is_removed']
-                        ];
+                        $parent = self::getParentFromCommentsArray($parent_row);
                     }                        
                 }
                     
