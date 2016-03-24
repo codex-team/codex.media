@@ -65,47 +65,46 @@
 <div class="page_comments" id="page_comments">
     
     <h3>Комментарии</h3>
-    <? if($user->id): ?>
-        <? if ($comments): ?>
-            <? foreach ($comments as $comment): ?>
-                <div class="comment_wrapper <?= $comment->parent_comment['id'] ? 'answer_wrapper' : '' ?>" 
-                     id="comment_<?= $comment->id ?>">
-                    <img class="comment_left" src="<?= $comment->author->photo ?>">
-                    <div class="comment_right">
-                        <b>
-                            <?= $comment->author->name ?>
-                        </b>
-                        <? if ($comment->parent_comment['id']): ?>
-                            <span class="to_user">
-                                <!-- Временная заглушка вместо шрифтовой иконки -->
-                                <div class="dummy_icon"></div>
-                                <?= $comment->parent_comment['author']->name ?>
-                            </span>
-                        <? endif; ?>
-                        <time>
-                            <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
-                        </time>
-                        <p><?= $comment->text ?></p>
-                        <a class="answer_button" onclick="comments.answer(<?= $comment->id ?>, 
-                                                                          <?= $comment->root_id ?>,
-                                                                          '<?= $comment->author->name ?>')">
+    <? if ($comments): ?>
+        <? foreach ($comments as $comment): ?>
+            <div class="comment_wrapper <?= $comment->parent_comment['id'] ? 'answer_wrapper' : '' ?>" 
+                 id="comment_<?= $comment->id ?>">
+                <img class="comment_left" src="<?= $comment->author->photo ?>">
+                <div class="comment_right">
+                    <b>
+                        <?= $comment->author->name ?>
+                    </b>
+                    <? if ($comment->parent_comment['id']): ?>
+                        <span class="to_user">
                             <!-- Временная заглушка вместо шрифтовой иконки -->
                             <div class="dummy_icon"></div>
-                            Ответить
+                            <?= $comment->parent_comment['author']->name ?>
+                        </span>
+                    <? endif; ?>
+                    <time>
+                        <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
+                    </time>
+                    <p><?= $comment->text ?></p>
+                    <a class="answer_button" onclick="comments.answer(<?= $comment->id ?>, 
+                                                                      <?= $comment->root_id ?>,
+                                                                      '<?= $comment->author->name ?>')">
+                        <!-- Временная заглушка вместо шрифтовой иконки -->
+                        <div class="dummy_icon"></div>
+                        Ответить
+                    </a>
+                    <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
+                        <a class="delete_button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
+                            Удалить
                         </a>
-                        <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
-                            <a class="delete_button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
-                                Удалить
-                            </a>
-                        <? endif; ?>
-                    </div>
-                    
+                    <? endif; ?>
                 </div>
-            <? endforeach; ?>
-        <? else: ?>
-            <p>Здесь пока нет комментариев.</p>
-        <? endif; ?>
-    
+                    
+            </div>
+        <? endforeach; ?>
+    <? else: ?>
+        <p class="dummy_text">Здесь пока нет комментариев.</p>
+    <? endif; ?>
+    <? if($user->id): ?>    
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
             <?= Form::hidden('csrf', Security::token()); ?>
             <textarea oninput="comments.enable_button()" id="text_field" name="text_field" rows="6"></textarea>
@@ -116,6 +115,6 @@
             <span class="cancel_answer" id="cancel_answer" onclick="comments.close_answer()"></span>
         </form>
     <? else: ?>
-        <p>Присоединяйтесь к сообществу, чтобы оставлять комментарии.</p>
+        <p class="dummy_text"><a href="/auth">Присоединяйтесь к сообществу</a>, чтобы оставлять комментарии.</p>
     <? endif; ?>
 </div>

@@ -1212,4 +1212,9 @@ footer.site_footer p{margin: 15px 25px}
         cursor: pointer;
     }
 
+.page_comments .dummy_text {
+    font-size: 16px;
+    line-height: 1.4em;
+}
+    .page_comments .dummy_text:first-of-type { margin-top: 26px; }
 
