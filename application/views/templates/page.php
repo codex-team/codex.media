@@ -68,18 +68,18 @@
     <? if($user->id): ?>
         <? if ($comments): ?>
             <? foreach ($comments as $comment): ?>
-                <div class="comment_wrapper <?= $comment->parent_comment->id ? 'answer_wrapper' : '' ?>" 
+                <div class="comment_wrapper <?= $comment->parent_comment['id'] ? 'answer_wrapper' : '' ?>" 
                      id="comment_<?= $comment->id ?>">
                     <img class="comment_left" src="<?= $comment->author->photo ?>">
                     <div class="comment_right">
                         <b>
                             <?= $comment->author->name ?>
                         </b>
-                        <? if ($comment->parent_comment->id != 0): ?>
+                        <? if ($comment->parent_comment['id']): ?>
                             <span class="to_user">
                                 <!-- Временная заглушка вместо шрифтовой иконки -->
                                 <div class="dummy_icon"></div>
-                                <?= $comment->parent_comment->author->name ?>
+                                <?= $comment->parent_comment['author']->name ?>
                             </span>
                         <? endif; ?>
                         <time>

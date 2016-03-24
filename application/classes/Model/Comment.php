@@ -76,7 +76,6 @@ Class Model_Comment extends Model_preDispatch
             $this->text           = $comment_row['text'];
             $this->page_id        = $comment_row['page_id'];
             $this->root_id        = $comment_row['root_id'];
-            $this->parent_comment = self::get($comment_row['parent_id']);
             $this->dt_create      = $comment_row['dt_create'];
             $this->is_removed     = $comment_row['is_removed'];
         }
@@ -97,9 +96,26 @@ Class Model_Comment extends Model_preDispatch
         
         if ($comment_rows) {
             foreach ($comment_rows as $comment_row) {
+                $parent = [];
+                
+                foreach ($comment_rows as $parent_row) {
+                    if ($parent_row['id'] == $comment_row['parent_id']) {
+                        $parent = [
+                            "id"         => $parent_row['id'],
+                            "author"     => new Model_User($parent_row['author']),
+                            "text"       => $parent_row['text'],
+                            "root_id"    => $parent_row['root_id'],
+                            "dt_create"  => $parent_row['dt_create'],
+                            "is_removed" => $parent_row['is_removed']
+                        ];
+                    }                        
+                }
+                    
                 $comment = new Model_Comment();
 
-                $comment->fillByRow($comment_row);
+                $comment->fillByRow($comment_row, $parent);
+                
+                $comment->parent_comment = $parent;
 
                 array_push($comments, $comment);
             }
