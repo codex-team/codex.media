@@ -103,7 +103,7 @@
                 </div>
             <? endforeach; ?>
         <? else: ?>
-            <p>Присоединяйтесь к сообществу, чтобы оставлять комментарии</p>
+            <p>Здесь пока нет комментариев.</p>
         <? endif; ?>
     
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
@@ -116,6 +116,6 @@
             <span class="cancel_answer" id="cancel_answer" onclick="comments.close_answer()"></span>
         </form>
     <? else: ?>
-        <p>Комментарии доступны только зарегистрированным пользователям.</p>
+        <p>Присоединяйтесь к сообществу, чтобы оставлять комментарии.</p>
     <? endif; ?>
 </div>
