@@ -74,6 +74,7 @@
                     <b>
                         <?= $comment->author->name ?>
                     </b>
+                    
                     <? if ($comment->parent_comment['id']): ?>
                         <span class="to_user">
                             <!-- Временная заглушка вместо шрифтовой иконки -->
@@ -81,17 +82,19 @@
                             <?= $comment->parent_comment['author']->name ?>
                         </span>
                     <? endif; ?>
+                    
                     <time>
                         <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
                     </time>
+                    
                     <p><?= $comment->text ?></p>
-                    <a class="answer_button" onclick="comments.answer(<?= $comment->id ?>, 
-                                                                      <?= $comment->root_id ?>,
-                                                                      '<?= $comment->author->name ?>')">
+                    
+                    <a class="answer_button" id="answer_button_<?= $comment->id ?>">
                         <!-- Временная заглушка вместо шрифтовой иконки -->
                         <div class="dummy_icon"></div>
                         Ответить
                     </a>
+                    
                     <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
                         <a class="delete_button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             Удалить
@@ -100,6 +103,9 @@
                 </div>
                     
             </div>
+            <script>
+                Comments.answer(<?= $comment->id ?>, <?= $comment->root_id ?>, '<?= $comment->author->name ?>');
+            </script>
         <? endforeach; ?>
     <? else: ?>
         <p class="dummy_text">Здесь пока нет комментариев.</p>
@@ -107,14 +113,26 @@
     <? if($user->id): ?>    
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
             <?= Form::hidden('csrf', Security::token()); ?>
-            <textarea oninput="comments.enable_button()" id="text_field" name="text_field" rows="6"></textarea>
+            <textarea id="add_comment_field" name="add_comment_field" rows="6"></textarea>
             <input type="hidden" name="parent_id" value="0" id="parent_id"/>
             <input type="hidden" name="root_id" value="0" id="root_id"/>
-            <input id="comment_button" disabled type="submit" value="Оставить комментарий" />
-            <span id="comment_answer" class="comment_answer"></span>
-            <span class="cancel_answer" id="cancel_answer" onclick="comments.close_answer()"></span>
+            <input id="add_comment_button" disabled type="submit" value="Оставить комментарий" />
+            <span id="add_answer_to" class="add_answer_to"></span>
+            <span class="cancel_answer" id="cancel_answer"></span>
         </form>
     <? else: ?>
         <p class="dummy_text"><a href="/auth">Присоединяйтесь к сообществу</a>, чтобы оставлять комментарии.</p>
     <? endif; ?>
 </div>
+
+<script>
+    $(function() {
+        Comments.init();
+        
+        Comments.clear_textarea();
+        
+        Comments.close_answer();
+        
+        Comments.enable_button();
+    });
+</script>
