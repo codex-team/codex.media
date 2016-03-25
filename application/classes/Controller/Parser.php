@@ -8,6 +8,12 @@ class Controller_Parser extends Controller_Base_preDispatch {
 
         $response = self::getPageTitleAndArticleByUrl($url);
 
+        $response['success'] = false;
+
+        if ($response['title'] != $response['article']) {
+            $response['success'] = true;
+        }
+
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
         $this->response->body( @json_encode($response) );
@@ -15,7 +21,7 @@ class Controller_Parser extends Controller_Base_preDispatch {
 
     public function getPageTitleAndArticleByUrl($url)
     {
-        $response = array("success" => false, "title" => "", "article" => "");
+        $response = array("title" => "", "article" => "");
 
         if ($url)
         {
@@ -34,10 +40,6 @@ class Controller_Parser extends Controller_Base_preDispatch {
 
             $response['title']      = self::getTitle($doc);
             $response['article']    = self::getArticleText($doc);  
-
-            if ($response['title'] != $response['article']) {
-                $response['success'] = true;
-            }
         }
 
         return $response;
