@@ -2759,7 +2759,7 @@ var parser = {
         data: { 'url' : url },
         success: function(response){
             
-            if ( response.success ) {
+            if ( response.success == 1) {
             
                 var title = document.getElementById('page_form_title');
                 title.value = response.title;

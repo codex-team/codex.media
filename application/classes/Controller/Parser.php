@@ -8,10 +8,10 @@ class Controller_Parser extends Controller_Base_preDispatch {
 
         $response = self::getPageTitleAndArticleByUrl($url);
 
-        $response['success'] = false;
+        $response['success'] = 0;
 
         if ($response['title'] != $response['article']) {
-            $response['success'] = true;
+            $response['success'] = 1;
         }
 
         $this->auto_render = false;
