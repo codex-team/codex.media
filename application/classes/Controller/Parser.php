@@ -5,11 +5,21 @@ class Controller_Parser extends Controller_Base_preDispatch {
     public function action_get_page()
     {
         $url = Arr::get($_GET, 'url', '');
+
+        $response = self::getPageTitleAndArticleByUrl($url);
+
+        $this->auto_render = false;
+        $this->response->headers('Content-Type', 'application/json; charset=utf-8');
+        $this->response->body( @json_encode($response) );
+    }
+
+    public function getPageTitleAndArticleByUrl($url)
+    {
         $response = array("result" => "error", "title" => "", "article" => "");
 
         if ($url)
         {
-            $page   = self::getPageHtmlByUrl($url);
+            $page = self::getPageHtmlByUrl($url);
 
             $doc = new DOMDocument();
             libxml_use_internal_errors(true);
@@ -30,9 +40,7 @@ class Controller_Parser extends Controller_Base_preDispatch {
             }
         }
 
-        $this->auto_render = false;
-        $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-        $this->response->body( @json_encode($response) );
+        return $response;
     }
 
     /**
@@ -50,8 +58,6 @@ class Controller_Parser extends Controller_Base_preDispatch {
         curl_setopt($ch, CURLOPT_URL, $url);
 
         $result = curl_exec($ch);
-
-        #var_dump(curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
 
         curl_close($ch);
 
