@@ -15,7 +15,7 @@ class Controller_Parser extends Controller_Base_preDispatch {
 
     public function getPageTitleAndArticleByUrl($url)
     {
-        $response = array("result" => "error", "title" => "", "article" => "");
+        $response = array("success" => false, "title" => "", "article" => "");
 
         if ($url)
         {
@@ -36,7 +36,7 @@ class Controller_Parser extends Controller_Base_preDispatch {
             $response['article']    = self::getArticleText($doc);  
 
             if ($response['title'] != $response['article']) {
-                $response['result']     = 'ok';
+                $response['success'] = true;
             }
         }
 
