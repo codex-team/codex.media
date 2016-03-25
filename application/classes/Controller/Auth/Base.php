@@ -99,6 +99,27 @@ class Controller_Auth_Base extends Controller_Base_preDispatch {
     }
 
     /**
+     * Check whether to delete the social network is possible\
+     * @author  Alexander Demyashev
+     * 
+     * @var    string   $uid
+     * @return bool     TRUE / FALSE
+     */
+    public static function rightToUnbindSocial( $uid ) {
+
+        $security = Dao_Users::select('email', 'password')->where('id', '=', $uid)->execute();
+        $socials  = Dao_Users::select('twitter', 'facebook', 'vk')->where('id', '=', $uid)->execute();
+
+        if ( !empty($security['email']) && !empty($security['passwords']) ) {
+            return true;
+        }
+        elseif ( count($socials) > 1 ) {
+            return true;
+        }
+        else return false;
+    }
+
+    /**
     * Removes auth session by id, uid or cookie
     * @author Savchenko Petr (vk.com/specc)
     */
