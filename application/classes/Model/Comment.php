@@ -113,7 +113,7 @@ Class Model_Comment extends Model_preDispatch
                     
                 $comment = new Model_Comment();
 
-                $comment->fillByRow($comment_row, $parent);
+                $comment->fillByRow($comment_row);
                 
                 $comment->parent_comment = $parent;
 
