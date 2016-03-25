@@ -75,16 +75,21 @@ Class Model_Comment extends Model_preDispatch
         return $this;
     }
     
-    private static function getParentFromCommentsArray($parent_row)
+    private static function getParentFromCommentsArray($comment_rows, $comment_row)
     {
-        $parent = array(
-            "id"         => $parent_row['id'],
-            "author"     => new Model_User($parent_row['author']),
-            "text"       => $parent_row['text'],
-            "root_id"    => $parent_row['root_id'],
-            "dt_create"  => $parent_row['dt_create'],
-            "is_removed" => $parent_row['is_removed']
-        );
+        foreach ($comment_rows as $parent_row) {
+            if ($parent_row['id'] == $comment_row['parent_id']) {
+                $parent = array(
+                    "id"         => $parent_row['id'],
+                    "author"     => new Model_User($parent_row['author']),
+                    "text"       => $parent_row['text'],
+                    "root_id"    => $parent_row['root_id'],
+                    "dt_create"  => $parent_row['dt_create'],
+                    "is_removed" => $parent_row['is_removed']
+                );
+                break;
+            }                        
+        }
         
         return $parent;
     }
@@ -104,12 +109,7 @@ Class Model_Comment extends Model_preDispatch
             foreach ($comment_rows as $comment_row) {
                 $parent = array();
                 
-                foreach ($comment_rows as $parent_row) {
-                    if ($parent_row['id'] == $comment_row['parent_id']) {
-                        $parent = self::getParentFromCommentsArray($parent_row);
-                        break;
-                    }                        
-                }
+                $parent = self::getParentFromCommentsArray($comment_rows, $comment_row);
                     
                 $comment = new Model_Comment();
 
