@@ -598,16 +598,28 @@ class Model_Methods extends Model
             'Ь' => "",    'Ы' => 'Y',   'Ъ' => "",
             'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
         );
+
         // translit
         $converted_string = strtr($string, $converter);
 
+        return $converted_string;
+    }
+
+    public static function translitUri($string)
+    {
+        $converted_string = self::rus2translit($string);
+
+        // заменяем все не цифры и не буквы на минусы
         $converted_string = preg_replace("/[^0-9a-zA-Z]/", "-", $converted_string);
 
+        // заменяем несколько минусов на один
         $converted_string = preg_replace('/-{2,}/', '-', $converted_string);
 
+        // отсекаем лишние минусы по краям
         $converted_string = trim($converted_string, '-');
 
         return $converted_string;
+
     }
 
 }
