@@ -13,7 +13,7 @@
 
 	<div class="mb30">
 		<h4>Импортивать страницу</h4>
-		<input type="text" name="url" id="parser_input_url" onpaste='var e=this; setTimeout(function(){parserImportPage(e.value);}, 1);'/>
+		<input type="text" name="url" id="parser_input_url" />
 	</div>
  
 	<? if (isset($errors['title']) &&  $errors['title']): ?>
@@ -176,6 +176,12 @@
 
 <script>
 	$(function(){
+
 		user.renderRedactor();
+
+		parser.init({
+			input_id : 'parser_input_url'
+		});
+
 	});
 </script>

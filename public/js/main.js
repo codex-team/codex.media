@@ -2716,9 +2716,44 @@ $(document).ready(function(){
  * Parser code
  * @author Taly Guryn
  */
-function parserImportPage( url ) {
 
-    simpleAjax.call({
+
+
+var parser = {
+
+    input : null,
+
+    init : function (settings){
+
+         this.input = document.getElementById(settings.input_id);
+
+         var _this = this;
+
+         this.input.addEventListener('paste', function (event) {
+         
+             _this.inputPasteCallback()
+         
+         } , false)
+
+    },
+
+    inputPasteCallback : function () {
+
+        var e = this.input;
+
+        var _this = this;
+
+        setTimeout(function(){
+
+            _this.sendRequest(e.value);
+
+        }, 100);
+    },
+    
+
+    sendRequest : function (url) {
+
+        simpleAjax.call({
         type: 'get',
         url: '/ajax/get_page',
         data: { 'url' : url },
@@ -2743,6 +2778,7 @@ function parserImportPage( url ) {
             }
         }
     });
+    }
 
-}
 
+};
