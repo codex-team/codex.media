@@ -605,17 +605,18 @@ class Model_Methods extends Model
         return $converted_string;
     }
 
-    public static function translitUri($string)
+    public static function gettingUri($string)
     {
+        // заменяем все кириллические символы на латиницу
         $converted_string = self::rus2translit($string);
 
-        // заменяем все не цифры и не буквы на минусы
+        // заменяем все не цифры и не буквы на дефисы
         $converted_string = preg_replace("/[^0-9a-zA-Z]/", "-", $converted_string);
 
-        // заменяем несколько минусов на один
+        // заменяем несколько дефисов на один
         $converted_string = preg_replace('/-{2,}/', '-', $converted_string);
 
-        // отсекаем лишние минусы по краям
+        // отсекаем лишние дефисы по краям
         $converted_string = trim($converted_string, '-');
 
         return $converted_string;
