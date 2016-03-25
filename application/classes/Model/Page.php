@@ -181,7 +181,7 @@ class Model_Page extends Model_preDispatch
     {
         $title = $this->title;
 
-        $title = Model_Methods::translitUri($title);
+        $title = Model_Methods::getUriByTitle($title);
 
         return strtolower($title);
     }

@@ -605,7 +605,7 @@ class Model_Methods extends Model
         return $converted_string;
     }
 
-    public static function gettingUri($string)
+    public static function getUriByTitle($string)
     {
         // заменяем все кириллические символы на латиницу
         $converted_string = self::rus2translit($string);
