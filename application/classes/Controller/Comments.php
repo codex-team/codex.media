@@ -10,7 +10,7 @@ class Controller_Comments extends Controller_Base_preDispatch
         
         $page = new Model_Page($this->request->param('id'));
         
-        $text = trim(Arr::get($_POST, 'text_field'));
+        $text = trim(Arr::get($_POST, 'add_comment_field'));
         
         /**
          * Checking for existing page

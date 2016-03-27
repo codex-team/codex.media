@@ -118,7 +118,7 @@
             <input type="hidden" name="root_id" value="0" id="root_id"/>
             <input id="add_comment_button" disabled type="submit" value="Оставить комментарий" />
             <span id="add_answer_to" class="add_answer_to"></span>
-            <span class="cancel_answer" id="cancel_answer"></span>
+            <span class="cancel_answer" id="cancel_answer" name="cancel_answer"></span>
         </form>
     <? else: ?>
         <p class="dummy_text"><a href="/auth">Присоединяйтесь к сообществу</a>, чтобы оставлять комментарии.</p>
@@ -128,11 +128,5 @@
 <script>
     $(function() {
         Comments.init();
-        
-        Comments.clear_textarea();
-        
-        Comments.close_answer();
-        
-        Comments.enable_button();
     });
 </script>
