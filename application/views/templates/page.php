@@ -89,16 +89,17 @@
                     
                     <p><?= $comment->text ?></p>
                     
-                    <a class="answer_button" id="answer_button_<?= $comment->id ?>">
+                    <span class="answer_button" id="answer_button_<?= $comment->id ?>">
                         <!-- Временная заглушка вместо шрифтовой иконки -->
                         <div class="dummy_icon"></div>
                         Ответить
-                    </a>
+                    </span>
                     
                     <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
-                        <a class="delete_button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
+                        <span class="delete_button" 
+                              href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             Удалить
-                        </a>
+                        </span>
                     <? endif; ?>
                 </div>
                     

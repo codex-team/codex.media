@@ -1147,11 +1147,12 @@ footer.site_footer p{margin: 15px 25px}
         .to_user { color: #8c8f92; }
 
         .comment_right .answer_button, 
-        .comment_right .delete_button { font-size: 15px; }
+        .comment_right .delete_button { 
+            font-size: 15px; 
+            cursor: pointer;
+        }
 
         .comment_right .answer_button { margin-right: 24px; }
-
-        .comment_right .delete_button { text-decoration: none; }
 
         .to_user { font-size: 14px; }
 
