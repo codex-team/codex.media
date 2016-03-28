@@ -48,7 +48,7 @@ Class Model_Comment extends Model_preDispatch
         
         if ($this->root_id == 0) {
             Dao_Comments::update()
-                ->where('id', '=', current($idAndRowAffected))
+                ->where('id', '=', $idAndRowAffected)
                 ->set('root_id', $idAndRowAffected)
                 ->execute(); 
         }
