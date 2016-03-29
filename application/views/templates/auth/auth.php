@@ -15,7 +15,7 @@
 	<h3>Вход через пароль</h3>
 
     <? if (!empty($login_error_text)): ?>
-        <p class="form_error mb20"><?= $login_error_text ?></p>
+        <p class="form_error mb20 mt20"><?= $login_error_text ?></p>
     <? endif; ?>
 
     <? $loginFields = array(
