@@ -89,24 +89,24 @@
                     
                     <p><?= $comment->text ?></p>
                     
-                    <span class="answer_button" id="answer_button_<?= $comment->id ?>">
+                    <span class="answer_button" id="answer_button_<?= $comment->id ?>"
+                          data-comment-id="<?= $comment->id ?>"
+                          data-root-id="<?= $comment->root_id ?>"
+                          data-author="<?= $comment->author->name ?>">
                         <!-- Временная заглушка вместо шрифтовой иконки -->
                         <div class="dummy_icon"></div>
                         Ответить
                     </span>
                     
                     <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
-                        <span class="delete_button" 
+                        <a class="delete_button" 
                               href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             Удалить
-                        </span>
+                        </a>
                     <? endif; ?>
                 </div>
                     
             </div>
-            <script>
-                Comments.answer(<?= $comment->id ?>, <?= $comment->root_id ?>, '<?= $comment->author->name ?>');
-            </script>
         <? endforeach; ?>
     <? else: ?>
         <p class="dummy_text">Здесь пока нет комментариев.</p>

@@ -1,7 +1,6 @@
 var Comments = {
     
-    answer_button : null,
-    comment_body : null,
+    answer_buttons : null,
     comments_list : null,
     
     form : {
@@ -24,6 +23,11 @@ var Comments = {
         this.form.add_comment_field    = this.form.wrapper.add_comment_field;
         
         this.comments_list             = document.getElementById('page_comments');
+        
+        this.comments                  = document.getElementsByClassName('comment_wrapper');
+        
+        this.answer_buttons            = document.getElementsByClassName('answer_button');
+        
     
         this.clear_textarea();
         
@@ -31,6 +35,7 @@ var Comments = {
         
         var _this = this;
         
+        // Вызываем обработчик по клику на крестик
         this.form.cancel_answer_button.addEventListener('click', function() {
             Comments.prepare_form({
                 parent_id : 0,
@@ -43,6 +48,26 @@ var Comments = {
                 where_to_append : _this.comments_list
             })
         }, false);
+        
+        var answer_buttons = [].slice.call(this.answer_buttons);
+        
+        // Вызываем обработчик на клики по кнопкам "Ответить"
+        answer_buttons.forEach(function(button, i, buttons) {
+            var comment_body = document.getElementById('comment_' + button.dataset.commentId);
+            
+            button.addEventListener('click', function() {            
+                Comments.prepare_form({
+                    parent_id : button.dataset.commentId,
+                    root_id : button.dataset.rootId,
+                    button_value : 'Ответить',
+                    to_user : 'пользователю ' + '<b>' + button.dataset.author + '</b>',
+                    cancel_button : '<i class="icon-cancel"></i>',
+                    comment_field_rows : 4,
+                    fit_comment_width : true,
+                    where_to_append : comment_body
+                })
+            }, false);
+        });
     },
     
     /**
@@ -51,28 +76,12 @@ var Comments = {
     clear_textarea : function() {
         this.form.add_comment_field.value = "";
     },
-
-    answer : function(comment_id, root_id, author) {
-        this.answer_button = document.getElementById('answer_button_' + comment_id);
-        
-        var _this = this;
-        
-        this.answer_button.addEventListener('click', function() {
-            _this.comment_body  = document.getElementById('comment_' + comment_id);
-            
-            Comments.prepare_form({
-                parent_id : comment_id,
-                root_id : root_id,
-                button_value : 'Ответить',
-                to_user : 'пользователю ' + '<b>' + author + '</b>',
-                cancel_button : '<i class="icon-cancel"></i>',
-                comment_field_rows : 4,
-                fit_comment_width : true,
-                where_to_append : _this.comment_body
-            })
-        }, false);
-    },
     
+    
+    /**
+     * Обработчик событий кликов на кнопки "Ответить" и "Х"
+     * Принимаем массив settings. Оформляем форму
+     */
     prepare_form : function(settings) {
         // Заполняем hidden поля формы значениями root_id и parent_id или нулями.
         this.form.parent_id.value = settings.parent_id;
@@ -83,10 +92,6 @@ var Comments = {
         this.form.add_answer_to.innerHTML        = settings.to_user;
         this.form.cancel_answer_button.innerHTML = settings.cancel_button;
             
-        // Сжимаем/растягиваем по высоте текстовое поле формы комментария, переводим фокус на него
-        this.form.add_comment_field.rows = settings.comment_field_rows;
-        this.form.add_comment_field.focus();
-            
         // Перемещаем форму под текущий комментарий или под все комментарии, подгоняем ее ширину
         if(settings.fit_comment_width) {
             this.form.wrapper.classList.add('answer_form');
@@ -94,6 +99,10 @@ var Comments = {
             this.form.wrapper.classList.remove('answer_form');
         }
         settings.where_to_append.appendChild(this.form.wrapper);
+        
+        // Сжимаем/растягиваем по высоте текстовое поле формы комментария, переводим фокус на него
+        this.form.add_comment_field.rows = settings.comment_field_rows;
+        this.form.add_comment_field.focus();
     },
 
     /**

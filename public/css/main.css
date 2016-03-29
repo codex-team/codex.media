@@ -1150,6 +1150,7 @@ footer.site_footer p{margin: 15px 25px}
         .comment_right .delete_button { 
             font-size: 15px; 
             cursor: pointer;
+            text-decoration: none;
         }
 
         .comment_right .answer_button { margin-right: 24px; }
