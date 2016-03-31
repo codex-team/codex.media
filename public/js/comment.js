@@ -32,10 +32,20 @@ var Comments = {
         this.form.add_comment_textarea.addEventListener('input', Comments.textareaInputHandler, false);
         
         // Добавляем слушатель события клика по "ответить"
-        this.addReplyButtonListener();
+        for(var i = 0; i < this.answer_buttons.length; i++) {
+            
+            this.answer_buttons[i].addEventListener('click', function(event) { 
+               
+                Comments.replyButtonClickHandler(event);
+                
+            }, false);
+            
+        }
         
         // Добавляем слушатель события клика по крестику
-        this.addCancelReplyButtonListener();        
+        this.form.cancel_answer_button.addEventListener('click', function() {
+            Comments.canselReplyButtonClickHandler();
+        }, false);       
     },
     
     /**
@@ -44,18 +54,6 @@ var Comments = {
     clearTextarea : function() {
         
         this.form.add_comment_textarea.value = "";
-        
-    },
-    
-    /**
-     * Добавляем слушатель события клика по крестику
-     */
-    addCancelReplyButtonListener : function() {        
-        
-        // Вызываем обработчик по клику на крестик
-        this.form.cancel_answer_button.addEventListener('click', function() {
-            Comments.canselReplyButtonClickHandler();
-        }, false);
         
     },
     
@@ -71,24 +69,6 @@ var Comments = {
             parent_id : 0,
             root_id : 0
         });
-        
-    },
-    
-    /**
-     * Добавляем слушатель события клика по "Ответить"
-     */
-    addReplyButtonListener : function() {
-        var button;
-        
-        for(var i = 0; i < this.answer_buttons.length; i++) {
-            button = this.answer_buttons[i];
-            
-            button.addEventListener('click', function(event) { 
-               
-                Comments.replyButtonClickHandler(event);
-                
-            }, false);
-        }
         
     },
     
