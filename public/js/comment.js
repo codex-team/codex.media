@@ -100,7 +100,7 @@ var Comments = {
         
         if (settings.parent_id) {
             // Используем querySelector для навигации по DOM при помощи синтаксиса CSS
-            var parent_author = document.querySelector('#comment_' + settings.parent_id + ' b').innerHTML;
+            var parent_author = document.querySelector('#comment_' + settings.parent_id + ' .author_name').innerHTML;
             this.form.add_answer_to.innerHTML = 'пользователю <b>' + parent_author + '</b>';
             
             // Изменяем текст кнопки в форме

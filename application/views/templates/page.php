@@ -71,7 +71,7 @@
                  id="comment_<?= $comment->id ?>">
                 <img class="comment_left" src="<?= $comment->author->photo ?>">
                 <div class="comment_right">
-                    <b>
+                    <b class="author_name">
                         <?= $comment->author->name ?>
                     </b>
                     

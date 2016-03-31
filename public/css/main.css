@@ -1116,7 +1116,7 @@ footer.site_footer p{margin: 15px 25px}
         width: 42px;
     }
 
-.comment_right b, 
+.comment_right .author_name, 
 .to_user { display: inline; }
 
     .comment_right {
@@ -1125,7 +1125,10 @@ footer.site_footer p{margin: 15px 25px}
         margin-left: 20px;
     }
 
-        .comment_right b { font-size: 16px; }
+        .comment_right .author_name { 
+            font-size: 16px; 
+            font-weight: 600;
+        }
 
         .comment_right p {
             margin-top: 11px;
