@@ -91,8 +91,7 @@
                     
                     <span class="answer_button" id="answer_button_<?= $comment->id ?>"
                           data-comment-id="<?= $comment->id ?>"
-                          data-root-id="<?= $comment->root_id ?>"
-                          data-author="<?= $comment->author->name ?>">
+                          data-root-id="<?= $comment->root_id ?>">
                         <!-- Временная заглушка вместо шрифтовой иконки -->
                         <div class="dummy_icon"></div>
                         Ответить
