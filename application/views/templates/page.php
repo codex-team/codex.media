@@ -100,7 +100,7 @@
                     
                     <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
                         <a class="delete_button" 
-                              href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
+                           href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             Удалить
                         </a>
                     <? endif; ?>
@@ -114,12 +114,12 @@
     <? if($user->id): ?>    
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
             <?= Form::hidden('csrf', Security::token()); ?>
-            <textarea id="add_comment_field" name="add_comment_field" rows="6"></textarea>
+            <textarea id="add_comment_textarea" name="add_comment_textarea" rows="5"></textarea>
             <input type="hidden" name="parent_id" value="0" id="parent_id"/>
             <input type="hidden" name="root_id" value="0" id="root_id"/>
             <input id="add_comment_button" disabled type="submit" value="Оставить комментарий" />
             <span id="add_answer_to" class="add_answer_to"></span>
-            <span class="cancel_answer" id="cancel_answer" name="cancel_answer"></span>
+            <span class="cancel_answer" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
         </form>
     <? else: ?>
         <p class="dummy_text"><a href="/auth">Присоединяйтесь к сообществу</a>, чтобы оставлять комментарии.</p>

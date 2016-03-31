@@ -10,7 +10,7 @@ var Comments = {
         add_comment_button : null,
         add_answer_to : null,
         cancel_answer_button : null,
-        add_comment_field : ""
+        add_comment_textarea : ""
     },
     
     init : function() {
@@ -20,96 +20,131 @@ var Comments = {
         this.form.add_comment_button   = this.form.wrapper.add_comment_button;
         this.form.add_answer_to        = document.getElementById('add_answer_to');
         this.form.cancel_answer_button = document.getElementById('cancel_answer');
-        this.form.add_comment_field    = this.form.wrapper.add_comment_field;
+        this.form.add_comment_textarea = this.form.wrapper.add_comment_textarea;
         
         this.comments_list             = document.getElementById('page_comments');
-        
-        this.comments                  = document.getElementsByClassName('comment_wrapper');
-        
         this.answer_buttons            = document.getElementsByClassName('answer_button');
         
-    
-        this.clear_textarea();
+        // Чистим textarea после загрузки страницы
+        this.clearTextarea();
         
-        this.form.add_comment_field.addEventListener('input', Comments.enable_button, false);
+        // Добавляенм слушатель события ввода в textarea
+        this.form.add_comment_textarea.addEventListener('input', Comments.textareaInputHandler, false);
         
-        var _this = this;
+        // Добавляем слушатель события клика по "ответить"
+        this.addReplyButtonListener();
         
-        // Вызываем обработчик по клику на крестик
-        this.form.cancel_answer_button.addEventListener('click', function() {
-            Comments.prepare_form({
-                parent_id : 0,
-                root_id : 0,
-                button_value : 'Оставить комментарий',
-                to_user : '',
-                cancel_button : '',
-                comment_field_rows : 6,
-                fit_comment_width : false,
-                where_to_append : _this.comments_list
-            })
-        }, false);
-        
-        var answer_buttons = [].slice.call(this.answer_buttons);
-        
-        // Вызываем обработчик на клики по кнопкам "Ответить"
-        answer_buttons.forEach(function(button, i, buttons) {
-            var comment_body = document.getElementById('comment_' + button.dataset.commentId);
-            
-            button.addEventListener('click', function() {            
-                Comments.prepare_form({
-                    parent_id : button.dataset.commentId,
-                    root_id : button.dataset.rootId,
-                    button_value : 'Ответить',
-                    to_user : 'пользователю ' + '<b>' + button.dataset.author + '</b>',
-                    cancel_button : '<i class="icon-cancel"></i>',
-                    comment_field_rows : 4,
-                    fit_comment_width : true,
-                    where_to_append : comment_body
-                })
-            }, false);
-        });
+        // Добавляем слушатель события клика по крестику
+        this.addCancelReplyButtonListener();        
     },
     
     /**
      * Очищаем textarea после перезагрузки страницы
      */
-    clear_textarea : function() {
-        this.form.add_comment_field.value = "";
+    clearTextarea : function() {
+        
+        this.form.add_comment_textarea.value = "";
+        
     },
     
+    /**
+     * Добавляем слушатель события клика по крестику
+     */
+    addCancelReplyButtonListener : function() {        
+        
+        // Вызываем обработчик по клику на крестик
+        this.form.cancel_answer_button.addEventListener('click', function() {
+            Comments.canselReplyButtonClickHandler();
+        }, false);
+        
+    },
     
     /**
-     * Обработчик событий кликов на кнопки "Ответить" и "Х"
+     * Обработчик клика по крестику
+     */
+    canselReplyButtonClickHandler : function() {    
+        
+        // Вставляем поле ввода комментария под список комментариев
+        this.comments_list.appendChild(this.form.wrapper);
+        
+        this.prepareForm({
+            parent_id : 0,
+            root_id : 0
+        });
+        
+    },
+    
+    /**
+     * Добавляем слушатель события клика по "Ответить"
+     */
+    addReplyButtonListener : function() {
+        var button;
+        
+        for(var i = 0; i < this.answer_buttons.length; i++) {
+            button = this.answer_buttons[i];
+            
+            button.addEventListener('click', function(event) { 
+               
+                Comments.replyButtonClickHandler(event);
+                
+            }, false);
+        }
+        
+    },
+    
+    /**
+     * Обработчик клика по "Ответить"
+     */
+    replyButtonClickHandler : function(event){
+        
+        var button = event.target,
+            comment = document.getElementById('comment_' + button.dataset.commentId);
+        
+        // Вставляем поле добавления комментария под нужный комментарий
+        comment.appendChild(this.form.wrapper);
+        
+        this.prepareForm({
+            parent_id : button.dataset.commentId,
+            root_id : button.dataset.rootId,
+        });
+    
+    },
+    
+    /**
      * Принимаем массив settings. Оформляем форму
      */
-    prepare_form : function(settings) {
+    prepareForm : function(settings) {
         // Заполняем hidden поля формы значениями root_id и parent_id или нулями.
         this.form.parent_id.value = settings.parent_id;
         this.form.root_id.value   = settings.root_id;
-            
-        // Оформляем форму комментария
-        this.form.add_comment_button.value       = settings.button_value;
-        this.form.add_answer_to.innerHTML        = settings.to_user;
-        this.form.cancel_answer_button.innerHTML = settings.cancel_button;
-            
-        // Перемещаем форму под текущий комментарий или под все комментарии, подгоняем ее ширину
-        if(settings.fit_comment_width) {
-            this.form.wrapper.classList.add('answer_form');
-        } else {
-            this.form.wrapper.classList.remove('answer_form');
-        }
-        settings.where_to_append.appendChild(this.form.wrapper);
         
-        // Сжимаем/растягиваем по высоте текстовое поле формы комментария, переводим фокус на него
-        this.form.add_comment_field.rows = settings.comment_field_rows;
-        this.form.add_comment_field.focus();
+        if (settings.parent_id) {
+            // Используем querySelector для навигации по DOM при помощи синтаксиса CSS
+            var parent_author = document.querySelector('#comment_' + settings.parent_id + ' b').innerHTML;
+            this.form.add_answer_to.innerHTML = 'пользователю <b>' + parent_author + '</b>';
+            
+            // Изменяем текст кнопки в форме
+            this.form.add_comment_button.value = 'Ответить';
+        } else {
+            this.form.add_answer_to.innerHTML = '';
+            
+            // Изменяем текст кнопки в форме
+            this.form.add_comment_button.value = 'Оставить комментарий';
+        }
     },
-
+    
+    /**
+     * Обработчик ввода в textarea
+     */
+    textareaInputHandler : function() {
+        Comments.enableButton();
+    },
+    
     /**
      * Отключаем кнопку submit, если поле пустое или поле только с пробелами
      */
-    enable_button : function() {
-        var field_value = this.form.add_comment_field.value.trim();
+    enableButton : function() {
+        var field_value = this.form.add_comment_textarea.value.trim();
         
         this.form.add_comment_button.disabled = !field_value;         
     }

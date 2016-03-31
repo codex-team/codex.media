@@ -1214,6 +1214,17 @@ footer.site_footer p{margin: 15px 25px}
         cursor: pointer;
     }
 
+    /* Оформляем форму как ответ */
+
+    .comment_wrapper > .comment_form {
+        width: calc(100% - 66px);
+        margin-left: 66px;
+    }
+
+    .page_comments > .comment_form > .cancel_answer {
+        display: none;
+    }
+
 .page_comments .dummy_text {
     font-size: 16px;
     line-height: 1.4em;
