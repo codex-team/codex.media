@@ -2767,6 +2767,9 @@ var parser = {
                 var content = document.getElementById('page_form_content');
                 content.value = response.article;
 
+                var source_link = document.getElementById('source_link');
+                source_link.value = url;
+
                 // while we have no own editor, we should use this getting element
                 // cause I can't edit code for external editor
                 document.getElementsByClassName('redactor_redactor')[0].innerHTML   = response.article;

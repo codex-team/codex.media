@@ -16,6 +16,7 @@ class Model_Page extends Model_preDispatch
     public $uri             = '';
     public $author;
     public $parent;
+    public $source_link     = '';
 
     const TYPE_SITE_PAGE = 1;
     const TYPE_SITE_NEWS = 2;
@@ -38,16 +39,12 @@ class Model_Page extends Model_preDispatch
     {
         if (!empty($page_row))
         {
-            $this->id              = $page_row['id'];
-            $this->type            = $page_row['type'];
-            $this->status          = $page_row['status'];
-            $this->id_parent       = $page_row['id_parent'];
-            $this->title           = $page_row['title'];
-            $this->content         = $page_row['content'];
-            $this->date            = $page_row['date'];
-            $this->is_menu_item    = $page_row['is_menu_item'];
-            $this->rich_view       = $page_row['rich_view'];
-            $this->dt_pin          = $page_row['dt_pin'];
+
+            foreach ($page_row as $field => $value) {
+                if (property_exists($this, $field)) {
+                    $this->$field = $value;
+                }
+            }
 
             $this->uri             = $this->getPageUri();
             $this->author          = new Model_User($page_row['author']);
@@ -66,7 +63,8 @@ class Model_Page extends Model_preDispatch
                     ->set('content',        $this->content)
                     ->set('is_menu_item',   $this->is_menu_item)
                     ->set('rich_view',      $this->rich_view)
-                    ->set('dt_pin',         $this->dt_pin);
+                    ->set('dt_pin',         $this->dt_pin)
+                    ->set('source_link',    $this->source_link);
 
         if ($this->is_menu_item)
         {
@@ -95,6 +93,7 @@ class Model_Page extends Model_preDispatch
                     ->set('is_menu_item',   $this->is_menu_item)
                     ->set('rich_view',      $this->rich_view)
                     ->set('dt_pin',         $this->dt_pin)
+                    ->set('source_link',    $this->source_link)
                     ->clearcache('page:' . $this->id);
 
         /*

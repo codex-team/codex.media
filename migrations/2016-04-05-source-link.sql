@@ -1,0 +1,1 @@
+ALTER TABLE `pages` ADD `source_link` varchar(140) DEFAULT NULL AFTER `dt_pin`;
