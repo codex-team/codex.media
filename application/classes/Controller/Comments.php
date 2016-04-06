@@ -20,7 +20,7 @@ class Controller_Comments extends Controller_Base_preDispatch
         /**
          * Checking for authorized user 
          */
-        if (!$this->user->id) { $error = 'Access denied'; goto finish; }
+        if ($this->user->status < Model_User::USER_STATUS_REGISTERED) { $error = 'Access denied'; goto finish; }
 
         /**
          * Checking for existing text 
