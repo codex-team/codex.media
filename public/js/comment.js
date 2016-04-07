@@ -79,10 +79,10 @@ var Comments = {
         
         var button, comment;
 
-        if (event.target.id) {
-            button = event.target;
-        } else {
+        if (event.target.id == "answer_icon") {
             button = event.target.parentNode;
+        } else {
+            button = event.target;
         }
         
         comment = document.getElementById('comment_' + button.dataset.commentId);

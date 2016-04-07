@@ -77,8 +77,7 @@
                     
                     <? if ($comment->parent_comment['id']): ?>
                         <span class="to_user">
-                            <!-- Временная заглушка вместо шрифтовой иконки -->
-                            <div class="dummy_icon"></div>
+                            <i class="icon-right-dir"></i>
                             <?= $comment->parent_comment['author']->name ?>
                         </span>
                     <? endif; ?>
@@ -93,8 +92,7 @@
                         <span class="answer_button" id="answer_button_<?= $comment->id ?>"
                               data-comment-id="<?= $comment->id ?>"
                               data-root-id="<?= $comment->root_id ?>">
-                            <!-- Временная заглушка вместо шрифтовой иконки -->
-                            <div class="dummy_icon"></div>
+                            <i class="icon-reply" id="answer_icon"></i>
                             Ответить
                         </span>
                     <? endif; ?>
