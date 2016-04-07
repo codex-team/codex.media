@@ -92,7 +92,7 @@
                         <span class="answer_button" id="answer_button_<?= $comment->id ?>"
                               data-comment-id="<?= $comment->id ?>"
                               data-root-id="<?= $comment->root_id ?>">
-                            <i class="icon-reply" id="answer_icon"></i>
+                            <i class="icon-reply"></i>
                             Ответить
                         </span>
                     <? endif; ?>

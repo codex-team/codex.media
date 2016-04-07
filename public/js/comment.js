@@ -78,11 +78,16 @@ var Comments = {
     replyButtonClickHandler : function(event){
         
         var button, comment;
-
-        if (event.target.id == "answer_icon") {
-            button = event.target.parentNode;
-        } else {
+        
+        /**
+         * Проверяем, является ли кнопкой то, на что нажал пользователь (у кнопки есть дата-атрибут)
+         * Если да, то обращаемся к кнопке напрямую, через event.target
+         * Если нет (т.е. кликнули на иконку), то - через event.target.parentNode
+         */
+        if (event.target.dataset.commentId) {
             button = event.target;
+        } else {
+            button = event.target.parentNode;
         }
         
         comment = document.getElementById('comment_' + button.dataset.commentId);
