@@ -67,6 +67,8 @@
 			</div>
 		<? endif ?>
 
+		<input type="hidden" name="source_link" id="source_link" value="">
+
 		<input class="mt20" type="submit" value="Опубликовать">
 
 	</form>
