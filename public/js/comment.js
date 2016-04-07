@@ -77,8 +77,15 @@ var Comments = {
      */
     replyButtonClickHandler : function(event){
         
-        var button = event.target,
-            comment = document.getElementById('comment_' + button.dataset.commentId);
+        var button, comment;
+
+        if (event.target.id) {
+            button = event.target;
+        } else {
+            button = event.target.parentNode;
+        }
+        
+        comment = document.getElementById('comment_' + button.dataset.commentId);
         
         // Вставляем поле добавления комментария под нужный комментарий
         comment.appendChild(this.form.wrapper);
