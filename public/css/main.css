@@ -365,7 +365,6 @@ h3{
 html{overflow-y: scroll;}
 body{
     overflow-x: hidden;
-    color: #eee;
     font-size: 14px;
     font-family: 'PT Sans';
 }

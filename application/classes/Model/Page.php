@@ -5,7 +5,7 @@ class Model_Page extends Model_preDispatch
 
     public $id              = 0;
     public $type            = '';
-    public $status          = '';
+    public $status          = 0;
     public $id_parent       = '';
     public $title           = '';
     public $content         = '';
@@ -181,7 +181,7 @@ class Model_Page extends Model_preDispatch
     {
         $title = $this->title;
 
-        $title = Model_Methods::rus2translit($title);
+        $title = Model_Methods::getUriByTitle($title);
 
         return strtolower($title);
     }

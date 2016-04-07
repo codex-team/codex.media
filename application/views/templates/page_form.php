@@ -11,6 +11,11 @@
 
 <div class="page_form">
 
+	<div class="mb30">
+		<h4>Импортивать страницу</h4>
+		<input type="text" name="url" id="parser_input_url" />
+	</div>
+ 
 	<? if (isset($errors['title']) &&  $errors['title']): ?>
 		<div class="form_error align_c">
 			<?= $errors['title'] ?>
@@ -35,11 +40,11 @@
 
 		<h4>Заголовок</h4>
 		<div class="input_text mb30">
-			<input type="text" name="title" value="<?= $page->title ?>" />
+			<input type="text" name="title" id="page_form_title" value="<?= $page->title ?>" />
 		</div>
 
 		<h4>Содержание</h4>
-			<textarea name="content" class="redactor" rows="7" >
+			<textarea name="content" class="redactor" id="page_form_content" rows="7" >
 				<?= $page->content ?>
 			</textarea>
 
@@ -158,13 +163,8 @@
 				}
 			</script>
 		</table>
-
 	</div>
-
-
 </div>
-
-
 
 
 
@@ -176,6 +176,12 @@
 
 <script>
 	$(function(){
+
 		user.renderRedactor();
+
+		parser.init({
+			input_id : 'parser_input_url'
+		});
+
 	});
 </script>
