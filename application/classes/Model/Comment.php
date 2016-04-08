@@ -77,6 +77,8 @@ Class Model_Comment extends Model_preDispatch
 
     private static function getParentFromCommentsArray($comment_rows, $comment_row)
     {
+        $parent = array();
+
         foreach ($comment_rows as $parent_row) {
             if ($parent_row['id'] == $comment_row['parent_id']) {
                 $parent = array(
