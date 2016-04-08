@@ -16,6 +16,8 @@ class Controller_User extends Controller_Base_preDispatch
             $this->view['setUserStatus'] = $viewUser->setUserStatus(self::translate_user_status($new_status));
         }
 
+        $viewUser->isMe = $viewUser->id == $this->user->id;
+
         $this->view['userPages'] = $viewUser->getUserPages();
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
