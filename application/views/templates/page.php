@@ -63,31 +63,31 @@
     </div>
 <? endif; ?>
 <div class="page_comments" id="page_comments">
-    
+
     <h3>Комментарии</h3>
     <? if ($comments): ?>
         <? foreach ($comments as $comment): ?>
-            <div class="comment_wrapper <?= $comment->parent_comment['id'] ? 'answer_wrapper' : '' ?>" 
+            <div class="comment_wrapper <?= $comment->parent_comment['id'] ? 'answer_wrapper' : '' ?>"
                  id="comment_<?= $comment->id ?>">
                 <img class="comment_left" src="<?= $comment->author->photo ?>">
                 <div class="comment_right">
                     <b class="author_name">
                         <?= $comment->author->name ?>
                     </b>
-                    
+
                     <? if ($comment->parent_comment['id']): ?>
                         <span class="to_user">
                             <i class="icon-right-dir"></i>
                             <?= $comment->parent_comment['author']->name ?>
                         </span>
                     <? endif; ?>
-                    
+
                     <time>
                         <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
                     </time>
-                    
+
                     <p><?= $comment->text ?></p>
-                    
+
                     <? if ($user->id): ?>
                         <span class="answer_button" id="answer_button_<?= $comment->id ?>"
                               data-comment-id="<?= $comment->id ?>"
@@ -96,21 +96,21 @@
                             Ответить
                         </span>
                     <? endif; ?>
-                    
+
                     <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
-                        <a class="delete_button" 
+                        <a class="delete_button"
                            href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             Удалить
                         </a>
                     <? endif; ?>
                 </div>
-                    
+
             </div>
         <? endforeach; ?>
     <? else: ?>
         <p class="dummy_text">Здесь пока нет комментариев.</p>
     <? endif; ?>
-    <? if($user->id): ?>    
+    <? if($user->id): ?>
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
             <?= Form::hidden('csrf', Security::token()); ?>
             <textarea id="add_comment_textarea" name="add_comment_textarea" rows="5"></textarea>
