@@ -12,6 +12,8 @@ class Controller_Comments extends Controller_Base_preDispatch
         
         $text = trim(Arr::get($_POST, 'add_comment_textarea'));
         
+        $error = '';
+        
         /**
          * Checking for existing page
          */
@@ -21,7 +23,7 @@ class Controller_Comments extends Controller_Base_preDispatch
          * Checking for authorized user 
          */
         if ($this->user->status < Model_User::USER_STATUS_REGISTERED) { $error = 'Access denied'; goto finish; }
-
+   
         /**
          * Checking for existing text 
          */
@@ -36,7 +38,11 @@ class Controller_Comments extends Controller_Base_preDispatch
         $comment->insert();
 
         finish:
-        $this->redirect( '/p/' . $page->id . '/' . $page->uri . '?error=' . $error );
+        if ($error) {
+            $this->redirect( '/p/' . $page->id . '/' . $page->uri . '?error=' . $error );
+        } else {
+            $this->redirect( '/p/' . $page->id . '/' . $page->uri . $error );
+        }
     }
     
     public function action_delete()
@@ -52,7 +58,7 @@ class Controller_Comments extends Controller_Base_preDispatch
         
         $page = new Model_Page($comment->page_id);
 
-        $this->redirect('/p/'.$page->id.'/'.$page->uri);
+        $this->redirect('/p/' . $page->id . '/' . $page->uri . $error);
     }
 
 }
