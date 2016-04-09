@@ -67,7 +67,7 @@
     <h3>Комментарии</h3>
     <? if ($comments): ?>
         <? foreach ($comments as $comment): ?>
-            <div class="comment_wrapper <?= $comment->parent_comment['id'] ? 'answer_wrapper' : '' ?>"
+            <div class="comment_wrapper <?= $comment->parent_comment ? 'answer_wrapper' : '' ?>"
                  id="comment_<?= $comment->id ?>">
                 <img class="comment_left" src="<?= $comment->author->photo ?>">
                 <div class="comment_right">
@@ -75,7 +75,7 @@
                         <?= $comment->author->name ?>
                     </b>
 
-                    <? if ($comment->parent_comment['id']): ?>
+                    <? if ($comment->parent_comment): ?>
                         <span class="to_user">
                             <i class="icon-right-dir"></i>
                             <?= $comment->parent_comment['author']->name ?>
