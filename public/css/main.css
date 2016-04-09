@@ -1107,7 +1107,7 @@ footer.site_footer p{margin: 15px 25px}
 
     .answer_wrapper { margin-left: 70px; }
 
-.comment_left, 
+.comment_left,
 .comment_right {
     vertical-align: top;
     position: relative;
@@ -1119,7 +1119,7 @@ footer.site_footer p{margin: 15px 25px}
         width: 42px;
     }
 
-.comment_right .author_name, 
+.comment_right .author_name,
 .to_user { display: inline; }
 
     .comment_right {
@@ -1128,8 +1128,8 @@ footer.site_footer p{margin: 15px 25px}
         margin-left: 20px;
     }
 
-        .comment_right .author_name { 
-            font-size: 16px; 
+        .comment_right .author_name {
+            font-size: 16px;
             font-weight: 600;
         }
 
@@ -1148,13 +1148,13 @@ footer.site_footer p{margin: 15px 25px}
             color: #8c8f92;
         }
 
-        .comment_right .answer_button, 
-        .comment_right .delete_button, 
+        .comment_right .answer_button,
+        .comment_right .delete_button,
         .to_user { color: #8c8f92; }
 
-        .comment_right .answer_button, 
-        .comment_right .delete_button { 
-            font-size: 15px; 
+        .comment_right .answer_button,
+        .comment_right .delete_button {
+            font-size: 15px;
             cursor: pointer;
             text-decoration: none;
         }
@@ -1170,7 +1170,7 @@ footer.site_footer p{margin: 15px 25px}
         }
 
         .to_user { font-size: 14px; }
-    
+
         .to_user .icon-right-dir {
             color: #8c8f92;
             display: inline-block;
@@ -1182,7 +1182,7 @@ footer.site_footer p{margin: 15px 25px}
 .comment_form {
     width: 100%;
 }
-    
+
     .answer_form { 
         width: calc(100% - 66px);
         margin-left: 66px;
@@ -1199,21 +1199,16 @@ footer.site_footer p{margin: 15px 25px}
 
     .comment_form span { font-size: 16px; }
 
-    .comment_form input[type="submit"] { 
-        transition: opacity 200ms ease; 
+    .comment_form input[type="submit"] {
+        transition: opacity 200ms ease;
         margin-right: 15px;
         background: #58A3E0;
     }
 
-    .comment_form input[type="submit"]:disabled {
-        opacity: .4;
-        cursor: default;
-    }
-
     .add_answer_to { color: #8c8f92; }
 
-    .cancel_answer { 
-        color: #8c8f92; 
+    .cancel_answer {
+        color: #8c8f92;
         margin-left: 10px;
         cursor: pointer;
     }
