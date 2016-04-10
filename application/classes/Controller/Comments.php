@@ -58,7 +58,7 @@ class Controller_Comments extends Controller_Base_preDispatch
         
         $page = new Model_Page($comment->page_id);
 
-        $this->redirect('/p/' . $page->id . '/' . $page->uri . $error);
+        $this->redirect('/p/' . $page->id . '/' . $page->uri);
     }
 
 }
