@@ -71,6 +71,11 @@
                  id="comment_<?= $comment->id ?>">
                 <img class="comment_left" src="<?= $comment->author->photo ?>">
                 <div class="comment_right">
+
+                    <time>
+                        <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
+                    </time>
+
                     <b class="author_name">
                         <?= $comment->author->name ?>
                     </b>
@@ -82,9 +87,6 @@
                         </span>
                     <? endif; ?>
 
-                    <time>
-                        <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
-                    </time>
 
                     <p><?= $comment->text ?></p>
 
