@@ -32,7 +32,6 @@ ul, li{list-style: none}
 .align_l{text-align: left}
 .align_r{text-align: right}
 a{outline: none; cursor: pointer}
-.clearfix{clear: both}
 .clear:before, .clear:after {content: ""; display: table;}
 .clear:after {clear: both;}
 .clear {zoom: 1;}
@@ -1100,5 +1099,133 @@ footer.site_footer p{margin: 15px 25px}
     -webkit-animation-iteration-count: 1; -moz-animation-iteration-count: 1; -o-animation-iteration-count: 1; animation-iteration-count: 1;
 }
 
+/*
+** Стили комментариев
+*/
+.comment_wrapper { margin-top: 34px; }
 
+    .comment_wrapper:last-of-type { margin-bottom: 64px; }
+
+    .answer_wrapper { margin-left: 70px; }
+
+.comment_right .author_name,
+.to_user { display: inline; }
+
+    .comment_left {
+        border-radius: 2px;
+        display: inline-block;
+        width: 42px;
+        float: left;
+    }
+
+    .comment_right {
+        padding-left: 64px;
+    }
+
+        .comment_right .author_name {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 0;
+        }
+
+        .comment_right p {
+            margin-top: 11px;
+            font-size: 16px;
+            margin-bottom: 17px;
+            line-height: 1.4em;
+        }
+
+        .comment_right time {
+            float: right;
+            right: 0;
+            display: inline;
+            font-size: 14px;
+            color: #8c8f92;
+        }
+
+        .comment_right .answer_button,
+        .comment_right .delete_button,
+        .to_user { color: #8c8f92; }
+
+        .comment_right .answer_button,
+        .comment_right .delete_button {
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .comment_right .answer_button { margin-right: 24px; }
+
+            .comment_right .answer_button:hover,
+            .comment_right .delete_button:hover {
+                color: #65686a;
+            }
+
+        .comment_right .answer_button .icon-reply {
+            display: inline-block;
+            height: 10px;
+            width: 10px;
+            margin-right: 11px;
+        }
+
+        .to_user { font-size: 14px; }
+
+        .to_user .icon-right-dir {
+            color: #8c8f92;
+            display: inline;
+            height: 8px;
+            width: 8px;
+            margin-left: 2px;
+        }
+
+    .comment_form textarea{
+        margin-top: -2px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+        padding: 14px 16px;
+        resize: vertical;
+        font-size: 16px;
+    }
+
+    .comment_form span { font-size: 14px; }
+
+    .comment_form input[type="submit"] {
+        margin-right: 5px;
+        background: #58A3E0;
+        padding: 7px 18px;
+    }
+
+        .comment_form input[type="submit"]:hover {
+            background: #4884b5;
+        }
+
+    .add_answer_to {
+        color: #8c8f92;
+    }
+
+    .cancel_answer {
+        color: #8c8f92;
+        margin-left: 4px;
+        cursor: pointer;
+    }
+
+        .cancel_answer:hover {
+            color: #65686a;
+        }
+
+    /* Оформляем форму как ответ */
+
+    .comment_wrapper > .comment_form {
+        margin-left: 66px;
+    }
+
+    .page_comments > .comment_form > .cancel_answer {
+        display: none;
+    }
+
+.page_comments .dummy_text {
+    font-size: 16px;
+    line-height: 1.4em;
+}
+    .page_comments .dummy_text:first-of-type { margin-top: 26px; }
 
