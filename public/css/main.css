@@ -1157,12 +1157,19 @@ footer.site_footer p{margin: 15px 25px}
             font-size: 15px;
             cursor: pointer;
             text-decoration: none;
+            transition: color 100ms ease-in-out;
         }
 
         .comment_right .answer_button { margin-right: 24px; }
 
+            .comment_right .answer_button:hover,
+            .comment_right .delete_button:hover {
+                color: #65686a;
+            }
+
+
+
         .comment_right .answer_button .icon-reply {
-            color: #8c8f92;
             display: inline-block;
             height: 10px;
             width: 10px;
@@ -1200,10 +1207,14 @@ footer.site_footer p{margin: 15px 25px}
     .comment_form span { font-size: 16px; }
 
     .comment_form input[type="submit"] {
-        transition: opacity 200ms ease;
+        transition: background 200ms ease;
         margin-right: 15px;
         background: #58A3E0;
     }
+
+        .comment_form input[type="submit"]:hover {
+            background: #4884b5;
+        }
 
     .add_answer_to { color: #8c8f92; }
 
