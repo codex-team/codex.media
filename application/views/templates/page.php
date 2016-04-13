@@ -70,7 +70,7 @@
             <div class="comment_wrapper <?= $comment->parent_comment ? 'answer_wrapper' : '' ?>"
                  id="comment_<?= $comment->id ?>">
                 <img class="comment_left" src="<?= $comment->author->photo ?>">
-                <div class="comment_right">
+                <div class="comment_right clear">
                     <b class="author_name">
                         <?= $comment->author->name ?>
                     </b>
