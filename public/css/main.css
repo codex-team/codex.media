@@ -1108,11 +1108,8 @@ footer.site_footer p{margin: 15px 25px}
 
     .answer_wrapper { margin-left: 70px; }
 
-.comment_left,
-.comment_right {
-    vertical-align: top;
-    position: relative;
-}
+.comment_right .author_name,
+.to_user { display: inline; }
 
     .comment_left {
         border-radius: 2px;
@@ -1120,9 +1117,6 @@ footer.site_footer p{margin: 15px 25px}
         width: 42px;
         float: left;
     }
-
-.comment_right .author_name,
-.to_user { display: inline; }
 
     .comment_right {
         padding-left: 64px;
@@ -1142,7 +1136,7 @@ footer.site_footer p{margin: 15px 25px}
         }
 
         .comment_right time {
-            position: absolute;
+            float: right;
             right: 0;
             display: inline;
             font-size: 14px;
@@ -1166,8 +1160,6 @@ footer.site_footer p{margin: 15px 25px}
             .comment_right .delete_button:hover {
                 color: #65686a;
             }
-
-
 
         .comment_right .answer_button .icon-reply {
             display: inline-block;
