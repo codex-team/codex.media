@@ -41,7 +41,7 @@ class Controller_Comments extends Controller_Base_preDispatch
         if ($error) {
             $this->redirect( '/p/' . $page->id . '/' . $page->uri . '?error=' . $error );
         } else {
-            $this->redirect( '/p/' . $page->id . '/' . $page->uri . $error );
+            $this->redirect( '/p/' . $page->id . '/' . $page->uri );
         }
     }
     
