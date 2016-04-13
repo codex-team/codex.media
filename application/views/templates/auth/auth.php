@@ -1,107 +1,98 @@
-<div class="social_auth">
-	Вы можете войти на сайт через аккаунт ВКонтакте, Facebook или Twitter
-	<div class="social_buttons">
-	    <a class="button main" href="/auth/vk"><i class="pic vk"></i>Войти через ВКонтакте</a>
-        <a class="button main" href="/auth/fb"><i class="pic fb"></i>Войти через Facebook</a><?php /*
-        <a class="button main" href="/auth/tw"><i class="pic tw"></i>Войти через Twitter</a> */ ?>
-    </div>
+
+<div class="page_landing">
+
+    <h1 class="title">Войти на сайт</h1>
+    <div class="desc">Вы можете войти на сайт через аккаунт в социальной сети</div>
+
+    <a class="button iconic vk" href="/auth/vk"><i class="icon-vkontakte"></i>ВКонтакте</a>
+    <a class="button iconic facebook" href="/auth/fb"><i class="icon-facebook"></i>Facebook</a>
+    <a class="button iconic twitter" href="/auth/tw"><i class="icon-twitter"></i>Twitter</a>
+
 </div>
 
-<div class="auth_form">
+<form class="page_simple_form" action="/auth" method="post">
+
+	<h3>Вход через пароль</h3>
 
     <? if (!empty($login_error_text)): ?>
-        <p class="form_error mb20"><?= $login_error_text ?></p>
+        <p class="form_error mb20 mt20"><?= $login_error_text ?></p>
+    <? endif; ?>
+
+    <? $loginFields = array(
+            'email' => array(
+                'label' => 'Email',
+                'type'  => 'email',
+                'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'email'),
+            ),
+            'password' => array(
+                'label' => 'Пароль',
+                'type'  => 'password',
+            )
+        );
+    ?>
+
+    <fieldset>
+        <? foreach ($loginFields as $fieldName => $field): ?>
+            <input placeholder="<?= Arr::get($field, 'label') ?>" type="<?= Arr::get($field, 'type', 'text') ?>" name="login_<?= $fieldName?>" id="login_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>" />
+        <? endforeach ?>
+    </fieldset>
+
+    <button class="button main">Войти</button>
+
+    <?= Form::hidden('csrf', Security::token()); ?>
+    <?= Form::hidden('action', 'login' ); ?>
+
+</form>
+
+<div class="page_footer_links">
+    <a href="/recover">Восстановить пароль</a>
+    <a href="/signup">Регистрация</a>
+</div>
+
+<? /*
+<form class="page_simple_form" action="/auth" method="post">
+
+    <h3>Регистрация</h3>
+
+    <? $regFields = array(
+        'name' => array(
+            'label' => 'Фамилия, Имя',
+            'value' => isset( $inviteData['name'] ) ? $inviteData['name'] : Arr::get($_POST, 'name', ''),
+        ),
+        'email' => array(
+            'label' => 'Email',
+            'type'  => 'email',
+            'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'email'),
+            'events' => 'onblur="user.validateEmail($(this));"'
+        ),
+        'password' => array(
+            'label' => 'Пароль',
+            'type'  => 'password',
+            'events' => 'onkeypress="show_confirmation(event)"'
+        ),
+        'password_repeat' => array(
+            'label' => 'Повторите пароль',
+            'type'  => 'password',
+            'id' => 'password_repeat'
+        )
+    ); ?>
+
+    <? if (!empty($signup_error_fields)): ?>
+        <? foreach($signup_error_fields as $fieldName => $errorText ): ?>
+            <div class="error"><?= $errorText ?></div>
+        <? endforeach; ?>
     <? endif; ?>
 
 
-	<div class="fl_l left">
-		<h3>Вход</h3>
-        <form class="ajaxfree" action="/auth" method="post">
+    <fieldset>
+        <? foreach ($regFields as $fieldName => $field): ?>
+            <input placeholder="<?= Arr::get($field, 'label') ?>" type="<?= Arr::get($field, 'type', 'text') ?>" name="signup_<?= $fieldName?>" id="signup_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>" <?= Arr::get($field, 'events')?> />
+        <? endforeach ?>
+    </fieldset>
 
-            <? $loginFields = array(
-                'email' => array(
-                    'label' => 'Email',
-                    'type'  => 'email',
-                    'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'email'),
-                    'class' => 'mb5'
-                ),
-                'password' => array(
-                    'label' => 'Пароль',
-                    'type'  => 'password',
-                    'class' => 'mb30'
-                )
-                );
-            ?>
+    <?= Form::hidden('csrf', Security::token()); ?>
+    <?= Form::hidden('action', 'signup' ); ?>
 
-
-            <? foreach ($loginFields as $fieldName => $field): ?>
-                <div class="input <?= Arr::get($field, 'class') ?> <?= !empty($login_error_fields[$fieldName]) ? 'error' : ''?> <?= !empty($field['value']) ? 'focus' : ''?>">
-                    <label for="login_<?= $fieldName ?>"><?= $field['label'] ?></label>
-                    <input type="<?= Arr::get($field, 'type', 'text') ?>" name="login_<?= $fieldName?>" id="login_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>" />
-                    <? if (!empty($login_error_fields[$fieldName])): ?>
-                        <div class="validation_error"><?= $login_error_fields[$fieldName] ?></div>
-                    <? endif ?>
-                </div>
-            <? endforeach ?>
-
-            <div class="mt15">
-                <input type="submit" value="Войти" />
-                <a href="/recover" class="form_bottom_link">Восстановить пароль</a>
-            </div>
-
-            <?= Form::hidden('csrf', Security::token()); ?>
-            <?= Form::hidden('action', 'login' ); ?>
-        </form>
-    </div>
-
-    <div class="right">
-		<h3>Регистрация</h3>
-        <form class="ajaxfree" action="/auth" method="post">
-
-            <? $regFields = array(
-                'name' => array(
-                    'label' => 'Фамилия, Имя',
-                    'value' => isset( $inviteData['name'] ) ? $inviteData['name'] : Arr::get($_POST, 'name', ''),
-                    'class' => 'mb5'
-                ),
-                'email' => array(
-                    'label' => 'Email',
-                    'type'  => 'email',
-                    'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'email'),
-                    'class' => 'mb5',
-                    'events' => 'onblur="user.validateEmail($(this));"'
-                ),
-                'password' => array(
-                    'label' => 'Пароль',
-                    'type'  => 'password',
-                    'class' => 'mb5',
-                    'events' => 'onkeypress="show_confirmation(event)"'
-                ),
-                'password_repeat' => array(
-                    'label' => 'Повторите пароль',
-                    'type'  => 'password',
-                    'class' => empty($signup_error_fields['password_repeat']) ? '_hide mb30' : '',
-                    'id' => 'password_repeat'
-                )
-            ); ?>
-
-            <? foreach ($regFields as $fieldName => $field): ?>
-                <div class="input <?= Arr::get($field, 'class') ?> <?= !empty($signup_error_fields[$fieldName]) ? 'error' : ''?> <?= !empty($field['value']) ? 'focus' : ''?>" <?= !empty($field['id']) ? 'id="' . $field['id'] . '"' : '' ?> >
-                    <label for="signup_<?= $fieldName ?>"><?= $field['label'] ?></label>
-                    <input type="<?= Arr::get($field, 'type', 'text') ?>" name="signup_<?= $fieldName?>" id="signup_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>" <?= Arr::get($field, 'events')?> />
-                    <? if (!empty($signup_error_fields[$fieldName])): ?>
-                        <div class="validation_error"><?= $signup_error_fields[$fieldName] ?></div>
-                    <? endif ?>
-                </div>
-            <? endforeach ?>
-
-            <?= Form::hidden('csrf', Security::token()); ?>
-            <?= Form::hidden('action', 'signup' ); ?>
-
-            <input type="submit" value="Зарегистрироваться" />
-        </form>
-    </div>
-
-</div>
-
-
+    <button class="button main">Зарегистрироваться</button>
+</form>
+*/ ?>

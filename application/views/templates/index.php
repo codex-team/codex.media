@@ -1,58 +1,28 @@
-<div class="index_header clear">
-    <div class="fl_r status clear">
-        <i class="icon fl_l"></i>
-        <div class="r_col">
-            <div class="date">29 апреля, 15:41</div>
-            <a href="/lessons">идет 2 урок</a>
-        </div>
+<? if($user->status == Model_User::USER_STATUS_ADMIN): ?>
+    <div class="breadcrumb">
+        <a class="button green" href="/p/add-news">Добавить новость</a>
     </div>
-    <?= $site_info->description ?>
-</div>
+<? endif ?>
+<div class="news">
+    <? foreach ($pages as $page): ?>
 
-<div class="recommend_block">
-    Рекомендуем
-    <a href="">Прием в ОУ</a>
-    <a href="">Расписание уроков</a>
-    <a href="/p/22/fayloobmennik">Файлообменник</a>
-</div>
+        <article class="post <?= $page->rich_view ? 'rich_view' : '' ?> <?= $page->dt_pin ? 'pinned' : '' ?>">
+            <time><?= date_format(date_create($page->date), 'd F Y, G:i') ?></time>
+            <h3>
+                <a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a>
+            </h3>
 
-<div class="clear">
-
-    <div class="fl_r page_right_col">
-        <a class="banner" href="">Banner 200x240</a>
-
-
-    </div>
-    <div class="page_left_col">
-
-        <div class="official_links">
-            <a href="">Официальные документы</a>
-            <a href="">Приемные часы администрации</a>
-        </div>
-
-
-        <div class="news">
-
-            <? if($user->status == Model_User::USER_STATUS_ADMIN): ?>
-                <article class="post">
-                    <a class="button green" href="/p/add-news">Добавить новость</a>
-                </article>
+            <? if (!$page->rich_view): ?>
+                <div class="body">
+                    <?= $page->content ?>
+                </div>
             <? endif ?>
+            <div class="footer">
+                <a class="read_more" href="/p/<?= $page->id ?>/<?= $page->uri ?>" rel="nofollow">Подробнее</a>
+                <a href="/p/<?= $page->id ?>/<?= $page->uri ?>" rel="nofollow">Комментировать</a>
+            </div>
+        </article>
 
-            <? foreach ($pages as $page): ?>
-
-                <article class="post">
-                    <h2><a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h2>
-                    <div class="body">
-                        <?= $page->content ?>
-                    </div>
-                    <time><?= date_format(date_create($page->date), 'd F Y, G:i') ?></time>
-                </article>
-
-            <? endforeach; ?>
-
-        </div>
-
-    </div>
+    <? endforeach; ?>
 
 </div>

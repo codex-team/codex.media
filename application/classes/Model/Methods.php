@@ -597,18 +597,30 @@ class Model_Methods extends Model
             'Ч' => 'Ch',  'Ш' => 'Sh',  'Щ' => 'Sch',
             'Ь' => "",    'Ы' => 'Y',   'Ъ' => "",
             'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
-            ' ' => '-',   '-' => '-',   '–' => '-',    '.' => '-',
-            ',' => '-',   '\'' => '',   '\"' => '',    '(' => '-', ')' => '-',
-            '?' => '-',   '#' => '-',   '$' => '-',    '!' => '-',
-            '@' => '-',   '%' => '-',   '&' => '-',    '*' => '-',
-            '`' => '-',   '\\' => '-',  '/' => '-'
         );
+
         // translit
         $converted_string = strtr($string, $converter);
 
-        $converted_string = trim(preg_replace('/-{2,}/', '-', $converted_string) , '-');
+        return $converted_string;
+    }
+
+    public static function getUriByTitle($string)
+    {
+        // заменяем все кириллические символы на латиницу
+        $converted_string = self::rus2translit($string);
+
+        // заменяем все не цифры и не буквы на дефисы
+        $converted_string = preg_replace("/[^0-9a-zA-Z]/", "-", $converted_string);
+
+        // заменяем несколько дефисов на один
+        $converted_string = preg_replace('/-{2,}/', '-', $converted_string);
+
+        // отсекаем лишние дефисы по краям
+        $converted_string = trim($converted_string, '-');
 
         return $converted_string;
+
     }
 
 }

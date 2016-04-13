@@ -55,6 +55,12 @@ Route::set('PROFILE', 'user/<id>', array( 'id' => $DIGIT ))->defaults(array(
     'controller' => 'user',
     'action' => 'profile'
 ));
+Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
+    'controller' => 'user',
+    'action' => 'settings'
+));
+
+
 
 Route::set('CONTACTS', 'contacts')->defaults(array(
     'controller' => 'index',
@@ -92,6 +98,11 @@ Route::set('PAGE_FILES_EDITING', 'ajax/edit_file/<type>')->defaults(array(
     'action'          => 'edit_file'
 ));
 
+Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
+    'controller'      => 'parser',
+    'action'          => 'get_page'
+));
+
 
 
 /** Auth */
@@ -105,10 +116,6 @@ Route::set('LOGOUT', 'logout')->defaults(array(
     'action' => 'logout'
 ));
 
-Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
-    'controller' => 'user',
-    'action' => 'settings'
-));
 
 
 

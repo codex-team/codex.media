@@ -4,8 +4,8 @@ return array
 (
     'vk' => array(
         'type'          => 1,
-        'client_id'     => '5171042',
-        'client_secret' => '4V4V7Ql3OcFVHaIpHS6y',
+        'client_id'     => '5313285',
+        'client_secret' => '9VYBUy1aQLomWyrlhSX4',
         'redirect_uri'  => 'http'.((Arr::get($_SERVER, 'HTTPS')) ? 's' : '').'://'.Arr::get($_SERVER, 'SERVER_NAME').'/auth/vk',
         'scopes'        => 'email,offline',
     ),
@@ -21,7 +21,6 @@ return array
         'type'           => 3,
         'consumer_key'   => 'YX0ETqtsCJFT7SmfKKmrgSzXo',
         'consumer_secret'=>'TqZE8mg1WBzBg5q4jZhHoQ9KZshJVthxEVKgNA25jG9vobPwJP',
-        'access_token'   => '449259184-OFowTSaY7LLqf4AxnLpJJ3gYalc1yDgE6z9sX6X9',
-        'secret_token'   => 'fqRSQJom0G7PL9uG9J2H3KNSpc9MLpPN2syTzcRgVrl6P',
+        'redirect_uri' =>  'http'. ((Arr::get($_SERVER, 'HTTPS')) ? 's' : '') .'://'.Arr::get($_SERVER, 'SERVER_NAME').'/auth/tw',
     ),
 );

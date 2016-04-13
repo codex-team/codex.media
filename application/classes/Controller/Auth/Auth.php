@@ -33,7 +33,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         if ($method) switch ($method) {
             case 'vk' : $authSucceeded = $this->login_vk(); break;
             case 'fb' : $authSucceeded = $this->login_fb(); break;
-            // case 'tw' : $authSucceeded = $this->login_tw(); break;
+            case 'tw' : $authSucceeded = $this->login_tw(); break;
         }
 
         /** Redirect user after succeeded auth */
@@ -182,6 +182,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         $action = Arr::get($_GET, 'action', '');
         $state  = Arr::get($_GET, 'state', 'login');
 
+        if ( $state == 'remove' ) return $this->social_remove('vk');
+
         if (!$code) {
             $redirect = $vk->getCode($state);
         } else {
@@ -212,10 +214,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                     unset($user_to_db['email']);
                     $status = $this->social_attach($user_to_db);
                     break;
-
-                case 'remove': 
-                    $status = $this->social_remove('vk');
-                    break;
             }
 
             return $status;
@@ -235,6 +233,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
             $this->view['login_error_text'] = Arr::get($_GET, 'error_description', '');
             return FALSE;
         }
+
+        if ( $state == 'remove' ) return $this->social_remove('facebook');
 
         if (!$code) {
             $fb->auth($state);
@@ -266,10 +266,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                     unset($user_to_db['email']);
                     $status = $this->social_attach($user_to_db);
                     break;
-
-                case 'remove':
-                    $status = $this->social_remove('facebook');
-                    break;
             }
 
             return $status;
@@ -283,43 +279,121 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
      */
     public function login_tw() {
 
-        $state  = Arr::get($_GET, 'state', 'login');
-        
-        $tw = Model::factory("Social_Tw");
-        $userdata = $tw->get('account/verify_credentials');
+        $session = Session::instance();
 
-        // 'include_email' Use of this parameter requires whitelisting.
-        $user_to_db = array(
-            'name'            => $userdata->name,
-            'email'           => NULL,
-            'twitter'         => $userdata->id_str,
-            'twitter_name'    => $userdata->name,
-            'twitter_username'=> $userdata->screen_name,
-            'photo'           => $userdata->profile_image_url_https,
-            'photo_medium'    => $userdata->profile_image_url_https,
-            'photo_big'       => $userdata->profile_image_url_https
+        $state              = Arr::get($_GET, 'state', 'login');
+        $oauth_verifier     = Arr::get($_GET, 'oauth_verifier', '');
+        $oauth_token        = $session->get('oauth_token', '');
+        $oauth_token_secret = $session->get('oauth_token_secret', '');
+
+        if ($state == 'remove') return $this->social_remove('twitter');
+
+        //If there was a redirect from twitter and it sent us some auth data
+        $twitter_initiated = !empty($oauth_verifier) 
+                          && !empty($oauth_token) 
+                          && !empty($oauth_token_secret);
+
+        if( $twitter_initiated ) {
+
+            $userdata = $this->login_tw_get_userdata( $oauth_verifier, $oauth_token, $oauth_token_secret, $session);
+            
+            // 'include_email' Use of this parameter requires whitelisting.
+            $user_to_db = array(
+                'name'            => $userdata->name,
+                'email'           => NULL,
+                'twitter'         => $userdata->id_str,
+                'twitter_name'    => $userdata->name,
+                'twitter_username'=> $userdata->screen_name,
+                'photo'           => str_replace('normal.jpeg', '200x200.jpeg', $userdata->profile_image_url_https),
+                'photo_medium'    => str_replace('normal.jpeg', '400x400.jpeg', $userdata->profile_image_url_https),
+                'photo_big'       => str_replace('normal.jpeg', '400x400.jpeg', $userdata->profile_image_url_https)
+            );
+
+            /**
+             *  What to do with response data?
+             *  @var string $state  
+             */
+            if ($state) switch ($state) {
+                case 'login':
+                    $status = $this->social_insert('twitter', $user_to_db);
+                    break;
+
+                case 'attach':
+                    unset($user_to_db['email']);
+                    $status = $this->social_attach($user_to_db);
+                    break;
+            }
+
+            return $status;
+
+        } else {
+
+            // if we do not have data from Twitter
+            return $this->login_tw_get_request_token( $session );
+        }
+    }
+
+    /**
+     * Get userdata from twitter profile with oauth_verifier token
+     *
+     * @author Alexander Demyashev <alexander.demyashev@gmail.com>
+     * 
+     * @param  string   $oauth_verifier
+     * @param  string   $oauth_token
+     * @param  string   $oauth_token_secret
+     * @param  object   $session
+     * @return array    $userdata
+     */
+    private function login_tw_get_userdata( $oauth_verifier, $oauth_token, $oauth_token_secret, $session ) {
+        
+        $settings = Kohana::$config->load('social.twitter');
+        
+        $twitter_oauth = new Model_Social_Tw(
+            $settings['consumer_key'], 
+            $settings['consumer_secret'], 
+            $oauth_token, 
+            $oauth_token_secret
         );
 
-        /**
-         *  What to do with response data?
-         *  @var string $state  
-         */
-        if ($state) switch ($state) {
-            case 'login': 
-                $status = $this->social_insert('twitter', $user_to_db); 
-                break;
+        $user_info = $twitter_oauth->getAccessToken( $oauth_verifier );
+        
+        return $twitter_oauth->get('account/verify_credentials');
+    }
 
-            case 'attach': 
-                unset($user_to_db['email']); 
-                $status = $this->social_attach($user_to_db); 
-                break;
+    /**
+     * Get oauth_verifier code from twitter in order to 
+     * @author Alexander Demyashev <alexander.demyashev@gmail.com>
+     * @param  object   $session
+     * @return bool     FALSE or REDIRECT (30x http code)
+     */
+    private function login_tw_get_request_token( $session ) {
 
-            case 'remove': 
-                $status = $this->social_remove('twitter'); 
-                break;
+        $settings = Kohana::$config->load('social.twitter');
+
+        $twitter_oauth = new Model_Social_Tw(
+            $settings['consumer_key'], 
+            $settings['consumer_secret']
+        );
+
+        $request_token = $twitter_oauth->getRequestToken( $settings['redirect_uri'] );
+
+        $session->set('oauth_token', $request_token['oauth_token']);
+        $session->set('oauth_token_secret', $request_token['oauth_token_secret']);
+
+        if( $twitter_oauth->http_code == 200 ){
+
+            $url = $twitter_oauth->getAuthorizeURL($request_token['oauth_token']);
+            $this->redirect($url);
+
+        } else {
+
+            $log = Log::instance();
+            $log->add(Log::ERROR, 'Twitter authorisation failed');
+            $log->write();
+
+            return FALSE;
         }
 
-        return $status;
     }
 
     /**
@@ -378,9 +452,16 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
             case 'twitter':  $fieldsToClean = array('twitter'=> NULL,'twitter_name'=> NULL,'twitter_username'=> NULL); break;
         }
 
-        if ($userId = parent::checkAuth() ) {
-            Model::factory('User')->updateUser($userId, $fieldsToClean);
-            return TRUE;
+        if ( $userId = parent::checkAuth() ) {
+
+            if ( TRUE == parent::rightToUnbindSocial( $userId ) ) {
+                Model::factory('User')->updateUser($userId, $fieldsToClean);
+                return TRUE;
+            } else {
+                $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети, т.к. это ваша последняя возможность авторизации на сайте';
+                return FALSE;
+            }
+    
         } else {
             $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети';
             return FALSE;

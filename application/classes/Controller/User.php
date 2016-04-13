@@ -16,6 +16,8 @@ class Controller_User extends Controller_Base_preDispatch
             $this->view['setUserStatus'] = $viewUser->setUserStatus(self::translate_user_status($new_status));
         }
 
+        $viewUser->isMe = $viewUser->id == $this->user->id;
+
         $this->view['userPages'] = $viewUser->getUserPages();
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
@@ -49,11 +51,11 @@ class Controller_User extends Controller_Base_preDispatch
 
         if (Security::check($csrfToken)) {
 
-            $newEmail        = trim(Arr::get($_POST, 'new_email'));
+            $newEmail        = trim(Arr::get($_POST, 'email'));
             $currentPassword = trim(Arr::get($_POST, 'current_password'));
             $newPassword     = trim(Arr::get($_POST, 'new_password'));
             $repeatPassword  = trim(Arr::get($_POST, 'repeat_password'));
-            $newPhone        = trim(Arr::get($_POST, 'phone_number'));
+            $newPhone        = trim(Arr::get($_POST, 'phone'));
             $newAva          = Arr::get($_FILES, 'new_ava');
 
             $hashedCurrentPassword = Controller_Auth_Base::createPasswordHash($currentPassword);
@@ -80,7 +82,7 @@ class Controller_User extends Controller_Base_preDispatch
                 $fields['password'] = Controller_Auth_Base::createPasswordHash($newPassword);
             }
 
-            //если пустое поле, то не заносим его в базу и модель, за исключением телефона    
+            //если пустое поле, то не заносим его в базу и модель, за исключением телефона
             foreach ($fields as $key => $value) {
                 if (!$value && $key != 'phone') unset($fields[$key]);
             }

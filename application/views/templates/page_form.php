@@ -1,18 +1,21 @@
-<h1 class="site_category_title">
-	<? if (isset($page->id) && $page->id):?>
-		Редактирование
-	<? else:?>
-		Создание
-	<? endif;?>
-	<? if ($page->type == Model_Page::TYPE_SITE_NEWS): ?>
-		новости
-	<? else: ?>
-		страницы
-	<? endif ?>
-</h1>
+<div class="breadcrumb">
+
+    <a class="nav_chain" href="/">Главная</a> »
+    <span class="nav_chain">
+        <?= isset($page->id) && $page->id ? 'Редактирование' : 'Создание' ?>
+        <?= $page->type == Model_Page::TYPE_SITE_NEWS ? 'новости' : 'страницы' ?>
+    </span>
+
+</div>
+
 
 <div class="page_form">
 
+	<div class="mb30">
+		<h4>Импортивать страницу</h4>
+		<input type="text" name="url" id="parser_input_url" />
+	</div>
+ 
 	<? if (isset($errors['title']) &&  $errors['title']): ?>
 		<div class="form_error align_c">
 			<?= $errors['title'] ?>
@@ -37,11 +40,11 @@
 
 		<h4>Заголовок</h4>
 		<div class="input_text mb30">
-			<input type="text" name="title" value="<?= $page->title ?>" />
+			<input type="text" name="title" id="page_form_title" value="<?= $page->title ?>" />
 		</div>
 
 		<h4>Содержание</h4>
-			<textarea name="content" class="redactor" rows="7" >
+			<textarea name="content" class="redactor" id="page_form_content" rows="7" >
 				<?= $page->content ?>
 			</textarea>
 
@@ -63,6 +66,8 @@
 				<? endif ?>
 			</div>
 		<? endif ?>
+
+		<input type="hidden" name="source_link" id="source_link" value="">
 
 		<input class="mt20" type="submit" value="Опубликовать">
 
@@ -160,13 +165,8 @@
 				}
 			</script>
 		</table>
-
 	</div>
-
-
 </div>
-
-
 
 
 
@@ -178,6 +178,12 @@
 
 <script>
 	$(function(){
+
 		user.renderRedactor();
+
+		parser.init({
+			input_id : 'parser_input_url'
+		});
+
 	});
 </script>
