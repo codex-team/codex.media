@@ -3,8 +3,8 @@ var Comments = {
     answer_buttons : null,
     comments_list : null,
 
-    form : {
-        wrapper : null,
+    nodes : {
+        form : null,
         parent_id : null,
         root_id : null,
         add_comment_button : null,
@@ -14,13 +14,13 @@ var Comments = {
     },
 
     init : function() {
-        this.form.wrapper              = document.getElementById("comment_form");
-        this.form.parent_id            = this.form.wrapper.parent_id;
-        this.form.root_id              = this.form.wrapper.root_id;
-        this.form.add_comment_button   = this.form.wrapper.add_comment_button;
+        this.form.form                 = document.getElementById("comment_form");
+        this.form.parent_id            = this.form.form.parent_id;
+        this.form.root_id              = this.form.form.root_id;
+        this.form.add_comment_button   = this.form.form.add_comment_button;
         this.form.add_answer_to        = document.getElementById('add_answer_to');
         this.form.cancel_answer_button = document.getElementById('cancel_answer');
-        this.form.add_comment_textarea = this.form.wrapper.add_comment_textarea;
+        this.form.textarea = this.form.form.add_comment_textarea;
 
         this.comments_list             = document.getElementById('page_comments');
         this.answer_buttons            = document.getElementsByClassName('answer_button');
@@ -68,7 +68,7 @@ var Comments = {
     canselReplyButtonClickHandler : function() {
 
         // Вставляем поле ввода комментария под список комментариев
-        this.comments_list.appendChild(this.form.wrapper);
+        this.comments_list.appendChild(this.form.form);
 
         this.prepareForm({
             parent_id : 0,
@@ -98,7 +98,7 @@ var Comments = {
         comment = document.getElementById('comment_' + button.dataset.commentId);
 
         // Вставляем поле добавления комментария под нужный комментарий
-        comment.appendChild(this.form.wrapper);
+        comment.appendChild(this.form.form);
 
         this.prepareForm({
             parent_id : button.dataset.commentId,
@@ -147,8 +147,11 @@ var Comments = {
     },
 
     keydownSubmitHandler : function(event) {
+        /*
+         * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
+         */
         if ( (event.ctrlKey || event.metaKey) && event.keyCode == 13 ) {
-            this.form.wrapper.submit();
+            this.form.form.submit();
         }
     }
 };
