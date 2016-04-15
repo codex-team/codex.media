@@ -20,7 +20,7 @@ var Comments = {
         this.nodes.add_comment_button   = this.nodes.form.add_comment_button;
         this.nodes.add_answer_to        = document.getElementById('add_answer_to');
         this.nodes.cancel_answer_button = document.getElementById('cancel_answer');
-        this.nodes.textarea             = this.nodes.form.textarea;
+        this.nodes.textarea             = this.nodes.form.add_comment_textarea;
         this.comments_list              = document.getElementById('page_comments');
         this.answer_buttons             = document.getElementsByClassName('answer_button');
 
@@ -145,11 +145,13 @@ var Comments = {
         this.nodes.add_comment_button.disabled = !field_value;
     },
 
+    /*
+     * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
+     */
     keydownSubmitHandler : function(event) {
-        /*
-         * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
-         */
-        if ( (event.ctrlKey || event.metaKey) && event.keyCode == 13 ) {
+            EnterPressed = event.keyCode == 13;
+
+        if ( CtrlPressed && EnterPressed ) {
             this.nodes.form.submit();
         }
     }
