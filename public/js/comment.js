@@ -34,7 +34,7 @@ var Comments = {
         // Добавляем слушатель события клика по "ответить"
         for(var i = 0; i < this.answer_buttons.length; i++) {
 
-            this.answer_buttons[i].addEventListener('click', function(event) { 
+            this.answer_buttons[i].addEventListener('click', function(event) {
 
                 Comments.replyButtonClickHandler(event);
 
@@ -46,6 +46,11 @@ var Comments = {
         this.form.cancel_answer_button.addEventListener('click', function() {
             Comments.canselReplyButtonClickHandler();
         }, false);
+
+        this.form.add_comment_textarea.addEventListener('keydown', function (event) {
+            Comments.keydownSubmitHandler(event);
+        }, false);
+
     },
 
     /**
@@ -139,5 +144,11 @@ var Comments = {
         var field_value = this.form.add_comment_textarea.value.trim();
 
         this.form.add_comment_button.disabled = !field_value;
+    },
+
+    keydownSubmitHandler : function(event) {
+        if ( (event.ctrlKey || event.metaKey) && event.keyCode == 13 ) {
+            this.form.wrapper.submit();
+        }
     }
 };

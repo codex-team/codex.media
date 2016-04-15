@@ -69,7 +69,9 @@
         <? foreach ($comments as $comment): ?>
             <div class="comment_wrapper clear <?= $comment->parent_comment ? 'answer_wrapper' : '' ?>"
                  id="comment_<?= $comment->id ?>">
-                <img class="comment_left" src="<?= $comment->author->photo ?>">
+                <a href="/user/<?= $comment->author->id ?>">
+                    <img class="comment_left" src="<?= $comment->author->photo ?>">
+                </a>
                 <div class="comment_right">
 
                     <time>
