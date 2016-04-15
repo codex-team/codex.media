@@ -10,7 +10,7 @@ class Controller_Comments extends Controller_Base_preDispatch
 
         $page = new Model_Page($this->request->param('id'));
 
-        $text = trim(Arr::get($_POST, 'add_comment_textarea'));
+        $text = trim(nl2br(Arr::get($_POST, 'add_comment_textarea')));
 
         $error = '';
 
@@ -30,7 +30,7 @@ class Controller_Comments extends Controller_Base_preDispatch
         if (!$text) { $error = 'Text is incorrect'; goto finish; }
 
         $comment->page_id              = $this->request->param('id');
-        $comment->text                 = nl2br($text);
+        $comment->text                 = $text;
         $comment->parent_comment['id'] = Arr::get($_POST, 'parent_id', '0');
         $comment->author['id']         = $this->user->id;
         $comment->root_id              = Arr::get($_POST, 'root_id', '0');
