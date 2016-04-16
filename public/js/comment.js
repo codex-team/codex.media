@@ -149,6 +149,7 @@ var Comments = {
      * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
      */
     keydownSubmitHandler : function(event) {
+        var CtrlPressed  = event.ctrlKey || event.metaKey,
             EnterPressed = event.keyCode == 13;
 
         if ( CtrlPressed && EnterPressed ) {
