@@ -1126,6 +1126,8 @@ footer.site_footer p{margin: 15px 25px}
             font-size: 16px;
             font-weight: 600;
             line-height: 0;
+            color: #222222;
+            text-decoration: none;
         }
 
         .comment_right p {
