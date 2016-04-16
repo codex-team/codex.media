@@ -78,9 +78,9 @@
                         <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
                     </time>
 
-                    <b class="author_name">
+                    <a href="/user/<?= $comment->author->id ?>" class="author_name">
                         <?= $comment->author->name ?>
-                    </b>
+                    </a>
 
                     <? if ($comment->parent_comment): ?>
                         <span class="to_user">
