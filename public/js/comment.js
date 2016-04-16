@@ -3,38 +3,37 @@ var Comments = {
     answer_buttons : null,
     comments_list : null,
 
-    form : {
-        wrapper : null,
+    nodes : {
+        form : null,
         parent_id : null,
         root_id : null,
         add_comment_button : null,
         add_answer_to : null,
         cancel_answer_button : null,
-        add_comment_textarea : ""
+        textarea : ""
     },
 
     init : function() {
-        this.form.wrapper              = document.getElementById("comment_form");
-        this.form.parent_id            = this.form.wrapper.parent_id;
-        this.form.root_id              = this.form.wrapper.root_id;
-        this.form.add_comment_button   = this.form.wrapper.add_comment_button;
-        this.form.add_answer_to        = document.getElementById('add_answer_to');
-        this.form.cancel_answer_button = document.getElementById('cancel_answer');
-        this.form.add_comment_textarea = this.form.wrapper.add_comment_textarea;
-
-        this.comments_list             = document.getElementById('page_comments');
-        this.answer_buttons            = document.getElementsByClassName('answer_button');
+        this.nodes.form                 = document.getElementById("comment_form");
+        this.nodes.parent_id            = this.nodes.form.parent_id;
+        this.nodes.root_id              = this.nodes.form.root_id;
+        this.nodes.add_comment_button   = this.nodes.form.add_comment_button;
+        this.nodes.add_answer_to        = document.getElementById('add_answer_to');
+        this.nodes.cancel_answer_button = document.getElementById('cancel_answer');
+        this.nodes.textarea             = this.nodes.form.add_comment_textarea;
+        this.comments_list              = document.getElementById('page_comments');
+        this.answer_buttons             = document.getElementsByClassName('answer_button');
 
         // Чистим textarea после загрузки страницы
         this.clearTextarea();
 
         // Добавляенм слушатель события ввода в textarea
-        this.form.add_comment_textarea.addEventListener('input', Comments.textareaInputHandler, false);
+        this.nodes.textarea.addEventListener('input', Comments.textareaInputHandler, false);
 
         // Добавляем слушатель события клика по "ответить"
         for(var i = 0; i < this.answer_buttons.length; i++) {
 
-            this.answer_buttons[i].addEventListener('click', function(event) { 
+            this.answer_buttons[i].addEventListener('click', function(event) {
 
                 Comments.replyButtonClickHandler(event);
 
@@ -43,9 +42,14 @@ var Comments = {
         }
 
         // Добавляем слушатель события клика по крестику
-        this.form.cancel_answer_button.addEventListener('click', function() {
+        this.nodes.cancel_answer_button.addEventListener('click', function() {
             Comments.canselReplyButtonClickHandler();
         }, false);
+
+        this.nodes.textarea.addEventListener('keydown', function (event) {
+            Comments.keydownSubmitHandler(event);
+        }, false);
+
     },
 
     /**
@@ -53,7 +57,7 @@ var Comments = {
      */
     clearTextarea : function() {
 
-        this.form.add_comment_textarea.value = "";
+        this.nodes.textarea.value = "";
 
     },
 
@@ -63,7 +67,7 @@ var Comments = {
     canselReplyButtonClickHandler : function() {
 
         // Вставляем поле ввода комментария под список комментариев
-        this.comments_list.appendChild(this.form.wrapper);
+        this.comments_list.appendChild(this.nodes.form);
 
         this.prepareForm({
             parent_id : 0,
@@ -93,7 +97,7 @@ var Comments = {
         comment = document.getElementById('comment_' + button.dataset.commentId);
 
         // Вставляем поле добавления комментария под нужный комментарий
-        comment.appendChild(this.form.wrapper);
+        comment.appendChild(this.nodes.form);
 
         this.prepareForm({
             parent_id : button.dataset.commentId,
@@ -107,21 +111,21 @@ var Comments = {
      */
     prepareForm : function(settings) {
         // Заполняем hidden поля формы значениями root_id и parent_id или нулями.
-        this.form.parent_id.value = settings.parent_id;
-        this.form.root_id.value   = settings.root_id;
+        this.nodes.parent_id.value = settings.parent_id;
+        this.nodes.root_id.value   = settings.root_id;
 
         if (settings.parent_id) {
             // Берем имя автора из соответствующего тега в родительском комментарии
             var parent_author = document.querySelector('#comment_' + settings.parent_id + ' .author_name').innerHTML;
-            this.form.add_answer_to.innerHTML = '<i class="icon-right-dir"></i> ' + parent_author;
+            this.nodes.add_answer_to.innerHTML = '<i class="icon-right-dir"></i> ' + parent_author;
 
             // Изменяем текст кнопки в форме
-            this.form.add_comment_button.value = 'Ответить';
+            this.nodes.add_comment_button.value = 'Ответить';
         } else {
-            this.form.add_answer_to.innerHTML = '';
+            this.nodes.add_answer_to.innerHTML = '';
 
             // Изменяем текст кнопки в форме
-            this.form.add_comment_button.value = 'Оставить комментарий';
+            this.nodes.add_comment_button.value = 'Оставить комментарий';
         }
     },
 
@@ -136,8 +140,20 @@ var Comments = {
      * Отключаем кнопку submit, если поле пустое или поле только с пробелами
      */
     enableButton : function() {
-        var field_value = this.form.add_comment_textarea.value.trim();
+        var field_value = this.nodes.textarea.value.trim();
 
-        this.form.add_comment_button.disabled = !field_value;
+        this.nodes.add_comment_button.disabled = !field_value;
+    },
+
+    /*
+     * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
+     */
+    keydownSubmitHandler : function(event) {
+        var CtrlPressed  = event.ctrlKey || event.metaKey,
+            EnterPressed = event.keyCode == 13;
+
+        if ( CtrlPressed && EnterPressed ) {
+            this.nodes.form.submit();
+        }
     }
 };
