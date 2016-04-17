@@ -15,7 +15,6 @@
     <title><?= $title ? $title : $GLOBALS['SITE_NAME'] . ': ' . $GLOBALS['SITE_SLOGAN'] ?></title>
 
     <base href="/" />
-    <script type="text/javascript" src="<?= isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https' : 'http'; ?>://code.jquery.com/jquery-1.8.3.min.js"></script>
 
     <link href="//fonts.googleapis.com/css?family=PT+Sans:400italic,400,700italic,700" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif+Caption&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
@@ -24,10 +23,6 @@
 
     <link rel="stylesheet" type="text/css" media="all" href="/public/css/main.css?v=<?= time() ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
-
-    <script src="/public/js/main.js?v=<?= time() ?>"></script>
-    
-    <script src="/public/js/comment.js"></script>
 
 </head>
 <body>
@@ -98,6 +93,11 @@
             <input type="file" name="files" id="transportInput"/>
         </form>
     </div>
+
+    <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>
+
+    <script src="/public/js/comment.js"></script>
+
 
 
 
