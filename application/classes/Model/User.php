@@ -173,4 +173,33 @@ class Model_User extends Model_preDispatch
         return Model_Page::rowsToModels($pages);
     }
 
+    public static function getTeachersList()
+    {
+        $teachers = Dao_Users::select()
+                        ->where('status', '>=', Model_User::USER_STATUS_TEACHER)
+                        ->order_by('id','ASC')
+                        ->execute();
+
+        return Model_User::rowsToModels($teachers);
+    }
+
+    public static function rowsToModels($users_rows)
+    {
+        $users = array();
+
+        if (!empty($users_rows))
+        {
+            foreach ($users_rows as $user_row)
+            {
+                $user = new Model_User();
+
+                $user->fillByRow($user_row);
+
+                array_push($users, $user);
+            }
+        }
+
+        return $users;
+    }
+
 }

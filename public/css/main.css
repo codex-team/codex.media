@@ -982,8 +982,30 @@ footer.site_footer p{margin: 15px 25px}
     margin: 30px 30px 0 0;
 }
 
+.list_teacher_heading {
+    
+    font-size: 26px;
+    padding: 20px;
+}
 
+.p_table{
+    width: 100%;    
+}
 
+.p_table td {
+    padding: 20px;
+    border-bottom: 1px solid #EFF1F5;
+    word-wrap: break-word;
+    text-decoration: none;
+    vertical-align: middle;  
+}
+
+    .list_teacher_ava,
+    .list_teacher_ava > img{
+        width: 32px;
+        height: 32px;
+        border-radius: 20px;
+    }
 
 @-webkit-keyframes bounceIn {
     0% { opacity: 0; -webkit-transform: scale(.3);}
