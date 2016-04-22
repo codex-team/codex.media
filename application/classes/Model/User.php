@@ -174,12 +174,12 @@ class Model_User extends Model_preDispatch
         return Model_Page::rowsToModels($pages);
     }
 
-    public static function getTeachersList()
+    public static function getUsersList($status)
     {
         $teachers = Dao_Users::select()
-                        ->where('status', '>=', Model_User::USER_STATUS_TEACHER)
+                        ->where('status', '>=', $status)
                         ->order_by('id','ASC')
-                        ->cached(Date::HOUR, 'teachers')
+                        ->cached(Date::HOUR, 'users_list:' . $status)
                         ->execute();
 
         return Model_User::rowsToModels($teachers);

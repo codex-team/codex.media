@@ -17,8 +17,16 @@ class Controller_Index extends Controller_Base_preDispatch
 
     public function action_teachers()
     {
-        $this->view['teachers'] = Model_User::getTeachersList(); 
+        $users_type = $this->request->param('type');
 
-        $this->template->content = View::factory('templates/teachers', $this->view);
+        if ($users_type) {
+            $status = Model_User::USER_STATUS_TEACHER;
+        } else {
+            $status = Model_User::USER_STATUS_REGISTERED;
+        }
+
+        $this->view['users'] = Model_User::getUsersList($status); 
+
+        $this->template->content = View::factory('templates/users_list', $this->view);
     }
 }
