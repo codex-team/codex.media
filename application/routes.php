@@ -29,15 +29,11 @@ Route::set('INDEX', '')->defaults(array(
 #    'action' => 'add_new'
 #));
 
-Route::set('NEW_PAGE', 'p/(<id>(/<uri>/))add-<type>', array( 'id' => $DIGIT , 'uri' => $STRING, 'type' => 'page|news' ))->defaults(array(
+Route::set('NEW_PAGE', 'p/save')->defaults(array(
     'controller' => 'pages',
-    'action' => 'add_page'
+    'action' => 'save'
 ));
 
-Route::set('EDIT_PAGE', 'p/<id>/<uri>/edit', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
-    'controller' => 'pages',
-    'action' => 'edit_page'
-));
 
 Route::set('DELETE_PAGE', 'p/<id>/<uri>/delete', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
@@ -124,8 +120,8 @@ Route::set('ADD_COMMENT_SCRIPT', 'p/<id>/<uri>/add-comment', array( 'id' => $DIG
     'action' => 'add'
 ));
 
-Route::set('DEL_COMMENT_SCRIPT', 'p/<id>/<uri>/delete-comment/<comment_id>', array( 
-        'id'         => $DIGIT, 
+Route::set('DEL_COMMENT_SCRIPT', 'p/<id>/<uri>/delete-comment/<comment_id>', array(
+        'id'         => $DIGIT,
         'uri'        => $STRING,
         'comment_id' => $DIGIT))
     ->defaults(array(

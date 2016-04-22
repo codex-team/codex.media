@@ -287,11 +287,11 @@ h3{
 
 @font-face {
   font-family: 'codex-edu';
-  src: url('../fonts/codex-edu.eot?4');
-  src: url('../fonts/codex-edu.eot?4#iefix') format('embedded-opentype'),
-       url('../fonts/codex-edu.woff?4') format('woff'),
-       url('../fonts/codex-edu.ttf?4') format('truetype'),
-       url('../fonts/codex-edu.svg?4#codex-edu') format('svg');
+  src: url('../fonts/codex-edu.eot?5');
+  src: url('../fonts/codex-edu.eot?5#iefix') format('embedded-opentype'),
+       url('../fonts/codex-edu.woff?5') format('woff'),
+       url('../fonts/codex-edu.ttf?5') format('truetype'),
+       url('../fonts/codex-edu.svg?5#codex-edu') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -340,29 +340,34 @@ h3{
   /* Uncomment for 3D effect */
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
-.icon-search:before { content: '\e800'; }
-.icon-mail:before { content: '\e801'; }
-.icon-star:before { content: '\e802'; }
-.icon-star-empty:before { content: '\e803'; }
-.icon-picture:before { content: '\e804'; }
-.icon-ok:before { content: '\e805'; }
-.icon-cancel:before { content: '\e806'; }
-.icon-plus:before { content: '\e807'; }
-.icon-pencil:before { content: '\e808'; }
-.icon-trash:before { content: '\e809'; }
-.icon-rss:before { content: '\e80a'; }
-.icon-facebook:before { content: '\e80b'; }
-.icon-twitter:before { content: '\e80c'; }
-.icon-vkontakte:before { content: '\e80d'; }
-.icon-vcard:before { content: '\e80e'; }
-.icon-book-open:before { content: '\e80f'; }
-.icon-cog:before { content: '\e810'; }
-.icon-pin-outline:before { content: '\e811'; }
-.icon-logout:before { content: '\e812'; }
-.icon-right-dir:before { content: '\e813'; }
-.icon-down-dir:before { content: '\e814'; }
-.icon-reply:before { content: '\e815'; }
-.icon-telegram:before { content: '\e816'; }
+
+.icon-search:before { content: '\e800'; } /* '' */
+.icon-mail:before { content: '\e801'; } /* '' */
+.icon-star:before { content: '\e802'; } /* '' */
+.icon-star-empty:before { content: '\e803'; } /* '' */
+.icon-picture:before { content: '\e804'; } /* '' */
+.icon-ok:before { content: '\e805'; } /* '' */
+.icon-cancel:before { content: '\e806'; } /* '' */
+.icon-plus:before { content: '\e807'; } /* '' */
+.icon-pencil:before { content: '\e808'; } /* '' */
+.icon-trash:before { content: '\e809'; } /* '' */
+.icon-rss:before { content: '\e80a'; } /* '' */
+.icon-facebook:before { content: '\e80b'; } /* '' */
+.icon-twitter:before { content: '\e80c'; } /* '' */
+.icon-vkontakte:before { content: '\e80d'; } /* '' */
+.icon-vcard:before { content: '\e80e'; } /* '' */
+.icon-book-open:before { content: '\e80f'; } /* '' */
+.icon-cog:before { content: '\e810'; } /* '' */
+.icon-pin-outline:before { content: '\e811'; } /* '' */
+.icon-logout:before { content: '\e812'; } /* '' */
+.icon-right-dir:before { content: '\e813'; } /* '' */
+.icon-down-dir:before { content: '\e814'; } /* '' */
+.icon-reply:before { content: '\e815'; } /* '' */
+.icon-telegram:before { content: '\e816'; } /* '' */
+.icon-link:before { content: '\e817'; } /* '' */
+.icon-attach:before { content: '\e818'; } /* '' */
+.icon-pin:before { content: '\e819'; } /* '' */
+.icon-megaphone:before { content: '\e81a'; } /* '' */
 
 /********/
 html{overflow-y: scroll;}
@@ -1230,4 +1235,59 @@ footer.site_footer p{margin: 15px 25px}
     line-height: 1.4em;
 }
     .page_comments .dummy_text:first-of-type { margin-top: 26px; }
+
+
+.atlas_form{
+    position: relative;
+    font-size: 16px;
+    color: #7d869a;
+    margin-left: 1px;
+}
+    .atlas_form .import{
+        position: absolute;
+        right: 15px;
+        top: 19px;
+        cursor: pointer;
+    }
+    .atlas_form input,
+    .atlas_form textarea{
+        border: 0;
+        padding: 20px 30px;
+        border-bottom: 1px solid #eff3f6;
+        outline: none;
+    }
+    .atlas_form .actions{
+        margin-top: -1px;
+        padding: 20px 25px;
+        background: #f0f4f9;
+        border-top: 1px solid #e4ebf4;
+        border-bottom: 1px solid #e4ebf4;
+    }
+    .atlas_form .toggler{
+        padding: 14px;
+        margin-right: 10px;
+        color: #3b4867;
+        font-size: 1.2em;
+        cursor: pointer;
+    }
+    .atlas_form .button{
+        padding: 15px 30px;
+        font-size: 1em;
+    }
+    .atlas_form .attach{
+        display: inline-block;
+        padding: 15px 0;
+        color: #7d869a;
+        cursor: pointer;
+    }
+        .atlas_form .attach:hover,
+        .atlas_form .import:hover{
+            color: #3b496a;
+        }
+    .atlas_form .attach i{
+        margin-right: 10px;
+    }
+    .atlas_form .title_input{
+        padding-right: 200px;
+    }
 

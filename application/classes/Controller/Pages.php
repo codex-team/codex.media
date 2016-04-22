@@ -34,7 +34,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         }
     }
 
-    public function action_add_page()
+    public function action_save()
     {
         if (!$this->user->isTeacher())
         {
@@ -42,39 +42,43 @@ class Controller_Pages extends Controller_Base_preDispatch
             return FALSE;
         }
 
-        $page = new Model_Page();
-
-        $param_type = $this->request->param('type');
-        $page->id_parent = $this->request->param('id');
-
-        $page->type = self::set_page_type($param_type, $page);
-
         if (!$this->user->isAdmin() && $page->type != Model_Page::TYPE_USER_PAGE)
         {
             self::error_page('Недостаточно прав для создания новости или страницы сайта');
             return FALSE;
         }
 
-        $errors = array();
-
-        if (Security::check(Arr::get($_POST, 'csrf')))
+        if (!Security::check(Arr::get($_POST, 'csrf')))
         {
-            $page = self::get_form();
+            return FALSE;
+        }
 
-            if ($page->title)
-            {
-                $page = self::save_page($page);
-                $this->redirect('/p/' . $page->id . '/' . $page->uri);
+        $errors = array();
+        $page   = self::get_form();
 
+        if ($page->title)
+        {
+            if ($page->id) {
+                $page->update();
             } else {
-
-                $errors['title'] = 'Заголовок страницы не может быть пустым';
+                $page = $page->insert();
             }
+
+            if ($page->type == Model_Page::TYPE_SITE_NEWS) {
+                $this->redirect('/');
+            } else {
+                $this->redirect('/p/' . $page->id . '/' . $page->uri);
+            }
+
+
+        } else {
+
+            $errors['title'] = 'Заголовок страницы не может быть пустым';
         }
 
         $this->view['page']      = $page;
         $this->view['errors']    = $errors;
-        $this->template->content = View::factory('templates/page_form', $this->view);
+        $this->template->content = View::factory('templates/pages/new', $this->view);
     }
 
     public function action_edit_page()
@@ -132,32 +136,6 @@ class Controller_Pages extends Controller_Base_preDispatch
     }
 
     /**
-     * Returns new page's type
-     *
-     * @author              Taly
-     * @param $type         var $type from params request
-     * @param $page         object Model_Page
-     * @return int          page's type
-     */
-    public function set_page_type($type, $page)
-    {
-        if ($type == 'news')
-        {
-            return Model_Page::TYPE_SITE_NEWS;
-
-        } else {
-
-            $page->parent = new Model_Page($page->id_parent);
-
-            if ($page->parent->type == Model_Page::TYPE_USER_PAGE || $page->parent->id == 0){
-                return Model_Page::TYPE_USER_PAGE;
-            } else {
-                return Model_Page::TYPE_SITE_PAGE;
-            }
-        }
-    }
-
-    /**
      * Function for getting path from root (main page or user's page) to this page
      * Returns array of Pages
      *
@@ -183,9 +161,9 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function get_form()
     {
-        $page = new Model_Page();
 
-        $page->id            = (int)Arr::get($_POST, 'id');
+        $page = new Model_Page((int)Arr::get($_POST, 'id', 0));
+
         $page->type          = (int)Arr::get($_POST, 'type');
         $page->author        = $this->user;
         $page->id_parent     = (int)Arr::get($_POST, 'id_parent', 0);
@@ -195,17 +173,6 @@ class Controller_Pages extends Controller_Base_preDispatch
         $page->rich_view     = Arr::get($_POST, 'rich_view', 0);
         $page->dt_pin        = Arr::get($_POST, 'dt_pin');
         $page->source_link   = Arr::get($_POST, 'source_link');
-
-        return $page;
-    }
-
-    public function save_page($page)
-    {
-        if ($page->id) {
-            $page->update();
-        } else {
-            $page = $page->insert();
-        }
 
         return $page;
     }

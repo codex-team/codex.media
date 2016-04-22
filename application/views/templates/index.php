@@ -1,8 +1,13 @@
 <? if($user->status == Model_User::USER_STATUS_ADMIN): ?>
-    <div class="breadcrumb">
-        <a class="button green" href="/p/add-news">Добавить новость</a>
-    </div>
+    <?
+        $page = new Model_Page();
+        $page->type = Model_Page::TYPE_SITE_NEWS;
+    ?>
+    <?= View::factory('templates/pages/form', array(
+        'page' => $page,
+    )); ?>
 <? endif ?>
+
 <div class="news">
     <? foreach ($pages as $page): ?>
 
