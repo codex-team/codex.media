@@ -124,6 +124,7 @@ class Model_User extends Model_preDispatch
             ->where('id', '=', $this->id)
             ->set('status', $status)
             ->clearcache('user:' . $this->id)
+            ->clearcache('teachers')
             ->execute();
 
         $this->isTeacher        = $this->isTeacher();
@@ -178,6 +179,7 @@ class Model_User extends Model_preDispatch
         $teachers = Dao_Users::select()
                         ->where('status', '>=', Model_User::USER_STATUS_TEACHER)
                         ->order_by('id','ASC')
+                        ->cached(Date::HOUR, 'teachers')
                         ->execute();
 
         return Model_User::rowsToModels($teachers);
