@@ -49,7 +49,7 @@
     <a href="/signup">Регистрация</a>
 </div>
 
-<? /*
+
 <form class="page_simple_form" action="/auth" method="post">
 
     <h3>Регистрация</h3>
@@ -95,4 +95,3 @@
 
     <button class="button main">Зарегистрироваться</button>
 </form>
-*/ ?>

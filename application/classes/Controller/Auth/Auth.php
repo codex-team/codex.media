@@ -68,9 +68,12 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
             /** Saves new user */
             $userId = parent::insertUser(array(
-                'email'    => $signupForm['email'],
-                'password' => parent::createPasswordHash($signupForm['password']),
-                'name'     => $signupForm['name']
+                'email'        => $signupForm['email'],
+                'password'     => parent::createPasswordHash($signupForm['password']),
+                'name'         => $signupForm['name'],
+                'photo'        => 'public/img/default_ava/default_avatar_final_100.png',
+                'photo_medium' => 'public/img/default_ava/default_avatar_final_200.png',
+                'photo_big'    => 'public/img/default_ava/default_avatar_final_400.png'
             ));
 
             if ($userId) {
@@ -200,10 +203,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                 'photo_medium'  => $userdata->photo_100,
                 'photo_big'     => $userdata->photo_max
             );
-            
+
             /**
              *  What to do with response data?
-             *  @var string $state  
+             *  @var string $state
              */
             if ($state) switch ($state) {
                 case 'login':
@@ -255,7 +258,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
             /**
              *  What to do with response data?
-             *  @var string $state  
+             *  @var string $state
              */
             if ($state) switch ($state) {
                 case 'login':
@@ -270,7 +273,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
             return $status;
         }
-        
+
     }
 
     /**
@@ -289,14 +292,14 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         if ($state == 'remove') return $this->social_remove('twitter');
 
         //If there was a redirect from twitter and it sent us some auth data
-        $twitter_initiated = !empty($oauth_verifier) 
-                          && !empty($oauth_token) 
+        $twitter_initiated = !empty($oauth_verifier)
+                          && !empty($oauth_token)
                           && !empty($oauth_token_secret);
 
         if( $twitter_initiated ) {
 
             $userdata = $this->login_tw_get_userdata( $oauth_verifier, $oauth_token, $oauth_token_secret, $session);
-            
+
             // 'include_email' Use of this parameter requires whitelisting.
             $user_to_db = array(
                 'name'            => $userdata->name,
@@ -311,7 +314,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
             /**
              *  What to do with response data?
-             *  @var string $state  
+             *  @var string $state
              */
             if ($state) switch ($state) {
                 case 'login':
@@ -337,7 +340,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
      * Get userdata from twitter profile with oauth_verifier token
      *
      * @author Alexander Demyashev <alexander.demyashev@gmail.com>
-     * 
+     *
      * @param  string   $oauth_verifier
      * @param  string   $oauth_token
      * @param  string   $oauth_token_secret
@@ -345,23 +348,23 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
      * @return array    $userdata
      */
     private function login_tw_get_userdata( $oauth_verifier, $oauth_token, $oauth_token_secret, $session ) {
-        
+
         $settings = Kohana::$config->load('social.twitter');
-        
+
         $twitter_oauth = new Model_Social_Tw(
-            $settings['consumer_key'], 
-            $settings['consumer_secret'], 
-            $oauth_token, 
+            $settings['consumer_key'],
+            $settings['consumer_secret'],
+            $oauth_token,
             $oauth_token_secret
         );
 
         $user_info = $twitter_oauth->getAccessToken( $oauth_verifier );
-        
+
         return $twitter_oauth->get('account/verify_credentials');
     }
 
     /**
-     * Get oauth_verifier code from twitter in order to 
+     * Get oauth_verifier code from twitter in order to
      * @author Alexander Demyashev <alexander.demyashev@gmail.com>
      * @param  object   $session
      * @return bool     FALSE or REDIRECT (30x http code)
@@ -371,7 +374,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         $settings = Kohana::$config->load('social.twitter');
 
         $twitter_oauth = new Model_Social_Tw(
-            $settings['consumer_key'], 
+            $settings['consumer_key'],
             $settings['consumer_secret']
         );
 
@@ -404,7 +407,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
      *  @author Demyashev Alexander
      */
     private function social_insert($social, $userdata)
-    {  
+    {
         $social_cfg = Kohana::$config->load('social')->$social;
 
         $userFound = Dao_Users::select('id')
@@ -461,7 +464,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
                 $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети, т.к. это ваша последняя возможность авторизации на сайте';
                 return FALSE;
             }
-    
+
         } else {
             $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети';
             return FALSE;
@@ -505,8 +508,4 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
         $this->redirect('/auth');
     }
-
-
-
-
 }
