@@ -89,7 +89,7 @@
 
     <div id="utils" class="hidden">
         <iframe name="transport" _onload="transport.checkErrorLoading(event)"></iframe>
-        <form class="ajaxfree" id="transport_form" method="post" enctype="multipart/form-data"  target="transport" action="/ajax/transport" accept-charset="utf-8" >
+        <form id="transportForm" method="post" enctype="multipart/form-data"  target="transport" action="/file/transport" accept-charset="utf-8" >
             <input type="file" name="files" id="transportInput"/>
         </form>
     </div>

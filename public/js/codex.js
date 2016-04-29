@@ -75,7 +75,9 @@ codex.parser = {
 
     init : function (settings){
 
-         this.input = document.getElementById(settings.input_id);
+        console.log(this);
+
+         // this.input = document.getElementById(settings.input_id);
 
          var _this = this;
 
@@ -132,17 +134,108 @@ codex.parser = {
             }
         });
     }
-
-
 };
+
+/**
+* File transport module
+*/
+codex.transport = {
+    
+    form : null,
+    input : null,
+
+    /**
+    * Input where current transport action stored 
+    */
+    actionInput: null,
+
+    init : function () {
+
+        this.form = document.getElementById('transportForm');
+        this.input = document.getElementById('transportInput');
+
+        if (!this.form || !this.input) {
+            return false;
+        }
+
+        this.input.addEventListener('change', this.fileSelected);
+
+    },
+
+    /**
+    * Chose-file button click handler
+    */
+    selectFile : function (event, action) {
+
+        this.prepareForm({
+            action : action
+        });
+        this.input.click();  
+    
+    },
+
+    fileSelected : function (event) {
+        codex.transport.form.submit();
+        codex.transport.clear();
+    },
+
+    prepareForm : function (params) {
+
+        if (!this.actionInput) {
+            this.actionInput          = document.createElement('input');
+            this.actionInput.type   = 'hidden';
+            this.actionInput.name = 'action';
+            this.form.appendChild(this.actionInput);
+        }
+
+        this.actionInput.value = params.action;
+
+    },
+
+    clear : function () {
+
+        this.action = null;
+        this.input.value = null;
+        
+    },
+
+    response : function (response) {
+
+        console.log(response);
+
+        if (response.success && response.filename) {
+            this.appendFileRow(response.filename);
+        }
+    },
+
+    appendFileRow : function (filename) {
+
+        var attachesZone = document.getElementById('formAttaches');
+        
+        var row = document.createElement('div');
+
+        row.classList.add('item');
+        row.textContent = filename;
+
+        attachesZone.appendChild(row);
+
+
+    }
+
+
+
+
+}
 
 function documentIsReady(f){/in/.test(document.readyState) ? setTimeout(documentIsReady,9,f) : f();}
 
 documentIsReady(function(){
 
-    codex.parser.init({
-        input_id : 'parser_input_url'
-    });
+    codex.transport.init()
+
+    // codex.parser.init({
+    //     input_id : 'parser_input_url'
+    // });
 });
 
 

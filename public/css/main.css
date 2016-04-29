@@ -1290,4 +1290,17 @@ footer.site_footer p{margin: 15px 25px}
     .atlas_form .title_input{
         padding-right: 200px;
     }
+    .atlas_form .attaches .item {
+        padding: 20px 30px;
+    }
+    .atlas_form .attaches .item::before {
+        display: inline-block;
+        margin-right: 12px;     
+        content: '\e818';
+        font-family: 'codex-edu';
+        vertical-align: middle;    
+    }
+    .atlas_form .attaches .item:not(:first-of-type) {
+        border-top: 1px solid #eff3f6;
+    }
 

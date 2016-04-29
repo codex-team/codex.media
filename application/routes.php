@@ -77,8 +77,8 @@ Route::set('ADMIN_PAGE', 'admin(/<page>(/<id>))')->defaults(array(
 
 
 
-Route::set('AJAX_FILE_TRANSPORT', 'ajax/transport')->defaults(array(
-    'controller'      => 'ajax',
+Route::set('AJAX_FILE_TRANSPORT', 'file/transport')->defaults(array(
+    'controller'      => 'transport',
     'action'          => 'file_uploader',
     'show'            => true,
     'siteHitsBlocked' => true

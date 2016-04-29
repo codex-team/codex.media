@@ -12,11 +12,13 @@
     <input class="title_input" type="text" name="title" placeholder="Заголовок новости">
     <textarea name="content" rows="5" placeholder="Содержание новости"></textarea>
 
+    <div class="attaches" id="formAttaches"></div>
+
     <div class="actions clear">
         <span class="button main fl_r" onclick="submit()">Отправить</span>
         <div class="toggler fl_r"><i class="icon-megaphone"></i></div>
         <div class="toggler fl_r"><i class="icon-pin"></i></div>
-        <span class="attach"><i class="icon-attach"></i>Прикрепить файл</span>
+        <span class="attach" onclick="codex.transport.selectFile(event, 'pageFile')"><i class="icon-attach"></i>Прикрепить файл</span>
     </div>
 
     <script>
