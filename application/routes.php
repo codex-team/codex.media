@@ -60,6 +60,11 @@ Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
     'action' => 'settings'
 ));
 
+Route::set('USERS_LIST', 'users(/<type>)', array('type' => 'teachers'))->defaults(array(
+    'controller' => 'index',
+    'action' => 'teachers'
+));
+
 
 
 Route::set('CONTACTS', 'contacts')->defaults(array(
