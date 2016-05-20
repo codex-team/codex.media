@@ -1,4 +1,4 @@
-<form class="atlas_form" action="/p/save" id="atlasForm" method="post">
+<form class="atlas_form" action="/p/save" id="atlasForm" method="post" name="atlas">
 
     <?= Form::hidden('csrf', Security::token()); ?>
     <?= Form::hidden('type', $page->type); ?>
@@ -15,18 +15,14 @@
     <div class="attaches" id="formAttaches"></div>
 
     <div class="actions clear">
-        <span class="button main fl_r" onclick="submit()">Отправить</span>
+        <span class="button main fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
         <div class="toggler fl_r"><i class="icon-megaphone"></i></div>
         <div class="toggler fl_r"><i class="icon-pin"></i></div>
-        <span class="attach" onclick="codex.transport.selectFile(event, 'pageFile')"><i class="icon-attach"></i>Прикрепить файл</span>
+        <span class="attach" onclick="codex.transport.selectFile(event, '<?= Controller_Transport::PAGE_FILE ?>')"><i class="icon-attach"></i>Прикрепить файл</span>
     </div>
 
-    <script>
-        var submit = function (argument) {
-            var form = document.getElementById('atlasForm');
-            form.submit();
-        };
-    </script>
+    <input type="text" name="form_attaches_input" />
+
 </form>
 <? /*
     <div class="mb30">

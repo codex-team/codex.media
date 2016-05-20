@@ -58,11 +58,18 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         if ($page->title)
         {
+
+
             if ($page->id) {
                 $page->update();
             } else {
                 $page = $page->insert();
             }
+
+            /**
+            * Link attached files to current page
+            */
+            $this->savePageFiles();
 
             if ($page->type == Model_Page::TYPE_SITE_NEWS) {
                 $this->redirect('/');
@@ -193,6 +200,19 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->view['error_text'] = $error_text;
 
         $this->template->content = View::factory('templates/error', $this->view);
+    }
+
+
+    /**
+    * Gets json-encoded attaches list from input
+    * Writes this
+    */
+    private function savePageFiles(){
+
+        $attaches = Arr::get($_POST, 'attaches');
+
+        ## update Files
+
     }
 
 

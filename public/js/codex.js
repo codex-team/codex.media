@@ -140,18 +140,23 @@ codex.parser = {
 * File transport module
 */
 codex.transport = {
-    
+
     form : null,
     input : null,
 
     /**
-    * Input where current transport action stored 
+    * Current attaches will be stored in this object
     */
-    actionInput: null,
+    files : {},
+
+    /**
+    * Input where current transport type stored
+    */
+    transportTypeInput: null,
 
     init : function () {
 
-        this.form = document.getElementById('transportForm');
+        this.form  = document.getElementById('transportForm');
         this.input = document.getElementById('transportInput');
 
         if (!this.form || !this.input) {
@@ -165,13 +170,13 @@ codex.transport = {
     /**
     * Chose-file button click handler
     */
-    selectFile : function (event, action) {
+    selectFile : function (event, type) {
 
         this.prepareForm({
-            action : action
+            type : type
         });
-        this.input.click();  
-    
+        this.input.click();
+
     },
 
     fileSelected : function (event) {
@@ -181,22 +186,22 @@ codex.transport = {
 
     prepareForm : function (params) {
 
-        if (!this.actionInput) {
-            this.actionInput          = document.createElement('input');
-            this.actionInput.type   = 'hidden';
-            this.actionInput.name = 'action';
-            this.form.appendChild(this.actionInput);
+        if (!this.transportTypeInput) {
+            this.transportTypeInput      = document.createElement('input');
+            this.transportTypeInput.type = 'hidden';
+            this.transportTypeInput.name = 'type';
+            this.form.appendChild(this.transportTypeInput);
         }
 
-        this.actionInput.value = params.action;
+        this.transportTypeInput.value = params.type;
 
     },
 
     clear : function () {
 
-        this.action = null;
+        this.type = null;
         this.input.value = null;
-        
+
     },
 
     response : function (response) {
@@ -204,21 +209,100 @@ codex.transport = {
         console.log(response);
 
         if (response.success && response.filename) {
-            this.appendFileRow(response.filename);
+
+            this.storeFile(response);
+            // this.appendFileToInput(response.filename);
         }
     },
 
-    appendFileRow : function (filename) {
+    /**
+    * Store file in memory
+    * Attaches list will be sent form submitting
+    */
+    storeFile : function(file){
+
+        if (!file || !file.id) {
+            return;
+        }
+
+        this.files[file.id] = {
+            'name'  : file.filename,
+            'title' : file.title,
+            'id'    : file.id
+        };
+
+        this.appendFileRow(file);
+
+    },
+
+    appendFileRow : function (file) {
 
         var attachesZone = document.getElementById('formAttaches');
-        
+
         var row = document.createElement('div');
 
         row.classList.add('item');
-        row.textContent = filename;
+        row.textContent = file.title;
 
         attachesZone.appendChild(row);
 
+    },
+
+    appendFileToInput : function (filename) {
+
+        var fileInput = document.getElementsByName('form_attaches_input')[0],
+            attaches  = [],
+            oldValue,
+            newValue;
+
+        if (!fileInput) {
+            return;
+        }
+
+        /**
+        * Get already attached files list stored in json encoded string
+        */
+        oldValue = fileInput.value;
+
+        /**
+        * Trying to parse attaches list into array
+        */
+        if (oldValue) {
+            try {
+                attaches = JSON.parse(oldValue);
+            } catch(e){
+                console.log(e);
+            }
+        }
+
+        /**
+        * Append new file to attaches array
+        */
+        attaches.push(filename);
+
+        /**
+        * Store attaches array with input
+        */
+        fileInput.value = JSON.stringify(attaches);
+
+
+    },
+
+    submitAtlasForm : function(){
+
+        var atlasForm = document.forms['atlas'];
+
+        if (!atlasForm) return;
+
+        var attachesInput = document.createElement('input');
+
+        attachesInput.type = 'hidden';
+        attachesInput.name = 'attaches';
+        attachesInput.value = JSON.stringify(this.files);
+
+        atlasForm.appendChild(attachesInput);
+
+        atlasForm.submit();
 
     }
 
