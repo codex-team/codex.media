@@ -54,6 +54,7 @@
             <? endif ?>
 
             <ul class="menu">
+                <li><a href="/users/teachers">Список учителей</a></li>
                 <? $menu = $methods->getSiteMenu(); ?>
                 <? foreach ($menu as $item): ?>
                     <li><a href="/p/<?= $item->id ?>/<?= $item->uri ?>"><?= $item->title ?></a></li>
@@ -63,11 +64,6 @@
             <? if (!$user->id): ?>
                 <a class="button green" href="/auth">Войти на сайт</a>
             <? endif ?>
-
-
-            <ul class="submenu">
-                <li><a href="/admin">Admin</a></li>
-            </ul>
 
             <footer class="site_footer">
                 <p><?= $site_info->full_name ?></p>
