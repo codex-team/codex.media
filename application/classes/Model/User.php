@@ -124,6 +124,7 @@ class Model_User extends Model_preDispatch
             ->where('id', '=', $this->id)
             ->set('status', $status)
             ->clearcache('user:' . $this->id)
+            ->clearcache('teachers')
             ->execute();
 
         $this->isTeacher        = $this->isTeacher();
@@ -171,6 +172,36 @@ class Model_User extends Model_preDispatch
                     ->execute();
 
         return Model_Page::rowsToModels($pages);
+    }
+
+    public static function getUsersList($status)
+    {
+        $teachers = Dao_Users::select()
+                        ->where('status', '>=', $status)
+                        ->order_by('id','ASC')
+                        ->cached(Date::HOUR, 'users_list:' . $status)
+                        ->execute();
+
+        return Model_User::rowsToModels($teachers);
+    }
+
+    public static function rowsToModels($users_rows)
+    {
+        $users = array();
+
+        if (!empty($users_rows))
+        {
+            foreach ($users_rows as $user_row)
+            {
+                $user = new Model_User();
+
+                $user->fillByRow($user_row);
+
+                array_push($users, $user);
+            }
+        }
+
+        return $users;
     }
 
 }
