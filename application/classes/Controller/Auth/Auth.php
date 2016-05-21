@@ -70,10 +70,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
             $userId = parent::insertUser(array(
                 'email'        => $signupForm['email'],
                 'password'     => parent::createPasswordHash($signupForm['password']),
-                'name'         => $signupForm['name'],
-                'photo'        => 'public/img/default_ava/default_avatar_final_100.png',
-                'photo_medium' => 'public/img/default_ava/default_avatar_final_200.png',
-                'photo_big'    => 'public/img/default_ava/default_avatar_final_400.png'
+                'name'         => $signupForm['name']
             ));
 
             if ($userId) {
