@@ -35,10 +35,11 @@
             <label for="phone">Номер телефона</label>
             <input type="text" name="phone" id="phone" value="<?= $user->phone; ?>">
 
-            <? if (!$user->vk && !$user->twitter && !$user->facebook):?>
+            <? if ($user->password):?>
 
                 <label for="current_password">Текущий пароль</label>
                 <input type="password" name="current_password" id="current_password">
+            <? endif; ?>
 
                 <label for="login_password">Новый пароль</label>
                 <input type="password" name="new_password" id="login_password">
@@ -46,7 +47,6 @@
                 <label for="repeat_password">Повторите пароль</label>
                 <input type="password" name="repeat_password" id="repeat_password">
 
-            <? endif; ?>
 
             <input type="submit" name="submit" value="Сохранить"/>
 
