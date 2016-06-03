@@ -57,10 +57,11 @@ class Model_User extends Model_preDispatch
                 }
             }
 
-            if (!$this->photo)        $this->photo        = '/public/img/default_ava_small.png';
-            if (!$this->photo_medium) $this->photo_medium = '/public/img/default_ava.png';
-            if (!$this->photo_big)    $this->photo_big    = '/public/img/default_ava_big.png';
-
+            if (!$this->photo || !$this->photo_medium || !$this->photo_big){
+                $this->photo        = '/public/img/default_ava_small.png';
+                $this->photo_medium = '/public/img/default_ava.png';
+                $this->photo_big    = '/public/img/default_ava_big.png';
+            }
 
             $this->isTeacher        = $this->isTeacher();
             $this->isAdmin          = $this->isAdmin();

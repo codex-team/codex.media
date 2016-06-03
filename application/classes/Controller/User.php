@@ -58,8 +58,11 @@ class Controller_User extends Controller_Base_preDispatch
             $newPhone        = trim(Arr::get($_POST, 'phone'));
             $newAva          = Arr::get($_FILES, 'new_ava');
 
-            $hashedCurrentPassword = Controller_Auth_Base::createPasswordHash($currentPassword);
-
+            if ($currentPassword) {
+                $hashedCurrentPassword = Controller_Auth_Base::createPasswordHash($currentPassword);
+            } else {
+                $hashedCurrentPassword = Controller_Auth_Base::createPasswordHash($newPassword);
+            }
             if ($hashedCurrentPassword != $this->user->password && $currentPassword) {
                 $error['currPassError'] = 'Неправильный текущий пароль.';
                 $newPassword = '';
