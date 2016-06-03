@@ -54,7 +54,6 @@
             <? endif ?>
 
             <ul class="menu">
-                <li><a href="/users/">Список пользователей</a></li>
                 <? $menu = $methods->getSiteMenu(); ?>
                 <? foreach ($menu as $item): ?>
                     <li><a href="/p/<?= $item->id ?>/<?= $item->uri ?>"><?= $item->title ?></a></li>
