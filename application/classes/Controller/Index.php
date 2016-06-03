@@ -28,6 +28,6 @@ class Controller_Index extends Controller_Base_preDispatch
         $this->view['users']            = Model_User::getUsersList($status);
         $this->view['is_teachers_list'] = $users_type ? 1 : 0;
 
-        $this->template->content = View::factory('templates/user/list', $this->view);
+        $this->template->content = View::factory('templates/users/list', $this->view);
     }
 }
