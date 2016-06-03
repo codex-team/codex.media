@@ -468,6 +468,28 @@ footer.site_footer p{margin: 15px 25px}
     margin-left: 300px;
 }
 
+.page_menu{
+    padding: 23px;
+    list-style: none;
+    font-size: 0;
+}
+    .page_menu li{
+        position: relative;
+        display: inline-block;
+        font-size: 17px;
+    }
+        .page_menu li:after{
+            content: '・';
+            display: inline-block;
+            padding: 0 5px;
+            vertical-align: middle;
+            color: #C1C8DA;
+            font-size: 24px;
+        }
+        .page_menu li:last-child::after{
+            display: none;
+        }
+
 .breadcrumb{
     padding: 30px;
     border-bottom: 1px solid #eff3f6;
@@ -981,10 +1003,8 @@ footer.site_footer p{margin: 15px 25px}
     margin: 30px 30px 0 0;
 }
 
-.list_teacher_heading {
-    
-    font-size: 26px;
-    padding: 20px;
+.list_users_heading {
+    padding-left: 7px; 
 }
 
 .p_table{
@@ -992,12 +1012,16 @@ footer.site_footer p{margin: 15px 25px}
 }
 
 .p_table td {
-    padding: 20px;
-    border-bottom: 1px solid #EFF1F5;
+    padding: 14px;
+    border-top: 1px solid #EFF1F5;
     word-wrap: break-word;
     text-decoration: none;
     vertical-align: middle;  
 }
+    td.ava {
+        width: 32px;
+        padding-left: 30px;
+    }
 
     .list_teacher_ava,
     .list_teacher_ava > img{

@@ -1,9 +1,11 @@
-<div>
-    
-    <ul>
-        <li><?= !$is_teachers_list ? '<a href="/users/teachers">учителя</a>' : 'учителя' ?></li> 
-        <li><?= $is_teachers_list ? '<a href="/users/">пользователи</a></li>' : 'пользователи' ?></li>
+<div class="list_users_heading">
+    <ul class="page_menu">
+        <li><?= $is_teachers_list ? '<a href="/users/">Пользователи</a></li>' : 'Пользователи' ?></li>
+        <li><?= !$is_teachers_list ? '<a href="/users/teachers">Учителя</a>' : 'Учителя' ?></li>
     </ul>
+</div>
+
+<div>    
 
     <? if (count($users) == 0): ?>
 
@@ -14,9 +16,9 @@
         <table class="p_table">
             <? foreach ($users as $user_table_row): ?>                
                     <tr>
-                        <td>      
+                        <td class="ava">      
                             <a href="/user/<?= $user_table_row->id ?>">
-                                <img  class="list_teacher_ava" src="<?= $user_table_row->photo ?>">
+                                <img class="list_teacher_ava" src="<?= $user_table_row->photo ?>">
                             </a>     
                         </td>    
                         <td>
