@@ -478,16 +478,13 @@ footer.site_footer p{margin: 15px 25px}
         display: inline-block;
         font-size: 17px;
     }
-        .page_menu li:after{
+        .page_menu li:not(:last-child)::after{
             content: '・';
             display: inline-block;
             padding: 0 5px;
             vertical-align: middle;
             color: #C1C8DA;
             font-size: 24px;
-        }
-        .page_menu li:last-child::after{
-            display: none;
         }
 
 .breadcrumb{
