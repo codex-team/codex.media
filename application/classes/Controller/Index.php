@@ -25,8 +25,8 @@ class Controller_Index extends Controller_Base_preDispatch
             $status = Model_User::USER_STATUS_REGISTERED;
         }
 
-        $this->view['users']            = Model_User::getUsersList($status);
-        $this->view['is_teachers_list'] = $users_type ? 1 : 0;
+        $this->view['users']    = Model_User::getUsersList($status);
+        $this->view['status']   = $status;
 
         $this->template->content = View::factory('templates/users/list', $this->view);
     }
