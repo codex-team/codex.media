@@ -15,7 +15,7 @@ class Controller_Index extends Controller_Base_preDispatch
         $this->template->content = View::factory('templates/contacts', $this->view);
     }
 
-    public function action_teachers()
+    public function action_users_list()
     {
         $users_type = $this->request->param('type');
 
@@ -25,8 +25,9 @@ class Controller_Index extends Controller_Base_preDispatch
             $status = Model_User::USER_STATUS_REGISTERED;
         }
 
-        $this->view['users'] = Model_User::getUsersList($status); 
+        $this->view['users']            = Model_User::getUsersList($status);
+        $this->view['is_teachers_list'] = $users_type ? 1 : 0;
 
-        $this->template->content = View::factory('templates/users_list', $this->view);
+        $this->template->content = View::factory('templates/user/list', $this->view);
     }
 }
