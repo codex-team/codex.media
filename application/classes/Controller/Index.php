@@ -16,13 +16,12 @@ class Controller_Index extends Controller_Base_preDispatch
     }
 
     public function action_users_list()
-    {
-        $users_type = $this->request->param('type');
+    {   
+        $status = Model_User::USER_STATUS_REGISTERED;
 
-        if ($users_type) {
-            $status = Model_User::USER_STATUS_TEACHER;
-        } else {
-            $status = Model_User::USER_STATUS_REGISTERED;
+        if ($this->request->param('type') == 'teachers')
+        {
+            $status = Model_User::USER_STATUS_TEACHER;           
         }
 
         $this->view['users']    = Model_User::getUsersList($status);
