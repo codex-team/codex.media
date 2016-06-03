@@ -21,7 +21,7 @@ class Controller_User extends Controller_Base_preDispatch
         $this->view['userPages'] = $viewUser->getUserPages();
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
-        $this->template->content = View::factory('/templates/user/profile', $this->view);
+        $this->template->content = View::factory('/templates/users/profile', $this->view);
 
     }
 
@@ -98,6 +98,6 @@ class Controller_User extends Controller_Base_preDispatch
         $this->view['error']     = $error;
         $this->view['success']   = $succesResult;
 
-        $this->template->content = View::factory('/templates/user/settings', $this->view);
+        $this->template->content = View::factory('/templates/users/settings', $this->view);
     }
 }
