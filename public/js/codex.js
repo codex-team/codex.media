@@ -243,50 +243,12 @@ codex.transport = {
 
         row.classList.add('item');
         row.textContent = file.title;
+        row.setAttribute('contentEditable', true);
 
         attachesZone.appendChild(row);
 
     },
 
-    appendFileToInput : function (filename) {
-
-        var fileInput = document.getElementsByName('form_attaches_input')[0],
-            attaches  = [],
-            oldValue,
-            newValue;
-
-        if (!fileInput) {
-            return;
-        }
-
-        /**
-        * Get already attached files list stored in json encoded string
-        */
-        oldValue = fileInput.value;
-
-        /**
-        * Trying to parse attaches list into array
-        */
-        if (oldValue) {
-            try {
-                attaches = JSON.parse(oldValue);
-            } catch(e){
-                console.log(e);
-            }
-        }
-
-        /**
-        * Append new file to attaches array
-        */
-        attaches.push(filename);
-
-        /**
-        * Store attaches array with input
-        */
-        fileInput.value = JSON.stringify(attaches);
-
-
-    },
 
     submitAtlasForm : function(){
 
