@@ -78,7 +78,9 @@ class Model_User extends Model_preDispatch
                     ->where('email', '=', $email)
                     ->limit(1)
                     ->execute();
+
         if (!$arr) return true;
+
         return false;
     }
 
@@ -119,18 +121,15 @@ class Model_User extends Model_preDispatch
 
     public function setUserStatus($status)
     {
-        $this->status = $status;
-
         Dao_Users::update()
             ->where('id', '=', $this->id)
             ->set('status', $status)
-            ->clearcache('user:' . $this->id)
-            ->clearcache('teachers')
+            ->clearcache('user:' . $this->id, array('users'))
             ->execute();
 
-        $this->isTeacher        = $this->isTeacher();
-        $this->isAdmin          = $this->isAdmin();
-
+        $this->status       = $status;
+        $this->isTeacher    = $this->isTeacher();
+        $this->isAdmin      = $this->isAdmin();
 
         return true;
     }
@@ -152,12 +151,14 @@ class Model_User extends Model_preDispatch
     public function isAdmin()
     {
         if (!$this->id) return false;
+
         return $this->status == self::USER_STATUS_ADMIN;
     }
 
     public function isTeacher()
     {
         if (!$this->id) return false;
+        
         return $this->status >= self::USER_STATUS_TEACHER;
     }
 
@@ -180,7 +181,7 @@ class Model_User extends Model_preDispatch
         $teachers = Dao_Users::select()
                         ->where('status', '>=', $status)
                         ->order_by('id','ASC')
-                        ->cached(Date::HOUR, 'users_list:' . $status)
+                        ->cached(Date::HOUR, 'users_list:' . $status, array('users'))
                         ->execute();
 
         return Model_User::rowsToModels($teachers);

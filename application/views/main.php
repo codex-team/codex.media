@@ -64,11 +64,6 @@
                 <a class="button green" href="/auth">Войти на сайт</a>
             <? endif ?>
 
-
-            <ul class="submenu">
-                <li><a href="/admin">Admin</a></li>
-            </ul>
-
             <footer class="site_footer">
                 <p><?= $site_info->full_name ?></p>
                 <p>

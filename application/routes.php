@@ -62,7 +62,7 @@ Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
 
 Route::set('USERS_LIST', 'users(/<type>)', array('type' => 'teachers'))->defaults(array(
     'controller' => 'index',
-    'action' => 'teachers'
+    'action' => 'users_list'
 ));
 
 
