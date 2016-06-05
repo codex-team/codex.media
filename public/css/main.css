@@ -568,7 +568,7 @@ footer.site_footer p{margin: 15px 25px}
         .news .pinned::after{
             font-family: 'codex-edu';
             display: block;
-            content: '\e810';
+            content: '\e811';
             color: #E3E5EA;
             position: absolute;
             right: 50px;
