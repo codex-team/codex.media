@@ -510,6 +510,7 @@ footer.site_footer p{margin: 15px 25px}
         border-bottom: 0;
         margin-left: 20px;
         margin-top: -6px;
+        margin-bottom: -6px;
     }
         .breadcrumb .iconic{
             padding-left: 11px;
