@@ -55,5 +55,19 @@ class Controller_Index extends Controller_Base_preDispatch
         $this->template->title = 'Контакты';
         $this->template->content = View::factory('templates/contacts', $this->view);
     }
-    
+
+    public function action_users_list()
+    {   
+        $status = Model_User::USER_STATUS_REGISTERED;
+
+        if ($this->request->param('type') == 'teachers')
+        {
+            $status = Model_User::USER_STATUS_TEACHER;           
+        }
+
+        $this->view['users']    = Model_User::getUsersList($status);
+        $this->view['status']   = $status;
+
+        $this->template->content = View::factory('templates/users/list', $this->view);
+    }
 }

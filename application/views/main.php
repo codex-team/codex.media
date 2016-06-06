@@ -26,6 +26,8 @@
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <script src="/public/js/main.js?v=<?= time() ?>"></script>
+    
+    <script src="/public/js/comment.js"></script>
 
 </head>
 <body>
@@ -61,11 +63,6 @@
             <? if (!$user->id): ?>
                 <a class="button green" href="/auth">Войти на сайт</a>
             <? endif ?>
-
-
-            <ul class="submenu">
-                <li><a href="/admin">Admin</a></li>
-            </ul>
 
             <footer class="site_footer">
                 <p><?= $site_info->full_name ?></p>

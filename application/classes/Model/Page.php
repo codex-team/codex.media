@@ -165,6 +165,26 @@ class Model_Page extends Model_preDispatch
         return $pages;
     }
 
+    public static function getChildrenPagesByParent( $id_parent )
+    {
+        $query = Dao_Pages::select()
+            ->where('status', '=', self::STATUS_SHOWING_PAGE)
+            ->where('id_parent','=', $id_parent)
+            ->order_by('id','ASC')
+            ->execute();
+
+        return self::rowsToModels($query);
+    }
+
+    public function getPageUri()
+    {
+        $title = $this->title;
+
+        $title = Model_Methods::getUriByTitle($title);
+
+        return strtolower($title);
+    }
+
     public static function modelToArray($page_model = null, $pages_models = null)
     {
 
@@ -197,25 +217,4 @@ class Model_Page extends Model_preDispatch
 
         return $page;
     }
-
-    public static function getChildrenPagesByParent( $id_parent )
-    {
-        $query = Dao_Pages::select()
-            ->where('status', '=', self::STATUS_SHOWING_PAGE)
-            ->where('id_parent','=', $id_parent)
-            ->order_by('id','ASC')
-            ->execute();
-
-        return self::rowsToModels($query);
-    }
-
-    public function getPageUri()
-    {
-        $title = $this->title;
-
-        $title = Model_Methods::getUriByTitle($title);
-
-        return strtolower($title);
-    }
-
 }

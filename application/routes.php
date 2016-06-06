@@ -60,6 +60,11 @@ Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
     'action' => 'settings'
 ));
 
+Route::set('USERS_LIST', 'users(/<type>)', array('type' => 'teachers'))->defaults(array(
+    'controller' => 'index',
+    'action' => 'users_list'
+));
+
 
 
 Route::set('CONTACTS', 'contacts')->defaults(array(
@@ -116,6 +121,22 @@ Route::set('LOGOUT', 'logout')->defaults(array(
     'action' => 'logout'
 ));
 
+
+/** Comments */
+
+Route::set('ADD_COMMENT_SCRIPT', 'p/<id>/<uri>/add-comment', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+    'controller' => 'comments',
+    'action' => 'add'
+));
+
+Route::set('DEL_COMMENT_SCRIPT', 'p/<id>/<uri>/delete-comment/<comment_id>', array( 
+        'id'         => $DIGIT, 
+        'uri'        => $STRING,
+        'comment_id' => $DIGIT))
+    ->defaults(array(
+        'controller' => 'comments',
+        'action'     => 'delete'
+));
 
 
 
