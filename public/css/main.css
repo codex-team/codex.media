@@ -9,7 +9,7 @@ html{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
 img{border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
 
 label{cursor: pointer}
-button, input, select, textarea{font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle}
+button, input, select, textarea{font-size: 100%; margin: 0; vertical-align: baseline; vertical-align: middle}
 input[type="checkbox"], input[type="radio"]{ box-sizing: border-box; }
 button::-moz-focus-inner, input::-moz-focus-inner{ border: 0; padding: 0; }
 textarea{overflow: auto; vertical-align: top; resize: vertical; }
@@ -1070,7 +1070,7 @@ footer.site_footer p{margin: 15px 25px}
     -webkit-animation-name: fadeIn; -webkit-animation-duration: 600ms; -webkit-animation-iteration-count: 1;
     -moz-animation-name: fadeIn; -moz-animation-duration: 600ms; -moz-animation-iteration-count: 1;
     -o-animation-name: fadeIn; -o-animation-duration: 600ms; -o-animation-iteration-count: 1;
-    animation-name: fadeIn; animation-duration: 600ms; animation-iteration-count: 1;;
+    animation-name: fadeIn; animation-duration: 600ms; animation-iteration-count: 1;
 }
 
 
