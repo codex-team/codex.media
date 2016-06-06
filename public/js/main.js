@@ -2712,12 +2712,70 @@ $(document).ready(function(){
 
 });
 
+var news_loader = {
+
+    page : 1,
+
+    load_more_button : null,
+
+    init : function (settings){
+
+         this.load_more_button = document.getElementById(settings.button_id);
+
+         var _this = this;
+
+         news_loader.page = settings.current_page;
+
+         this.load_more_button.addEventListener('click', function (event) {
+
+             _this.sendRequest({'page': parseInt(news_loader.page) + 1 });  
+
+             event.preventDefault();
+         
+         } , false);
+
+    },
+
+    sendRequest : function (data)
+    {
+        simpleAjax.call({
+        type: 'post',
+        url: '/' + data.page,
+        data: {},
+        success: function(response)
+        {
+            console.log(response);
+            
+            if ( response.success == true ) {
+
+                // var title = document.getElementById('page_form_title');
+                // title.value = response.title;
+
+                // var content = document.getElementById('page_form_content');
+                // content.value = response.article;
+
+                // var source_link = document.getElementById('source_link');
+                // source_link.value = url;
+
+                // // while we have no own editor, we should use this getting element
+                // // cause I can't edit code for external editor
+                // document.getElementsByClassName('redactor_redactor')[0].innerHTML   = response.article;
+
+            } else {
+
+                CLIENT.showException('Не удалось импортировать страницу');
+                
+            }
+        }
+        });
+    }
+
+}
+
 /**
  * Parser code
  * @author Taly Guryn
  */
-
-
 
 var parser = {
 
@@ -2780,7 +2838,7 @@ var parser = {
                 
             }
         }
-    });
+        });
     }
 
 
