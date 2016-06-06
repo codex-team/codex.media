@@ -10,11 +10,11 @@
 //     'action' => 'index'
 // ));
 
-
+    
 $DIGIT = '\d+';
 $STRING = '[-a-z\d]+';
 
-Route::set('INDEX', '')->defaults(array(
+Route::set('INDEX', '(<page_number>)', array( 'page_number' => $DIGIT ))->defaults(array(
     'controller' => 'index',
     'action' => 'index'
 ));
