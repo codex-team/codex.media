@@ -2809,14 +2809,14 @@ var parser = {
     },
     
 
-    sendRequest : function (url) {
-
+    sendRequest : function (url)
+    {
         simpleAjax.call({
         type: 'get',
         url: '/ajax/get_page',
         data: { 'url' : url },
-        success: function(response){
-            
+        success: function(response)
+        {    
             if ( response.success == 1) {
             
                 var title = document.getElementById('page_form_title');
