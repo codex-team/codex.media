@@ -3,7 +3,7 @@
         <a class="button green" href="/p/add-news">Добавить новость</a>
     </div>
 <? endif ?>
-<div class="news">
+<div id="list_of_news" class="news">
     
     <?= View::factory('templates/news_list', array(
         'pages'=> $pages
