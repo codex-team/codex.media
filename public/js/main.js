@@ -2743,23 +2743,19 @@ var news_loader = {
         url: '/' + data.page,
         data: {},
         success: function(response)
-        {
-            console.log(response);
-            
+        {   
             if ( response.success == true ) {
 
-                // var title = document.getElementById('page_form_title');
-                // title.value = response.title;
+                var news_div_block = document.getElementById('list_of_news');
+                news_div_block.innerHTML += response.pages;
 
-                // var content = document.getElementById('page_form_content');
-                // content.value = response.article;
+                news_loader.page++;
 
-                // var source_link = document.getElementById('source_link');
-                // source_link.value = url;
-
-                // // while we have no own editor, we should use this getting element
-                // // cause I can't edit code for external editor
-                // document.getElementsByClassName('redactor_redactor')[0].innerHTML   = response.article;
+                /* Checking for next page's existing. If no — hide the button for loading news */
+                if ( !response.next_page )
+                {
+                    news_loader.load_more_button.style.visibility = "hidden";
+                }
 
             } else {
 
