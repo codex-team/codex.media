@@ -33,7 +33,7 @@ class Controller_Index extends Controller_Base_preDispatch
             $response = array();
             $response['success']    = 1;
             $response['next_page']  = $next_page;   
-            $response['pages']      = Model_Page::modelToArray(null, $pages);
+            $response['pages']      = View::factory('templates/news_list', array( 'pages' => $pages ))->render(); 
 
             $this->auto_render = false;
             $this->response->headers('Content-Type', 'application/json; charset=utf-8');
