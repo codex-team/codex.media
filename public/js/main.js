@@ -2795,6 +2795,8 @@ var news_loader = {
                 news_loader.load_more_button.innerHTML = news_loader.button_text;
 
                 var news_div_block = document.getElementById(news_loader.settings.target_block_id);
+                if ( !news_div_block ) return false;
+                
                 news_div_block.innerHTML += response.pages;
 
                 /* Next page */
