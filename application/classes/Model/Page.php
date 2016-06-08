@@ -184,3 +184,5 @@ class Model_Page extends Model_preDispatch
 
         return strtolower($title);
     }
+
+}    
