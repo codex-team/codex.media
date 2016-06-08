@@ -2717,29 +2717,31 @@ var news_loader = {
     /* Pagination. Here is a number of current page */
     page : 1,
 
-    /* Variable for button */
     load_more_button : null,
 
-    /* Button's text for saving it */
+    /**
+     * Button's text for saving it.
+     * On its place dots will be  while news are loading
+     */
     button_text : null,
 
-    /* Variable for enabling auto loading */
+    /* Check fir disabling/enabling auto loading */
     auto_loading : false,
 
     /** 
-     * Variable for possibility to load news by scrolling. 
+     * Possibility to load news by scrolling. 
      * Restriction for reduction requests which could be while scrolling 
      */
     access_to_auto_load : true,
 
-    /* Variable for settings */
+    /* For  */
     settings : null,
 
     init : function (settings){
 
         this.load_more_button = document.getElementById(settings.button_id);
 
-        /* if no button is on the page */
+        /* Check for button exist  */
         if ( !this.load_more_button ) return false;
 
         news_loader.page        = settings.current_page;
@@ -2758,7 +2760,7 @@ var news_loader = {
 
     load_news : function ()
     { 
-        /* Making "loading" button */
+        /* "loading"-looking button */
         news_loader.load_more_button.innerHTML = ' ';
         news_loader.load_more_button.classList.add('loading');
 
