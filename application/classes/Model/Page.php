@@ -81,7 +81,7 @@ class Model_Page extends Model_preDispatch
 
     public function update()
     {
-        $page = Dao_Pages::update()
+        return Dao_Pages::update()
                     ->where('id', '=', $this->id)
                     ->set('id',             $this->id)
                     ->set('type',           $this->type)
@@ -94,18 +94,8 @@ class Model_Page extends Model_preDispatch
                     ->set('rich_view',      $this->rich_view)
                     ->set('dt_pin',         $this->dt_pin)
                     ->set('source_link',    $this->source_link)
-                    ->clearcache('page:' . $this->id);
-
-        /*
-        *  Only admins can add news to the site menu.
-        *  We should clear cache for getting menu updates.
-        */           
-        if ($this->author->isAdmin)
-        {
-            Dao_Pages::update()->clearcache('site_menu')->execute();
-        }
-
-        return $page->execute();            
+                    ->clearcache('page:' . $this->id, array('site_menu'))
+                    ->execute();            
     }
 
     public function setAsRemoved()
