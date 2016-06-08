@@ -2720,27 +2720,44 @@ var news_loader = {
 
     button_text : null,
 
+    auto_loading : false,
+
+    access_to_auto_load : true,
+
     init : function (settings){
 
          this.load_more_button = document.getElementById(settings.button_id);
-
-         var _this = this;
 
          news_loader.page = settings.current_page;
 
          news_loader.button_text = this.load_more_button.innerHTML;
 
-         this.load_more_button.addEventListener('click', function (event) {
+         this.load_more_button.addEventListener('click', function (event){
 
-             _this.sendRequest({'page': parseInt(news_loader.page) + 1 });  
+            news_loader.load_news();
 
-             news_loader.load_more_button.innerHTML = ' ';
-             news_loader.load_more_button.classList.add('button', 'loading');
+            event.preventDefault();
 
-             event.preventDefault();
-         
-         } , false);
+         }, false);
 
+    },
+
+    load_news : function ()
+    { 
+        news_loader.load_more_button.innerHTML = ' ';
+        news_loader.load_more_button.classList.add('button', 'loading');
+
+        news_loader.sendRequest({'page': parseInt(news_loader.page) + 1 }); 
+    },
+
+    scrollAutoLoading : function ()
+    {
+        if ((window.pageYOffset + window.innerHeight >= document.height) && news_loader.access_to_auto_load)
+        {
+            news_loader.access_to_auto_load = false;
+
+            news_loader.load_news();
+        }
     },
 
     sendRequest : function (data)
@@ -2761,15 +2778,23 @@ var news_loader = {
 
                 news_loader.page++;
 
+                news_loader.access_to_auto_load = true;
+
                 /* Checking for next page's existing. If no — hide the button for loading news */
                 if ( !response.next_page )
                 {
                     news_loader.load_more_button.style.visibility = "hidden";
                 }
 
+                if ( !news_loader.auto_loading )
+                {
+                    window.addEventListener("scroll", news_loader.scrollAutoLoading);
+                    news_loader.auto_loading = true;
+                }
+
             } else {
 
-                CLIENT.showException('Не удалось импортировать страницу');
+                CLIENT.showException('Не удалось подгрузить новости');
                 
             }
         }
