@@ -102,7 +102,7 @@ class Model_Page extends Model_preDispatch
         */           
         if ($this->author->isAdmin)
         {
-            Dao_Pages::update()->clearcache('site_menu');
+            Dao_Pages::update()->clearcache('site_menu')->execute();
         }
 
         return $page->execute();            
