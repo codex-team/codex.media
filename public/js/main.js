@@ -2712,10 +2712,10 @@ $(document).ready(function(){
 
 });
 
-var news_loader = {
+var Appender = {
 
     /* Pagination. Here is a number of current page */
-    page : 1,
+    page : 1, 
 
     load_more_button : null,
 
@@ -2725,16 +2725,44 @@ var news_loader = {
      */
     button_text : null,
 
-    /* Check fir disabling/enabling auto loading */
-    auto_loading : false,
+    auto_loading : {
 
-    /** 
-     * Possibility to load news by scrolling. 
-     * Restriction for reduction requests which could be while scrolling 
-     */
-    access_to_auto_load : true,
+        is_launched : false,
 
-    /* For  */
+        /** 
+         * Possibility to load news by scrolling. 
+         * Restriction for reduction requests which could be while scrolling 
+         */
+        access : true,
+
+        init : function ()
+        {
+            window.addEventListener("scroll", Appender.auto_loading.scroll);
+
+            Appender.auto_loading.is_launched = true;
+        },
+
+        disable : function ()
+        {
+            window.removeEventListener("scroll", Appender.auto_loading.scroll);
+
+            Appender.auto_loading.is_launched = false;
+        },
+
+        scroll : function ()
+        {
+            var scroll_reached_end = window.pageYOffset + window.innerHeight >= document.height;
+
+            if (scroll_reached_end && Appender.auto_loading.access)
+            {
+                Appender.auto_loading.access = false;
+
+                Appender.loading();
+            }
+        },
+
+    },
+
     settings : null,
 
     init : function (settings){
@@ -2744,40 +2772,43 @@ var news_loader = {
         /* Check for button exist  */
         if ( !this.load_more_button ) return false;
 
-        news_loader.page        = settings.current_page;
-        news_loader.settings    = settings;
-        news_loader.button_text = this.load_more_button.innerHTML;
+        Appender.page        = settings.current_page;
+        Appender.settings    = settings;
+        Appender.button_text = this.load_more_button.innerHTML;
 
         this.load_more_button.addEventListener('click', function (event){
 
-            news_loader.load_news();
+            Appender.loading();
 
             event.preventDefault();
+
+            Appender.auto_loading.init();
 
         }, false);
 
     },
 
-    load_news : function ()
+    loading : function ()
     { 
         /* "loading"-looking button */
-        news_loader.load_more_button.innerHTML = ' ';
-        news_loader.load_more_button.classList.add('loading');
+        Appender.load_more_button.innerHTML = ' ';
+        Appender.load_more_button.classList.add('loading');
 
-        news_loader.sendRequest({
-            'url': news_loader.settings.url + (parseInt(news_loader.page) + 1) 
+        Appender.sendRequest({
+            'url': Appender.settings.url + (parseInt(Appender.page) + 1) 
         }); 
+
+        Appender.load_more_button.classList.remove('loading');
+        Appender.load_more_button.innerHTML = Appender.button_text;
     },
 
-    scrollAutoLoading : function ()
+    disable : function ()
     {
-        var scroll_reached_end = window.pageYOffset + window.innerHeight >= document.height;
+        Appender.load_more_button.style.visibility = "hidden";
 
-        if (scroll_reached_end && news_loader.access_to_auto_load)
+        if ( Appender.auto_loading.is_launched )
         {
-            news_loader.access_to_auto_load = false;
-
-            news_loader.load_news();
+            Appender.auto_loading.disable();
         }
     },
 
@@ -2791,37 +2822,20 @@ var news_loader = {
         {   
             if ( response.success )
             {
-                news_loader.load_more_button.classList.remove('loading');
-                news_loader.load_more_button.innerHTML = news_loader.button_text;
+                var news_div_block = document.getElementById(Appender.settings.target_block_id);
 
-                var news_div_block = document.getElementById(news_loader.settings.target_block_id);
                 if ( !news_div_block ) return false;
-                
+
                 news_div_block.innerHTML += response.pages;
 
                 /* Next page */
-                news_loader.page++;
+                Appender.page++;
 
                 /* Removing restriction for auto loading */
-                news_loader.access_to_auto_load = true;
-
-                /* If auto loading is enabled, then add scroll listener */
-                if ( !news_loader.auto_loading )
-                {
-                    window.addEventListener("scroll", news_loader.scrollAutoLoading);
-
-                    news_loader.auto_loading = true;
-                }
+                Appender.auto_loading.access = true;
 
                 /* Checking for next page's existing. If no — hide the button for loading news and remove listener */
-                if ( !response.next_page )
-                {
-                    news_loader.load_more_button.style.visibility = "hidden";
-
-                    window.removeEventListener("scroll", news_loader.scrollAutoLoading);
-
-                    news_loader.auto_loading = false;
-                }
+                if ( !response.next_page ) Appender.disable();
 
             } else {
 
