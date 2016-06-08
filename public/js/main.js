@@ -2714,45 +2714,64 @@ $(document).ready(function(){
 
 var news_loader = {
 
+    /* Pagination. Here is a number of current page */
     page : 1,
 
+    /* Variable for button */
     load_more_button : null,
 
+    /* Button's text for saving it */
     button_text : null,
 
+    /* Variable for enabling auto loading */
     auto_loading : false,
 
+    /** 
+     * Variable for possibility to load news by scrolling. 
+     * Restriction for reduction requests which could be while scrolling 
+     */
     access_to_auto_load : true,
+
+    /* Variable for settings */
+    settings : null,
 
     init : function (settings){
 
-         this.load_more_button = document.getElementById(settings.button_id);
+        this.load_more_button = document.getElementById(settings.button_id);
 
-         news_loader.page = settings.current_page;
+        /* if no button is on the page */
+        if ( !this.load_more_button ) return false;
 
-         news_loader.button_text = this.load_more_button.innerHTML;
+        news_loader.page        = settings.current_page;
+        news_loader.settings    = settings;
+        news_loader.button_text = this.load_more_button.innerHTML;
 
-         this.load_more_button.addEventListener('click', function (event){
+        this.load_more_button.addEventListener('click', function (event){
 
             news_loader.load_news();
 
             event.preventDefault();
 
-         }, false);
+        }, false);
 
     },
 
     load_news : function ()
     { 
+        /* Making "loading" button */
         news_loader.load_more_button.innerHTML = ' ';
-        news_loader.load_more_button.classList.add('button', 'loading');
+        news_loader.load_more_button.classList.add('loading');
 
-        news_loader.sendRequest({'page': parseInt(news_loader.page) + 1 }); 
+        news_loader.sendRequest({
+            'url': news_loader.settings.url + (parseInt(news_loader.page) + 1) 
+        }); 
     },
 
     scrollAutoLoading : function ()
     {
-        if ((window.pageYOffset + window.innerHeight >= document.height) && news_loader.access_to_auto_load)
+        var scroll_reached_end = window.pageYOffset + window.innerHeight >= document.height;
+
+        if (scroll_reached_end && news_loader.access_to_auto_load)
         {
             news_loader.access_to_auto_load = false;
 
@@ -2764,32 +2783,40 @@ var news_loader = {
     {
         simpleAjax.call({
         type: 'post',
-        url: '/' + data.page,
+        url: data.url,
         data: {},
         success: function(response)
         {   
-            if ( response.success == true )
+            if ( response.success )
             {
-                news_loader.load_more_button.classList.remove('button', 'loading');
+                news_loader.load_more_button.classList.remove('loading');
                 news_loader.load_more_button.innerHTML = news_loader.button_text;
 
-                var news_div_block = document.getElementById('list_of_news');
+                var news_div_block = document.getElementById(news_loader.settings.target_block_id);
                 news_div_block.innerHTML += response.pages;
 
+                /* Next page */
                 news_loader.page++;
 
+                /* Removing restriction for auto loading */
                 news_loader.access_to_auto_load = true;
 
-                /* Checking for next page's existing. If no — hide the button for loading news */
-                if ( !response.next_page )
-                {
-                    news_loader.load_more_button.style.visibility = "hidden";
-                }
-
+                /* If auto loading is enabled, then add scroll listener */
                 if ( !news_loader.auto_loading )
                 {
                     window.addEventListener("scroll", news_loader.scrollAutoLoading);
+
                     news_loader.auto_loading = true;
+                }
+
+                /* Checking for next page's existing. If no — hide the button for loading news and remove listener */
+                if ( !response.next_page )
+                {
+                    news_loader.load_more_button.style.visibility = "hidden";
+
+                    window.removeEventListener("scroll", news_loader.scrollAutoLoading);
+
+                    news_loader.auto_loading = false;
                 }
 
             } else {

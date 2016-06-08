@@ -13,13 +13,15 @@
 
 <? if ($next_page): ?>
 
-	<a class="load_more_button" id="button_load_news" href="/<?= $page_number + 1 ?>">Показать предыдущие новости</a>
+	<a class="load_more_button button" id="button_load_news" href="/<?= $page_number + 1 ?>">Показать больше новостей</a>
 
 	<script>
 		$(function(){
 			news_loader.init({
 				button_id 		: 'button_load_news',
-				current_page 	: '<?= $page_number ?>'
+				current_page 	: '<?= $page_number ?>',
+				url				: '/',
+				target_block_id : 'list_of_news',
 			});
 		});
 	</script>
