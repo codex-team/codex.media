@@ -184,37 +184,3 @@ class Model_Page extends Model_preDispatch
 
         return strtolower($title);
     }
-
-    public static function modelToArray($page_model = null, $pages_models = null)
-    {
-
-        /**
-         * Using for many models
-         */
-        if ($pages_models)
-        {
-            $pages_array = array();
-
-            foreach ($pages_models as $page_model) {
-                $pages_array[] = self::modelToArray($page_model);
-            }
-
-            return $pages_array;
-        } 
-
-        /**
-         * Using for one model
-         */
-        $page = array();
-
-        if ($page_model)
-        {
-            foreach ($page_model as $key => $value)
-            {
-                $page[$key] = $value;  
-            }
-        }
-
-        return $page;
-    }
-}
