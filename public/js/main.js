@@ -2822,11 +2822,11 @@ var Appender = {
         {   
             if ( response.success )
             {
-                var news_div_block = document.getElementById(Appender.settings.target_block_id);
+                var block_for_items = document.getElementById(Appender.settings.target_block_id);
 
-                if ( !news_div_block ) return false;
+                if ( !block_for_items ) return false;
 
-                news_div_block.innerHTML += response.pages;
+                block_for_items.innerHTML += response.pages;
 
                 /* Next page */
                 Appender.page++;
