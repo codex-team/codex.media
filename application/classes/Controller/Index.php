@@ -18,7 +18,9 @@ class Controller_Index extends Controller_Base_preDispatch
         $pages = Model_Page::getPages(
                                     Model_Page::TYPE_SITE_NEWS, 
                                     self::NEWS_LIMIT_PER_PAGE + 1, 
-                                    $offset);  
+                                    $offset,
+                                    0,
+                                    true);  
 
         $next_page = false;
         if (count($pages) > self::NEWS_LIMIT_PER_PAGE)
