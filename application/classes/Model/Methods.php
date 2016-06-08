@@ -30,7 +30,7 @@ class Model_Methods extends Model
         $info = Dao_SiteInfo::select()
             ->order_by('id', 'DESC')
             ->limit(1)
-            ->cached(Date::DAY, 'site_info', array('site_menu')
+            ->cached(Date::DAY, 'site_info', array('site_menu'))
             ->execute();
 
         $this->title        = $info['title'];
