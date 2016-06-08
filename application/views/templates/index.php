@@ -12,16 +12,18 @@
 </div>
 
 <? if ($next_page): ?>
-	<a id="button_load_news" href="/<?= $page_number + 1 ?>">Показать более ранние новости</a>
-<? endif ?>
 
-<script>
-	$(function(){
+	<a class="load_more_button" id="button_load_news" href="/<?= $page_number + 1 ?>">Показать предыдущие новости</a>
 
-		news_loader.init({
-			button_id 		: 'button_load_news',
-			current_page 	: '<?= $page_number ?>'
+	<script>
+		$(function(){
+
+			news_loader.init({
+				button_id 		: 'button_load_news',
+				current_page 	: '<?= $page_number ?>'
+			});
+
 		});
-
-	});
-</script>
+	</script>
+	
+<? endif ?>
