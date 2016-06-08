@@ -30,7 +30,7 @@ class Controller_Index extends Controller_Base_preDispatch
 
         }
 
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'))
+        if (Model_Methods::isAjax())
         {
             $response = array();
             $response['success']    = 1;
