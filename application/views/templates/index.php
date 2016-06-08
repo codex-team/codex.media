@@ -18,8 +18,8 @@
 	<script>
 		$(function(){
 			news_loader.init({
-				button_id 		: 'button_load_news',
-				current_page 	: '<?= $page_number ?>',
+				button_id		: 'button_load_news',
+				current_page	: '<?= $page_number ?>',
 				url				: '/',
 				target_block_id : 'list_of_news',
 			});
