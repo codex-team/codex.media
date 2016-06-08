@@ -1275,17 +1275,3 @@ footer.site_footer p{margin: 15px 25px}
 }
     .page_comments .dummy_text:first-of-type { margin-top: 26px; }
 
-.load_more_button {
-    padding: 15px 0;
-    font-size: 17px;
-    color: #3d485a;
-    text-align: center;
-    background-color: rgba(18, 34, 50, 0.05); 
-    color: #3d485a;
-    text-decoration: none;
-    display: block;
-}
-    .load_more_button:hover {
-        background-color: rgba(18, 34, 50, 0.13); 
-    }   
-

@@ -2718,8 +2718,6 @@ var news_loader = {
 
     load_more_button : null,
 
-    button_text : null,
-
     init : function (settings){
 
          this.load_more_button = document.getElementById(settings.button_id);
@@ -2728,14 +2726,9 @@ var news_loader = {
 
          news_loader.page = settings.current_page;
 
-         news_loader.button_text = this.load_more_button.innerHTML;
-
          this.load_more_button.addEventListener('click', function (event) {
 
              _this.sendRequest({'page': parseInt(news_loader.page) + 1 });  
-
-             news_loader.load_more_button.innerHTML = ' ';
-             news_loader.load_more_button.classList.add('button', 'loading');
 
              event.preventDefault();
          
@@ -2751,10 +2744,7 @@ var news_loader = {
         data: {},
         success: function(response)
         {   
-            if ( response.success == true )
-            {
-                news_loader.load_more_button.classList.remove('button', 'loading');
-                news_loader.load_more_button.innerHTML = news_loader.button_text;
+            if ( response.success == true ) {
 
                 var news_div_block = document.getElementById('list_of_news');
                 news_div_block.innerHTML += response.pages;
