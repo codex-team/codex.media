@@ -2717,6 +2717,10 @@ var Appender = {
     /* Pagination. Here is a number of current page */
     page : 1, 
 
+    settings : null,
+
+    block_for_items : null,
+
     load_more_button : null,
 
     /**
@@ -2724,46 +2728,6 @@ var Appender = {
      * On its place dots will be  while news are loading
      */
     button_text : null,
-
-    auto_loading : {
-
-        is_launched : false,
-
-        /** 
-         * Possibility to load news by scrolling. 
-         * Restriction for reduction requests which could be while scrolling 
-         */
-        access : true,
-
-        init : function ()
-        {
-            window.addEventListener("scroll", Appender.auto_loading.scroll);
-
-            Appender.auto_loading.is_launched = true;
-        },
-
-        disable : function ()
-        {
-            window.removeEventListener("scroll", Appender.auto_loading.scroll);
-
-            Appender.auto_loading.is_launched = false;
-        },
-
-        scroll : function ()
-        {
-            var scroll_reached_end = window.pageYOffset + window.innerHeight >= document.height;
-
-            if (scroll_reached_end && Appender.auto_loading.access)
-            {
-                Appender.auto_loading.access = false;
-
-                Appender.loading();
-            }
-        },
-
-    },
-
-    settings : null,
 
     init : function (settings){
 
@@ -2778,7 +2742,7 @@ var Appender = {
 
         this.load_more_button.addEventListener('click', function (event){
 
-            Appender.loading();
+            Appender.load();
 
             event.preventDefault();
 
@@ -2788,18 +2752,17 @@ var Appender = {
 
     },
 
-    loading : function ()
+    load : function ()
     { 
-        /* "loading"-looking button */
-        Appender.load_more_button.innerHTML = ' ';
-        Appender.load_more_button.classList.add('loading');
+        var url = Appender.settings.url + (parseInt(Appender.page) + 1);
+
+        Appender.block_for_items = document.getElementById(Appender.settings.target_block_id);
+
+        if ( !Appender.block_for_items ) return false;
 
         Appender.sendRequest({
-            'url': Appender.settings.url + (parseInt(Appender.page) + 1) 
+            'url': url
         }); 
-
-        Appender.load_more_button.classList.remove('loading');
-        Appender.load_more_button.innerHTML = Appender.button_text;
     },
 
     disable : function ()
@@ -2818,15 +2781,16 @@ var Appender = {
         type: 'post',
         url: data.url,
         data: {},
-        success: function(response)
+        beforeSend : function ()
+        {
+            Appender.load_more_button.innerHTML = ' ';
+            Appender.load_more_button.classList.add('loading');
+        }, 
+        success : function(response)
         {   
             if ( response.success )
-            {
-                var block_for_items = document.getElementById(Appender.settings.target_block_id);
-
-                if ( !block_for_items ) return false;
-
-                block_for_items.innerHTML += response.pages;
+            {                
+                Appender.block_for_items.innerHTML += response.pages;
 
                 /* Next page */
                 Appender.page++;
@@ -2842,9 +2806,50 @@ var Appender = {
                 CLIENT.showException('Не удалось подгрузить новости');
                 
             }
+
+            Appender.load_more_button.classList.remove('loading');
+            Appender.load_more_button.innerHTML = Appender.button_text;
         }
         });
-    }
+    },
+
+    auto_loading : {
+
+        is_launched : false,
+
+        /** 
+         * Possibility to load news by scrolling. 
+         * Restriction for reduction requests which could be while scrolling 
+         */
+        can_load : true,
+
+        init : function ()
+        {
+            window.addEventListener("scroll", Appender.auto_loading.scroll);
+
+            Appender.auto_loading.is_launched = true;
+        },
+
+        disable : function ()
+        {
+            window.removeEventListener("scroll", Appender.auto_loading.scroll);
+
+            Appender.auto_loading.is_launched = false;
+        },
+
+        scrollEvent : function ()
+        {
+            var scroll_reached_end = window.pageYOffset + window.innerHeight >= document.height;
+
+            if (scroll_reached_end && Appender.auto_loading.can_load)
+            {
+                Appender.auto_loading.can_load = false;
+
+                Appender.load();
+            }
+        },
+
+    },
 
 }
 
