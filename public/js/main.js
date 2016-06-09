@@ -2730,17 +2730,19 @@ var Appender = {
     button_text : null,
 
     init : function (settings){
+        
+        /* Checking for existing button and field for loaded info */
+        Appender.load_more_button = document.getElementById(settings.button_id);
+        if ( !Appender.load_more_button ) return false;
 
-        this.load_more_button = document.getElementById(settings.button_id);
-
-        /* Check for button exist  */
-        if ( !this.load_more_button ) return false;
+        Appender.block_for_items = document.getElementById(Appender.settings.target_block_id);
+        if ( !Appender.block_for_items ) return false;
 
         Appender.page        = settings.current_page;
         Appender.settings    = settings;
-        Appender.button_text = this.load_more_button.innerHTML;
+        Appender.button_text = Appender.load_more_button.innerHTML;
 
-        this.load_more_button.addEventListener('click', function (event){
+        Appender.load_more_button.addEventListener('click', function (event){
 
             Appender.load();
 
@@ -2754,32 +2756,11 @@ var Appender = {
 
     load : function ()
     { 
-        var url = Appender.settings.url + (parseInt(Appender.page) + 1);
+        var request_url = Appender.settings.url + (parseInt(Appender.page) + 1); 
 
-        Appender.block_for_items = document.getElementById(Appender.settings.target_block_id);
-
-        if ( !Appender.block_for_items ) return false;
-
-        Appender.sendRequest({
-            'url': url
-        }); 
-    },
-
-    disable : function ()
-    {
-        Appender.load_more_button.style.visibility = "hidden";
-
-        if ( Appender.auto_loading.is_launched )
-        {
-            Appender.auto_loading.disable();
-        }
-    },
-
-    sendRequest : function (data)
-    {
         simpleAjax.call({
         type: 'post',
-        url: data.url,
+        url: request_url,
         data: {},
         beforeSend : function ()
         {
@@ -2796,7 +2777,7 @@ var Appender = {
                 Appender.page++;
 
                 /* Removing restriction for auto loading */
-                Appender.auto_loading.access = true;
+                Appender.auto_loading.can_load = true;
 
                 /* Checking for next page's existing. If no — hide the button for loading news and remove listener */
                 if ( !response.next_page ) Appender.disable();
@@ -2813,6 +2794,16 @@ var Appender = {
         });
     },
 
+    disable : function ()
+    {
+        Appender.load_more_button.style.display = "none";
+
+        if ( Appender.auto_loading.is_launched )
+        {
+            Appender.auto_loading.disable();
+        }
+    },
+
     auto_loading : {
 
         is_launched : false,
@@ -2825,14 +2816,14 @@ var Appender = {
 
         init : function ()
         {
-            window.addEventListener("scroll", Appender.auto_loading.scroll);
+            window.addEventListener("scroll", Appender.auto_loading.scrollEvent);
 
             Appender.auto_loading.is_launched = true;
         },
 
         disable : function ()
         {
-            window.removeEventListener("scroll", Appender.auto_loading.scroll);
+            window.removeEventListener("scroll", Appender.auto_loading.scrollEvent);
 
             Appender.auto_loading.is_launched = false;
         },
