@@ -2729,17 +2729,18 @@ var Appender = {
      */
     button_text : null,
 
-    init : function (settings){
-        
+    init : function (settings)
+    {
+        Appender.settings    = settings;
+
         /* Checking for existing button and field for loaded info */
-        Appender.load_more_button = document.getElementById(settings.button_id);
+        Appender.load_more_button = document.getElementById(Appender.settings.button_id);
         if ( !Appender.load_more_button ) return false;
 
         Appender.block_for_items = document.getElementById(Appender.settings.target_block_id);
         if ( !Appender.block_for_items ) return false;
 
         Appender.page        = settings.current_page;
-        Appender.settings    = settings;
         Appender.button_text = Appender.load_more_button.innerHTML;
 
         Appender.load_more_button.addEventListener('click', function (event){
