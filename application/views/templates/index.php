@@ -4,7 +4,7 @@
     </div>
 <? endif ?>
 <div id="list_of_news" class="news">
-    
+
     <?= View::factory('templates/news_list', array(
         'pages'=> $pages
     )); ?>
@@ -25,5 +25,5 @@
 			});
 		});
 	</script>
-	
+
 <? endif ?>

@@ -2715,7 +2715,7 @@ $(document).ready(function(){
 var Appender = {
 
     /* Pagination. Here is a number of current page */
-    page : 1, 
+    page : 1,
 
     settings : null,
 
@@ -2755,8 +2755,8 @@ var Appender = {
     },
 
     load : function ()
-    { 
-        var request_url = Appender.settings.url + (parseInt(Appender.page) + 1); 
+    {
+        var request_url = Appender.settings.url + (parseInt(Appender.page) + 1);
 
         simpleAjax.call({
         type: 'post',
@@ -2766,11 +2766,11 @@ var Appender = {
         {
             Appender.load_more_button.innerHTML = ' ';
             Appender.load_more_button.classList.add('loading');
-        }, 
+        },
         success : function(response)
-        {   
+        {
             if ( response.success )
-            {                
+            {
                 Appender.block_for_items.innerHTML += response.pages;
 
                 /* Next page */
@@ -2785,7 +2785,7 @@ var Appender = {
             } else {
 
                 CLIENT.showException('Не удалось подгрузить новости');
-                
+
             }
 
             Appender.load_more_button.classList.remove('loading');
@@ -2808,9 +2808,9 @@ var Appender = {
 
         is_launched : false,
 
-        /** 
-         * Possibility to load news by scrolling. 
-         * Restriction for reduction requests which could be while scrolling 
+        /**
+         * Possibility to load news by scrolling.
+         * Restriction for reduction requests which could be while scrolling
          */
         can_load : true,
 
@@ -2860,9 +2860,9 @@ var parser = {
          var _this = this;
 
          this.input.addEventListener('paste', function (event) {
-         
+
              _this.inputPasteCallback()
-         
+
          } , false)
 
     },
@@ -2879,18 +2879,19 @@ var parser = {
 
         }, 100);
     },
-    
+
 
     sendRequest : function (url)
     {
+        console.log('asdas');
         simpleAjax.call({
         type: 'get',
         url: '/ajax/get_page',
         data: { 'url' : url },
         success: function(response)
-        {    
+        {
             if ( response.success == 1) {
-            
+
                 var title = document.getElementById('page_form_title');
                 title.value = response.title;
 
@@ -2907,7 +2908,7 @@ var parser = {
             } else {
 
                 CLIENT.showException('Не удалось импортировать страницу');
-                
+
             }
         }
         });

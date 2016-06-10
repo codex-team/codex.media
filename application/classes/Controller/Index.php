@@ -16,11 +16,11 @@ class Controller_Index extends Controller_Base_preDispatch
         $offset = ($page_number - 1) * self::NEWS_LIMIT_PER_PAGE;
 
         $pages = Model_Page::getPages(
-                                    Model_Page::TYPE_SITE_NEWS, 
-                                    self::NEWS_LIMIT_PER_PAGE + 1, 
+                                    Model_Page::TYPE_SITE_NEWS,
+                                    self::NEWS_LIMIT_PER_PAGE + 1,
                                     $offset,
                                     0,
-                                    true);  
+                                    true);
 
         $next_page = false;
         if (count($pages) > self::NEWS_LIMIT_PER_PAGE)
@@ -34,7 +34,7 @@ class Controller_Index extends Controller_Base_preDispatch
         {
             $response = array();
             $response['success']    = 1;
-            $response['next_page']  = $next_page;   
+            $response['next_page']  = $next_page;
             $response['pages']      = View::factory('templates/news_list', array( 'pages' => $pages ))->render(); 
 
             $this->auto_render = false;
@@ -59,12 +59,12 @@ class Controller_Index extends Controller_Base_preDispatch
     }
 
     public function action_users_list()
-    {   
+    {
         $status = Model_User::USER_STATUS_REGISTERED;
 
         if ($this->request->param('type') == 'teachers')
         {
-            $status = Model_User::USER_STATUS_TEACHER;           
+            $status = Model_User::USER_STATUS_TEACHER;
         }
 
         $this->view['users']    = Model_User::getUsersList($status);
