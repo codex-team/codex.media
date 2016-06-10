@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Model_User extends Model_preDispatch
+class Model_User extends Model
 {
 
     public $id                  = 0;
@@ -38,7 +38,6 @@ class Model_User extends Model_preDispatch
 
     public function __construct($uid = null)
     {
-        parent::__construct();
         if ( !$uid ) return;
 
         $user = self::get($uid);
@@ -66,8 +65,8 @@ class Model_User extends Model_preDispatch
             $this->isTeacher        = $this->isTeacher();
             $this->isAdmin          = $this->isAdmin();
 
-            $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
-            $this->lastOnline       = self::getLastOnlineTimestamp();
+            // $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
+            // $this->lastOnline       = self::getLastOnlineTimestamp();
         }
     }
 
@@ -158,7 +157,7 @@ class Model_User extends Model_preDispatch
     public function isTeacher()
     {
         if (!$this->id) return false;
-        
+
         return $this->status >= self::USER_STATUS_TEACHER;
     }
 

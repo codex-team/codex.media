@@ -10,11 +10,11 @@
 //     'action' => 'index'
 // ));
 
-
+    
 $DIGIT = '\d+';
 $STRING = '[-a-z\d]+';
 
-Route::set('INDEX', '')->defaults(array(
+Route::set('INDEX', '(<page_number>)', array( 'page_number' => $DIGIT ))->defaults(array(
     'controller' => 'index',
     'action' => 'index'
 ));
@@ -29,7 +29,7 @@ Route::set('INDEX', '')->defaults(array(
 #    'action' => 'add_new'
 #));
 
-Route::set('NEW_PAGE', 'p/(<id>(/<uri>/))add-<type>', array( 'id' => $DIGIT , 'uri' => $STRING, 'type' => 'page|news' ))->defaults(array(
+Route::set('NEW_PAGE', 'p/(<id>/(<uri>/))add-<type>', array( 'id' => $DIGIT , 'uri' => $STRING, 'type' => 'page|news' ))->defaults(array(
     'controller' => 'pages',
     'action' => 'add_page'
 ));

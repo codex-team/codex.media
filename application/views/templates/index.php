@@ -3,26 +3,27 @@
         <a class="button green" href="/p/add-news">Добавить новость</a>
     </div>
 <? endif ?>
-<div class="news">
-    <? foreach ($pages as $page): ?>
+<div id="list_of_news" class="news">
 
-        <article class="post <?= $page->rich_view ? 'rich_view' : '' ?> <?= $page->dt_pin ? 'pinned' : '' ?>">
-            <time><?= date_format(date_create($page->date), 'd F Y, G:i') ?></time>
-            <h3>
-                <a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a>
-            </h3>
-
-            <? if (!$page->rich_view): ?>
-                <div class="body">
-                    <?= $page->content ?>
-                </div>
-            <? endif ?>
-            <div class="footer">
-                <a class="read_more" href="/p/<?= $page->id ?>/<?= $page->uri ?>" rel="nofollow">Подробнее</a>
-                <a href="/p/<?= $page->id ?>/<?= $page->uri ?>" rel="nofollow">Комментировать</a>
-            </div>
-        </article>
-
-    <? endforeach; ?>
+    <?= View::factory('templates/news_list', array(
+        'pages'=> $pages
+    )); ?>
 
 </div>
+
+<? if ($next_page): ?>
+
+	<a class="load_more_button" id="button_load_news" href="/<?= $page_number + 1 ?>">Показать больше новостей</a>
+
+	<script>
+		$(function(){
+			Appender.init({
+				button_id       : 'button_load_news',
+				current_page    : '<?= $page_number ?>',
+				url             : '/',
+				target_block_id : 'list_of_news',
+			});
+		});
+	</script>
+
+<? endif ?>

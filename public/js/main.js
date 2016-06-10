@@ -2712,12 +2712,143 @@ $(document).ready(function(){
 
 });
 
+var Appender = {
+
+    /* Pagination. Here is a number of current page */
+    page : 1,
+
+    settings : null,
+
+    block_for_items : null,
+
+    load_more_button : null,
+
+    /**
+     * Button's text for saving it.
+     * On its place dots will be  while news are loading
+     */
+    button_text : null,
+
+    init : function (settings)
+    {
+        Appender.settings    = settings;
+
+        /* Checking for existing button and field for loaded info */
+        Appender.load_more_button = document.getElementById(Appender.settings.button_id);
+        if ( !Appender.load_more_button ) return false;
+
+        Appender.block_for_items = document.getElementById(Appender.settings.target_block_id);
+        if ( !Appender.block_for_items ) return false;
+
+        Appender.page        = settings.current_page;
+        Appender.button_text = Appender.load_more_button.innerHTML;
+
+        Appender.load_more_button.addEventListener('click', function (event){
+
+            Appender.load();
+
+            event.preventDefault();
+
+            Appender.auto_loading.init();
+
+        }, false);
+
+    },
+
+    load : function ()
+    {
+        var request_url = Appender.settings.url + (parseInt(Appender.page) + 1);
+
+        simpleAjax.call({
+        type: 'post',
+        url: request_url,
+        data: {},
+        beforeSend : function ()
+        {
+            Appender.load_more_button.innerHTML = ' ';
+            Appender.load_more_button.classList.add('loading');
+        },
+        success : function(response)
+        {
+            if ( response.success )
+            {
+                Appender.block_for_items.innerHTML += response.pages;
+
+                /* Next page */
+                Appender.page++;
+
+                /* Removing restriction for auto loading */
+                Appender.auto_loading.can_load = true;
+
+                /* Checking for next page's existing. If no — hide the button for loading news and remove listener */
+                if ( !response.next_page ) Appender.disable();
+
+            } else {
+
+                CLIENT.showException('Не удалось подгрузить новости');
+
+            }
+
+            Appender.load_more_button.classList.remove('loading');
+            Appender.load_more_button.innerHTML = Appender.button_text;
+        }
+        });
+    },
+
+    disable : function ()
+    {
+        Appender.load_more_button.style.display = "none";
+
+        if ( Appender.auto_loading.is_launched )
+        {
+            Appender.auto_loading.disable();
+        }
+    },
+
+    auto_loading : {
+
+        is_launched : false,
+
+        /**
+         * Possibility to load news by scrolling.
+         * Restriction for reduction requests which could be while scrolling
+         */
+        can_load : true,
+
+        init : function ()
+        {
+            window.addEventListener("scroll", Appender.auto_loading.scrollEvent);
+
+            Appender.auto_loading.is_launched = true;
+        },
+
+        disable : function ()
+        {
+            window.removeEventListener("scroll", Appender.auto_loading.scrollEvent);
+
+            Appender.auto_loading.is_launched = false;
+        },
+
+        scrollEvent : function ()
+        {
+            var scroll_reached_end = window.pageYOffset + window.innerHeight >= document.height;
+
+            if (scroll_reached_end && Appender.auto_loading.can_load)
+            {
+                Appender.auto_loading.can_load = false;
+
+                Appender.load();
+            }
+        },
+
+    },
+
+}
+
 /**
  * Parser code
  * @author Taly Guryn
  */
-
-
 
 var parser = {
 
@@ -2730,9 +2861,9 @@ var parser = {
          var _this = this;
 
          this.input.addEventListener('paste', function (event) {
-         
+
              _this.inputPasteCallback()
-         
+
          } , false)
 
     },
@@ -2749,18 +2880,19 @@ var parser = {
 
         }, 100);
     },
-    
 
-    sendRequest : function (url) {
 
+    sendRequest : function (url)
+    {
+        console.log('asdas');
         simpleAjax.call({
         type: 'get',
         url: '/ajax/get_page',
         data: { 'url' : url },
-        success: function(response){
-            
+        success: function(response)
+        {
             if ( response.success == 1) {
-            
+
                 var title = document.getElementById('page_form_title');
                 title.value = response.title;
 
@@ -2777,10 +2909,10 @@ var parser = {
             } else {
 
                 CLIENT.showException('Не удалось импортировать страницу');
-                
+
             }
         }
-    });
+        });
     }
 
 

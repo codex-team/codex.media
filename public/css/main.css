@@ -252,7 +252,7 @@ h3{
 
 
 
-.button.loading:after{
+.loading:after{
     content: '●●●';
     display: inline-block;
     margin-left: 5px;
@@ -1274,4 +1274,17 @@ footer.site_footer p{margin: 15px 25px}
     line-height: 1.4em;
 }
     .page_comments .dummy_text:first-of-type { margin-top: 26px; }
+
+
+.load_more_button {
+    padding: 15px 0;
+    font-size: 17px;
+    color: #3d485a;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+}
+    .load_more_button:hover {
+        background-color: rgba(18, 34, 65, 0.13);
+    }
 
