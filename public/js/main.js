@@ -2712,12 +2712,11 @@ $(document).ready(function(){
 
 });
 
+
 /**
  * Parser code
  * @author Taly Guryn
  */
-
-
 
 var parser = {
 
@@ -2730,9 +2729,9 @@ var parser = {
          var _this = this;
 
          this.input.addEventListener('paste', function (event) {
-         
+
              _this.inputPasteCallback()
-         
+
          } , false)
 
     },
@@ -2749,18 +2748,19 @@ var parser = {
 
         }, 100);
     },
-    
 
-    sendRequest : function (url) {
 
+    sendRequest : function (url)
+    {
+        console.log('asdas');
         simpleAjax.call({
         type: 'get',
         url: '/ajax/get_page',
         data: { 'url' : url },
-        success: function(response){
-            
+        success: function(response)
+        {
             if ( response.success == 1) {
-            
+
                 var title = document.getElementById('page_form_title');
                 title.value = response.title;
 
@@ -2777,11 +2777,10 @@ var parser = {
             } else {
 
                 CLIENT.showException('Не удалось импортировать страницу');
-                
+
             }
         }
-    });
+        });
     }
-
 
 };

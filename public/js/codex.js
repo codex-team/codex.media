@@ -36,36 +36,70 @@ codex.core = {
     */
     ajax : function (data) {
 
-        if (!data || !data['url']){
+        if (!data || !data.url){
             return;
         }
 
         var XMLHTTP          = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP"),
-            success_function = function( r ){};
+            success_function = function(){};
 
-        data['async']        = !!data['async'];
-        data['type']         = data['type'] || 'GET';
-        data['data']         = data['data'] || '';
-        data['content-type'] = data['content-type'] || 'text/html';
-        success_function     = data['success'] || success_function ;
+        data.async           = true;
+        data.type            = data.type || 'GET';
+        data.data            = data.data || '';
+        data['content-type'] = data['content-type'] || 'application/json; charset=utf-8';
+        success_function     = data.success || success_function ;
 
-        if (data['type'] == 'GET' && data['data']) {
-            data['url'] = /\?/.test(data['url']) ? data['url'] + '&' + data['data'] : data['url'] + '?' + data['data'];
+        if (data.type == 'GET' && data.data) {
+            data.url = /\?/.test(data.url) ? data.url + '&' + data.data : data.url + '?' + data.data;
         }
 
-        if (data['withCredentials']) {
+        if (data.withCredentials) {
             XMLHTTP.withCredentials = true;
         }
 
-        XMLHTTP.open( data['type'], data['url'], data['async'] );
+        if (data.beforeSend && typeof data.beforeSend == 'function') {
+            data.beforeSend.call();
+        }
+
+        XMLHTTP.open( data.type, data.url, data.async );
         XMLHTTP.setRequestHeader("Content-type", data['content-type'] );
+        XMLHTTP.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         XMLHTTP.onreadystatechange = function() {
             if (XMLHTTP.readyState == 4 && XMLHTTP.status == 200) {
                 success_function(XMLHTTP.responseText);
             }
+        };
+
+        XMLHTTP.send(data.data);
+
+    },
+
+    showException : function ( message ){
+
+        var wrapper = document.querySelector('.exceptionWrapper'),
+            notify;
+
+        if (!wrapper) {
+
+            wrapper = document.createElement('div');
+            wrapper.classList.add('exceptionWrapper');
+
+            document.body.appendChild(wrapper);
+
         }
 
-        XMLHTTP.send(data['data']);
+        notify = document.createElement('div');
+        notify.classList.add('clientException');
+
+        notify.innerHTML = message;
+
+        wrapper.appendChild(notify);
+
+        notify.classList.add('bounceIn');
+
+        setTimeout(function(){
+            notify.remove();
+        }, 8000);
 
     }
 
@@ -135,7 +169,7 @@ codex.parser = {
 
                 } else {
 
-                    CLIENT.showException('Не удалось импортировать страницу');
+                    codex.core.showException('Не удалось импортировать страницу');
 
                 }
             }
@@ -324,6 +358,141 @@ codex.transport = {
 
 
 
+
+};
+
+codex.appender = {
+
+    /* Pagination. Here is a number of current page */
+    page : 1,
+
+    settings : null,
+
+    block_for_items : null,
+
+    load_more_button : null,
+
+    /**
+     * Button's text for saving it.
+     * On its place dots will be  while news are loading
+     */
+    button_text : null,
+
+    init : function (settings)
+    {
+        codex.appender.settings    = settings;
+
+        /* Checking for existing button and field for loaded info */
+        codex.appender.load_more_button = document.getElementById(codex.appender.settings.button_id);
+        if ( !codex.appender.load_more_button ) return false;
+
+        codex.appender.block_for_items = document.getElementById(codex.appender.settings.target_block_id);
+        if ( !codex.appender.block_for_items ) return false;
+
+        codex.appender.page        = settings.current_page;
+        codex.appender.button_text = codex.appender.load_more_button.innerHTML;
+
+        codex.appender.load_more_button.addEventListener('click', function (event){
+
+            codex.appender.load();
+
+            event.preventDefault();
+
+            codex.appender.auto_loading.init();
+
+        }, false);
+
+    },
+
+    load : function ()
+    {
+        var request_url = codex.appender.settings.url + (parseInt(codex.appender.page) + 1);
+
+        codex.core.ajax({
+            type: 'post',
+            url: request_url,
+            data: {},
+            beforeSend : function ()
+            {
+                codex.appender.load_more_button.innerHTML = ' ';
+                codex.appender.load_more_button.classList.add('loading');
+            },
+            success : function(response)
+            {
+                response = JSON.parse(response);
+
+                if ( response.success )
+                {
+                    codex.appender.block_for_items.innerHTML += response.pages;
+
+                    /* Next page */
+                    codex.appender.page++;
+
+                    /* Removing restriction for auto loading */
+                    codex.appender.auto_loading.can_load = true;
+
+                    /* Checking for next page's existing. If no — hide the button for loading news and remove listener */
+                    if ( !response.next_page ) codex.appender.disable();
+
+                } else {
+
+                    codex.core.showException('Не удалось подгрузить новости');
+
+                }
+
+                codex.appender.load_more_button.classList.remove('loading');
+                codex.appender.load_more_button.innerHTML = codex.appender.button_text;
+            }
+        });
+    },
+
+    disable : function ()
+    {
+        codex.appender.load_more_button.style.display = "none";
+
+        if ( codex.appender.auto_loading.is_launched )
+        {
+            codex.appender.auto_loading.disable();
+        }
+    },
+
+    auto_loading : {
+
+        is_launched : false,
+
+        /**
+         * Possibility to load news by scrolling.
+         * Restriction for reduction requests which could be while scrolling
+         */
+        can_load : true,
+
+        init : function ()
+        {
+            window.addEventListener("scroll", codex.appender.auto_loading.scrollEvent);
+
+            codex.appender.auto_loading.is_launched = true;
+        },
+
+        disable : function ()
+        {
+            window.removeEventListener("scroll", codex.appender.auto_loading.scrollEvent);
+
+            codex.appender.auto_loading.is_launched = false;
+        },
+
+        scrollEvent : function ()
+        {
+            var scroll_reached_end = window.pageYOffset + window.innerHeight >= document.height;
+
+            if (scroll_reached_end && codex.appender.auto_loading.can_load)
+            {
+                codex.appender.auto_loading.can_load = false;
+
+                codex.appender.load();
+            }
+        },
+
+    },
 
 };
 

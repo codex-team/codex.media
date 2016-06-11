@@ -9,7 +9,7 @@ html{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
 img{border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
 
 label{cursor: pointer}
-button, input, select, textarea{font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle}
+button, input, select, textarea{font-size: 100%; margin: 0; vertical-align: baseline;}
 input[type="checkbox"], input[type="radio"]{ box-sizing: border-box; }
 button::-moz-focus-inner, input::-moz-focus-inner{ border: 0; padding: 0; }
 textarea{overflow: auto; vertical-align: top; resize: vertical; }
@@ -252,7 +252,7 @@ h3{
 
 
 
-.button.loading:after{
+.loading:after{
     content: '●●●';
     display: inline-block;
     margin-left: 5px;
@@ -473,6 +473,25 @@ footer.site_footer p{margin: 15px 25px}
     margin-left: 300px;
 }
 
+.page_menu{
+    padding: 23px;
+    list-style: none;
+    font-size: 0;
+}
+    .page_menu li{
+        position: relative;
+        display: inline-block;
+        font-size: 17px;
+    }
+        .page_menu li:not(:last-child)::after{
+            content: '・';
+            display: inline-block;
+            padding: 0 5px;
+            vertical-align: middle;
+            color: #C1C8DA;
+            font-size: 24px;
+        }
+
 .breadcrumb{
     padding: 30px;
     border-bottom: 1px solid #eff3f6;
@@ -496,6 +515,7 @@ footer.site_footer p{margin: 15px 25px}
         border-bottom: 0;
         margin-left: 20px;
         margin-top: -6px;
+        margin-bottom: -6px;
     }
         .breadcrumb .iconic{
             padding-left: 11px;
@@ -554,7 +574,7 @@ footer.site_footer p{margin: 15px 25px}
         .news .pinned::after{
             font-family: 'codex-edu';
             display: block;
-            content: '\e810';
+            content: '\e811';
             color: #E3E5EA;
             position: absolute;
             right: 50px;
@@ -986,8 +1006,32 @@ footer.site_footer p{margin: 15px 25px}
     margin: 30px 30px 0 0;
 }
 
+.list_users_heading {
+    padding-left: 7px;
+}
 
+.p_table{
+    width: 100%;
+}
 
+.p_table td {
+    padding: 14px;
+    border-top: 1px solid #EFF1F5;
+    word-wrap: break-word;
+    text-decoration: none;
+    vertical-align: middle;
+}
+    td.ava {
+        width: 32px;
+        padding-left: 30px;
+    }
+
+    .list_teacher_ava,
+    .list_teacher_ava > img{
+        width: 32px;
+        height: 32px;
+        border-radius: 20px;
+    }
 
 @-webkit-keyframes bounceIn {
     0% { opacity: 0; -webkit-transform: scale(.3);}
@@ -1031,7 +1075,7 @@ footer.site_footer p{margin: 15px 25px}
     -webkit-animation-name: fadeIn; -webkit-animation-duration: 600ms; -webkit-animation-iteration-count: 1;
     -moz-animation-name: fadeIn; -moz-animation-duration: 600ms; -moz-animation-iteration-count: 1;
     -o-animation-name: fadeIn; -o-animation-duration: 600ms; -o-animation-iteration-count: 1;
-    animation-name: fadeIn; animation-duration: 600ms; animation-iteration-count: 1;;
+    animation-name: fadeIn; animation-duration: 600ms; animation-iteration-count: 1;
 }
 
 
@@ -1295,12 +1339,24 @@ footer.site_footer p{margin: 15px 25px}
     }
     .atlas_form .attaches .item::before {
         display: inline-block;
-        margin-right: 12px;     
+        margin-right: 12px;
         content: '\e818';
         font-family: 'codex-edu';
-        vertical-align: middle;    
+        vertical-align: middle;
     }
     .atlas_form .attaches .item:not(:first-of-type) {
         border-top: 1px solid #eff3f6;
+    }
+
+.load_more_button {
+    padding: 15px 0;
+    font-size: 17px;
+    color: #3d485a;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+}
+    .load_more_button:hover {
+        background-color: rgba(18, 34, 65, 0.13);
     }
 

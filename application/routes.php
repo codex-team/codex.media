@@ -14,7 +14,7 @@
 $DIGIT = '\d+';
 $STRING = '[-a-z\d]+';
 
-Route::set('INDEX', '')->defaults(array(
+Route::set('INDEX', '(<page_number>)', array( 'page_number' => $DIGIT ))->defaults(array(
     'controller' => 'index',
     'action' => 'index'
 ));
@@ -54,6 +54,11 @@ Route::set('PROFILE', 'user/<id>', array( 'id' => $DIGIT ))->defaults(array(
 Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
     'controller' => 'user',
     'action' => 'settings'
+));
+
+Route::set('USERS_LIST', 'users(/<type>)', array('type' => 'teachers'))->defaults(array(
+    'controller' => 'index',
+    'action' => 'users_list'
 ));
 
 

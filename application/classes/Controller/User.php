@@ -21,7 +21,7 @@ class Controller_User extends Controller_Base_preDispatch
         $this->view['userPages'] = $viewUser->getUserPages();
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
-        $this->template->content = View::factory('/templates/user/profile', $this->view);
+        $this->template->content = View::factory('/templates/users/profile', $this->view);
 
     }
 
@@ -58,8 +58,11 @@ class Controller_User extends Controller_Base_preDispatch
             $newPhone        = trim(Arr::get($_POST, 'phone'));
             $newAva          = Arr::get($_FILES, 'new_ava');
 
-            $hashedCurrentPassword = Controller_Auth_Base::createPasswordHash($currentPassword);
-
+            if ($currentPassword) {
+                $hashedCurrentPassword = Controller_Auth_Base::createPasswordHash($currentPassword);
+            } else {
+                $hashedCurrentPassword = Controller_Auth_Base::createPasswordHash($newPassword);
+            }
             if ($hashedCurrentPassword != $this->user->password && $currentPassword) {
                 $error['currPassError'] = 'Неправильный текущий пароль.';
                 $newPassword = '';
@@ -95,6 +98,6 @@ class Controller_User extends Controller_Base_preDispatch
         $this->view['error']     = $error;
         $this->view['success']   = $succesResult;
 
-        $this->template->content = View::factory('/templates/user/settings', $this->view);
+        $this->template->content = View::factory('/templates/users/settings', $this->view);
     }
 }

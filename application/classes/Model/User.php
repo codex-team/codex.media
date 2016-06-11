@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Model_User extends Model_preDispatch
+class Model_User extends Model
 {
 
     public $id                  = 0;
@@ -38,7 +38,6 @@ class Model_User extends Model_preDispatch
 
     public function __construct($uid = null)
     {
-        parent::__construct();
         if ( !$uid ) return;
 
         $user = self::get($uid);
@@ -57,16 +56,17 @@ class Model_User extends Model_preDispatch
                 }
             }
 
-            if (!$this->photo)        $this->photo        = '/public/img/default_ava_small.png';
-            if (!$this->photo_medium) $this->photo_medium = '/public/img/default_ava.png';
-            if (!$this->photo_big)    $this->photo_big    = '/public/img/default_ava_big.png';
-
+            if (!$this->photo || !$this->photo_medium || !$this->photo_big){
+                $this->photo        = '/public/img/default_ava_small.png';
+                $this->photo_medium = '/public/img/default_ava.png';
+                $this->photo_big    = '/public/img/default_ava_big.png';
+            }
 
             $this->isTeacher        = $this->isTeacher();
             $this->isAdmin          = $this->isAdmin();
 
-            $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
-            $this->lastOnline       = self::getLastOnlineTimestamp();
+            // $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
+            // $this->lastOnline       = self::getLastOnlineTimestamp();
         }
     }
 
@@ -77,7 +77,9 @@ class Model_User extends Model_preDispatch
                     ->where('email', '=', $email)
                     ->limit(1)
                     ->execute();
+
         if (!$arr) return true;
+
         return false;
     }
 
@@ -118,17 +120,15 @@ class Model_User extends Model_preDispatch
 
     public function setUserStatus($status)
     {
-        $this->status = $status;
-
         Dao_Users::update()
             ->where('id', '=', $this->id)
             ->set('status', $status)
-            ->clearcache('user:' . $this->id)
+            ->clearcache('user:' . $this->id, array('users'))
             ->execute();
 
-        $this->isTeacher        = $this->isTeacher();
-        $this->isAdmin          = $this->isAdmin();
-
+        $this->status       = $status;
+        $this->isTeacher    = $this->isTeacher();
+        $this->isAdmin      = $this->isAdmin();
 
         return true;
     }
@@ -150,12 +150,14 @@ class Model_User extends Model_preDispatch
     public function isAdmin()
     {
         if (!$this->id) return false;
+
         return $this->status == self::USER_STATUS_ADMIN;
     }
 
     public function isTeacher()
     {
         if (!$this->id) return false;
+
         return $this->status >= self::USER_STATUS_TEACHER;
     }
 
@@ -171,6 +173,36 @@ class Model_User extends Model_preDispatch
                     ->execute();
 
         return Model_Page::rowsToModels($pages);
+    }
+
+    public static function getUsersList($status)
+    {
+        $teachers = Dao_Users::select()
+                        ->where('status', '>=', $status)
+                        ->order_by('id','ASC')
+                        ->cached(Date::HOUR, 'users_list:' . $status, array('users'))
+                        ->execute();
+
+        return Model_User::rowsToModels($teachers);
+    }
+
+    public static function rowsToModels($users_rows)
+    {
+        $users = array();
+
+        if (!empty($users_rows))
+        {
+            foreach ($users_rows as $user_row)
+            {
+                $user = new Model_User();
+
+                $user->fillByRow($user_row);
+
+                array_push($users, $user);
+            }
+        }
+
+        return $users;
     }
 
 }

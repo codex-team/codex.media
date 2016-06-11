@@ -30,7 +30,7 @@ class Model_Methods extends Model
         $info = Dao_SiteInfo::select()
             ->order_by('id', 'DESC')
             ->limit(1)
-            ->cached(Date::DAY, 'site_info')
+            ->cached(Date::DAY, 'site_info', array('site_menu'))
             ->execute();
 
         $this->title        = $info['title'];
@@ -629,6 +629,11 @@ class Model_Methods extends Model
 
         return $converted_string;
 
+    }
+
+    public static function isAjax()
+    {
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
     }
 
 }
