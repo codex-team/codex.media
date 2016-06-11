@@ -96,12 +96,6 @@
         </form>
     </div>
 
-    <script src="/public/js/comment.js"></script>
-
-
-
-
-
 
     <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
 

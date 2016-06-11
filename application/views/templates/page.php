@@ -128,7 +128,7 @@
         <p class="dummy_text"><a href="/auth">Присоединяйтесь к сообществу</a>, чтобы оставлять комментарии.</p>
     <? endif; ?>
 </div>
-
+<script src="/public/js/comment.js"></script>
 <script>
     codex.documentIsReady(function(){
         Comments.init();
