@@ -20,6 +20,13 @@ var codex = (function(codex){
 })({});
 
 /**
+* Handle document ready
+*/
+codex.documentIsReady = function(f){
+    return /in/.test(document.readyState) ? setTimeout(codex.documentIsReady,9,f) : f();
+}
+
+/**
 * System methods and helpers
 */
 codex.core = {
@@ -320,11 +327,11 @@ codex.transport = {
 
 };
 
-function documentIsReady(f){/in/.test(document.readyState) ? setTimeout(documentIsReady,9,f) : f();}
 
-documentIsReady(function(){
 
-    codex.transport.init()
+codex.documentIsReady(function(){
+
+    codex.transport.init();
 
     // codex.parser.init({
     //     input_id : 'parser_input_url'

@@ -130,7 +130,7 @@
 </div>
 
 <script>
-    $(function() {
+    codex.documentIsReady(function(){
         Comments.init();
     });
 </script>

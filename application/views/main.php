@@ -24,6 +24,8 @@
     <link rel="stylesheet" type="text/css" media="all" href="/public/css/main.css?v=<?= time() ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
 
+    <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>
+
 </head>
 <body>
 
@@ -93,8 +95,6 @@
             <input type="file" name="files" id="transportInput"/>
         </form>
     </div>
-
-    <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>
 
     <script src="/public/js/comment.js"></script>
 
