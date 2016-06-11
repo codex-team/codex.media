@@ -145,7 +145,13 @@ codex.transport = {
     input : null,
 
     /**
+    * @uses for store inputed filename to this.files
+    */
+    keydownFinishedTimeout : null,
+
+    /**
     * Current attaches will be stored in this object
+    * @see this.storeFile
     */
     files : {},
 
@@ -206,8 +212,6 @@ codex.transport = {
 
     response : function (response) {
 
-        console.log(response);
-
         if (response.success && response.filename) {
 
             this.storeFile(response);
@@ -235,6 +239,10 @@ codex.transport = {
 
     },
 
+    /**
+    * Appends saved file to form
+    * Allow edit name by contenteditable element
+    */
     appendFileRow : function (file) {
 
         var attachesZone = document.getElementById('formAttaches');
@@ -247,12 +255,51 @@ codex.transport = {
 
         attachesZone.appendChild(row);
 
+        /** Save ID to determine which filename edited */
+        row.dataset.id = file.id;
+        row.addEventListener('input', this.storeFileName, false);
+
+    },
+
+    /**
+    * Saves filename from input to this.files object
+    */
+    storeFileName : function(){
+
+        /**
+        * Clear previous keydown-timeout
+        */
+        if (codex.transport.keydownFinishedTimeout){
+            clearTimeout(codex.transport.keydownFinishedTimeout);
+        }
+
+        var input = this;
+
+        /**
+        * Start waiting to input finished, then save value to this.files
+        */
+        codex.transport.keydownFinishedTimeout = setTimeout(function() {
+
+            var id    = input.dataset.id,
+                title = input.textContent.trim();
+
+            if (title) {
+                codex.transport.files[id].title = title;
+            }
+
+        }, 300);
+
+
     },
 
 
+    /**
+    * Prepares and submit form
+    * Send attaches by json-encoded stirng with hidden input
+    */
     submitAtlasForm : function(){
 
-        var atlasForm = document.forms['atlas'];
+        var atlasForm = document.forms.atlas;
 
         if (!atlasForm) return;
 
@@ -271,7 +318,7 @@ codex.transport = {
 
 
 
-}
+};
 
 function documentIsReady(f){/in/.test(document.readyState) ? setTimeout(documentIsReady,9,f) : f();}
 

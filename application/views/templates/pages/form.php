@@ -21,8 +21,6 @@
         <span class="attach" onclick="codex.transport.selectFile(event, '<?= Controller_Transport::PAGE_FILE ?>')"><i class="icon-attach"></i>Прикрепить файл</span>
     </div>
 
-    <input type="text" name="form_attaches_input" />
-
 </form>
 <? /*
     <div class="mb30">

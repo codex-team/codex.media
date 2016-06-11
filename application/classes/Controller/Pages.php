@@ -207,15 +207,18 @@ class Controller_Pages extends Controller_Base_preDispatch
     * Gets json-encoded attaches list from input
     * Writes this
     */
-    private function savePageFiles($page_id = null)
+    private function savePageFiles($page_id)
     {
         $attaches = Arr::get($_POST, 'attaches');
 
-        $attaches = json_decode($attaches);
+        $attaches = json_decode($attaches, true);
 
-        foreach ($attaches as $attache_id => $properties)
+        foreach ($attaches as $id => $file)
         {
-            $this->methods->updateFile($attache_id, [ 'page' => $page_id ]);
+            $this->methods->updateFile($id, array(
+                'page'  => $page_id,
+                'title' => $file['title']
+            )) ;
         }
     }
 
