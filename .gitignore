@@ -16,3 +16,4 @@ application/config/oauth.php*
 public/img/covers/*
 /nbproject/private/
 *~
+_.htaccess
