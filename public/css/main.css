@@ -1349,14 +1349,14 @@ footer.site_footer p{margin: 15px 25px}
     }
 
 .load_more_button {
-    padding: 15px 0;
-    font-size: 17px;
-    color: #3d485a;
+    padding: 85px 0;
+    font-size: 18px;
+    color: #364762;
     text-align: center;
     text-decoration: none;
     display: block;
 }
     .load_more_button:hover {
-        background-color: rgba(18, 34, 65, 0.13);
+        background-color: #fbfcfd;
     }
 
