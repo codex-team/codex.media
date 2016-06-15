@@ -1,4 +1,4 @@
-<form class="atlas_form" action="/p/save" id="atlasForm" method="post" name="atlas">
+<form class="atlas_form w_island" action="/p/save" id="atlasForm" method="post" name="atlas">
 
     <?= Form::hidden('csrf', Security::token()); ?>
     <?= Form::hidden('type', $page->type); ?>

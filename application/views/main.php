@@ -77,6 +77,10 @@
 
         </aside>
 
+        <div class="sidebar">
+            <? include(APPPATH .'views/templates/sidebar.php') ?>
+        </div>
+
         <div class="page_wrap">
             <?= $content ?>
         </div>

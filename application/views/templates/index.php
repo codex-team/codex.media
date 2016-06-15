@@ -18,7 +18,7 @@
 
 <? if ($next_page): ?>
 
-	<a class="load_more_button" id="button_load_news" href="/<?= $page_number + 1 ?>">Показать больше новостей</a>
+	<a class="load_more_button w_island" id="button_load_news" href="/<?= $page_number + 1 ?>">Показать больше новостей</a>
 
 	<script>
 		codex.documentIsReady(function() {
