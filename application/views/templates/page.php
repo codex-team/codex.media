@@ -71,7 +71,6 @@
 <? endif; ?>
 <div class="page_comments w_island" style="margin: 5px 0 5px 5px" id="page_comments">
 
-    <h3>Комментарии</h3>
     <? if ($comments): ?>
         <? foreach ($comments as $comment): ?>
             <div class="comment_wrapper clear <?= $comment->parent_comment ? 'answer_wrapper' : '' ?>"
@@ -119,7 +118,14 @@
             </div>
         <? endforeach; ?>
     <? else: ?>
-        <p class="dummy_text">Здесь пока нет комментариев.</p>
+        <div class="empty_motivatior">
+            <i class="icon_nocomments"></i><br/>
+            Станьте первым, кто оставьте свой комментарий к данному материалу.
+            <? if (!$user->id): ?>
+                <br/>
+                <a class="button main" href="/auth">Авторизоваться</a>
+            <? endif ?>
+        </div>
     <? endif; ?>
     <? if($user->id): ?>
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
@@ -132,7 +138,7 @@
             <span class="cancel_answer" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
         </form>
     <? else: ?>
-        <p class="dummy_text"><a href="/auth">Присоединяйтесь к сообществу</a>, чтобы оставлять комментарии.</p>
+
     <? endif; ?>
 </div>
 <script src="/public/js/comment.js"></script>

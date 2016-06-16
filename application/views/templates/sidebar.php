@@ -17,7 +17,7 @@
     }
 </style>
 
-
+<? /*
 <script id="vk_script" type="text/javascript" src="//vk.com/js/api/openapi.js?122" async="true"></script>
 
 <!-- VK Widget -->
@@ -31,3 +31,4 @@
     }, false)
 
 </script>
+*/ ?>

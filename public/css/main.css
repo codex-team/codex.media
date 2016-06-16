@@ -196,11 +196,11 @@ h3{
 
 .button, input[type="submit"]{
     display: inline-block;
-    padding: 10px 15px;
+    padding: 10px 25px;
     text-align: center;
-    font-size: 14px;
     border-radius: 25px;
     text-decoration: none;
+    font-size: 15px;
     background: #eee; color: #9D9D9D;
     border: 0;
     cursor: pointer;
@@ -525,7 +525,9 @@ footer.site_footer p{margin: 15px 25px}
     border: 1px solid #f5f7f8;
     border-radius: 2px;
 }
-
+.w_island_centercol{
+    margin: 5px 0 5px 5px;;
+}
 
 .news article{
     margin: 5px 0 5px 5px;
@@ -637,9 +639,10 @@ footer.site_footer p{margin: 15px 25px}
 
 
 .page_landing{
-    padding: 150px 100px;
+    padding: 150px 100px 80px;
     text-align: center;
     font-size: 1.2em;
+    color: #4c6b9c;
 }
     .page_landing .title{
         font-size: 1.6em;
@@ -687,7 +690,7 @@ footer.site_footer p{margin: 15px 25px}
     }
 
 .page_footer_links{
-    border-top: 2px solid #EFF2F7;
+    border-top: 1px solid #dce6f5;
     padding-top: 35px;
     text-align: center;
     font-size: 16px;
@@ -1300,6 +1303,37 @@ footer.site_footer p{margin: 15px 25px}
     line-height: 1.4em;
 }
     .page_comments .dummy_text:first-of-type { margin-top: 26px; }
+
+.empty_motivatior{
+    max-width: 350px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 80px 50px;
+    color: #7d869a;
+    font-size: 1.1em;
+    line-height: 1.6em;
+}
+    .empty_motivatior i {
+        margin-bottom: 20px;
+    }
+    .empty_motivatior .button{
+        margin-top: 30px;
+    }
+.icon_nocomments{
+    display: inline-block;
+    background: url('../img/icon-nocomments@2x.png') no-repeat;
+    background-size: 70px 61px;
+    width: 70px;
+    height: 61px;
+}
+.icon_noarticles{
+    display: inline-block;
+    background: url('../img/icon-noarticles@2x.png') no-repeat;
+    background-size: 66px 85px;
+    width: 66px;
+    height: 85px;
+}
+
 
 
 .atlas_form{
