@@ -206,6 +206,7 @@ h3{
     text-align: center;
     border-radius: 25px;
     text-decoration: none;
+    font-family: inherit;
     font-size: 15px;
     background: #eee; color: #9D9D9D;
     border: 0;
@@ -1109,7 +1110,31 @@ footer.site_footer p{margin: 15px 25px}
 }
 
 
-@media all and (max-width: 750px){
+@media all and (max-width: 1100px){
+    aside,
+    .sidebar{
+        width: 250px;
+    }
+    .page_wrap{
+        margin: 0 250px;
+    }
+    .banner_preview{
+        width: 200px !important;
+        height: 260px !important;
+    }
+    #vk_groups,
+    #vk_groups iframe{
+        width: 200px !important;
+    }
+    .news .rich_view,
+    .news article{
+        padding: 30px;
+    }
+
+}
+
+
+@media all and (max-width: 1000px){
 
 
 
@@ -1118,6 +1143,18 @@ footer.site_footer p{margin: 15px 25px}
     .mobile_search_icon{display: block;}
 
     .show_only_in_mobile{ visibility: visible !important; }
+
+    .sidebar{
+        display: none;
+    }
+    aside{
+        transform: translate3d(-230px, 0 , 0);
+        box-shadow: 0 0px 33px 0 rgba(151, 160, 181, 0.18), 0px 0 1px 1px rgba(93, 116, 165, .1);
+        z-index: 9;
+    }
+    .page_wrap{
+        margin: 0;
+    }
 
 
 
@@ -1187,31 +1224,32 @@ footer.site_footer p{margin: 15px 25px}
 
     .answer_wrapper { margin-left: 70px; }
 
-.comment_right .author_name,
-.to_user { display: inline; }
 
     .comment_left {
-        border-radius: 2px;
+        border-radius: 20px;
         display: inline-block;
-        width: 42px;
+        width: 40px;
         float: left;
     }
 
     .comment_right {
-        padding-left: 64px;
+        padding-left: 54px;
     }
 
         .comment_right .author_name {
-            font-size: 16px;
+            font-size: .97em;
             font-weight: 600;
             line-height: 0;
             color: #222222;
             text-decoration: none;
         }
+        .comment_right .to_user {
+            font-size: .8em;
+        }
 
         .comment_right p {
-            margin-top: 11px;
-            font-size: 16px;
+            margin-top: 7px;
+            font-size: 1.1em;
             margin-bottom: 17px;
             line-height: 1.4em;
         }
@@ -1220,7 +1258,7 @@ footer.site_footer p{margin: 15px 25px}
             float: right;
             right: 0;
             display: inline;
-            font-size: 14px;
+            font-size: .8em;
             color: #8c8f92;
         }
 
@@ -1235,7 +1273,9 @@ footer.site_footer p{margin: 15px 25px}
             text-decoration: none;
         }
 
-        .comment_right .answer_button { margin-right: 24px; }
+        .comment_right .answer_button {
+            margin-right: 24px;
+        }
 
             .comment_right .answer_button:hover,
             .comment_right .delete_button:hover {
@@ -1248,8 +1288,6 @@ footer.site_footer p{margin: 15px 25px}
             width: 10px;
             margin-right: 11px;
         }
-
-        .to_user { font-size: 14px; }
 
         .to_user .icon-right-dir {
             color: #8c8f92;
@@ -1270,16 +1308,6 @@ footer.site_footer p{margin: 15px 25px}
 
     .comment_form span { font-size: 14px; }
 
-    .comment_form input[type="submit"] {
-        margin-right: 5px;
-        background: #58A3E0;
-        padding: 7px 18px;
-    }
-
-        .comment_form input[type="submit"]:hover {
-            background: #4884b5;
-        }
-
     .add_answer_to {
         color: #8c8f92;
     }
@@ -1297,7 +1325,8 @@ footer.site_footer p{margin: 15px 25px}
     /* Оформляем форму как ответ */
 
     .comment_wrapper > .comment_form {
-        margin-left: 66px;
+        margin-left: 54px;
+        margin-top: 20px;
     }
 
     .page_comments > .comment_form > .cancel_answer {
