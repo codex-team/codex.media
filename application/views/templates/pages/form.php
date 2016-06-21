@@ -15,9 +15,19 @@
     <div class="attaches" id="formAttaches"></div>
 
     <div class="actions clear">
+
         <span class="button main fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
-        <div class="toggler fl_r"><i class="icon-megaphone"></i></div>
-        <div class="toggler fl_r"><i class="icon-pin"></i></div>
+
+        <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Важная новость">
+            <input type="checkbox" name="rich_view" value="1" <?= isset($page->rich_view) && $page->rich_view == 1 ? 'checked="checked"' : Arr::get($_POST, 'rich_view' , '') ?>/>
+            <i class="icon-megaphone"></i>
+        </div>
+
+        <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Закрепить новость">
+            <input type="checkbox" name="dt_pin" value="<?= $page->dt_pin ? $page->dt_pin : date('Y-m-d H:i:s') ?>" <?= isset($page->dt_pin) ? 'checked="checked"' : '' ?>/>
+            <i class="icon-pin"></i>
+        </div>
+
         <span class="attach" onclick="codex.transport.selectFile(event, '<?= Controller_Transport::PAGE_FILE ?>')"><i class="icon-attach"></i>Прикрепить файл</span>
     </div>
 

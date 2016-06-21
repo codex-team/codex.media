@@ -8,7 +8,7 @@ var codex = (function(codex){
     codex.init = function(settings){
 
         /** Save settings or use defaults */
-        for ( set in settings ){
+        for (var set in settings ){
             this.settings[set] = settings[set] || this.settings[set] || null;
         }
 
@@ -24,7 +24,7 @@ var codex = (function(codex){
 */
 codex.documentIsReady = function(f){
     return /in/.test(document.readyState) ? setTimeout(codex.documentIsReady,9,f) : f();
-}
+};
 
 /**
 * System methods and helpers
@@ -122,11 +122,11 @@ codex.parser = {
 
          var _this = this;
 
-         this.input.addEventListener('paste', function (event) {
+         this.input.addEventListener('paste', function () {
 
-             _this.inputPasteCallback()
+             _this.inputPasteCallback();
 
-         } , false)
+         }, false);
 
     },
 
@@ -226,7 +226,7 @@ codex.transport = {
 
     },
 
-    fileSelected : function (event) {
+    fileSelected : function () {
         codex.transport.form.submit();
         codex.transport.clear();
     },
@@ -497,10 +497,56 @@ codex.appender = {
 };
 
 
+codex.content = {
+
+    /**
+    * Module uses for toggle custom checkboxes
+    * that has 'js-custom-checkbox' class and input[type="checkbox"] included
+    * Example:
+    * <span class="js-custom-checkbox">
+    *    <input type="checkbox" name="" value="1"/>
+    * </span>
+    */
+    customCheckboxes : {
+
+        /**
+        * This class specifies checked custom-checkbox
+        * You may set it on serverisde
+        */
+        CHECKED_CLASS : 'checked',
+
+        init : function(){
+
+            var checkboxes = document.getElementsByClassName('js-custom-checkbox');
+
+            if (checkboxes.length) for (var i = checkboxes.length - 1; i >= 0; i--) {
+                checkboxes[i].addEventListener('click', codex.content.customCheckboxes.clicked , false);
+            }
+        },
+
+        clicked : function(){
+
+            var checkbox  = this,
+                input     = this.querySelector('input'),
+                isChecked = this.classList.contains(codex.content.customCheckboxes.CHECKED_CLASS);
+
+            checkbox.classList.toggle(codex.content.customCheckboxes.CHECKED_CLASS);
+
+            input.checked = !isChecked;
+
+        }
+
+    }
+
+};
+
+
 
 codex.documentIsReady(function(){
 
     codex.transport.init();
+
+    codex.content.customCheckboxes.init();
 
     // codex.parser.init({
     //     input_id : 'parser_input_url'

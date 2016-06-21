@@ -6,7 +6,7 @@
     <?= View::factory('templates/pages/form', array( 'page' => $page )); ?>
 <? endif ?>
 
-<? if (false && $pages): ?>
+<? if ( $pages ): ?>
 
     <div id="list_of_news" class="news">
 

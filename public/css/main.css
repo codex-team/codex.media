@@ -61,16 +61,18 @@ a{color: #58A3E0}
     [data-title]:after{
         content: attr(data-title);/* font-family: tahoma, Geneva;*/
         position: absolute;
-        bottom: -2.5em; left: 0px;
-        padding: 5px 10px;
-        background: rgba(0,0,0,.85);
-        color: #fff;
-        font-size: 12px;
+        bottom: -4em;
+        z-index: 2;
+        right: 0px;
+        padding: 12px 20px;
+        background: #fff;
+        color: #748098;
+        font-size: 13px;
         font-style: normal;
         border-radius: 2px;
+        box-shadow: 0 5px 11px 0 rgba(142, 146, 193, 0.35);
 
         white-space: nowrap;
-
         display: none;
     }
         [data-title]:hover::after{
@@ -177,6 +179,10 @@ input:focus::-webkit-input-placeholder, textarea:focus::-webkit-input-placeholde
 .checkbox.checked i, .fake_checkbox.checked i{background: #58b2ff}
 .checkbox.checked i:before , .fake_checkbox.checked i:before { margin-left: 15px; }
 .checkbox label{vertical-align: middle;}
+
+.js-custom-checkbox input{
+    display: none;
+}
 
 
 
@@ -1365,12 +1371,21 @@ footer.site_footer p{margin: 15px 25px}
         background: #fdfdfe;
     }
     .atlas_form .toggler{
-        padding: 5px;
+        padding: 6px;
         margin: 8px 12px 0 0;
-        color: #3b4867;
-        font-size: 1.2em;
+        border: 1px solid #d7deec;
+        border-radius: 20px;
+        color: #6a7590;
         cursor: pointer;
     }
+        .atlas_form .toggler:hover{
+            background: #fff;
+        }
+        .atlas_form .toggler.checked{
+            background: #3b4b69;
+            border-color: #3b4b69;
+            color: #f9f9ff;
+        }
     .atlas_form .button{
         padding: 12px 30px;
         font-size: 1em;
