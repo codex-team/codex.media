@@ -1,5 +1,7 @@
 <form class="atlas_form w_island" action="/p/save" id="atlasForm" method="post" name="atlas">
 
+    <? $object = isset($object) ? $object : 'новости' ?>
+
     <?= Form::hidden('csrf', Security::token()); ?>
     <?= Form::hidden('type', $page->type); ?>
     <?= Form::hidden('id', $page->id); ?>
@@ -9,8 +11,8 @@
         <i class="icon-link"></i> Импортировать
     </span>
 
-    <input class="title_input" type="text" name="title" placeholder="Заголовок новости">
-    <textarea name="content" rows="5" placeholder="Содержание новости"></textarea>
+    <input class="title_input" type="text" name="title" placeholder="Заголовок <?= $object ?>" value="<?= $page->title ?>">
+    <textarea name="content" rows="5" placeholder="Содержание <?= $object ?>"><?= $page->content ?></textarea>
 
     <div class="attaches" id="formAttaches"></div>
 
@@ -18,15 +20,31 @@
 
         <span class="button main fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
 
-        <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Важная новость">
-            <input type="checkbox" name="rich_view" value="1" <?= isset($page->rich_view) && $page->rich_view == 1 ? 'checked="checked"' : Arr::get($_POST, 'rich_view' , '') ?>/>
-            <i class="icon-megaphone"></i>
-        </div>
 
-        <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Закрепить новость">
-            <input type="checkbox" name="dt_pin" value="<?= $page->dt_pin ? $page->dt_pin : date('Y-m-d H:i:s') ?>" <?= isset($page->dt_pin) ? 'checked="checked"' : '' ?>/>
-            <i class="icon-pin"></i>
-        </div>
+        <? if ($user->isAdmin): ?>
+
+            <? if ($page->type == Model_Page::TYPE_SITE_NEWS): ?>
+
+                <div class="toggler fl_r js-custom-checkbox <?= $page->rich_view ? 'checked' : '' ?>" data-title="Важная новость">
+                    <input type="checkbox" name="rich_view" value="1" <?= isset($page->rich_view) && $page->rich_view == 1 ? 'checked="checked"' : Arr::get($_POST, 'rich_view' , '') ?>/>
+                    <i class="icon-megaphone"></i>
+                </div>
+
+                <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Закрепить новость">
+                    <input type="checkbox" name="dt_pin" value="<?= $page->dt_pin ? $page->dt_pin : date('Y-m-d H:i:s') ?>" <?= isset($page->dt_pin) ? 'checked="checked"' : '' ?>/>
+                    <i class="icon-pin"></i>
+                </div>
+
+            <? else: ?>
+
+                <div class="toggler fl_r js-custom-checkbox <?= $page->is_menu_item ? 'checked' : '' ?>" data-title="Пункт меню">
+                    <input type="checkbox" name="is_menu_item" value="1" <?= isset($page->is_menu_item) && $page->is_menu_item == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') ?>/>
+                    <i class="icon-star"></i>
+                </div>
+
+            <? endif ?>
+
+        <? endif ?>
 
         <span class="attach" onclick="codex.transport.selectFile(event, '<?= Controller_Transport::PAGE_FILE ?>')"><i class="icon-attach"></i>Прикрепить файл</span>
     </div>
