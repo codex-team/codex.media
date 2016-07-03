@@ -532,7 +532,11 @@ codex.content = {
 
             checkbox.classList.toggle(codex.content.customCheckboxes.CHECKED_CLASS);
 
-            input.checked = !isChecked;
+            if (isChecked) {
+                input.removeAttribute('checked');
+            } else {
+                input.setAttribute('checked', 'checked');
+            }
 
         }
 
