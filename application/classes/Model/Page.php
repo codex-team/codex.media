@@ -4,13 +4,13 @@ class Model_Page extends Model_preDispatch
 {
 
     public $id              = 0;
-    public $type            = '';
+    public $type            = 0;
     public $status          = 0;
-    public $id_parent       = '';
+    public $id_parent       = 0;
     public $title           = '';
     public $content         = '';
     public $date            = '';
-    public $is_menu_item    = '';
+    public $is_menu_item    = 0;
     public $rich_view       = 0;
     public $dt_pin;
     public $uri             = '';
@@ -95,12 +95,12 @@ class Model_Page extends Model_preDispatch
                     ->set('dt_pin',         $this->dt_pin)
                     ->set('source_link',    $this->source_link)
                     ->clearcache('page:' . $this->id, array('site_menu'))
-                    ->execute();            
+                    ->execute();
     }
 
     public function setAsRemoved()
     {
-            
+
         $this->status = self::STATUS_REMOVED_PAGE;
         $this->update();
 
@@ -175,4 +175,4 @@ class Model_Page extends Model_preDispatch
         return strtolower($title);
     }
 
-}    
+}
