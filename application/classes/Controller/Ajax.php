@@ -8,7 +8,7 @@ class Controller_Ajax extends Controller_Base_preDispatch {
         $file_id  = (int)Arr::get($_POST, 'fid');
         $response = array("result" => "error");
 
-        if ($file_id ) {    
+        if ($file_id ) {
 
             if ($action == 'title') {
 
@@ -26,15 +26,15 @@ class Controller_Ajax extends Controller_Base_preDispatch {
             } elseif ($action == 'restore' ) {
                 $response['result'] = $this->methods->updateFile( $file_id , array( 'status'  => 0 )) ? 'ok' : 'error';
             } else {
-                $response['message'] = 'wrong action';    
+                $response['message'] = 'wrong action';
             }
-            
+
         } else {
             $response['message'] = 'fid missed';
         }
 
 
-        
+
 
         $this->auto_render = false;
         $this->response->body(@json_encode($response) );
