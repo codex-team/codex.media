@@ -23,7 +23,7 @@
         <? if( $can_modify_this_page ): ?>
             <div class="fl_r actions">
                 <a class="textbutton" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
-                <a class="button iconic green" href="/p/<?= $page->id ?>/<?= $page->uri ?>/edit"><i class="icon-pencil"></i> Редактировать</a>
+                <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i> Редактировать</a>
             </div>
         <? endif ?>
 
@@ -48,7 +48,7 @@
         </ul>
     <? endif; ?>
     <? if ( $can_modify_this_page ): ?>
-        <a class="button iconic green add_children_btn" href="/p/<?= $page->id ?>/<?= $page->uri ?>/add-page">
+        <a class="button iconic green add_children_btn" href="/p/save?parent=<?= $page->id ?>">
             <i class="icon-plus"></i>
             Вложенная страница
         </a>

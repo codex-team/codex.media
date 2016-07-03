@@ -45,7 +45,7 @@
             <a class="textbutton fl_r" href="/user/settings"><i class="icon-cog"></i> Настройки</a>
         <? endif; ?>
         <? if($viewUser->isMe && $user->isTeacher): ?>
-            <a class="button iconic green" href="/p/add-page"><i class="icon-plus"></i> Создать страницу</a>
+            <a class="button iconic green" href="/p/save"><i class="icon-plus"></i> Создать страницу</a>
         <? else: ?>
             <span class="info">
                 Зарегистрирован <?= $methods->ltime(strtotime($viewUser->dt_reg)) ?>
