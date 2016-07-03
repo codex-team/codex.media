@@ -48,77 +48,62 @@ class Controller_Pages extends Controller_Base_preDispatch
             return FALSE;
         }
 
-        if (!Security::check(Arr::get($_POST, 'csrf')))
-        {
-            return FALSE;
-        }
+        $errors    = array();
+        $csrfToken = Arr::get($_POST, 'csrf');
 
-        $errors = array();
-        $page   = self::get_form();
+        if (Security::check($csrfToken)){
 
-        if ($page->title)
-        {
+            /** Сабмит формы */
 
+            $page   = self::get_form();
 
-            if ($page->id) {
-                $page->update();
+            if ($page->title && Arr::get($_POST, 'title')){
+
+                if ($page->id) {
+                    $page->update();
+                } else {
+                    $page = $page->insert();
+                }
+
+                /**
+                * Link attached files to current page
+                */
+                $this->savePageFiles($page->id);
+
+                if ($page->type == Model_Page::TYPE_SITE_NEWS) {
+                    $this->redirect('/');
+                } else {
+                    $this->redirect('/p/' . $page->id . '/' . $page->uri);
+                }
+
             } else {
-                $page = $page->insert();
+                $errors['title'] = 'Заголовок страницы не может быть пустым';
             }
-
-            /**
-            * Link attached files to current page
-            */
-            $this->savePageFiles($page->id);
-
-            if ($page->type == Model_Page::TYPE_SITE_NEWS) {
-                $this->redirect('/');
-            } else {
-                $this->redirect('/p/' . $page->id . '/' . $page->uri);
-            }
-
 
         } else {
 
-            $errors['title'] = 'Заголовок страницы не может быть пустым';
+            /** Открытие формы */
+
+            $page_id = (int) Arr::get($_GET, 'id', 0);
+            $page    = new Model_Page($page_id);
+
+            /** Нам необходимо получить только ОДИН из параметров:
+             * id       для редактирования существующей страницы
+             * type     для создания новости или страницы
+             * parent   для создания подстраницы
+             */
+
+            if (!$page_id)
+                $page->type      = (int) Arr::get($_GET, 'type', 0);
+
+            if (!$page->type)
+                $page->id_parent =       Arr::get($_GET, 'parent', 0);
+
         }
 
         $this->view['page']      = $page;
         $this->view['errors']    = $errors;
         $this->template->content = View::factory('templates/pages/new', $this->view);
-    }
-
-    public function action_edit_page()
-    {
-        $id = $this->request->param('id');
-        $page = new Model_Page($id);
-
-        $errors = array();
-
-        if ($this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher))
-        {
-            if (Security::check(Arr::get($_POST, 'csrf')))
-            {
-                $page = self::get_form();
-
-                if ($page->title)
-                {
-                    $page = self::save_page($page);
-                    $this->redirect('/p/' . $page->id . '/' . $page->uri);
-                } else {
-                    $errors['title'] = 'Заголовок страницы не может быть пустым';
-                }
-            }
-
-            $this->view['page']      = $page;
-            $this->view['errors']    = $errors;
-            $this->template->content = View::factory('templates/page_form', $this->view);
-
-        } else {
-
-            self::error_page('Недостаточно прав для редактирования страницы');
-            return FALSE;
-        }
     }
 
     public function action_delete_page()
@@ -168,18 +153,18 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function get_form()
     {
+        $id = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
+        $page = new Model_Page($id);
 
-        $page = new Model_Page((int)Arr::get($_POST, 'id', 0));
-
-        $page->type          = (int)Arr::get($_POST, 'type');
+        $page->type          = (int) Arr::get($_POST, 'type',         0);
+        $page->id_parent     = (int) Arr::get($_POST, 'id_parent',    0);
+        $page->title         =       Arr::get($_POST, 'title',        '');
+        $page->content       =       Arr::get($_POST, 'content',      '');
+        $page->is_menu_item  = (int) Arr::get($_POST, 'is_menu_item', 0);
+        $page->rich_view     = (int) Arr::get($_POST, 'rich_view',    0);
+        $page->dt_pin        =       Arr::get($_POST, 'dt_pin',       null);
+        $page->source_link   =       Arr::get($_POST, 'source_link',  '');
         $page->author        = $this->user;
-        $page->id_parent     = (int)Arr::get($_POST, 'id_parent', 0);
-        $page->title         = Arr::get($_POST, 'title', '');
-        $page->content       = Arr::get($_POST, 'content', '');
-        $page->is_menu_item  = Arr::get($_POST, 'is_menu_item', 0);
-        $page->rich_view     = Arr::get($_POST, 'rich_view', 0);
-        $page->dt_pin        = Arr::get($_POST, 'dt_pin');
-        $page->source_link   = Arr::get($_POST, 'source_link');
 
         return $page;
     }
