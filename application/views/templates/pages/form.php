@@ -1,6 +1,9 @@
 <form class="atlas_form w_island" action="/p/save" id="atlasForm" method="post" name="atlas">
 
-    <? $object = isset($object) ? $object : 'новости' ?>
+    <?
+        /** Name of object's type in genitive declension */
+        $object_name = $page->type == Model_Page::TYPE_SITE_NEWS ? 'новости' : 'страницы';
+    ?>
 
     <?= Form::hidden('csrf', Security::token()); ?>
     <?= Form::hidden('type', $page->type); ?>
@@ -11,8 +14,8 @@
         <i class="icon-link"></i> Импортировать
     </span>
 
-    <input class="title_input" type="text" name="title" placeholder="Заголовок <?= $object ?>" value="<?= $page->title ?>">
-    <textarea name="content" rows="5" placeholder="Содержание <?= $object ?>"><?= $page->content ?></textarea>
+    <input class="title_input" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
+    <textarea name="content" rows="5" placeholder="Содержание <?= $object_name ?>"><?= $page->content ?></textarea>
 
     <div class="attaches" id="formAttaches"></div>
 

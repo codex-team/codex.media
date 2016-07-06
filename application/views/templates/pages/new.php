@@ -14,6 +14,4 @@
 
 <?= View::factory('templates/pages/form', array(
     'page'   => $page,
-    'action' => $action,
-    'object' => $object,
 )); ?>
