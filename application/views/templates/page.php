@@ -120,7 +120,7 @@
     <? else: ?>
         <div class="empty_motivatior">
             <i class="icon_nocomments"></i><br/>
-            Станьте первым, кто оставьте свой комментарий к данному материалу.
+            Станьте первым, кто оставит свой комментарий к данному материалу.
             <? if (!$user->id): ?>
                 <br/>
                 <a class="button main" href="/auth">Авторизоваться</a>
