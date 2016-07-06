@@ -15,7 +15,6 @@
     <title><?= $title ? $title : $GLOBALS['SITE_NAME'] . ': ' . $GLOBALS['SITE_SLOGAN'] ?></title>
 
     <base href="/" />
-    <script type="text/javascript" src="<?= isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https' : 'http'; ?>://code.jquery.com/jquery-1.8.3.min.js"></script>
 
     <link href="//fonts.googleapis.com/css?family=PT+Sans:400italic,400,700italic,700" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=PT+Serif+Caption&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
@@ -25,9 +24,7 @@
     <link rel="stylesheet" type="text/css" media="all" href="/public/css/main.css?v=<?= time() ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
 
-    <script src="/public/js/main.js?v=<?= time() ?>"></script>
-    
-    <script src="/public/js/comment.js"></script>
+    <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>
 
 </head>
 <body>
@@ -80,6 +77,10 @@
 
         </aside>
 
+        <div class="sidebar">
+            <? include(APPPATH .'views/templates/sidebar.php') ?>
+        </div>
+
         <div class="page_wrap">
             <?= $content ?>
         </div>
@@ -89,13 +90,10 @@
 
     <div id="utils" class="hidden">
         <iframe name="transport" _onload="transport.checkErrorLoading(event)"></iframe>
-        <form class="ajaxfree" id="transport_form" method="post" enctype="multipart/form-data"  target="transport" action="/ajax/transport" accept-charset="utf-8" >
+        <form id="transportForm" method="post" enctype="multipart/form-data"  target="transport" action="/file/transport" accept-charset="utf-8" >
             <input type="file" name="files" id="transportInput"/>
         </form>
     </div>
-
-
-
 
 
     <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>

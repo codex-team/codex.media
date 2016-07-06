@@ -34,7 +34,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         }
     }
 
-    public function action_add_page()
+    public function action_save()
     {
         if (!$this->user->isTeacher())
         {
@@ -42,72 +42,68 @@ class Controller_Pages extends Controller_Base_preDispatch
             return FALSE;
         }
 
-        $page = new Model_Page();
-
-        $param_type = $this->request->param('type');
-        $page->id_parent = $this->request->param('id');
-
-        $page->type = self::set_page_type($param_type, $page);
-
         if (!$this->user->isAdmin() && $page->type != Model_Page::TYPE_USER_PAGE)
         {
             self::error_page('Недостаточно прав для создания новости или страницы сайта');
             return FALSE;
         }
 
-        $errors = array();
+        $errors    = array();
+        $csrfToken = Arr::get($_POST, 'csrf');
 
-        if (Security::check(Arr::get($_POST, 'csrf')))
-        {
-            $page = self::get_form();
+        if (Security::check($csrfToken)){
 
-            if ($page->title)
-            {
-                $page = self::save_page($page);
-                $this->redirect('/p/' . $page->id . '/' . $page->uri);
+            /** Сабмит формы */
+
+            $page   = self::get_form();
+
+            if ($page->title && Arr::get($_POST, 'title')){
+
+                if ($page->id) {
+                    $page->update();
+                } else {
+                    $page = $page->insert();
+                }
+
+                /**
+                * Link attached files to current page
+                */
+                $this->savePageFiles($page->id);
+
+                if ($page->type == Model_Page::TYPE_SITE_NEWS) {
+                    $this->redirect('/');
+                } else {
+                    $this->redirect('/p/' . $page->id . '/' . $page->uri);
+                }
 
             } else {
-
                 $errors['title'] = 'Заголовок страницы не может быть пустым';
             }
+
+        } else {
+
+            /** Открытие формы */
+
+            $page_id = (int) Arr::get($_GET, 'id', 0);
+            $page    = new Model_Page($page_id);
+
+            /** Нам необходимо получить только ОДИН из параметров:
+             * id       для редактирования существующей страницы
+             * type     для создания новости или страницы
+             * parent   для создания подстраницы
+             */
+
+            if (!$page_id)
+                $page->type      = (int) Arr::get($_GET, 'type', 0);
+
+            if (!$page->type)
+                $page->id_parent =       Arr::get($_GET, 'parent', 0);
+
         }
 
         $this->view['page']      = $page;
         $this->view['errors']    = $errors;
-        $this->template->content = View::factory('templates/page_form', $this->view);
-    }
-
-    public function action_edit_page()
-    {
-        $id = $this->request->param('id');
-        $page = new Model_Page($id);
-
-        $errors = array();
-
-        if ($this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher))
-        {
-            if (Security::check(Arr::get($_POST, 'csrf')))
-            {
-                $page = self::get_form();
-
-                if ($page->title)
-                {
-                    $page = self::save_page($page);
-                    $this->redirect('/p/' . $page->id . '/' . $page->uri);
-                } else {
-                    $errors['title'] = 'Заголовок страницы не может быть пустым';
-                }
-            }
-
-            $this->view['page']      = $page;
-            $this->view['errors']    = $errors;
-            $this->template->content = View::factory('templates/page_form', $this->view);
-
-        } else {
-
-            self::error_page('Недостаточно прав для редактирования страницы');
-            return FALSE;
-        }
+        $this->template->content = View::factory('templates/pages/new', $this->view);
     }
 
     public function action_delete_page()
@@ -129,32 +125,6 @@ class Controller_Pages extends Controller_Base_preDispatch
         }
 
         $this->redirect($url);
-    }
-
-    /**
-     * Returns new page's type
-     *
-     * @author              Taly
-     * @param $type         var $type from params request
-     * @param $page         object Model_Page
-     * @return int          page's type
-     */
-    public function set_page_type($type, $page)
-    {
-        if ($type == 'news')
-        {
-            return Model_Page::TYPE_SITE_NEWS;
-
-        } else {
-
-            $page->parent = new Model_Page($page->id_parent);
-
-            if ($page->parent->type == Model_Page::TYPE_USER_PAGE || $page->parent->id == 0){
-                return Model_Page::TYPE_USER_PAGE;
-            } else {
-                return Model_Page::TYPE_SITE_PAGE;
-            }
-        }
     }
 
     /**
@@ -183,29 +153,18 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function get_form()
     {
-        $page = new Model_Page();
+        $id = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
+        $page = new Model_Page($id);
 
-        $page->id            = (int)Arr::get($_POST, 'id');
-        $page->type          = (int)Arr::get($_POST, 'type');
+        $page->type          = (int) Arr::get($_POST, 'type',         0);
+        $page->id_parent     = (int) Arr::get($_POST, 'id_parent',    0);
+        $page->title         =       Arr::get($_POST, 'title',        '');
+        $page->content       =       Arr::get($_POST, 'content',      '');
+        $page->is_menu_item  = (int) Arr::get($_POST, 'is_menu_item', 0);
+        $page->rich_view     = (int) Arr::get($_POST, 'rich_view',    0);
+        $page->dt_pin        =       Arr::get($_POST, 'dt_pin',       null);
+        $page->source_link   =       Arr::get($_POST, 'source_link',  '');
         $page->author        = $this->user;
-        $page->id_parent     = (int)Arr::get($_POST, 'id_parent', 0);
-        $page->title         = Arr::get($_POST, 'title', '');
-        $page->content       = Arr::get($_POST, 'content', '');
-        $page->is_menu_item  = Arr::get($_POST, 'is_menu_item', 0);
-        $page->rich_view     = Arr::get($_POST, 'rich_view', 0);
-        $page->dt_pin        = Arr::get($_POST, 'dt_pin');
-        $page->source_link   = Arr::get($_POST, 'source_link');
-
-        return $page;
-    }
-
-    public function save_page($page)
-    {
-        if ($page->id) {
-            $page->update();
-        } else {
-            $page = $page->insert();
-        }
 
         return $page;
     }
@@ -226,6 +185,26 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->view['error_text'] = $error_text;
 
         $this->template->content = View::factory('templates/error', $this->view);
+    }
+
+
+    /**
+    * Gets json-encoded attaches list from input
+    * Writes this
+    */
+    private function savePageFiles($page_id)
+    {
+        $attaches = Arr::get($_POST, 'attaches');
+
+        $attaches = json_decode($attaches, true);
+
+        foreach ($attaches as $id => $file)
+        {
+            $this->methods->updateFile($id, array(
+                'page'  => $page_id,
+                'title' => $file['title']
+            )) ;
+        }
     }
 
 

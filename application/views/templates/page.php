@@ -1,59 +1,66 @@
-<div class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+<div class="w_island" style="margin: 5px 0 5px 5px">
 
-    <? if($navigation[0]->type != Model_Page::TYPE_USER_PAGE || $navigation[0]->is_menu_item == 1): ?>
-        <a class="nav_chain" href="/" itemprop="url"><span itemprop="title">Главная</span></a>
-    <? else: ?>
-        <a class="nav_chain" href="/user/<?= $page->author->id ?>" itemprop="url"><span itemprop="title"><?= $page->author->name ?></span></a>
-    <? endif ?>
+    <div class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
 
-    <? foreach ($navigation as $navig_page): ?> »
-        <? if ($navig_page->id != $page->id): ?>
-            <a href="/p/<?= $navig_page->id ?>/<?= $navig_page->uri ?>" itemprop="title" class="nav_chain">
-                <?= $navig_page->title ?>
-            </a>
+        <? if($navigation[0]->type != Model_Page::TYPE_USER_PAGE || $navigation[0]->is_menu_item == 1): ?>
+            <a class="nav_chain" href="/" itemprop="url"><span itemprop="title">Главная</span></a>
         <? else: ?>
-            <span itemprop="title" class="nav_chain">
-                <?= $navig_page->title ?>
-            </span>
+            <a class="nav_chain" href="/user/<?= $page->author->id ?>" itemprop="url"><span itemprop="title"><?= $page->author->name ?></span></a>
         <? endif ?>
-    <? endforeach ?>
 
-    <? if( $can_modify_this_page ): ?>
-        <div class="fl_r actions">
-            <a class="textbutton" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
-            <a class="button iconic green" href="/p/<?= $page->id ?>/<?= $page->uri ?>/edit"><i class="icon-pencil"></i> Редактировать</a>
-        </div>
-    <? endif ?>
-
-</div>
-
-<h1 class="page_title">
-	<?= $page->title ?>
-</h1>
-<article class="page_content">
-	<?= $page->content ?>
-</article>
-
-<? if ($page->childrens): ?>
-    <ul class="page_childrens clear">
-        <? foreach ($page->childrens as $children): ?>
-            <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
+        <? foreach ($navigation as $navig_page): ?> »
+            <? if ($navig_page->id != $page->id): ?>
+                <a href="/p/<?= $navig_page->id ?>/<?= $navig_page->uri ?>" itemprop="title" class="nav_chain">
+                    <?= $navig_page->title ?>
+                </a>
+            <? else: ?>
+                <span itemprop="title" class="nav_chain">
+                    <?= $navig_page->title ?>
+                </span>
+            <? endif ?>
         <? endforeach ?>
-    </ul>
-<? endif; ?>
-<? if ( $can_modify_this_page ): ?>
-    <a class="button iconic green add_children_btn" href="/p/<?= $page->id ?>/<?= $page->uri ?>/add-page">
-        <i class="icon-plus"></i>
-        Вложенная страница
-    </a>
-<? endif; ?>
+
+        <? if( $can_modify_this_page ): ?>
+            <div class="fl_r actions">
+                <a class="textbutton" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
+                <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i> Редактировать</a>
+            </div>
+        <? endif ?>
+
+    </div>
+
+
+
+    <h1 class="page_title">
+    	<?= $page->title ?>
+    </h1>
+    <article class="page_content">
+    	<?= $page->content ?>
+    </article>
+
+
+
+    <? if ($page->childrens): ?>
+        <ul class="page_childrens clear">
+            <? foreach ($page->childrens as $children): ?>
+                <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
+            <? endforeach ?>
+        </ul>
+    <? endif; ?>
+    <? if ( $can_modify_this_page ): ?>
+        <a class="button iconic green add_children_btn" href="/p/save?parent=<?= $page->id ?>">
+            <i class="icon-plus"></i>
+            Вложенная страница
+        </a>
+    <? endif; ?>
+</div>
 <? if (isset($files) && $files): ?>
-    <div class="files">
+    <div class="w_island files" style="margin: 5px 0 5px 5px">
     	<table class="page_files">
     		<? foreach ($files as $file): ?>
     			<tr>
     				<td class="ext"><span class="ext_tag"><?= $file['extension'] ?></span></td>
-    				<td class="title"><?= $file['title'] ?></td>
+    				<td class="title"><a href="/"><?= $file['title'] ?></a></td>
     				<td>
     					<p class="size"><?= (int)$file['size'] < 1000 ? $file['size'] . PHP_EOL . 'КБ' : ceil($file['size'] / 1000) . PHP_EOL . 'МБ' ?></p>
     				</td>
@@ -62,9 +69,8 @@
     	</table>
     </div>
 <? endif; ?>
-<div class="page_comments" id="page_comments">
+<div class="page_comments w_island" style="margin: 5px 0 5px 5px" id="page_comments">
 
-    <h3>Комментарии</h3>
     <? if ($comments): ?>
         <? foreach ($comments as $comment): ?>
             <div class="comment_wrapper clear <?= $comment->parent_comment ? 'answer_wrapper' : '' ?>"
@@ -112,7 +118,14 @@
             </div>
         <? endforeach; ?>
     <? else: ?>
-        <p class="dummy_text">Здесь пока нет комментариев.</p>
+        <div class="empty_motivatior">
+            <i class="icon_nocomments"></i><br/>
+            Станьте первым, кто оставьте свой комментарий к данному материалу.
+            <? if (!$user->id): ?>
+                <br/>
+                <a class="button main" href="/auth">Авторизоваться</a>
+            <? endif ?>
+        </div>
     <? endif; ?>
     <? if($user->id): ?>
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
@@ -125,12 +138,12 @@
             <span class="cancel_answer" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
         </form>
     <? else: ?>
-        <p class="dummy_text"><a href="/auth">Присоединяйтесь к сообществу</a>, чтобы оставлять комментарии.</p>
+
     <? endif; ?>
 </div>
-
+<script src="/public/js/comment.js"></script>
 <script>
-    $(function() {
+    codex.documentIsReady(function(){
         Comments.init();
     });
 </script>

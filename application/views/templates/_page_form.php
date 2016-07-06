@@ -15,7 +15,7 @@
 		<h4>Импортивать страницу</h4>
 		<input type="text" name="url" id="parser_input_url" />
 	</div>
- 
+
 	<? if (isset($errors['title']) &&  $errors['title']): ?>
 		<div class="form_error align_c">
 			<?= $errors['title'] ?>
@@ -103,6 +103,7 @@
 					<?= View::factory('templates/admin/file_row' , array('file' => $file) );?>
 				<? endforeach ?>
 			<? endif ?>
+            <? /*
 			<script>
 				$(".editable").live("click", function(){
 					if ( !$(this).data("toggled") ){
@@ -164,18 +165,13 @@
 					});
 				}
 			</script>
+            */ ?>
 		</table>
 	</div>
 </div>
-
-
-
-
-
-
+<? /*
 <script src="/public/libs/redactor/9.2.2/redactor.min.js"></script>
 <link rel="stylesheet" type="text/css" media="all" href="/public/libs/redactor/9.2.2/redactor.css">
-
 <script>
 	$(function(){
 
@@ -187,3 +183,4 @@
 
 	});
 </script>
+*/ ?>

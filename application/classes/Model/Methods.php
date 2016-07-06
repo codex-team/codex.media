@@ -127,6 +127,14 @@ class Model_Methods extends Model
         return self::getComments( Controller_Comments::COMMENTS_TYPE_BLOG , $pid );
     }
 
+    /**
+    * Files uploading section
+    */
+
+    public function newFile( $fields )
+    {
+        return current(DB::insert( 'files' , array_keys($fields) )->values(array_values($fields))->execute());
+    }
 
     public function addFileToPage( $fields )
     {

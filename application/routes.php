@@ -10,7 +10,7 @@
 //     'action' => 'index'
 // ));
 
-    
+
 $DIGIT = '\d+';
 $STRING = '[-a-z\d]+';
 
@@ -29,15 +29,11 @@ Route::set('INDEX', '(<page_number>)', array( 'page_number' => $DIGIT ))->defaul
 #    'action' => 'add_new'
 #));
 
-Route::set('NEW_PAGE', 'p/(<id>/(<uri>/))add-<type>', array( 'id' => $DIGIT , 'uri' => $STRING, 'type' => 'page|news' ))->defaults(array(
+Route::set('NEW_PAGE', 'p/save')->defaults(array(
     'controller' => 'pages',
-    'action' => 'add_page'
+    'action' => 'save'
 ));
 
-Route::set('EDIT_PAGE', 'p/<id>/<uri>/edit', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
-    'controller' => 'pages',
-    'action' => 'edit_page'
-));
 
 Route::set('DELETE_PAGE', 'p/<id>/<uri>/delete', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
@@ -86,8 +82,8 @@ Route::set('ADMIN_PAGE', 'admin(/<page>(/<id>))')->defaults(array(
 
 
 
-Route::set('AJAX_FILE_TRANSPORT', 'ajax/transport')->defaults(array(
-    'controller'      => 'ajax',
+Route::set('AJAX_FILE_TRANSPORT', 'file/transport')->defaults(array(
+    'controller'      => 'transport',
     'action'          => 'file_uploader',
     'show'            => true,
     'siteHitsBlocked' => true
@@ -129,8 +125,8 @@ Route::set('ADD_COMMENT_SCRIPT', 'p/<id>/<uri>/add-comment', array( 'id' => $DIG
     'action' => 'add'
 ));
 
-Route::set('DEL_COMMENT_SCRIPT', 'p/<id>/<uri>/delete-comment/<comment_id>', array( 
-        'id'         => $DIGIT, 
+Route::set('DEL_COMMENT_SCRIPT', 'p/<id>/<uri>/delete-comment/<comment_id>', array(
+        'id'         => $DIGIT,
         'uri'        => $STRING,
         'comment_id' => $DIGIT))
     ->defaults(array(
