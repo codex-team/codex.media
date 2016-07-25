@@ -12,7 +12,8 @@ class Controller_Transport extends Controller_Base_preDispatch {
     /**
     * Transport file types
     */
-    const PAGE_FILE = 1;
+    const PAGE_FILE  = 1;
+    const PAGE_PHOTO = 2;
 
 
     /**
