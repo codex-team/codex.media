@@ -241,7 +241,7 @@ class Model_Methods extends Model
 
         if ( $file = Upload::save($file, $filename, $path) ){
 
-            return $file;
+            return $filename;
         }
 
         return FALSE;
