@@ -763,10 +763,13 @@ footer.site_footer p{margin: 15px 25px}
 }
 
 .page_image{
-    margin: 5px;
+    margin: 0px 0px 5px 5px;
+    border-radius: 2px;
+    float: left;
 }
 .page_wrap .images{
     padding: 30px 30px;
+    overflow: hidden;
 }
 
 
