@@ -1433,6 +1433,7 @@ footer.site_footer p{margin: 15px 25px}
         padding: 12px 0 10px;
         color: #7d869a;
         cursor: pointer;
+        margin-right: 30px;
     }
         .atlas_form .attach:hover,
         .atlas_form .import:hover{
