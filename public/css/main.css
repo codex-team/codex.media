@@ -762,6 +762,13 @@ footer.site_footer p{margin: 15px 25px}
     padding: 30px 100px;
 }
 
+.page_image{
+    margin: 5px;
+}
+.page_wrap .images{
+    padding: 30px 30px;
+}
+
 
 .page_title{
     font-size: 2.4em;
