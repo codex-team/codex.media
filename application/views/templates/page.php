@@ -54,13 +54,22 @@
         </a>
     <? endif; ?>
 </div>
+
+<? if (isset($images) && $images): ?>
+    <div class="w_island images" style="margin: 5px 0 5px 5px">
+        <? foreach ($images as $image): ?>
+            <img src="/upload/page_images/b_<?= $image['filename'] ?>" class="page_image">
+        <? endforeach ?>
+    </div>
+<? endif; ?>
+
 <? if (isset($files) && $files): ?>
     <div class="w_island files" style="margin: 5px 0 5px 5px">
     	<table class="page_files">
     		<? foreach ($files as $file): ?>
     			<tr>
     				<td class="ext"><span class="ext_tag"><?= $file['extension'] ?></span></td>
-    				<td class="title"><a href="/"><?= $file['title'] ?></a></td>
+    				<td class="title"><a href="/upload/page_files/<?= $file['filename'] ?>"><?= $file['title'] ?></a></td>
     				<td>
     					<p class="size"><?= (int)$file['size'] < 1000 ? $file['size'] . PHP_EOL . 'КБ' : ceil($file['size'] / 1000) . PHP_EOL . 'МБ' ?></p>
     				</td>
@@ -69,6 +78,7 @@
     	</table>
     </div>
 <? endif; ?>
+
 <div class="page_comments w_island" style="margin: 5px 0 5px 5px" id="page_comments">
 
     <? if ($comments): ?>
