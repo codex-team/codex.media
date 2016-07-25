@@ -240,10 +240,7 @@ class Model_Methods extends Model
 
         if ( $file = Upload::save($file, $filename, $path) ){
 
-            // Delete the temporary file
-            unlink($file);
-
-            return $filename;
+            return $file;
         }
 
         return FALSE;
