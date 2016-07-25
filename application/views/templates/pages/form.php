@@ -50,6 +50,9 @@
         <? endif ?>
 
         <span class="attach" onclick="codex.transport.selectFile(event, '<?= Controller_Transport::PAGE_FILE ?>')"><i class="icon-attach"></i>Прикрепить файл</span>
+
+        <span class="attach" onclick="codex.transport.selectFile(event, '<?= Controller_Transport::PAGE_IMAGE ?>')"><i class="icon-picture"></i>Прикрепить фото</span>
+
     </div>
 
 </form>
