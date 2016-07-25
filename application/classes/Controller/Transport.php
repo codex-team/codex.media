@@ -53,7 +53,19 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
         $this->transportResponse['type'] = $this->type;
 
-        $filename = $this->savePageFile();
+        switch ($this->type)
+        {
+            case self::PAGE_FILE:
+                $filename = $this->savePageFile();
+                break;
+
+            case self::PAGE_IMAGE:
+                $filename = $this->savePageFile();
+                break;
+
+            default:
+                break;
+        }
 
         if ($filename) {
 
@@ -81,9 +93,6 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
         $this->auto_render = false;
         $this->response->body($script);
-
-
-
     }
 
     private function savePageFile()
