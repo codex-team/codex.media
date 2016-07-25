@@ -13,7 +13,7 @@ class Controller_Transport extends Controller_Base_preDispatch {
     * Transport file types
     */
     const PAGE_FILE  = 1;
-    const PAGE_PHOTO = 2;
+    const PAGE_IMAGE = 2;
 
 
     /**
@@ -53,37 +53,27 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
         $this->transportResponse['type'] = $this->type;
 
-        switch ($this->type) {
-            case self::PAGE_FILE:
+        $filename = $this->savePageFile();
 
-                $filename = $this->savePageFile();
+        if ($filename) {
 
-                if ($filename) {
+            $this->transportResponse['success'] = 1;
 
-                    $this->transportResponse['success'] = 1;
+            $title = $this->methods->getUriByTitle($this->files['name']);
 
-                    $title = $this->methods->getUriByTitle($this->files['name']);
+            $saved_id = $this->methods->newFile(array(
+                'filename'  => $filename,
+                'title'     => $title,
+                'author'    => $this->user->id,
+                'size'      => Arr::get($this->files, 'size', 0) / 1000,
+                'extension' => strtolower(pathinfo($filename, PATHINFO_EXTENSION)),
+                'type'      => $this->type,
+            ));
 
-                    $saved_id = $this->methods->newFile(array(
-                        'filename'  => $filename,
-                        'title'     => $title,
-                        'author'    => $this->user->id,
-                        'size'      => Arr::get($this->files, 'size', 0) / 1000,
-                        'extension' => strtolower(pathinfo($filename, PATHINFO_EXTENSION)),
-                        'type'      => $this->type,
-                    ));
-
-                    $this->transportResponse['title']    = $title;
-                    $this->transportResponse['id']       = $saved_id;
-                    $this->transportResponse['filename'] = $filename;
-                }
-
-
-            break;
-
-            default: $this->transportResponse['message'] = 'Wrong transport type'; break;
+            $this->transportResponse['title']    = $title;
+            $this->transportResponse['id']       = $saved_id;
+            $this->transportResponse['filename'] = $filename;
         }
-
 
         finish:
 
@@ -98,13 +88,21 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
     private function savePageFile()
     {
-        if (Upload::type($this->files, array('jpg', 'jpeg', 'png', 'gif'))){
-            $filename = $this->methods->saveImage( $this->files , 'upload/page_images/' );
-        } else {
-            $filename = $this->methods->saveFile( $this->files , 'upload/page_files/' );
+        switch ($this->type)
+        {
+            case self::PAGE_IMAGE:
+                $filename = $this->methods->saveImage( $this->files , 'upload/page_images/' );
+                break;
+
+            case self::PAGE_FILE:
+                $filename = $this->methods->saveFile( $this->files , 'upload/page_files/' );
+                break;
+
+            default:
+                $this->transportResponse['message'] = 'Wrong transport type';
         }
 
-        if ( !$filename ){
+        if ( !$filename or !isset($filename) ){
             $this->transportResponse['message'] = 'Error while saving';
             return false;
         }
