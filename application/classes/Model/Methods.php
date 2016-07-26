@@ -73,17 +73,6 @@ class Model_Methods extends Model
         return Model_Page::rowsToModels($menu_pages);
     }
 
-
-    public function getUsers()
-    {
-        return DB::select()
-                ->from('users')
-                ->order_by('id','desc')
-                ->cached(Date::MINUTE*1)
-                ->execute()
-                ->as_array();
-    }
-
     /**
     * Files uploading section
     */
