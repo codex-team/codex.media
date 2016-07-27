@@ -79,8 +79,9 @@ Route::set('ADMIN_PAGE', 'admin(/<page>(/<id>))')->defaults(array(
 ));
 
 
-
-
+/**
+* Ajax routes
+*/
 
 Route::set('AJAX_FILE_TRANSPORT', 'file/transport')->defaults(array(
     'controller'      => 'transport',
@@ -102,6 +103,15 @@ Route::set('PAGE_FILES_EDITING', 'ajax/edit_file/<type>')->defaults(array(
 Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
     'controller'      => 'parser',
     'action'          => 'get_page'
+));
+
+
+/**
+* Downloading files
+*/
+Route::set('DOWNLOAD_FILE', 'file/<filename>')->defaults(array(
+    'controller' => 'files',
+    'action' => 'download'
 ));
 
 
