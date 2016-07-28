@@ -1451,10 +1451,17 @@ footer.site_footer p{margin: 15px 25px}
     .atlas_form .attaches .item {
         padding: 20px 30px;
     }
-    .atlas_form .attaches .item::before {
+    .atlas_form .attaches .item_file::before {
         display: inline-block;
         margin-right: 12px;
         content: '\e818';
+        font-family: 'codex-edu';
+        vertical-align: middle;
+    }
+    .atlas_form .attaches .item_image::before {
+        display: inline-block;
+        margin-right: 12px;
+        content: '\e804';
         font-family: 'codex-edu';
         vertical-align: middle;
     }
