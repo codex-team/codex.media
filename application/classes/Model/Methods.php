@@ -77,17 +77,17 @@ class Model_Methods extends Model
     * Files uploading section
     */
 
-    public function newFile( $fields )
-    {
-        return current(DB::insert( 'files' , array_keys($fields) )->values(array_values($fields))->execute());
-    }
+    // public function newFile( $fields )
+    // {
+    //     return current(DB::insert( 'files' , array_keys($fields) )->values(array_values($fields))->execute());
+    // }
 
     public function addFileToPage( $fields )
     {
         return current(DB::insert( 'files' , array_keys($fields) )->values(array_values($fields))->execute());
     }
 
-    public function getPageFiles( $page_id, $type = Controller_Transport::PAGE_FILE )
+    public function getPageFiles( $page_id, $type = Model_File::PAGE_FILE )
     {
         return DB::select()
                 ->from('files')
@@ -121,7 +121,7 @@ class Model_Methods extends Model
 
         if ( $file = Upload::save($file, NULL, $path) ){
 
-            $filename = uniqid("", false).'.jpg';
+            $filename = uniqid("", false) . '.jpg';
 
             $image = Image::factory($file);
 

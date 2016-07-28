@@ -10,13 +10,6 @@ class Controller_Transport extends Controller_Base_preDispatch {
     private $files = null;
 
     /**
-    * Transport file types
-    */
-    const PAGE_FILE  = 1;
-    const PAGE_IMAGE = 2;
-
-
-    /**
     * File transport module
     */
     public function action_file_uploader()
@@ -45,7 +38,7 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
         }
 
-        if (!$this->user->isTeacher())
+        if ( !$this->user->isTeacher() )
         {
             $this->transportResponse['message'] = 'Access denied';
             goto finish;
@@ -55,11 +48,11 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
         switch ($this->type)
         {
-            case self::PAGE_FILE:
+            case Model_File::PAGE_FILE:
                 $filename = $this->savePageFile();
                 break;
 
-            case self::PAGE_IMAGE:
+            case Model_File::PAGE_IMAGE:
                 $filename = $this->savePageFile();
                 break;
 
@@ -73,18 +66,18 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
             $title = $this->methods->getUriByTitle($this->files['name']);
 
-            $saved_id = $this->methods->newFile(array(
-                'filename'  => $filename,
-                'title'     => $title,
-                'author'    => $this->user->id,
-                'size'      => Arr::get($this->files, 'size', 0) / 1000,
-                'extension' => strtolower(pathinfo($filename, PATHINFO_EXTENSION)),
-                'type'      => $this->type,
-            ));
+            $saved = new Model_File;
+            $saved->title = $title;
+            $saved->filename = current(explode(".",$filename));
+            $saved->author = $this->user->id;
+            $saved->size = Arr::get($this->files, 'size', 0) / 1000;
+            $saved->extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            $saved->type = $this->type;
+            $saved->insert();
 
-            $this->transportResponse['title']    = $title;
-            $this->transportResponse['id']       = $saved_id;
-            $this->transportResponse['filename'] = $filename;
+            $this->transportResponse['title']    = $saved->title;
+            $this->transportResponse['id']       = $saved->id;
+            $this->transportResponse['filename'] = $saved->filename;
         }
 
         finish:
@@ -99,11 +92,11 @@ class Controller_Transport extends Controller_Base_preDispatch {
     {
         switch ($this->type)
         {
-            case self::PAGE_IMAGE:
+            case Model_File::PAGE_IMAGE:
                 $filename = $this->methods->saveImage( $this->files , 'upload/page_images/' );
                 break;
 
-            case self::PAGE_FILE:
+            case Model_File::PAGE_FILE:
                 $filename = $this->methods->saveFile( $this->files , 'upload/page_files/' );
                 break;
 
