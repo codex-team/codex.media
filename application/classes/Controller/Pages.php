@@ -21,12 +21,13 @@ class Controller_Pages extends Controller_Base_preDispatch
             $page->childrens  = Model_Page::getChildrenPagesByParent($page->id);
 
             $this->view['can_modify_this_page'] = $this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher);
-            $this->view['comments']   = Model_Comment::getCommentsByPageId($id);
-            $this->view['navigation'] = self::get_navigation_path_array($page->id);
-            $this->view['page']       = $page;
-            $this->view['files']      = $this->methods->getPageFiles($page->id, Controller_Transport::PAGE_FILE);
-            $this->view['images']      = $this->methods->getPageFiles($page->id, Controller_Transport::PAGE_IMAGE);
-            $this->template->content  = View::factory('templates/page', $this->view);
+            $this->view['comments']             = Model_Comment::getCommentsByPageId($id);
+            $this->view['navigation']           = self::get_navigation_path_array($page->id);
+            $this->view['page']                 = $page;
+            $this->view['files']                = $this->methods->getPageFiles($page->id, Model_File::PAGE_FILE);
+            $this->view['images']               = $this->methods->getPageFiles($page->id, Model_File::PAGE_IMAGE);
+
+            $this->template->content = View::factory('templates/page', $this->view);
 
         } else {
 
@@ -104,6 +105,9 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $this->view['page']      = $page;
         $this->view['errors']    = $errors;
+        $this->view['files']     = $this->methods->getPageFiles($page->id, Model_File::PAGE_FILE);
+        $this->view['images']    = $this->methods->getPageFiles($page->id, Model_File::PAGE_IMAGE);
+
         $this->template->content = View::factory('templates/pages/new', $this->view);
     }
 
