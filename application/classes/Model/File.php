@@ -116,4 +116,26 @@ class Model_File extends Model
         return $path;
     }
 
+    static public function getPageFiles( $page_id, $type = false )
+    {
+        $page_files = Dao_Files::select()
+            ->where('page','=', $page_id)
+            ->where('status', '=', 0);
+
+        // if ($type) $page_files->where('type', '=', $type);
+
+        $page_files_rows = $page_files->order_by('id','DESC')->execute();
+
+        $page_files_array = array();
+
+        if (!empty($page_files_rows))
+        {
+            foreach ($page_files_rows as $file) {
+                $page_files_array[] = new Model_File($file['id']);
+            }
+        }
+
+        return $page_files_array;
+    }
+
 }
