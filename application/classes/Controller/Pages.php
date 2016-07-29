@@ -24,8 +24,6 @@ class Controller_Pages extends Controller_Base_preDispatch
             $this->view['comments']             = Model_Comment::getCommentsByPageId($id);
             $this->view['navigation']           = self::get_navigation_path_array($page->id);
             $this->view['page']                 = $page;
-            $this->view['files']                = $this->methods->getPageFiles($page->id, Model_File::PAGE_FILE);
-            $this->view['images']               = $this->methods->getPageFiles($page->id, Model_File::PAGE_IMAGE);
 
             $this->template->content = View::factory('templates/page', $this->view);
 
@@ -105,8 +103,6 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $this->view['page']      = $page;
         $this->view['errors']    = $errors;
-        $this->view['files']     = $this->methods->getPageFiles($page->id, Model_File::PAGE_FILE);
-        $this->view['images']    = $this->methods->getPageFiles($page->id, Model_File::PAGE_IMAGE);
 
         $this->template->content = View::factory('templates/pages/new', $this->view);
     }
