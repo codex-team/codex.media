@@ -87,18 +87,6 @@ class Model_Methods extends Model
         return current(DB::insert( 'files' , array_keys($fields) )->values(array_values($fields))->execute());
     }
 
-    public function getPageFiles( $page_id, $type = Model_File::PAGE_FILE )
-    {
-        return DB::select()
-                ->from('files')
-                ->where('page','=', $page_id)
-                ->where('status', '=', 0)
-                ->where('type', '=', $type)
-                ->order_by('id','DESC')
-                ->execute()
-                ->as_array();
-    }
-
     public function updateFile( $id,  $fields )
     {
         $query = DB::update( 'files' );
