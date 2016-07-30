@@ -4,9 +4,12 @@ class Controller_Files extends Controller_Base_preDispatch
 {
     public function action_download()
     {
-        $filename = $this->request->param('filename');
+        $file_hash = $this->request->param('file_hash');
 
-        $file = new Model_File(null, $filename);
+        /**  packing hex to bin for searchig */
+        $file_hash = pack('H*', $file_hash);
+
+        $file = new Model_File(null, $file_hash);
 
         $file->returnFileToUser();
 

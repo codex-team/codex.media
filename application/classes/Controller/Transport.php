@@ -56,12 +56,13 @@ class Controller_Transport extends Controller_Base_preDispatch {
             $title = $this->methods->getUriByTitle($filename_without_ext);
 
             $saved = new Model_File;
-            $saved->filename  = substr($filename, 0, strrpos($filename, '.' ));
+            $saved->filename  = $filename;
             $saved->title     = $title;
             $saved->author    = $this->user->id;
             $saved->size      = Arr::get($this->files, 'size', 0) / 1000;
             $saved->extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
             $saved->type      = $this->type;
+            $saved->file_hash = pack('H*', substr($filename, 0, strrpos($filename, '.' )));
             $saved->insert();
 
             $this->transportResponse['title']    = $saved->title;

@@ -89,7 +89,7 @@ class Model_Methods extends Model
 
         if ( $file = Upload::save($file, NULL, $path) ){
 
-            $filename = uniqid("", false) . '.jpg';
+            $filename = md5(json_encode($file)) . '.jpg';
 
             $image = Image::factory($file);
 
@@ -150,7 +150,7 @@ class Model_Methods extends Model
         if (!is_dir($path)) mkdir($path);
 
         $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $filename = uniqid() . '.' . $ext;
+        $filename = md5(json_encode($file)) . '.' . $ext;
 
         if ( $file = Upload::save($file, $filename, $path) ){
 

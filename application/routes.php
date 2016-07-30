@@ -11,8 +11,8 @@
 // ));
 
 
-$DIGIT = '\d+';
-$STRING = '[-a-z\d]+';
+$DIGIT  = '\d+';
+$STRING = '[a-zA-Z\d]+';
 
 Route::set('INDEX', '(<page_number>)', array( 'page_number' => $DIGIT ))->defaults(array(
     'controller' => 'index',
@@ -109,7 +109,7 @@ Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
 /**
 * Downloading files
 */
-Route::set('DOWNLOAD_FILE', 'file/<filename>')->defaults(array(
+Route::set('DOWNLOAD_FILE', 'file/<file_hash>', array( 'file_hash' => $STRING ))->defaults(array(
     'controller' => 'files',
     'action' => 'download'
 ));

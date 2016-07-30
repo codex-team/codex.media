@@ -15,25 +15,26 @@ class Model_File extends Model
     public $status      = 0;
     public $type        = 0;
     public $filepath    = '';
+    public $file_hash   = '';
 
     const PAGE_FILE  = 1;
     const PAGE_IMAGE = 2;
 
-    public function __construct($id = null, $name = null, $row = array())
+    public function __construct($id = null, $file_hash = null, $row = array())
     {
-        if ( !$id && !$name && !$row ) return;
+        if ( !$id && !$file_hash && !$row ) return;
 
-        return self::get($id, $name, $row);
+        return self::get($id, $file_hash, $row);
     }
 
-    public function get($id = null, $name = null, $file_row = array())
+    public function get($id = null, $file_hash = null, $file_row = array())
     {
-        if ($id || $name)
+        if ($id || $file_hash)
         {
             $file = Dao_Files::select();
 
             if ($id)    $file->where('id', '=', $id);
-            if ($name)  $file->where('filename', '=', $name);
+            if ($file_hash)  $file->where('file_hash', '=', $file_hash);
 
             $file_row = $file->limit(1)->execute();
 
@@ -52,7 +53,8 @@ class Model_File extends Model
             }
         }
 
-        $this->filepath = self::getFilePath();
+        $this->filepath  = self::getFilePath();
+        $this->file_hash = bin2hex($this->file_hash);
 
         return $this;
     }
@@ -75,7 +77,8 @@ class Model_File extends Model
                  ->set('author',    $this->author)
                  ->set('size',      $this->size)
                  ->set('extension', $this->extension)
-                 ->set('type',      $this->type);
+                 ->set('type',      $this->type)
+                 ->set('file_hash', $this->file_hash);
         }
 
         $file_id = $file->execute();
@@ -129,7 +132,7 @@ class Model_File extends Model
     {
         $path = self::getUploadPathByType($this->type);
 
-        $path .= $this->filename . '.' . $this->extension;
+        $path .= $this->filename;
 
         return $path;
     }
