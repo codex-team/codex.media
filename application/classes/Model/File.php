@@ -125,7 +125,7 @@ class Model_File extends Model
         }
     }
 
-    public function getFilePath()
+    private function getFilePath()
     {
         $path = self::getUploadPathByType($this->type);
 
