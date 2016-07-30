@@ -12,7 +12,7 @@
 
 
 $DIGIT  = '\d+';
-$STRING = '[a-zA-Z\d]+';
+$STRING = '[-a-zA-Z\d]+';
 
 Route::set('INDEX', '(<page_number>)', array( 'page_number' => $DIGIT ))->defaults(array(
     'controller' => 'index',
