@@ -46,19 +46,7 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
         $this->transportResponse['type'] = $this->type;
 
-        switch ($this->type)
-        {
-            case Model_File::PAGE_FILE:
-                $filename = $this->savePageFile();
-                break;
-
-            case Model_File::PAGE_IMAGE:
-                $filename = $this->savePageFile();
-                break;
-
-            default:
-                break;
-        }
+        $filename = $this->savePageFile();
 
         if ($filename) {
 
@@ -91,6 +79,8 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
     private function savePageFile()
     {
+        $filename = null;
+
         switch ($this->type)
         {
             case Model_File::PAGE_IMAGE:
@@ -105,8 +95,11 @@ class Controller_Transport extends Controller_Base_preDispatch {
                 $this->transportResponse['message'] = 'Wrong transport type';
         }
 
-        if ( !$filename or !isset($filename) ){
-            $this->transportResponse['message'] = 'Error while saving';
+        if ( !$filename )
+        {
+            if (!$this->transportResponse['message'])
+                $this->transportResponse['message'] = 'Error while saving';
+
             return false;
         }
 
