@@ -80,15 +80,16 @@ class Controller_Transport extends Controller_Base_preDispatch {
     private function save()
     {
         $filename = null;
+        $upload_path = Model_File::getUploadPathByType($this->type);
 
         switch ($this->type)
         {
             case Model_File::PAGE_IMAGE:
-                $filename = $this->methods->saveImage( $this->files , Model_File::getUploadPathByType($this->type) );
+                $filename = $this->methods->saveImage( $this->files , $upload_path );
                 break;
 
             case Model_File::PAGE_FILE:
-                $filename = $this->methods->saveFile( $this->files , Model_File::getUploadPathByType($this->type) );
+                $filename = $this->methods->saveFile( $this->files , $upload_path );
                 break;
 
             default:
