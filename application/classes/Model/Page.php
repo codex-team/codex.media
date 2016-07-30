@@ -179,11 +179,4 @@ class Model_Page extends Model_preDispatch
         return strtolower($title);
     }
 
-    public function putAttachesToVars()
-    {
-        $this->attaches        = Model_File::getPageFiles($this->id);
-        $this->files           = Model_File::getPageFiles($this->id, Model_File::PAGE_FILE);
-        $this->images          = Model_File::getPageFiles($this->id, Model_File::PAGE_IMAGE);
-    }
-
 }
