@@ -19,33 +19,16 @@ class Model_File extends Model
     const PAGE_FILE  = 1;
     const PAGE_IMAGE = 2;
 
-    static public function getUploadPathByType($type)
+    public function __construct($id = null, $name = null, $row = array())
     {
-        switch ($type) {
-            case self::PAGE_FILE:
-                return 'upload/page_files/';
-                break;
+        if ( !$id && !$name && !$row ) return;
 
-            case self::PAGE_IMAGE:
-                return 'upload/page_images/';
-                break;
-
-            default:
-                return 'upload/';
-                break;
-        }
+        return self::get($id, $name, $row);
     }
 
-    public function __construct($id = null, $name = null)
+    public function get($id = null, $name = null, $file_row = array())
     {
-        if ( !$id and !$name ) return;
-
-        return self::get($id, $name);
-    }
-
-    public function get($id = null, $name = null)
-    {
-        if ($id or $name)
+        if ($id || $name)
         {
             $file = Dao_Files::select();
 
@@ -54,18 +37,24 @@ class Model_File extends Model
 
             $file_row = $file->limit(1)->execute();
 
-            foreach ($file_row as $field => $value){
-                if (property_exists($this, $field)){
-                    $this->$field = $value;
-                }
-            }
-
-            $this->filepath = self::getFilePath();
-
-            return $this;
         }
 
-        return false;
+        if( !$file_row ) {
+
+            return false;
+        }
+
+        foreach ($file_row as $field => $value)
+        {
+            if (property_exists($this, $field))
+            {
+                $this->$field = $value;
+            }
+        }
+
+        $this->filepath = self::getFilePath();
+
+        return $this;
     }
 
     public function insert($fields = array())
@@ -119,6 +108,23 @@ class Model_File extends Model
         return self::get($file_id);
     }
 
+    static public function getUploadPathByType($type)
+    {
+        switch ($type) {
+            case self::PAGE_FILE:
+                return 'upload/page_files/';
+                break;
+
+            case self::PAGE_IMAGE:
+                return 'upload/page_images/';
+                break;
+
+            default:
+                return 'upload/default/';
+                break;
+        }
+    }
+
     public function getFilePath()
     {
         $path = self::getUploadPathByType($this->type);
@@ -142,8 +148,8 @@ class Model_File extends Model
 
         if (!empty($page_files_rows))
         {
-            foreach ($page_files_rows as $file) {
-                $page_files_array[] = new Model_File($file['id']);
+            foreach ($page_files_rows as $file_row) {
+                $page_files_array[] = new Model_File(null, null, $file_row);
             }
         }
 
