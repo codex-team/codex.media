@@ -46,7 +46,7 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
         $this->transportResponse['type'] = $this->type;
 
-        $filename = $this->savePageFile();
+        $filename = $this->save();
 
         if ($filename) {
 
@@ -77,7 +77,7 @@ class Controller_Transport extends Controller_Base_preDispatch {
         $this->response->body($script);
     }
 
-    private function savePageFile()
+    private function save()
     {
         $filename = null;
 
