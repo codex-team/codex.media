@@ -64,7 +64,8 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
             $this->transportResponse['success'] = 1;
 
-            $title = $this->methods->getUriByTitle($this->files['name']);
+            $filename_without_ext = substr($this->files['name'], 0, strrpos($this->files['name'], '.' ));
+            $title = $this->methods->getUriByTitle($filename_without_ext);
 
             $saved = new Model_File;
             $saved->title = $title;
