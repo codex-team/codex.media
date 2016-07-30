@@ -94,12 +94,12 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
             default:
                 $this->transportResponse['message'] = 'Wrong transport type';
+                return false;
         }
 
         if ( !$filename )
         {
-            if (!$this->transportResponse['message'])
-                $this->transportResponse['message'] = 'Error while saving';
+            $this->transportResponse['message'] = 'Error while saving';
 
             return false;
         }
