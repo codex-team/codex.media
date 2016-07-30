@@ -94,11 +94,11 @@ class Controller_Transport extends Controller_Base_preDispatch {
         switch ($this->type)
         {
             case Model_File::PAGE_IMAGE:
-                $filename = $this->methods->saveImage( $this->files , 'upload/page_images/' );
+                $filename = $this->methods->saveImage( $this->files , Model_File::getUploadPathByType($this->type) );
                 break;
 
             case Model_File::PAGE_FILE:
-                $filename = $this->methods->saveFile( $this->files , 'upload/page_files/' );
+                $filename = $this->methods->saveFile( $this->files , Model_File::getUploadPathByType($this->type) );
                 break;
 
             default:
