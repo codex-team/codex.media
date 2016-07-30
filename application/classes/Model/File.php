@@ -81,12 +81,12 @@ class Model_File extends Model
 
         } else {
             /** если на вход идет модель */
-            $file->set('filename', $this->filename)
-                 ->set('title', $this->title)
-                 ->set('author', $this->author)
-                 ->set('size', $this->size)
+            $file->set('filename',  $this->filename)
+                 ->set('title',     $this->title)
+                 ->set('author',    $this->author)
+                 ->set('size',      $this->size)
                  ->set('extension', $this->extension)
-                 ->set('type', $this->type);
+                 ->set('type',      $this->type);
         }
 
         $file_id = $file->execute();
@@ -94,17 +94,29 @@ class Model_File extends Model
         return self::get($file_id);
     }
 
-    public function update($fields)
+    public function update($fields = array())
     {
-        $file = Dao_Files::update()
-                ->where('id', '=', $this->id);
+        $file = Dao_Files::update();
 
-        foreach ($fields as $name => $value)
-            $file->set($name, trim(htmlspecialchars($value)));
+        if ($fields && isset($fields['id']))
+        {
+            /** если на вход идет массив */
+            $file->where('id', '=', $fields['id']);
 
-        $file->execute();
+            foreach ($fields as $name => $value)
+                $file->set($name, trim(htmlspecialchars($value)));
 
-        return self::get($this->id);
+        } else {
+            /** если на вход идет модель */
+            $file->where('id', '=', $this->id)
+                 ->set('page',      $this->page)
+                 ->set('title',     $this->title);
+
+        }
+
+        $file_id = $file->execute();
+
+        return self::get($file_id);
     }
 
     public function getFilePath()
@@ -122,9 +134,9 @@ class Model_File extends Model
             ->where('page','=', $page_id)
             ->where('status', '=', 0);
 
-        // if ($type) $page_files->where('type', '=', $type);
+        if ($type) $page_files->where('type', '=', $type);
 
-        $page_files_rows = $page_files->order_by('id','DESC')->execute();
+        $page_files_rows = $page_files->order_by('id','ASC')->execute();
 
         $page_files_array = array();
 
@@ -136,6 +148,35 @@ class Model_File extends Model
         }
 
         return $page_files_array;
+    }
+
+    /**
+    *   Функция для скачивания файла
+    *   Источник: https://habrahabr.ru/post/151795/
+    */
+    public function returnFileToUser()
+    {
+        if (file_exists($this->filepath))
+        {
+            // сбрасываем буфер вывода PHP, чтобы избежать переполнения памяти выделенной под скрипт
+            // если этого не сделать файл будет читаться в память полностью!
+            if (ob_get_level())
+            {
+              ob_end_clean();
+            }
+            // заставляем браузер показать окно сохранения файла
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename=' . $this->title . '.' . $this->extension);
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($this->filepath));
+            // читаем файл и отправляем его пользователю
+            readfile($this->filepath);
+            exit;
+        }
     }
 
 }
