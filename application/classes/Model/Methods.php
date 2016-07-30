@@ -77,26 +77,6 @@ class Model_Methods extends Model
     * Files uploading section
     */
 
-    // public function newFile( $fields )
-    // {
-    //     return current(DB::insert( 'files' , array_keys($fields) )->values(array_values($fields))->execute());
-    // }
-
-    public function addFileToPage( $fields )
-    {
-        return current(DB::insert( 'files' , array_keys($fields) )->values(array_values($fields))->execute());
-    }
-
-    public function updateFile( $id,  $fields )
-    {
-        $query = DB::update( 'files' );
-        foreach ($fields as $name => $value) {
-            $query->set(array($name => $value));
-        }
-        return $query->where('id','=',$id)->execute();
-    }
-
-
     public function saveImage( $file , $path )
     {
         /**
@@ -166,7 +146,6 @@ class Model_Methods extends Model
         /**
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
-
 
         if (!is_dir($path)) mkdir($path);
 
