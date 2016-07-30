@@ -19,12 +19,24 @@
 
     <div class="attaches" id="formAttaches">
 
-        <? if ($page->attaches): ?>
+        <? if ($page->images): ?>
 
-            <? foreach ($page->attaches as $attache): ?>
+            <? foreach ($page->images as $image): ?>
 
-                <div class="item item_<?= $attache->type == Model_File::PAGE_FILE ? 'file' : 'image' ?>" contenteditable="true" data-id="<?= $attache->id ?>">
-                    <?= $attache->title ?>
+                <div class="item item_image" <? /* contenteditable="true" */ ?> data-id="<?= $image->id ?>">
+                    <?= $image->title ?>
+                </div>
+
+            <? endforeach ?>
+
+        <? endif ?>
+
+        <? if ($page->files): ?>
+
+            <? foreach ($page->files as $file): ?>
+
+                <div class="item item_file" <? /* contenteditable="true" */ ?> data-id="<?= $file->id ?>">
+                    <?= $file->title ?>
                 </div>
 
             <? endforeach ?>
