@@ -17,7 +17,21 @@
     <input class="title_input" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
     <textarea name="content" rows="5" placeholder="Содержание <?= $object_name ?>"><?= $page->content ?></textarea>
 
-    <div class="attaches" id="formAttaches"></div>
+    <div class="attaches" id="formAttaches">
+
+        <? if ($page->attaches): ?>
+
+            <? foreach ($page->attaches as $attache): ?>
+
+                <div class="item item_<?= $attache->type == Model_File::PAGE_FILE ? 'file' : 'image' ?>" contenteditable="true" data-id="<?= $attache->id ?>">
+                    <?= $attache->title ?>
+                </div>
+
+            <? endforeach ?>
+
+        <? endif ?>
+
+    </div>
 
     <div class="actions clear">
 
