@@ -15,7 +15,6 @@ class Model_File extends Model
     public $status      = 0;
     public $type        = 0;
     public $filepath    = '';
-    public $file_hash   = '';
 
     const PAGE_FILE  = 1;
     const PAGE_IMAGE = 2;
@@ -54,7 +53,6 @@ class Model_File extends Model
         }
 
         $this->filepath  = self::getFilePath();
-        $this->file_hash = bin2hex($this->file_hash);
 
         return $this;
     }
@@ -78,7 +76,7 @@ class Model_File extends Model
                  ->set('size',      $this->size)
                  ->set('extension', $this->extension)
                  ->set('type',      $this->type)
-                 ->set('file_hash', $this->file_hash);
+                 ->set('file_hash', md5($this->filename, true));
         }
 
         $file_id = $file->execute();

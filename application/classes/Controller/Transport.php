@@ -62,7 +62,6 @@ class Controller_Transport extends Controller_Base_preDispatch {
             $saved->size      = Arr::get($this->files, 'size', 0) / 1000;
             $saved->extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
             $saved->type      = $this->type;
-            $saved->file_hash = pack('H*', substr($filename, 0, strrpos($filename, '.' )));
             $saved->insert();
 
             $this->transportResponse['title']    = $saved->title;
