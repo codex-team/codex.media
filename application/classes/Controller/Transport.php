@@ -69,9 +69,9 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
             $saved = new Model_File;
             $saved->title = $title;
-            $saved->filename = current(explode(".",$filename));
             $saved->author = $this->user->id;
             $saved->size = Arr::get($this->files, 'size', 0) / 1000;
+            $saved->filename  = substr($filename, 0, strrpos($filename, '.' ));
             $saved->extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
             $saved->type = $this->type;
             $saved->insert();
