@@ -199,12 +199,12 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $attaches = json_decode($attaches, true);
 
-        foreach ($attaches as $id => $file)
+        foreach ($attaches as $id => $file_row)
         {
-            $this->methods->updateFile($id, array(
-                'page'  => $page_id,
-                'title' => $file['title']
-            )) ;
+            $file = new Model_File($id);
+            $file->page  = $page_id;
+            $file->title = $file_row['title'];
+            $file->update();
         }
     }
 
