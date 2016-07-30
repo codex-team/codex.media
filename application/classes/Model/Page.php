@@ -52,10 +52,6 @@ class Model_Page extends Model_preDispatch
 
             $this->uri             = $this->getPageUri();
             $this->author          = new Model_User($page_row['author']);
-
-            $this->attaches        = Model_File::getPageFiles($this->id);
-            $this->files           = Model_File::getPageFiles($this->id, Model_File::PAGE_FILE);
-            $this->images          = Model_File::getPageFiles($this->id, Model_File::PAGE_IMAGE);
         }
 
         return $this;
@@ -181,6 +177,13 @@ class Model_Page extends Model_preDispatch
         $title = Model_Methods::getUriByTitle($title);
 
         return strtolower($title);
+    }
+
+    public function putAttachesToVars()
+    {
+        $this->attaches        = Model_File::getPageFiles($this->id);
+        $this->files           = Model_File::getPageFiles($this->id, Model_File::PAGE_FILE);
+        $this->images          = Model_File::getPageFiles($this->id, Model_File::PAGE_IMAGE);
     }
 
 }

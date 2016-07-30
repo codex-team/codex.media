@@ -19,6 +19,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             }
 
             $page->childrens  = Model_Page::getChildrenPagesByParent($page->id);
+            $page->putAttachesToVars();
 
             $this->view['can_modify_this_page'] = $this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher);
             $this->view['comments']             = Model_Comment::getCommentsByPageId($id);
@@ -86,6 +87,8 @@ class Controller_Pages extends Controller_Base_preDispatch
 
             $page_id = (int) Arr::get($_GET, 'id', 0);
             $page    = new Model_Page($page_id);
+
+            $page->putAttachesToVars();
 
             /** Нам необходимо получить только ОДИН из параметров:
              * id       для редактирования существующей страницы
