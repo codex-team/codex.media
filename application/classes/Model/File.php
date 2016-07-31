@@ -68,6 +68,8 @@ class Model_File extends Model
                 $file->set($key, $value);
             }
 
+            $file->set('file_hash', md5($fields['filename'], true));
+
         } else {
             /** если на вход идет модель */
             $file->set('filename',  $this->filename)
