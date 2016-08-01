@@ -17,7 +17,33 @@
     <input class="title_input" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
     <textarea name="content" rows="5" placeholder="Содержание <?= $object_name ?>"><?= $page->content ?></textarea>
 
-    <div class="attaches" id="formAttaches"></div>
+    <div class="attaches" id="formAttaches">
+
+        <? if ($page->images): ?>
+
+            <? foreach ($page->images as $image): ?>
+
+                <div class="item item_image" <? /* contenteditable="true" */ ?> data-id="<?= $image->id ?>">
+                    <?= $image->title ?>
+                </div>
+
+            <? endforeach ?>
+
+        <? endif ?>
+
+        <? if ($page->files): ?>
+
+            <? foreach ($page->files as $file): ?>
+
+                <div class="item item_file" <? /* contenteditable="true" */ ?> data-id="<?= $file->id ?>">
+                    <?= $file->title ?>
+                </div>
+
+            <? endforeach ?>
+
+        <? endif ?>
+
+    </div>
 
     <div class="actions clear">
 
@@ -49,7 +75,10 @@
 
         <? endif ?>
 
-        <span class="attach" onclick="codex.transport.selectFile(event, '<?= Controller_Transport::PAGE_FILE ?>')"><i class="icon-attach"></i>Прикрепить файл</span>
+        <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_FILE ?>')"><i class="icon-attach"></i>Прикрепить файл</span>
+
+        <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_IMAGE ?>')"><i class="icon-picture"></i>Прикрепить фото</span>
+
     </div>
 
 </form>

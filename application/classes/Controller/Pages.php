@@ -18,14 +18,16 @@ class Controller_Pages extends Controller_Base_preDispatch
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
             }
 
-            $page->childrens  = Model_Page::getChildrenPagesByParent($page->id);
+            $page->childrens = Model_Page::getChildrenPagesByParent($page->id);
+            $page->files     = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
+            $page->images    = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
 
             $this->view['can_modify_this_page'] = $this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher);
-            $this->view['comments']   = Model_Comment::getCommentsByPageId($id);
-            $this->view['navigation'] = self::get_navigation_path_array($page->id);
-            $this->view['page']       = $page;
-            $this->view['files']      = $this->methods->getPageFiles($page->id);
-            $this->template->content  = View::factory('templates/page', $this->view);
+            $this->view['comments']             = Model_Comment::getCommentsByPageId($id);
+            $this->view['navigation']           = self::get_navigation_path_array($page->id);
+            $this->view['page']                 = $page;
+
+            $this->template->content = View::factory('templates/page', $this->view);
 
         } else {
 
@@ -87,6 +89,9 @@ class Controller_Pages extends Controller_Base_preDispatch
             $page_id = (int) Arr::get($_GET, 'id', 0);
             $page    = new Model_Page($page_id);
 
+            $page->files  = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
+            $page->images = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
+
             /** Нам необходимо получить только ОДИН из параметров:
              * id       для редактирования существующей страницы
              * type     для создания новости или страницы
@@ -103,6 +108,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $this->view['page']      = $page;
         $this->view['errors']    = $errors;
+
         $this->template->content = View::factory('templates/pages/new', $this->view);
     }
 
@@ -198,12 +204,12 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $attaches = json_decode($attaches, true);
 
-        foreach ($attaches as $id => $file)
+        foreach ($attaches as $id => $file_row)
         {
-            $this->methods->updateFile($id, array(
-                'page'  => $page_id,
-                'title' => $file['title']
-            )) ;
+            $file = new Model_File($id);
+            $file->page  = $page_id;
+            $file->title = $file_row['title'];
+            $file->update();
         }
     }
 

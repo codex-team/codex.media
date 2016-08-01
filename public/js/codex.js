@@ -257,6 +257,8 @@ codex.transport = {
 
             this.storeFile(response);
             // this.appendFileToInput(response.filename);
+        } else {
+            codex.core.showException(response.message);
         }
     },
 
@@ -291,6 +293,13 @@ codex.transport = {
         var row = document.createElement('div');
 
         row.classList.add('item');
+
+        switch (file.type){
+            case '1': row.classList.add('item_file'); break;
+            case '2': row.classList.add('item_image'); break;
+            default: break;
+        }
+
         row.textContent = file.title;
         row.setAttribute('contentEditable', true);
 

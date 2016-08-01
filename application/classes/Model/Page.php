@@ -18,6 +18,10 @@ class Model_Page extends Model_preDispatch
     public $parent;
     public $source_link     = '';
 
+    public $attaches        = array();
+    public $files           = array();
+    public $images          = array();
+
     const TYPE_SITE_PAGE = 1;
     const TYPE_SITE_NEWS = 2;
     const TYPE_USER_PAGE = 3;
@@ -55,7 +59,7 @@ class Model_Page extends Model_preDispatch
 
     public function insert()
     {
-        $page =  Dao_Pages::insert()
+        $page = Dao_Pages::insert()
                     ->set('type',           $this->type)
                     ->set('author',         $this->author->id)
                     ->set('id_parent',      $this->id_parent)

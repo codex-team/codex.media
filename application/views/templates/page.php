@@ -54,21 +54,33 @@
         </a>
     <? endif; ?>
 </div>
-<? if (isset($files) && $files): ?>
+
+<? if ($page->images): ?>
+    <div class="w_island images" style="margin: 5px 0 5px 5px">
+        <? foreach ($page->images as $image): ?>
+            <a href="/upload/page_images/o_<?= $image->filename ?>">
+                <img src="/upload/page_images/b_<?= $image->filename ?>" class="page_image">
+            </a>
+        <? endforeach ?>
+    </div>
+<? endif; ?>
+
+<? if ($page->files): ?>
     <div class="w_island files" style="margin: 5px 0 5px 5px">
     	<table class="page_files">
-    		<? foreach ($files as $file): ?>
+    		<? foreach ($page->files as $file): ?>
     			<tr>
-    				<td class="ext"><span class="ext_tag"><?= $file['extension'] ?></span></td>
-    				<td class="title"><a href="/"><?= $file['title'] ?></a></td>
+    				<td class="ext"><span class="ext_tag"><?= $file->extension ?></span></td>
+    				<td class="title"><a href="/file/<?= $file->file_hash_hex ?>"><?= $file->title ?></a></td>
     				<td>
-    					<p class="size"><?= (int)$file['size'] < 1000 ? $file['size'] . PHP_EOL . 'КБ' : ceil($file['size'] / 1000) . PHP_EOL . 'МБ' ?></p>
+    					<p class="size"><?= (int)$file->size < 1000 ? $file->size . PHP_EOL . 'КБ' : ceil($file->size / 1000) . PHP_EOL . 'МБ' ?></p>
     				</td>
     			</tr>
     		<? endforeach ?>
     	</table>
     </div>
 <? endif; ?>
+
 <div class="page_comments w_island" style="margin: 5px 0 5px 5px" id="page_comments">
 
     <? if ($comments): ?>
