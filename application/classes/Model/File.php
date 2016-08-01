@@ -83,8 +83,9 @@ class Model_File extends Model
                  ->set('type',      $this->type);
         }
 
-        $file_id = $file->set('file_hash', hex2bin(substr($this->filename, 0, strrpos($this->filename, '.'))))
-                        ->execute();
+        $file->set('file_hash', hex2bin(substr($this->filename, 0, strrpos($this->filename, '.'))));
+
+        $file_id = $file->execute();
 
         return self::get($file_id);
     }
