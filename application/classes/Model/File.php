@@ -16,27 +16,29 @@ class Model_File extends Model
     public $type        = 0;
     public $filepath    = '';
 
+    public $file_hash     = '';
+    public $file_hash_hex = '';
+
     const PAGE_FILE  = 1;
     const PAGE_IMAGE = 2;
 
-    public function __construct($id = null, $file_hash = null, $row = array())
+    public function __construct($id = null, $file_hash_hex = null, $row = array())
     {
-        if ( !$id && !$file_hash && !$row ) return;
+        if ( !$id && !$file_hash_hex && !$row ) return;
 
-        return self::get($id, $file_hash, $row);
+        return self::get($id, $file_hash_hex, $row);
     }
 
-    public function get($id = null, $file_hash = null, $file_row = array())
+    public function get($id = null, $file_hash_hex = null, $file_row = array())
     {
-        if ($id || $file_hash)
+        if ($id || $file_hash_hex)
         {
             $file = Dao_Files::select();
 
-            if ($id)    $file->where('id', '=', $id);
-            if ($file_hash)  $file->where('file_hash', '=', $file_hash);
+            if ($id)             $file->where('id', '=', $id);
+            if ($file_hash_hex)  $file->where('file_hash', '=', hex2bin($file_hash_hex));
 
             $file_row = $file->limit(1)->execute();
-
         }
 
         if( !$file_row ) {
@@ -52,7 +54,8 @@ class Model_File extends Model
             }
         }
 
-        $this->filepath  = self::getFilePath();
+        $this->file_hash_hex = bin2hex($this->file_hash);
+        $this->filepath      = self::getFilePath();
 
         return $this;
     }
@@ -68,7 +71,7 @@ class Model_File extends Model
                 $file->set($key, $value);
             }
 
-            $file->set('file_hash', md5($fields['filename'], true));
+            $this->filename = $fields['filename'];
 
         } else {
             /** если на вход идет модель */
@@ -77,11 +80,11 @@ class Model_File extends Model
                  ->set('author',    $this->author)
                  ->set('size',      $this->size)
                  ->set('extension', $this->extension)
-                 ->set('type',      $this->type)
-                 ->set('file_hash', md5($this->filename, true));
+                 ->set('type',      $this->type);
         }
 
-        $file_id = $file->execute();
+        $file_id = $file->set('file_hash', hex2bin(substr($this->filename, 0, strrpos($this->filename, '.'))))
+                        ->execute();
 
         return self::get($file_id);
     }

@@ -71,7 +71,7 @@
     		<? foreach ($page->files as $file): ?>
     			<tr>
     				<td class="ext"><span class="ext_tag"><?= $file->extension ?></span></td>
-    				<td class="title"><a href="/file/<?= md5($file->filename) ?>"><?= $file->title ?></a></td>
+    				<td class="title"><a href="/file/<?= $file->file_hash_hex ?>"><?= $file->title ?></a></td>
     				<td>
     					<p class="size"><?= (int)$file->size < 1000 ? $file->size . PHP_EOL . 'КБ' : ceil($file->size / 1000) . PHP_EOL . 'МБ' ?></p>
     				</td>

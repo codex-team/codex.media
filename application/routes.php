@@ -109,7 +109,7 @@ Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
 /**
 * Downloading files
 */
-Route::set('DOWNLOAD_FILE', 'file/<file_hash>', array( 'file_hash' => $STRING ))->defaults(array(
+Route::set('DOWNLOAD_FILE', 'file/<file_hash_hex>', array( 'file_hash_hex' => $STRING ))->defaults(array(
     'controller' => 'files',
     'action' => 'download'
 ));
