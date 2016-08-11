@@ -25,6 +25,7 @@
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>
+    <script src="/public/js/special.js?v=<?= filemtime('public/js/special.js'); ?>"></script>
 
 </head>
 <body>
