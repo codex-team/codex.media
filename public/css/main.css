@@ -217,12 +217,9 @@ h3{
     .button.green:hover{background: #279d83;}
     .button.main, input[type="submit"]{background: #548AD2; color: #fff;}
     .button.main:hover, input[type="submit"]:hover{background: #3D77C3; color: #fff}
-    .button.iconic{
-        padding: 10px 15px 10px 12px;
+    .iconic i{
+        margin: 0 4px 0 -7px;
     }
-        .iconic i{
-            margin-right: 2px;
-        }
 
 .button.facebook,
 .button.vk,
@@ -1064,6 +1061,21 @@ footer.site_footer p{margin: 15px 25px}
         height: 32px;
         border-radius: 20px;
     }
+
+.prifile_settings--ava-holder{
+    margin-bottom: 30px;
+}
+    .profile_settings--ava{
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        margin-right: 25px;
+    }
+    .prifile_settings--ava-holder .button{
+        vertical-align: middle;
+    }
+
+
 
 @-webkit-keyframes bounceIn {
     0% { opacity: 0; -webkit-transform: scale(.3);}
