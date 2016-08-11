@@ -2,7 +2,7 @@
 
     <article class="post w_island <?= $page->rich_view ? 'rich_view' : '' ?> <?= $page->dt_pin ? 'pinned' : '' ?>">
         <h3>
-            <a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a>
+            <a class="post-link" href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a>
         </h3>
         <? if (!$page->rich_view): ?>
             <div class="body">

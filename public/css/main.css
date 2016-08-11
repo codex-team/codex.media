@@ -560,7 +560,8 @@ footer.site_footer p{margin: 15px 25px}
         border-top: 1px solid #f5f7f8;
         margin-top: 35px;
         padding-top: 35px;
-        font-size: 1.15em;
+        font-size: 1.05em;
+        letter-spacing: .2px;
         color: #8a96ae;
     }
         .news .footer a{
@@ -578,8 +579,26 @@ footer.site_footer p{margin: 15px 25px}
         }
 
 .news .rich_view{
-    padding: 40px 55px;
-    border: 5px solid #c9d1e0;
+    padding: 0;
+    color: #233558;
+}
+    .news .rich_view:hover{
+        border-radius: 4px;
+        background: #30344A;
+        color: #E4EEFF;
+    }
+    .rich_view .post-link{
+        display: block;
+        padding: 45px;
+    }
+.news .rich_view .footer{
+    display: none;
+}
+.news .rich_view h3{
+    margin: 0;
+    text-align: center;
+    font-size: 1.34em;
+    letter-spacing: .2px;
 }
     .news .pinned{
         position: relative;
@@ -594,35 +613,6 @@ footer.site_footer p{margin: 15px 25px}
             top: 50px;
             font-size: 15px;
         }
-    .news .rich_view time{
-        /*color: #69758A;*/
-    }
-    .news .rich_view .body{
-        color: #747E92;
-    }
-    .news .rich_view h3{
-        font-size: 2.4em;
-        margin-bottom: 70px;
-    }
-    .news .rich_view h3 > a:hover{
-        text-decoration: underline;
-    }
-    .news .rich_view .read_more{
-        display: inline-block;
-        padding: 9px 22px;
-        margin-right: 35px;
-        vertical-align: middle;
-        border-radius: 25px;
-        background: #2aae91;
-        color: #fff;
-        font-weight: normal;
-    }
-        .news .rich_view .read_more:hover{
-            text-decoration: none;
-            background: #206959;
-        }
-
-
 
 
 
