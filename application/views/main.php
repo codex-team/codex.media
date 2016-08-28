@@ -25,7 +25,6 @@
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>
-    <script src="/public/js/special.js?v=<?= filemtime('public/js/special.js'); ?>"></script>
 
 </head>
 <body>
@@ -74,6 +73,20 @@
                     Факс:&nbsp;<?= $site_info->fax ?><br />
                     Почта:&nbsp;<?= $site_info->email ?>
                 </p>
+
+                <div class='codex-special--toolbar'>
+                    <div class='codex-special--hover'>
+                        <span name="codex-special-text" data-style='big'>
+                            <i class="icon-font"></i>
+                            Увеличенный текст
+                        </span>
+                        <span class="codex-special--circle codex-special--circle__white" name="codex-special-color" data-style='white'></span>
+                        <span class="codex-special--circle codex-special--circle__green" name="codex-special-color" data-style='green'></span>
+                        <span class="codex-special--circle codex-special--circle__blue" name="codex-special-color" data-style='blue'></span>
+                    </div>
+                    <i class="icon-eye"></i>
+                    Контрастная версия
+                </div>
             </footer>
 
         </aside>
@@ -96,6 +109,7 @@
         </form>
     </div>
 
+    <script src="/public/js/special.js?v=<?= filemtime('public/js/special.js'); ?>"></script>
 
     <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
 
