@@ -35,7 +35,7 @@
     	<?= $page->title ?>
     </h1>
     <article class="page_content">
-    	<?= $page->content ?>
+    	<?= nl2br($page->content) ?>
     </article>
 
 
