@@ -15,7 +15,14 @@ var codexSpecial = {
 	},
 
     classesTextSize : {
-        big   : 'special-big',
+        big       : 'special-big-15',
+        bigger    : 'special-big-20',
+        biggest   : 'special-big-25',
+    },
+
+    clean : {
+        color    : true,
+        textSize : true,
     },
 
     init : function () {
@@ -24,8 +31,8 @@ var codexSpecial = {
     	this.hover = document.getElementsByClassName("codex-special--hover")[0];
     	this.toolbar = document.getElementsByClassName("codex-special--toolbar")[0];
 
-    	this.colorSwitchers = document.getElementsByName("codex-special-color");
-        this.textSizeSwitchers = document.getElementsByName("codex-special-text");
+    	this.colorSwitchers = document.getElementsByName("codex-special--color");
+        this.textSizeSwitchers = document.getElementsByName("codex-special--text");
 
     	for (var i = 0, switcher; !!(switcher = codexSpecial.colorSwitchers[i]); i++) {
     		switcher.addEventListener('click', codexSpecial.changeColor, false);
@@ -40,11 +47,9 @@ var codexSpecial = {
 
         codexSpecial.dropColor();
 
-        console.log(this);
+        if (this.style.opacity == 1 && !codexSpecial.clean['color']) {
 
-        if (this.style.opacity == 1 && codexSpecial.hover.style.display == 'block') {
-
-            codexSpecial.clear();
+            codexSpecial.clear('color');
 
             return;
 
@@ -58,6 +63,8 @@ var codexSpecial = {
 
     	this.style.opacity = 1;
 
+        codexSpecial.clean['color'] = false;
+
     	codexSpecial.body.classList.add(codexSpecial.classesColor[this.dataset.style]);
 
     },
@@ -70,41 +77,69 @@ var codexSpecial = {
 
     },
 
-    // changeTextSize : function () {
+    changeTextSize : function () {
 
-    //     codexSpecial.hover.style.display = 'block';
+        codexSpecial.dropTextSize();
 
-    //     codexSpecial.dropTextSize();
+        if (this.style.opacity == 1 && !codexSpecial.clean['textSize']) {
 
-    //     for (var i = 0, switcher; !!(switcher = codexSpecial.textSizeSwitchers[i]); i++) {
-    //         switcher.style.opacity = 0.5;
-    //     }
+            codexSpecial.clear('textSize');
 
-    //     this.style.opacity = 1;
+            return;
 
-    //     codexSpecial.body.classList.add(codexSpecial.classesTextSize[this.dataset.style]);
-
-    // },
-
-    // dropTextSize : function () {
-
-    //     for (key in codexSpecial.classesTextSize){
-    //         codexSpecial.body.classList.remove(codexSpecial.classesTextSize[key]);
-    //     }
-
-    // },
-
-    clear : function () {
-
-    	for (key in codexSpecial.classes){
-    		codexSpecial.body.classList.remove(codexSpecial.classes[key]);
-    	}
-
-        for (var i = 0, switcher; !!(switcher = codexSpecial.colorSwitchers[i]); i++) {
-            switcher.style.opacity = 1;
         }
 
-    	codexSpecial.hover.style.display = null;
+        codexSpecial.hover.style.display = 'block';
+
+        for (var i = 0, switcher; !!(switcher = codexSpecial.textSizeSwitchers[i]); i++) {
+            switcher.style.opacity = 0.5;
+        }
+
+        this.style.opacity = 1;
+
+        codexSpecial.clean['textSize'] = false;
+
+        codexSpecial.body.classList.add(codexSpecial.classesTextSize[this.dataset.style]);
+
+    },
+
+    dropTextSize : function () {
+
+        for (key in codexSpecial.classesTextSize){
+            codexSpecial.body.classList.remove(codexSpecial.classesTextSize[key]);
+        }
+
+    },
+
+    clear : function (param) {
+
+        if (param == 'color') {
+
+        	codexSpecial.dropColor();
+
+            for (var i = 0, switcher; !!(switcher = codexSpecial.colorSwitchers[i]); i++) {
+                switcher.style.opacity = 1;
+            }
+
+            codexSpecial.clean['color'] = true;
+        }
+
+        if (param == 'textSize') {
+
+            codexSpecial.dropTextSize();
+
+            for (var i = 0, switcher; !!(switcher = codexSpecial.textSizeSwitchers[i]); i++) {
+                switcher.style.opacity = 1;
+            }
+
+            codexSpecial.clean['textSize'] = true;
+        }
+
+        if (codexSpecial.clean['color'] && codexSpecial.clean['textSize']){
+
+        	codexSpecial.hover.style.display = null;
+
+        }
 
     },
 

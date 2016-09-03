@@ -22,6 +22,7 @@
 
 
     <link rel="stylesheet" type="text/css" media="all" href="/public/css/main.css?v=<?= time() ?>">
+    <link rel="stylesheet" type="text/css" media="all" href="/public/css/special.css?v=<?= time() ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>
@@ -76,13 +77,18 @@
 
                 <div class='codex-special--toolbar'>
                     <div class='codex-special--hover'>
-                        <span name="codex-special-text" data-style='big'>
+                        <span class="codex-special--text-15" name="codex-special--text" data-style='big'>
                             <i class="icon-font"></i>
-                            Увеличенный текст
                         </span>
-                        <span class="codex-special--circle codex-special--circle__white" name="codex-special-color" data-style='white'></span>
-                        <span class="codex-special--circle codex-special--circle__green" name="codex-special-color" data-style='green'></span>
-                        <span class="codex-special--circle codex-special--circle__blue" name="codex-special-color" data-style='blue'></span>
+                        <span class="codex-special--text-20" name="codex-special--text" data-style='bigger'>
+                            <i class="icon-font"></i>
+                        </span>
+                        <span class="codex-special--text-25" name="codex-special--text" data-style='biggest'>
+                            <i class="icon-font"></i>
+                        </span>
+                        <span class="codex-special--circle codex-special--circle__white" name="codex-special--color" data-style='white'></span>
+                        <span class="codex-special--circle codex-special--circle__green" name="codex-special--color" data-style='green'></span>
+                        <span class="codex-special--circle codex-special--circle__blue" name="codex-special--color" data-style='blue'></span>
                     </div>
                     <i class="icon-eye"></i>
                     Контрастная версия
