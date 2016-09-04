@@ -1,0 +1,1 @@
+ALTER TABLE `files` ADD `file_hash` BINARY(16) NULL AFTER `type`;

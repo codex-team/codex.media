@@ -10,12 +10,6 @@ class Controller_Transport extends Controller_Base_preDispatch {
     private $files = null;
 
     /**
-    * Transport file types
-    */
-    const PAGE_FILE = 1;
-
-
-    /**
     * File transport module
     */
     public function action_file_uploader()
@@ -44,7 +38,7 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
         }
 
-        if (!$this->user->isTeacher())
+        if ( !$this->user->isTeacher() )
         {
             $this->transportResponse['message'] = 'Access denied';
             goto finish;
@@ -52,37 +46,28 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
         $this->transportResponse['type'] = $this->type;
 
-        switch ($this->type) {
-            case self::PAGE_FILE:
+        $filename = $this->save();
 
-                $filename = $this->savePageFile();
+        if ($filename) {
 
-                if ($filename) {
+            $this->transportResponse['success'] = 1;
 
-                    $this->transportResponse['success'] = 1;
+            $filename_without_ext = substr($this->files['name'], 0, strrpos($this->files['name'], '.' ));
+            $title = $this->methods->getUriByTitle($filename_without_ext);
 
-                    $title = $this->methods->getUriByTitle($this->files['name']);
+            $saved = new Model_File;
+            $saved->filename  = $filename;
+            $saved->title     = $title;
+            $saved->author    = $this->user->id;
+            $saved->size      = Arr::get($this->files, 'size', 0) / 1000;
+            $saved->extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            $saved->type      = $this->type;
+            $saved->insert();
 
-                    $saved_id = $this->methods->newFile(array(
-                        'filename'  => $filename,
-                        'title'     => $title,
-                        'author'    => $this->user->id,
-                        'size'      => Arr::get($this->files, 'size', 0) / 1000,
-                        'extension' => strtolower(pathinfo($filename, PATHINFO_EXTENSION)),
-                        'type'      => $this->type,
-                    ));
-
-                    $this->transportResponse['title']    = $title;
-                    $this->transportResponse['id']       = $saved_id;
-                    $this->transportResponse['filename'] = $filename;
-                }
-
-
-            break;
-
-            default: $this->transportResponse['message'] = 'Wrong transport type'; break;
+            $this->transportResponse['title']    = $saved->title;
+            $this->transportResponse['id']       = $saved->id;
+            $this->transportResponse['filename'] = $saved->filename;
         }
-
 
         finish:
 
@@ -90,21 +75,32 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
         $this->auto_render = false;
         $this->response->body($script);
-
-
-
     }
 
-    private function savePageFile()
+    private function save()
     {
-        if (Upload::type($this->files, array('jpg', 'jpeg', 'png', 'gif'))){
-            $filename = $this->methods->saveImage( $this->files , 'upload/page_images/' );
-        } else {
-            $filename = $this->methods->saveFile( $this->files , 'upload/page_files/' );
+        $filename = null;
+        $upload_path = Model_File::getUploadPathByType($this->type);
+
+        switch ($this->type)
+        {
+            case Model_File::PAGE_IMAGE:
+                $filename = $this->methods->saveImage( $this->files , $upload_path );
+                break;
+
+            case Model_File::PAGE_FILE:
+                $filename = $this->methods->saveFile( $this->files , $upload_path );
+                break;
+
+            default:
+                $this->transportResponse['message'] = 'Wrong transport type';
+                return false;
         }
 
-        if ( !$filename ){
+        if ( !$filename )
+        {
             $this->transportResponse['message'] = 'Error while saving';
+
             return false;
         }
 

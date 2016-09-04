@@ -73,94 +73,9 @@ class Model_Methods extends Model
         return Model_Page::rowsToModels($menu_pages);
     }
 
-
-    public function getUsers()
-    {
-        return DB::select()
-                ->from('users')
-                ->order_by('id','desc')
-                ->cached(Date::MINUTE*1)
-                ->execute()
-                ->as_array();
-    }
-
-
-    public function getComments($page, $status = null, $cached = false )
-    {
-        if ( (int)$page < 1 ) return array();
-        $comments = DB::select()->from('comments')
-            ->where('page', '=', $page)
-            ->where('is_removed', '=', 0);
-        $comments->order_by('id','asc');
-        if ($cached) {
-            $comments->cached(Date::MINUTE*5);
-        }
-        $comments = $comments->execute()->as_array();
-        if ($comments) return $comments;
-        return array();
-    }
-
-    public function getCommentById( $id )
-    {
-        return DB::select()->from('comments')->where('id', '=', $id)->where('status', '<', 2)->execute()->current();
-    }
-
-    public function addComment( $data )
-    {
-        return DB::insert('comments', array_keys($data))->values(array_values($data))->execute();
-    }
-
-    public function removeComment( $uid , $id , $isAdmin = false )
-    {
-        $result = DB::delete('comments')->where('id', '=', $id);
-        if ( !$isAdmin ) $result->where('uid', '=', $uid);
-        return $result->execute() ? true : false ;
-    }
-
-    public function getCommentsCount($type, $target)
-    {
-        return (int)DB::select('id')->from('comments')->where('type','=',$type)->where('target','=',$target)->cached(Date::MINUTE / 4)->execute()->count();
-    }
-
-    public function getBlogPostComments($pid, $status = null, $feed = false, $cached = false)
-    {
-        return self::getComments( Controller_Comments::COMMENTS_TYPE_BLOG , $pid );
-    }
-
     /**
     * Files uploading section
     */
-
-    public function newFile( $fields )
-    {
-        return current(DB::insert( 'files' , array_keys($fields) )->values(array_values($fields))->execute());
-    }
-
-    public function addFileToPage( $fields )
-    {
-        return current(DB::insert( 'files' , array_keys($fields) )->values(array_values($fields))->execute());
-    }
-
-    public function getPageFiles( $page_id )
-    {
-        return DB::select()
-                ->from('files')
-                ->where('page','=', $page_id)
-                ->where('status', '=', 0)
-                ->order_by('id','DESC')
-                ->execute()
-                ->as_array();
-    }
-
-    public function updateFile( $id,  $fields )
-    {
-        $query = DB::update( 'files' );
-        foreach ($fields as $name => $value) {
-            $query->set(array($name => $value));
-        }
-        return $query->where('id','=',$id)->execute();
-    }
-
 
     public function saveImage( $file , $path )
     {
@@ -174,7 +89,7 @@ class Model_Methods extends Model
 
         if ( $file = Upload::save($file, NULL, $path) ){
 
-            $filename = uniqid("", false).'.jpg';
+            $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.jpg';
 
             $image = Image::factory($file);
 
@@ -232,16 +147,12 @@ class Model_Methods extends Model
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
 
-
         if (!is_dir($path)) mkdir($path);
 
         $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $filename = uniqid() . '.' . $ext;
+        $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.' . $ext;
 
         if ( $file = Upload::save($file, $filename, $path) ){
-
-            // Delete the temporary file
-            unlink($file);
 
             return $filename;
         }

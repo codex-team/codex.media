@@ -762,6 +762,16 @@ footer.site_footer p{margin: 15px 25px}
     padding: 30px 100px;
 }
 
+.page_image{
+    margin: 0px 0px 5px 5px;
+    border-radius: 2px;
+    float: left;
+}
+.page_wrap .images{
+    padding: 30px 30px;
+    overflow: hidden;
+}
+
 
 .page_title{
     font-size: 2.4em;
@@ -1426,6 +1436,7 @@ footer.site_footer p{margin: 15px 25px}
         padding: 12px 0 10px;
         color: #7d869a;
         cursor: pointer;
+        margin-right: 30px;
     }
         .atlas_form .attach:hover,
         .atlas_form .import:hover{
@@ -1440,10 +1451,17 @@ footer.site_footer p{margin: 15px 25px}
     .atlas_form .attaches .item {
         padding: 20px 30px;
     }
-    .atlas_form .attaches .item::before {
+    .atlas_form .attaches .item_file::before {
         display: inline-block;
         margin-right: 12px;
         content: '\e818';
+        font-family: 'codex-edu';
+        vertical-align: middle;
+    }
+    .atlas_form .attaches .item_image::before {
+        display: inline-block;
+        margin-right: 12px;
+        content: '\e804';
         font-family: 'codex-edu';
         vertical-align: middle;
     }
