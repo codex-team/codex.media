@@ -1,10 +1,20 @@
-<style type="text/css">
-.page_simple_form_wrapper {
-    margin-top: 100px;
-}
-</style>
 
-<div class="page_simple_form_wrapper">
+<style>
+    .sidebar{
+        display: none;
+    }
+</style>
+<div class="page_landing">
+
+    <h1 class="title">Войти на сайт</h1>
+    <div class="desc">Вы можете войти на сайт через аккаунт в социальной сети</div>
+
+    <a class="button iconic vk" href="/auth/vk"><i class="icon-vkontakte"></i>ВКонтакте</a>
+    <a class="button iconic facebook" href="/auth/fb"><i class="icon-facebook"></i>Facebook</a>
+    <a class="button iconic twitter" href="/auth/tw"><i class="icon-twitter"></i>Twitter</a>
+
+</div>
+
 <form class="page_simple_form" action="/auth" method="post">
 
     <h3>Регистрация</h3>
@@ -50,4 +60,8 @@
 
     <button class="button main">Зарегистрироваться</button>
 </form>
-<div>
+
+<div class="page_footer_links">    
+    <a href="/recover">Восстановить пароль</a>
+    <a href="/auth">Авторизироваться</a>
+</div>
