@@ -49,6 +49,13 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
     }
 
+    public function action_signup()
+    {
+        $this->title = 'Регистрация';
+        $this->description = 'Страница для регистрации пользователей';
+        $this->template->content = View::factory('/templates/auth/signup', $this->view);
+    }
+
     /**
     * Users registration method
     * @return bool - signup result status
