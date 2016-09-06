@@ -75,24 +75,8 @@
                     Почта:&nbsp;<?= $site_info->email ?>
                 </p>
 
-                <div class='codex-special--toolbar'>
-                    <div class='codex-special--hover'>
-                        <span class="codex-special--text-15" name="codex-special--text" data-style='big'>
-                            <i class="icon-font"></i>
-                        </span>
-                        <span class="codex-special--text-20" name="codex-special--text" data-style='bigger'>
-                            <i class="icon-font"></i>
-                        </span>
-                        <span class="codex-special--text-25" name="codex-special--text" data-style='biggest'>
-                            <i class="icon-font"></i>
-                        </span>
-                        <span class="codex-special--circle codex-special--circle__white" name="codex-special--color" data-style='white'></span>
-                        <span class="codex-special--circle codex-special--circle__green" name="codex-special--color" data-style='green'></span>
-                        <span class="codex-special--circle codex-special--circle__blue" name="codex-special--color" data-style='blue'></span>
-                    </div>
-                    <i class="icon-eye"></i>
-                    Контрастная версия
-                </div>
+                <div id='test'></div>
+
             </footer>
 
         </aside>

@@ -1,10 +1,21 @@
 .codex-special--toolbar {
-    position: relative;
-    border-top: 2px;
-    border-color: #F2F4F8;
-    border-style: solid;
+    position: fixed;
+    top: 0;
+    right: 3%;
+    width: 270px;
+    border: 1px solid #F2F4F8;
+    border-top: 0;
+    border-radius: 0 0 3px 3px;
     padding: 20px;
     font-size: 15px;
+    background-color: white;
+}
+
+.codex-special--toolbar.included {
+    position: relative;
+    width: 100%;
+    border: none;
+    border-top: 1px solid #F2F4F8;
 }
     /*.codex-special--toolbar i{
         margin-right: 5px;
@@ -20,23 +31,28 @@
     background-color: #FCFDFE;
     padding: 20px;
     text-align: left;
-    /*vertical-align: middle;*/
+    vertical-align: middle;
 }
     .codex-special--toolbar:hover .codex-special--hover {
         display: block;
     }
+    .codex-special--toolbar:hover {
+        opacity: 1;
+    }
 
-    .codex-special--text-15 {
-        font-size: 15px;
-        /*vertical-align: bottom;*/
+    .codex-special--text {
+        display: inline-block;
+        vertical-align: middle;
+        float: left;
+        margin-right:5px;
+        cursor: pointer;
+        border-radius: 5px;
+        padding: 1px 5px;
+        /*border: 1px solid #fff;*/
     }
-    .codex-special--text-20 {
-        font-size: 20px;
-        /*vertical-align: bottom;*/
-    }
-    .codex-special--text-25 {
-        font-size: 24px;
-        /*vertical-align: bottom;*/
+    .codex-special--text.enabled {
+        /*border: 1px solid #000;*/
+        font-style: bold;
     }
 
     .codex-special--circle {
@@ -63,25 +79,70 @@
         border-color: #2B2A28;
     }
 
+/**
+* Blue version styles
+*/
+body.special-blue,
+.special-blue div,
+.special-blue aside,
+.special-blue footer,
+.special-blue header,
+.special-blue form,
+.special-blue article {
+    background-color: #C5DFFF !important;
+    color: #36465B !important;
+}
+.special-blue input,
+.special-blue textarea {
+    background-color: #C5DFFF !important;
+    color: #36465B !important;
+}
+/**
+* Green version styles
+*/
+body.special-green,
+.special-green div,
+.special-green aside,
+.special-green footer,
+.special-green header,
+.special-green form,
+.special-green article {
+    background-color: #7C766A !important;
+    color: #44E963 !important;
+}
+.special-green input,
+.special-green textarea {
+    background-color: #7C766A !important;
+    color: #44E963 !important;
+}
 
-.special-blue div article {
-    background-color: #C5DFFF;
-    color: #36465B;
+/**
+* White version styles
+*/
+body.special-white,
+.special-white div,
+.special-white aside,
+.special-white footer,
+.special-white header,
+.special-white form,
+.special-white article {
+    background-color: #2B2A28 !important;
+    color: #FFF !important;
 }
-.special-green div article {
-    background-color: #7C766A;
-    color: #44E963;
+.special-white input,
+.special-white textarea {
+    background-color: #2B2A28 !important;
+    color: #FFF !important;
 }
-.special-white div article {
-    background-color: #2B2A28;
-    color: #FFF;
+div.codex-special--toolbar,
+div.codex-special--hover {
+    background-color: #FCFDFE !important;
+    color: #3D4859 !important;
 }
-.special-big-15 div article{
+/**
+* Big text version style
+*/
+.special-big div article{
     font-size: 1.5em;
 }
-.special-big-20 div article{
-    font-size: 2em;
-}
-.special-big-25 div article{
-    font-size: 2.5em;
-}
+

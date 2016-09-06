@@ -1,46 +1,180 @@
 var codexSpecial = {
 
-	body    : null,
+	body    : document.body,
 	toolbar : null,
 	hover   : null,
 
 	colorSwitchers : [],
 
-    textSizeSwitchers : [],
+    /**
+    *
+    */
+    textSizeSwitcher : null,
 
-	classesColor : {
+	colorSwitchersClasses : {
+        white : 'special-white',
 		green : 'special-green',
 		blue  : 'special-blue',
-		white : 'special-white',
 	},
 
-    classesTextSize : {
-        big       : 'special-big-15',
-        bigger    : 'special-big-20',
-        biggest   : 'special-big-25',
-    },
+    textSizeClass : 'special-big',
 
     clean : {
         color    : true,
         textSize : true,
     },
 
-    init : function () {
+    settings : {
+        blockId : null,
+    },
 
-    	this.body = document.getElementsByTagName("body")[0];
-    	this.hover = document.getElementsByClassName("codex-special--hover")[0];
-    	this.toolbar = document.getElementsByClassName("codex-special--toolbar")[0];
+    init : function (settings) {
 
-    	this.colorSwitchers = document.getElementsByName("codex-special--color");
-        this.textSizeSwitchers = document.getElementsByName("codex-special--text");
+        /**
+        * 1. Get settings
+        */
+        this.settings = settings;
 
-    	for (var i = 0, switcher; !!(switcher = codexSpecial.colorSwitchers[i]); i++) {
-    		switcher.addEventListener('click', codexSpecial.changeColor, false);
-    	}
+        /**
+        * 2. Make interface
+        */
+        this.makeUI();
 
-        for (var i = 0, switcher; !!(switcher = codexSpecial.textSizeSwitchers[i]); i++) {
-            switcher.addEventListener('click', codexSpecial.changeTextSize, false);
+        /**
+        * 3. Add listeners
+        */
+        this.addListeners();
+
+    },
+
+    makeUI : function () {
+
+        /**
+        * 1. Make Toolbar, Hover and Switchers
+        */
+
+        var toolbar = this.draw.toolbar(),
+            hover   = this.draw.hover(),
+            textSizeSwitcher = this.draw.textSizeSwitcher();
+
+        /**
+        * 2. Append elements
+        */
+
+        toolbar.appendChild(hover);
+        hover.appendChild(textSizeSwitcher);
+
+        /**
+        * 3. Append color switchers
+        */
+        for (var color in this.colorSwitchersClasses) {
+
+            circle = this.draw.colorSwitcher(color);
+
+            circle.dataset.style = color;
+
+            hover.appendChild(circle);
+
+            this.colorSwitchers.push(circle);
+
         }
+
+        this.toolbar = toolbar;
+        this.hover   = hover;
+        this.textSizeSwitcher = textSizeSwitcher;
+
+        this.appendPanel();
+
+    },
+
+    appendPanel : function () {
+
+        if (this.settings.blockId){
+
+            this.getElementById(this.settings.blockId).appendChild(this.toolbar);
+
+            this.toolbar.classList.add('codex-special--included');
+
+            return;
+
+        }
+
+        this.body.appendChild(this.toolbar);
+
+    },
+
+    /**
+    *
+    */
+    addListeners : function () {
+
+        this.colorSwitchers.map(function(switcher, index) {
+
+            switcher.addEventListener('click', codexSpecial.changeColor, false);
+
+        });
+
+        this.textSizeSwitcher.addEventListener('click', codexSpecial.changeTextSize, false);
+
+    },
+
+    draw : {
+
+        element : function (newElement, newClass) {
+
+            var block = document.createElement(newElement);
+
+            block.classList.add(newClass);
+
+            return block;
+
+        },
+
+        toolbar : function () {
+
+            var toolbar = codexSpecial.draw.element('DIV', 'codex-special--toolbar');
+
+            toolbar.innerHTML = '<i class="icon-eye"></i> Контрастная версия';
+
+            return toolbar;
+
+        },
+
+        hover : function () {
+
+            return codexSpecial.draw.element('DIV', 'codex-special--hover');
+
+        },
+
+        /**
+        * Makes color switcher
+        * @param {String} color
+        */
+        colorSwitcher : function ( type ) {
+
+            var colorSwitcher = codexSpecial.draw.element('SPAN', 'codex-special--circle');
+
+            colorSwitcher.classList.add('codex-special--circle__' + type);
+
+            return colorSwitcher;
+
+        },
+
+        /**
+        * Makes text size toggler
+        */
+        textSizeSwitcher : function () {
+
+            var textToggler = codexSpecial.draw.element('SPAN', 'codex-special--text');
+
+            // text.name = 'codex-special--text';
+
+            textToggler.innerHTML = '<i class="icon-font"></i> Увеличенный шрифт'
+
+            return textToggler;
+
+        },
+
     },
 
     changeColor : function () {
@@ -57,31 +191,33 @@ var codexSpecial = {
 
         codexSpecial.hover.style.display = 'block';
 
-    	for (var i = 0, switcher; !!(switcher = codexSpecial.colorSwitchers[i]); i++) {
+        codexSpecial.colorSwitchers.map(function(switcher, index) {
+
     		switcher.style.opacity = 0.5;
-    	}
+
+        });
 
     	this.style.opacity = 1;
 
         codexSpecial.clean['color'] = false;
 
-    	codexSpecial.body.classList.add(codexSpecial.classesColor[this.dataset.style]);
+    	codexSpecial.body.classList.add(codexSpecial.colorSwitchersClasses[this.dataset.style]);
 
     },
 
     dropColor : function () {
 
-    	for (key in codexSpecial.classesColor){
-    		codexSpecial.body.classList.remove(codexSpecial.classesColor[key]);
-    	}
+    	for (key in codexSpecial.colorSwitchersClasses){
+
+    		codexSpecial.body.classList.remove(codexSpecial.colorSwitchersClasses[key]);
+
+        }
 
     },
 
     changeTextSize : function () {
 
-        codexSpecial.dropTextSize();
-
-        if (this.style.opacity == 1 && !codexSpecial.clean['textSize']) {
+        if (!codexSpecial.clean['textSize']) {
 
             codexSpecial.clear('textSize');
 
@@ -91,23 +227,19 @@ var codexSpecial = {
 
         codexSpecial.hover.style.display = 'block';
 
-        for (var i = 0, switcher; !!(switcher = codexSpecial.textSizeSwitchers[i]); i++) {
-            switcher.style.opacity = 0.5;
-        }
-
-        this.style.opacity = 1;
+        codexSpecial.textSizeSwitcher.classList.add('enabled');
 
         codexSpecial.clean['textSize'] = false;
 
-        codexSpecial.body.classList.add(codexSpecial.classesTextSize[this.dataset.style]);
+        codexSpecial.body.classList.add(codexSpecial.textSizeClass);
 
     },
 
     dropTextSize : function () {
 
-        for (key in codexSpecial.classesTextSize){
-            codexSpecial.body.classList.remove(codexSpecial.classesTextSize[key]);
-        }
+        codexSpecial.body.classList.remove(codexSpecial.textSizeClass);
+
+        codexSpecial.textSizeSwitcher.classList.remove('enabled');
 
     },
 
@@ -117,9 +249,11 @@ var codexSpecial = {
 
         	codexSpecial.dropColor();
 
-            for (var i = 0, switcher; !!(switcher = codexSpecial.colorSwitchers[i]); i++) {
+            codexSpecial.colorSwitchers.map(function(switcher, index) {
+
                 switcher.style.opacity = 1;
-            }
+
+            });
 
             codexSpecial.clean['color'] = true;
         }
@@ -127,10 +261,6 @@ var codexSpecial = {
         if (param == 'textSize') {
 
             codexSpecial.dropTextSize();
-
-            for (var i = 0, switcher; !!(switcher = codexSpecial.textSizeSwitchers[i]); i++) {
-                switcher.style.opacity = 1;
-            }
 
             codexSpecial.clean['textSize'] = true;
         }
@@ -145,4 +275,6 @@ var codexSpecial = {
 
 };
 
-codexSpecial.init();
+codexSpecial.init({
+    //blockId : 'test'
+});
