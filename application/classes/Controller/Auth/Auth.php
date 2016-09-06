@@ -50,19 +50,12 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     }
 
     public function action_signup()
+
     {
         $this->title = 'Регистрация';
         $this->description = 'Страница для регистрации пользователей';
         $this->template->content = View::factory('/templates/auth/signup', $this->view);
-    }
 
-    /**
-    * Users registration method
-    * @return bool - signup result status
-    * @author Savchenko Petr (vk.com/specc)
-    */
-    public function signup()
-    {
         $signupForm = array(
             'email'           => Arr::get($_POST, 'signup_email'),
             'name'            => preg_replace("/[ ]+/", " ", trim(Arr::get($_POST, 'signup_name'))),
@@ -87,8 +80,41 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         }
 
         return FALSE;
-
     }
+
+    /**
+    * Users registration method
+    * @return bool - signup result status
+    * @author Savchenko Petr (vk.com/specc)
+    */
+    // public function signup()
+    // {
+    //     $signupForm = array(
+    //         'email'           => Arr::get($_POST, 'signup_email'),
+    //         'name'            => preg_replace("/[ ]+/", " ", trim(Arr::get($_POST, 'signup_name'))),
+    //         'password'        => Arr::get($_POST, 'signup_password'),
+    //         'password_repeat' => Arr::get($_POST, 'signup_password_repeat'),
+    //     );
+
+    //     /** Check for correct-filling form  */
+    //     if ( self::checkSignupFields( $signupForm ) ) {
+
+    //         /** Saves new user */
+    //         $userId = parent::insertUser(array(
+    //             'email'        => $signupForm['email'],
+    //             'password'     => parent::createPasswordHash($signupForm['password']),
+    //             'name'         => $signupForm['name']
+    //         ));
+
+    //         if ($userId) {
+    //             parent::initAuthSession($userId);
+    //             return TRUE;
+    //         }
+    //     }
+
+    //     return FALSE;
+
+    // }
 
 
     /**

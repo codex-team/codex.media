@@ -15,7 +15,7 @@
 
 </div>
 
-<form class="page_simple_form" action="/auth" method="post">
+<form class="page_simple_form" action="/signup" method="post">
 
     <h3>Регистрация</h3>
 
