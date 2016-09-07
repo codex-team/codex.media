@@ -1,4 +1,6 @@
-<div class="w_island" style="margin: 5px 0 5px 5px">
+<div class="w_island">
+
+    <? /*
 
     <div class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
 
@@ -29,19 +31,23 @@
 
     </div>
 
+    */ ?>
+
 
 
     <h1 class="page_title">
     	<?= $page->title ?>
     </h1>
-    <article class="page_content">
-    	<?= nl2br($page->content) ?>
-    </article>
+    <? if ($page->content): ?>
+        <article class="page_content">
+        	<?= nl2br($page->content) ?>
+        </article>
+    <? endif ?>
 
 
 
     <? if ($page->childrens): ?>
-        <ul class="page_childrens clear">
+        <ul class="page_childrens clear <?= !$page->content ? 'page_childrens--empty-content' : '' ?>">
             <? foreach ($page->childrens as $children): ?>
                 <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
             <? endforeach ?>
