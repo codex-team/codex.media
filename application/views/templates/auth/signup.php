@@ -63,5 +63,5 @@
 
 <div class="page_footer_links">    
     <a href="/recover">Восстановить пароль</a>
-    <a href="/auth">Авторизироваться</a>
+    <a href="/auth">Войти на сайт</a>
 </div>
