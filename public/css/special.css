@@ -11,9 +11,9 @@
     background-color: white;
 }
 
-.codex-special--toolbar.included {
+.codex-special--toolbar.codex-special--included {
     position: relative;
-    width: 100%;
+    width: 90% !important;
     border: none;
     border-top: 1px solid #F2F4F8;
 }

@@ -89,11 +89,16 @@ var codexSpecial = {
 
     appendPanel : function () {
 
+
         if (this.settings.blockId){
 
-            this.getElementById(this.settings.blockId).appendChild(this.toolbar);
+            console.log(document.getElementById(this.settings.blockId));
+
+            document.getElementById(this.settings.blockId).appendChild(this.toolbar);
 
             this.toolbar.classList.add('codex-special--included');
+
+            console.log(this.toolbar.classList);
 
             return;
 
@@ -276,5 +281,5 @@ var codexSpecial = {
 };
 
 codexSpecial.init({
-    //blockId : 'test'
+    blockId : 'test'
 });

@@ -62,7 +62,7 @@
                 <a class="button green" href="/auth">Войти на сайт</a>
             <? endif ?>
 
-            <footer class="site_footer">
+            <footer class="site_footer" id='test'>
                 <p><?= $site_info->full_name ?></p>
                 <p>
                     <a href="/contacts">
@@ -74,8 +74,6 @@
                     Факс:&nbsp;<?= $site_info->fax ?><br />
                     Почта:&nbsp;<?= $site_info->email ?>
                 </p>
-
-                <div id='test'></div>
 
             </footer>
 
