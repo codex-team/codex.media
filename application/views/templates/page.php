@@ -1,4 +1,4 @@
-<div class="w_island">
+<div class="w_island w_island_centercol">
 
     <? /*
 

@@ -93,6 +93,9 @@ input[type="text"], input[type="email"], input[type="password"], input[type="sea
     padding: 10px;
     display: block;
     box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 input[type="text"], input[type="email"], input[type="password"], input[type="search"], textarea, .fake_textarea{
     width: 100%;
@@ -882,7 +885,7 @@ aside .user_panel{
         border-radius: 50%;
     }
     .user_page .name{
-        margin-top: 20px;
+        margin-top: 1em;
         margin-bottom: 15px;
         font-size: 28px;
     }
@@ -1444,6 +1447,9 @@ aside .user_panel{
         aside .button{
             margin: 20px;
         }
+        aside .user_panel{
+            padding: 15px 20px;
+        }
 
 
     .site_footer{
@@ -1483,6 +1489,7 @@ aside .user_panel{
     .post-list-item time{
         max-width: 70px;
         margin: 0;
+        margin-top: -0.4em;
         text-align: right;
         font-size: .6em;
     }
@@ -1503,7 +1510,7 @@ aside .user_panel{
         padding: 15px;
     }
     .page_title{
-        font-size: 1.3em;
+        font-size: 1.4em;
     }
     .page_form .redactor_editor,
     .page_content{
@@ -1525,14 +1532,137 @@ aside .user_panel{
 
 
     /**
+    * Atlas form
+    */
+    .atlas_form .import{
+        display: none;
+    }
+    .atlas_form .attach{
+        display: inline-block;
+        clear: both;
+        margin: 5px 20px 0 0 ;
+    }
+    .atlas_form .toggler{
+        float: none;
+        display: inline-block;
+    }
+    .atlas_form .actions{
+        padding: 15px;
+        font-size: 12px;
+    }
+    .atlas_form .button{
+        padding: 10px 18px;
+    }
+    .atlas_form input,
+    .atlas_form textarea{
+        padding: 10px;
+        font-size: 13px;
+    }
+    .atlas_form .title_input{
+        padding-right: 10px;
+    }
+
+    /**
     * Empty data holder
     */
     .empty_motivatior{
         max-width: none;
         padding: 15px;
-        font-size: 1em;
+        font-size: .9em;
         line-height: 1.3em;
     }
+        .empty_motivatior .button{
+            font-size: 13px;
+        }
+
+
+
+    /**
+    * Auth page and landings
+    */
+    .page_landing{
+        padding: 30px;
+        font-size: 1em;
+    }
+    .page_landing .iconic{
+        text-align: left;
+    }
+    .page_landing .button{
+        display: block;
+        margin-bottom: 1em;
+    }
+
+
+    /**
+    * User profile
+    */
+    .user_page{
+        padding: 30px 15px;
+    }
+    .user_page .ava,
+    .user_page .ava img{
+        width: 60px;
+        height: 60px;
+    }
+    .user_page .name{
+        margin-top: .7em;
+        font-size: 18px;
+    }
+    .action_line{
+        padding: 15px;
+    }
+    .action_line .textbutton{
+        background: #f7f9fb;
+        border-radius: 20px;
+    }
+    .action_line .textbutton,
+    .action_line .button{
+        display: block;
+        float: none;
+        text-align: left;
+        margin: 5px 0;
+        padding: 10px 20px;
+    }
+    .action_line .textbutton i,
+    .action_line .button i{
+        margin: 0 5px 0 0;
+    }
+
+
+    .add_children_btn{
+        display: block;
+        margin: 15px 15px 30px;
+        text-align: left;
+    }
+
+
+
+    /**
+    * Comments
+    */
+    .comment_wrapper{
+        margin: 5px 0;
+    }
+    .comment_left{
+        width: 22px;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+    .comment_right{
+        padding-left: 0;
+    }
+    .comment_right p{
+        margin-top: 12px;
+    }
+    .comment_right .to_user{
+        display: block;
+    }
+    .answer_wrapper{
+        margin-left: 15px;
+    }
+
+
+
 
     /**
     * End of mobile viewport
