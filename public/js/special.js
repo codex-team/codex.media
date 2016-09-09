@@ -283,5 +283,5 @@ var codexSpecial = {
 };
 
 codexSpecial.init({
-    blockId : 'test'
+    //blockId : 'test'
 });
