@@ -27,7 +27,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
         if ($action) switch ($action) {
             case 'login' : $authSucceeded = $this->login(); break;
-            case 'signup': $authSucceeded = $this->signup(); break;
         }
 
         if ($method) switch ($method) {
@@ -47,6 +46,16 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
         $this->description = 'Страница для авторизации и регистрации пользователей';
         $this->template->content = View::factory('/templates/auth/auth', $this->view);
 
+    }
+
+    public function action_signup()
+
+    {
+        $this->title = 'Регистрация';
+        $this->description = 'Страница для регистрации пользователей';
+        $this->template->content = View::factory('/templates/auth/signup', $this->view);
+
+        $this->signup();
     }
 
     /**

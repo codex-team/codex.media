@@ -122,6 +122,11 @@ Route::set('AUTH_PAGE', 'auth(/<method>)')->defaults(array(
     'action' => 'auth'
 ));
 
+Route::set('SIGNUP', 'signup')->defaults(array(
+    'controller' => 'auth_auth',
+    'action' => 'signup'
+));
+
 Route::set('LOGOUT', 'logout')->defaults(array(
     'controller' => 'auth_auth',
     'action' => 'logout'
