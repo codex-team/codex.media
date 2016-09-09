@@ -1,31 +1,38 @@
-<div class="breadcrumb">
+<div class="w_island w_island_centercol">
+    <div class="breadcrumb">
 
-    <a class="nav_chain" href="/user/<?= $user->id ?>"><?= $user->name ?></a> »
-    <span class="nav_chain">Настройки аккаунта</span>
+        <a class="nav_chain" href="/user/<?= $user->id ?>"><?= $user->name ?></a> »
+        <span class="nav_chain">Настройки аккаунта</span>
 
-</div>
-
-<? if ($success): ?>
-    <div class="info_block align_c">
-        Обновления сохранены
     </div>
-<? endif; ?>
-<? if ($error): ?>
-    <div class="info_block align_c" style="background-color:#EBA4B5; color:#F7053E;">
-        <? foreach ($error as $info): ?>
-            <?= $info; ?>
-        <? endforeach; ?>
-    </div>
-<? endif; ?>
-<div class="profile_panel clear">
+
+    <? if ($success): ?>
+        <div class="info_block align_c">
+            Обновления сохранены
+        </div>
+    <? endif; ?>
+    <? if ($error): ?>
+        <div class="info_block align_c" style="background-color:#EBA4B5; color:#F7053E;">
+            <? foreach ($error as $info): ?>
+                <?= $info; ?>
+            <? endforeach; ?>
+        </div>
+    <? endif; ?>
+    <div class="profile_panel clear">
 
         <form class="base_form" method="POST" action="user/settings" enctype="multipart/form-data">
 
             <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
 
-            <div class="button fileinput iconic">
-                <i class="icon-picture"></i> Изменить фотографию
-                <input type="file" name="new_ava">
+            <div class="prifile_settings--ava-holder">
+
+                <img class="profile_settings--ava" src="<?= $user->photo_medium ?>" />
+
+                <span class="button fileinput iconic">
+                    <i class="icon-picture"></i> Изменить фотографию
+                    <input type="file" name="new_ava">
+                </span>
+
             </div>
 
 
@@ -72,5 +79,5 @@
             <? endif; ?>
 
         </div>
-
+    </div>
 </div>

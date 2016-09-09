@@ -32,6 +32,9 @@
     <div class="main_wrap">
 
         <aside>
+
+            <div class="mobile_menu_toggler fl_r" onclick="document.getElementById('js-mobile-menu-holder').classList.toggle('mobile_menu_holder--opened')"></div>
+
             <a class="main_logo clear" href="/">
                 <i class="spb_shield fl_l"></i>
                 <div class="r_col">
@@ -40,41 +43,44 @@
                 </div>
             </a>
 
-            <? if ( $user->id ): ?>
-                <a class="fl_r logout" href="/logout" data-title="Выйти">
-                    <i class="icon-logout"></i>
-                </a>
-                <a class="user_panel cf" href="/user/<?= $user->id ?>">
-                    <img src="<?= $user->photo ?>" />
-                    <?= $user->name ?>
-                </a>
-            <? endif ?>
+            <div class="mobile_menu_holder" id="js-mobile-menu-holder">
 
-            <ul class="menu">
-                <? $menu = $methods->getSiteMenu(); ?>
-                <? foreach ($menu as $item): ?>
-                    <li><a href="/p/<?= $item->id ?>/<?= $item->uri ?>"><?= $item->title ?></a></li>
-                <? endforeach ?>
-            </ul>
-
-            <? if (!$user->id): ?>
-                <a class="button green" href="/auth">Войти на сайт</a>
-            <? endif ?>
-
-            <footer class="site_footer">
-                <p><?= $site_info->full_name ?></p>
-                <p>
-                    <a href="/contacts">
-                        <?= $site_info->address ?>
+                <? if ( $user->id ): ?>
+                    <a class="fl_r logout" href="/logout" data-title="Выйти">
+                        <i class="icon-logout"></i>
                     </a>
-                </p>
-                <p>
-                    Телефон:&nbsp;<?= $site_info->phone ?><br />
-                    Факс:&nbsp;<?= $site_info->fax ?><br />
-                    Почта:&nbsp;<?= $site_info->email ?>
-                </p>
-            </footer>
+                    <a class="user_panel cf" href="/user/<?= $user->id ?>">
+                        <img src="<?= $user->photo ?>" />
+                        <?= $user->name ?>
+                    </a>
+                <? endif ?>
 
+                <ul class="menu">
+                    <? $menu = $methods->getSiteMenu(); ?>
+                    <? foreach ($menu as $item): ?>
+                        <li><a href="/p/<?= $item->id ?>/<?= $item->uri ?>"><?= $item->title ?></a></li>
+                    <? endforeach ?>
+                </ul>
+
+                <? if (!$user->id): ?>
+                    <a class="button green" href="/auth">Войти на сайт</a>
+                <? endif ?>
+
+                <footer class="site_footer">
+                    <p><?= $site_info->full_name ?></p>
+                    <p>
+                        <a href="/contacts">
+                            <?= $site_info->address ?>
+                        </a>
+                    </p>
+                    <p>
+                        Телефон:&nbsp;<?= $site_info->phone ?><br />
+                        Факс:&nbsp;<?= $site_info->fax ?><br />
+                        Почта:&nbsp;<?= $site_info->email ?>
+                    </p>
+                </footer>
+
+            </div>
         </aside>
 
         <div class="sidebar">
