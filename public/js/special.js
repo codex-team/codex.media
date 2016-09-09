@@ -104,6 +104,8 @@ var codexSpecial = {
 
         }
 
+        this.toolbar.classList.add('codex-special--excluded');
+
         this.body.appendChild(this.toolbar);
 
     },
