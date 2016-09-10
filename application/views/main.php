@@ -78,7 +78,7 @@
                         Факс:&nbsp;<?= $site_info->fax ?><br />
                         Почта:&nbsp;<?= $site_info->email ?>
                     </p>
-                    <div class="special-version__holder" id="js-contrast-version-holder"></div>
+                    <div id="js-contrast-version-holder"></div>
                 </footer>
 
 
