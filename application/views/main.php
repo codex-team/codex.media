@@ -22,7 +22,6 @@
 
 
     <link rel="stylesheet" type="text/css" media="all" href="/public/css/main.css?v=<?= time() ?>">
-    <link rel="stylesheet" type="text/css" media="all" href="/public/css/special.css?v=<?= time() ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>
@@ -79,7 +78,9 @@
                         Факс:&nbsp;<?= $site_info->fax ?><br />
                         Почта:&nbsp;<?= $site_info->email ?>
                     </p>
+                    <div class="special-version__holder" id="js-contrast-version-holder"></div>
                 </footer>
+
 
             </div>
         </aside>
@@ -102,7 +103,7 @@
         </form>
     </div>
 
-    <script src="/public/js/special.js?v=<?= filemtime('public/js/special.js'); ?>"></script>
+    <script src="/public/extensions/codex-special/codex-special.v.0.8.js"></script>
 
     <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
 

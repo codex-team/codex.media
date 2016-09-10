@@ -1,0 +1,161 @@
+.codex-special__toolbar {
+    padding: 15px;
+    background-color: white;
+    white-space: nowrap;
+    font-size: 15px;
+}
+.codex-special__toolbar_icon {
+    margin-right: 3px;
+}
+
+.codex-special__toolbar.codex-special__included {
+    position: relative;
+    border-top: 1px solid #F2F4F8;
+}
+
+.codex-special__toolbar.codex-special__excluded {
+    position: fixed;
+    top: 0;
+    right: 3%;
+    width: 270px;
+    border: 1px solid #F2F4F8;
+    border-top: 0;
+    border-radius: 0 0 3px 3px;
+}
+
+    .codex-special__toolbar_text {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 24px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .codex-special__toolbar_text.enabled,
+    .codex-special__toolbar_text:hover
+    {
+        color: #3d82c1;
+    }
+
+    .codex-special__circle {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border: 7px solid;
+        vertical-align: middle;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+        .codex-special__circle:not(:last-of-type) {
+            margin-right: 5px;
+        }
+    .codex-special__circle__blue {
+        background-color: #36465B;
+        border-color: #C5DFFF;
+    }
+    .codex-special__circle__green {
+        background-color: #44E963;
+        border-color: #7C766A;
+    }
+    .codex-special__circle__white {
+        background-color: #FFF;
+        border-color: #2B2A28;
+    }
+
+
+/**
+* Special verisons styles
+*/
+
+
+/**
+* Blue version styles
+*/
+body.special-blue,
+.special-blue div,
+.special-blue aside,
+.special-blue footer,
+.special-blue header,
+.special-blue form,
+.special-blue article {
+    background-color: #b9d8ff !important;
+    color: #152b48 !important;
+}
+.special-blue input,
+.special-blue textarea {
+    background-color: #C5DFFF !important;
+    color: #36465B !important;
+}
+.special-blue a{
+    color: #005db3 !important;
+    text-decoration: underline !important;
+}
+/**
+* Green version styles
+*/
+body.special-green,
+.special-green div,
+.special-green aside,
+.special-green footer,
+.special-green header,
+.special-green form,
+.special-green article {
+    background-color: #2b2924 !important;
+    color: #10f13a !important;
+}
+.special-green input,
+.special-green textarea {
+    background-color: #211f1a !important;
+    color: #44E963 !important;
+}
+.special-green a{
+    color: #beff5e !important;
+    text-decoration: underline !important;
+}
+
+/**
+* White version styles
+*/
+body.special-white,
+.special-white div,
+.special-white aside,
+.special-white footer,
+.special-white header,
+.special-white form,
+.special-white article {
+    background-color: #121213 !important;
+    color: #FFF !important;
+}
+.special-white input,
+.special-white textarea {
+    background-color: #1d1d1d !important;
+    color: #FFF !important;
+}
+.special-white .codex-special__toolbar{
+    background-color: #0d0e0e !important;
+    color: #74aaff !important;
+    border-color: #3e3e3e !important;
+}
+.special-white a{
+    color: #6b9dff !important;
+    text-decoration: underline !important;
+}
+/**
+* Big text version style
+*/
+.special-big div,
+.special-big input,
+.special-big aside
+{
+    font-size: 1.2em !important;
+}
+.special-big ul,
+.special-big ol
+{
+    font-size: 1em !important;
+}
+.special-big a{
+    font-size: 1em !important;
+}
+.special-big article{
+    font-size: 1.1em !important;
+}
