@@ -351,6 +351,6 @@ var codexSpecial = (function() {
 })();
 
 codexSpecial.init({
-    blockId : 'js-contrast-version-holder',
+    // blockId : 'js-contrast-version-holder',
     scriptLocation: '/public/extensions/codex-special/'
 });

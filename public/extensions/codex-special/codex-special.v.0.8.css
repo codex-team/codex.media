@@ -159,3 +159,19 @@ body.special-white,
 .special-big article{
     font-size: 1.1em !important;
 }
+
+
+
+
+/**
+* Mobile view styles
+*/
+@media all and (max-width: 1000px){
+
+    .codex-special__toolbar.codex-special__excluded{
+        top: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+    }
+}
