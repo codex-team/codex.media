@@ -27,18 +27,16 @@ var codexSpecial = (function() {
     * @private CSS classes config
     */
 	var classes = {
+
         colorSwitchers : {
             white    : 'special-white',
     		green    : 'special-green',
     		blue     : 'special-blue',
         },
-        textSizeIncreased : 'special-big'
-	};
 
-    var clean = {
-        color    : true,
-        textSize : true,
-    };
+        textSizeIncreased : 'special-big'
+
+	};
 
     var initialSettings = {
         blockId : null,
@@ -79,6 +77,11 @@ var codexSpecial = (function() {
         * 4. Add listeners
         */
         addListeners_();
+
+        /**
+        * 5. Check localStorage for settings
+        */
+        loadSettings_();
 
     };
 
@@ -180,27 +183,58 @@ var codexSpecial = (function() {
     /**
     * @private
     */
-    function changeColor_ () {
+    function loadSettings_ () {
 
-        dropColor_();
+        var color    = localStorage.getItem('codex-special__color');
+        var textSize = localStorage.getItem('codex-special__textSize');
 
-        if (this.style.opacity === 1 && !clean.color) {
+        if (color) {
 
-            clear_('color');
+            nodes.colorSwitchers.map(function(switcher, index) {
 
-            return;
+                if (switcher.dataset.style == color){
+
+                    changeColor_.call(switcher);
+
+                }
+
+            });
 
         }
 
+        if (textSize){
+
+            var textSizeSwitcher = nodes.textSizeSwitcher;
+
+            changeTextSize_.call(textSizeSwitcher);
+        }
+
+    }
+
+    /**
+    * @private
+    */
+    function changeColor_ () {
+
+        if ( this.classList.contains('codex-special__circle-enabled') ) {
+
+            return dropColor_();
+
+        }
+
+        dropColor_();
+
         nodes.colorSwitchers.map(function(switcher, index) {
 
-    		switcher.style.opacity = 0.5;
+            switcher.classList.add('codex-special__circle-disabled');
 
         });
 
-    	this.style.opacity = 1;
+        this.classList.remove('codex-special__circle-disabled');
 
-        clean.color = false;
+        this.classList.add('codex-special__circle-enabled');
+
+        localStorage.setItem('codex-special__color', this.dataset.style);
 
     	document.body.classList.add(classes.colorSwitchers[this.dataset.style]);
 
@@ -217,6 +251,14 @@ var codexSpecial = (function() {
 
         }
 
+        nodes.colorSwitchers.map(function(switcher, index) {
+
+            switcher.classList.remove('codex-special__circle-disabled', 'codex-special__circle-enabled');
+
+        });
+
+        localStorage.removeItem('codex-special__color');
+
     }
 
     /**
@@ -224,17 +266,17 @@ var codexSpecial = (function() {
     */
     function changeTextSize_ () {
 
-        if (!clean.textSize) {
+        if ( document.body.classList.contains(classes.textSizeIncreased) ) {
 
-            clear_('textSize');
-
-            return;
+            return dropTextSize_();
 
         }
 
+        dropTextSize_();
+
         nodes.textSizeSwitcher.classList.add('enabled');
 
-        clean.textSize = false;
+        localStorage.setItem('codex-special__textSize', 'big');
 
         document.body.classList.add(classes.textSizeIncreased);
 
@@ -249,42 +291,9 @@ var codexSpecial = (function() {
 
         nodes.textSizeSwitcher.classList.remove('enabled');
 
-    }
-
-    /**
-    * @private
-    * @param param ?
-    */
-    function clear_ ( param ) {
-
-        if (param == 'color') {
-
-        	dropColor_();
-
-            codexSpecial.colorSwitchers.map(function(switcher, index) {
-
-                switcher.style.opacity = 1;
-
-            });
-
-            codexSpecial.clean.color = true;
-        }
-
-        if (param == 'textSize') {
-
-            dropTextSize_();
-
-            clean.textSize = true;
-        }
-
-        if (clean.color && clean.textSize){
-
-        	nodes.hover.style.display = null;
-
-        }
+        localStorage.removeItem('codex-special__textSize');
 
     }
-
 
     /**
     * @private
@@ -349,8 +358,3 @@ var codexSpecial = (function() {
     return new _codexSpecial();
 
 })();
-
-codexSpecial.init({
-    blockId : 'js-contrast-version-holder',
-    scriptLocation: '/public/extensions/codex-special/'
-});
