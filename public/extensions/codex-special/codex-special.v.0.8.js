@@ -338,8 +338,3 @@ var codexSpecial = (function() {
     return new _codexSpecial();
 
 })();
-
-codexSpecial.init({
-    blockId : 'js-contrast-version-holder',
-    scriptLocation: '/public/extensions/codex-special/'
-});
