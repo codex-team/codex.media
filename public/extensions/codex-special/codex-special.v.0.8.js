@@ -27,12 +27,15 @@ var codexSpecial = (function() {
     * @private CSS classes config
     */
 	var classes = {
+
         colorSwitchers : {
             white    : 'special-white',
     		green    : 'special-green',
     		blue     : 'special-blue',
         },
+
         textSizeIncreased : 'special-big'
+
 	};
 
     var initialSettings = {
@@ -74,6 +77,11 @@ var codexSpecial = (function() {
         * 4. Add listeners
         */
         addListeners_();
+
+        /**
+        * 5. Check localStorage for settings
+        */
+        loadSettings_();
 
     };
 
@@ -175,6 +183,37 @@ var codexSpecial = (function() {
     /**
     * @private
     */
+    function loadSettings_ () {
+
+        var color    = localStorage.getItem('codex-special__color');
+        var textSize = localStorage.getItem('codex-special__textSize');
+
+        if (color) {
+
+            nodes.colorSwitchers.map(function(switcher, index) {
+
+                if (switcher.dataset.style == color){
+
+                    changeColor_.call(switcher);
+
+                }
+
+            });
+
+        }
+
+        if (textSize){
+
+            var textSizeSwitcher = nodes.textSizeSwitcher;
+
+            changeTextSize_.call(textSizeSwitcher);
+        }
+
+    }
+
+    /**
+    * @private
+    */
     function changeColor_ () {
 
         if ( this.classList.contains('codex-special__circle-enabled') ) {
@@ -194,6 +233,8 @@ var codexSpecial = (function() {
         this.classList.remove('codex-special__circle-disabled');
 
         this.classList.add('codex-special__circle-enabled');
+
+        localStorage.setItem('codex-special__color', this.dataset.style);
 
     	document.body.classList.add(classes.colorSwitchers[this.dataset.style]);
 
@@ -218,6 +259,8 @@ var codexSpecial = (function() {
 
         });
 
+        localStorage.removeItem('codex-special__color');
+
     }
 
     /**
@@ -235,6 +278,8 @@ var codexSpecial = (function() {
 
         nodes.textSizeSwitcher.classList.add('enabled');
 
+        localStorage.setItem('codex-special__textSize', 'big');
+
         document.body.classList.add(classes.textSizeIncreased);
 
     }
@@ -248,32 +293,9 @@ var codexSpecial = (function() {
 
         nodes.textSizeSwitcher.classList.remove('enabled');
 
-    }
-
-    /**
-    * @private
-    * @param param ?
-    */
-    function clear_ ( param ) {
-
-        if (param == 'color') {
-
-            nodes.colorSwitchers.map(function(switcher, index) {
-
-                switcher.style.opacity = 1;
-
-            });
-
-            clean.color = true;
-        }
-
-        if (param == 'textSize') {
-
-            clean.textSize = true;
-        }
+        localStorage.removeItem('codex-special__textSize');
 
     }
-
 
     /**
     * @private
