@@ -35,11 +35,6 @@ var codexSpecial = (function() {
         textSizeIncreased : 'special-big'
 	};
 
-    var clean = {
-        color    : true,
-        textSize : true,
-    };
-
     var initialSettings = {
         blockId : null,
         scriptLocation: '/'
@@ -182,25 +177,23 @@ var codexSpecial = (function() {
     */
     function changeColor_ () {
 
-        dropColor_();
+        if ( this.classList.contains('codex-special__circle-enabled') ) {
 
-        if (this.style.opacity == 1 && !clean.color) {
-
-            clear_('color');
-
-            return;
+            return dropColor_();
 
         }
 
+        dropColor_();
+
         nodes.colorSwitchers.map(function(switcher, index) {
 
-    		switcher.style.opacity = 0.5;
+            switcher.classList.add('codex-special__circle-disabled');
 
         });
 
-    	this.style.opacity = 1;
+        this.classList.remove('codex-special__circle-disabled');
 
-        clean.color = false;
+        this.classList.add('codex-special__circle-enabled');
 
     	document.body.classList.add(classes.colorSwitchers[this.dataset.style]);
 
@@ -217,6 +210,14 @@ var codexSpecial = (function() {
 
         }
 
+        nodes.colorSwitchers.map(function(switcher, index) {
+
+            switcher.classList.remove('codex-special__circle-disabled');
+
+            switcher.classList.remove('codex-special__circle-enabled');
+
+        });
+
     }
 
     /**
@@ -224,19 +225,15 @@ var codexSpecial = (function() {
     */
     function changeTextSize_ () {
 
-        dropTextSize_();
+        if ( document.body.classList.contains(classes.textSizeIncreased) ) {
 
-        if (!clean.textSize) {
-
-            clear_('textSize');
-
-            return;
+            return dropTextSize_();
 
         }
 
-        nodes.textSizeSwitcher.classList.add('enabled');
+        dropTextSize_();
 
-        clean.textSize = false;
+        nodes.textSizeSwitcher.classList.add('enabled');
 
         document.body.classList.add(classes.textSizeIncreased);
 

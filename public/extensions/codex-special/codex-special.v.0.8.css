@@ -48,6 +48,13 @@
         .codex-special__circle:not(:last-of-type) {
             margin-right: 5px;
         }
+
+    .codex-special__circle-disabled {
+    }
+    .codex-special__circle-enabled {
+        border-radius: 10%;
+    }
+
     .codex-special__circle__blue {
         background-color: #36465B;
         border-color: #C5DFFF;
