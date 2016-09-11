@@ -253,9 +253,7 @@ var codexSpecial = (function() {
 
         nodes.colorSwitchers.map(function(switcher, index) {
 
-            switcher.classList.remove('codex-special__circle-disabled');
-
-            switcher.classList.remove('codex-special__circle-enabled');
+            switcher.classList.remove('codex-special__circle-disabled', 'codex-special__circle-enabled');
 
         });
 
