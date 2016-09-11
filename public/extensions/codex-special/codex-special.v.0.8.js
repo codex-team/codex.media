@@ -184,7 +184,7 @@ var codexSpecial = (function() {
 
         dropColor_();
 
-        if (this.style.opacity === 1 && !clean.color) {
+        if (this.style.opacity == 1 && !clean.color) {
 
             clear_('color');
 
@@ -224,6 +224,8 @@ var codexSpecial = (function() {
     */
     function changeTextSize_ () {
 
+        dropTextSize_();
+
         if (!clean.textSize) {
 
             clear_('textSize');
@@ -259,28 +261,18 @@ var codexSpecial = (function() {
 
         if (param == 'color') {
 
-        	dropColor_();
-
-            codexSpecial.colorSwitchers.map(function(switcher, index) {
+            nodes.colorSwitchers.map(function(switcher, index) {
 
                 switcher.style.opacity = 1;
 
             });
 
-            codexSpecial.clean.color = true;
+            clean.color = true;
         }
 
         if (param == 'textSize') {
 
-            dropTextSize_();
-
             clean.textSize = true;
-        }
-
-        if (clean.color && clean.textSize){
-
-        	nodes.hover.style.display = null;
-
         }
 
     }
