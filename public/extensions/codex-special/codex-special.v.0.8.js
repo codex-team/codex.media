@@ -347,7 +347,7 @@ var codexSpecial = (function() {
 
             var textToggler = draw_.element('SPAN', 'codex-special__toolbar_text');
 
-            textToggler.innerHTML = '<i class="codex-special__toolbar_icon icon-font"></i> Увеличенный шрифт';
+            textToggler.innerHTML = '<i class="codex-special__toolbar_icon"></i> Увеличенный шрифт';
 
             return textToggler;
 

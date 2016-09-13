@@ -4,9 +4,6 @@
     white-space: nowrap;
     font-size: 15px;
 }
-.codex-special__toolbar_icon {
-    margin-right: 3px;
-}
 
 .codex-special__toolbar.codex-special__included {
     position: relative;
@@ -29,12 +26,25 @@
         margin-right: 24px;
         cursor: pointer;
         border-radius: 5px;
+        color: #333;
     }
     .codex-special__toolbar_text.enabled,
     .codex-special__toolbar_text:hover
     {
         color: #3d82c1;
     }
+
+    .codex-special__toolbar_icon {
+        display: inline-block;
+        background: url('icon-font.svg') no-repeat;
+        width: 16px;
+        height: 16px;
+        vertical-align: text-bottom;
+    }
+        .codex-special__toolbar_text.enabled .codex-special__toolbar_icon,
+        .codex-special__toolbar_text:hover .codex-special__toolbar_icon {
+            background: url('icon-font-blue.svg') no-repeat;
+        }
 
     .codex-special__circle {
         display: inline-block;
