@@ -110,7 +110,7 @@ var codexSpecial = (function() {
     function makeUI_() {
 
         /**
-        * 1. Make Toolbar, Hover and Switchers
+        * 1. Make Toolbar and Switchers
         */
 
         var toolbar = draw_.toolbar(),
@@ -317,12 +317,6 @@ var codexSpecial = (function() {
         toolbar : function () {
 
             return draw_.element('DIV', 'codex-special__toolbar');
-
-        },
-
-        hover : function () {
-
-            return draw_.element('DIV', 'codex-special__hover');
 
         },
 
