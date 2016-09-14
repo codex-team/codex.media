@@ -153,13 +153,13 @@ var codexSpecial = (function() {
 
             document.getElementById(initialSettings.blockId).appendChild(nodes.toolbar);
 
-            nodes.toolbar.classList.add('codex-special__included');
+            nodes.toolbar.classList.add('codex-special__toolbar_included');
 
             return;
 
         }
 
-        nodes.toolbar.classList.add('codex-special__excluded');
+        nodes.toolbar.classList.add('codex-special__toolbar_excluded');
 
         document.body.appendChild(nodes.toolbar);
 
@@ -216,7 +216,7 @@ var codexSpecial = (function() {
     */
     function changeColor_ () {
 
-        if ( this.classList.contains('codex-special__circle-enabled') ) {
+        if ( this.classList.contains('codex-special__circle_enabled') ) {
 
             return dropColor_();
 
@@ -226,13 +226,13 @@ var codexSpecial = (function() {
 
         nodes.colorSwitchers.map(function(switcher, index) {
 
-            switcher.classList.add('codex-special__circle-disabled');
+            switcher.classList.add('codex-special__circle_disabled');
 
         });
 
-        this.classList.remove('codex-special__circle-disabled');
+        this.classList.remove('codex-special__circle_disabled');
 
-        this.classList.add('codex-special__circle-enabled');
+        this.classList.add('codex-special__circle_enabled');
 
         localStorage.setItem('codex-special__color', this.dataset.style);
 
@@ -253,7 +253,7 @@ var codexSpecial = (function() {
 
         nodes.colorSwitchers.map(function(switcher, index) {
 
-            switcher.classList.remove('codex-special__circle-disabled', 'codex-special__circle-enabled');
+            switcher.classList.remove('codex-special__circle_disabled', 'codex-special__circle_enabled');
 
         });
 
@@ -274,7 +274,7 @@ var codexSpecial = (function() {
 
         dropTextSize_();
 
-        nodes.textSizeSwitcher.classList.add('enabled');
+        nodes.textSizeSwitcher.classList.add('codex-special__toolbar_text_enabled');
 
         localStorage.setItem('codex-special__textSize', 'big');
 
@@ -289,7 +289,7 @@ var codexSpecial = (function() {
 
         document.body.classList.remove(classes.textSizeIncreased);
 
-        nodes.textSizeSwitcher.classList.remove('enabled');
+        nodes.textSizeSwitcher.classList.remove('codex-special__toolbar_text_enabled');
 
         localStorage.removeItem('codex-special__textSize');
 
@@ -334,7 +334,7 @@ var codexSpecial = (function() {
 
             var colorSwitcher = draw_.element('SPAN', 'codex-special__circle');
 
-            colorSwitcher.classList.add('codex-special__circle__' + type);
+            colorSwitcher.classList.add('codex-special__circle_' + type);
 
             return colorSwitcher;
 
