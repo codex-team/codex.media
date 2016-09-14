@@ -29,7 +29,6 @@ html body .codex-special__toolbar{
         margin-right: 24px;
         cursor: pointer;
         border-radius: 5px;
-        color: #333;
     }
     .codex-special__toolbar_text:hover
     {
