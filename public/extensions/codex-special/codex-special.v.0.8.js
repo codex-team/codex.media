@@ -274,7 +274,7 @@ var codexSpecial = (function() {
 
         dropTextSize_();
 
-        nodes.textSizeSwitcher.classList.add('codex-special__toolbar_text_enabled');
+        nodes.textSizeSwitcher.innerHTML = '<i class="codex-special__toolbar_icon"></i> Уменьшить шрифт';
 
         localStorage.setItem('codex-special__textSize', 'big');
 
@@ -289,7 +289,7 @@ var codexSpecial = (function() {
 
         document.body.classList.remove(classes.textSizeIncreased);
 
-        nodes.textSizeSwitcher.classList.remove('codex-special__toolbar_text_enabled');
+        nodes.textSizeSwitcher.innerHTML = '<i class="codex-special__toolbar_icon"></i> Увеличить шрифт';
 
         localStorage.removeItem('codex-special__textSize');
 
@@ -341,7 +341,7 @@ var codexSpecial = (function() {
 
             var textToggler = draw_.element('SPAN', 'codex-special__toolbar_text');
 
-            textToggler.innerHTML = '<i class="codex-special__toolbar_icon"></i> Увеличенный шрифт';
+            textToggler.innerHTML = '<i class="codex-special__toolbar_icon"></i> Увеличить шрифт';
 
             return textToggler;
 

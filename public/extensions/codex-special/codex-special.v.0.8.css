@@ -31,7 +31,6 @@ html body .codex-special__toolbar{
         border-radius: 5px;
         color: #333;
     }
-    .codex-special__toolbar_text_enabled,
     .codex-special__toolbar_text:hover
     {
         color: #3d82c1;
@@ -44,7 +43,6 @@ html body .codex-special__toolbar{
         height: 16px;
         vertical-align: text-bottom;
     }
-        .codex-special__toolbar_text_enabled .codex-special__toolbar_icon,
         .codex-special__toolbar_text:hover .codex-special__toolbar_icon {
             background: url('icon-font-blue.svg') no-repeat;
         }
@@ -57,8 +55,9 @@ html body .codex-special__toolbar{
         vertical-align: middle;
         border-radius: 50%;
         cursor: pointer;
+        float: right;
     }
-        .codex-special__circle:not(:last-of-type) {
+        .codex-special__circle:not(:first-of-type) {
             margin-right: 5px;
         }
 
