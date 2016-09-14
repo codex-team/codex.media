@@ -29,9 +29,9 @@ var codexSpecial = (function() {
 	var classes = {
 
         colorSwitchers : {
-            white    : 'special-white',
+            blue     : 'special-blue',
     		green    : 'special-green',
-    		blue     : 'special-blue',
+            white    : 'special-white',
         },
 
         textSizeIncreased : 'special-big'

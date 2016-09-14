@@ -105,8 +105,8 @@ body.special-blue,
     color: #36465B !important;
 }
 .special-blue .codex-special__toolbar{
-    background-color: #acc9ed !important;
-    color: #74aaff !important;
+    background-color: #a4d1f7 !important;
+    color: #222b42 !important;
     border-color: #95CAED !important;
 }
 .special-blue a{
@@ -132,8 +132,8 @@ body.special-green,
     color: #44E963 !important;
 }
 .special-green .codex-special__toolbar{
-    background-color: #c0b7a0 !important;
-    color: #74aaff !important;
+    background-color: #25221f !important;
+    color: #a79f89 !important;
     border-color: #4A3D37 !important;
 }
 .special-green a{
@@ -160,8 +160,8 @@ body.special-white,
     color: #FFF !important;
 }
 .special-white .codex-special__toolbar{
-    background-color: #acb9b9 !important;
-    color: #74aaff !important;
+    background-color: #070808 !important;
+    color: #afb2b9 !important;
     border-color: #282829 !important;
 }
 .special-white a{
