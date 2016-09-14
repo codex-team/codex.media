@@ -104,6 +104,11 @@ body.special-blue,
     background-color: #C5DFFF !important;
     color: #36465B !important;
 }
+.special-blue .codex-special__toolbar{
+    background-color: #acc9ed !important;
+    color: #74aaff !important;
+    border-color: #95CAED !important;
+}
 .special-blue a{
     color: #005db3 !important;
     text-decoration: underline !important;
@@ -125,6 +130,11 @@ body.special-green,
 .special-green textarea {
     background-color: #211f1a !important;
     color: #44E963 !important;
+}
+.special-green .codex-special__toolbar{
+    background-color: #c0b7a0 !important;
+    color: #74aaff !important;
+    border-color: #4A3D37 !important;
 }
 .special-green a{
     color: #beff5e !important;
@@ -150,9 +160,9 @@ body.special-white,
     color: #FFF !important;
 }
 .special-white .codex-special__toolbar{
-    background-color: #0d0e0e !important;
+    background-color: #acb9b9 !important;
     color: #74aaff !important;
-    border-color: #3e3e3e !important;
+    border-color: #282829 !important;
 }
 .special-white a{
     color: #6b9dff !important;
