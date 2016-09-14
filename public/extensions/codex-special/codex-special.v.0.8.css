@@ -2,7 +2,10 @@
     padding: 15px;
     background-color: white;
     white-space: nowrap;
-    font-size: 16px;
+}
+/* wrap for saving font-size in toolbar */
+html body .codex-special__toolbar{
+    font-size: 16px !important;
 }
 
 .codex-special__toolbar_included {
@@ -176,10 +179,6 @@ body.special-white,
 .special-big article{
     font-size: 1.1em !important;
 }
-.special-big .codex-special__toolbar{
-    font-size: 16px !important;
-}
-
 
 
 
