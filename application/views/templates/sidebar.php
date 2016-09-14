@@ -1,4 +1,4 @@
-<div class="banner_preview">
+<? /*<div class="banner_preview">
     Banner
     <br>
     250x300
@@ -17,7 +17,7 @@
     }
 </style>
 
-
+*/ ?>
 <script id="vk_script" type="text/javascript" async ></script>
 
 <!-- VK Widget -->

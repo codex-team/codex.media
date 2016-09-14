@@ -16,9 +16,7 @@
 
     <base href="/" />
 
-    <link href="//fonts.googleapis.com/css?family=PT+Sans:400italic,400,700italic,700" rel="stylesheet" type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=PT+Serif+Caption&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700,700italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700&subset=cyrillic" rel="stylesheet">
 
 
     <link rel="stylesheet" type="text/css" media="all" href="/public/css/main.css?v=<?= time() ?>">
@@ -51,7 +49,7 @@
                     </a>
                     <a class="user_panel cf" href="/user/<?= $user->id ?>">
                         <img src="<?= $user->photo ?>" />
-                        <?= $user->name ?>
+                        <span class="user_panel__name overflow_long"><?= $user->name ?></span>
                     </a>
                 <? endif ?>
 

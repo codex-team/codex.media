@@ -38,6 +38,17 @@
     <h1 class="page_title">
     	<?= $page->title ?>
     </h1>
+    <div class="page-information">
+        <? if ($page->type != Model_Page::TYPE_SITE_PAGE): ?>
+            <time class="page-information__time"><?= $methods->ftime(strtotime($page->date)) ?></time>
+        <? endif; ?>
+        <? if ($page->type == Model_Page::TYPE_USER_PAGE): ?>
+            <a class="page-information__author" href="/user/<?= $page->author->id ?>">
+                <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
+                <span class="page-information__author_name"><?= $page->author->name ?></span>
+            </a>
+        <? endif ?>
+    </div>
     <? if ($page->content): ?>
         <article class="page_content">
         	<?= nl2br($page->content) ?>
@@ -53,12 +64,13 @@
             <? endforeach ?>
         </ul>
     <? endif; ?>
-    <? if ( $can_modify_this_page ): ?>
-        <a class="button iconic green add_children_btn" href="/p/save?parent=<?= $page->id ?>">
-            <i class="icon-plus"></i>
-            Вложенная страница
-        </a>
-    <? endif; ?>
+    <? if( $can_modify_this_page ): ?>
+        <div class="action-line action-line__onpage clear">
+            <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i> Редактировать</a>
+            <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
+            <a class="textbutton" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
+        </div>
+    <? endif ?>
 </div>
 
 <? if ($page->images): ?>

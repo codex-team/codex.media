@@ -210,7 +210,7 @@ h3{
     border-radius: 25px;
     text-decoration: none;
     font-family: inherit;
-    font-size: 15px;
+    font-size: 13px;
     background: #eee; color: #9D9D9D;
     border: 0;
     cursor: pointer;
@@ -276,11 +276,11 @@ h3{
 
 @font-face {
   font-family: 'codex-edu';
-  src: url('../fonts/codex-edu.eot?5');
-  src: url('../fonts/codex-edu.eot?5#iefix') format('embedded-opentype'),
-       url('../fonts/codex-edu.woff?5') format('woff'),
-       url('../fonts/codex-edu.ttf?5') format('truetype'),
-       url('../fonts/codex-edu.svg?5#codex-edu') format('svg');
+  src: url('../fonts/codex-edu.eot?6');
+  src: url('../fonts/codex-edu.eot?6#iefix') format('embedded-opentype'),
+       url('../fonts/codex-edu.woff?6') format('woff'),
+       url('../fonts/codex-edu.ttf?6') format('truetype'),
+       url('../fonts/codex-edu.svg?6#codex-edu') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -362,8 +362,8 @@ h3{
 html{overflow-y: scroll;}
 body{
     overflow-x: hidden;
-    font-size: 14px;
-    font-family: 'PT Sans';
+    font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     background: #f9f9fb;
 }
 html,body{min-height: 500px}
@@ -404,7 +404,7 @@ aside .menu{
 }
     aside .menu a{
         display: block;
-        font-size: 17px;
+        font-size: 15px;
         font-weight: bold;
         padding: 12px 25px;
         color: #3d485a;
@@ -428,6 +428,7 @@ aside .user_panel{
     color: #657280;
     text-decoration: none;
     border-bottom: 1px solid #f5f7f8;
+    font-size: 14px;
 }
     aside .user_panel:hover{
         background: #f6f8fa
@@ -545,7 +546,7 @@ aside .user_panel{
 .post-list-item{
     margin: 5px 0 5px 5px;
     padding: 40px 60px 35px;
-    font-size: 16px;
+    font-size: 15px;
 }
     .post-list-item__title{
         display: inline-block;
@@ -556,7 +557,8 @@ aside .user_panel{
         font-weight: bold;
     }
     .post-list-item__body{
-        line-height: 1.5em;
+        line-height: 1.55em;
+        letter-spacing: -.1px;
     }
     .post-list-item time{
         display: inline-block;
@@ -711,12 +713,6 @@ aside .user_panel{
     }
 
 
-.site_category_title{
-    padding: 30px;
-    font-size: 25px;
-    background: #F4F8FE;
-}
-.site_category_title > a{color: inherit;}
 
 .page_form{padding: 30px;}
 .page_form h4{margin-bottom: 10px;}
@@ -746,8 +742,10 @@ aside .user_panel{
 
 
 
-.page_form .redactor_editor, .page_content{
-    font-family: 'PT Serif';
+.page_form .redactor_editor,
+.page_content{
+    /*font-family: 'PT Serif';*/
+    font-family: 'Lora', Georgia, serif;
     font-size: 17px;
     line-height: 1.6em;
 }
@@ -761,6 +759,33 @@ aside .user_panel{
 .page_wrap .files{
     padding: 30px 100px;
 }
+.page-information{
+    padding: 0 100px;
+    color: #8a96ae;
+}
+    .page-information__time{
+        display: inline-block;
+        margin-right: 20px;
+        font-size: 12px;
+
+    }
+    .page-information__author{
+        display: inline-block;
+        text-decoration: none;
+        font-size: 12px;
+        color: inherit;
+    }
+        .page-information__author img{
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            vertical-align: bottom;
+            margin-right: 5px;
+        }
+        .page-information__author_name{
+            border-bottom: 1px solid #d3d6e0;
+            padding-bottom: 1px;
+        }
 
 .page_image{
     margin: 0px 0px 5px 5px;
@@ -775,7 +800,8 @@ aside .user_panel{
 
 .page_title{
     font-size: 2.4em;
-    font-family: 'PT Serif Caption';
+    /*font-family: 'PT Serif Caption';*/
+    font-family: 'Lora', serif;
     padding: 60px 100px 30px;
 }
 
@@ -815,9 +841,6 @@ aside .user_panel{
     border-top: 0;
     padding-top: 0;
 }
-    .action_line + .page_childrens{
-        border-top: 0;
-    }
     .page_childrens:before {
         font-family: 'codex-edu';
         content: '\e80e';
@@ -834,7 +857,7 @@ aside .user_panel{
     }
         .page_childrens a{
             font-size: 17px;
-            font-family: 'PT Serif';
+            font-family: 'Lora', Georgia, serif;
         }
         .page_childrens a,
         .page_files a{
@@ -871,7 +894,6 @@ aside .user_panel{
 
 
 .user_page{
-    border-bottom: 1px solid #f5f7f8;
     padding: 150px;
     text-align: center;
 }
@@ -893,26 +915,38 @@ aside .user_panel{
         font-size: 16px;
         text-decoration: none;
     }
+    .user_panel__name{
+        display: inline-block;
+        vertical-align: middle;
+        width: 70%;
+    }
 
-.action_line{
+.action-line{
     padding: 25px 30px;
-    border-bottom: 1px solid #f5f7f8;
+    border-top: 1px solid #f5f7f8;
     font-size: 15px;
 }
-    .page_content + .action_line{
-        border-top: 1px solid #f5f7f8;
+    .action-line__onpage{
+        padding: 25px 100px;
     }
-    .action_line .textbutton{
+    .action-line__onpage .button{
+        margin-right: 20px;
+        padding: 7px 18px;
+    }
+
+    .action-line .textbutton{
         padding: 10px 15px;
-        margin-left: 20px;
         text-decoration: none;
         color: #8E909A;
     }
-        .action_line .textbutton i{
+        .action-line .fl_r{
+            margin-left: 20px;
+        }
+        .action-line .textbutton i{
             margin-right: 3px;
         }
 
-    .action_line .info{
+    .action-line .info{
         display: inline-block;
         margin-top: 10px;
         color: #8E909A;
@@ -937,11 +971,6 @@ aside .user_panel{
             vertical-align: middle;
             margin: 0 15px;
         }
-
-.add_children_btn{
-    margin-left: 100px;
-    margin-bottom: 40px;
-}
 
 
 .add_file_form {margin: 30px 0;}
@@ -1181,7 +1210,7 @@ aside .user_panel{
         box-sizing: border-box;
         padding: 14px 16px;
         resize: vertical;
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .comment_form span { font-size: 14px; }
@@ -1252,7 +1281,7 @@ aside .user_panel{
 .atlas_form{
     position: relative;
     margin: 5px 0 5px 5px;
-    font-size: 16px;
+    font-size: 15px;
     color: #7d869a;
 }
     .atlas_form .import{
@@ -1509,6 +1538,14 @@ aside .user_panel{
     .page_wrap .files{
         padding: 15px;
     }
+    .page-information{
+        padding: 0 15px;
+    }
+        .page-information__time,
+        .page-information__author{
+            margin-top: 3px;
+            margin-bottom: 3px;
+        }
     .page_title{
         font-size: 1.4em;
     }
@@ -1608,23 +1645,23 @@ aside .user_panel{
         margin-top: .7em;
         font-size: 18px;
     }
-    .action_line{
+    .action-line{
         padding: 15px;
     }
-    .action_line .textbutton{
+    .action-line .textbutton{
         background: #f7f9fb;
         border-radius: 20px;
     }
-    .action_line .textbutton,
-    .action_line .button{
+    .action-line .textbutton,
+    .action-line .button{
         display: block;
         float: none;
         text-align: left;
         margin: 5px 0;
         padding: 10px 20px;
     }
-    .action_line .textbutton i,
-    .action_line .button i{
+    .action-line .textbutton i,
+    .action-line .button i{
         margin: 0 5px 0 0;
     }
 

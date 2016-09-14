@@ -40,12 +40,12 @@
     		Обновления сохранены
     	</div>
     <? endif; ?>
-    <div class="action_line clear">
+    <div class="action-line  clear">
         <? if($viewUser->isMe): ?>
             <a class="textbutton fl_r" href="/user/settings"><i class="icon-cog"></i> Настройки</a>
         <? endif; ?>
         <? if($viewUser->isMe && $user->isTeacher): ?>
-            <a class="button iconic green" href="/p/save"><i class="icon-plus"></i> Создать страницу</a>
+            <a class="button iconic green" href="/p/save?type=<?= Model_Page::TYPE_USER_PAGE ?>"><i class="icon-plus"></i> Создать страницу</a>
         <? else: ?>
             <span class="info">
                 Зарегистрирован <?= $methods->ltime(strtotime($viewUser->dt_reg)) ?>
@@ -56,7 +56,7 @@
         <? endif ?>
     </div>
     <? if ($user->isAdmin): ?>
-        <ul class="action_line page_actions hide" id="pageAction">
+        <ul class="action-line page_actions hide" id="pageAction">
             <? if (!$viewUser->isTeacher): ?>
                 <li><a href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a></li>
             <? else: ?>
@@ -69,21 +69,20 @@
             <? endif ?>
         </ul>
     <? endif ?>
+</div>
+	<? if ($userPages): ?>
 
+        <div id="list_of_news" class="news">
 
+            <?= View::factory('templates/news_list', array( 'pages'=> $userPages)); ?>
 
-    <div class="profile_panel clear">
-    	<? if ($userPages): ?>
-            <ul>
-        		<? foreach ($userPages as $page): ?>
-        			<li><h3><a href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a></h3></li>
-        		<? endforeach; ?>
-            </ul>
-    	<? else: ?>
+        </div>
+
+	<? else: ?>
+        <div class="w_island w_island_centercol">
     		<div class="empty_motivatior">
                 <i class="icon_noarticles"></i><br/>
                 Здесь появятся страницы и статьи
             </div>
-    	<? endif ?>
-    </div>
-</div>
+        </div>
+    <? endif ?>
