@@ -2,7 +2,7 @@
     padding: 15px;
     background-color: white;
     white-space: nowrap;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .codex-special__toolbar_included {
@@ -27,7 +27,6 @@
         cursor: pointer;
         border-radius: 5px;
         color: #333;
-        font-size: 16px !important;
     }
     .codex-special__toolbar_text_enabled,
     .codex-special__toolbar_text:hover
@@ -176,6 +175,9 @@ body.special-white,
 }
 .special-big article{
     font-size: 1.1em !important;
+}
+.special-big .codex-special__toolbar{
+    font-size: 16px !important;
 }
 
 
