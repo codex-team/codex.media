@@ -92,12 +92,13 @@ var codexSpecial = (function() {
     */
     function loadStyles_(){
 
-        var style = document.createElement( 'link' );
+        var style = document.createElement( 'link' )
+            time  = new Date().getTime();
 
         style.setAttribute( 'type', 'text/css' );
         style.setAttribute( 'rel', 'stylesheet');
 
-        style.href = initialSettings.scriptLocation + CSS_FILE_PATH;
+        style.href = initialSettings.scriptLocation + CSS_FILE_PATH + '?v=' + time;
 
         document.head.appendChild( style );
 
