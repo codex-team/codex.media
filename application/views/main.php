@@ -76,7 +76,9 @@
                         Факс:&nbsp;<?= $site_info->fax ?><br />
                         Почта:&nbsp;<?= $site_info->email ?>
                     </p>
+                    <div id="js-contrast-version-holder"></div>
                 </footer>
+
 
             </div>
         </aside>
@@ -99,6 +101,7 @@
         </form>
     </div>
 
+    <script src="/public/extensions/codex-special/codex-special.v.1.0.min.js?v=2"></script>
 
     <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
 

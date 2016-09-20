@@ -24,14 +24,14 @@
 <div style="width: 250px; margin: 25px auto" id="vk_groups"></div>
 <script type="text/javascript">
 
-    var vk_script = document.getElementById('vk_script');
+    // var vk_script = document.getElementById('vk_script');
 
-    if (vk_script) {
+    // if (vk_script) {
 
-        vk_script.src = '//vk.com/js/api/openapi.js?122';
-        vk_script.addEventListener('load', function function_name() {
-            VK.Widgets.Group("vk_groups", {mode: 1, width: "250", height: "100", color1: 'FFFFFF', color2: '2B587A', color3: '5B7FA6'}, 9398);
-        }, false)
-    }
+    //     vk_script.src = '//vk.com/js/api/openapi.js?122';
+    //     vk_script.addEventListener('load', function function_name() {
+    //         VK.Widgets.Group("vk_groups", {mode: 1, width: "250", height: "100", color1: 'FFFFFF', color2: '2B587A', color3: '5B7FA6'}, 9398);
+    //     }, false)
+    // }
 
 </script>

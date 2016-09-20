@@ -332,31 +332,36 @@ h3{
 
 .icon-search:before { content: '\e800'; } /* '' */
 .icon-mail:before { content: '\e801'; } /* '' */
-.icon-star:before { content: '\e802'; } /* '' */
-.icon-star-empty:before { content: '\e803'; } /* '' */
+.icon-star-empty:before { content: '\e802'; } /* '' */
+.icon-star:before { content: '\e803'; } /* '' */
 .icon-picture:before { content: '\e804'; } /* '' */
-.icon-ok:before { content: '\e805'; } /* '' */
+.icon-camera:before { content: '\e805'; } /* '' */
 .icon-cancel:before { content: '\e806'; } /* '' */
-.icon-plus:before { content: '\e807'; } /* '' */
-.icon-pencil:before { content: '\e808'; } /* '' */
-.icon-trash:before { content: '\e809'; } /* '' */
-.icon-rss:before { content: '\e80a'; } /* '' */
-.icon-facebook:before { content: '\e80b'; } /* '' */
-.icon-twitter:before { content: '\e80c'; } /* '' */
-.icon-vkontakte:before { content: '\e80d'; } /* '' */
-.icon-vcard:before { content: '\e80e'; } /* '' */
-.icon-book-open:before { content: '\e80f'; } /* '' */
-.icon-cog:before { content: '\e810'; } /* '' */
-.icon-pin-outline:before { content: '\e811'; } /* '' */
-.icon-logout:before { content: '\e812'; } /* '' */
-.icon-right-dir:before { content: '\e813'; } /* '' */
-.icon-down-dir:before { content: '\e814'; } /* '' */
-.icon-reply:before { content: '\e815'; } /* '' */
-.icon-telegram:before { content: '\e816'; } /* '' */
-.icon-link:before { content: '\e817'; } /* '' */
-.icon-attach:before { content: '\e818'; } /* '' */
-.icon-pin:before { content: '\e819'; } /* '' */
-.icon-megaphone:before { content: '\e81a'; } /* '' */
+.icon-ok:before { content: '\e807'; } /* '' */
+.icon-plus:before { content: '\e808'; } /* '' */
+.icon-vcard:before { content: '\e809'; } /* '' */
+.icon-book-open:before { content: '\e80a'; } /* '' */
+.icon-cog:before { content: '\e80b'; } /* '' */
+.icon-pin:before { content: '\e80c'; } /* '' */
+.icon-logout:before { content: '\e80d'; } /* '' */
+.icon-right-dir:before { content: '\e80e'; } /* '' */
+.icon-down-dir:before { content: '\e80f'; } /* '' */
+.icon-up-dir:before { content: '\e810'; } /* '' */
+.icon-reply:before { content: '\e811'; } /* '' */
+.icon-link:before { content: '\e812'; } /* '' */
+.icon-attach:before { content: '\e813'; } /* '' */
+.icon-megaphone:before { content: '\e814'; } /* '' */
+.icon-pin-1:before { content: '\e815'; } /* '' */
+.icon-eye:before { content: '\e816'; } /* '' */
+.icon-eye-off:before { content: '\e817'; } /* '' */
+.icon-font:before { content: '\e818'; } /* '' */
+.icon-rss:before { content: '\f09e'; } /* '' */
+.icon-vkontakte:before { content: '\f189'; } /* '' */
+.icon-telegram:before { content: '\f1d8'; } /* '' */
+.icon-trash:before { content: '\f1f8'; } /* '' */
+.icon-twitter:before { content: '\f309'; } /* '' */
+.icon-facebook:before { content: '\f30c'; } /* '' */
+.icon-facebook-circled:before { content: '\f30d'; } /* '' */
 
 /********/
 html{overflow-y: scroll;}
@@ -631,18 +636,19 @@ aside .user_panel{
 
 
 
-.form_error, .form_saved{
+.form_error,
+.form_saved{
+    margin-top: 2em;
     padding: 15px 30px;
-    border-radius: 2px;
+    border-radius: 3px;
+    font-size: 15px;
 }
 
 .form_saved{
-    background: #FFE49A;
-    color: #80714B;
+    color: ##13b592;
 }
 .form_error{
-    background: #ffabad;
-    color: #4a0f11;
+    color: #d85459;
 }
 
 
@@ -666,7 +672,9 @@ aside .user_panel{
     }
 
 
-
+/**
+* Auth form
+*/
 .page_simple_form{
     max-width: 300px;
     margin: 0 auto;
@@ -697,6 +705,9 @@ aside .user_panel{
     }
     .page_simple_form button{
         padding: 12px 30px;
+    }
+    .page_simple_form .invalid{
+        box-shadow: 0 0 0 2px rgb(255, 221, 221);
     }
 
 .page_footer_links{
@@ -1380,6 +1391,16 @@ aside .user_panel{
         color: #607292;
     }
 
+/**
+* Error messages in auth form
+*/
+.auth-error{
+    margin: 10px;
+    color: #ce7272;
+    font-size: 15px;
+    letter-spacing: .2px;
+}
+
 
 /**
 * End
@@ -1719,6 +1740,106 @@ aside .user_panel{
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+* Special verison styles
+*/
+
+.special-big .sidebar{
+    display: none;
+}
+.special-big .page_wrap{
+    margin-right: 5px;
+}
+.special-big .post-list-item__title{
+    font-size: 1.4em !important;
+}
+
+.special-white aside,
+.special-white .main_logo,
+.special-white .w_island,
+.special-white .post-list-item__footer,
+.special-white .banner_preview,
+.special-white aside .user_panel,
+.special-white .atlas_form input,
+.special-white .atlas_form textarea,
+.special-white .atlas_form .actions
+{
+    border-color: #282829 !important;
+}
+.special-white .main_logo{
+    text-decoration: none !important;
+}
+.special-white .main_logo:hover{
+    background: #000 !important;
+}
+.special-white .button{
+    color: #fff !important;
+    background: #009449 !important;
+}
+
+
+.special-blue aside,
+.special-blue .main_logo,
+.special-blue .w_island,
+.special-blue .post-list-item__footer,
+.special-blue .banner_preview,
+.special-blue aside .user_panel,
+.special-blue .atlas_form input,
+.special-blue .atlas_form textarea,
+.special-blue .atlas_form .actions
+{
+    border-color: #93c9ef !important;
+}
+.special-blue .main_logo{
+    text-decoration: none !important;
+}
+.special-blue .main_logo:hover{
+    background: #000 !important;
+}
+.special-blue .button{
+    color: #fff !important;
+    background: #009449 !important;
+}
+
+.special-green aside,
+.special-green .main_logo,
+.special-green .w_island,
+.special-green .post-list-item__footer,
+.special-green .banner_preview,
+.special-green aside .user_panel,
+.special-green .atlas_form input,
+.special-green .atlas_form textarea,
+.special-green .atlas_form .actions
+{
+    border-color: #4a3d37 !important;
+}
+.special-green .main_logo{
+    text-decoration: none !important;
+}
+.special-green .main_logo:hover{
+    background: #000 !important;
+}
+.special-green .button{
+    color: #fff !important;
+    background: #009449 !important;
+}
 
 /**
 * Animations
