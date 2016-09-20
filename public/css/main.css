@@ -915,7 +915,6 @@ aside .user_panel{
     .user_page .ava ,
     .user_page .ava img{
         width: 100px; height: 100px;
-        border-radius: 50%;
     }
     .user_page .name{
         margin-top: 1em;

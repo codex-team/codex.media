@@ -82,7 +82,7 @@
         <div class="w_island w_island_centercol">
     		<div class="empty_motivatior">
                 <i class="icon_noarticles"></i><br/>
-                Здесь появятся страницы и статьи
+                К чему нам ваши статьи и страницы
             </div>
         </div>
     <? endif ?>
