@@ -26,7 +26,7 @@
             'email' => array(
                 'label' => 'Email',
                 'type'  => 'email',
-                'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'email'),
+                'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'login_email'),
             ),
             'password' => array(
                 'label' => 'Пароль',

@@ -22,18 +22,16 @@
     <? $regFields = array(
         'name' => array(
             'label' => 'Фамилия, Имя',
-            'value' => isset( $inviteData['name'] ) ? $inviteData['name'] : Arr::get($_POST, 'name', ''),
+            'value' => isset( $inviteData['name'] ) ? $inviteData['name'] : Arr::get($_POST, 'signup_name', ''),
         ),
         'email' => array(
             'label' => 'Email',
             'type'  => 'email',
-            'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'email'),
-            'events' => 'onblur="user.validateEmail($(this));"'
+            'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'signup_email'),
         ),
         'password' => array(
             'label' => 'Пароль',
             'type'  => 'password',
-            'events' => 'onkeypress="show_confirmation(event)"'
         ),
         'password_repeat' => array(
             'label' => 'Повторите пароль',
@@ -44,14 +42,13 @@
 
     <? if (!empty($signup_error_fields)): ?>
         <? foreach($signup_error_fields as $fieldName => $errorText ): ?>
-            <div class="error"><?= $errorText ?></div>
+            <div class="auth-error"><?= $errorText ?></div>
         <? endforeach; ?>
     <? endif; ?>
 
-
     <fieldset>
         <? foreach ($regFields as $fieldName => $field): ?>
-            <input placeholder="<?= Arr::get($field, 'label') ?>" type="<?= Arr::get($field, 'type', 'text') ?>" name="signup_<?= $fieldName?>" id="signup_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>" <?= Arr::get($field, 'events')?> />
+            <input <?= !empty($signup_error_fields[$fieldName]) ? 'class="invalid"' : '' ?> placeholder="<?= Arr::get($field, 'label') ?>" type="<?= Arr::get($field, 'type', 'text') ?>" name="signup_<?= $fieldName?>" id="signup_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>"  <?= Arr::get($field, 'events')?> required />
         <? endforeach ?>
     </fieldset>
 
@@ -61,7 +58,7 @@
     <button class="button main">Зарегистрироваться</button>
 </form>
 
-<div class="page_footer_links">    
+<div class="page_footer_links">
     <a href="/recover">Восстановить пароль</a>
     <a href="/auth">Войти на сайт</a>
 </div>

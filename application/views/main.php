@@ -103,7 +103,7 @@
         </form>
     </div>
 
-    <script src="/public/extensions/codex-special/codex-special.v.0.8.js"></script>
+    <script src="/public/extensions/codex-special/codex-special.v.1.0.min.js?v=2"></script>
 
     <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
 

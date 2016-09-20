@@ -3,7 +3,7 @@
 * @author Codex Team — ifmo.su
 *   Vitaly Guryn    https://github.com/illiiiillllilii
 *   Savchenko Petr  https://github.com/neSpecc
-* @version 0.8
+* @version 1.0
 */
 var codexSpecial = (function() {
 
@@ -21,7 +21,7 @@ var codexSpecial = (function() {
     /**
     * Required stylesheets URL
     */
-    var CSS_FILE_PATH = 'codex-special.v.0.8.css';
+    var CSS_FILE_PATH = 'codex-special.v.1.0.css';
 
     /**
     * @private CSS classes config
@@ -45,6 +45,7 @@ var codexSpecial = (function() {
 
 
     /**
+    * @constructor
     * Public methods and properties
     */
     var _codexSpecial = function () {};
@@ -92,13 +93,12 @@ var codexSpecial = (function() {
     */
     function loadStyles_(){
 
-        var style = document.createElement( 'link' )
-            time  = new Date().getTime();
+        var style = document.createElement( 'link' );
 
         style.setAttribute( 'type', 'text/css' );
         style.setAttribute( 'rel', 'stylesheet');
 
-        style.href = initialSettings.scriptLocation + CSS_FILE_PATH + '?v=' + time;
+        style.href = initialSettings.scriptLocation + CSS_FILE_PATH;
 
         document.head.appendChild( style );
 
@@ -114,8 +114,8 @@ var codexSpecial = (function() {
         * 1. Make Toolbar and Switchers
         */
 
-        var toolbar = draw_.toolbar(),
-            textSizeSwitcher = draw_.textSizeSwitcher();
+        var toolbar = draw_.toolbar();
+        var textSizeSwitcher = draw_.textSizeSwitcher();
 
         /**
         * 2. Append text size switcher
@@ -186,8 +186,9 @@ var codexSpecial = (function() {
     */
     function loadSettings_ () {
 
-        var color    = localStorage.getItem('codex-special__color');
-        var textSize = localStorage.getItem('codex-special__textSize');
+        var color    = localStorage.getItem('codex-special__color'),
+            textSize = localStorage.getItem('codex-special__textSize'),
+            textSizeSwitcher;
 
         if (color) {
 
@@ -205,7 +206,7 @@ var codexSpecial = (function() {
 
         if (textSize){
 
-            var textSizeSwitcher = nodes.textSizeSwitcher;
+            textSizeSwitcher = nodes.textSizeSwitcher;
 
             changeTextSize_.call(textSizeSwitcher);
         }
@@ -323,7 +324,7 @@ var codexSpecial = (function() {
 
         /**
         * Makes color switcher
-        * @param {String} color
+        * @param {string} type  - color string identifier
         */
         colorSwitcher : function ( type ) {
 

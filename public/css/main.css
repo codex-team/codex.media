@@ -634,18 +634,19 @@ aside .user_panel{
 
 
 
-.form_error, .form_saved{
+.form_error,
+.form_saved{
+    margin-top: 2em;
     padding: 15px 30px;
-    border-radius: 2px;
+    border-radius: 3px;
+    font-size: 15px;
 }
 
 .form_saved{
-    background: #FFE49A;
-    color: #80714B;
+    color: ##13b592;
 }
 .form_error{
-    background: #ffabad;
-    color: #4a0f11;
+    color: #d85459;
 }
 
 
@@ -669,7 +670,9 @@ aside .user_panel{
     }
 
 
-
+/**
+* Auth form
+*/
 .page_simple_form{
     max-width: 300px;
     margin: 0 auto;
@@ -700,6 +703,9 @@ aside .user_panel{
     }
     .page_simple_form button{
         padding: 12px 30px;
+    }
+    .page_simple_form .invalid{
+        box-shadow: 0 0 0 2px rgb(255, 221, 221);
     }
 
 .page_footer_links{
@@ -1355,6 +1361,16 @@ aside .user_panel{
         border-color: #e3e9f6;
         color: #607292;
     }
+
+/**
+* Error messages in auth form
+*/
+.auth-error{
+    margin: 10px;
+    color: #ce7272;
+    font-size: 15px;
+    letter-spacing: .2px;
+}
 
 
 /**
