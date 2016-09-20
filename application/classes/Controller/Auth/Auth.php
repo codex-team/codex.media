@@ -49,18 +49,18 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
     }
 
     public function action_signup()
-
     {
         $this->title = 'Регистрация';
         $this->description = 'Страница для регистрации пользователей';
-        $this->template->content = View::factory('/templates/auth/signup', $this->view);
 
         $this->signup();
+
+        $this->template->content = View::factory('/templates/auth/signup', $this->view);
+
     }
 
     /**
     * Users registration method
-    * @return bool - signup result status
     * @author Savchenko Petr (vk.com/specc)
     */
     public function signup()
@@ -83,12 +83,14 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
             ));
 
             if ($userId) {
+
                 parent::initAuthSession($userId);
-                return TRUE;
+
+                /** Redirect user after succeeded auth */
+                $this->redirect( self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH );
+
             }
         }
-
-        return FALSE;
 
     }
 
@@ -126,7 +128,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base {
 
         /** Check for correct passsword repeation */
         if ($fields['password'] != $fields['password_repeat']) {
-            $this->view['signup_error_fields']['password_repeat'] = $this->view['signup_error_fields']['password'] = 'Подтвердждение пароля не пройдено. Проверьте правильность ввода';
+            $this->view['signup_error_fields']['password_repeat'] = 'Подтвердждение пароля не пройдено. Проверьте правильность ввода';
             return FALSE;
         }
 
