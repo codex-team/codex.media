@@ -189,7 +189,7 @@ input:focus::-webkit-input-placeholder, textarea:focus::-webkit-input-placeholde
 
 
 
-.info_block{
+.info-block{
     padding: 30px;
     font-size: 15px;
     background: #F5F8FB;
@@ -509,7 +509,7 @@ aside .user_panel{
     min-height: 22px;
     color: #a3a7b5;
 }
-    .breadcrumb .nav_chain {
+    .breadcrumb__nav-chain {
         display: inline-block;
         margin: 0 5px;
         padding: 0 1px;
@@ -1048,11 +1048,11 @@ aside .user_panel{
 }
 
 
-.profile_panel{
+.profile-panel{
     padding: 30px;
 }
 
-    .profile_panel .right{
+    .profile-panel .right{
         padding-left: 300px;
     }
 .contacts_map{position: relative;}
@@ -1070,19 +1070,30 @@ aside .user_panel{
 }
 
 
-.base_form{
+.base-form{
     max-width: 500px;
 }
-    .base_form label{
+    .base-form__label{
         display: block;
         font-weight: bold;
         margin: 1em 0 .7em;
     }
-    .base_form input[type="submit"]{
+    .base-form__input-submit{
         margin-top: 30px;
     }
 
-.social_linking .button{
+.social-linking__button{
+    display: inline-block;
+    padding: 10px 25px;
+    text-align: center;
+    border-radius: 25px;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 13px;
+    background: #eee;
+    color: #9D9D9D;
+    border: 0;
+    cursor: pointer;
     margin: 30px 30px 0 0;
 }
 
