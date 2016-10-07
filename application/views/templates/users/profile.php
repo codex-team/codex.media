@@ -1,9 +1,7 @@
 <div class="w_island w_island_centercol">
     <div class="user-page">
-    	<div class="user-page__ava">
-    		<img src="<?= $viewUser->photo_medium ?>" class="user-page__ava_img" />
-    	</div>
-    	<h1 class="user-page__ava_name">
+    	<img src="<?= $viewUser->photo_medium ?>" class="user-page__img" />
+    	<h1 class="user-page__name">
     		<?= $viewUser->name ?>
     		<? /*
     			switch ($viewUser->status){
@@ -16,7 +14,7 @@
     	</h1>
         <div class="user-page__social">
         	<? if ($viewUser->vk): ?>
-        		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank" class="user-page__social_a">
+        		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank" class="user-page__social_link">
                     <i class="icon-vkontakte"></i>
                     <?= $viewUser->vk_uri ? $viewUser->vk_uri : $viewUser->vk_name ?>
                 </a>
@@ -42,7 +40,7 @@
     <? endif; ?>
     <div class="action-line  clear">
         <? if($viewUser->isMe): ?>
-            <a class="action-line_textbutton fl_r" href="/user/settings"><i class="icon-cog"></i> Настройки</a>
+            <a class="action-line__textbutton fl_r" href="/user/settings"><i class="icon-cog"></i> Настройки</a>
         <? endif; ?>
         <? if($viewUser->isMe && $user->isTeacher): ?>
             <a class="iconic action-line_button_green" href="/p/save?type=<?= Model_Page::TYPE_USER_PAGE ?>"><i class="icon-plus"></i> Создать страницу</a>
@@ -52,7 +50,7 @@
             </span>
         <? endif?>
         <? if ($user->isAdmin): ?>
-            <span class="action-line_textbutton pointer fl_r" onclick="document.getElementById('pageAction').classList.toggle('hide')"><i class="icon-vcard"></i> Действия</span>
+            <span class="action-line__textbutton pointer fl_r" onclick="document.getElementById('pageAction').classList.toggle('hide')"><i class="icon-vcard"></i> Действия</span>
         <? endif ?>
     </div>
     <? if ($user->isAdmin): ?>

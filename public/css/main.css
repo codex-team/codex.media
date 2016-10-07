@@ -908,21 +908,15 @@ aside .user_panel{
     padding: 150px;
     text-align: center;
 }
-    .user-page__ava{
-        display: inline-block;
-        overflow: hidden;
+    .user-page__img{
         width: 100px; height: 100px;
     }
-   
-    .user-page__ava_img{
-        width: 100px; height: 100px;
-    }
-    .user-page__ava_name{
+    .user-page__name{
         margin-top: 1em;
         margin-bottom: 15px;
         font-size: 28px;
     }
-    .user-page__social_a{
+    .user-page__social_link{
         font-size: 16px;
         text-decoration: none;
     }
@@ -945,7 +939,7 @@ aside .user_panel{
         padding: 7px 18px;
     }
 
-    .action-line_textbutton{
+    .action-line__textbutton{
         padding: 10px 15px;
         text-decoration: none;
         color: #8E909A;
@@ -953,7 +947,7 @@ aside .user_panel{
         .action-line .fl_r{
             margin-left: 20px;
         }
-        .action-line_textbutton i{
+        .action-line__textbutton i{
             margin-right: 3px;
         }
 
