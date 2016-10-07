@@ -189,7 +189,7 @@ input:focus::-webkit-input-placeholder, textarea:focus::-webkit-input-placeholde
 
 
 
-.info_block{
+.info-block{
     padding: 30px;
     font-size: 15px;
     background: #F5F8FB;
@@ -509,7 +509,7 @@ aside .user_panel{
     min-height: 22px;
     color: #a3a7b5;
 }
-    .breadcrumb .nav_chain {
+    .breadcrumb__nav-chain {
         display: inline-block;
         margin: 0 5px;
         padding: 0 1px;
@@ -904,24 +904,19 @@ aside .user_panel{
 
 
 
-.user_page{
+.user-page{
     padding: 150px;
     text-align: center;
 }
-    .user_page .ava{
-        display: inline-block;
-        overflow: hidden;
-    }
-    .user_page .ava ,
-    .user_page .ava img{
+    .user-page__img{
         width: 100px; height: 100px;
     }
-    .user_page .name{
+    .user-page__name{
         margin-top: 1em;
         margin-bottom: 15px;
         font-size: 28px;
     }
-    .user_page .social a{
+    .user-page__social_link{
         font-size: 16px;
         text-decoration: none;
     }
@@ -944,7 +939,7 @@ aside .user_panel{
         padding: 7px 18px;
     }
 
-    .action-line .textbutton{
+    .action-line__textbutton{
         padding: 10px 15px;
         text-decoration: none;
         color: #8E909A;
@@ -952,11 +947,11 @@ aside .user_panel{
         .action-line .fl_r{
             margin-left: 20px;
         }
-        .action-line .textbutton i{
+        .action-line__textbutton i{
             margin-right: 3px;
         }
 
-    .action-line .info{
+    .action-line__info{
         display: inline-block;
         margin-top: 10px;
         color: #8E909A;
@@ -964,14 +959,15 @@ aside .user_panel{
 
 
 
-.page_actions{
+.action-line__page-actions{
     text-align: center;
+    padding-bottom: 25px;
 }
-    .page_actions li{
+    .action-line__page-actions_li{
         display: inline-block;
         list-style: none;
     }
-        .page_actions li:not(:first-child)::before{
+        .action-line__page-actions_li:not(:first-child)::before{
             content: '';
             display: inline-block;
             height: 3px;
@@ -1052,11 +1048,11 @@ aside .user_panel{
 }
 
 
-.profile_panel{
+.profile-panel{
     padding: 30px;
 }
 
-    .profile_panel .right{
+    .profile-panel .right{
         padding-left: 300px;
     }
 .contacts_map{position: relative;}
@@ -1074,19 +1070,30 @@ aside .user_panel{
 }
 
 
-.base_form{
+.base-form{
     max-width: 500px;
 }
-    .base_form label{
+    .base-form__label{
         display: block;
         font-weight: bold;
         margin: 1em 0 .7em;
     }
-    .base_form input[type="submit"]{
+    .base-form__input-submit{
         margin-top: 30px;
     }
 
-.social_linking .button{
+.social-linking__button{
+    display: inline-block;
+    padding: 10px 25px;
+    text-align: center;
+    border-radius: 25px;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 13px;
+    background: #eee;
+    color: #9D9D9D;
+    border: 0;
+    cursor: pointer;
     margin: 30px 30px 0 0;
 }
 
@@ -1256,7 +1263,7 @@ aside .user_panel{
 }
     .page_comments .dummy_text:first-of-type { margin-top: 26px; }
 
-.empty_motivatior{
+.empty-motivatior{
     max-width: 350px;
     margin: 0 auto;
     text-align: center;
@@ -1265,7 +1272,7 @@ aside .user_panel{
     font-size: 1.1em;
     line-height: 1.6em;
 }
-    .empty_motivatior i {
+    .icon_noarticles {
         margin-bottom: 20px;
     }
     .empty_motivatior .button{
