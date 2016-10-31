@@ -12,36 +12,41 @@ class Controller_Transport extends Controller_Base_preDispatch {
     /**
     * File transport module
     */
-    public function action_file_uploader()
-    {
+    public function action_file_uploader() {
+
         $this->type  = Arr::get($_POST , 'type' , false);
         $this->files = Arr::get($_FILES, 'files');
 
-        if ( !$this->type ){
+        if (!$this->type) {
 
             $this->transportResponse['message'] = 'Transport type missed';
+
             goto finish;
 
         }
 
-        if ( !$this->files || !Upload::not_empty($this->files) || !Upload::valid($this->files) ){
+        if (!$this->files || !Upload::not_empty($this->files) || !Upload::valid($this->files)){
 
             $this->transportResponse['message'] = 'File is missing or damaged';
+
             goto finish;
 
         }
 
-        if ( !Upload::size($this->files, '30M') ){
+        if (!Upload::size($this->files, '30M')) {
 
             $this->transportResponse['message'] = 'File size exceeded limit';
+
             goto finish;
 
         }
 
-        if ( !$this->user->isTeacher() )
-        {
+        if (!$this->user->isTeacher()) {
+
             $this->transportResponse['message'] = 'Access denied';
+
             goto finish;
+
         }
 
         $this->transportResponse['type'] = $this->type;
@@ -67,6 +72,7 @@ class Controller_Transport extends Controller_Base_preDispatch {
             $this->transportResponse['title']    = $saved->title;
             $this->transportResponse['id']       = $saved->id;
             $this->transportResponse['filename'] = $saved->filename;
+
         }
 
         finish:
@@ -75,15 +81,16 @@ class Controller_Transport extends Controller_Base_preDispatch {
 
         $this->auto_render = false;
         $this->response->body($script);
+
     }
 
-    private function save()
-    {
+    private function save() {
+
         $filename = null;
         $upload_path = Model_File::getUploadPathByType($this->type);
 
-        switch ($this->type)
-        {
+        switch ($this->type) {
+
             case Model_File::PAGE_IMAGE:
                 $filename = $this->methods->saveImage( $this->files , $upload_path );
                 break;
@@ -95,10 +102,11 @@ class Controller_Transport extends Controller_Base_preDispatch {
             default:
                 $this->transportResponse['message'] = 'Wrong transport type';
                 return false;
+
         }
 
-        if ( !$filename )
-        {
+        if (!$filename) {
+
             $this->transportResponse['message'] = 'Error while saving';
 
             return false;
@@ -117,7 +125,5 @@ class Controller_Transport extends Controller_Base_preDispatch {
                 // $this->response['callback'] = 'callback.uploadpageFile.success(' . json_encode($data) . ')';
 
     }
-
-
 
 }

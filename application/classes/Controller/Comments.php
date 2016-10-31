@@ -1,10 +1,8 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Comments extends Controller_Base_preDispatch
-{
+class Controller_Comments extends Controller_Base_preDispatch {
 
-    public function action_add()
-    {
+    public function action_add() {
 
         $comment = new Model_Comment();
 
@@ -17,17 +15,35 @@ class Controller_Comments extends Controller_Base_preDispatch
         /**
          * Checking for existing page
          */
-        if (!$page->id) { $error = 'Wrong page id'; goto finish; }
+        if (!$page->id) {
+
+            $error = 'Wrong page id';
+
+            goto finish;
+
+        }
 
         /**
          * Checking for authorized user
          */
-        if ($this->user->status < Model_User::USER_STATUS_REGISTERED) { $error = 'Access denied'; goto finish; }
+        if ($this->user->status < Model_User::USER_STATUS_REGISTERED) {
+
+            $error = 'Access denied';
+
+            goto finish;
+
+        }
 
         /**
          * Checking for existing text
          */
-        if (!$text) { $error = 'Text is incorrect'; goto finish; }
+        if (!$text) {
+
+            $error = 'Text is incorrect';
+
+            goto finish;
+
+        }
 
         $comment->page_id              = $this->request->param('id');
         $comment->text                 = $text;
@@ -39,21 +55,27 @@ class Controller_Comments extends Controller_Base_preDispatch
 
         finish:
         if ($error) {
+
             $this->redirect( '/p/' . $page->id . '/' . $page->uri . '?error=' . $error );
+
         } else {
+
             $this->redirect( '/p/' . $page->id . '/' . $page->uri );
+
         }
+        
     }
 
-    public function action_delete()
-    {
+    public function action_delete() {
+
         $comment_id = $this->request->param('comment_id');
 
         $comment = Model_Comment::get($comment_id);
 
-        if ($comment->author->id == $this->user->id || $this->user->isAdmin)
-        {
+        if ($comment->author->id == $this->user->id || $this->user->isAdmin) {
+
             $comment->delete();
+
         }
 
         $page = new Model_Page($comment->page_id);

@@ -2,8 +2,8 @@
 
 class Controller_Parser extends Controller_Base_preDispatch {
 
-    public function action_get_page()
-    {
+    public function action_get_page() {
+
         $url = Arr::get($_GET, 'url', '');
 
         $response = self::getPageTitleAndArticleByUrl($url);
@@ -11,20 +11,23 @@ class Controller_Parser extends Controller_Base_preDispatch {
         $response['success'] = 0;
 
         if ($response['title'] != $response['article']) {
+
             $response['success'] = 1;
+
         }
 
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-        $this->response->body( @json_encode($response) );
+        $this->response->body(@json_encode($response));
+
     }
 
-    public function getPageTitleAndArticleByUrl($url)
-    {
+    public function getPageTitleAndArticleByUrl($url) {
+
         $response = array("title" => "", "article" => "");
 
-        if ($url)
-        {
+        if ($url) {
+
             $page = self::getPageHtmlByUrl($url);
 
             $doc = new DOMDocument();
@@ -38,18 +41,20 @@ class Controller_Parser extends Controller_Base_preDispatch {
 
             libxml_clear_errors();
 
-            $response['title']      = self::getTitle($doc);
-            $response['article']    = self::getArticleText($doc);  
+            $response['title']   = self::getTitle($doc);
+            $response['article'] = self::getArticleText($doc);
+
         }
 
         return $response;
+
     }
 
     /**
     * Получаем код страницы
     */
-    public function getPageHtmlByUrl($url)
-    {
+    public function getPageHtmlByUrl($url) {
+
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_USERAGENT,"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:31.0) Gecko/20100101 Firefox/31.0 " );
@@ -69,17 +74,15 @@ class Controller_Parser extends Controller_Base_preDispatch {
     /**
     * Получаем заголовок страницы
     */
-    public function getTitle($doc)
-    {
-        #var_dump($doc);
+    public function getTitle($doc) {
 
         $pageTitle  = '';
 
-        $h1         = $doc->getElementsByTagName('h1');
-        $title      = $doc->getElementsByTagName('title');
+        $h1    = $doc->getElementsByTagName('h1');
+        $title = $doc->getElementsByTagName('title');
 
         /** получаем h1 или title */
-        if ($h1->length){
+        if ($h1->length) {
 
             $pageTitle = $h1->item(0)->nodeValue;
 
@@ -91,14 +94,15 @@ class Controller_Parser extends Controller_Base_preDispatch {
         $pageTitle = trim($pageTitle);
 
         return $pageTitle;
+
     }
 
     /*
     * Parses html page and extracts article text
     * Looks for node with many paragraph-tags
     */
-    public function getArticleText($doc)
-    {
+    public function getArticleText($doc) {
+
         /**
         * Working with all paragraphs on page
         */
@@ -125,7 +129,7 @@ class Controller_Parser extends Controller_Base_preDispatch {
             /** Compose node text-identifier looks like 'TAGNAME@classname' */
             $parentNodeIdentifier = self::getNodeIdentifier($parentNode);
 
-            if ( !isset($parents[$parentNodeIdentifier]) ){
+            if (!isset($parents[$parentNodeIdentifier])) {
 
                 $parents[$parentNodeIdentifier] = array(
                     'node'   => $parentNode,
@@ -148,10 +152,14 @@ class Controller_Parser extends Controller_Base_preDispatch {
         $nodeWithMaximumParagraphs = null;
 
         foreach ($parents as $item) {
+
             if ($item['childs'] > $maximumParagraphsCount) {
+
                 $maximumParagraphsCount    = $item['childs'];
                 $nodeWithMaximumParagraphs = $item['node'];
+
             }
+
         }
 
         /**
@@ -160,6 +168,7 @@ class Controller_Parser extends Controller_Base_preDispatch {
         $articleContent = self::DOMinnerHTML($nodeWithMaximumParagraphs);
 
         return $articleContent;
+
     }
 
     /**
@@ -167,30 +176,33 @@ class Controller_Parser extends Controller_Base_preDispatch {
     * @todo add another attributes. Many elements can be without classname
     * @return string tagname@classname. Example: 'DIV@article_content'
     */
-    private static function getNodeIdentifier(DOMNode $node)
-    {
+    private static function getNodeIdentifier(DOMNode $node) {
+
         $tagName   = $node->nodeName;
         $className = '';
 
-        if ( $classAttr = $node->attributes->getNamedItem('class') ){
+        if ($classAttr = $node->attributes->getNamedItem('class')) {
+
             $className = $classAttr->nodeValue;
+
         }
 
         return $tagName . '@' . $className;
+
     }
 
     /**
     * Returns DOMNode inner html content
     */
-    private static function DOMinnerHTML(DOMNode $element)
-    {
+    private static function DOMinnerHTML(DOMNode $element) {
 
         $innerHTML = '';
         $children  = $element->childNodes;
 
-        foreach ($children as $child)
-        {
+        foreach ($children as $child) {
+
             $innerHTML .= $element->ownerDocument->saveHTML($child);
+
         }
 
         return $innerHTML;
