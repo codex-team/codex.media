@@ -82,14 +82,13 @@
             </div>
         </aside>
 
-        <div class="sidebar">
-            <? include(APPPATH .'views/templates/sidebar.php') ?>
-        </div>
-
         <div class="page_wrap">
             <?= $content ?>
         </div>
 
+        <div class="sidebar">
+            <? include(APPPATH .'views/templates/sidebar.php') ?>
+        </div>
 
     </div>
 
@@ -109,5 +108,6 @@
         <!-- /Yandex.Metrika counter -->
 
     <? endif; ?>
+
 </body>
 </html>
