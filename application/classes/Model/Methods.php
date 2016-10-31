@@ -61,19 +61,6 @@ class Model_Methods extends Model {
 
     }
 
-    public function getSiteMenu() {
-
-        $menu_pages = Dao_Pages::select()
-            ->where('status', '=', 0)
-            ->where('is_menu_item', '=', 1)
-            ->order_by('id', 'ASC')
-            ->cached(Date::MINUTE*5, 'site_menu')
-            ->execute();
-
-        return Model_Page::rowsToModels($menu_pages);
-
-    }
-
     /**
     * Files uploading section
     */
