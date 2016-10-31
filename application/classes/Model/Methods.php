@@ -7,12 +7,12 @@ class Model_Methods extends Model {
     const SOCIAL_TW = 3;
 
     public $IMAGE_SIZES_CONFIG = array(
-        // первый параметр - вырезать квадрат (true) или просто ресайзить с сохранением пропрорций (false)
 
-        'o'  => array(false , 1500, 1500 ),
-        'b'  => array(true , 200 ),
-        'm'  => array(true , 100 ),
-        's'  => array(true , 50  ),
+        // первый параметр - вырезать квадрат (true) или просто ресайзить с сохранением пропрорций (false)
+        'o'  => array(false, 1500, 1500),
+        'b'  => array(true , 200),
+        'm'  => array(true , 100),
+        's'  => array(true , 50),
     );
 
 
