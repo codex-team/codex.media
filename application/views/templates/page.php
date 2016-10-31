@@ -56,18 +56,22 @@
     <? endif ?>
 
 
+    <? if ($page->type != Model_Page::TYPE_SITE_NEWS): ?>
+        <? if ($page->childrens): ?>
+            <ul class="page_childrens clear <?= !$page->content ? 'page_childrens--empty-content' : '' ?>">
+                <? foreach ($page->childrens as $children): ?>
+                    <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
+                <? endforeach ?>
+            </ul>
+        <? endif; ?>
+    <? endif ?>
 
-    <? if ($page->childrens): ?>
-        <ul class="page_childrens clear <?= !$page->content ? 'page_childrens--empty-content' : '' ?>">
-            <? foreach ($page->childrens as $children): ?>
-                <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
-            <? endforeach ?>
-        </ul>
-    <? endif; ?>
     <? if( $can_modify_this_page ): ?>
         <div class="action-line action-line__onpage clear">
             <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i> Редактировать</a>
-            <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
+            <? if ($page->type != Model_Page::TYPE_SITE_NEWS): ?>
+                <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
+            <? endif ?>
             <a class="textbutton" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
         </div>
     <? endif ?>
