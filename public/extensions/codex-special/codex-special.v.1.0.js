@@ -1,11 +1,34 @@
 /**
 * Speical contrast verison for websites
+* @link https://github.com/codex-team/codex.special
 * @author Codex Team — ifmo.su
-*   Vitaly Guryn    https://github.com/illiiiillllilii
+*   Vitaly Guryn    https://github.com/talyguryn
 *   Savchenko Petr  https://github.com/neSpecc
 * @version 1.0
 */
 var codexSpecial = (function() {
+
+    /**
+    * Multilanguage support
+    */
+    var DICT = {
+
+        ru : {
+            increaseSize : 'Увеличить размер',
+            decreaseSize : 'Уменьшить размер'
+        },
+
+        en : {
+            increaseSize : 'Increase size',
+            decreaseSize : 'Decrease size'
+        }
+
+    };
+
+    /**
+    * Texts from dictionary
+    */
+    var texts = null;
 
     /**
     * @private static nodes
@@ -24,25 +47,39 @@ var codexSpecial = (function() {
     var CSS_FILE_PATH = 'codex-special.v.1.0.css';
 
     /**
+    * Path to codex-special
+    * Generated automatically
+    */
+    var pathToExtension;
+
+    /**
     * @private CSS classes config
     */
-	var classes = {
+  	var classes = {
 
         colorSwitchers : {
             blue     : 'special-blue',
-    		green    : 'special-green',
+            green    : 'special-green',
             white    : 'special-white',
         },
 
         textSizeIncreased : 'special-big'
 
-	};
+  	};
 
+    /**
+    * Settings for codexSpecial block
+    *
+    * blockId — at the end of which block you want to place codexSpecial
+    * scriptLocation — path to codexSpecial styles file
+    * lang — language for the codexSpecial from DICT_
+    */
     var initialSettings = {
-        blockId : null,
-        scriptLocation: '/'
-    };
 
+        blockId : null,
+        lang : 'ru'
+
+    };
 
     /**
     * @constructor
@@ -62,7 +99,7 @@ var codexSpecial = (function() {
         /**
         * 1. Save initial settings to the private property
         */
-        initialSettings = settings;
+        fillSettings_(settings);
 
         /**
         * 2. Prepare stylesheets
@@ -89,16 +126,59 @@ var codexSpecial = (function() {
 
     /**
     * @private
+    * Fills initialSettings
+    */
+    function fillSettings_(settings) {
+
+        for (var param in settings) {
+
+            initialSettings[param] = settings[param];
+
+        }
+
+        pathToExtension = getScriptLocation();
+
+    }
+
+    /**
+    * @private
+    * Gets codex-special path
+    */
+    function getScriptLocation() {
+
+        var scriptsList = document.getElementsByTagName('script'),
+            scriptSrc,
+            lastSlashPosition;
+
+        for (var i = 1; i < scriptsList.length; i++) {
+
+            scriptSrc = scriptsList[i].src;
+
+            if (scriptSrc.indexOf('codex-special') != -1) {
+
+                lastSlashPosition = scriptSrc.lastIndexOf('/');
+
+                scriptDir = scriptSrc.substr(0, lastSlashPosition + 1);
+
+                return scriptDir;
+
+            }
+        }
+
+    }
+
+    /**
+    * @private
     * Loads requeired stylesheet
     */
-    function loadStyles_(){
+    function loadStyles_() {
 
-        var style = document.createElement( 'link' );
+        var style = document.createElement('link');
 
-        style.setAttribute( 'type', 'text/css' );
-        style.setAttribute( 'rel', 'stylesheet');
+        style.setAttribute('type', 'text/css');
+        style.setAttribute('rel', 'stylesheet');
 
-        style.href = initialSettings.scriptLocation + CSS_FILE_PATH;
+        style.href = pathToExtension + CSS_FILE_PATH;
 
         document.head.appendChild( style );
 
@@ -109,6 +189,11 @@ var codexSpecial = (function() {
     * Interface maker
     */
     function makeUI_() {
+
+        /**
+        * 0. Init dictionary
+        */
+        texts = DICT[initialSettings.lang];
 
         /**
         * 1. Make Toolbar and Switchers
@@ -148,7 +233,7 @@ var codexSpecial = (function() {
     * @private
     * Toolbar positionin method
     */
-    function appendPanel_ () {
+    function appendPanel_() {
 
         if (initialSettings.blockId){
 
@@ -169,7 +254,7 @@ var codexSpecial = (function() {
     /**
     * @private
     */
-    function addListeners_ () {
+    function addListeners_() {
 
         nodes.colorSwitchers.map(function(switcher, index) {
 
@@ -184,7 +269,7 @@ var codexSpecial = (function() {
     /**
     * @private
     */
-    function loadSettings_ () {
+    function loadSettings_() {
 
         var color    = localStorage.getItem('codex-special__color'),
             textSize = localStorage.getItem('codex-special__textSize'),
@@ -194,7 +279,7 @@ var codexSpecial = (function() {
 
             nodes.colorSwitchers.map(function(switcher, index) {
 
-                if (switcher.dataset.style == color){
+                if (switcher.dataset.style == color) {
 
                     changeColor_.call(switcher);
 
@@ -216,9 +301,9 @@ var codexSpecial = (function() {
     /**
     * @private
     */
-    function changeColor_ () {
+    function changeColor_() {
 
-        if ( this.classList.contains('codex-special__circle_enabled') ) {
+        if (this.classList.contains('codex-special__circle_enabled')) {
 
             return dropColor_();
 
@@ -245,7 +330,7 @@ var codexSpecial = (function() {
     /**
     * @private
     */
-    function dropColor_ () {
+    function dropColor_() {
 
     	for (var color in classes.colorSwitchers){
 
@@ -266,9 +351,9 @@ var codexSpecial = (function() {
     /**
     * @private
     */
-    function changeTextSize_ () {
+    function changeTextSize_() {
 
-        if ( document.body.classList.contains(classes.textSizeIncreased) ) {
+        if (document.body.classList.contains(classes.textSizeIncreased)) {
 
             return dropTextSize_();
 
@@ -276,7 +361,7 @@ var codexSpecial = (function() {
 
         dropTextSize_();
 
-        nodes.textSizeSwitcher.innerHTML = '<i class="codex-special__toolbar_icon"></i> Уменьшить шрифт';
+        nodes.textSizeSwitcher.innerHTML = '<i class="codex-special__toolbar_icon"></i> ' + texts.decreaseSize;
 
         localStorage.setItem('codex-special__textSize', 'big');
 
@@ -287,11 +372,11 @@ var codexSpecial = (function() {
     /**
     * @private
     */
-    function dropTextSize_ () {
+    function dropTextSize_() {
 
         document.body.classList.remove(classes.textSizeIncreased);
 
-        nodes.textSizeSwitcher.innerHTML = '<i class="codex-special__toolbar_icon"></i> Увеличить шрифт';
+        nodes.textSizeSwitcher.innerHTML = '<i class="codex-special__toolbar_icon"></i> ' + texts.increaseSize;
 
         localStorage.removeItem('codex-special__textSize');
 
@@ -326,7 +411,7 @@ var codexSpecial = (function() {
         * Makes color switcher
         * @param {string} type  - color string identifier
         */
-        colorSwitcher : function ( type ) {
+        colorSwitcher : function (type) {
 
             var colorSwitcher = draw_.element('SPAN', 'codex-special__circle');
 
@@ -343,7 +428,7 @@ var codexSpecial = (function() {
 
             var textToggler = draw_.element('SPAN', 'codex-special__toolbar_text');
 
-            textToggler.innerHTML = '<i class="codex-special__toolbar_icon"></i> Увеличить шрифт';
+            textToggler.innerHTML = '<i class="codex-special__toolbar_icon"></i> ' + texts.increaseSize;
 
             return textToggler;
 

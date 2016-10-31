@@ -1,7 +1,8 @@
 /**
 * Speical contrast verison for websites
+* @link https://github.com/codex-team/codex.special
 * @author Codex Team — ifmo.su
-*   Vitaly Guryn    https://github.com/illiiiillllilii
+*   Vitaly Guryn    https://github.com/talyguryn
 *   Savchenko Petr  https://github.com/neSpecc
 * @version 1.0
 */
@@ -39,7 +40,7 @@ html body .codex-special__toolbar{
     position: fixed;
     top: 0;
     right: 3%;
-    width: 270px;
+    width: 300px;
     border: 1px solid #F2F4F8;
     border-top: 0;
     border-radius: 0 0 3px 3px;
@@ -76,6 +77,7 @@ html body .codex-special__toolbar{
         height: 7px;
         border: 7px solid;
         vertical-align: middle;
+        box-sizing: content-box;
         border-radius: 50%;
         cursor: pointer;
         float: right;
@@ -224,7 +226,7 @@ body.special-white,
 {
     background-color: #fff812 !important;
     color: #15130b !important;
-    border-color: transparent; !important;
+    border-color: transparent !important;
 }
 .special-green .codex-special__toolbar_text:hover,
 .special-white .codex-special__toolbar_text:hover,
