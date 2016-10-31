@@ -92,6 +92,12 @@ class Model_Settings extends Model_preDispatch {
 
     }
 
+    public function delete() {
+
+        return Dao_Settings::delete()->where('name', '=', $this->name)->execute();
+
+    }
+
 
     /**
      * other functions
