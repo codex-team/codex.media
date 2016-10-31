@@ -183,14 +183,27 @@ class Model_Page extends Model_preDispatch {
 
     }
 
-    public function getPageUri() {
+    private function getPageUri() {
 
         $title = $this->title;
 
         $title = Model_Methods::getUriByTitle($title);
 
         return strtolower($title);
-        
+
+    }
+
+    public static function getSiteMenu() {
+
+        $menu_pages = Dao_Pages::select()
+            ->where('status', '=', 0)
+            ->where('is_menu_item', '=', 1)
+            ->order_by('id', 'ASC')
+            //->cached(Date::MINUTE*5, 'site_menu')
+            ->execute();
+
+        return self::rowsToModels($menu_pages);
+
     }
 
 }

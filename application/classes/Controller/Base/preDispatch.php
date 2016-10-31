@@ -88,6 +88,8 @@ class Controller_Base_preDispatch extends Controller_Template {
 
         View::set_global('site_info', $this->methods->getSiteInfo());
 
+        View::set_global('site_menu', Model_Page::getSiteMenu());
+
         // modules
         $this->redis = $this->_redis();
         View::set_global('redis', $this->redis);
