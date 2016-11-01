@@ -1,16 +1,12 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Admin extends Controller_Base_preDispatch {
-
+class Controller_Admin extends Controller_Base_preDispatch
+{
     public static $categories = array('pages', 'page', 'index', 'news', 'users', 'parser', 'base');
 
-    public function action_index() {
-
-        if (!$this->user->id){
-
-            $this->redirect('/');
-
-        }
+    public function action_index()
+    {
+        if (!$this->user->id) $this->redirect('/');
 
         $this->title = $this->view['title'] = 'Панель управления сайтом';
 
@@ -25,34 +21,29 @@ class Controller_Admin extends Controller_Base_preDispatch {
             case 'users'  : self::users(); break;
             case 'parser' : self::parser(); break;
             case 'index'  : default : self::adminIndexPage();
-
         }
 
         $this->view['form_saved'] = $form_saved;
         $this->template->content = View::factory('templates/admin/layout', $this->view);
-
     }
 
-    public function parser() {
-
+    public function parser()
+    {
         $this->view['category'] = 'parser';
-
     }
 
-    public function adminIndexPage() {
-
+    public function adminIndexPage()
+    {
         $this->view['category'] = 'index';
-
     }
 
-    public function users() {
-
+    public function users()
+    {
         $this->view['users'] = $this->methods->getUsers();
-
     }
 
-    public function pageForm() {
-
+    public function pageForm()
+    {
         $type = (int)Arr::get($_POST, 'type');
         $id   = (int)Arr::get($_POST, 'id');
 
@@ -80,22 +71,18 @@ class Controller_Admin extends Controller_Base_preDispatch {
                 } else {
 
                     return $this->methods->newPage( $data );
-
                 }
 
             } else {
 
                 $this->view['error'] = 'Укажите название страницы';
                 return FALSE;
-
             }
-
         }
-
     }
 
-    public function pages($page_type = NULL) {
-
+    public function pages($page_type = NULL)
+    {
         $pageId = $this->view['pageId'] = $this->request->param('id');
         $pages  = $this->methods->getPages( $page_type );
 
@@ -112,11 +99,9 @@ class Controller_Admin extends Controller_Base_preDispatch {
             foreach ($pages as $id => $page) {
 
                 $pages[$id]['parent'] = $page['id_parent'] ? $this->methods->getPage( $page['id_parent'] ) : array();
-
             }
 
             $this->view['pages'] = $pages;
-
         }
 
         $this->view['page_type'] = $page_type;
@@ -124,8 +109,8 @@ class Controller_Admin extends Controller_Base_preDispatch {
         return self::pageForm();
     }
 
-    public function action_file_uploader() {
-
+    public function action_file_uploader()
+    {
         $response = array("result" => "error");
 
         $page_id   = (int)Arr::get($_POST , 'page_id' , 0);
@@ -147,7 +132,6 @@ class Controller_Admin extends Controller_Base_preDispatch {
                         } else {
 
                             $filename = $this->methods->saveFile( $file , 'upload/page_files/' );
-
                         }
 
                         if ($filename) {
@@ -166,38 +150,31 @@ class Controller_Admin extends Controller_Base_preDispatch {
                                 $response['result']   = 'success';
                                 $new_file_row = View::factory('templates/admin/file_row', array( 'file' => $data ) )->render();
                                 $response['callback'] = 'callback.uploadpageFile.success(' . json_encode($new_file_row) . ')';
-
                             }
 
                         } else {
 
                             $response['message'] = 'Error while saving';
-
                         }
 
                 } else {
 
                     $response['message'] = 'File size exceeded limit';
-
                 }
 
             } else {
 
                 $response['message'] = 'File is missing or damaged';
-
             }
 
         } else {
 
             $response['message'] = ' Page id missed';
-
         }
 
         $script = '<script>window.parent.transport.response(' . @json_encode($response) . ')</script>';
 
         $this->auto_render = false;
         $this->response->body($script);
-
     }
-
 }

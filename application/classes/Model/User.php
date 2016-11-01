@@ -76,9 +76,9 @@ class Model_User extends Model
     public function hasUniqueEmail($email)
     {
         $arr = Dao_Users::select('id')
-                    ->where('email', '=', $email)
-                    ->limit(1)
-                    ->execute();
+            ->where('email', '=', $email)
+            ->limit(1)
+            ->execute();
 
         if (!$arr) return true;
 
@@ -88,10 +88,10 @@ class Model_User extends Model
     public function get($id)
     {
         $user = Dao_Users::select()
-                    ->where('id', '=', $id)
-                    ->limit(1)
-                    //->cached(Date::HOUR, 'user:' . $id)
-                    ->execute();
+            ->where('id', '=', $id)
+            ->limit(1)
+            //->cached(Date::HOUR, 'user:' . $id)
+            ->execute();
 
         return self::fillByRow($user);
     }
@@ -99,8 +99,8 @@ class Model_User extends Model
     public function updateUser($user_id, $fields)
     {
         $user = Dao_Users::update()
-                ->where('id', '=', $user_id)
-                ->clearcache('user:' . $user_id);
+            ->where('id', '=', $user_id)
+            ->clearcache('user:' . $user_id);
 
         foreach ($fields as $name => $value) $user->set($name, trim(htmlspecialchars($value)));
 
@@ -167,12 +167,12 @@ class Model_User extends Model
     public function getUserPages($id_parent = 0)
     {
         $pages = Dao_Pages::select()
-                    ->where('author', '=', $this->id)
-                    ->where('status', '=', Model_Page::STATUS_SHOWING_PAGE)
-                    ->where('type', '=', Model_Page::TYPE_USER_PAGE)
-                    ->where('id_parent', '=', $id_parent)
-                    ->order_by('id','DESC')
-                    ->execute();
+            ->where('author', '=', $this->id)
+            ->where('status', '=', Model_Page::STATUS_SHOWING_PAGE)
+            ->where('type', '=', Model_Page::TYPE_USER_PAGE)
+            ->where('id_parent', '=', $id_parent)
+            ->order_by('id','DESC')
+            ->execute();
 
         return Model_Page::rowsToModels($pages);
     }
@@ -180,10 +180,10 @@ class Model_User extends Model
     public static function getUsersList($status)
     {
         $teachers = Dao_Users::select()
-                        ->where('status', '>=', $status)
-                        ->order_by('id','ASC')
-                        ->cached(Date::HOUR, 'users_list:' . $status, array('users'))
-                        ->execute();
+            ->where('status', '>=', $status)
+            ->order_by('id','ASC')
+            ->cached(Date::HOUR, 'users_list:' . $status, array('users'))
+            ->execute();
 
         return Model_User::rowsToModels($teachers);
     }

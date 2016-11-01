@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Base_preDispatch extends Controller_Template {
+class Controller_Base_preDispatch extends Controller_Template
+{
     /** Wrapper template name */
     public $template = 'main';
 
@@ -13,12 +14,11 @@ class Controller_Base_preDispatch extends Controller_Template {
      * set up default values. These variables are then available to our
      * controllers if they need to be modified.unsubscribeEmail
      */
-    public function before() {
-
+    public function before()
+    {
         if (!$this->request->param('iframe-embedding')) {
 
             $this->response->headers("X-Frame-Options", "SAMEORIGIN");
-
         }
 
         /** Disallow requests from other domains */
@@ -28,9 +28,7 @@ class Controller_Base_preDispatch extends Controller_Template {
                 (Arr::get($_SERVER, 'SERVER_NAME') != 'ifmo.su')) {
 
                 exit();
-
             }
-
         }
 
         parent::before();
@@ -54,9 +52,7 @@ class Controller_Base_preDispatch extends Controller_Template {
             $this->template->keywords    = '';
             $this->template->description = '';
             $this->template->content     = '';
-
         }
-
     }
 
     /**
@@ -65,38 +61,39 @@ class Controller_Base_preDispatch extends Controller_Template {
      * make any last minute modifications to the template before anything
      * is rendered.
      */
-    public function after() {
-
+    public function after()
+    {
         //echo View::factory('profiler/stats');
 
         if ($this->auto_render) {
 
             if ( $this->title )       $this->template->title       = $this->title;
             if ( $this->description ) $this->template->description = $this->description;
-
         }
 
         parent::after();
-
     }
 
-    private function setGlobals() {
-
-        // methods
+    private function setGlobals()
+    {
+        /** Methods */
         $this->methods = new Model_Methods();
         View::set_global('methods', $this->methods);
 
+        /** Site info from Settings */
         View::set_global('site_info', Model_Settings::getListByLabel('site_info'));
 
+        /** Site menu pages */
         View::set_global('site_menu', Model_Page::getSiteMenu());
 
-        // modules
+        /** Modules */
         $this->redis = $this->_redis();
         View::set_global('redis', $this->redis);
 
         $this->memcache = $memcache = Cache::instance('memcache');
         View::set_global('memcache', $memcache);
 
+        /** Session */
         $this->session = Session::instance();
 
         $uid  = Controller_Auth_Base::checkAuth();
@@ -107,8 +104,8 @@ class Controller_Base_preDispatch extends Controller_Template {
 
     }
 
-    public function userOnline() {
-
+    public function userOnline()
+    {
         if ($this->user->id) {
 
             $this->user->isOnline = 1;
@@ -117,11 +114,8 @@ class Controller_Base_preDispatch extends Controller_Template {
 
                 $this->redis->set('user:'.$this->user->id.':online', $this->user->id, Date::MINUTE);
                 $this->redis->set('user:'.$this->user->id.':online:timestamp', time());
-
             }
-
         }
-
     }
 
 
@@ -129,9 +123,9 @@ class Controller_Base_preDispatch extends Controller_Template {
     * Sanitizes GET and POST params
     * @uses HTMLPurifier
     */
-    public function XSSfilter() {
-
-        $exceptions     = array( 'long_desc' , 'blog_text', 'long_description' , 'content' ); // Исключения для полей с визуальным редактором
+    public function XSSfilter()
+    {
+        $exceptions = array( 'long_desc' , 'blog_text', 'long_description' , 'content' ); // Исключения для полей с визуальным редактором
 
         foreach ($_POST as $key => $value) {
 
@@ -144,9 +138,7 @@ class Controller_Base_preDispatch extends Controller_Template {
             } else {
 
                 $_POST[$key] = Security::xss_clean( strip_tags(trim($value), '<br><em><del><p><a><b><strong><i><strike><blockquote><ul><li><ol><img><tr><table><td><th><span><h1><h2><h3><iframe>' ));
-
             }
-
         }
 
         foreach ($_GET  as $key => $value) {
@@ -154,25 +146,18 @@ class Controller_Base_preDispatch extends Controller_Template {
             $value = stripos( $value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $value;
 
             $_GET[$key] = Security::xss_clean(HTML::chars($value));
-
         }
-
     }
 
-    public static function _redis() {
-
-        if (!class_exists("Redis")) {
-
-            return null;
-
-        }
+    public static function _redis()
+    {
+        if (!class_exists("Redis")) return null;
 
         $redis = new Redis();
         $redis->connect('127.0.0.1', 6379);
         $redis->auth('21gJs32hv3ks');
         $redis->select(0);
+
         return $redis;
-
     }
-
 }

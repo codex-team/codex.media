@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Model_Page extends Model_preDispatch {
-
+class Model_Page extends Model_preDispatch
+{
     public $id              = 0;
     public $type            = 0;
     public $status          = 0;

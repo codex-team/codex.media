@@ -2,7 +2,6 @@
 
 class Model_Methods extends Model
 {
-
     const SOCIAL_VK = 1;
     const SOCIAL_FB = 2;
     const SOCIAL_TW = 3;
@@ -26,7 +25,6 @@ class Model_Methods extends Model
         /**
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
-
         if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
 
         if (!is_dir($path)) mkdir($path);

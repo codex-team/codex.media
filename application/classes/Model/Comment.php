@@ -2,7 +2,6 @@
 
 Class Model_Comment extends Model_preDispatch
 {
-
     public $id;
     public $author;
     public $text;

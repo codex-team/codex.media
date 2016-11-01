@@ -1,9 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Pages extends Controller_Base_preDispatch {
-
-    public function action_show_page() {
-
+class Controller_Pages extends Controller_Base_preDispatch
+{
+    public function action_show_page()
+    {
         $id = $this->request->param('id');
         $uri = $this->request->param('uri');
 
@@ -11,11 +11,7 @@ class Controller_Pages extends Controller_Base_preDispatch {
 
         if ($page->title) {
 
-            if ($uri != $page->uri) {
-
-                $this->redirect('/p/' . $page->id . '/' . $page->uri);
-
-            }
+            if ($uri != $page->uri) $this->redirect('/p/' . $page->id . '/' . $page->uri);
 
             $page->childrens = Model_Page::getChildrenPagesByParent($page->id);
             $page->files     = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
@@ -32,27 +28,21 @@ class Controller_Pages extends Controller_Base_preDispatch {
 
             self::error_page('Запрашиваемая страница не найдена');
             return FALSE;
-
         }
-
     }
 
-    public function action_save() {
-
+    public function action_save()
+    {
         if (!$this->user->isTeacher()) {
 
             self::error_page('Недостаточно прав для создания страницы');
-
             return FALSE;
-
         }
 
         if (!$this->user->isAdmin() && $page->type != Model_Page::TYPE_USER_PAGE) {
 
             self::error_page('Недостаточно прав для создания новости или страницы сайта');
-
             return FALSE;
-
         }
 
         $errors    = array();
@@ -72,7 +62,6 @@ class Controller_Pages extends Controller_Base_preDispatch {
                 } else {
 
                     $page = $page->insert();
-
                 }
 
                 /**
@@ -87,13 +76,11 @@ class Controller_Pages extends Controller_Base_preDispatch {
                 } else {
 
                     $this->redirect('/p/' . $page->id . '/' . $page->uri);
-
                 }
 
             } else {
 
                 $errors['title'] = 'Заголовок страницы не может быть пустым';
-
             }
 
         } else {
@@ -111,11 +98,8 @@ class Controller_Pages extends Controller_Base_preDispatch {
              * parent   для создания подстраницы
              */
 
-            if (!$page_id)
-                $page->type      = (int) Arr::get($_GET, 'type', 0);
-
-            if (!$page->type)
-                $page->id_parent =       Arr::get($_GET, 'parent', 0);
+            if (!$page_id)    $page->type      = (int) Arr::get($_GET, 'type', 0);
+            if (!$page->type) $page->id_parent = (int) Arr::get($_GET, 'parent', 0);
 
         }
 
@@ -123,11 +107,10 @@ class Controller_Pages extends Controller_Base_preDispatch {
         $this->view['errors'] = $errors;
 
         $this->template->content = View::factory('templates/pages/new', $this->view);
-
     }
 
-    public function action_delete_page() {
-
+    public function action_delete_page()
+    {
         $id   = $this->request->param('id');
         $page = new Model_Page($id);
 
@@ -141,13 +124,10 @@ class Controller_Pages extends Controller_Base_preDispatch {
         } else {
 
             self::error_page('Недостаточно прав для удаления страницы');
-
             return FALSE;
-
         }
 
         $this->redirect($url);
-
     }
 
     /**
@@ -158,8 +138,8 @@ class Controller_Pages extends Controller_Base_preDispatch {
      * @param $id               this page id
      * @return array            array of objects, parent pages from root + this page
      */
-    public function get_navigation_path_array($id) {
-
+    public function get_navigation_path_array($id)
+    {
         $navig_array = array();
 
         while ($id != 0) {
@@ -169,15 +149,13 @@ class Controller_Pages extends Controller_Base_preDispatch {
             array_unshift($navig_array, $page);
 
             $id = $page->id_parent;
-
         }
 
         return $navig_array;
-
     }
 
-    public function get_form() {
-
+    public function get_form()
+    {
         $id   = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
         $page = new Model_Page($id);
 
@@ -192,11 +170,10 @@ class Controller_Pages extends Controller_Base_preDispatch {
         $page->author        =       $this->user;
 
         return $page;
-
     }
 
-    public function get_url_to_parent_page($page) {
-
+    public function get_url_to_parent_page($page)
+    {
         if ($page->id_parent != 0) {
 
             return '/p/' . $page->parent->id . '/' . $page->parent->uri;
@@ -208,27 +185,22 @@ class Controller_Pages extends Controller_Base_preDispatch {
         } else {
 
             return '/';
-
         }
-
     }
 
-    public function error_page($error_text) {
-
+    public function error_page($error_text)
+    {
         $this->view['error_text'] = $error_text;
-
         $this->template->content = View::factory('templates/error', $this->view);
-
     }
 
     /**
     * Gets json-encoded attaches list from input
     * Writes this
     */
-    private function savePageFiles($page_id) {
-
+    private function savePageFiles($page_id)
+    {
         $attaches = Arr::get($_POST, 'attaches');
-
         $attaches = json_decode($attaches, true);
 
         foreach ($attaches as $id => $file_row) {
@@ -237,9 +209,6 @@ class Controller_Pages extends Controller_Base_preDispatch {
             $file->page  = $page_id;
             $file->title = $file_row['title'];
             $file->update();
-
         }
-
     }
-
 }

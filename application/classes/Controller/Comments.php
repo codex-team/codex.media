@@ -1,9 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Comments extends Controller_Base_preDispatch {
-
-    public function action_add() {
-
+class Controller_Comments extends Controller_Base_preDispatch
+{
+    public function action_add()
+    {
         $comment = new Model_Comment();
 
         $page = new Model_Page($this->request->param('id'));
@@ -18,9 +18,7 @@ class Controller_Comments extends Controller_Base_preDispatch {
         if (!$page->id) {
 
             $error = 'Wrong page id';
-
             goto finish;
-
         }
 
         /**
@@ -29,9 +27,7 @@ class Controller_Comments extends Controller_Base_preDispatch {
         if ($this->user->status < Model_User::USER_STATUS_REGISTERED) {
 
             $error = 'Access denied';
-
             goto finish;
-
         }
 
         /**
@@ -40,9 +36,7 @@ class Controller_Comments extends Controller_Base_preDispatch {
         if (!$text) {
 
             $error = 'Text is incorrect';
-
             goto finish;
-
         }
 
         $comment->page_id              = $this->request->param('id');
@@ -61,26 +55,19 @@ class Controller_Comments extends Controller_Base_preDispatch {
         } else {
 
             $this->redirect( '/p/' . $page->id . '/' . $page->uri );
-
         }
-        
     }
 
-    public function action_delete() {
-
+    public function action_delete()
+    {
         $comment_id = $this->request->param('comment_id');
 
         $comment = Model_Comment::get($comment_id);
 
-        if ($comment->author->id == $this->user->id || $this->user->isAdmin) {
-
-            $comment->delete();
-
-        }
+        if ($comment->author->id == $this->user->id || $this->user->isAdmin) $comment->delete();
 
         $page = new Model_Page($comment->page_id);
 
         $this->redirect('/p/' . $page->id . '/' . $page->uri);
     }
-
 }

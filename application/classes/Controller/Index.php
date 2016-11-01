@@ -1,18 +1,14 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Index extends Controller_Base_preDispatch {
-
+class Controller_Index extends Controller_Base_preDispatch
+{
     const NEWS_LIMIT_PER_PAGE = 10;
 
-    public function action_index() {
-
+    public function action_index()
+    {
         $page_number = $this->request->param('page_number');
 
-        if (!$page_number) {
-
-            $page_number = 1;
-
-        }
+        if (!$page_number) $page_number = 1;
 
         $offset = ($page_number - 1) * self::NEWS_LIMIT_PER_PAGE;
 
@@ -30,7 +26,6 @@ class Controller_Index extends Controller_Base_preDispatch {
             $next_page = true;
 
             unset($pages[self::NEWS_LIMIT_PER_PAGE]);
-
         }
 
         if (Model_Methods::isAjax()) {
@@ -51,33 +46,24 @@ class Controller_Index extends Controller_Base_preDispatch {
             $this->view['page_number']  = $page_number;
 
             $this->template->content = View::factory('templates/index', $this->view);
-
         }
-
     }
 
-    public function action_contacts() {
-
+    public function action_contacts()
+    {
         $this->template->title = 'Контакты';
         $this->template->content = View::factory('templates/contacts', $this->view);
-
     }
 
-    public function action_users_list() {
-
+    public function action_users_list()
+    {
         $status = Model_User::USER_STATUS_REGISTERED;
 
-        if ($this->request->param('type') == 'teachers') {
+        if ($this->request->param('type') == 'teachers') $status = Model_User::USER_STATUS_TEACHER;
 
-            $status = Model_User::USER_STATUS_TEACHER;
-
-        }
-
-        $this->view['users']    = Model_User::getUsersList($status);
-        $this->view['status']   = $status;
+        $this->view['users']  = Model_User::getUsersList($status);
+        $this->view['status'] = $status;
 
         $this->template->content = View::factory('templates/users/list', $this->view);
-
     }
-
 }
