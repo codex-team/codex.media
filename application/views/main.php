@@ -36,8 +36,8 @@
             <a class="main_logo clear" href="/">
                 <i class="spb_shield fl_l"></i>
                 <div class="r_col">
-                    <?= $site_info->title ?><br>
-                    <?= $site_info->city ?>
+                    <?= $site_info['title'] ?><br>
+                    <?= $site_info['city'] ?>
                 </div>
             </a>
 
@@ -64,16 +64,16 @@
                 <? endif ?>
 
                 <footer class="site_footer">
-                    <p><?= $site_info->full_name ?></p>
+                    <p><?= $site_info['full_name'] ?></p>
                     <p>
                         <a href="/contacts">
-                            <?= $site_info->address ?>
+                            <?= $site_info['address'] ?>
                         </a>
                     </p>
                     <p>
-                        Телефон:&nbsp;<?= $site_info->phone ?><br />
-                        Факс:&nbsp;<?= $site_info->fax ?><br />
-                        Почта:&nbsp;<?= $site_info->email ?>
+                        Телефон:&nbsp;<?= $site_info['phone'] ?><br />
+                        Факс:&nbsp;<?= $site_info['fax'] ?><br />
+                        Почта:&nbsp;<?= $site_info['email'] ?>
                     </p>
                     <div id="js-contrast-version-holder"></div>
                 </footer>

@@ -14,52 +14,7 @@ class Model_Methods extends Model {
         'm'  => array(true , 100),
         's'  => array(true , 50),
     );
-
-
-    /**
-     * Get or update site main information
-     *
-     * @author Taly
-     *
-     * @param int $info         if exist then update
-     * @return array $this            returns array for global var $site_info
-     */
-    public function getSiteInfo() {
-
-        $info = Dao_SiteInfo::select()
-            ->order_by('id', 'DESC')
-            ->limit(1)
-            //->cached(Date::DAY, 'site_info', array('site_menu'))
-            ->execute();
-
-        $this->title        = $info['title'];
-        $this->city         = $info['city'];
-        $this->full_name    = $info['full_name'];
-        $this->description  = $info['description'];
-
-        $this->address      = $info['address'];
-        $this->coordinates  = $info['coordinates'];
-        $this->phone        = $info['phone'];
-        $this->fax          = $info['fax'];
-        $this->email        = $info['email'];
-
-        $this->logo         = $info['logo'];
-
-        return $this;
-
-    }
-
-    public function saveSiteInfo($info) {
-
-        $db_request = Dao_SiteInfo::insert()->clearcache('site_info');
-
-        foreach ($info as $name => $value) $db_request->set($name, $value);
-
-        $db_request->execute();
-
-        return True;
-
-    }
+    
 
     /**
     * Files uploading section

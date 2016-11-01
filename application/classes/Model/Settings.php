@@ -110,9 +110,15 @@ class Model_Settings extends Model_preDispatch {
 
         $paramList = array();
 
-        foreach ($parameterRows as $row) {
+        if ($parameterRows) {
 
-            $paramList[] = new Model_Settings($row['name']);
+            foreach ($parameterRows as $row) {
+
+                $param = new Model_Settings($row['name']);
+
+                $paramList[$param->name] = $param->value; 
+
+            }
 
         }
 

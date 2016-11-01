@@ -86,7 +86,7 @@ class Controller_Base_preDispatch extends Controller_Template {
         $this->methods = new Model_Methods();
         View::set_global('methods', $this->methods);
 
-        View::set_global('site_info', $this->methods->getSiteInfo());
+        View::set_global('site_info', Model_Settings::getListByLabel('site_info'));
 
         View::set_global('site_menu', Model_Page::getSiteMenu());
 

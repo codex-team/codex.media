@@ -23,7 +23,6 @@ class Controller_Admin extends Controller_Base_preDispatch {
             case 'pages'  : $form_saved = self::pages(Model_Page::TYPE_SITE_PAGE); break;
             case 'news'   : $form_saved = self::pages(Model_Page::TYPE_SITE_NEWS); break;
             case 'users'  : self::users(); break;
-            case 'base'   : self::siteSettings(); break;
             case 'parser' : self::parser(); break;
             case 'index'  : default : self::adminIndexPage();
 
@@ -50,38 +49,6 @@ class Controller_Admin extends Controller_Base_preDispatch {
 
         $this->view['users'] = $this->methods->getUsers();
 
-    }
-
-    /**
-     *
-     * @author taly
-     */
-    public function siteSettings() {
-
-        if (Security::check(Arr::get($_POST, 'csrf'))) {
-
-            $data = array(
-                'title'         => Arr::get($_POST, 'title'),
-                'city'          => Arr::get($_POST, 'city'),
-                'full_name'     => Arr::get($_POST, 'full_name'),
-                'description'   => Arr::get($_POST, 'description'),
-                'address'       => Arr::get($_POST, 'address'),
-                'coordinates'   => Arr::get($_POST, 'coordinates'),
-                'phone'         => Arr::get($_POST, 'phone'),
-                'fax'           => Arr::get($_POST, 'fax'),
-                'email'         => Arr::get($_POST, 'email'),
-                'logo'          => Arr::get($_POST, 'logo'),
-            );
-
-            if ($this->methods->saveSiteInfo($data)) {
-
-                $this->view['site_info'] = $this->methods->getSiteInfo();
-
-            }
-
-        }
-
-        $this->view['category'] = 'base';
     }
 
     public function pageForm() {
@@ -124,7 +91,7 @@ class Controller_Admin extends Controller_Base_preDispatch {
             }
 
         }
-        
+
     }
 
     public function pages($page_type = NULL) {
