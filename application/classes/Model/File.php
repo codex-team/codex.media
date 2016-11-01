@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Model_File extends Model {
-
+class Model_File extends Model
+{
     public $id          = 0;
     public $page        = 0;
     public $extension   = '';
@@ -21,16 +21,15 @@ class Model_File extends Model {
     const PAGE_FILE  = 1;
     const PAGE_IMAGE = 2;
 
-    public function __construct($id = null, $file_hash_hex = null, $row = array()) {
-
+    public function __construct($id = null, $file_hash_hex = null, $row = array())
+    {
         if (!$id && !$file_hash_hex && !$row) return;
 
         return self::get($id, $file_hash_hex, $row);
-
     }
 
-    public function get($id = null, $file_hash_hex = null, $file_row = array()) {
-
+    public function get($id = null, $file_hash_hex = null, $file_row = array())
+    {
         if ($id || $file_hash_hex) {
 
             $file = Dao_Files::select();
@@ -39,7 +38,6 @@ class Model_File extends Model {
             if ($file_hash_hex)  $file->where('file_hash', '=', hex2bin($file_hash_hex));
 
             $file_row = $file->limit(1)->execute();
-
         }
 
         if(!$file_row) return false;
@@ -49,20 +47,17 @@ class Model_File extends Model {
             if (property_exists($this, $field)) {
 
                 $this->$field = $value;
-
             }
-
         }
 
         $this->file_hash_hex = bin2hex($this->file_hash);
         $this->filepath      = self::getFilePath();
 
         return $this;
-
     }
 
-    public function insert($fields = array()) {
-
+    public function insert($fields = array())
+    {
         $file = Dao_Files::insert();
 
         if ($fields) {
@@ -71,7 +66,6 @@ class Model_File extends Model {
             foreach ($fields as $key => $value) {
 
                 $file->set($key, $value);
-
             }
 
             $this->filename = $fields['filename'];
@@ -85,7 +79,6 @@ class Model_File extends Model {
                  ->set('size',      $this->size)
                  ->set('extension', $this->extension)
                  ->set('type',      $this->type);
-
         }
 
         $file->set('file_hash', hex2bin(substr($this->filename, 0, strrpos($this->filename, '.'))));
@@ -93,11 +86,10 @@ class Model_File extends Model {
         $file_id = $file->execute();
 
         return self::get($file_id);
-
     }
 
-    public function update($fields = array()) {
-
+    public function update($fields = array())
+    {
         $file = Dao_Files::update();
 
         if ($fields && isset($fields['id'])) {
@@ -114,17 +106,15 @@ class Model_File extends Model {
             $file->where('id', '=', $this->id)
                  ->set('page',      $this->page)
                  ->set('title',     $this->title);
-
         }
 
         $file_id = $file->execute();
 
         return self::get($file_id);
-
     }
 
-    static public function getUploadPathByType($type) {
-
+    static public function getUploadPathByType($type)
+    {
         switch ($type) {
 
             case self::PAGE_FILE:
@@ -138,23 +128,20 @@ class Model_File extends Model {
             default:
                 return 'upload/default/';
                 break;
-
         }
-
     }
 
-    private function getFilePath() {
-
+    private function getFilePath()
+    {
         $path = self::getUploadPathByType($this->type);
 
         $path .= $this->filename;
 
         return $path;
-
     }
 
-    static public function getPageFiles($page_id, $type = false) {
-
+    static public function getPageFiles($page_id, $type = false)
+    {
         $page_files = Dao_Files::select()
             ->where('page','=', $page_id)
             ->where('status', '=', 0);
@@ -170,21 +157,18 @@ class Model_File extends Model {
             foreach ($page_files_rows as $file_row) {
 
                 $page_files_array[] = new Model_File(null, null, $file_row);
-
             }
-
         }
 
         return $page_files_array;
-
     }
 
     /**
     *   Функция для скачивания файла
     *   Источник: https://habrahabr.ru/post/151795/
     */
-    public function returnFileToUser() {
-
+    public function returnFileToUser()
+    {
         if (file_exists($this->filepath)) {
 
             // сбрасываем буфер вывода PHP, чтобы избежать переполнения памяти выделенной под скрипт
@@ -200,13 +184,10 @@ class Model_File extends Model {
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
             header('Content-Length: ' . filesize($this->filepath));
-            
+
             // читаем файл и отправляем его пользователю
             readfile($this->filepath);
             exit;
-
         }
-
     }
-
 }

@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Model_Methods extends Model {
+class Model_Methods extends Model
+{
 
     const SOCIAL_VK = 1;
     const SOCIAL_FB = 2;
@@ -14,14 +15,14 @@ class Model_Methods extends Model {
         'm'  => array(true , 100),
         's'  => array(true , 50),
     );
-    
+
 
     /**
     * Files uploading section
     */
 
-    public function saveImage($file , $path) {
-
+    public function saveImage($file , $path)
+    {
         /**
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
@@ -54,7 +55,6 @@ class Model_Methods extends Model {
                     } else {
 
                         $image->resize( $width , NULL, true );
-
                     }
 
                     $image->crop( $width, $height );
@@ -66,30 +66,24 @@ class Model_Methods extends Model {
                      */
 
                     // $image->sharpen(1.5);
-
                 } else {
 
                     if ($image->width > $width || $image->height > $height) {
 
                         $image->resize( $width , $height , true );
-
                     }
-
                 }
 
                 $image->save($path . $prefix . '_' . $filename);
-
             }
 
             // Delete the temporary file
             unlink($file);
 
             return $filename;
-
         }
 
         return FALSE;
-
     }
 
     public function saveFile($file , $path)
@@ -97,33 +91,25 @@ class Model_Methods extends Model {
         /**
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
-
         if (!is_dir($path)) mkdir($path);
 
         $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.' . $ext;
 
-        if ($file = Upload::save($file, $filename, $path)) {
-
-            return $filename;
-        }
+        if ($file = Upload::save($file, $filename, $path)) return $filename;
 
         return FALSE;
-
     }
 
 
     /* Надо будет выпилить - устаревает функция */
 
-    public function ftime($timestamp, $long = false , $need_time = true , $short_month = false) {
-
-        if ($long && !$need_time) {
-
-            return $this->rusDate("j F Y", $timestamp);
-
-        }
+    public function ftime($timestamp, $long = false , $need_time = true , $short_month = false)
+    {
+        if ($long && !$need_time) return $this->rusDate("j F Y", $timestamp);
 
         $time = time() - $timestamp;
+
         if (date('d-m-Y', time()) == date('d-m-Y', $timestamp)) {
 
             return 'сегодня в ' . date('H:i', $timestamp);
@@ -155,13 +141,11 @@ class Model_Methods extends Model {
         } else {
 
             return round($time / Date::DAY) . ' ' . self::num_decline(round($time / Date::DAY), 'день','дня','дней') .' назад';
-
         }
-
     }
 
-    public function ltime($timestamp) {
-
+    public function ltime($timestamp)
+    {
         $time = time();
         $ltime = $time - $timestamp;
 
@@ -182,13 +166,11 @@ class Model_Methods extends Model {
         } else {
 
             return $this->rusDate("j M Y в H:i", $timestamp);
-
         }
-
     }
 
-    public function dater($timestamp, $type) {
-
+    public function dater($timestamp, $type)
+    {
         $time = time() - $timestamp;
 
         if ($type == 'extra_short') {
@@ -200,15 +182,12 @@ class Model_Methods extends Model {
             } else {
 
                 return round($time / Date::DAY) . ' дн.';
-
             }
-
         }
-
     }
 
-    public function rusDate() {
-
+    public function rusDate()
+    {
         $translate = array(
             "am"        => "дп",
             "pm"        => "пп",
@@ -267,35 +246,27 @@ class Model_Methods extends Model {
         } else {
 
             return strtr(date(func_get_arg(0)), $translate);
-
         }
-
     }
 
-    public function num_decline($num, $nominative, $genitive_singular, $genitive_plural) {
-
+    public function num_decline($num, $nominative, $genitive_singular, $genitive_plural)
+    {
         if ($num > 10 && (floor(($num % 100) / 10))  == 1) {
 
             return $genitive_plural;
 
         } else {
 
-            switch($num % 10){
-
+            switch ($num % 10) {
                 case 1: return $nominative;
-
                 case 2: case 3: case 4: return $genitive_singular;
-
                 case 5: case 6: case 7: case 8: case 9: case 0: return $genitive_plural;
-
             }
-
         }
-
     }
 
-    public function short($string = '', $limit = 999999) {
-
+    public function short($string = '', $limit = 999999)
+    {
         if (strlen($string) > $limit) {
 
             return Kohana_UTF8::substr($string, 0, $limit) . '...';
@@ -303,13 +274,11 @@ class Model_Methods extends Model {
         } else {
 
             return $string;
-
         }
-
     }
 
-    public function specc_short($string = '' , $limit = 999999) {
-
+    public function specc_short($string = '' , $limit = 999999)
+    {
         // $string = 'You <br> gonna be <h2>all right</h2><img src="/public/img/favicon.png" /> So go take <a href="/">down</a> the cross.';
         // $limit = 30;
 
@@ -322,9 +291,9 @@ class Model_Methods extends Model {
 
         for ($i = 0 ; $i < strlen($string); $i++) {
 
-            $char = mb_substr( $string , $i , 1 ) ;
-            // echo  $i . '  -> ' . $real_count . '   ->   \'' . $char . '\'' . ' : ';
+            $char = mb_substr( $string , $i , 1 );
 
+            // echo  $i . '  -> ' . $real_count . '   ->   \'' . $char . '\'' . ' : ';
             if ($char == '<') {
 
                 $inside_tag = true;
@@ -343,7 +312,6 @@ class Model_Methods extends Model {
 
                     $insede_alone_tag = true;
                     // echo ' inside alone tag ';
-
                 }
 
             } elseif ($char == '>') {
@@ -356,19 +324,15 @@ class Model_Methods extends Model {
                 if (! $insede_alone_tag) $tag_opened = true;
 
                 if ($inside_close_tag || $insede_alone_tag) {
-
                     $tag_opened = false;
                     $insede_alone_tag = false;
                     $inside_close_tag = false;
-
                 }
 
                 // echo $tag_opened ? 'tag opened' : 'not tag opened' ;
                 if (!$tag_opened && $real_count >= $limit - 1) {
-
                     // echo '<br> STOPPED AFTER CLOSED TAG';
                     break;
-
                 }
 
             } else {
@@ -376,12 +340,10 @@ class Model_Methods extends Model {
                 if (!$tag_opened) {
 
                     if ($inside_tag) {
-
                         // echo " in tag ";
                         $ret .= $char; // 2 - символы внутри тэга. Нужны
 
                     } else {
-
                         // echo('*');
                         if ($real_count <= $limit - 1) {
 
@@ -401,69 +363,53 @@ class Model_Methods extends Model {
                                 $is_trimmed = true;
                                 // echo '<br/>';
                                 break;
-
                             }
-
                         }
-
                     }
 
                 } else {
 
                     if ($inside_tag) { // Мы внутри закрывающего тега
-
                         // echo ' in tag ';
-
                     } else {
 
                         $real_count++;
-
                     }
 
                     $ret .= $char; // Сиволы до закрытия тегаи. Берем всегда, независимо от лимита.
-
                 }
-
             }
-
             // echo '<br>';
-
         }
-
         // echo Debug::vars( $ret );
         // exit();
 
         // echo '<br/><br/>-------------<br><br>';
-
-        return array( 'text' => $ret , 'changed' => $is_trimmed );
-
+        return array('text' => $ret , 'changed' => $is_trimmed);
     }
 
-    public function auto_link_urls($text) {
-
+    public function auto_link_urls($text)
+    {
         // Find and replace all http/https/ftp/ftps links that are not part of an existing html anchor
         // $text = preg_replace_callback('~\b(?<!href="|">)(?:ht|f)tps?://[-.a-zA-Z#\d\&\?=\/%а-яА-Я]+~i', 'self::_auto_link_urls_callback1', $text);
         $text = preg_replace_callback('~\b(?<!href="|">)(?:ht|f)tps?://[-\w\.#\d\&\?=\/%\:_]+\b~i', 'self::_auto_link_urls_callback1', $text);
 
         // Find and replace all naked www.links.com (without http://)
         return preg_replace_callback('~\b(?<!://|">)www\.[-a-zA-Z\d]+\.[a-z]{2,6}[-\w\/\?=&%\d#\:_]*\b~i', 'self::_auto_link_urls_callback2', $text);
-
     }
 
-    public function _auto_link_urls_callback1($matches) {
-
+    public function _auto_link_urls_callback1($matches)
+    {
         return HTML::anchor(UTF8::clean($matches[0], Kohana::$charset));
-
     }
 
-    public function _auto_link_urls_callback2($matches) {
-
+    public function _auto_link_urls_callback2($matches)
+    {
         return HTML::anchor('http://'.$matches[0], $matches[0]);
-
     }
 
-    public function renderShareButton($data, $type, $target) {
-
+    public function renderShareButton($data, $type, $target)
+    {
         $result = '';
 
         $data['data_type']   = $type;
@@ -481,21 +427,19 @@ class Model_Methods extends Model {
         $result = View::factory('/share/buttons', $data)->render();
 
         return $result;
-
     }
 
-    public function makeCorrectUrl( $string ) {
-
+    public function makeCorrectUrl( $string )
+    {
         return preg_match('/^(?:ht|f)tps?:\/\//', $string) ? $string : 'http://' . $string;
-
     }
 
     /**
      * Транслитерация кириллицы
      * @param string $string - строка с киррилицей
      */
-    public static function rus2translit($string) {
-
+    public static function rus2translit($string)
+    {
         $converter = array(
             'а' => 'a',   'б' => 'b',   'в' => 'v',
             'г' => 'g',   'д' => 'd',   'е' => 'e',
@@ -526,11 +470,10 @@ class Model_Methods extends Model {
         $converted_string = strtr($string, $converter);
 
         return $converted_string;
-
     }
 
-    public static function getUriByTitle($string) {
-
+    public static function getUriByTitle($string)
+    {
         // заменяем все кириллические символы на латиницу
         $converted_string = self::rus2translit($string);
 
@@ -544,13 +487,10 @@ class Model_Methods extends Model {
         $converted_string = trim($converted_string, '-');
 
         return $converted_string;
-
     }
 
-    public static function isAjax() {
-
+    public static function isAjax()
+    {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
-
     }
-
 }

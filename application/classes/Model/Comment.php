@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') OR die('No Direct Script Access');
 
-Class Model_Comment extends Model_preDispatch {
+Class Model_Comment extends Model_preDispatch
+{
 
     public $id;
     public $author;
@@ -11,16 +12,15 @@ Class Model_Comment extends Model_preDispatch {
     public $dt_create;
     public $is_removed;
 
-    public function __construct() {
-
-    }
+    public function __construct()
+    {}
 
     /**
      * Возвращает комментарий с указанным id из БД.
      * Иначе возвращает пустой комментарий с id = 0.
      */
-    public static function get($id = 0) {
-
+    public static function get($id = 0)
+    {
         $comment_row = Dao_Comments::select()
             ->where('id', '=', $id)
             ->limit(1)
@@ -30,14 +30,13 @@ Class Model_Comment extends Model_preDispatch {
         $model = new Model_Comment();
 
         return $model->fillByRow($comment_row);
-
     }
 
     /**
      * Добавляет комментарий в БД.
      */
-    public function insert() {
-
+    public function insert()
+    {
         $idAndRowAffected = Dao_Comments::insert()
             ->set('user_id',   $this->author['id'])
             ->set('text',      $this->text)
@@ -53,18 +52,16 @@ Class Model_Comment extends Model_preDispatch {
                 ->where('id', '=', $idAndRowAffected)
                 ->set('root_id', $idAndRowAffected)
                 ->execute();
-
         }
 
         return $idAndRowAffected;
-
     }
 
     /**
      * Заполняет объект строкой из БД.
      */
-    private function fillByRow($comment_row) {
-
+    private function fillByRow($comment_row)
+    {
         if (!empty($comment_row['id'])) {
 
             $this->id         = $comment_row['id'];
@@ -74,15 +71,13 @@ Class Model_Comment extends Model_preDispatch {
             $this->root_id    = $comment_row['root_id'];
             $this->dt_create  = $comment_row['dt_create'];
             $this->is_removed = $comment_row['is_removed'];
-
         }
 
         return $this;
-
     }
 
-    private static function getParentFromCommentsArray($comment_rows, $comment_row) {
-
+    private static function getParentFromCommentsArray($comment_rows, $comment_row)
+    {
         $parent = array();
 
         foreach ($comment_rows as $parent_row) {
@@ -99,17 +94,14 @@ Class Model_Comment extends Model_preDispatch {
                 );
 
                 break;
-
             }
-
         }
 
         return $parent;
-
     }
 
-    public static function getCommentsByPageId($page_id) {
-
+    public static function getCommentsByPageId($page_id)
+    {
         $comments = array();
 
         $comment_rows = Dao_Comments::select()
@@ -134,20 +126,17 @@ Class Model_Comment extends Model_preDispatch {
                 $comment->parent_comment = $parent;
 
                 array_push($comments, $comment);
-
             }
-
         }
 
         return $comments;
-
     }
 
     /**
      * Удаляем комментарий и все его подкомментарии
      */
-    public function delete() {
-
+    public function delete()
+    {
         Dao_Comments::update()
             ->where('id', '=', $this->id)
             ->set('is_removed', 1)
@@ -163,7 +152,5 @@ Class Model_Comment extends Model_preDispatch {
             ->where('parent_id', '=', $this->id)
             ->set('is_removed', 1)
             ->execute();
-
     }
-
 }
