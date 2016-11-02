@@ -561,13 +561,8 @@ codex.documentIsReady(function(){
 
     codex.content.customCheckboxes.init();
 
-    // codex.parser.init({
-    //     input_id : 'parser_input_url'
-    // });
-
     codexSpecial.init({
         blockId : 'js-contrast-version-holder',
-        scriptLocation: '/public/extensions/codex-special/'
     });
 
 });
