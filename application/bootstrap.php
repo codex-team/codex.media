@@ -5,13 +5,11 @@
 // Load the core Kohana class
 require SYSPATH.'classes/Kohana/Core'.EXT;
 
-if (is_file(APPPATH.'classes/Kohana'.EXT))
-{
+if (is_file(APPPATH.'classes/Kohana'.EXT)) {
     // Application extends the core
     require APPPATH.'classes/Kohana'.EXT;
-}
-else
-{
+
+} else {
     // Load empty core extension
     require SYSPATH.'classes/Kohana'.EXT;
 }
@@ -69,8 +67,8 @@ I18n::lang('en-us');
  * Note: If you supply an invalid environment name, a PHP warning will be thrown
  * saying "Couldn't find constant Kohana::<INVALID_ENV_NAME>"
  */
-if (isset($_SERVER['KOHANA_ENV']))
-{
+if (isset($_SERVER['KOHANA_ENV'])) {
+    
     Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
 }
 

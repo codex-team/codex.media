@@ -5,7 +5,6 @@
  * defaults for the URI.
  */
 
-
 $DIGIT  = '\d+';
 $STRING = '[-a-zA-Z\d]+';
 
@@ -13,7 +12,7 @@ $STRING = '[-a-zA-Z\d]+';
 /**
  * Static pages
  */
-Route::set('INDEX', '(<page_number>)', array( 'page_number' => $DIGIT ))->defaults(array(
+Route::set('INDEX', '(<page_number>)', array('page_number' => $DIGIT))->defaults(array(
     'controller' => 'index',
     'action' => 'index'
 ));
@@ -37,12 +36,12 @@ Route::set('NEW_PAGE', 'p/save')->defaults(array(
     'action' => 'save'
 ));
 
-Route::set('DELETE_PAGE', 'p/<id>/<uri>/delete', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+Route::set('DELETE_PAGE', 'p/<id>/<uri>/delete', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
     'action' => 'delete_page'
 ));
 
-Route::set('PAGE', 'p/<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
     'action' => 'show_page'
 ));
@@ -51,7 +50,7 @@ Route::set('PAGE', 'p/<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))-
 /**
  * User section
  */
-Route::set('PROFILE', 'user/<id>', array( 'id' => $DIGIT ))->defaults(array(
+Route::set('PROFILE', 'user/<id>', array('id' => $DIGIT))->defaults(array(
     'controller' => 'user',
     'action' => 'profile'
 ));
@@ -99,7 +98,7 @@ Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
 /**
 * Downloading files
 */
-Route::set('DOWNLOAD_FILE', 'file/<file_hash_hex>', array( 'file_hash_hex' => $STRING ))->defaults(array(
+Route::set('DOWNLOAD_FILE', 'file/<file_hash_hex>', array('file_hash_hex' => $STRING))->defaults(array(
     'controller' => 'files',
     'action' => 'download'
 ));
@@ -125,7 +124,7 @@ Route::set('LOGOUT', 'logout')->defaults(array(
 /**
  * Comments
  */
-Route::set('ADD_COMMENT_SCRIPT', 'p/<id>/<uri>/add-comment', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+Route::set('ADD_COMMENT_SCRIPT', 'p/<id>/<uri>/add-comment', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
     'controller' => 'comments',
     'action' => 'add'
 ));
