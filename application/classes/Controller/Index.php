@@ -24,7 +24,6 @@ class Controller_Index extends Controller_Base_preDispatch
         if (count($pages) > self::NEWS_LIMIT_PER_PAGE) {
 
             $next_page = true;
-
             unset($pages[self::NEWS_LIMIT_PER_PAGE]);
         }
 
@@ -33,7 +32,7 @@ class Controller_Index extends Controller_Base_preDispatch
             $response = array();
             $response['success']    = 1;
             $response['next_page']  = $next_page;
-            $response['pages']      = View::factory('templates/news_list', array( 'pages' => $pages ))->render();
+            $response['pages']      = View::factory('templates/news_list', array('pages' => $pages))->render();
 
             $this->auto_render = false;
             $this->response->headers('Content-Type', 'application/json; charset=utf-8');

@@ -33,9 +33,18 @@ class Model_Page extends Model_preDispatch
     {
         if (!$id) return;
 
-        $page = self::get($id);
+        self::get($id);
+    }
 
-        self::fillByRow($page);
+    public function get($id = 0)
+    {
+        $pageRow = Dao_Pages::select()
+            ->where('id', '=', $id)
+            ->limit(1)
+            //->cached(Date::MINUTE * 30, 'page:' . $id)
+            ->execute();
+
+        return self::fillByRow($pageRow);
     }
 
     private function fillByRow($page_row)
@@ -109,15 +118,6 @@ class Model_Page extends Model_preDispatch
         }
 
         return true;
-    }
-
-    public function get($id = 0)
-    {
-        return Dao_Pages::select()
-            ->where('id', '=', $id)
-            ->limit(1)
-            //->cached(Date::MINUTE * 30, 'page:' . $id)
-            ->execute();
     }
 
     public static function getPages(
