@@ -1,5 +1,5 @@
 <div class="contacts_map">
-	<div id="map" style="height: 500px;z-index: 1"></div>
+	<div id="map"></div>
 	<div class="text_wrap">
 		<div class="text">
 			<li><?= $site_info['address'] ?></li>
@@ -13,7 +13,31 @@
 	</div>
 </div>
 
-<script>
+
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_Ru" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+	ymaps.ready(init);
+
+	var myMap,
+		myPlacemark;
+
+	function init(){
+		myMap = new ymaps.Map("map", {
+			center: [<?= $site_info['coordinates'] ?>],
+			zoom: 16
+		});
+
+		myPlacemark = new ymaps.Placemark([<?= $site_info['coordinates'] ?>], {
+			hintContent: '<?= $site_info['title'] ?>',
+			balloonContent: '<?= $site_info['full_name'] ?>'
+		});
+
+		myMap.geoObjects.add(myPlacemark);
+	}
+
+</script>
 
 	<?
 	/**
@@ -34,5 +58,3 @@
 	});
 
 	*/ ?>
-
-</script>

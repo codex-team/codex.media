@@ -1073,6 +1073,10 @@ aside .user_panel{
     font-size: 18px;
 }
 
+.contacts_map #map {
+    height: 100vh;
+}
+
 
 .base_form{
     max-width: 500px;
