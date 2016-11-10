@@ -80,7 +80,7 @@
 <? if ($page->images): ?>
     <div class="w_island images" style="margin: 5px 0 5px 5px">
         <? foreach ($page->images as $image): ?>
-            <a href="/upload/page_images/o_<?= $image->filename ?>">
+            <a href="/upload/page_images/o_<?= $image->filename ?>" target="_blank">
                 <img src="/upload/page_images/b_<?= $image->filename ?>" class="page_image">
             </a>
         <? endforeach ?>
