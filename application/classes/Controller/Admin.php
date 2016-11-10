@@ -24,17 +24,18 @@ class Controller_Admin extends Controller_Base_preDispatch
         }
 
         $this->view['form_saved'] = $form_saved;
-        $this->template->content = View::factory('templates/admin/layout', $this->view);
-    }
-
-    public function parser()
-    {
-        $this->view['category'] = 'parser';
+        $this->template->content = View::factory('templates/admin/index', $this->view);
     }
 
     public function adminIndexPage()
     {
         $this->view['category'] = 'index';
+    }
+
+    /*
+    public function parser()
+    {
+        $this->view['category'] = 'parser';
     }
 
     public function users()
@@ -177,4 +178,5 @@ class Controller_Admin extends Controller_Base_preDispatch
         $this->auto_render = false;
         $this->response->body($script);
     }
+    */
 }
