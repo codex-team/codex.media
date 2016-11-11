@@ -14,7 +14,9 @@
 </div>
 
 
-<script src="https://api-maps.yandex.ru/2.1/?lang=ru_Ru" type="text/javascript"></script>
+<!-- Yandex.Maps  -->
+
+<script async src="https://api-maps.yandex.ru/2.1/?lang=ru_Ru" type="text/javascript"></script>
 
 <script type="text/javascript">
 
@@ -23,15 +25,16 @@
 	var myMap,
 		myPlacemark;
 
-	function init(){
+	function init() {
+
 		myMap = new ymaps.Map("map", {
 			center: [<?= $site_info['coordinates'] ?>],
 			zoom: 16
 		});
 
 		myPlacemark = new ymaps.Placemark([<?= $site_info['coordinates'] ?>], {
-			hintContent: '<?= $site_info['title'] ?>',
-			balloonContent: '<?= $site_info['full_name'] ?>'
+			hintContent    : '<?= $site_info['title'] ?>',
+			balloonContent : '<?= $site_info['full_name'] ?>'
 		});
 
 		myMap.geoObjects.add(myPlacemark);
@@ -39,22 +42,4 @@
 
 </script>
 
-	<?
-	/**
-	 * Google maps
-	 * <?= $site_info['coordinates'] ?>
-	 */
-
-	 /*
-
-	$(document).ready(function(){
-
-		var w_height = $(window).height();
-		$('#map').css('height', w_height );
-
-		user.initialize_GoogleMap( document.getElementById('map') , <?= $site_info['coordinates'] ?>, false , false , false );
-
-
-	});
-
-	*/ ?>
+<!-- /Yandex.Maps  -->
