@@ -10,10 +10,6 @@
     <?= Form::hidden('id', $page->id); ?>
     <?= Form::hidden('id_parent', $page->id_parent); ?>
 
-    <span class="import">
-        <i class="icon-link"></i> Импортировать
-    </span>
-
     <input class="title_input" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
     <textarea name="content" rows="5" placeholder="Содержание <?= $object_name ?>"><?= $page->content ?></textarea>
 

@@ -23,15 +23,15 @@ class Controller_Transport extends Controller_Base_preDispatch
             goto finish;
         }
 
-        if (!$this->files || !Upload::not_empty($this->files) || !Upload::valid($this->files)){
+        if (!Upload::size($this->files, '2M')) {
 
-            $this->transportResponse['message'] = 'File is missing or damaged';
+            $this->transportResponse['message'] = 'File size exceeded limit';
             goto finish;
         }
 
-        if (!Upload::size($this->files, '30M')) {
+        if (!$this->files || !Upload::not_empty($this->files) || !Upload::valid($this->files)){
 
-            $this->transportResponse['message'] = 'File size exceeded limit';
+            $this->transportResponse['message'] = 'File is missing or damaged';
             goto finish;
         }
 

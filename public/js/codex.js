@@ -217,20 +217,32 @@ codex.transport = {
     */
     appendFileRow : function (file) {
 
-        var attachesZone = document.getElementById('formAttaches');
-
-        var row = document.createElement('div');
+        var attachesZone = document.getElementById('formAttaches'),
+            row          = document.createElement('div');
+            filename     = document.createElement('span');
+            deleteButton = document.createElement('span');
 
         row.classList.add('item');
 
         switch (file.type){
-            case '1': row.classList.add('item_file'); break;
-            case '2': row.classList.add('item_image'); break;
+            case '1': filename.classList.add('item_file'); break;
+            case '2': filename.classList.add('item_image'); break;
             default: break;
         }
 
-        row.textContent = file.title;
-        row.setAttribute('contentEditable', true);
+        filename.textContent = file.title;
+        filename.setAttribute('contentEditable', true);
+
+        deleteButton.classList.add('fl_r', 'button_delete', 'icon-trash');
+        deleteButton.addEventListener('click', function(){
+
+            delete codex.transport.files[file.id];
+            this.parentNode.remove();
+
+        } , false);
+
+        row.appendChild(filename);
+        row.appendChild(deleteButton);
 
         attachesZone.appendChild(row);
 

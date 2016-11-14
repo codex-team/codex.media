@@ -482,6 +482,17 @@ input[type="submit"] {
         background: #5B91CE;
     }
 
+.button_delete {
+    padding: 10px;
+    margin: -10px;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.button_delete:hover {
+    background-color: #dddddf; color: #fff;
+}
+
 
 .loading:after{
     content: '●●●';
