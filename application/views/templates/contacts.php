@@ -1,16 +1,25 @@
 <div class="contacts_map">
+
 	<div id="map"></div>
+
 	<div class="text_wrap">
+
 		<div class="text">
+
 			<li><?= $site_info['address'] ?></li>
 
 			<div class="contacts mt30">
+
 				<li>Телефон: <?= $site_info['phone'] ?></li>
 				<li>Факс: <?= $site_info['fax'] ?></li>
 				<li>Почта: <?= $site_info['email'] ?></li>
+
 			</div>
+
 		</div>
+
 	</div>
+
 </div>
 
 

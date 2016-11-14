@@ -45,7 +45,7 @@ var Comments = {
         this.nodes.cancel_answer_button.addEventListener('click', function() {
 
             Comments.canselReplyButtonClickHandler();
-            
+
         }, false);
 
         this.nodes.textarea.addEventListener('keydown', function (event) {
@@ -170,3 +170,9 @@ var Comments = {
         }
     }
 };
+
+codex.documentIsReady(function(){
+
+    Comments.init();
+
+});

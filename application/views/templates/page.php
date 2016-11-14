@@ -34,10 +34,12 @@
     */ ?>
 
 
-
+    <? /* Page title */ ?>
     <h1 class="page_title">
     	<?= $page->title ?>
     </h1>
+
+    <? /* Page info */ ?>
     <div class="page-information">
         <? if ($page->type != Model_Page::TYPE_SITE_PAGE): ?>
             <time class="page-information__time"><?= $methods->ftime(strtotime($page->date)) ?></time>
@@ -49,13 +51,15 @@
             </a>
         <? endif ?>
     </div>
+
+    <? /* Page content */ ?>
     <? if ($page->content): ?>
         <article class="page_content">
         	<?= nl2br($page->content) ?>
         </article>
     <? endif ?>
 
-
+    <? /* Show childs only for non-news pages */ ?>
     <? if ($page->type != Model_Page::TYPE_SITE_NEWS): ?>
         <? if ($page->childrens): ?>
             <ul class="page_childrens clear <?= !$page->content ? 'page_childrens--empty-content' : '' ?>">
@@ -66,6 +70,7 @@
         <? endif; ?>
     <? endif ?>
 
+    <? /* Admin page buttons  */ ?>
     <? if( $can_modify_this_page ): ?>
         <div class="action-line action-line__onpage clear">
             <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i> Редактировать</a>
@@ -77,6 +82,7 @@
     <? endif ?>
 </div>
 
+<? /* Page's images block */ ?>
 <? if ($page->images): ?>
     <div class="w_island images" style="margin: 5px 0 5px 5px">
         <? foreach ($page->images as $image): ?>
@@ -87,6 +93,7 @@
     </div>
 <? endif; ?>
 
+<? /* Page's files block */ ?>
 <? if ($page->files): ?>
     <div class="w_island files" style="margin: 5px 0 5px 5px">
     	<table class="page_files">
@@ -175,9 +182,5 @@
 
     <? endif; ?>
 </div>
+
 <script src="/public/js/comment.js"></script>
-<script>
-    codex.documentIsReady(function(){
-        Comments.init();
-    });
-</script>
