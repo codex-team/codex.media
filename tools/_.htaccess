@@ -1,4 +1,5 @@
 php_value short_open_tag 1
+php_value always_populate_raw_post_data -1
 
 RewriteEngine On
 
