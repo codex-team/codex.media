@@ -2,7 +2,7 @@
 
 class Controller_Index extends Controller_Base_preDispatch
 {
-    const NEWS_LIMIT_PER_PAGE = 10;
+    const NEWS_LIMIT_PER_PAGE = 5;
 
     public function action_index()
     {

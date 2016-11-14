@@ -6,6 +6,11 @@
     <?= View::factory('templates/pages/form', array( 'page' => $page )); ?>
 <? endif ?>
 
+
+<? if ($page_number > 1): ?>
+    <div class="article post-list-item w_island separator">Page <?= $page_number ?></div>
+<? endif ?>
+
 <? if ( $pages ): ?>
 
     <div id="list_of_news" class="news">
@@ -23,6 +28,7 @@
                     current_page    : '<?= $page_number ?>',
                     url             : '/',
                     target_block_id : 'list_of_news',
+                    auto_loading    : true,
                 });
             });
         </script>

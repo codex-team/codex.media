@@ -30,8 +30,11 @@
     if (vk_script) {
 
         vk_script.src = '//vk.com/js/api/openapi.js?122';
+
         vk_script.addEventListener('load', function function_name() {
+
             VK.Widgets.Group("vk_groups", {mode: 1, width: "250", height: "100", color1: 'FFFFFF', color2: '2B587A', color3: '5B7FA6'}, 9398);
+
         }, false)
     }
 

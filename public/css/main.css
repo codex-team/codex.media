@@ -855,6 +855,16 @@ aside .logout {
     margin: 5px 0 5px 5px;
 }
 
+.separator {
+    padding: 15px 20px 15px !important;
+    text-align: center;
+    background: none;
+
+}
+    a .separator:hover {
+        background: #ededef;
+    }
+
 
 /**
 * Posts list item

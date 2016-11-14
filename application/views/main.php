@@ -22,6 +22,8 @@
     <link rel="stylesheet" type="text/css" media="all" href="/public/css/main.css?v=<?= time() ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
 
+    <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>
+
 </head>
 <body>
 
@@ -109,7 +111,7 @@
         <? /* Side block */ ?>
         <div class="sidebar">
 
-            <? include(APPPATH .'views/templates/sidebar.php') ?>
+            <? //include(APPPATH .'views/templates/sidebar.php') ?>
 
         </div>
 
@@ -130,9 +132,25 @@
 
     <? /* Scripts */ ?>
 
-    <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>
-
     <script src="/public/extensions/codex-special/codex-special.v.1.0.min.js?v=2"></script>
+
+    <script>
+
+        codex.documentIsReady(function(){
+
+            codex.transport.init();
+
+            codex.content.customCheckboxes.init();
+
+            codexSpecial.init({
+
+                blockId : 'js-contrast-version-holder',
+
+            });
+
+        });
+
+    </script>
 
     <? /* end Scripts */ ?>
 

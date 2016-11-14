@@ -5,17 +5,16 @@ var codex = (function(codex){
     /**
     * Preparation method
     */
-    codex.init = function(settings){
+    codex.init = function(settings) {
 
         /** Save settings or use defaults */
-        for (var set in settings ){
+        for (var set in settings) {
+
             this.settings[set] = settings[set] || this.settings[set] || null;
         }
-
     };
 
     return codex;
-
 
 })({});
 
@@ -23,6 +22,7 @@ var codex = (function(codex){
 * Handle document ready
 */
 codex.documentIsReady = function(f){
+
     return /in/.test(document.readyState) ? setTimeout(codex.documentIsReady,9,f) : f();
 };
 
@@ -105,77 +105,6 @@ codex.core = {
 
 },
 
-
-/**
- * Parser module
- * @author Taly Guryn
- */
-codex.parser = {
-
-    input : null,
-
-    init : function (settings){
-
-        console.log(this);
-
-         // this.input = document.getElementById(settings.input_id);
-
-         var _this = this;
-
-         this.input.addEventListener('paste', function () {
-
-             _this.inputPasteCallback();
-
-         }, false);
-
-    },
-
-    inputPasteCallback : function () {
-
-        var e = this.input;
-
-        var _this = this;
-
-        setTimeout(function(){
-
-            _this.sendRequest(e.value);
-
-        }, 100);
-    },
-
-
-    sendRequest : function (url) {
-
-        codex.core.ajax({
-            type: 'get',
-            url: '/ajax/get_page',
-            data: { 'url' : url },
-            success: function(response){
-
-                if ( response.success == 1) {
-
-                    var title = document.getElementById('page_form_title');
-                    title.value = response.title;
-
-                    var content = document.getElementById('page_form_content');
-                    content.value = response.article;
-
-                    var source_link = document.getElementById('source_link');
-                    source_link.value = url;
-
-                    // while we have no own editor, we should use this getting element
-                    // cause I can't edit code for external editor
-                    document.getElementsByClassName('redactor_redactor')[0].innerHTML   = response.article;
-
-                } else {
-
-                    codex.core.showException('Не удалось импортировать страницу');
-
-                }
-            }
-        });
-    }
-};
 
 /**
 * File transport module
@@ -370,6 +299,19 @@ codex.transport = {
 
 };
 
+
+/**
+ * Appender is being used for ajax-loading next pages of lists
+ *
+ *    codex.appender.init({
+ *        button_id       : 'button_load_news',       // button for listening
+ *        current_page    : '<?= $page_number ?>',    // current_page number
+ *        url             : '/',                      // url for ajax-requests
+ *        target_block_id : 'list_of_news',           // target for appending
+ *        auto_loading    : true,                     // allow loading when reach bottom while scrolling
+ *    });
+ */
+
 codex.appender = {
 
     /* Pagination. Here is a number of current page */
@@ -387,21 +329,25 @@ codex.appender = {
      */
     button_text : null,
 
-    init : function (settings)
-    {
-        codex.appender.settings    = settings;
+    init : function (settings) {
+
+        this.settings = settings;
 
         /* Checking for existing button and field for loaded info */
-        codex.appender.load_more_button = document.getElementById(codex.appender.settings.button_id);
-        if ( !codex.appender.load_more_button ) return false;
+        this.load_more_button = document.getElementById(this.settings.button_id);
 
-        codex.appender.block_for_items = document.getElementById(codex.appender.settings.target_block_id);
-        if ( !codex.appender.block_for_items ) return false;
+        if (!this.load_more_button) return false;
 
-        codex.appender.page        = settings.current_page;
-        codex.appender.button_text = codex.appender.load_more_button.innerHTML;
+        this.block_for_items = document.getElementById(this.settings.target_block_id);
 
-        codex.appender.load_more_button.addEventListener('click', function (event){
+        if (!this.block_for_items) return false;
+
+        this.page        = settings.current_page;
+        this.button_text = this.load_more_button.innerHTML;
+
+        if (this.settings.auto_loading) this.auto_loading.is_allowed = true;
+
+        this.load_more_button.addEventListener('click', function (event){
 
             codex.appender.load();
 
@@ -410,62 +356,70 @@ codex.appender = {
             codex.appender.auto_loading.init();
 
         }, false);
-
     },
 
-    load : function ()
-    {
-        var request_url = codex.appender.settings.url + (parseInt(codex.appender.page) + 1);
+    load : function () {
+
+        var request_url = this.settings.url + (parseInt(this.page) + 1),
+            separator   = '<a href="' + request_url + '"><div class="article post-list-item w_island separator">Page ' + (parseInt(this.page) + 1) + '</div></a>';
+
 
         codex.core.ajax({
             type: 'post',
             url: request_url,
             data: {},
-            beforeSend : function ()
-            {
+            beforeSend : function () {
+
                 codex.appender.load_more_button.innerHTML = ' ';
                 codex.appender.load_more_button.classList.add('loading');
             },
-            success : function(response)
-            {
+            success : function(response) {
+
                 response = JSON.parse(response);
 
-                if ( response.success )
-                {
-                    codex.appender.block_for_items.innerHTML += response.pages;
+                if (response.success) {
+
+                    if (!response.pages) return;
+
+                    /* Append items */
+                    codex.appender.block_for_items.innerHTML += separator + response.pages;
 
                     /* Next page */
                     codex.appender.page++;
 
-                    /* Removing restriction for auto loading */
-                    codex.appender.auto_loading.can_load = true;
+                    if (codex.appender.settings.auto_loading) {
+                        /* Removing restriction for auto loading */
+                        codex.appender.auto_loading.can_load = true;
+                    }
 
                     /* Checking for next page's existing. If no — hide the button for loading news and remove listener */
-                    if ( !response.next_page ) codex.appender.disable();
+                    if (!response.next_page) codex.appender.disable();
 
                 } else {
 
                     codex.core.showException('Не удалось подгрузить новости');
-
                 }
 
                 codex.appender.load_more_button.classList.remove('loading');
                 codex.appender.load_more_button.innerHTML = codex.appender.button_text;
             }
+
         });
     },
 
-    disable : function ()
-    {
+    disable : function () {
+
         codex.appender.load_more_button.style.display = "none";
 
-        if ( codex.appender.auto_loading.is_launched )
-        {
+        if (codex.appender.auto_loading.is_launched) {
+
             codex.appender.auto_loading.disable();
         }
     },
 
     auto_loading : {
+
+        is_allowed : false,
 
         is_launched : false,
 
@@ -475,34 +429,34 @@ codex.appender = {
          */
         can_load : true,
 
-        init : function ()
-        {
+        init : function () {
+
+            if (!this.is_allowed) return;
+
             window.addEventListener("scroll", codex.appender.auto_loading.scrollEvent);
 
             codex.appender.auto_loading.is_launched = true;
         },
 
-        disable : function ()
-        {
+        disable : function () {
+
             window.removeEventListener("scroll", codex.appender.auto_loading.scrollEvent);
 
             codex.appender.auto_loading.is_launched = false;
         },
 
-        scrollEvent : function ()
-        {
-            var scroll_reached_end = window.pageYOffset + window.innerHeight >= document.height;
+        scrollEvent : function () {
 
-            if (scroll_reached_end && codex.appender.auto_loading.can_load)
-            {
+            var scroll_reached_end = window.pageYOffset + window.innerHeight >= document.body.clientHeight;
+
+            if (scroll_reached_end && codex.appender.auto_loading.can_load) {
+
                 codex.appender.auto_loading.can_load = false;
 
                 codex.appender.load();
             }
         },
-
     },
-
 };
 
 
@@ -524,16 +478,17 @@ codex.content = {
         */
         CHECKED_CLASS : 'checked',
 
-        init : function(){
+        init : function() {
 
             var checkboxes = document.getElementsByClassName('js-custom-checkbox');
 
             if (checkboxes.length) for (var i = checkboxes.length - 1; i >= 0; i--) {
+
                 checkboxes[i].addEventListener('click', codex.content.customCheckboxes.clicked , false);
             }
         },
 
-        clicked : function(){
+        clicked : function() {
 
             var checkbox  = this,
                 input     = this.querySelector('input'),
@@ -542,27 +497,13 @@ codex.content = {
             checkbox.classList.toggle(codex.content.customCheckboxes.CHECKED_CLASS);
 
             if (isChecked) {
+
                 input.removeAttribute('checked');
+
             } else {
+
                 input.setAttribute('checked', 'checked');
             }
-
         }
-
     }
-
 };
-
-
-
-codex.documentIsReady(function(){
-
-    codex.transport.init();
-
-    codex.content.customCheckboxes.init();
-
-    codexSpecial.init({
-        blockId : 'js-contrast-version-holder',
-    });
-
-});
