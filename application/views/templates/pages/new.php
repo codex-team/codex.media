@@ -13,5 +13,6 @@
 </div>
 
 <?= View::factory('templates/pages/form', array(
-    'page'   => $page,
+    'page'        => $page,
+    'attachments' => $attachments,
 )); ?>

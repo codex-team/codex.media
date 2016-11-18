@@ -63,7 +63,6 @@ class Controller_Transport extends Controller_Base_preDispatch
 
             $this->transportResponse['title']    = $saved->title;
             $this->transportResponse['id']       = $saved->id;
-            $this->transportResponse['filename'] = $saved->filename;
         }
 
         finish:

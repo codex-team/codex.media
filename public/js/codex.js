@@ -182,7 +182,7 @@ codex.transport = {
 
     response : function (response) {
 
-        if (response.success && response.filename) {
+        if (response.success && response.title) {
 
             this.storeFile(response);
             // this.appendFileToInput(response.filename);
@@ -202,7 +202,6 @@ codex.transport = {
         }
 
         this.files[file.id] = {
-            'name'  : file.filename,
             'title' : file.title,
             'id'    : file.id
         };
@@ -233,11 +232,18 @@ codex.transport = {
         filename.textContent = file.title;
         filename.setAttribute('contentEditable', true);
 
-        deleteButton.classList.add('fl_r', 'button_delete', 'icon-trash');
+        deleteButton.classList.add('fl_r', 'button-delete', 'icon-trash');
         deleteButton.addEventListener('click', function(){
 
-            delete codex.transport.files[file.id];
-            this.parentNode.remove();
+            if (this.parentNode.dataset.ready_for_delete) {
+
+                delete codex.transport.files[file.id];
+                this.parentNode.remove();
+            }
+
+            this.parentNode.dataset.ready_for_delete = true;
+            this.classList.add('button-delete__ready-to-delete');
+            this.innerHTML = 'Удалить документ';
 
         } , false);
 

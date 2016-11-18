@@ -69,14 +69,7 @@ class Controller_Pages extends Controller_Base_preDispatch
                 */
                 $this->savePageFiles($page->id);
 
-                if ($page->type == Model_Page::TYPE_SITE_NEWS) {
-
-                    $this->redirect('/');
-
-                } else {
-
-                    $this->redirect('/p/' . $page->id . '/' . $page->uri);
-                }
+                $this->redirect('/p/' . $page->id . '/' . $page->uri);
 
             } else {
 
@@ -92,12 +85,14 @@ class Controller_Pages extends Controller_Base_preDispatch
             $page->files  = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
             $page->images = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
 
+            $page->attachments = Model_File::getPageFiles($page->id, false, true);
+            $this->view['attachments'] = json_encode($page->attachments);
+
             /** Нам необходимо получить только ОДИН из параметров:
              * id       для редактирования существующей страницы
              * type     для создания новости или страницы
              * parent   для создания подстраницы
              */
-
             if (!$page_id)    $page->type      = (int) Arr::get($_GET, 'type', 0);
             if (!$page->type) $page->id_parent = (int) Arr::get($_GET, 'parent', 0);
 
@@ -119,7 +114,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             $page->parent = new Model_Page($page->id_parent);
             $page->setAsRemoved();
 
-            $url = self::get_url_to_parent_page($page);
+            $url = self::getUrlToParentPage($page);
 
         } else {
 
@@ -172,7 +167,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         return $page;
     }
 
-    public function get_url_to_parent_page($page)
+    public function getUrlToParentPage($page)
     {
         if ($page->id_parent != 0) {
 
@@ -200,14 +195,36 @@ class Controller_Pages extends Controller_Base_preDispatch
     */
     private function savePageFiles($page_id)
     {
-        $attaches = Arr::get($_POST, 'attaches');
-        $attaches = json_decode($attaches, true);
+        $new_attaches_list = Arr::get($_POST, 'attaches');
+        $new_attaches_list = json_decode($new_attaches_list, true);
+        $old_attaches_list = Model_File::getPageFiles($page_id);
 
-        foreach ($attaches as $id => $file_row) {
+        echo Debug::vars($old_attaches_list);
 
-            $file = new Model_File($id);
+        /**
+         * Delete files
+         */
+        foreach ($old_attaches_list as $id => $file) {
+
+            if (!array_key_exists($file->id, $new_attaches_list)) {
+
+                $file = new Model_File($file->id);
+                $file->page = 0;
+
+                $file->update();
+            }
+        }
+
+        /**
+         * Save files
+         */
+        foreach ($new_attaches_list as $id => $file_row) {
+
+            $file = new Model_File($file_row['id']);
+
             $file->page  = $page_id;
             $file->title = $file_row['title'];
+
             $file->update();
         }
     }

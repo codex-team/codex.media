@@ -140,7 +140,7 @@ class Model_File extends Model
         return $path;
     }
 
-    static public function getPageFiles($page_id, $type = false)
+    static public function getPageFiles($page_id, $type = false, $json = false)
     {
         $page_files = Dao_Files::select()
             ->where('page','=', $page_id)
@@ -152,11 +152,24 @@ class Model_File extends Model
 
         $page_files_array = array();
 
+
         if (!empty($page_files_rows)) {
 
             foreach ($page_files_rows as $file_row) {
 
-                $page_files_array[] = new Model_File(null, null, $file_row);
+                if (!$json) {
+
+                    $page_files_array[] = new Model_File(null, null, $file_row);
+
+                } else {
+
+                    $file_id = (int) $file_row['id'];
+                    $json_file_info['id'] = $file_id;
+                    $json_file_info['title'] = $file_row['title'];
+                    $json_file_info['type'] = $file_row['type'];
+
+                    $page_files_array[$file_id] = $json_file_info;
+                }
             }
         }
 
