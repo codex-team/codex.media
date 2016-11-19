@@ -3,16 +3,17 @@
 class Model_Settings extends Model_preDispatch
 {
     /**
-     * model vars
+     * Settings для сохранение глобальных переменных с настройками сайта.
+     *
+     * @var $name  имя переменной
+     * @var $value значение переменной
+     * @var $label метка (для объединения переменных в группы)
      */
     public $name;
     public $value;
     public $label;
 
 
-    /**
-     * basic model functions
-     */
     public function __construct($name = null)
     {
         if (!$name) return;
@@ -83,13 +84,20 @@ class Model_Settings extends Model_preDispatch
 
 
     /**
-     * other functions
+     * Returns vars array by label
+     *
+     * @return array[key] = value
      */
     public static function getListByLabel($label = null)
     {
-        $parameterRows = Dao_Settings::select('name')
-            ->where('label', '=', $label)
-            ->execute();
+        $parameterRows = Dao_Settings::select('name');
+
+        if ($label) {
+
+            $parameterRows->where('label', '=', $label);
+        }
+
+        $parameterRows->execute();
 
         $paramList = array();
 

@@ -168,7 +168,10 @@ class Controller_Parser extends Controller_Base_preDispatch
         $tagName   = $node->nodeName;
         $className = '';
 
-        if ($classAttr = $node->attributes->getNamedItem('class')) $className = $classAttr->nodeValue;
+        if ($classAttr = $node->attributes->getNamedItem('class')) {
+
+            $className = $classAttr->nodeValue;
+        }
 
         return $tagName . '@' . $className;
     }
@@ -181,7 +184,10 @@ class Controller_Parser extends Controller_Base_preDispatch
         $innerHTML = '';
         $children  = $element->childNodes;
 
-        foreach ($children as $child) $innerHTML .= $element->ownerDocument->saveHTML($child);
+        foreach ($children as $child) {
+
+            $innerHTML .= $element->ownerDocument->saveHTML($child);
+        }
 
         return $innerHTML;
     }

@@ -525,3 +525,19 @@ codex.content = {
         }
     }
 };
+
+
+
+codex.documentIsReady(function(){
+
+    codex.transport.init();
+
+    codex.content.customCheckboxes.init();
+
+    codexSpecial.init({
+
+        blockId : 'js-contrast-version-holder',
+
+    });
+
+});

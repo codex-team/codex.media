@@ -58,7 +58,10 @@ class Controller_Index extends Controller_Base_preDispatch
     {
         $status = Model_User::USER_STATUS_REGISTERED;
 
-        if ($this->request->param('type') == 'teachers') $status = Model_User::USER_STATUS_TEACHER;
+        if ($this->request->param('type') == 'teachers') {
+
+            $status = Model_User::USER_STATUS_TEACHER;
+        }
 
         $this->view['users']  = Model_User::getUsersList($status);
         $this->view['status'] = $status;

@@ -70,11 +70,13 @@ input[type="checkbox"] {
 }
 
 ::-moz-selection {
-    background: #FF5E99; color:#fff;
+    background: #FF5E99;
+    color:#fff;
     text-shadow: none;
 }
 ::selection {
-    background:#FF5E99; color:#fff;
+    background:#FF5E99;
+    color:#fff;
     text-shadow: none;
 }
 
@@ -233,7 +235,8 @@ a {
         right: 0px; bottom: -4em;
         z-index: 2;
         padding: 12px 20px;
-        background: #fff; color: #748098;
+        background: #fff;
+        color: #748098;
         font-size: 13px;
         font-style: normal;
         border-radius: 2px;
@@ -417,7 +420,8 @@ textarea:focus::-webkit-input-placeholder {
 .info_block {
     padding: 30px;
     font-size: 15px;
-    background: #F5F8FB; color: #406EAB;
+    background: #F5F8FB;
+    color: #406EAB;
     border-radius: 2px;
 }
 
@@ -436,26 +440,31 @@ input[type="submit"] {
     text-decoration: none;
     font-family: inherit;
     font-size: 13px;
-    background: #eee; color: #9D9D9D;
+    background: #eee;
+    color: #9D9D9D;
     border: 0;
     cursor: pointer;
 }
     .button:hover {
-        background: #DEE0E3; color: #7A838C;
+        background: #DEE0E3;
+        color: #7A838C;
     }
 .button.green {
-    background: #2aae91; color: #fff;
+    background: #2aae91;
+    color: #fff;
 }
 .button.green:hover {
     background: #279d83;
 }
 .button.main,
 input[type="submit"] {
-    background: #548AD2; color: #fff;
+    background: #548AD2;
+    color: #fff;
 }
     .button.main:hover,
     input[type="submit"]:hover {
-        background: #3D77C3; color: #fff
+        background: #3D77C3;
+        color: #fff
     }
 
 .iconic i{
@@ -490,7 +499,8 @@ input[type="submit"] {
     cursor: pointer;
 }
 .button-delete:hover {
-    background-color: red; color: #fff;
+    background-color: red;
+    color: #fff;
 }
 .button-delete__ready-to-delete {
     color: red;
@@ -555,7 +565,8 @@ input[type="submit"] {
     padding: 7px 15px;
     margin-bottom: 20px;
     border-radius: 3px;
-    background: #FFDEDE; color: #B51D1D;
+    background: #FFDEDE;
+    color: #B51D1D;
     font-size: 11px;
     font-family: 'monaco', 'consolas', 'courier';
 }
@@ -741,7 +752,8 @@ aside .button {
     margin: 25px;
 }
     .button.logout {
-        background: #2D3136; color: #606469;
+        background: #2D3136;
+        color: #606469;
     }
         .button.logout:hover {
             background: #202328;
@@ -1200,7 +1212,8 @@ aside .logout {
 .page_content blockquote,
 .redactor_editor blockquote,
 .redactor_format_blockquote {
-    background: #EDF4FB; color: #5E7084;
+    background: #EDF4FB;
+    color: #5E7084;
     padding: 20px;
     font-style: italic;
 }
@@ -1837,7 +1850,8 @@ aside .logout {
     text-decoration: none;
 }
     .load_more_button:hover {
-        background-color: #edf0f8; color: #607292;
+        background-color: #edf0f8;
+        color: #607292;
         border-color: #e3e9f6;
     }
 
@@ -1861,8 +1875,7 @@ aside .logout {
 /**
 * Small screens and tablets viewport
 */
-@media all and (max-width: 1100px)
-{
+@media all and (max-width: 1100px) {
     aside,
     .sidebar {
         width: 250px;
@@ -1892,8 +1905,7 @@ aside .logout {
 /**
 * Mobile view styles
 */
-@media all and (max-width: 1000px)
-{
+@media all and (max-width: 1000px) {
     .mobile_hide {
         display: none !important;
         visibility: hidden !important;
@@ -2221,8 +2233,7 @@ aside .logout {
 /**
 * Retina & HD displays viewport
 */
-@media all and (-webkit-min-device-pixel-ratio: 1.5)
-{
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
 
 }
 

@@ -134,24 +134,6 @@
 
     <script src="/public/extensions/codex-special/codex-special.v.1.0.min.js?v=2"></script>
 
-    <script>
-
-        codex.documentIsReady(function(){
-
-            codex.transport.init();
-
-            codex.content.customCheckboxes.init();
-
-            codexSpecial.init({
-
-                blockId : 'js-contrast-version-holder',
-
-            });
-
-        });
-
-    </script>
-
     <? /* end Scripts */ ?>
 
 

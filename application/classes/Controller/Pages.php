@@ -199,8 +199,6 @@ class Controller_Pages extends Controller_Base_preDispatch
         $new_attaches_list = json_decode($new_attaches_list, true);
         $old_attaches_list = Model_File::getPageFiles($page_id);
 
-        echo Debug::vars($old_attaches_list);
-
         /**
          * Delete files
          */

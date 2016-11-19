@@ -62,7 +62,6 @@ class Model_File extends Model
 
         if ($fields) {
 
-            /** если на вход идет массив */
             foreach ($fields as $key => $value) {
 
                 $file->set($key, $value);
