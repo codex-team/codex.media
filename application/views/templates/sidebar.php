@@ -6,7 +6,7 @@
 <style>
 
     .banner_preview{
-        background: #e5e9f2; color: #7c8da8;
+        background: #e5e9f2;
         border: 1px solid #d6e0ee;
         text-align: center;
         width: 250px;
@@ -14,6 +14,7 @@
         margin: 25px auto;
         padding: 40px;
         box-sizing: border-box;
+        color: #7c8da8;
     }
 
 </style>

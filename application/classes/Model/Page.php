@@ -41,7 +41,7 @@ class Model_Page extends Model_preDispatch
         $pageRow = Dao_Pages::select()
             ->where('id', '=', $id)
             ->limit(1)
-            //->cached(Date::MINUTE * 30, 'page:' . $id)
+            ->cached(Date::MINUTE * 30, 'page:' . $id)
             ->execute();
 
         return self::fillByRow($pageRow);
@@ -79,7 +79,7 @@ class Model_Page extends Model_preDispatch
             ->set('dt_pin',         $this->dt_pin)
             ->set('source_link',    $this->source_link);
 
-        //if ($this->is_menu_item) $page->clearcache('site_menu');
+        if ($this->is_menu_item) $page->clearcache('site_menu');
 
         $page = $page->execute();
 
@@ -101,7 +101,7 @@ class Model_Page extends Model_preDispatch
             ->set('rich_view',      $this->rich_view)
             ->set('dt_pin',         $this->dt_pin)
             ->set('source_link',    $this->source_link)
-            //->clearcache('page:' . $this->id, array('site_menu'))
+            ->clearcache('page:' . $this->id, array('site_menu'))
             ->execute();
     }
 
@@ -184,7 +184,7 @@ class Model_Page extends Model_preDispatch
             ->where('status', '=', 0)
             ->where('is_menu_item', '=', 1)
             ->order_by('id', 'ASC')
-            //->cached(Date::MINUTE*5, 'site_menu')
+            ->cached(Date::MINUTE*5, 'site_menu')
             ->execute();
 
         return self::rowsToModels($menu_pages);

@@ -90,7 +90,7 @@ class Model_User extends Model
         $user = Dao_Users::select()
             ->where('id', '=', $id)
             ->limit(1)
-            //->cached(Date::HOUR, 'user:' . $id)
+            ->cached(Date::HOUR, 'user:' . $id)
             ->execute();
 
         return self::fillByRow($user);
@@ -125,7 +125,7 @@ class Model_User extends Model
         Dao_Users::update()
             ->where('id', '=', $this->id)
             ->set('status', $status)
-            //->clearcache('user:' . $this->id, array('users'))
+            ->clearcache('user:' . $this->id, array('users'))
             ->execute();
 
         $this->status       = $status;

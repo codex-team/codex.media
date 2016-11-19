@@ -11,7 +11,10 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         if ($page->title) {
 
-            if ($uri != $page->uri) $this->redirect('/p/' . $page->id . '/' . $page->uri);
+            if ($uri != $page->uri) {
+
+                $this->redirect('/p/' . $page->id . '/' . $page->uri);
+            }
 
             $page->childrens = Model_Page::getChildrenPagesByParent($page->id);
             $page->files     = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);

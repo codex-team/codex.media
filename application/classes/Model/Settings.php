@@ -26,6 +26,7 @@ class Model_Settings extends Model_preDispatch
         $parameterRow = Dao_Settings::select()
             ->where('name', '=', $name)
             ->limit(1)
+            ->cached(Date::MINUTE * 30, 'settings:' . $name)
             ->execute();
 
         return self::fillByRow($parameterRow);
@@ -49,13 +50,11 @@ class Model_Settings extends Model_preDispatch
 
     public function insert()
     {
-        $parameterRow = Dao_Settings::insert();
-
-        $parameterRow->set('name',  $this->name);
-        $parameterRow->set('value', $this->value);
-        $parameterRow->set('label', $this->label);
-
-        $parameterRow = $parameterRow->execute();
+        $parameterRow = Dao_Settings::insert()
+            ->set('name',  $this->name)
+            ->set('value', $this->value)
+            ->set('label', $this->label)
+            ->execute();
 
         if ($parameterRow) return $this;
 
@@ -65,12 +64,11 @@ class Model_Settings extends Model_preDispatch
     public function update()
     {
         $parameterRow = Dao_Settings::update()
-            ->where('name', '=', $this->name);
-
-        $parameterRow->set('value', $this->value);
-        $parameterRow->set('label', $this->label);
-
-        $parameterRow = $parameterRow->execute();
+            ->where('name', '=', $this->name)
+            ->set('value', $this->value)
+            ->set('label', $this->label)
+            ->clearcache('settings:' . $this->name)
+            ->execute();
 
         if ($parameterRow) return $this;
 
@@ -97,7 +95,7 @@ class Model_Settings extends Model_preDispatch
             $parameterRows->where('label', '=', $label);
         }
 
-        $parameterRows->execute();
+        $parameterRows = $parameterRows->execute();
 
         $paramList = array();
 
