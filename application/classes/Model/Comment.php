@@ -23,7 +23,7 @@ Class Model_Comment extends Model_preDispatch
         $comment_row = Dao_Comments::select()
             ->where('id', '=', $id)
             ->limit(1)
-            //->cached(Date::MINUTE * 5, 'comment:' . $id)
+            ->cached(Date::MINUTE * 5, 'comment:' . $id)
             ->execute();
 
         $model = new Model_Comment();
@@ -42,7 +42,7 @@ Class Model_Comment extends Model_preDispatch
             ->set('page_id',   $this->page_id)
             ->set('root_id',   $this->root_id)
             ->set('parent_id', $this->parent_comment['id'])
-            //->clearcache('page:' . $this->page_id)
+            ->clearcache('page:' . $this->page_id)
             ->execute();
 
         if ($this->root_id == 0) {
@@ -107,7 +107,7 @@ Class Model_Comment extends Model_preDispatch
             ->where('page_id', '=', $page_id)
             ->where('is_removed', '=', 0)
             ->order_by('root_id', 'ASC')
-            //->cached(Date::MINUTE * 5, 'page:' . $page_id)
+            ->cached(Date::MINUTE * 5, 'page:' . $page_id)
             ->execute();
 
         if ($comment_rows) {
@@ -139,7 +139,7 @@ Class Model_Comment extends Model_preDispatch
         Dao_Comments::update()
             ->where('id', '=', $this->id)
             ->set('is_removed', 1)
-            //->clearcache('page:' . $this->page_id)
+            ->clearcache('page:' . $this->page_id)
             ->execute();
 
         Dao_Comments::update()
