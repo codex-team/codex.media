@@ -25,6 +25,7 @@
     padding: 15px;
     background-color: white;
     white-space: nowrap;
+    z-index: 9999;
 }
 /* wrap for saving font-size in toolbar */
 html body .codex-special__toolbar{
@@ -122,6 +123,7 @@ body.special-blue,
 .special-blue form,
 .special-blue article {
     background-color: #b9d8ff !important;
+    background-image: none !important;
     color: #152b48 !important;
 }
 .special-blue input,
@@ -149,6 +151,7 @@ body.special-green,
 .special-green form,
 .special-green article {
     background-color: #2b2924 !important;
+    background-image: none !important;
     color: #10f13a !important;
 }
 .special-green input,
@@ -172,6 +175,7 @@ body.special-white,
 .special-white form,
 .special-white article {
     background-color: #121213 !important;
+    background-image: none !important;
     color: #FFF !important;
 }
 .special-white input,
