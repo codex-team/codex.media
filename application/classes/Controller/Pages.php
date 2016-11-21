@@ -210,7 +210,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             if (!array_key_exists($file->id, $new_attaches_list)) {
 
                 $file = new Model_File($file->id);
-                $file->page = 0;
+                $file->is_removed = 1;
 
                 $file->update();
             }

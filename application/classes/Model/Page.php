@@ -110,11 +110,29 @@ class Model_Page extends Model_preDispatch
         $this->status = self::STATUS_REMOVED_PAGE;
         $this->update();
 
+        /* remove files */
+        $files = Model_File::getPageFiles($this->id);
+
+        foreach ($files as $file) {
+
+            $file->is_removed = 1;
+            $file->update();
+        }
+
+        /* remove childs */
         $childrens = $this->getChildrenPagesByParent($this->id);
 
         foreach ($childrens as $page) {
 
             $page->setAsRemoved();
+        }
+
+        /* remove comments */
+        $comments = Model_Comment::getCommentsByPageId($this->id);
+
+        foreach ($comments as $comment) {
+
+            $comment->delete();
         }
 
         return true;

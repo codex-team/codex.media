@@ -7,12 +7,17 @@ Class Model_Comment extends Model_preDispatch
     public $text;
     public $page_id;
     public $root_id;
+    public $parent_id;
     public $parent_comment;
     public $dt_create;
     public $is_removed;
 
-    public function __construct()
-    {}
+    public function __construct($id = 0)
+    {
+        if ($id) return self::get($id);
+
+        return false;
+    }
 
     /**
      * Возвращает комментарий с указанным id из БД.
@@ -42,7 +47,7 @@ Class Model_Comment extends Model_preDispatch
             ->set('page_id',   $this->page_id)
             ->set('root_id',   $this->root_id)
             ->set('parent_id', $this->parent_comment['id'])
-            ->clearcache('page:' . $this->page_id)
+            ->clearcache('comments_page:' . $this->page_id)
             ->execute();
 
         if ($this->root_id == 0) {
@@ -54,6 +59,41 @@ Class Model_Comment extends Model_preDispatch
         }
 
         return $idAndRowAffected;
+    }
+
+    public static function getCommentsByPageId($page_id)
+    {
+        $comment_rows = Dao_Comments::select()
+            ->where('page_id', '=', $page_id)
+            ->where('is_removed', '=', 0)
+            ->order_by('root_id', 'ASC')
+            ->cached(Date::MINUTE * 5, 'comments_page:' . $page_id)
+            ->execute();
+
+        return self::rowsToModels($comment_rows, true);
+    }
+
+    /**
+     * Возвращает модель родительского комментария из массива к конкретному комментарию
+     *
+     * @var $all_comment массив комментариев, где проводится поиск
+     * @var $comment     комментарий, для которого необходимо найти родителя
+     */
+    private static function getParentForCommentFromCommentsArray($all_comment, $comment)
+    {
+        $parent = array();
+
+        foreach ($all_comment as $parent_row) {
+
+            if ($comment['parent_id'] == $parent_row['id']) {
+
+                $parent = new Model_Comment;
+
+                return $parent->fillByRow($parent_row);
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -68,6 +108,7 @@ Class Model_Comment extends Model_preDispatch
             $this->text       = $comment_row['text'];
             $this->page_id    = $comment_row['page_id'];
             $this->root_id    = $comment_row['root_id'];
+            $this->parent_id  = $comment_row['parent_id'];
             $this->dt_create  = $comment_row['dt_create'];
             $this->is_removed = $comment_row['is_removed'];
         }
@@ -75,54 +116,31 @@ Class Model_Comment extends Model_preDispatch
         return $this;
     }
 
-    private static function getParentFromCommentsArray($comment_rows, $comment_row)
-    {
-        $parent = array();
-
-        foreach ($comment_rows as $parent_row) {
-
-            if ($parent_row['id'] == $comment_row['parent_id']) {
-
-                $parent = array(
-                    "id"         => $parent_row['id'],
-                    "author"     => new Model_User($parent_row['user_id']),
-                    "text"       => $parent_row['text'],
-                    "root_id"    => $parent_row['root_id'],
-                    "dt_create"  => $parent_row['dt_create'],
-                    "is_removed" => $parent_row['is_removed']
-                );
-
-                break;
-            }
-        }
-
-        return $parent;
-    }
-
-    public static function getCommentsByPageId($page_id)
+    /**
+     * Возвращает массив моделей комментариев
+     *
+     * @var $comment_rows
+     * @var $add_parent (boolean) добавлять ли в модели информацию о родительских комментариях
+     */
+    private static function rowsToModels($comment_rows, $add_parent = false)
     {
         $comments = array();
-
-        $comment_rows = Dao_Comments::select()
-            ->where('page_id', '=', $page_id)
-            ->where('is_removed', '=', 0)
-            ->order_by('root_id', 'ASC')
-            ->cached(Date::MINUTE * 5, 'page:' . $page_id)
-            ->execute();
 
         if ($comment_rows) {
 
             foreach ($comment_rows as $comment_row) {
 
-                $parent = array();
-
-                $parent = self::getParentFromCommentsArray($comment_rows, $comment_row);
-
                 $comment = new Model_Comment();
 
                 $comment->fillByRow($comment_row);
 
-                $comment->parent_comment = $parent;
+                /* добавление информации о родительском комментарии */
+                if ($add_parent) {
+
+                    $parent = array();
+                    $parent = self::getParentForCommentFromCommentsArray($comment_rows, $comment_row);
+                    $comment->parent_comment = $parent;
+                }
 
                 array_push($comments, $comment);
             }
@@ -132,24 +150,40 @@ Class Model_Comment extends Model_preDispatch
     }
 
     /**
-     * Удаляем комментарий и все его подкомментарии
+     * Получаем массив моделей подкомментариев
      */
-    public function delete()
+    public function getSubcomments()
     {
+        $subcomments = Dao_Comments::select()
+            ->where('parent_id', '=', $this->id)
+            ->where('is_removed', '=', 0)
+            ->order_by('id', 'ASC')
+            ->execute();
+
+        return self::rowsToModels($subcomments);
+    }
+
+    /**
+     * Удаляет комментарий и все его подкомментарии
+     */
+    public function delete($with_subcomments = false)
+    {
+        /* удалить сам комментарий */
         Dao_Comments::update()
             ->where('id', '=', $this->id)
             ->set('is_removed', 1)
-            ->clearcache('page:' . $this->page_id)
+            ->clearcache('comments_page:' . $this->page_id)
             ->execute();
 
-        Dao_Comments::update()
-            ->where('root_id', '=', $this->id)
-            ->set('is_removed', 1)
-            ->execute();
+        /* удалить подкомментарии */
+        if ($with_subcomments) {
 
-        Dao_Comments::update()
-            ->where('parent_id', '=', $this->id)
-            ->set('is_removed', 1)
-            ->execute();
+            $subcomments = $this->getSubcomments();
+
+            foreach ($subcomments as $subcomment) {
+
+                $subcomment->delete(true);
+            }
+        }
     }
 }

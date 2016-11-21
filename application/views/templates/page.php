@@ -132,7 +132,7 @@
                     <? if ($comment->parent_comment): ?>
                         <span class="to_user">
                             <i class="icon-right-dir"></i>
-                            <?= $comment->parent_comment['author']->name ?>
+                            <?= $comment->parent_comment->author->name ?>
                         </span>
                     <? endif; ?>
 

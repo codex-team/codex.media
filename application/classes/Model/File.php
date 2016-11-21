@@ -4,13 +4,14 @@ class Model_File extends Model
 {
     public $id          = 0;
     public $page        = 0;
+    public $title       = '';
+    public $is_removed  = 0;
+
     public $extension   = '';
     public $filename    = '';
-    public $title       = '';
     public $author      = 0;
     public $size        = 0;
     public $date        = null;
-    public $is_removed  = 0;
     public $status      = 0;
     public $type        = 0;
     public $filepath    = '';
@@ -102,9 +103,11 @@ class Model_File extends Model
         } else {
 
             /** если на вход идет модель */
-            $file->where('id', '=', $this->id)
-                 ->set('page',      $this->page)
-                 ->set('title',     $this->title);
+            $file->where('id', '=',  $this->id)
+                 ->set('page',       $this->page)
+                 ->set('title',      $this->title)
+                 ->set('is_removed', $this->is_removed)
+                 ->set('status',     $this->status);
         }
 
         $file_id = $file->execute();
@@ -143,6 +146,7 @@ class Model_File extends Model
     {
         $page_files = Dao_Files::select()
             ->where('page','=', $page_id)
+            ->where('is_removed','=', 0)
             ->where('status', '=', 0);
 
         if ($type) $page_files->where('type', '=', $type);
