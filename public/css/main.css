@@ -499,11 +499,11 @@ input[type="submit"] {
     cursor: pointer;
 }
 .button-delete:hover {
-    background-color: red;
+    background-color: rgb(217, 0, 0);
     color: #fff;
 }
 .button-delete__ready-to-delete {
-    color: red;
+    color: rgb(217, 0, 0);
 }
 
 
@@ -1376,6 +1376,19 @@ aside .logout {
             vertical-align: middle;
             margin: 0 15px;
         }
+
+.click-again-to-approve {
+    background-color: rgb(217, 0, 0) !important;
+    color: #ffffff !important;
+    border-radius: 20px;
+}
+    .textbutton.click-again-to-approve {
+        padding: 6px 30px;
+    }
+
+    .delete_button.click-again-to-approve {
+        padding: 6px 30px;
+    }
 
 
 .add_file_form {

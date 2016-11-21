@@ -523,6 +523,35 @@ codex.content = {
                 input.setAttribute('checked', 'checked');
             }
         }
+    },
+
+    approvalButtons : {
+
+        CLICKED_CLASS : 'click-again-to-approve',
+
+        init : function() {
+
+            var buttons = document.getElementsByClassName('js-approval-button');
+
+            if (buttons.length) for (var i = buttons.length - 1; i >= 0; i--) {
+
+                buttons[i].addEventListener('click', codex.content.approvalButtons.clicked , false);
+            }
+        },
+
+        clicked : function() {
+
+            var button    = this,
+                isClicked = this.classList.contains(codex.content.approvalButtons.CLICKED_CLASS);
+
+            if (!isClicked) {
+
+                /* временное решение, пока нет всплывающего окна подверждения важных действий */
+                button.classList.add(codex.content.approvalButtons.CLICKED_CLASS);
+
+                event.preventDefault();
+            }
+        }
     }
 };
 
@@ -533,6 +562,8 @@ codex.documentIsReady(function(){
     codex.transport.init();
 
     codex.content.customCheckboxes.init();
+
+    codex.content.approvalButtons.init();
 
     codexSpecial.init({
 

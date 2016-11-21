@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700&subset=cyrillic" rel="stylesheet">
 
 
-    <link rel="stylesheet" type="text/css" media="all" href="/public/css/main.css?v=<?= time() ?>">
+    <link rel="stylesheet" type="text/css" media="all" href="/public/css/main.css?v=<?= filemtime('public/css/main.css'); ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>

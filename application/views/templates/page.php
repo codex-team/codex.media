@@ -77,7 +77,7 @@
             <? if ($page->type != Model_Page::TYPE_SITE_NEWS): ?>
                 <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
             <? endif ?>
-            <a class="textbutton" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
+            <a class="textbutton js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
         </div>
     <? endif ?>
 </div>
@@ -149,7 +149,7 @@
                     <? endif; ?>
 
                     <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
-                        <a class="delete_button"
+                        <a class="delete_button js-approval-button"
                            href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             Удалить
                         </a>
