@@ -42,28 +42,22 @@
         <span class="button main fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
 
 
-        <? if ($user->isAdmin): ?>
+        <? if ($user->isAdmin && $page->type == Model_Page::TYPE_SITE_NEWS): ?>
 
-            <? if ($page->type == Model_Page::TYPE_SITE_NEWS): ?>
+            <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Закрепить новость">
+                <input type="checkbox" name="dt_pin" value="<?= $page->dt_pin ? $page->dt_pin : date('Y-m-d H:i:s') ?>" <?= isset($page->dt_pin) ? 'checked="checked"' : '' ?>/>
+                <i class="icon-pin"></i>
+            </div>
 
-                <div class="toggler fl_r js-custom-checkbox <?= $page->rich_view ? 'checked' : '' ?>" data-title="Важная новость">
-                    <input type="checkbox" name="rich_view" value="1" <?= isset($page->rich_view) && $page->rich_view == 1 ? 'checked="checked"' : Arr::get($_POST, 'rich_view' , '') ?>/>
-                    <i class="icon-megaphone"></i>
-                </div>
+            <div class="toggler fl_r js-custom-checkbox <?= $page->rich_view ? 'checked' : '' ?>" data-title="Важная новость">
+                <input type="checkbox" name="rich_view" value="1" <?= isset($page->rich_view) && $page->rich_view == 1 ? 'checked="checked"' : Arr::get($_POST, 'rich_view' , '') ?>/>
+                <i class="icon-megaphone"></i>
+            </div>
 
-                <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Закрепить новость">
-                    <input type="checkbox" name="dt_pin" value="<?= $page->dt_pin ? $page->dt_pin : date('Y-m-d H:i:s') ?>" <?= isset($page->dt_pin) ? 'checked="checked"' : '' ?>/>
-                    <i class="icon-pin"></i>
-                </div>
-
-            <? else: ?>
-
-                <div class="toggler fl_r js-custom-checkbox <?= $page->is_menu_item ? 'checked' : '' ?>" data-title="Пункт меню">
-                    <input type="checkbox" name="is_menu_item" value="1" <?= isset($page->is_menu_item) && $page->is_menu_item == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') ?>/>
-                    <i class="icon-star"></i>
-                </div>
-
-            <? endif ?>
+            <div class="toggler fl_r js-custom-checkbox <?= $page->is_menu_item ? 'checked' : '' ?>" data-label="menu_item" data-title="Пункт меню">
+                <input type="checkbox" name="is_menu_item" value="1" <?= isset($page->is_menu_item) && $page->is_menu_item == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') ?>/>
+                <i class="icon-star"></i>
+            </div>
 
         <? endif ?>
 
