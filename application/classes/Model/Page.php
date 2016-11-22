@@ -139,18 +139,21 @@ class Model_Page extends Model_preDispatch
     }
 
     public static function getPages(
-        $type = 0,
-        $limit = 0,
+        $type   = 0,
+        $limit  = 0,
         $offset = 0,
         $status = 0,
-        $pinned_news = false
+        $pinned_news        = false,
+        $without_menu_items = false
     ) {
+        
         $pages_query = Dao_Pages::select()->where('status', '=', $status);
 
-        if ($type)        $pages_query->where('type', '=', $type);
-        if ($limit)       $pages_query->limit($limit);
-        if ($offset)      $pages_query->offset($offset);
-        if ($pinned_news) $pages_query->order_by('dt_pin', 'DESC');
+        if ($type)               $pages_query->where('type', '=', $type);
+        if ($limit)              $pages_query->limit($limit);
+        if ($offset)             $pages_query->offset($offset);
+        if ($pinned_news)        $pages_query->order_by('dt_pin', 'DESC');
+        if ($without_menu_items) $pages_query->where('is_menu_item', '=', 0);
 
         $pages_rows = $pages_query->order_by('id','DESC')->execute();
 

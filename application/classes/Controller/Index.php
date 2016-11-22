@@ -17,7 +17,9 @@ class Controller_Index extends Controller_Base_preDispatch
             self::NEWS_LIMIT_PER_PAGE + 1,
             $offset,
             0,
-            true);
+            true,
+            true
+        );
 
         $next_page = false;
 
