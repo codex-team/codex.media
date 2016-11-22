@@ -17,7 +17,7 @@ class Model_Page extends Model_preDispatch
     public $parent;
     public $source_link     = '';
 
-    public $attaches        = array();
+    public $attachments     = array();
     public $files           = array();
     public $images          = array();
 
