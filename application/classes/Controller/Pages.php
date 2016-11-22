@@ -4,7 +4,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 {
     public function action_show_page()
     {
-        $id = $this->request->param('id');
+        $id  = $this->request->param('id');
         $uri = $this->request->param('uri');
 
         $page = new Model_Page($id);
@@ -16,13 +16,13 @@ class Controller_Pages extends Controller_Base_preDispatch
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
             }
 
+            $page->parent    = new Model_Page($page->id_parent);
             $page->childrens = Model_Page::getChildrenPagesByParent($page->id);
             $page->files     = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
             $page->images    = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
 
             $this->view['can_modify_this_page'] = $this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher);
             $this->view['comments']             = Model_Comment::getCommentsByPageId($id);
-            $this->view['navigation']           = self::get_navigation_path_array($page->id);
             $this->view['page']                 = $page;
 
             $this->template->content = View::factory('templates/page', $this->view);

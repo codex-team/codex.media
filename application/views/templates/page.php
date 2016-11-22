@@ -1,37 +1,32 @@
 <div class="w_island w_island_centercol">
 
-    <? /*
-
     <div class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
 
-        <? if($navigation[0]->type != Model_Page::TYPE_USER_PAGE || $navigation[0]->is_menu_item == 1): ?>
-            <a class="nav_chain" href="/" itemprop="url"><span itemprop="title">Главная</span></a>
+        <? if ($page->parent->id): ?>
+
+            <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri ?>" itemprop="title" class="nav_chain">
+                <?= $page->parent->title ?>
+            </a>
+
         <? else: ?>
-            <a class="nav_chain" href="/user/<?= $page->author->id ?>" itemprop="url"><span itemprop="title"><?= $page->author->name ?></span></a>
-        <? endif ?>
 
-        <? foreach ($navigation as $navig_page): ?> »
-            <? if ($navig_page->id != $page->id): ?>
-                <a href="/p/<?= $navig_page->id ?>/<?= $navig_page->uri ?>" itemprop="title" class="nav_chain">
-                    <?= $navig_page->title ?>
+            <? if ($page->type != Model_Page::TYPE_USER_PAGE): ?>
+
+                <a class="nav_chain" href="/" itemprop="url">
+                    <span itemprop="title">Главная</span>
                 </a>
-            <? else: ?>
-                <span itemprop="title" class="nav_chain">
-                    <?= $navig_page->title ?>
-                </span>
-            <? endif ?>
-        <? endforeach ?>
 
-        <? if( $can_modify_this_page ): ?>
-            <div class="fl_r actions">
-                <a class="textbutton" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
-                <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i> Редактировать</a>
-            </div>
+            <? else: ?>
+
+                <a class="nav_chain" href="/user/<?= $page->author->id ?>" itemprop="url">
+                    <span itemprop="title"><?= $page->author->name ?></span>
+                </a>
+
+            <? endif ?>
+
         <? endif ?>
 
     </div>
-
-    */ ?>
 
 
     <? /* Page title */ ?>
