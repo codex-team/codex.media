@@ -4,29 +4,28 @@
 
     <div class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
 
-        <? if($navigation[0]->type != Model_Page::TYPE_USER_PAGE || $navigation[0]->is_menu_item == 1): ?>
-            <a class="nav_chain" href="/" itemprop="url"><span itemprop="title">Главная</span></a>
+        <? if ($page->parent->id): ?>
+
+            <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri ?>" itemprop="title" class="nav_chain">
+                <?= $page->parent->title ?>
+            </a>
+
         <? else: ?>
-            <a class="nav_chain" href="/user/<?= $page->author->id ?>" itemprop="url"><span itemprop="title"><?= $page->author->name ?></span></a>
-        <? endif ?>
 
-        <? foreach ($navigation as $navig_page): ?> »
-            <? if ($navig_page->id != $page->id): ?>
-                <a href="/p/<?= $navig_page->id ?>/<?= $navig_page->uri ?>" itemprop="title" class="nav_chain">
-                    <?= $navig_page->title ?>
+            <? if ($page->type != Model_Page::TYPE_USER_PAGE): ?>
+
+                <a class="nav_chain" href="/" itemprop="url">
+                    <span itemprop="title">Главная</span>
                 </a>
-            <? else: ?>
-                <span itemprop="title" class="nav_chain">
-                    <?= $navig_page->title ?>
-                </span>
-            <? endif ?>
-        <? endforeach ?>
 
-        <? if( $can_modify_this_page ): ?>
-            <div class="fl_r actions">
-                <a class="textbutton" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
-                <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i> Редактировать</a>
-            </div>
+            <? else: ?>
+
+                <a class="nav_chain" href="/user/<?= $page->author->id ?>" itemprop="url">
+                    <span itemprop="title"><?= $page->author->name ?></span>
+                </a>
+
+            <? endif ?>
+
         <? endif ?>
 
     </div>
@@ -34,10 +33,12 @@
     */ ?>
 
 
-
+    <? /* Page title */ ?>
     <h1 class="page_title">
     	<?= $page->title ?>
     </h1>
+
+    <? /* Page info */ ?>
     <div class="page-information">
         <? if ($page->type != Model_Page::TYPE_SITE_PAGE): ?>
             <time class="page-information__time"><?= $methods->ftime(strtotime($page->date)) ?></time>
@@ -49,40 +50,49 @@
             </a>
         <? endif ?>
     </div>
+
+    <? /* Page content */ ?>
     <? if ($page->content): ?>
         <article class="page_content">
         	<?= nl2br($page->content) ?>
         </article>
     <? endif ?>
 
+    <? /* Show childs only for non-news pages */ ?>
+    <? if ($page->type != Model_Page::TYPE_SITE_NEWS): ?>
+        <? if ($page->childrens): ?>
+            <ul class="page_childrens clear <?= !$page->content ? 'page_childrens--empty-content' : '' ?>">
+                <? foreach ($page->childrens as $children): ?>
+                    <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
+                <? endforeach ?>
+            </ul>
+        <? endif; ?>
+    <? endif ?>
 
-
-    <? if ($page->childrens): ?>
-        <ul class="page_childrens clear <?= !$page->content ? 'page_childrens--empty-content' : '' ?>">
-            <? foreach ($page->childrens as $children): ?>
-                <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
-            <? endforeach ?>
-        </ul>
-    <? endif; ?>
+    <? /* Admin page buttons  */ ?>
     <? if( $can_modify_this_page ): ?>
         <div class="action-line action-line__onpage clear">
             <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i> Редактировать</a>
-            <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
-            <a class="textbutton" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
+            <? if ($page->type != Model_Page::TYPE_SITE_NEWS): ?>
+                <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
+            <? endif ?>
+            <a class="textbutton js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
         </div>
     <? endif ?>
 </div>
 
+<? /* Page's images block */ ?>
 <? if ($page->images): ?>
     <div class="w_island images" style="margin: 5px 0 5px 5px">
         <? foreach ($page->images as $image): ?>
-            <a href="/upload/page_images/o_<?= $image->filename ?>">
+            <a href="/upload/page_images/o_<?= $image->filename ?>" target="_blank">
                 <img src="/upload/page_images/b_<?= $image->filename ?>" class="page_image">
             </a>
         <? endforeach ?>
     </div>
 <? endif; ?>
 
+<? /* Page's files block */ ?>
 <? if ($page->files): ?>
     <div class="w_island files" style="margin: 5px 0 5px 5px">
     	<table class="page_files">
@@ -121,7 +131,7 @@
                     <? if ($comment->parent_comment): ?>
                         <span class="to_user">
                             <i class="icon-right-dir"></i>
-                            <?= $comment->parent_comment['author']->name ?>
+                            <?= $comment->parent_comment->author->name ?>
                         </span>
                     <? endif; ?>
 
@@ -138,7 +148,7 @@
                     <? endif; ?>
 
                     <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
-                        <a class="delete_button"
+                        <a class="delete_button js-approval-button"
                            href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             Удалить
                         </a>
@@ -171,9 +181,5 @@
 
     <? endif; ?>
 </div>
+
 <script src="/public/js/comment.js"></script>
-<script>
-    codex.documentIsReady(function(){
-        Comments.init();
-    });
-</script>

@@ -2,29 +2,27 @@
 
 class Controller_Pages extends Controller_Base_preDispatch
 {
-
-
     public function action_show_page()
     {
-        $id = $this->request->param('id');
+        $id  = $this->request->param('id');
         $uri = $this->request->param('uri');
 
         $page = new Model_Page($id);
 
-        if ($page->title)
-        {
-            if ($uri != $page->uri)
-            {
+        if ($page->title) {
+
+            if ($uri != $page->uri) {
+
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
             }
 
+            $page->parent    = new Model_Page($page->id_parent);
             $page->childrens = Model_Page::getChildrenPagesByParent($page->id);
             $page->files     = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
             $page->images    = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
 
             $this->view['can_modify_this_page'] = $this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher);
             $this->view['comments']             = Model_Comment::getCommentsByPageId($id);
-            $this->view['navigation']           = self::get_navigation_path_array($page->id);
             $this->view['page']                 = $page;
 
             $this->template->content = View::factory('templates/page', $this->view);
@@ -38,14 +36,14 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function action_save()
     {
-        if (!$this->user->isTeacher())
-        {
+        if (!$this->user->isTeacher()) {
+
             self::error_page('Недостаточно прав для создания страницы');
             return FALSE;
         }
 
-        if (!$this->user->isAdmin() && $page->type != Model_Page::TYPE_USER_PAGE)
-        {
+        if (!$this->user->isAdmin() && $page->type != Model_Page::TYPE_USER_PAGE) {
+
             self::error_page('Недостаточно прав для создания новости или страницы сайта');
             return FALSE;
         }
@@ -53,17 +51,19 @@ class Controller_Pages extends Controller_Base_preDispatch
         $errors    = array();
         $csrfToken = Arr::get($_POST, 'csrf');
 
-        if (Security::check($csrfToken)){
+        if (Security::check($csrfToken)) {
 
             /** Сабмит формы */
+            $page = self::get_form();
 
-            $page   = self::get_form();
-
-            if ($page->title && Arr::get($_POST, 'title')){
+            if ($page->title && Arr::get($_POST, 'title')) {
 
                 if ($page->id) {
+
                     $page->update();
+
                 } else {
+
                     $page = $page->insert();
                 }
 
@@ -72,57 +72,53 @@ class Controller_Pages extends Controller_Base_preDispatch
                 */
                 $this->savePageFiles($page->id);
 
-                if ($page->type == Model_Page::TYPE_SITE_NEWS) {
-                    $this->redirect('/');
-                } else {
-                    $this->redirect('/p/' . $page->id . '/' . $page->uri);
-                }
+                $this->redirect('/p/' . $page->id . '/' . $page->uri);
 
             } else {
+
                 $errors['title'] = 'Заголовок страницы не может быть пустым';
             }
 
         } else {
 
             /** Открытие формы */
-
             $page_id = (int) Arr::get($_GET, 'id', 0);
             $page    = new Model_Page($page_id);
 
             $page->files  = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
             $page->images = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
 
+            $page->attachments = Model_File::getPageFiles($page->id, false, true);
+            $this->view['attachments'] = json_encode($page->attachments);
+
             /** Нам необходимо получить только ОДИН из параметров:
              * id       для редактирования существующей страницы
              * type     для создания новости или страницы
              * parent   для создания подстраницы
              */
-
-            if (!$page_id)
-                $page->type      = (int) Arr::get($_GET, 'type', 0);
-
-            if (!$page->type)
-                $page->id_parent =       Arr::get($_GET, 'parent', 0);
+            if (!$page_id)    $page->type      = (int) Arr::get($_GET, 'type', 0);
+            if (!$page->type) $page->id_parent = (int) Arr::get($_GET, 'parent', 0);
 
         }
 
-        $this->view['page']      = $page;
-        $this->view['errors']    = $errors;
+        $this->view['page']   = $page;
+        $this->view['errors'] = $errors;
+        $this->view['attachments'] = json_encode($page->attachments);
 
         $this->template->content = View::factory('templates/pages/new', $this->view);
     }
 
     public function action_delete_page()
     {
-        $id = $this->request->param('id');
+        $id   = $this->request->param('id');
         $page = new Model_Page($id);
 
-        if ($this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher))
-        {
+        if ($this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher)) {
+
             $page->parent = new Model_Page($page->id_parent);
             $page->setAsRemoved();
 
-            $url = self::get_url_to_parent_page($page);
+            $url = self::getUrlToParentPage($page);
 
         } else {
 
@@ -145,8 +141,8 @@ class Controller_Pages extends Controller_Base_preDispatch
     {
         $navig_array = array();
 
-        while ($id != 0)
-        {
+        while ($id != 0) {
+
             $page = new Model_Page($id);
 
             array_unshift($navig_array, $page);
@@ -159,7 +155,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function get_form()
     {
-        $id = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
+        $id   = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
         $page = new Model_Page($id);
 
         $page->type          = (int) Arr::get($_POST, 'type',         0);
@@ -170,29 +166,39 @@ class Controller_Pages extends Controller_Base_preDispatch
         $page->rich_view     = (int) Arr::get($_POST, 'rich_view',    0);
         $page->dt_pin        =       Arr::get($_POST, 'dt_pin',       null);
         $page->source_link   =       Arr::get($_POST, 'source_link',  '');
-        $page->author        = $this->user;
+        $page->author        =       $this->user;
 
         return $page;
     }
 
-    public function get_url_to_parent_page($page)
+    public function getUrlToParentPage($page)
     {
         if ($page->id_parent != 0) {
+
             return '/p/' . $page->parent->id . '/' . $page->parent->uri;
+
         } elseif ($page->type != Model_Page::TYPE_SITE_NEWS) {
+
             return '/user/' . $page->author->id;
+
         } else {
+
             return '/';
         }
     }
 
     public function error_page($error_text)
     {
-        $this->view['error_text'] = $error_text;
+        Log::instance()->add(Log::ERROR, ':error_text by :user_name (id :user_id) at :url',array(
+            ':url' => $_SERVER['REQUEST_URI'],
+            ':user_id' => $this->user->id,
+            ':user_name' => $this->user->name,
+            ':error_text' => $error_text,
+        ));
 
+        $this->view['error_text'] = $error_text;
         $this->template->content = View::factory('templates/error', $this->view);
     }
-
 
     /**
     * Gets json-encoded attaches list from input
@@ -200,18 +206,35 @@ class Controller_Pages extends Controller_Base_preDispatch
     */
     private function savePageFiles($page_id)
     {
-        $attaches = Arr::get($_POST, 'attaches');
+        $new_attaches_list = Arr::get($_POST, 'attaches');
+        $new_attaches_list = json_decode($new_attaches_list, true);
+        $old_attaches_list = Model_File::getPageFiles($page_id);
 
-        $attaches = json_decode($attaches, true);
+        /**
+         * Delete files
+         */
+        foreach ($old_attaches_list as $id => $file) {
 
-        foreach ($attaches as $id => $file_row)
-        {
-            $file = new Model_File($id);
+            if (!array_key_exists($file->id, $new_attaches_list)) {
+
+                $file = new Model_File($file->id);
+                $file->is_removed = 1;
+
+                $file->update();
+            }
+        }
+
+        /**
+         * Save files
+         */
+        foreach ($new_attaches_list as $id => $file_row) {
+
+            $file = new Model_File($file_row['id']);
+
             $file->page  = $page_id;
             $file->title = $file_row['title'];
+
             $file->update();
         }
     }
-
-
 }

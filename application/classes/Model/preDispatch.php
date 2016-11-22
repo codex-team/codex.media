@@ -4,11 +4,8 @@ class Model_preDispatch extends Model
 {
     public $redis;
 
-    public function __construct( )
+    public function __construct()
     {
         $this->redis = Controller_Base_preDispatch::_redis();
     }
-
-
-
 }

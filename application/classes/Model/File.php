@@ -2,16 +2,16 @@
 
 class Model_File extends Model
 {
-
     public $id          = 0;
     public $page        = 0;
+    public $title       = '';
+    public $is_removed  = 0;
+
     public $extension   = '';
     public $filename    = '';
-    public $title       = '';
     public $author      = 0;
     public $size        = 0;
     public $date        = null;
-    public $is_removed  = 0;
     public $status      = 0;
     public $type        = 0;
     public $filepath    = '';
@@ -24,15 +24,15 @@ class Model_File extends Model
 
     public function __construct($id = null, $file_hash_hex = null, $row = array())
     {
-        if ( !$id && !$file_hash_hex && !$row ) return;
+        if (!$id && !$file_hash_hex && !$row) return;
 
         return self::get($id, $file_hash_hex, $row);
     }
 
     public function get($id = null, $file_hash_hex = null, $file_row = array())
     {
-        if ($id || $file_hash_hex)
-        {
+        if ($id || $file_hash_hex) {
+
             $file = Dao_Files::select();
 
             if ($id)             $file->where('id', '=', $id);
@@ -41,15 +41,12 @@ class Model_File extends Model
             $file_row = $file->limit(1)->execute();
         }
 
-        if( !$file_row ) {
+        if(!$file_row) return false;
 
-            return false;
-        }
+        foreach ($file_row as $field => $value) {
 
-        foreach ($file_row as $field => $value)
-        {
-            if (property_exists($this, $field))
-            {
+            if (property_exists($this, $field)) {
+
                 $this->$field = $value;
             }
         }
@@ -64,16 +61,17 @@ class Model_File extends Model
     {
         $file = Dao_Files::insert();
 
-        if ($fields)
-        {
-            /** если на вход идет массив */
+        if ($fields) {
+
             foreach ($fields as $key => $value) {
+
                 $file->set($key, $value);
             }
 
             $this->filename = $fields['filename'];
 
         } else {
+
             /** если на вход идет модель */
             $file->set('filename',  $this->filename)
                  ->set('title',     $this->title)
@@ -94,8 +92,8 @@ class Model_File extends Model
     {
         $file = Dao_Files::update();
 
-        if ($fields && isset($fields['id']))
-        {
+        if ($fields && isset($fields['id'])) {
+
             /** если на вход идет массив */
             $file->where('id', '=', $fields['id']);
 
@@ -103,11 +101,13 @@ class Model_File extends Model
                 $file->set($name, trim(htmlspecialchars($value)));
 
         } else {
-            /** если на вход идет модель */
-            $file->where('id', '=', $this->id)
-                 ->set('page',      $this->page)
-                 ->set('title',     $this->title);
 
+            /** если на вход идет модель */
+            $file->where('id', '=',  $this->id)
+                 ->set('page',       $this->page)
+                 ->set('title',      $this->title)
+                 ->set('is_removed', $this->is_removed)
+                 ->set('status',     $this->status);
         }
 
         $file_id = $file->execute();
@@ -118,6 +118,7 @@ class Model_File extends Model
     static public function getUploadPathByType($type)
     {
         switch ($type) {
+
             case self::PAGE_FILE:
                 return 'upload/page_files/';
                 break;
@@ -141,10 +142,11 @@ class Model_File extends Model
         return $path;
     }
 
-    static public function getPageFiles( $page_id, $type = false )
+    static public function getPageFiles($page_id, $type = false, $json = false)
     {
         $page_files = Dao_Files::select()
             ->where('page','=', $page_id)
+            ->where('is_removed','=', 0)
             ->where('status', '=', 0);
 
         if ($type) $page_files->where('type', '=', $type);
@@ -153,10 +155,24 @@ class Model_File extends Model
 
         $page_files_array = array();
 
-        if (!empty($page_files_rows))
-        {
+
+        if (!empty($page_files_rows)) {
+
             foreach ($page_files_rows as $file_row) {
-                $page_files_array[] = new Model_File(null, null, $file_row);
+
+                if (!$json) {
+
+                    $page_files_array[] = new Model_File(null, null, $file_row);
+
+                } else {
+
+                    $file_id = (int) $file_row['id'];
+                    $json_file_info['id'] = $file_id;
+                    $json_file_info['title'] = $file_row['title'];
+                    $json_file_info['type'] = $file_row['type'];
+
+                    $page_files_array[$file_id] = $json_file_info;
+                }
             }
         }
 
@@ -169,14 +185,12 @@ class Model_File extends Model
     */
     public function returnFileToUser()
     {
-        if (file_exists($this->filepath))
-        {
+        if (file_exists($this->filepath)) {
+
             // сбрасываем буфер вывода PHP, чтобы избежать переполнения памяти выделенной под скрипт
             // если этого не сделать файл будет читаться в память полностью!
-            if (ob_get_level())
-            {
-              ob_end_clean();
-            }
+            if (ob_get_level()) ob_end_clean();
+
             // заставляем браузер показать окно сохранения файла
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
@@ -186,10 +200,10 @@ class Model_File extends Model
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
             header('Content-Length: ' . filesize($this->filepath));
+
             // читаем файл и отправляем его пользователю
             readfile($this->filepath);
             exit;
         }
     }
-
 }

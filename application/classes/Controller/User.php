@@ -2,7 +2,6 @@
 
 class Controller_User extends Controller_Base_preDispatch
 {
-
     public function action_profile()
     {
         $user_id = $this->request->param('id');
@@ -11,8 +10,8 @@ class Controller_User extends Controller_Base_preDispatch
 
         $viewUser = new Model_User($user_id);
 
-        if ($this->user->isAdmin && $new_status)
-        {
+        if ($this->user->isAdmin && $new_status) {
+
             $this->view['setUserStatus'] = $viewUser->setUserStatus(self::translate_user_status($new_status));
         }
 
@@ -22,24 +21,28 @@ class Controller_User extends Controller_Base_preDispatch
         $this->view['viewUser']  = $viewUser;
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/users/profile', $this->view);
-
     }
 
     public function translate_user_status($act)
     {
         switch ($act) {
+
             case 'teacher'    :
                 $status = Model_User::USER_STATUS_TEACHER;
                 break;
+
             case 'banned'     :
                 $status = Model_User::USER_STATUS_BANNED;
                 break;
-            case 'registered'   :
+
+            case 'registered' :
                 $status = Model_User::USER_STATUS_REGISTERED;
                 break;
-            default        :
+
+            default :
                 return FALSE;
         }
+
         return $status;
     }
 
@@ -59,21 +62,28 @@ class Controller_User extends Controller_Base_preDispatch
             $newAva          = Arr::get($_FILES, 'new_ava');
 
             if ($currentPassword) {
+
                 $hashedCurrentPassword = Controller_Auth_Base::createPasswordHash($currentPassword);
+
             } else {
+
                 $hashedCurrentPassword = Controller_Auth_Base::createPasswordHash($newPassword);
             }
+
             if ($hashedCurrentPassword != $this->user->password && $currentPassword) {
+
                 $error['currPassError'] = 'Неправильный текущий пароль.';
                 $newPassword = '';
             }
 
             if ($newPassword != $repeatPassword) {
+
                 $newPassword = '';
                 $error['passError'] = 'Пароли не совпадают.';
             }
 
             if (Upload::valid($newAva) && Upload::not_empty($newAva) && Upload::size($newAva, '8M')) {
+
                 $this->user->saveAvatar($newAva, 'upload/profile/');
             }
 
@@ -82,15 +92,18 @@ class Controller_User extends Controller_Base_preDispatch
                 'phone'    => $newPhone);
 
             if (!$error) {
+
                 $fields['password'] = Controller_Auth_Base::createPasswordHash($newPassword);
-            }
+            }   
 
             //если пустое поле, то не заносим его в базу и модель, за исключением телефона
             foreach ($fields as $key => $value) {
+
                 if (!$value && $key != 'phone') unset($fields[$key]);
             }
 
-            if ( $this->user->updateUser($this->user->id, $fields) ) {
+            if ($this->user->updateUser($this->user->id, $fields)) {
+
                 $succesResult = (!$error) ? true : false;
             }
         }

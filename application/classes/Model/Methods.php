@@ -2,92 +2,38 @@
 
 class Model_Methods extends Model
 {
-
     const SOCIAL_VK = 1;
     const SOCIAL_FB = 2;
     const SOCIAL_TW = 3;
 
-    public $IMAGE_SIZES_CONFIG = array(
-        // первый параметр - вырезать квадрат (true) или просто ресайзить с сохранением пропрорций (false)
-
-        'o'  => array(false , 1500, 1500 ),
-        'b'  => array(true , 200 ),
-        'm'  => array(true , 100 ),
-        's'  => array(true , 50  ),
-    );
-
 
     /**
-     * Get or update site main information
-     *
-     * @author Taly
-     *
-     * @param int $info         if exist then update
-     * @return array $this            returns array for global var $site_info
+     * @var конфиг с размерами вырезаемых изображений
+     * первый параметр - вырезать квадрат (true) или просто ресайзить с сохранением пропрорций (false)
      */
-    public function getSiteInfo(){
+    public $IMAGE_SIZES_CONFIG = array(
 
-        $info = Dao_SiteInfo::select()
-            ->order_by('id', 'DESC')
-            ->limit(1)
-            ->cached(Date::DAY, 'site_info', array('site_menu'))
-            ->execute();
+        'o'  => array(false, 1500, 1500),
+        'b'  => array(true , 200),
+        'm'  => array(true , 100),
+        's'  => array(true , 50),
+    );
 
-        $this->title        = $info['title'];
-        $this->city         = $info['city'];
-        $this->full_name    = $info['full_name'];
-        $this->description  = $info['description'];
-
-        $this->address      = $info['address'];
-        $this->coordinates  = $info['coordinates'];
-        $this->phone        = $info['phone'];
-        $this->fax          = $info['fax'];
-        $this->email        = $info['email'];
-
-        $this->logo         = $info['logo'];
-
-        return $this;
-
-    }
-
-    public function saveSiteInfo($info)
-    {
-        $db_request = Dao_SiteInfo::insert()->clearcache('site_info');
-
-        foreach ($info as $name => $value) $db_request->set($name, $value);
-
-        $db_request->execute();
-
-        return True;
-    }
-
-    public function getSiteMenu()
-    {
-        $menu_pages = Dao_Pages::select()
-            ->where('status', '=', 0)
-            ->where('is_menu_item', '=', 1)
-            ->order_by('id', 'ASC')
-            ->cached(Date::MINUTE*5, 'site_menu')
-            ->execute();
-
-        return Model_Page::rowsToModels($menu_pages);
-    }
 
     /**
     * Files uploading section
     */
 
-    public function saveImage( $file , $path )
+    public function saveImage($file , $path)
     {
         /**
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
-
         if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
 
         if (!is_dir($path)) mkdir($path);
 
-        if ( $file = Upload::save($file, NULL, $path) ){
+        if ($file = Upload::save($file, NULL, $path)) {
 
             $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.jpg';
 
@@ -102,11 +48,14 @@ class Model_Methods extends Model
                 $image->background('#fff');
 
                 // Вырезание квадрата
-                if ( $isSquare ){
+                if ($isSquare) {
 
-                    if ( $image->width >= $image->height ) {
+                    if ($image->width >= $image->height) {
+
                         $image->resize( NULL , $height, true );
+
                     } else {
+
                         $image->resize( $width , NULL, true );
                     }
 
@@ -119,17 +68,15 @@ class Model_Methods extends Model
                      */
 
                     // $image->sharpen(1.5);
-
                 } else {
 
-                    if ( $image->width > $width || $image->height > $height  ) {
+                    if ($image->width > $width || $image->height > $height) {
+
                         $image->resize( $width , $height , true );
                     }
-
                 }
 
                 $image->save($path . $prefix . '_' . $filename);
-
             }
 
             // Delete the temporary file
@@ -141,21 +88,17 @@ class Model_Methods extends Model
         return FALSE;
     }
 
-    public function saveFile( $file , $path )
+    public function saveFile($file , $path)
     {
         /**
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
-
         if (!is_dir($path)) mkdir($path);
 
         $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.' . $ext;
 
-        if ( $file = Upload::save($file, $filename, $path) ){
-
-            return $filename;
-        }
+        if ($file = Upload::save($file, $filename, $path)) return $filename;
 
         return FALSE;
     }
@@ -165,26 +108,40 @@ class Model_Methods extends Model
 
     public function ftime($timestamp, $long = false , $need_time = true , $short_month = false)
     {
-        if ($long && !$need_time) {
-            return $this->rusDate("j F Y", $timestamp);
-        }
+        if ($long && !$need_time) return $this->rusDate("j F Y", $timestamp);
 
         $time = time() - $timestamp;
-        if ( date('d-m-Y', time()) == date('d-m-Y', $timestamp) ) {
+
+        if (date('d-m-Y', time()) == date('d-m-Y', $timestamp)) {
+
             return 'сегодня в ' . date('H:i', $timestamp);
-        } elseif ( date('d-m-Y', strtotime("-1 day")) == date('d-m-Y', $timestamp) ) {
+
+        } elseif (date('d-m-Y', strtotime("-1 day")) == date('d-m-Y', $timestamp)) {
+
             return 'вчера в ' . date('H:i', $timestamp);
-        } elseif( $long ) { // если нужна полная дата
-            if ( $short_month ){
+
+        } elseif ($long) { // если нужна полная дата
+
+            if ($short_month) {
+
                 return $this->rusDate("j M Y в H:i", $timestamp);
+
             } else {
+
                 return $this->rusDate("j F Y в H:i", $timestamp);
+
             }
-        } elseif ( $time > Date::MONTH && $time < Date::YEAR ) {
+
+        } elseif ($time > Date::MONTH && $time < Date::YEAR) {
+
             return round($time / Date::MONTH) . ' ' . self::num_decline(round($time / Date::MONTH), 'месяц','месяца','месяцев') .  ' назад';
-        } elseif ( $time > Date::YEAR ) {
+
+        } elseif ($time > Date::YEAR) {
+
             return $this->rusDate("j F Y", $timestamp);
+
         } else {
+
             return round($time / Date::DAY) . ' ' . self::num_decline(round($time / Date::DAY), 'день','дня','дней') .' назад';
         }
     }
@@ -195,30 +152,39 @@ class Model_Methods extends Model
         $ltime = $time - $timestamp;
 
         if ($ltime < Date::HOUR) {
+
             $timeToMinute = round($ltime / Date::MINUTE);
+
             return  $timeToMinute . PHP_EOL . self::num_decline($timeToMinute, 'минуту','минуты','минут') . ' назад';
-        } elseif ( date('dmY', $time) == date('dmY', $timestamp) ) {
+
+        } elseif (date('dmY', $time) == date('dmY', $timestamp)) {
+
             return 'сегодня в ' . date('H:i', $timestamp);
-        } elseif ( date('dmY', strtotime("-1 day")) == date('dmY', $timestamp) ) {
+
+        } elseif (date('dmY', strtotime("-1 day")) == date('dmY', $timestamp)) {
+
             return 'вчера в ' . date('H:i', $timestamp);
+
         } else {
+
             return $this->rusDate("j M Y в H:i", $timestamp);
         }
     }
 
     public function dater($timestamp, $type)
     {
-
         $time = time() - $timestamp;
 
-        if ( $type == 'extra_short' ) {
+        if ($type == 'extra_short') {
 
-            if ( date('d-m-Y', time()) == date('d-m-Y', $timestamp) ) {
+            if (date('d-m-Y', time()) == date('d-m-Y', $timestamp)) {
+
                 return date('H:i', $timestamp);
+
             } else {
+
                 return round($time / Date::DAY) . ' дн.';
             }
-
         }
     }
 
@@ -274,19 +240,26 @@ class Model_Methods extends Model
         );
 
         if (func_num_args() > 1) {
+
             $timestamp = func_get_arg(1);
+
             return strtr(date(func_get_arg(0), $timestamp), $translate);
+
         } else {
+
             return strtr(date(func_get_arg(0)), $translate);
         }
     }
 
     public function num_decline($num, $nominative, $genitive_singular, $genitive_plural)
     {
-        if($num > 10 && ( floor(($num % 100) / 10) )  == 1){
-                return $genitive_plural;
+        if ($num > 10 && (floor(($num % 100) / 10))  == 1) {
+
+            return $genitive_plural;
+
         } else {
-            switch($num % 10){
+
+            switch ($num % 10) {
                 case 1: return $nominative;
                 case 2: case 3: case 4: return $genitive_singular;
                 case 5: case 6: case 7: case 8: case 9: case 0: return $genitive_plural;
@@ -294,34 +267,36 @@ class Model_Methods extends Model
         }
     }
 
-    public function short( $string = '', $limit = 999999 ){
+    public function short($string = '', $limit = 999999)
+    {
+        if (strlen($string) > $limit) {
 
-        if ( strlen($string) > $limit ):
             return Kohana_UTF8::substr($string, 0, $limit) . '...';
-        else:
-            return $string;
-        endif;
 
+        } else {
+
+            return $string;
+        }
     }
 
-    public function specc_short( $string = '' , $limit = 999999 ){
-
+    public function specc_short($string = '' , $limit = 999999)
+    {
         // $string = 'You <br> gonna be <h2>all right</h2><img src="/public/img/favicon.png" /> So go take <a href="/">down</a> the cross.';
         // $limit = 30;
 
         $inside_tag  = $inside_close_tag = $insede_alone_tag = $tag_opened = false;
         $char = $ret = '';
-        $real_count = 0; // Количество обычных символов (не в тегах), к которому нам и надо стремиться
-        $is_trimmed = false;
+        $real_count  = 0; // Количество обычных символов (не в тегах), к которому нам и надо стремиться
+        $is_trimmed  = false;
 
         // echo 'Char number -> char number without tags -> Char ; Parameters <br>';
 
-        for ( $i = 0 ; $i < strlen($string); $i++ ){
+        for ($i = 0 ; $i < strlen($string); $i++) {
 
-            $char = mb_substr( $string , $i , 1 ) ;
+            $char = mb_substr( $string , $i , 1 );
+
             // echo  $i . '  -> ' . $real_count . '   ->   \'' . $char . '\'' . ' : ';
-
-            if ( $char == '<' ){
+            if ($char == '<') {
 
                 $inside_tag = true;
                 // echo ' opened!'; echo $tag_opened ? ' [tag opened] ' : ' [not tag opened] ' ;
@@ -330,115 +305,89 @@ class Model_Methods extends Model
 
                 $substr = mb_substr( $string, $i+1 , 5);
 
-                if ( $tag_opened && mb_substr( $string ,  $i + 1 , 1 ) == '/' ){
+                if ($tag_opened && mb_substr( $string ,  $i + 1 , 1 ) == '/') {
 
                     $inside_close_tag = true;
                     // echo " inside_close_tag";
 
-                } elseif (  stripos( $substr , 'img') !== false || stripos( $substr , 'br') !== false || stripos( $substr , 'hr') !== false ) {
+                } elseif (stripos( $substr , 'img') !== false || stripos( $substr , 'br') !== false || stripos( $substr , 'hr') !== false) {
 
                     $insede_alone_tag = true;
                     // echo ' inside alone tag ';
-
-
-
                 }
 
-
-            } else if ( $char == '>' ){
+            } elseif ($char == '>') {
 
                 $inside_tag = false;
                 // echo ' closed! ' ;
 
                 $ret .= $char;  // 4 - символ закрытия тэга
 
-                if ( ! $insede_alone_tag ) $tag_opened = true;
+                if (! $insede_alone_tag) $tag_opened = true;
 
-                if ( $inside_close_tag || $insede_alone_tag ){
-
+                if ($inside_close_tag || $insede_alone_tag) {
                     $tag_opened = false;
                     $insede_alone_tag = false;
                     $inside_close_tag = false;
-
                 }
 
                 // echo $tag_opened ? 'tag opened' : 'not tag opened' ;
-
-
-                if ( !$tag_opened && $real_count >= $limit - 1 ){
-
+                if (!$tag_opened && $real_count >= $limit - 1) {
                     // echo '<br> STOPPED AFTER CLOSED TAG';
                     break;
-
                 }
-
 
             } else {
 
-                    if ( ! $tag_opened ){
+                if (!$tag_opened) {
 
-                        if ( $inside_tag ){
-
-                            // echo " in tag ";
-                            $ret .= $char; // 2 - символы внутри тэга. Нужны
-
-                        } else {
-
-                            // echo('*');
-
-                                if ( $real_count <= $limit - 1 ) {
-
-                                    $real_count++;
-                                    $ret .= $char;     // 3 - Обычные сиволы - не внутри тэга и открытых тегов нет.
-
-                                } else {
-
-                                    if ( $char != ' ' && $char != '\n'){ // даем закончить слово
-
-                                        $real_count++;
-                                        $ret .= $char;
-
-                                    } else {
-
-                                        $ret .= ' …';
-                                        $is_trimmed = true;
-                                        // echo '<br/>';
-                                        break;
-
-                                    }
-
-                                }
-
-                        }
+                    if ($inside_tag) {
+                        // echo " in tag ";
+                        $ret .= $char; // 2 - символы внутри тэга. Нужны
 
                     } else {
+                        // echo('*');
+                        if ($real_count <= $limit - 1) {
 
-                        if ( $inside_tag ){ // Мы внутри закрывающего тега
-
-                            // echo ' in tag ';
+                            $real_count++;
+                            $ret .= $char;     // 3 - Обычные сиволы - не внутри тэга и открытых тегов нет.
 
                         } else {
 
-                            $real_count++;
+                            if ($char != ' ' && $char != '\n') { // даем закончить слово
 
+                                $real_count++;
+                                $ret .= $char;
+
+                            } else {
+
+                                $ret .= ' …';
+                                $is_trimmed = true;
+                                // echo '<br/>';
+                                break;
+                            }
                         }
-
-                        $ret .= $char; // Сиволы до закрытия тегаи. Берем всегда, независимо от лимита.
-
                     }
 
+                } else {
+
+                    if ($inside_tag) { // Мы внутри закрывающего тега
+                        // echo ' in tag ';
+                    } else {
+
+                        $real_count++;
+                    }
+
+                    $ret .= $char; // Сиволы до закрытия тегаи. Берем всегда, независимо от лимита.
+                }
             }
-
             // echo '<br>';
-
         }
-
         // echo Debug::vars( $ret );
         // exit();
 
         // echo '<br/><br/>-------------<br><br>';
-
-        return array( 'text' => $ret , 'changed' => $is_trimmed );
+        return array('text' => $ret , 'changed' => $is_trimmed);
     }
 
     public function auto_link_urls($text)
@@ -465,7 +414,7 @@ class Model_Methods extends Model
     {
         $result = '';
 
-        $data['data_type'] = $type;
+        $data['data_type']   = $type;
         $data['data_target'] = $target;
         $data['sharingData'] = $data;
 
@@ -491,7 +440,8 @@ class Model_Methods extends Model
      * Транслитерация кириллицы
      * @param string $string - строка с киррилицей
      */
-    public static function rus2translit($string) {
+    public static function rus2translit($string)
+    {
         $converter = array(
             'а' => 'a',   'б' => 'b',   'в' => 'v',
             'г' => 'g',   'д' => 'd',   'е' => 'e',
@@ -539,12 +489,10 @@ class Model_Methods extends Model
         $converted_string = trim($converted_string, '-');
 
         return $converted_string;
-
     }
 
     public static function isAjax()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
     }
-
 }

@@ -1,0 +1,13 @@
+php_value short_open_tag 1
+php_value always_populate_raw_post_data -1
+
+RewriteEngine On
+
+RewriteBase /
+
+RewriteRule ^(application|modules|system) - [F,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule .* index.php/$0 [PT,L]

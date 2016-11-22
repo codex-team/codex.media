@@ -17,13 +17,16 @@ class Controller_Base_preDispatch extends Controller_Template
     public function before()
     {
         if (!$this->request->param('iframe-embedding')) {
+
             $this->response->headers("X-Frame-Options", "SAMEORIGIN");
         }
 
         /** Disallow requests from other domains */
-        if ( Kohana::$environment === Kohana::PRODUCTION ) {
-            if ( (Arr::get($_SERVER, 'SERVER_NAME') != 'alpha.difual.com') &&
-                (Arr::get($_SERVER, 'SERVER_NAME') != 'ifmo.su') ) {
+        if (Kohana::$environment === Kohana::PRODUCTION) {
+
+            if ((Arr::get($_SERVER, 'SERVER_NAME') != 'alpha.difual.com') &&
+                (Arr::get($_SERVER, 'SERVER_NAME') != 'ifmo.su')) {
+
                 exit();
             }
         }
@@ -43,6 +46,7 @@ class Controller_Base_preDispatch extends Controller_Template
         $this->setGlobals();
 
         if ($this->auto_render) {
+
             // Initialize empty values
             $this->template->title       = $this->title = $GLOBALS['SITE_NAME'] . ': ' . $GLOBALS['SITE_SLOGAN'];
             $this->template->keywords    = '';
@@ -62,6 +66,7 @@ class Controller_Base_preDispatch extends Controller_Template
         //echo View::factory('profiler/stats');
 
         if ($this->auto_render) {
+
             if ( $this->title )       $this->template->title       = $this->title;
             if ( $this->description ) $this->template->description = $this->description;
         }
@@ -71,20 +76,24 @@ class Controller_Base_preDispatch extends Controller_Template
 
     private function setGlobals()
     {
-
-        // methods
+        /** Methods */
         $this->methods = new Model_Methods();
         View::set_global('methods', $this->methods);
 
-        View::set_global('site_info', $this->methods->getSiteInfo());
+        /** Site info from Settings */
+        View::set_global('site_info', Model_Settings::getListByLabel('site_info'));
 
-        // modules
+        /** Site menu pages */
+        View::set_global('site_menu', Model_Page::getSiteMenu());
+
+        /** Modules */
         $this->redis = $this->_redis();
         View::set_global('redis', $this->redis);
 
         $this->memcache = $memcache = Cache::instance('memcache');
         View::set_global('memcache', $memcache);
 
+        /** Session */
         $this->session = Session::instance();
 
         $uid  = Controller_Auth_Base::checkAuth();
@@ -98,14 +107,16 @@ class Controller_Base_preDispatch extends Controller_Template
     public function userOnline()
     {
         if ($this->user->id) {
+
             $this->user->isOnline = 1;
+
             if (!$this->redis->exists('user:'.$this->user->id.':online')) {
+
                 $this->redis->set('user:'.$this->user->id.':online', $this->user->id, Date::MINUTE);
                 $this->redis->set('user:'.$this->user->id.':online:timestamp', time());
             }
         }
     }
-
 
 
     /**
@@ -114,35 +125,39 @@ class Controller_Base_preDispatch extends Controller_Template
     */
     public function XSSfilter()
     {
-        $exceptions     = array( 'long_desc' , 'blog_text', 'long_description' , 'content' ); // Исключения для полей с визуальным редактором
+        $exceptions = array( 'long_desc' , 'blog_text', 'long_description' , 'content' ); // Исключения для полей с визуальным редактором
 
-        foreach ($_POST as $key => $value){
+        foreach ($_POST as $key => $value) {
 
             $value = stripos( $value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $value ;
 
-            if ( in_array($key, $exceptions) === false ){
+            if (in_array($key, $exceptions) === false) {
+
                 $_POST[$key] = Security::xss_clean(HTML::chars($value));
+
             } else {
+
                 $_POST[$key] = Security::xss_clean( strip_tags(trim($value), '<br><em><del><p><a><b><strong><i><strike><blockquote><ul><li><ol><img><tr><table><td><th><span><h1><h2><h3><iframe>' ));
             }
         }
 
         foreach ($_GET  as $key => $value) {
-            $value = stripos( $value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $value ;
+
+            $value = stripos( $value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $value;
+
             $_GET[$key] = Security::xss_clean(HTML::chars($value));
         }
     }
 
     public static function _redis()
     {
-        if ( !class_exists("Redis") ){
-            return null;
-        }
+        if (!class_exists("Redis")) return null;
+
         $redis = new Redis();
         $redis->connect('127.0.0.1', 6379);
         $redis->auth('21gJs32hv3ks');
         $redis->select(0);
+
         return $redis;
     }
-
 }

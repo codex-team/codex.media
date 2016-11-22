@@ -2,7 +2,6 @@
 
 class Model_User extends Model
 {
-
     public $id                  = 0;
     public $name                = '';
     public $password            = '';
@@ -38,7 +37,7 @@ class Model_User extends Model
 
     public function __construct($uid = null)
     {
-        if ( !$uid ) return;
+        if (!$uid) return;
 
         $user = self::get($uid);
 
@@ -51,12 +50,15 @@ class Model_User extends Model
 
             /** Fill model by DB row */
             foreach ($user as $field => $value) {
+
                 if (property_exists($this, $field)) {
+
                     $this->$field = $value;
                 }
             }
 
             if (!$this->photo || !$this->photo_medium || !$this->photo_big){
+
                 $this->photo        = '/public/img/default_ava_small.png';
                 $this->photo_medium = '/public/img/default_ava.png';
                 $this->photo_big    = '/public/img/default_ava_big.png';
@@ -74,9 +76,9 @@ class Model_User extends Model
     public function hasUniqueEmail($email)
     {
         $arr = Dao_Users::select('id')
-                    ->where('email', '=', $email)
-                    ->limit(1)
-                    ->execute();
+            ->where('email', '=', $email)
+            ->limit(1)
+            ->execute();
 
         if (!$arr) return true;
 
@@ -86,10 +88,10 @@ class Model_User extends Model
     public function get($id)
     {
         $user = Dao_Users::select()
-                    ->where('id', '=', $id)
-                    ->limit(1)
-                    ->cached(Date::HOUR, 'user:' . $id)
-                    ->execute();
+            ->where('id', '=', $id)
+            ->limit(1)
+            ->cached(Date::HOUR, 'user:' . $id)
+            ->execute();
 
         return self::fillByRow($user);
     }
@@ -97,8 +99,8 @@ class Model_User extends Model
     public function updateUser($user_id, $fields)
     {
         $user = Dao_Users::update()
-                ->where('id', '=', $user_id)
-                ->clearcache('user:' . $user_id);
+            ->where('id', '=', $user_id)
+            ->clearcache('user:' . $user_id);
 
         foreach ($fields as $name => $value) $user->set($name, trim(htmlspecialchars($value)));
 
@@ -135,14 +137,14 @@ class Model_User extends Model
 
     public function saveAvatar($file, $path)
     {
-        $model = new Model_Methods();
+        $model    = new Model_Methods();
         $filename = $model->saveImage($file, $path);
 
         $fields = array(
             'photo'        => $path . 's_' . $filename,
             'photo_medium' => $path . 'm_' . $filename,
             'photo_big'    => $path . 'b_' . $filename
-            );
+        );
 
         $this->updateUser($this->id, $fields);
     }
@@ -165,12 +167,12 @@ class Model_User extends Model
     public function getUserPages($id_parent = 0)
     {
         $pages = Dao_Pages::select()
-                    ->where('author', '=', $this->id)
-                    ->where('status', '=', Model_Page::STATUS_SHOWING_PAGE)
-                    ->where('type', '=', Model_Page::TYPE_USER_PAGE)
-                    ->where('id_parent', '=', $id_parent)
-                    ->order_by('id','DESC')
-                    ->execute();
+            ->where('author', '=', $this->id)
+            ->where('status', '=', Model_Page::STATUS_SHOWING_PAGE)
+            ->where('type', '=', Model_Page::TYPE_USER_PAGE)
+            ->where('id_parent', '=', $id_parent)
+            ->order_by('id','DESC')
+            ->execute();
 
         return Model_Page::rowsToModels($pages);
     }
@@ -178,10 +180,10 @@ class Model_User extends Model
     public static function getUsersList($status)
     {
         $teachers = Dao_Users::select()
-                        ->where('status', '>=', $status)
-                        ->order_by('id','ASC')
-                        ->cached(Date::HOUR, 'users_list:' . $status, array('users'))
-                        ->execute();
+            ->where('status', '>=', $status)
+            ->order_by('id','ASC')
+            ->cached(Date::HOUR, 'users_list:' . $status, array('users'))
+            ->execute();
 
         return Model_User::rowsToModels($teachers);
     }
@@ -190,10 +192,10 @@ class Model_User extends Model
     {
         $users = array();
 
-        if (!empty($users_rows))
-        {
-            foreach ($users_rows as $user_row)
-            {
+        if (!empty($users_rows)) {
+
+            foreach ($users_rows as $user_row) {
+
                 $user = new Model_User();
 
                 $user->fillByRow($user_row);
@@ -204,5 +206,4 @@ class Model_User extends Model
 
         return $users;
     }
-
 }

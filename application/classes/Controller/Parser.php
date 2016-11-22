@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Parser extends Controller_Base_preDispatch {
-
+class Controller_Parser extends Controller_Base_preDispatch
+{
     public function action_get_page()
     {
         $url = Arr::get($_GET, 'url', '');
@@ -10,21 +10,19 @@ class Controller_Parser extends Controller_Base_preDispatch {
 
         $response['success'] = 0;
 
-        if ($response['title'] != $response['article']) {
-            $response['success'] = 1;
-        }
+        if ($response['title'] != $response['article']) $response['success'] = 1;
 
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-        $this->response->body( @json_encode($response) );
+        $this->response->body(@json_encode($response));
     }
 
     public function getPageTitleAndArticleByUrl($url)
     {
         $response = array("title" => "", "article" => "");
 
-        if ($url)
-        {
+        if ($url) {
+
             $page = self::getPageHtmlByUrl($url);
 
             $doc = new DOMDocument();
@@ -38,8 +36,8 @@ class Controller_Parser extends Controller_Base_preDispatch {
 
             libxml_clear_errors();
 
-            $response['title']      = self::getTitle($doc);
-            $response['article']    = self::getArticleText($doc);  
+            $response['title']   = self::getTitle($doc);
+            $response['article'] = self::getArticleText($doc);
         }
 
         return $response;
@@ -71,15 +69,13 @@ class Controller_Parser extends Controller_Base_preDispatch {
     */
     public function getTitle($doc)
     {
-        #var_dump($doc);
-
         $pageTitle  = '';
 
-        $h1         = $doc->getElementsByTagName('h1');
-        $title      = $doc->getElementsByTagName('title');
+        $h1    = $doc->getElementsByTagName('h1');
+        $title = $doc->getElementsByTagName('title');
 
         /** получаем h1 или title */
-        if ($h1->length){
+        if ($h1->length) {
 
             $pageTitle = $h1->item(0)->nodeValue;
 
@@ -125,7 +121,7 @@ class Controller_Parser extends Controller_Base_preDispatch {
             /** Compose node text-identifier looks like 'TAGNAME@classname' */
             $parentNodeIdentifier = self::getNodeIdentifier($parentNode);
 
-            if ( !isset($parents[$parentNodeIdentifier]) ){
+            if (!isset($parents[$parentNodeIdentifier])) {
 
                 $parents[$parentNodeIdentifier] = array(
                     'node'   => $parentNode,
@@ -135,9 +131,7 @@ class Controller_Parser extends Controller_Base_preDispatch {
             } else {
 
                 $parents[$parentNodeIdentifier]['childs']++;
-
             }
-
         }
 
         /**
@@ -148,7 +142,9 @@ class Controller_Parser extends Controller_Base_preDispatch {
         $nodeWithMaximumParagraphs = null;
 
         foreach ($parents as $item) {
+
             if ($item['childs'] > $maximumParagraphsCount) {
+
                 $maximumParagraphsCount    = $item['childs'];
                 $nodeWithMaximumParagraphs = $item['node'];
             }
@@ -172,7 +168,8 @@ class Controller_Parser extends Controller_Base_preDispatch {
         $tagName   = $node->nodeName;
         $className = '';
 
-        if ( $classAttr = $node->attributes->getNamedItem('class') ){
+        if ($classAttr = $node->attributes->getNamedItem('class')) {
+
             $className = $classAttr->nodeValue;
         }
 
@@ -184,17 +181,14 @@ class Controller_Parser extends Controller_Base_preDispatch {
     */
     private static function DOMinnerHTML(DOMNode $element)
     {
-
         $innerHTML = '';
         $children  = $element->childNodes;
 
-        foreach ($children as $child)
-        {
+        foreach ($children as $child) {
+
             $innerHTML .= $element->ownerDocument->saveHTML($child);
         }
 
         return $innerHTML;
-
     }
-
 }

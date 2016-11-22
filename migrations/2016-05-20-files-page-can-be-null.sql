@@ -1,7 +1,0 @@
-ALTER TABLE `files` CHANGE `page` `page` INT(10) UNSIGNED NULL DEFAULT NULL;
-ALTER TABLE `files` ADD `type` TINYINT(13) NOT NULL COMMENT 'Тип файла из контроллера Transport' ;
-ALTER TABLE `files` CHANGE `size` `size` FLOAT(10) UNSIGNED NOT NULL;
-ALTER TABLE `files` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
-
-

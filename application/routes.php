@@ -5,63 +5,22 @@
  * defaults for the URI.
  */
 
-// Route::set('user', 'user(/<id>)')->defaults(array(
-//     'controller' => 'user',
-//     'action' => 'index'
-// ));
-
-
 $DIGIT  = '\d+';
 $STRING = '[-a-zA-Z\d]+';
 
-Route::set('INDEX', '(<page_number>)', array( 'page_number' => $DIGIT ))->defaults(array(
-    'controller' => 'index',
-    'action' => 'index'
-));
-
 
 /**
- *  Pages section
+ * Static pages
  */
-
-#Route::set('NEW', 'p/add-<type>', array( 'type' => 'page|news' ))->defaults(array(
-#    'controller' => 'pages',
-#    'action' => 'add_new'
-#));
-
-Route::set('NEW_PAGE', 'p/save')->defaults(array(
-    'controller' => 'pages',
-    'action' => 'save'
-));
-
-
-Route::set('DELETE_PAGE', 'p/<id>/<uri>/delete', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
-    'controller' => 'pages',
-    'action' => 'delete_page'
-));
-
-Route::set('PAGE', 'p/<id>(/<uri>)', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
-    'controller' => 'pages',
-    'action' => 'show_page'
-));
-
-
-
-Route::set('PROFILE', 'user/<id>', array( 'id' => $DIGIT ))->defaults(array(
-    'controller' => 'user',
-    'action' => 'profile'
-));
-Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
-    'controller' => 'user',
-    'action' => 'settings'
+Route::set('INDEX', '(<page_number>)', array('page_number' => $DIGIT))->defaults(array(
+    'controller' => 'index',
+    'action' => 'index'
 ));
 
 Route::set('USERS_LIST', 'users(/<type>)', array('type' => 'teachers'))->defaults(array(
     'controller' => 'index',
     'action' => 'users_list'
 ));
-
-
 
 Route::set('CONTACTS', 'contacts')->defaults(array(
     'controller' => 'index',
@@ -70,9 +29,40 @@ Route::set('CONTACTS', 'contacts')->defaults(array(
 
 
 /**
-*   Admin section
-*/
+ * Pages section
+ */
+Route::set('NEW_PAGE', 'p/save')->defaults(array(
+    'controller' => 'pages',
+    'action' => 'save'
+));
 
+Route::set('DELETE_PAGE', 'p/<id>/<uri>/delete', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'delete_page'
+));
+
+Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
+    'controller' => 'pages',
+    'action' => 'show_page'
+));
+
+
+/**
+ * User section
+ */
+Route::set('PROFILE', 'user/<id>', array('id' => $DIGIT))->defaults(array(
+    'controller' => 'user',
+    'action' => 'profile'
+));
+Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
+    'controller' => 'user',
+    'action' => 'settings'
+));
+
+
+/**
+* Admin section
+*/
 Route::set('ADMIN_PAGE', 'admin(/<page>(/<id>))')->defaults(array(
     'controller' => 'admin',
     'action' => 'index'
@@ -82,7 +72,6 @@ Route::set('ADMIN_PAGE', 'admin(/<page>(/<id>))')->defaults(array(
 /**
 * Ajax routes
 */
-
 Route::set('AJAX_FILE_TRANSPORT', 'file/transport')->defaults(array(
     'controller'      => 'transport',
     'action'          => 'file_uploader',
@@ -109,11 +98,10 @@ Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
 /**
 * Downloading files
 */
-Route::set('DOWNLOAD_FILE', 'file/<file_hash_hex>', array( 'file_hash_hex' => $STRING ))->defaults(array(
+Route::set('DOWNLOAD_FILE', 'file/<file_hash_hex>', array('file_hash_hex' => $STRING))->defaults(array(
     'controller' => 'files',
     'action' => 'download'
 ));
-
 
 
 /** Auth */
@@ -133,9 +121,10 @@ Route::set('LOGOUT', 'logout')->defaults(array(
 ));
 
 
-/** Comments */
-
-Route::set('ADD_COMMENT_SCRIPT', 'p/<id>/<uri>/add-comment', array( 'id' => $DIGIT , 'uri' => $STRING))->defaults(array(
+/**
+ * Comments
+ */
+Route::set('ADD_COMMENT_SCRIPT', 'p/<id>/<uri>/add-comment', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
     'controller' => 'comments',
     'action' => 'add'
 ));
@@ -148,12 +137,3 @@ Route::set('DEL_COMMENT_SCRIPT', 'p/<id>/<uri>/delete-comment/<comment_id>', arr
         'controller' => 'comments',
         'action'     => 'delete'
 ));
-
-
-
-// Defaults
-// Route::set('default', '(<controller>(/<action>(/<id>)))')
-//     ->defaults(array(
-//         'controller' => 'index',
-//         'action'     => 'index',
-//     ));
