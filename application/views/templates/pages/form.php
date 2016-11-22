@@ -54,7 +54,7 @@
                 <i class="icon-megaphone"></i>
             </div>
 
-            <div class="toggler fl_r js-custom-checkbox <?= $page->is_menu_item ? 'checked' : '' ?>" data-label="menu_item" data-title="Пункт меню">
+            <div class="toggler fl_r js-custom-checkbox <?= $page->is_menu_item ? 'checked' : '' ?>" data-title="Пункт меню">
                 <input type="checkbox" name="is_menu_item" value="1" <?= isset($page->is_menu_item) && $page->is_menu_item == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') ?>/>
                 <i class="icon-star"></i>
             </div>
