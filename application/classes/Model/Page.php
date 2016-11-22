@@ -202,7 +202,7 @@ class Model_Page extends Model_preDispatch
             ->where('status', '=', 0)
             ->where('is_menu_item', '=', 1)
             ->order_by('id', 'ASC')
-            ->cached(Date::MINUTE*5, 'site_menu')
+            ->cached(Date::MINUTE*5, 'site_menu', array('site_menu'))
             ->execute();
 
         return self::rowsToModels($menu_pages);
