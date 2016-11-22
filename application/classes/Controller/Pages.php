@@ -189,6 +189,13 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function error_page($error_text)
     {
+        Log::instance()->add(Log::ERROR, ':error_text by :user_name (id :user_id) at :url',array(
+            ':url' => $_SERVER['REQUEST_URI'],
+            ':user_id' => $this->user->id,
+            ':user_name' => $this->user->name,
+            ':error_text' => $error_text,
+        ));
+
         $this->view['error_text'] = $error_text;
         $this->template->content = View::factory('templates/error', $this->view);
     }
