@@ -1,5 +1,7 @@
 <div class="w_island w_island_centercol">
 
+    <? /*
+
     <div class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
 
         <? if ($page->parent->id): ?>
@@ -27,6 +29,8 @@
         <? endif ?>
 
     </div>
+
+    */ ?>
 
 
     <? /* Page title */ ?>

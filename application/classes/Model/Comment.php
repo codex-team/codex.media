@@ -74,18 +74,18 @@ Class Model_Comment extends Model_preDispatch
     }
 
     /**
-     * Возвращает модель родительского комментария из массива к конкретному комментарию
+     * Получает родительский комментарий из списка всех комментариев по переданному parent_id
      *
-     * @var $all_comment массив комментариев, где проводится поиск
-     * @var $comment     комментарий, для которого необходимо найти родителя
+     * @var $allComments массив комментариев, где проводится поиск
+     * @var $parent_id   id родительского комментария
      */
-    private static function getParentForCommentFromCommentsArray($all_comment, $comment)
+    private static function getParentForCommentFromCommentsArray($allComments, $parent_id)
     {
         $parent = array();
 
-        foreach ($all_comment as $parent_row) {
+        foreach ($allComments as $parent_row) {
 
-            if ($comment['parent_id'] == $parent_row['id']) {
+            if ($parent_id == $parent_row['id']) {
 
                 $parent = new Model_Comment;
 
@@ -138,7 +138,7 @@ Class Model_Comment extends Model_preDispatch
                 if ($add_parent) {
 
                     $parent = array();
-                    $parent = self::getParentForCommentFromCommentsArray($comment_rows, $comment_row);
+                    $parent = self::getParentForCommentFromCommentsArray($comment_rows, $comment_row['parent_id']);
                     $comment->parent_comment = $parent;
                 }
 
