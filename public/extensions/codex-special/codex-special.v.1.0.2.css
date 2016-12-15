@@ -4,7 +4,7 @@
 * @author Codex Team — ifmo.su
 *   Vitaly Guryn    https://github.com/talyguryn
 *   Savchenko Petr  https://github.com/neSpecc
-* @version 1.0
+* @version 1.0.2
 */
 
 
@@ -39,21 +39,40 @@ html body .codex-special__toolbar{
 
 .codex-special__toolbar_excluded {
     position: fixed;
-    top: 0;
-    right: 3%;
     width: 300px;
     border: 1px solid #F2F4F8;
-    border-top: 0;
-    border-radius: 0 0 3px 3px;
 }
-
-    .codex-special__toolbar_text {
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 24px;
-        cursor: pointer;
-        border-radius: 5px;
+    .codex-special__toolbar_top {
+        top: 0;
+        bottom: auto;
+        border-radius: 0 0 3px 3px;
+        border-top: 0;
     }
+
+    .codex-special__toolbar_bottom {
+        top: auto;
+        bottom: 0;
+        border-radius: 3px 3px 0 0;
+        border-bottom: 0;
+    }
+
+    .codex-special__toolbar_left {
+        left: 3%;
+        right: auto;
+    }
+
+    .codex-special__toolbar_right {
+        right: 3%;
+        left: auto;
+    }
+
+.codex-special__toolbar_text {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 24px;
+    cursor: pointer;
+    border-radius: 5px;
+}
     .codex-special__toolbar_text:hover
     {
         color: #3d82c1;
@@ -72,23 +91,29 @@ html body .codex-special__toolbar{
             font-family: 'codex-special';
         }
 
-    .codex-special__circle {
-        display: inline-block;
-        width: 7px;
-        height: 7px;
-        border: 7px solid;
-        vertical-align: middle;
-        box-sizing: content-box;
-        border-radius: 50%;
-        cursor: pointer;
-        float: right;
+.codex-special__circle {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border: 7px solid;
+    vertical-align: middle;
+    box-sizing: content-box;
+    border-radius: 50%;
+    cursor: pointer;
+    float: right;
+}
+    .codex-special__circle:not(:first-of-type) {
+        margin-right: 5px;
     }
-        .codex-special__circle:not(:first-of-type) {
-            margin-right: 5px;
-        }
+    
+    .codex-special__circle:hover {
+        width: 11px;
+        height: 11px;
+        border-width: 5px;
+    }
 
-    .codex-special__circle_disabled {
-    }
+    .codex-special__circle_disabled {}
+
     .codex-special__circle_enabled {
         border-radius: 10%;
     }
@@ -102,7 +127,7 @@ html body .codex-special__toolbar{
         border-color: #7C766A;
     }
     .codex-special__circle_white {
-        background-color: #FFF;
+        background-color: #FFFFFF;
         border-color: #2B2A28;
     }
 
