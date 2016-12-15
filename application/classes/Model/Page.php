@@ -17,12 +17,6 @@ class Model_Page extends Model_preDispatch
     public $parent;
     public $source_link     = '';
 
-    паспорт
-    инн
-    снилс
-    справка об отсуствии судимости
-    копия аттестата
-
     public $attachments     = array();
     public $files           = array();
     public $images          = array();

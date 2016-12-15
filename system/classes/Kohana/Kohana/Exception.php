@@ -81,7 +81,7 @@ class Kohana_Kohana_Exception extends Exception {
 	 * @param   Exception  $e
 	 * @return  boolean
 	 */
-	public static function handler(Exception $e)
+	public static function handler($e)
 	{
 		$response = Kohana_Exception::_handler($e);
 
@@ -99,7 +99,7 @@ class Kohana_Kohana_Exception extends Exception {
 	 * @param   Exception  $e
 	 * @return  boolean
 	 */
-	public static function _handler(Exception $e)
+	public static function _handler($e)
 	{
 		try
 		{
@@ -137,7 +137,7 @@ class Kohana_Kohana_Exception extends Exception {
 	 * @param   int        $level
 	 * @return  void
 	 */
-	public static function log(Exception $e, $level = Log::EMERGENCY)
+	public static function log($e, $level = Log::EMERGENCY)
 	{
 		if (is_object(Kohana::$log))
 		{
@@ -160,8 +160,12 @@ class Kohana_Kohana_Exception extends Exception {
 	 * @param   Exception  $e
 	 * @return  string
 	 */
-	public static function text(Exception $e)
+	public static function text($e)
 	{
+		if ( ! $e instanceof Exception AND ! $e instanceof Throwable) {
+			throw InvalidArgumentException('Argument 1 passed to Kohana_Kohana_Exception::response() must be an instance of Exception or Throwable');
+		}
+
 		return sprintf('%s [ %s ]: %s ~ %s [ %d ]',
 			get_class($e), $e->getCode(), strip_tags($e->getMessage()), Debug::path($e->getFile()), $e->getLine());
 	}
@@ -173,8 +177,14 @@ class Kohana_Kohana_Exception extends Exception {
 	 * @param   Exception  $e
 	 * @return  Response
 	 */
-	public static function response(Exception $e)
+	public static function response($e)
 	{
+		if ( ! $e instanceof Exception AND ! $e instanceof Throwable)
+		{
+			throw InvalidArgumentException('Argument 1 passed to Kohana_Kohana_Exception::response() must be an instance of Exception or Throwable');
+		}
+
+
 		try
 		{
 			// Get the exception information
@@ -230,7 +240,7 @@ class Kohana_Kohana_Exception extends Exception {
 						}
 					}
 				}
-				
+
 				if (isset(Kohana_Exception::$php_errors[$code]))
 				{
 					// Use the human-readable error name
@@ -251,13 +261,13 @@ class Kohana_Kohana_Exception extends Exception {
 
 			// Instantiate the error view.
 			$view = View::factory(Kohana_Exception::$error_view, get_defined_vars());
-			
+
 			// Prepare the response object.
 			$response = Response::factory();
 
 			// Set the response status
 			$response->status(($e instanceof HTTP_Exception) ? $e->getCode() : 500);
-			
+
 			// Set the response headers
 			$response->headers('Content-Type', Kohana_Exception::$error_view_content_type.'; charset='.Kohana::$charset);
 
