@@ -17,3 +17,5 @@ application/config/social.php
 public/img/covers/*
 /nbproject/private/
 *~
+
+.ftpconfig

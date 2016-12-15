@@ -21,7 +21,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             $page->files     = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
             $page->images    = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
 
-            $this->view['can_modify_this_page'] = $this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher);
+            $this->view['can_modify_this_page'] = $this->user->isAdmin || $this->user->id == $page->author->id;
             $this->view['comments']             = Model_Comment::getCommentsByPageId($id);
             $this->view['page']                 = $page;
 
@@ -36,16 +36,37 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function action_save()
     {
-        if (!$this->user->isTeacher()) {
+        if (!$this->user->id) {
 
             self::error_page('Недостаточно прав для создания страницы');
             return FALSE;
         }
 
-        if (!$this->user->isAdmin() && $page->type != Model_Page::TYPE_USER_PAGE) {
+        /**
+         * если пользователь не админ, то надо проверить, не подменил ли он
+         * type, parent или редактирует не свою страницу
+         */
+        if (!$this->user->isAdmin()) {
 
-            self::error_page('Недостаточно прав для создания новости или страницы сайта');
-            return FALSE;
+            /** проверка при создании подстраницы */
+            $page_parent = (int) Arr::get($_POST, 'parent', Arr::get($_GET, 'parent', 0));
+            $parent = new Model_Page($page_parent);
+            $is_valid_parent = $parent->id != 0 ? $this->user->id == $parent->author->id : true;
+
+            /** проверка типа */
+            $page_type = (int) Arr::get($_POST, 'type', Arr::get($_GET, 'type', Model_Page::TYPE_SITE_PAGE));
+            $is_valid_type = $parent->id == 0 ? $page_type != Model_Page::TYPE_SITE_NEWS : true;
+
+            /** проверка на право редактирования */
+            $page_id = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
+            $page = new Model_Page($page_id);
+            $is_valid_author = $page_id ? $this->user->id == $page->author->id : true;
+
+            if (!$is_valid_parent || !$is_valid_type || !$is_valid_author) {
+
+                self::error_page('Недостаточно прав для создания новости или страницы сайта');
+                return FALSE;
+            }
         }
 
         $errors    = array();
@@ -113,7 +134,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         $id   = $this->request->param('id');
         $page = new Model_Page($id);
 
-        if ($this->user->isAdmin || ($this->user->id == $page->author->id && $this->user->isTeacher)) {
+        if ($this->user->isAdmin || $this->user->id == $page->author->id) {
 
             $page->parent = new Model_Page($page->id_parent);
             $page->setAsRemoved();
@@ -158,7 +179,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         $id   = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
         $page = new Model_Page($id);
 
-        $page->type          = (int) Arr::get($_POST, 'type',         0);
+        $page->type          = (int) Arr::get($_POST, 'type',         1);
         $page->id_parent     = (int) Arr::get($_POST, 'id_parent',    0);
         $page->title         =       Arr::get($_POST, 'title',        '');
         $page->content       =       Arr::get($_POST, 'content',      '');

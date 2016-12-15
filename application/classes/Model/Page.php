@@ -3,7 +3,7 @@
 class Model_Page extends Model_preDispatch
 {
     public $id              = 0;
-    public $type            = 0;
+    public $type            = self::TYPE_SITE_PAGE;
     public $status          = 0;
     public $id_parent       = 0;
     public $title           = '';
@@ -17,6 +17,12 @@ class Model_Page extends Model_preDispatch
     public $parent;
     public $source_link     = '';
 
+    паспорт
+    инн
+    снилс
+    справка об отсуствии судимости
+    копия аттестата
+
     public $attachments     = array();
     public $files           = array();
     public $images          = array();
@@ -28,6 +34,10 @@ class Model_Page extends Model_preDispatch
     const STATUS_SHOWING_PAGE = 0;
     const STATUS_HIDDEN_PAGE  = 1;
     const STATUS_REMOVED_PAGE = 2;
+
+    const LIST_PAGES_NEWS     = 1;
+    const LIST_PAGES_TEACHERS = 2;
+    const LIST_PAGES_USERS    = 3;
 
     public function __construct($id = 0)
     {
@@ -144,9 +154,8 @@ class Model_Page extends Model_preDispatch
         $offset = 0,
         $status = 0,
         $pinned_news        = false,
-        $without_menu_items = false
+        $without_menu_items = true
     ) {
-        
         $pages_query = Dao_Pages::select()->where('status', '=', $status);
 
         if ($type)               $pages_query->where('type', '=', $type);
@@ -154,6 +163,42 @@ class Model_Page extends Model_preDispatch
         if ($offset)             $pages_query->offset($offset);
         if ($pinned_news)        $pages_query->order_by('dt_pin', 'DESC');
         if ($without_menu_items) $pages_query->where('is_menu_item', '=', 0);
+
+        $pages_rows = $pages_query->order_by('id','DESC')->execute();
+
+        return self::rowsToModels($pages_rows);
+    }
+
+    public static function getSpecialList(
+        $list_const = 0,
+        $limit = 0,
+        $offset = 0
+    ){
+        if (!$list_const) return false;
+
+        $pages_query = Dao_Pages::select()
+            ->where('is_removed', '=', 0);
+
+        if ($limit)  $pages_query->limit($limit);
+        if ($offset) $pages_query->offset($offset);
+
+        switch ($list_const) {
+            case self::LIST_PAGES_NEWS:
+                $pages_query->where('type', '=', self::TYPE_SITE_NEWS);
+                break;
+
+            case self::LIST_PAGES_TEACHERS:
+                //$pages_query->where('type', '=', self::TYPE_SITE_NEWS);
+                break;
+
+            case self::LIST_PAGES_USERS:
+                # code...
+                break;
+
+            default:
+                return false;
+                break;
+        }
 
         $pages_rows = $pages_query->order_by('id','DESC')->execute();
 
