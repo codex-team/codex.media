@@ -266,7 +266,7 @@ class Model_Page extends Model_preDispatch
         return self::FEED_TYPE_OTHER_BLOGS;
     }
 
-    private function addPageToFeed()
+    public function addPageToFeed()
     {
         $this->feed_type = $this->getFeedType();
 

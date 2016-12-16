@@ -12,7 +12,8 @@ class Model_Feed_News extends Model_Feed_Abstract {
      *
      * @return bool|int
      */
-    public function add($item_id, $item_dt_create) {
+    public function add($item_id, $item_dt_create)
+    {
         return parent::add($item_id, strtotime($item_dt_create));
     }
 
@@ -24,8 +25,8 @@ class Model_Feed_News extends Model_Feed_Abstract {
      * @return bool|array
      * @throws Exception
      */
-    public function get($numberOfItems = 0) {
-
+    public function get($numberOfItems = 0)
+    {
         $items = parent::get($numberOfItems);
 
         if (is_array($items)) {
@@ -37,8 +38,10 @@ class Model_Feed_News extends Model_Feed_Abstract {
                 $models_list[] = new Model_Page($id);
 
             }
+
             return $models_list;
         }
+        
         return false;
     }
 }
