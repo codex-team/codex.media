@@ -45,7 +45,7 @@ class Model_User extends Model
         self::fillByRow($user);
     }
 
-    public function fillByRow($user)
+    private function fillByRow($user)
     {
         if ($user) {
 

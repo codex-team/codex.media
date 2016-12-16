@@ -94,7 +94,7 @@ class Controller_User extends Controller_Base_preDispatch
             if (!$error) {
 
                 $fields['password'] = Controller_Auth_Base::createPasswordHash($newPassword);
-            }   
+            }
 
             //если пустое поле, то не заносим его в базу и модель, за исключением телефона
             foreach ($fields as $key => $value) {

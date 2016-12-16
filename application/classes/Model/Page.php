@@ -33,6 +33,8 @@ class Model_Page extends Model_preDispatch
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS    = 3;
 
+    const FEED_TYPE = 'news';
+
     public function __construct($id = 0)
     {
         if (!$id) return;
@@ -72,6 +74,8 @@ class Model_Page extends Model_preDispatch
 
     public function insert()
     {
+        $feed = new Model_Feed(self::FEED_TYPE);
+
         $page = Dao_Pages::insert()
             ->set('type',           $this->type)
             ->set('author',         $this->author->id)
@@ -86,6 +90,8 @@ class Model_Page extends Model_preDispatch
         if ($this->is_menu_item) $page->clearcache('site_menu');
 
         $page = $page->execute();
+
+        $feed->add($page);
 
         if ($page) return new Model_Page($page);
     }

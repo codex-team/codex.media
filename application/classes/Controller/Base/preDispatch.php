@@ -97,9 +97,7 @@ class Controller_Base_preDispatch extends Controller_Template
         $this->session = Session::instance();
 
         $uid  = Controller_Auth_Base::checkAuth();
-        $user = new Model_User($uid ?: 0);
-
-        $this->user = $user;
+        $this->user = new Model_User($uid ?: 0);
         View::set_global('user', $this->user);
 
     }
