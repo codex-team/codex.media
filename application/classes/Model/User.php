@@ -30,10 +30,11 @@ class Model_User extends Model
     public $isOnline            = 0;
     public $lastOnline          = 0;
 
-    const USER_STATUS_ADMIN         = 2;
-    const USER_STATUS_TEACHER       = 1;
-    const USER_STATUS_REGISTERED    = 0;
-    const USER_STATUS_BANNED        = -1;
+    const USER_STATUS_ADMIN      = 3;
+    const USER_STATUS_TEACHER    = 2;
+    const USER_STATUS_REGISTERED = 1;
+    const USER_STATUS_GUEST      = 0;
+    const USER_STATUS_BANNED     = -1;
 
     public function __construct($uid = null)
     {

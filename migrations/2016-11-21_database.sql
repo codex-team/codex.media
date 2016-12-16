@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `facebook` varchar(255) DEFAULT NULL,
   `facebook_name` varchar(255) DEFAULT NULL,
   `facebook_username` varchar(255) DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 - register, 2 - teacher , 3 - admin',
   `dt_reg` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_removed` tinyint(1) NOT NULL DEFAULT '0',
   `telegram_chat_id` int(11) DEFAULT NULL,
