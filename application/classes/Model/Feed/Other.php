@@ -1,11 +1,11 @@
 <?php
 
-class Model_Feed_News extends Model_Feed_Abstract {
+class Model_Feed_Other extends Model_Feed_Abstract {
 
-    protected $timeline_key = 'news';
+    protected $timeline_key = 'other';
 
     /**
-     * Получаем массив моделей новостей.
+     * Получаем массив моделей страниц.
      *
      * @param int $numberOfItems - количество элементов, которое хотим получить. Если не указан - получаем все
      *
