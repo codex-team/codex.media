@@ -12,7 +12,7 @@ class Model_Feed_Other extends Model_Feed_Abstract {
      * @return bool|array
      * @throws Exception
      */
-    public function get($numberOfItems = 0, $offset = 0)
+    public static function get($numberOfItems = 0, $offset = 0)
     {
         $items = parent::get($numberOfItems, $offset);
 
@@ -23,7 +23,6 @@ class Model_Feed_Other extends Model_Feed_Abstract {
             foreach ($items as $id) {
 
                 $models_list[] = new Model_Page($id);
-
             }
 
             return $models_list;

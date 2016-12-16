@@ -13,14 +13,17 @@ class Controller_Index extends Controller_Base_preDispatch
 
         $offset = ($page_number - 1) * self::NEWS_LIMIT_PER_PAGE;
 
-        $pages = Model_Page::getPages(
-            Model_Page::TYPE_SITE_NEWS,
-            self::NEWS_LIMIT_PER_PAGE + 1,
-            $offset,
-            0,
-            true,
-            true
-        );
+        // $pages = Model_Page::getPages(
+        //     Model_Page::TYPE_SITE_NEWS,
+        //     self::NEWS_LIMIT_PER_PAGE + 1,
+        //     $offset,
+        //     0,
+        //     true,
+        //     true
+        // );
+
+
+        $pages = Model_Feed_News::get(self::NEWS_LIMIT_PER_PAGE + 1, $offset);
 
         $next_page = false;
 
