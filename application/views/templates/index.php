@@ -6,10 +6,19 @@
     <?= View::factory('templates/pages/form', array( 'page' => $page )); ?>
 <? endif ?>
 
-
+<? /*
 <? if ($page_number > 1): ?>
     <div class="article post-list-item w_island separator">Page <?= $page_number ?></div>
 <? endif ?>
+*/ ?>
+
+<div class="list_users_heading">
+    <ul class="page_menu">
+        <li><?= true ? '<a href="/?feed=news">Новости</a></li>' : 'Новости' ?></li>
+        <li><?= true ? '<a href="/?feed=teachers">Блоги учителей</a>' : 'Блоги учителей' ?></li>
+        <li><?= true ? '<a href="/?feed=other">Всё подряд</a>' : 'Всё остальное' ?></li>
+    </ul>
+</div>
 
 <? if ( $pages ): ?>
 

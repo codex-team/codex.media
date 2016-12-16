@@ -402,7 +402,8 @@ codex.appender = {
                     if (!response.pages) return;
 
                     /* Append items */
-                    codex.appender.block_for_items.innerHTML += separator + response.pages;
+                    //codex.appender.block_for_items.innerHTML += separator;
+                    codex.appender.block_for_items.innerHTML += response.pages;
 
                     /* Next page */
                     codex.appender.page++;
