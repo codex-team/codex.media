@@ -4,13 +4,12 @@ class Model_Feed extends Model {
 
     private $redis;
     private $type;
-
     private $redis_key;
 
     public function __construct($type = '')
     {
         $this->redis = Controller_Base_preDispatch::_redis();
-        $this->type = $type;
+        $this->type      = $type;
         $this->redis_key = 'feed';
     }
 
@@ -23,7 +22,7 @@ class Model_Feed extends Model {
 
     public function composeValueIdentity($id)
     {
-        return $this->type.':'.$id;
+        return $this->type . ':' . $id;
     }
 
     /**
@@ -56,7 +55,7 @@ class Model_Feed extends Model {
      * Добавляем элемент в фид
      *
      * @param $item_id
-     * @param $item_score string time 
+     * @param $item_score string time
      * @return bool|void
      */
     public function add($item_id, $item_score = "now")
@@ -90,13 +89,14 @@ class Model_Feed extends Model {
     public function addActiveArticles()
     {
 
-        $articles = Model_Article::getActiveArticles();
+        $pages = Model_Page::getPages();
 
         $this->clear();
 
         $this->type = Model_Article::FEED_TYPE;
 
         foreach ($articles as $article) {
+
             $this->add($article->id, $article->dt_create);
         }
 
@@ -117,12 +117,16 @@ class Model_Feed extends Model {
         $numberOfItems = $this->redis->zCard($this->redis_key) > $numberOfItems ? $numberOfItems : 0;
 
         if ($numberOfItems) {
+
             $list = $this->redis->zRevRange($this->redis_key, 0, $numberOfItems - 1);
+
         } else {
+
             $list = $this->redis->zRevRange($this->redis_key, 0, -1);
         }
 
         if (is_array($list)) {
+
             $models_list = array();
 
             foreach ($list as $item) {
@@ -165,6 +169,7 @@ class Model_Feed extends Model {
      * Очистить фид
      */
     public function clear() {
+
         $this->redis->del($this->redis_key);
     }
 }

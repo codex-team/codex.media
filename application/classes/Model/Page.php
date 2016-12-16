@@ -16,6 +16,7 @@ class Model_Page extends Model_preDispatch
     public $author;
     public $parent;
     public $source_link     = '';
+    public $feed_type       = '';
 
     public $attachments     = array();
     public $files           = array();
@@ -33,7 +34,9 @@ class Model_Page extends Model_preDispatch
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS    = 3;
 
-    const FEED_TYPE = 'news';
+    const FEED_TYPE_NEWS           = 'news';
+    const FEED_TYPE_TEACHERS_BLOGS = 'teachers';
+    const FEED_TYPE_OTHER_BLOGS    = 'blogs';
 
     public function __construct($id = 0)
     {
@@ -67,6 +70,8 @@ class Model_Page extends Model_preDispatch
 
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
+
+            $this->addPageToFeed();
         }
 
         return $this;
@@ -74,8 +79,6 @@ class Model_Page extends Model_preDispatch
 
     public function insert()
     {
-        $feed = new Model_Feed(self::FEED_TYPE);
-
         $page = Dao_Pages::insert()
             ->set('type',           $this->type)
             ->set('author',         $this->author->id)
@@ -90,8 +93,6 @@ class Model_Page extends Model_preDispatch
         if ($this->is_menu_item) $page->clearcache('site_menu');
 
         $page = $page->execute();
-
-        $feed->add($page);
 
         if ($page) return new Model_Page($page);
     }
@@ -254,5 +255,25 @@ class Model_Page extends Model_preDispatch
             ->execute();
 
         return self::rowsToModels($menu_pages);
+    }
+
+    private function getFeedType()
+    {
+        if ($this->type == self::TYPE_SITE_NEWS)
+            return self::FEED_TYPE_NEWS;
+
+        if ($this->author->status >= Model_User::USER_STATUS_TEACHER)
+            return self::FEED_TYPE_TEACHERS_BLOGS;
+
+        return self::FEED_TYPE_OTHER_BLOGS;
+    }
+
+    private function addPageToFeed()
+    {
+        $this->feed_type = $this->getFeedType();
+
+        $feed = new Model_Feed($this->feed_type);
+
+        $feed->add($this->id, $this->date);
     }
 }
