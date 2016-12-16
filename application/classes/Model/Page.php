@@ -70,8 +70,6 @@ class Model_Page extends Model_preDispatch
 
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
-
-            $this->addPageToFeed();
         }
 
         return $this;
@@ -272,7 +270,21 @@ class Model_Page extends Model_preDispatch
     {
         $this->feed_type = $this->getFeedType();
 
-        $feed = new Model_Feed($this->feed_type);
+        switch ($this->feed_type) {
+            case self::FEED_TYPE_NEWS:
+                $feed = new Model_Feed_News();
+                break;
+
+            case self::FEED_TYPE_TEACHERS_BLOGS:
+                $feed = new Model_Feed_Teachers();
+                break;
+
+            case self::FEED_TYPE_OTHER_BLOGS:
+                $feed = new Model_Feed_Other();
+                break;
+
+            default: break;
+        }
 
         $feed->add($this->id, $this->date);
     }

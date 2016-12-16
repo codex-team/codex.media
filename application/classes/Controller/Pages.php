@@ -93,6 +93,8 @@ class Controller_Pages extends Controller_Base_preDispatch
                 */
                 $this->savePageFiles($page->id);
 
+                $page->addPageToFeed();
+
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
 
             } else {
