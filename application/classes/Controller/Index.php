@@ -7,6 +7,7 @@ class Controller_Index extends Controller_Base_preDispatch
     public function action_index()
     {
         $page_number = $this->request->param('page_number');
+        $feed_type = $this->request->param('feed');
 
         if (!$page_number) $page_number = 1;
 

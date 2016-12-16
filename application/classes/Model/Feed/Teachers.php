@@ -12,9 +12,9 @@ class Model_Feed_Teachers extends Model_Feed_Abstract {
      * @return bool|array
      * @throws Exception
      */
-    public function get($numberOfItems = 0)
+    public function get($numberOfItems = 0, $offset = 0)
     {
-        $items = parent::get($numberOfItems);
+        $items = parent::get($numberOfItems, $offset);
 
         if (is_array($items)) {
 

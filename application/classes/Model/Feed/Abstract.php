@@ -113,11 +113,11 @@ class Model_Feed_Abstract extends Model {
      *
      * @return array - массив идентефикаторов элементов
      */
-    public function get($numberOfItems = 0) {
+    public function get($numberOfItems = 0, $offset = 0) {
 
-        $numberOfItems = $this->redis->zCard($this->timeline_key) > $numberOfItems ? $numberOfItems : 0;
+        $numberOfItems = $this->redis->zCard($this->timeline_key) > $numberOfItems + $offset ? $numberOfItems + $offset : 0;
 
-        $items = $this->redis->zRevRange($this->timeline_key, 0, $numberOfItems - 1);
+        $items = $this->redis->zRevRange($this->timeline_key, $offset, $numberOfItems - 1);
 
         return $items;
     }
