@@ -22,8 +22,8 @@ class Controller_Index extends Controller_Base_preDispatch
         //     true
         // );
 
-
-        $pages = Model_Feed_News::get(self::NEWS_LIMIT_PER_PAGE + 1, $offset);
+        $feed = new Model_Feed_News(Model_Page::FEED_TYPE_NEWS);
+        $pages = $feed->get(self::NEWS_LIMIT_PER_PAGE + 1, $offset);
 
         $next_page = false;
 
