@@ -1,5 +1,5 @@
 <? // добавление формы на страницу ?>
-<? if (true): ?>
+<? if ($user->id): ?>
     <?
         $page = new Model_Page();
         $page->type = Model_Page::TYPE_USER_PAGE;
