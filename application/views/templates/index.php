@@ -1,7 +1,13 @@
-<? if($user->isAdmin()): ?>
+<? // добавление формы на страницу ?>
+<? if (true): ?>
     <?
         $page = new Model_Page();
-        $page->type = Model_Page::TYPE_SITE_NEWS;
+        $page->type = Model_Page::TYPE_USER_PAGE;
+
+        if ($user->isAdmin() && $feed_type == Model_Page::FEED_TYPE_NEWS) {
+
+            $page->type = Model_Page::TYPE_SITE_NEWS;
+        }
     ?>
     <?= View::factory('templates/pages/form', array( 'page' => $page )); ?>
 <? endif ?>
@@ -14,9 +20,14 @@
 
 <div class="list_users_heading">
     <ul class="page_menu">
-        <li><?= true ? '<a href="/?feed='.Model_Page::FEED_TYPE_NEWS.'">Новости</a></li>' : 'Новости' ?></li>
-        <li><?= true ? '<a href="/?feed='.Model_Page::FEED_TYPE_TEACHERS_BLOGS.'">Блоги учителей</a>' : 'Блоги учителей' ?></li>
-        <li><?= true ? '<a href="/?feed='.Model_Page::FEED_TYPE_BLOGS.'">Всё подряд</a>' : 'Всё остальное' ?></li>
+        <li><?= $feed_type != Model_Page::FEED_TYPE_NEWS && $feed_type ?
+            '<a href="/?feed='.Model_Page::FEED_TYPE_NEWS.'">Новости</a></li>' : 'Новости' ?></li>
+
+        <li><?= $feed_type != Model_Page::FEED_TYPE_TEACHERS_BLOGS ?
+            '<a href="/?feed='.Model_Page::FEED_TYPE_TEACHERS_BLOGS.'">Блоги учителей</a>' : 'Блоги учителей' ?></li>
+
+        <li><?= $feed_type != Model_Page::FEED_TYPE_BLOGS ?
+            '<a href="/?feed='.Model_Page::FEED_TYPE_BLOGS.'">Все свежие записи</a>' : 'Все свежие записи' ?></li>
     </ul>
 </div>
 
