@@ -35,7 +35,7 @@ class Controller_Transport extends Controller_Base_preDispatch
             goto finish;
         }
 
-        if (!$this->user->isTeacher()) {
+        if (!$this->user->id) {
 
             $this->transportResponse['message'] = 'Access denied';
             goto finish;

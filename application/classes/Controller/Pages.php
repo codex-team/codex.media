@@ -256,10 +256,13 @@ class Controller_Pages extends Controller_Base_preDispatch
 
             $file = new Model_File($file_row['id']);
 
-            $file->page  = $page_id;
-            $file->title = $file_row['title'];
+            if (!$file->page) {
 
-            $file->update();
+                $file->page  = $page_id;
+                $file->title = $file_row['title'];
+
+                $file->update();
+            }
         }
     }
 }
