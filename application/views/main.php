@@ -132,7 +132,7 @@
 
     <? /* Scripts */ ?>
 
-    <script src="/public/extensions/codex-special/codex-special.v.1.0.2.min.js?v=2"></script>
+    <script src="/public/extensions/codex.special/codex-special.v.1.0.2.min.js?v=2"></script>
 
     <? /* end Scripts */ ?>
 

@@ -77,7 +77,9 @@ class Controller_Pages extends Controller_Base_preDispatch
             /** Сабмит формы */
             $page = self::get_form();
 
-            if ($page->title && Arr::get($_POST, 'title')) {
+            echo Debug::vars(json_decode($page->content));
+
+            if ($page->title && Arr::get($_POST, 'title', 'no-title')) {
 
                 if ($page->id) {
 
@@ -185,7 +187,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $page->type          = (int) Arr::get($_POST, 'type',         1);
         $page->id_parent     = (int) Arr::get($_POST, 'id_parent',    0);
-        $page->title         =       Arr::get($_POST, 'title',        '');
+        $page->title         =       Arr::get($_POST, 'title',        'no-title');
         $page->content       =       Arr::get($_POST, 'content',      '');
         $page->is_menu_item  = (int) Arr::get($_POST, 'is_menu_item', 0);
         $page->rich_view     = (int) Arr::get($_POST, 'rich_view',    0);

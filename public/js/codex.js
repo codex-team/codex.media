@@ -310,13 +310,32 @@ codex.transport = {
 
         atlasForm.appendChild(attachesInput);
 
-        atlasForm.submit();
+        /** CodeX.Editor */
+        var form = document.forms['editor-demo'],
+            JSONinput = document.getElementById('json_result');
 
+        /**
+         * Save blocks
+         */
+        codex.editor.saver.saveBlocks();
+
+        setTimeout(function() {
+
+            /**
+             * Fill in INPUT items
+             */
+            INPUT.items = codex.editor.state.jsonOutput;
+            INPUT.count = INPUT.items.length;
+
+            JSONinput.innerHTML = JSON.stringify(codex.editor.state.jsonOutput);
+
+            /**
+             * Send form
+             */
+             atlasForm.submit();
+
+        }, 100);
     }
-
-
-
-
 };
 
 

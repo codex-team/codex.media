@@ -838,7 +838,7 @@ aside .logout {
 
 .breadcrumb {
     padding: 27px 30px;
-    border-bottom: 1px solid #f5f7f8;
+    border-bottom: 1px solid transparent;
     font-size: 15px;
     min-height: 22px;
     color: #a3a7b5;

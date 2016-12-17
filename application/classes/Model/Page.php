@@ -273,18 +273,22 @@ class Model_Page extends Model_preDispatch
         switch ($this->feed_type) {
             case self::FEED_TYPE_NEWS:
                 $feed = new Model_Feed_News();
+                $feed->add($this->id, $this->date);
                 break;
 
             case self::FEED_TYPE_TEACHERS_BLOGS:
                 $feed = new Model_Feed_Teachers();
+                $feed->add($this->id, $this->date);
                 break;
 
-            case self::FEED_TYPE_BLOGS:
-                $feed = new Model_Feed_All();
-                break;
+            // case self::FEED_TYPE_BLOGS:
+            //     $feed = new Model_Feed_All();
+            //     break;
 
             default: break;
         }
+
+        $feed = new Model_Feed_All();
 
         $feed->add($this->id, $this->date);
     }
@@ -296,19 +300,22 @@ class Model_Page extends Model_preDispatch
         switch ($this->feed_type) {
             case self::FEED_TYPE_NEWS:
                 $feed = new Model_Feed_News();
+                $feed->remove($this->id);
                 break;
 
             case self::FEED_TYPE_TEACHERS_BLOGS:
                 $feed = new Model_Feed_Teachers();
+                $feed->remove($this->id);
                 break;
 
-            case self::FEED_TYPE_BLOGS:
-                $feed = new Model_Feed_All();
-                break;
+            // case self::FEED_TYPE_BLOGS:
+            //     $feed = new Model_Feed_All();
+            //     break;
 
             default: break;
         }
 
+        $feed = new Model_Feed_All();
         $feed->remove($this->id);
     }
 }
