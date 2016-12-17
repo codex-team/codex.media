@@ -34,10 +34,10 @@
             '<a href="/?feed='.Model_Page::FEED_TYPE_NEWS.'">Новости</a></li>' : 'Новости' ?></li>
 
         <li><?= $feed_type != Model_Page::FEED_TYPE_TEACHERS_BLOGS ?
-            '<a href="/?feed='.Model_Page::FEED_TYPE_TEACHERS_BLOGS.'">Блоги учителей</a>' : 'Блоги учителей' ?></li>
+            '<a href="/?feed='.Model_Page::FEED_TYPE_TEACHERS_BLOGS.'">Блоги</a>' : 'Блоги' ?></li>
 
         <li><?= $feed_type != Model_Page::FEED_TYPE_BLOGS ?
-            '<a href="/?feed='.Model_Page::FEED_TYPE_BLOGS.'">Все свежие записи</a>' : 'Все свежие записи' ?></li>
+            '<a href="/?feed='.Model_Page::FEED_TYPE_BLOGS.'">Все записи</a>' : 'Все записи' ?></li>
     </ul>
 </div>
 
