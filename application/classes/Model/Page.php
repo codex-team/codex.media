@@ -288,4 +288,27 @@ class Model_Page extends Model_preDispatch
 
         $feed->add($this->id, $this->date);
     }
+
+    public function removePageFromFeed()
+    {
+        $this->feed_type = $this->getFeedType();
+
+        switch ($this->feed_type) {
+            case self::FEED_TYPE_NEWS:
+                $feed = new Model_Feed_News();
+                break;
+
+            case self::FEED_TYPE_TEACHERS_BLOGS:
+                $feed = new Model_Feed_Teachers();
+                break;
+
+            case self::FEED_TYPE_BLOGS:
+                $feed = new Model_Feed_All();
+                break;
+
+            default: break;
+        }
+
+        $feed->remove($this->id);
+    }
 }

@@ -4,7 +4,7 @@
         $page = new Model_Page();
         $page->type = Model_Page::TYPE_USER_PAGE;
 
-        if ($user->isAdmin() && $feed_type == Model_Page::FEED_TYPE_NEWS) {
+        if ($user->isAdmin() && ($feed_type == Model_Page::FEED_TYPE_NEWS || !$feed_type)) {
 
             $page->type = Model_Page::TYPE_SITE_NEWS;
         }
@@ -62,7 +62,7 @@
         <div class="empty_motivatior">
             <i class="icon_noarticles"></i><br/>
             <? if ($user->isAdmin()): ?>
-                Добавьте первую новость с помощью формы вверху страницы
+                Добавьте новый пост с помощью формы вверху страницы
             <? else: ?>
                 Здесь появятся новости и интересные публикации
             <? endif ?>

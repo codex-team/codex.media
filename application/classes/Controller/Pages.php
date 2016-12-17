@@ -9,7 +9,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $page = new Model_Page($id);
 
-        if ($page->title) {
+        if ($page->title && $page->status <> Model_Page::STATUS_REMOVED_PAGE) {
 
             if ($uri != $page->uri) {
 
@@ -140,6 +140,8 @@ class Controller_Pages extends Controller_Base_preDispatch
 
             $page->parent = new Model_Page($page->id_parent);
             $page->setAsRemoved();
+
+            $page->removePageFromFeed();
 
             $url = self::getUrlToParentPage($page);
 
