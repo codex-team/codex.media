@@ -21,6 +21,13 @@ class Controller_Pages extends Controller_Base_preDispatch
             $page->files     = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
             $page->images    = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
 
+            $page_blocks= array();
+            for($i = 0; $i < count($page->blocks); $i++) {
+                $page_blocks[] = View::factory('templates/editor/plugins/' . $page->blocks[$i]->type, array('block' => $page->blocks[$i]->data))
+                    ->render();
+            }
+            $this->view['page_blocks'] = $page_blocks;
+
             $this->view['can_modify_this_page'] = $this->user->isAdmin || $this->user->id == $page->author->id;
             $this->view['comments']             = Model_Comment::getCommentsByPageId($id);
             $this->view['page']                 = $page;
@@ -76,8 +83,6 @@ class Controller_Pages extends Controller_Base_preDispatch
 
             /** Сабмит формы */
             $page = self::get_form();
-
-            echo Debug::vars(json_decode($page->content));
 
             if ($page->title && Arr::get($_POST, 'title', 'no-title')) {
 
@@ -143,8 +148,6 @@ class Controller_Pages extends Controller_Base_preDispatch
             $page->parent = new Model_Page($page->id_parent);
             $page->setAsRemoved();
 
-            $page->removePageFromFeed();
-
             $url = self::getUrlToParentPage($page);
 
         } else {
@@ -194,6 +197,8 @@ class Controller_Pages extends Controller_Base_preDispatch
         $page->dt_pin        =       Arr::get($_POST, 'dt_pin',       null);
         $page->source_link   =       Arr::get($_POST, 'source_link',  '');
         $page->author        =       $this->user;
+
+        $page->blocks        = json_decode($page->content);
 
         return $page;
     }

@@ -18,6 +18,9 @@ class Model_Page extends Model_preDispatch
     public $source_link     = '';
     public $feed_type       = '';
 
+    public $description     = '';
+    public $blocks          = array();
+
     public $attachments     = array();
     public $files           = array();
     public $images          = array();
@@ -68,8 +71,12 @@ class Model_Page extends Model_preDispatch
                 }
             }
 
+            $this->blocks = json_decode($this->content);
+
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
+
+            $this->description = $this->getDescription();
         }
 
         return $this;
@@ -77,6 +84,8 @@ class Model_Page extends Model_preDispatch
 
     public function insert()
     {
+        $this->content = json_encode($this->blocks);
+
         $page = Dao_Pages::insert()
             ->set('type',           $this->type)
             ->set('author',         $this->author->id)
@@ -97,6 +106,8 @@ class Model_Page extends Model_preDispatch
 
     public function update()
     {
+        $this->content = json_encode($this->blocks);
+
         return Dao_Pages::update()
             ->where('id', '=', $this->id)
             ->set('id',             $this->id)
@@ -143,6 +154,8 @@ class Model_Page extends Model_preDispatch
 
             $comment->delete();
         }
+
+        $this->removePageFromFeed();
 
         return true;
     }
@@ -317,5 +330,27 @@ class Model_Page extends Model_preDispatch
 
         $feed = new Model_Feed_All();
         $feed->remove($this->id);
+    }
+
+    private function getDescription()
+    {
+        $blocks = $this->blocks;
+        $description = 'no-description';
+
+        if ($blocks) {
+
+            foreach ($blocks as $block) {
+
+                if (property_exists($block, 'cover')) {
+
+                    if ($block->cover == True) {
+
+                        $description = $block->data->text;
+                    }
+                }
+            }
+        }
+
+        return $description;
     }
 }

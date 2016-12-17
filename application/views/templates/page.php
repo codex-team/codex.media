@@ -52,9 +52,14 @@
     </div>
 
     <? /* Page content */ ?>
-    <? if ($page->content): ?>
+    <? if ($page->blocks): ?>
         <article class="page_content">
-        	<?= nl2br($page->content) ?>
+        	<?//= nl2br($page->content) ?>
+
+            <? for($i = 0; $i < count($page_blocks); $i++) : ?>
+                <?= $page_blocks[$i]; ?>
+            <? endfor; ?>
+
         </article>
     <? endif ?>
 

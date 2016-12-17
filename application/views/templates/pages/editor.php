@@ -2,7 +2,6 @@
 
 
 
-<?//= $page->content ?>
 
 <textarea hidden name="html" id="codex_editor" cols="30" rows="10" style="width: 100%;height: 300px;"></textarea>
 <textarea hidden name="content" id="json_result" cols="30" rows="10" style="width: 100%;height: 300px;"></textarea>
@@ -182,15 +181,7 @@
 * Redactor input
 */
 var INPUT = {
-    items : [],
-    count : 0,
-};
-
-/**
-* Old input with content
-*/
-var _INPUT = {
-    items : [],
+    items : <?= json_encode($page->blocks) ?: '[]' ?> ,
     count : 0,
 };
 
