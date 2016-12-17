@@ -71,8 +71,8 @@
     <div class="w_island w_island_centercol">
         <div class="empty_motivatior">
             <i class="icon_noarticles"></i><br/>
-            <? if ($user->isAdmin()): ?>
-                Добавьте новый пост с помощью формы вверху страницы
+            <? if ($user->id): ?>
+                Добавьте новую запись с помощью формы вверху страницы
             <? else: ?>
                 Здесь появятся новости и интересные публикации
             <? endif ?>
