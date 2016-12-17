@@ -14,9 +14,9 @@
 
 <div class="list_users_heading">
     <ul class="page_menu">
-        <li><?= true ? '<a href="/?feed=news">Новости</a></li>' : 'Новости' ?></li>
-        <li><?= true ? '<a href="/?feed=teachers">Блоги учителей</a>' : 'Блоги учителей' ?></li>
-        <li><?= true ? '<a href="/?feed=other">Всё подряд</a>' : 'Всё остальное' ?></li>
+        <li><?= true ? '<a href="/?feed='.Model_Page::FEED_TYPE_NEWS.'">Новости</a></li>' : 'Новости' ?></li>
+        <li><?= true ? '<a href="/?feed='.Model_Page::FEED_TYPE_TEACHERS_BLOGS.'">Блоги учителей</a>' : 'Блоги учителей' ?></li>
+        <li><?= true ? '<a href="/?feed='.Model_Page::FEED_TYPE_BLOGS.'">Всё подряд</a>' : 'Всё остальное' ?></li>
     </ul>
 </div>
 
@@ -36,6 +36,9 @@
                     button_id       : 'button_load_news',
                     current_page    : '<?= $page_number ?>',
                     url             : '/',
+                    getParams       : {
+                        'feed' : '<?= $feed_type ?>'
+                    },
                     target_block_id : 'list_of_news',
                     auto_loading    : true,
                 });

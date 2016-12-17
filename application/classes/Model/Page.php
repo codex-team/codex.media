@@ -36,7 +36,7 @@ class Model_Page extends Model_preDispatch
 
     const FEED_TYPE_NEWS           = 'news';
     const FEED_TYPE_TEACHERS_BLOGS = 'teachers';
-    const FEED_TYPE_OTHER_BLOGS    = 'blogs';
+    const FEED_TYPE_BLOGS          = 'blogs';
 
     public function __construct($id = 0)
     {
@@ -168,41 +168,41 @@ class Model_Page extends Model_preDispatch
         return self::rowsToModels($pages_rows);
     }
 
-    public static function getSpecialList(
-        $list_const = 0,
-        $limit = 0,
-        $offset = 0
-    ){
-        if (!$list_const) return false;
-
-        $pages_query = Dao_Pages::select()
-            ->where('is_removed', '=', 0);
-
-        if ($limit)  $pages_query->limit($limit);
-        if ($offset) $pages_query->offset($offset);
-
-        switch ($list_const) {
-            case self::LIST_PAGES_NEWS:
-                $pages_query->where('type', '=', self::TYPE_SITE_NEWS);
-                break;
-
-            case self::LIST_PAGES_TEACHERS:
-                //$pages_query->where('type', '=', self::TYPE_SITE_NEWS);
-                break;
-
-            case self::LIST_PAGES_USERS:
-                # code...
-                break;
-
-            default:
-                return false;
-                break;
-        }
-
-        $pages_rows = $pages_query->order_by('id','DESC')->execute();
-
-        return self::rowsToModels($pages_rows);
-    }
+    // public static function getSpecialList(
+    //     $list_const = 0,
+    //     $limit = 0,
+    //     $offset = 0
+    // ){
+    //     if (!$list_const) return false;
+    //
+    //     $pages_query = Dao_Pages::select()
+    //         ->where('is_removed', '=', 0);
+    //
+    //     if ($limit)  $pages_query->limit($limit);
+    //     if ($offset) $pages_query->offset($offset);
+    //
+    //     switch ($list_const) {
+    //         case self::LIST_PAGES_NEWS:
+    //             $pages_query->where('type', '=', self::TYPE_SITE_NEWS);
+    //             break;
+    //
+    //         case self::LIST_PAGES_TEACHERS:
+    //             //$pages_query->where('type', '=', self::TYPE_SITE_NEWS);
+    //             break;
+    //
+    //         case self::LIST_PAGES_USERS:
+    //             # code...
+    //             break;
+    //
+    //         default:
+    //             return false;
+    //             break;
+    //     }
+    //
+    //     $pages_rows = $pages_query->order_by('id','DESC')->execute();
+    //
+    //     return self::rowsToModels($pages_rows);
+    // }
 
     public static function rowsToModels($page_rows)
     {
@@ -263,7 +263,7 @@ class Model_Page extends Model_preDispatch
         if ($this->author->status >= Model_User::USER_STATUS_TEACHER)
             return self::FEED_TYPE_TEACHERS_BLOGS;
 
-        return self::FEED_TYPE_OTHER_BLOGS;
+        return self::FEED_TYPE_BLOGS;
     }
 
     public function addPageToFeed()
@@ -279,8 +279,8 @@ class Model_Page extends Model_preDispatch
                 $feed = new Model_Feed_Teachers();
                 break;
 
-            case self::FEED_TYPE_OTHER_BLOGS:
-                $feed = new Model_Feed_Other();
+            case self::FEED_TYPE_BLOGS:
+                $feed = new Model_Feed_All();
                 break;
 
             default: break;

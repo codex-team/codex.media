@@ -508,7 +508,7 @@ input[type="submit"] {
 
 
 .loading:after{
-    content: '●●●';
+    content: '● ● ●';
     display: inline-block;
     margin-left: 5px;
 
@@ -1528,6 +1528,7 @@ aside .logout {
 
     .contacts_map #map {
         height: 100vh;
+        min-height: 500px
     }
 
 

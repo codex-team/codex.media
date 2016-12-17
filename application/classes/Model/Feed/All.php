@@ -1,8 +1,21 @@
 <?php
 
-class Model_Feed_Other extends Model_Feed_Abstract {
+class Model_Feed_All extends Model_Feed_Abstract {
 
-    protected $timeline_key = 'other';
+    protected $timeline_key = 'all';
+
+    /**
+     * Добавляем элемент в фид, передав в score дату создания
+     *
+     * @param int $item_id
+     * @param int $item_dt_create
+     *
+     * @return bool|int
+     */
+    public function add($item_id, $item_dt_create)
+    {
+        return parent::add($item_id, strtotime($item_dt_create));
+    }
 
     /**
      * Получаем массив моделей страниц.
@@ -12,7 +25,7 @@ class Model_Feed_Other extends Model_Feed_Abstract {
      * @return bool|array
      * @throws Exception
      */
-    public static function get($numberOfItems = 0, $offset = 0)
+    public function get($numberOfItems = 0, $offset = 0)
     {
         $items = parent::get($numberOfItems, $offset);
 

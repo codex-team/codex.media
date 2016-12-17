@@ -7,7 +7,7 @@ class Controller_Index extends Controller_Base_preDispatch
     public function action_index()
     {
         $page_number = $this->request->param('page_number');
-        $feed_type = $this->request->param('feed');
+        $feed_type   = Arr::get($_GET, 'feed', '');
 
         if (!$page_number) $page_number = 1;
 
@@ -22,7 +22,23 @@ class Controller_Index extends Controller_Base_preDispatch
         //     true
         // );
 
-        $feed = new Model_Feed_News(Model_Page::FEED_TYPE_NEWS);
+        switch ($feed_type) {
+
+            /** case Model_Page::FEED_TYPE_NEWS is default */
+
+            case Model_Page::FEED_TYPE_TEACHERS_BLOGS:
+                $feed = new Model_Feed_Teachers();
+                break;
+
+            case Model_Page::FEED_TYPE_BLOGS:
+                $feed = new Model_Feed_All();
+                break;
+
+            default:
+                $feed = new Model_Feed_News();
+                break;
+        }
+
         $pages = $feed->get(self::NEWS_LIMIT_PER_PAGE + 1, $offset);
 
         $next_page = false;
@@ -49,6 +65,7 @@ class Controller_Index extends Controller_Base_preDispatch
             $this->view['pages']        = $pages;
             $this->view['next_page']    = $next_page;
             $this->view['page_number']  = $page_number;
+            $this->view['feed_type']    = $feed_type;
 
             $this->template->content = View::factory('templates/index', $this->view);
         }
