@@ -3,7 +3,7 @@
 class Model_Page extends Model_preDispatch
 {
     public $id              = 0;
-    public $type            = self::TYPE_SITE_PAGE;
+    public $type            = self::TYPE_USER_PAGE;
     public $status          = 0;
     public $id_parent       = 0;
     public $title           = '';

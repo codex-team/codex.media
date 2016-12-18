@@ -14,7 +14,7 @@
     <input class="title_input" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
 
     <?= View::factory('templates/pages/editor', array(
-        'page'        => $page,
+        'page' => $page,
     )); ?>
 
     <div class="attaches" id="formAttaches">
