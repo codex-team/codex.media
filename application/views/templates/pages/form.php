@@ -45,7 +45,6 @@
 
         <span class="button main fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
 
-
         <? if ($user->isAdmin && $page->type == Model_Page::TYPE_SITE_NEWS): ?>
 
             <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Закрепить новость">

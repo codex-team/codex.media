@@ -53,16 +53,16 @@ class Controller_Pages extends Controller_Base_preDispatch
         }
 
         /** проверка прав доступа при создании подстраницы */
-        $page_parent = (int) Arr::get($_POST, 'parent', Arr::get($_GET, 'parent', 0));
+        $page_parent = (int) Arr::get($_POST, 'parent', 0);
         $parent = new Model_Page($page_parent);
         $is_valid_parent = $parent->id != 0 ? $this->user->id == $parent->author->id : true;
 
         /** проверка типа */
-        $page_type = (int) Arr::get($_POST, 'type', Arr::get($_GET, 'type', Model_Page::TYPE_SITE_PAGE));
-        $is_valid_type = $parent->id == 0 ? $page_type != Model_Page::TYPE_SITE_NEWS : true;
+        $page_type = (int) Arr::get($_POST, 'type', Model_Page::TYPE_USER_PAGE);
+        $is_valid_type = $parent->id != 0 ? $page_type != Model_Page::TYPE_SITE_NEWS || $this->user->isAdmin: true;
 
         /** проверка на право редактирования */
-        $page_id = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
+        $page_id = (int) Arr::get($_POST, 'id', 0);
         $page = new Model_Page($page_id);
         $is_valid_author = $page_id ? $this->user->id == $page->author->id : true;
 
