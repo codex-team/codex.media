@@ -54,11 +54,12 @@
     <? /* Page content */ ?>
     <? if ($page->blocks): ?>
         <article class="page_content">
-        	<?//= nl2br($page->content) ?>
 
             <? for($i = 0; $i < count($page_blocks); $i++) : ?>
+
                 <?= $page_blocks[$i]; ?>
-            <? endfor; ?>
+
+            <? endfor ?>
 
         </article>
     <? endif ?>
@@ -69,18 +70,26 @@
                 <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
             <? endforeach ?>
         </ul>
-    <? endif; ?>
+    <? endif ?>
 
-    <? /* Admin page buttons  */ ?>
-    <? if( $can_modify_this_page ): ?>
+    <? /**
+        * Admin page buttons
+        */ ?>
+    <? if ($can_modify_this_page): ?>
         <div class="action-line action-line__onpage clear">
-            <? if($page->author->id == $user->id || $page->type == Model_Page::TYPE_SITE_NEWS): ?>
+            <? if ($page->author->id == $user->id ): ?>
+
                 <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i> Редактировать</a>
-                <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
+
+                <? if ($page->type != Model_Page::TYPE_SITE_NEWS): ?>
+                    <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
+                <? endif ?>
+
             <? endif ?>
             <a class="textbutton js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
         </div>
     <? endif ?>
+
 </div>
 
 <? /* Page's images block */ ?>
@@ -92,9 +101,11 @@
             </a>
         <? endforeach ?>
     </div>
-<? endif; ?>
+<? endif ?>
 
-<? /* Page's files block */ ?>
+<? /**
+    * Page's files block
+    */ ?>
 <? if ($page->files): ?>
     <div class="w_island files" style="margin: 5px 0 5px 5px">
     	<table class="page_files">
@@ -109,8 +120,11 @@
     		<? endforeach ?>
     	</table>
     </div>
-<? endif; ?>
+<? endif ?>
 
+<? /**
+    * Comments block
+    */ ?>
 <div class="page_comments w_island" style="margin: 5px 0 5px 5px" id="page_comments">
 
     <? if ($comments): ?>
@@ -135,7 +149,7 @@
                             <i class="icon-right-dir"></i>
                             <?= $comment->parent_comment->author->name ?>
                         </span>
-                    <? endif; ?>
+                    <? endif ?>
 
 
                     <p><?= $comment->text ?></p>
@@ -147,18 +161,18 @@
                             <i class="icon-reply"></i>
                             Ответить
                         </span>
-                    <? endif; ?>
+                    <? endif ?>
 
                     <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
                         <a class="delete_button js-approval-button"
                            href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             Удалить
                         </a>
-                    <? endif; ?>
+                    <? endif ?>
                 </div>
 
             </div>
-        <? endforeach; ?>
+        <? endforeach ?>
     <? else: ?>
         <div class="empty_motivatior">
             <i class="icon_nocomments"></i><br/>
@@ -168,7 +182,8 @@
                 <a class="button main" href="/auth">Авторизоваться</a>
             <? endif ?>
         </div>
-    <? endif; ?>
+    <? endif ?>
+
     <? if($user->id): ?>
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
             <?= Form::hidden('csrf', Security::token()); ?>
@@ -179,9 +194,8 @@
             <span id="add_answer_to" class="add_answer_to"></span>
             <span class="cancel_answer" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
         </form>
-    <? else: ?>
+    <? endif ?>
 
-    <? endif; ?>
 </div>
 
 <script src="/public/js/comment.js"></script>

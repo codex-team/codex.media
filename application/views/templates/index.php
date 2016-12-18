@@ -22,7 +22,7 @@
     </style>
 <? endif ?>
 
-<? /*
+<? /* плашка с номером страницы. можно выпилить.
 <? if ($page_number > 1): ?>
     <div class="article post-list-item w_island separator">Page <?= $page_number ?></div>
 <? endif ?>
