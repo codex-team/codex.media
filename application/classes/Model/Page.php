@@ -181,42 +181,6 @@ class Model_Page extends Model_preDispatch
         return self::rowsToModels($pages_rows);
     }
 
-    // public static function getSpecialList(
-    //     $list_const = 0,
-    //     $limit = 0,
-    //     $offset = 0
-    // ){
-    //     if (!$list_const) return false;
-    //
-    //     $pages_query = Dao_Pages::select()
-    //         ->where('is_removed', '=', 0);
-    //
-    //     if ($limit)  $pages_query->limit($limit);
-    //     if ($offset) $pages_query->offset($offset);
-    //
-    //     switch ($list_const) {
-    //         case self::LIST_PAGES_NEWS:
-    //             $pages_query->where('type', '=', self::TYPE_SITE_NEWS);
-    //             break;
-    //
-    //         case self::LIST_PAGES_TEACHERS:
-    //             //$pages_query->where('type', '=', self::TYPE_SITE_NEWS);
-    //             break;
-    //
-    //         case self::LIST_PAGES_USERS:
-    //             # code...
-    //             break;
-    //
-    //         default:
-    //             return false;
-    //             break;
-    //     }
-    //
-    //     $pages_rows = $pages_query->order_by('id','DESC')->execute();
-    //
-    //     return self::rowsToModels($pages_rows);
-    // }
-
     public static function rowsToModels($page_rows)
     {
         $pages = array();
@@ -294,10 +258,6 @@ class Model_Page extends Model_preDispatch
                 $feed->add($this->id, $this->date);
                 break;
 
-            // case self::FEED_TYPE_BLOGS:
-            //     $feed = new Model_Feed_All();
-            //     break;
-
             default: break;
         }
 
@@ -321,10 +281,6 @@ class Model_Page extends Model_preDispatch
                 $feed->remove($this->id);
                 break;
 
-            // case self::FEED_TYPE_BLOGS:
-            //     $feed = new Model_Feed_All();
-            //     break;
-
             default: break;
         }
 
@@ -332,15 +288,30 @@ class Model_Page extends Model_preDispatch
         $feed->remove($this->id);
     }
 
+    /**
+     * Функция находит первый блок paragraph и возвращает его в качестве превью
+     *
+     * #TODO возвращать и научиться обрабатывать блок любого типа с параметром cover = true
+     */
     private function getDescription()
     {
         $blocks = $this->blocks;
-        $description = 'no-description';
+        $description = 'описание отсутствует';
 
         if ($blocks) {
 
             foreach ($blocks as $block) {
 
+                if ($block->type == 'paragraph') {
+
+                    $description = $block->data->text;
+
+                    break;
+                }
+                /**
+                 * Поиск блока с параметром cover = true
+                 */
+                /*
                 if (property_exists($block, 'cover')) {
 
                     if ($block->cover == True) {
@@ -348,6 +319,7 @@ class Model_Page extends Model_preDispatch
                         $description = $block->data->text;
                     }
                 }
+                */
             }
         }
 

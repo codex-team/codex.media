@@ -12,13 +12,9 @@
 
 
     <input class="title_input" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
-    <? /*
-    <textarea name="content" rows="5" placeholder="Содержание <?= $object_name ?>"><?= $page->content ?></textarea>
-    */ ?>
 
     <?= View::factory('templates/pages/editor', array(
         'page'        => $page,
-        //'attachments' => $attachments,
     )); ?>
 
     <div class="attaches" id="formAttaches">

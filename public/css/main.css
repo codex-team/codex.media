@@ -1383,11 +1383,11 @@ aside .logout {
     border-radius: 20px;
 }
     .textbutton.click-again-to-approve {
-        padding: 6px 30px;
+        padding: 6px 15px;
     }
 
     .delete_button.click-again-to-approve {
-        padding: 6px 30px;
+        padding: 6px 15px;
     }
 
 

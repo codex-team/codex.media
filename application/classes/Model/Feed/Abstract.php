@@ -43,7 +43,8 @@ class Model_Feed_Abstract extends Model {
      *
      * @return array - массив из двух элементов (prefix, id)
      */
-    public function decomposeValueIdentity($identity) {
+    public function decomposeValueIdentity($identity)
+    {
         return explode(':', $identity);
     }
 
@@ -114,8 +115,8 @@ class Model_Feed_Abstract extends Model {
      * @param int $offset
      * @return array - массив идентефикаторов элементов
      */
-    public function get($numberOfItems = 0, $offset = 0) {
-
+    public function get($numberOfItems = 0, $offset = 0)
+    {
         $numberOfItems = $this->redis->zCard($this->timeline_key) > $numberOfItems + $offset ? $numberOfItems + $offset : 0;
 
         $items = $this->redis->zRevRange($this->timeline_key, $offset, $numberOfItems - 1);
@@ -131,6 +132,7 @@ class Model_Feed_Abstract extends Model {
     public function init($items)
     {
         foreach ($items as $item) {
+
             $this->add($item['id'], $item['dt_create']);
         }
     }
@@ -138,7 +140,8 @@ class Model_Feed_Abstract extends Model {
     /**
      * Очистить фид
      */
-    public function clear() {
+    public function clear()
+    {
         $this->redis->del($this->timeline_key);
     }
 }

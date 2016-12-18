@@ -23,8 +23,11 @@ class Controller_Pages extends Controller_Base_preDispatch
 
             $page_blocks= array();
             for($i = 0; $i < count($page->blocks); $i++) {
-                $page_blocks[] = View::factory('templates/editor/plugins/' . $page->blocks[$i]->type, array('block' => $page->blocks[$i]->data))
-                    ->render();
+                
+                $page_blocks[] = View::factory(
+                    'templates/editor/plugins/' . $page->blocks[$i]->type,
+                    array('block' => $page->blocks[$i]->data)
+                )->render();
             }
             $this->view['page_blocks'] = $page_blocks;
 
@@ -49,31 +52,24 @@ class Controller_Pages extends Controller_Base_preDispatch
             return FALSE;
         }
 
-        /**
-         * если пользователь не админ, то надо проверить, не подменил ли он
-         * type, parent или редактирует не свою страницу
-         */
-        if (!$this->user->isAdmin()) {
+        /** проверка прав доступа при создании подстраницы */
+        $page_parent = (int) Arr::get($_POST, 'parent', Arr::get($_GET, 'parent', 0));
+        $parent = new Model_Page($page_parent);
+        $is_valid_parent = $parent->id != 0 ? $this->user->id == $parent->author->id : true;
 
-            /** проверка при создании подстраницы */
-            $page_parent = (int) Arr::get($_POST, 'parent', Arr::get($_GET, 'parent', 0));
-            $parent = new Model_Page($page_parent);
-            $is_valid_parent = $parent->id != 0 ? $this->user->id == $parent->author->id : true;
+        /** проверка типа */
+        $page_type = (int) Arr::get($_POST, 'type', Arr::get($_GET, 'type', Model_Page::TYPE_SITE_PAGE));
+        $is_valid_type = $parent->id == 0 ? $page_type != Model_Page::TYPE_SITE_NEWS : true;
 
-            /** проверка типа */
-            $page_type = (int) Arr::get($_POST, 'type', Arr::get($_GET, 'type', Model_Page::TYPE_SITE_PAGE));
-            $is_valid_type = $parent->id == 0 ? $page_type != Model_Page::TYPE_SITE_NEWS : true;
+        /** проверка на право редактирования */
+        $page_id = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
+        $page = new Model_Page($page_id);
+        $is_valid_author = $page_id ? $this->user->id == $page->author->id : true;
 
-            /** проверка на право редактирования */
-            $page_id = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
-            $page = new Model_Page($page_id);
-            $is_valid_author = $page_id ? $this->user->id == $page->author->id : true;
+        if (!$is_valid_parent || !$is_valid_type || !$is_valid_author) {
 
-            if (!$is_valid_parent || !$is_valid_type || !$is_valid_author) {
-
-                self::error_page('Недостаточно прав для создания новости или страницы сайта');
-                return FALSE;
-            }
+            self::error_page('Недостаточно прав для создания или редактирования страницы сайта');
+            return FALSE;
         }
 
         $errors    = array();
@@ -84,7 +80,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             /** Сабмит формы */
             $page = self::get_form();
 
-            if ($page->title && Arr::get($_POST, 'title', 'no-title')) {
+            if ($page->title && Arr::get($_POST, 'title', '')) {
 
                 if ($page->id) {
 
