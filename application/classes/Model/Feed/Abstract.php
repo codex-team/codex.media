@@ -106,11 +106,12 @@ class Model_Feed_Abstract extends Model {
 
 
     /**
-     * Получаем индентефикаторы первых $numberOfItems элементов в фиде.
+     * Получаем индентефикаторы первых $numberOfItems элементов в фиде,
+     * сделав отступ в $offset элементов (для пагинации).
      * Если $numberOfItems не указано, то получаем весь фид.
      *
      * @param int $numberOfItems
-     *
+     * @param int $offset
      * @return array - массив идентефикаторов элементов
      */
     public function get($numberOfItems = 0, $offset = 0) {
