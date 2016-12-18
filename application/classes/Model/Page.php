@@ -304,10 +304,11 @@ class Model_Page extends Model_preDispatch
 
                 if ($block->type == 'paragraph') {
 
-                    $description = $block->data->text;
+                    $description = $block->data->text ?: $description;
 
                     break;
                 }
+                
                 /**
                  * Поиск блока с параметром cover = true
                  */
