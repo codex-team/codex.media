@@ -248,6 +248,7 @@ class Model_Page extends Model_preDispatch
         $this->feed_type = $this->getFeedType();
 
         switch ($this->feed_type) {
+
             case self::FEED_TYPE_NEWS:
                 $feed = new Model_Feed_News();
                 $feed->add($this->id, $this->date);
@@ -271,6 +272,7 @@ class Model_Page extends Model_preDispatch
         $this->feed_type = $this->getFeedType();
 
         switch ($this->feed_type) {
+
             case self::FEED_TYPE_NEWS:
                 $feed = new Model_Feed_News();
                 $feed->remove($this->id);
@@ -308,7 +310,7 @@ class Model_Page extends Model_preDispatch
 
                     break;
                 }
-                
+
                 /**
                  * Поиск блока с параметром cover = true
                  */
