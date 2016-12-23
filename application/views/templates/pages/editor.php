@@ -170,17 +170,16 @@
 
             data : INPUT
         });
-
     });
 
 
-/**
- * Redactor input
- */
-var INPUT = {
-    items : <?= json_encode($page->blocks) ?: '[]' ?> ,
-    count : 0,
-};
+    /**
+     * Redactor input
+     */
+    var INPUT = {
+        items : <?= json_encode($page->blocks) ?: '[]' ?> ,
+        count : 0,
+    };
 
 </script>
 
