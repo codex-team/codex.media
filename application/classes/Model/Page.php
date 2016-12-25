@@ -10,6 +10,7 @@ class Model_Page extends Model_preDispatch
     public $content         = '';
     public $date            = '';
     public $is_menu_item    = 0;
+    public $is_news_page    = 0;
     public $rich_view       = 0;
     public $dt_pin;
     public $uri             = '';
