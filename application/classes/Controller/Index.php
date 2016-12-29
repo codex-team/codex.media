@@ -24,13 +24,13 @@ class Controller_Index extends Controller_Base_preDispatch
 
         switch ($feed_type) {
 
-            /** case Model_Page::FEED_TYPE_NEWS is default */
+            /** case Model_Page::FEED_KEY_NEWS is default */
 
-            case Model_Page::FEED_TYPE_TEACHERS_BLOGS:
+            case Model_Page::FEED_KEY_TEACHERS_BLOGS:
                 $feed = new Model_Feed_Teachers();
                 break;
 
-            case Model_Page::FEED_TYPE_BLOGS:
+            case Model_Page::FEED_KEY_BLOGS:
                 $feed = new Model_Feed_All();
                 break;
 

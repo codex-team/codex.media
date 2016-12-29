@@ -38,9 +38,9 @@ class Model_Page extends Model_preDispatch
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS    = 3;
 
-    const FEED_TYPE_NEWS           = 'news';
-    const FEED_TYPE_TEACHERS_BLOGS = 'teachers';
-    const FEED_TYPE_BLOGS          = 'blogs';
+    const FEED_KEY_NEWS           = 'news';
+    const FEED_KEY_TEACHERS_BLOGS = 'teachers';
+    const FEED_KEY_BLOGS          = 'blogs';
 
     public function __construct($id = 0)
     {
@@ -236,12 +236,12 @@ class Model_Page extends Model_preDispatch
     private function getFeedType()
     {
         if ($this->type == self::TYPE_SITE_NEWS)
-            return self::FEED_TYPE_NEWS;
+            return self::FEED_KEY_NEWS;
 
         if ($this->author->status >= Model_User::USER_STATUS_TEACHER)
-            return self::FEED_TYPE_TEACHERS_BLOGS;
+            return self::FEED_KEY_TEACHERS_BLOGS;
 
-        return self::FEED_TYPE_BLOGS;
+        return self::FEED_KEY_BLOGS;
     }
 
     public function addPageToFeed()
@@ -250,12 +250,12 @@ class Model_Page extends Model_preDispatch
 
         switch ($this->feed_type) {
 
-            case self::FEED_TYPE_NEWS:
+            case self::FEED_KEY_NEWS:
                 $feed = new Model_Feed_News();
                 $feed->add($this->id, $this->date);
                 break;
 
-            case self::FEED_TYPE_TEACHERS_BLOGS:
+            case self::FEED_KEY_TEACHERS_BLOGS:
                 $feed = new Model_Feed_Teachers();
                 $feed->add($this->id, $this->date);
                 break;
@@ -274,12 +274,12 @@ class Model_Page extends Model_preDispatch
 
         switch ($this->feed_type) {
 
-            case self::FEED_TYPE_NEWS:
+            case self::FEED_KEY_NEWS:
                 $feed = new Model_Feed_News();
                 $feed->remove($this->id);
                 break;
 
-            case self::FEED_TYPE_TEACHERS_BLOGS:
+            case self::FEED_KEY_TEACHERS_BLOGS:
                 $feed = new Model_Feed_Teachers();
                 $feed->remove($this->id);
                 break;
