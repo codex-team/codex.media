@@ -8,11 +8,18 @@
 $DIGIT  = '\d+';
 $STRING = '[-a-zA-Z\d]+';
 
+$FEED_KEYS = Model_Page::FEED_KEY_NEWS.'|'.Model_Page::FEED_KEY_TEACHERS_BLOGS.'|'.Model_Page::FEED_KEY_BLOGS;
+
 
 /**
  * Static pages
  */
-Route::set('INDEX', '(<page_number>)', array('page_number' => $DIGIT))->defaults(array(
+Route::set('INDEX', '(<feed_key>(/))(<page_number>)',
+    array(
+        'feed_key' => $FEED_KEYS,
+        'page_number' => $DIGIT,
+    )
+)->defaults(array(
     'controller' => 'index',
     'action' => 'index'
 ));
@@ -89,10 +96,10 @@ Route::set('PAGE_FILES_EDITING', 'ajax/edit_file/<type>')->defaults(array(
     'action'          => 'edit_file'
 ));
 
-Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
-    'controller'      => 'parser',
-    'action'          => 'get_page'
-));
+// Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
+//     'controller'      => 'parser',
+//     'action'          => 'get_page'
+// ));
 
 
 /**

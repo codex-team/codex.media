@@ -1914,6 +1914,10 @@ aside .logout {
     }
 }
 
+.page_content p {
+     margin: 20px 0;
+}
+
 
 
 /**

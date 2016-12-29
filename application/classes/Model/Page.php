@@ -3,32 +3,26 @@
 class Model_Page extends Model_preDispatch
 {
     public $id              = 0;
-    public $type            = self::TYPE_USER_PAGE;
     public $status          = 0;
-    public $id_parent       = 0;
-    public $title           = '';
-    public $content         = '';
     public $date            = '';
-    public $is_menu_item    = 0;
-    public $is_news_page    = 0;
-    public $rich_view       = 0;
-    public $dt_pin;
     public $uri             = '';
     public $author;
-    public $parent;
-    public $source_link     = '';
-    public $feed_type       = '';
+    public $id_parent       = 0;
 
+    public $rich_view       = 0;
+    public $dt_pin;
+    public $is_menu_item    = 0;
+    public $is_news_page    = 0;
+    public $feed_key       = '';
+
+    public $title           = '';
+    public $content         = '';
     public $description     = '';
     public $blocks          = array();
 
     public $attachments     = array();
     public $files           = array();
     public $images          = array();
-
-    const TYPE_SITE_PAGE = 1;
-    const TYPE_SITE_NEWS = 2;
-    const TYPE_USER_PAGE = 3;
 
     const STATUS_SHOWING_PAGE = 0;
     const STATUS_HIDDEN_PAGE  = 1;
@@ -40,7 +34,7 @@ class Model_Page extends Model_preDispatch
 
     const FEED_KEY_NEWS           = 'news';
     const FEED_KEY_TEACHERS_BLOGS = 'teachers';
-    const FEED_KEY_BLOGS          = 'blogs';
+    const FEED_KEY_BLOGS          = 'all';
 
     public function __construct($id = 0)
     {
@@ -88,15 +82,14 @@ class Model_Page extends Model_preDispatch
         $this->content = json_encode($this->blocks);
 
         $page = Dao_Pages::insert()
-            ->set('type',           $this->type)
             ->set('author',         $this->author->id)
             ->set('id_parent',      $this->id_parent)
             ->set('title',          $this->title)
             ->set('content',        $this->content)
             ->set('is_menu_item',   $this->is_menu_item)
+            ->set('is_news_page',   $this->is_news_page)
             ->set('rich_view',      $this->rich_view)
-            ->set('dt_pin',         $this->dt_pin)
-            ->set('source_link',    $this->source_link);
+            ->set('dt_pin',         $this->dt_pin);
 
         if ($this->is_menu_item) $page->clearcache('site_menu');
 
@@ -112,16 +105,15 @@ class Model_Page extends Model_preDispatch
         return Dao_Pages::update()
             ->where('id', '=', $this->id)
             ->set('id',             $this->id)
-            ->set('type',           $this->type)
             ->set('status',         $this->status)
             ->set('author',         $this->author->id)
             ->set('id_parent',      $this->id_parent)
             ->set('title',          $this->title)
             ->set('content',        $this->content)
             ->set('is_menu_item',   $this->is_menu_item)
+            ->set('is_news_page',   $this->is_news_page)
             ->set('rich_view',      $this->rich_view)
             ->set('dt_pin',         $this->dt_pin)
-            ->set('source_link',    $this->source_link)
             ->clearcache('page:' . $this->id, array('site_menu'))
             ->execute();
     }
@@ -162,7 +154,6 @@ class Model_Page extends Model_preDispatch
     }
 
     public static function getPages(
-        $type   = 0,
         $limit  = 0,
         $offset = 0,
         $status = 0,
@@ -171,7 +162,6 @@ class Model_Page extends Model_preDispatch
     ) {
         $pages_query = Dao_Pages::select()->where('status', '=', $status);
 
-        if ($type)               $pages_query->where('type', '=', $type);
         if ($limit)              $pages_query->limit($limit);
         if ($offset)             $pages_query->offset($offset);
         if ($pinned_news)        $pages_query->order_by('dt_pin', 'DESC');
@@ -235,7 +225,7 @@ class Model_Page extends Model_preDispatch
 
     private function getFeedType()
     {
-        if ($this->type == self::TYPE_SITE_NEWS)
+        if ($this->is_news_page)
             return self::FEED_KEY_NEWS;
 
         if ($this->author->status >= Model_User::USER_STATUS_TEACHER)
@@ -246,9 +236,9 @@ class Model_Page extends Model_preDispatch
 
     public function addPageToFeed()
     {
-        $this->feed_type = $this->getFeedType();
+        $this->feed_key = $this->getFeedType();
 
-        switch ($this->feed_type) {
+        switch ($this->feed_key) {
 
             case self::FEED_KEY_NEWS:
                 $feed = new Model_Feed_News();
@@ -270,9 +260,9 @@ class Model_Page extends Model_preDispatch
 
     public function removePageFromFeed()
     {
-        $this->feed_type = $this->getFeedType();
+        $this->feed_key = $this->getFeedType();
 
-        switch ($this->feed_type) {
+        switch ($this->feed_key) {
 
             case self::FEED_KEY_NEWS:
                 $feed = new Model_Feed_News();
@@ -294,7 +284,7 @@ class Model_Page extends Model_preDispatch
     /**
      * Функция находит первый блок paragraph и возвращает его в качестве превью
      *
-     * #TODO возвращать и научиться обрабатывать блок любого типа с параметром cover = true
+     * #TODO возвращать и научиться обрабатывать блок(-и) любого типа с параметром cover = true
      */
     private function getDescription()
     {

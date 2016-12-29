@@ -170,7 +170,7 @@ class Model_User extends Model
         $pages = Dao_Pages::select()
             ->where('author', '=', $this->id)
             ->where('status', '=', Model_Page::STATUS_SHOWING_PAGE)
-            ->where('type', '=', Model_Page::TYPE_USER_PAGE)
+            // ->where('type', '=', Model_Page::TYPE_USER_PAGE)
             ->where('id_parent', '=', $id_parent)
             ->order_by('id','DESC')
             ->execute();

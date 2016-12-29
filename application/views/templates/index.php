@@ -1,52 +1,43 @@
-<? // добавление формы на страницу ?>
+<? /** add form for new page */ ?>
 <? if ($user->id): ?>
-    <?
-        $page = new Model_Page();
-        $page->type = Model_Page::TYPE_USER_PAGE;
 
-        if ($user->isAdmin() && ($feed_type == Model_Page::FEED_TYPE_NEWS || !$feed_type)) {
-
-            $page->type = Model_Page::TYPE_SITE_NEWS;
-        }
-    ?>
-    <?= View::factory('templates/pages/form', array( 'page' => $page )); ?>
+    <?= View::factory('templates/pages/form'); ?>
 
     <style>
-
         .ce-redactor {
             padding-top: 40px;
             min-height: 200px;
             padding-bottom: 40px;
         }
-
     </style>
-<? endif ?>
 
-<? /* плашка с номером страницы. можно выпилить.
-<? if ($page_number > 1): ?>
-    <div class="article post-list-item w_island separator">Page <?= $page_number ?></div>
 <? endif ?>
-*/ ?>
+<? /***/ ?>
 
+
+<? /** menu for pages lists */ ?>
 <div class="list_users_heading">
     <ul class="page_menu">
-        <li><?= $feed_type != Model_Page::FEED_TYPE_NEWS && $feed_type ?
-            '<a href="/?feed='.Model_Page::FEED_TYPE_NEWS.'">Новости</a></li>' : 'Новости' ?></li>
+        <li><?= $feed_key != Model_Page::FEED_KEY_NEWS && $feed_key ?
+            '<a href="/'.Model_Page::FEED_KEY_NEWS.'">Новости</a></li>' : 'Новости' ?></li>
 
-        <li><?= $feed_type != Model_Page::FEED_TYPE_TEACHERS_BLOGS ?
-            '<a href="/?feed='.Model_Page::FEED_TYPE_TEACHERS_BLOGS.'">Блоги</a>' : 'Блоги' ?></li>
+        <li><?= $feed_key != Model_Page::FEED_KEY_TEACHERS_BLOGS ?
+            '<a href="/'.Model_Page::FEED_KEY_TEACHERS_BLOGS.'">Блоги</a>' : 'Блоги' ?></li>
 
-        <li><?= $feed_type != Model_Page::FEED_TYPE_BLOGS ?
-            '<a href="/?feed='.Model_Page::FEED_TYPE_BLOGS.'">Все записи</a>' : 'Все записи' ?></li>
+        <li><?= $feed_key != Model_Page::FEED_KEY_BLOGS ?
+            '<a href="/'.Model_Page::FEED_KEY_BLOGS.'">Все записи</a>' : 'Все записи' ?></li>
+
+
     </ul>
 </div>
+<? /***/ ?>
 
-<? if ( $pages ): ?>
+
+<? /** pages list */ ?>
+<? if ($pages): ?>
 
     <div id="list_of_news" class="news">
-
         <?= View::factory('templates/news_list', array( 'pages'=> $pages)); ?>
-
     </div>
 
     <? if ($next_page): ?>
@@ -56,10 +47,7 @@
                 codex.appender.init({
                     button_id       : 'button_load_news',
                     current_page    : '<?= $page_number ?>',
-                    url             : '/',
-                    getParams       : {
-                        'feed' : '<?= $feed_type ?>'
-                    },
+                    url             : '<?= $feed_key ? "/".$feed_key."/" : "/" ?>',
                     target_block_id : 'list_of_news',
                     auto_loading    : true,
                 });
@@ -79,3 +67,4 @@
         </div>
     </div>
 <? endif ?>
+<? /***/ ?>

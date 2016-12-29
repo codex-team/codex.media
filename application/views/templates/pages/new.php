@@ -4,7 +4,7 @@
     <span class="nav_chain">
         <?
     		$action = isset($page->id) && $page->id ? 'Редактирование' : 'Создание';
-    		$object = $page->type == Model_Page::TYPE_SITE_NEWS ? 'новости' : 'страницы';
+    		$object = $page->is_news_page ? 'новости' : 'страницы';
 
         	echo $action . ' ' . $object;
         ?>

@@ -1,38 +1,5 @@
 <div class="w_island w_island_centercol">
 
-    <? /*
-
-    <div class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-
-        <? if ($page->parent->id): ?>
-
-            <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri ?>" itemprop="title" class="nav_chain">
-                <?= $page->parent->title ?>
-            </a>
-
-        <? else: ?>
-
-            <? if ($page->type != Model_Page::TYPE_USER_PAGE): ?>
-
-                <a class="nav_chain" href="/" itemprop="url">
-                    <span itemprop="title">Главная</span>
-                </a>
-
-            <? else: ?>
-
-                <a class="nav_chain" href="/user/<?= $page->author->id ?>" itemprop="url">
-                    <span itemprop="title"><?= $page->author->name ?></span>
-                </a>
-
-            <? endif ?>
-
-        <? endif ?>
-
-    </div>
-
-    */ ?>
-
-
     <? /* Page title */ ?>
     <h1 class="page_title">
     	<?= $page->title ?>
@@ -40,30 +7,23 @@
 
     <? /* Page info */ ?>
     <div class="page-information">
-        <? if ($page->type != Model_Page::TYPE_SITE_PAGE): ?>
-            <time class="page-information__time"><?= $methods->ftime(strtotime($page->date)) ?></time>
-        <? endif; ?>
-        <? if ($page->type == Model_Page::TYPE_USER_PAGE): ?>
-            <a class="page-information__author" href="/user/<?= $page->author->id ?>">
-                <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
-                <span class="page-information__author_name"><?= $page->author->name ?></span>
-            </a>
-        <? endif ?>
+        <time class="page-information__time"><?= $methods->ftime(strtotime($page->date)) ?></time>
+        <a class="page-information__author" href="/user/<?= $page->author->id ?>">
+            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
+            <span class="page-information__author_name"><?= $page->author->name ?></span>
+        </a>
     </div>
 
     <? /* Page content */ ?>
-    <? if ($page->blocks): ?>
+    <? if ($page->blocks_array): ?>
         <article class="page_content">
-
-            <? for($i = 0; $i < count($page_blocks); $i++) : ?>
-
-                <?= $page_blocks[$i]; ?>
-
+            <? for ($i = 0; $i < count($page->blocks_array); $i++): ?>
+                <?= $page->blocks_array[$i]; ?>
             <? endfor ?>
-
         </article>
     <? endif ?>
 
+    <? /* Child pages */ ?>
     <? if ($page->childrens): ?>
         <ul class="page_childrens clear <?= !$page->content ? 'page_childrens--empty-content' : '' ?>">
             <? foreach ($page->childrens as $children): ?>
@@ -72,19 +32,12 @@
         </ul>
     <? endif ?>
 
-    <? /**
-        * Admin page buttons
-        */ ?>
+    <? /* Manage page buttons */ ?>
     <? if ($can_modify_this_page): ?>
         <div class="action-line action-line__onpage clear">
             <? if ($page->author->id == $user->id ): ?>
-
                 <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i> Редактировать</a>
-
-                <? if ($page->type != Model_Page::TYPE_SITE_NEWS): ?>
-                    <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
-                <? endif ?>
-
+                <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
             <? endif ?>
             <a class="textbutton js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
         </div>
@@ -103,9 +56,7 @@
     </div>
 <? endif ?>
 
-<? /**
-    * Page's files block
-    */ ?>
+<? /* Page's files block */ ?>
 <? if ($page->files): ?>
     <div class="w_island files" style="margin: 5px 0 5px 5px">
     	<table class="page_files">
@@ -122,13 +73,11 @@
     </div>
 <? endif ?>
 
-<? /**
-    * Comments block
-    */ ?>
+<? /* Comments block */ ?>
 <div class="page_comments w_island" style="margin: 5px 0 5px 5px" id="page_comments">
 
-    <? if ($comments): ?>
-        <? foreach ($comments as $comment): ?>
+    <? if ($page->comments): ?>
+        <? foreach ($page->comments as $comment): ?>
             <div class="comment_wrapper clear <?= $comment->parent_comment ? 'answer_wrapper' : '' ?>"
                  id="comment_<?= $comment->id ?>">
                 <a href="/user/<?= $comment->author->id ?>">
