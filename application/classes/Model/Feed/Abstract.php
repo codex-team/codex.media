@@ -144,4 +144,12 @@ class Model_Feed_Abstract extends Model {
     {
         $this->redis->del($this->timeline_key);
     }
+
+    /**
+     * Поиск значения в фидах
+     */
+    public function scan($item_id)
+    {
+        return in_array($this->timeline_key, $this->redis->scan($item_id));
+    }
 }
