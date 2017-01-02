@@ -2,7 +2,7 @@
 
 class Controller_Pages extends Controller_Base_preDispatch
 {
-    public function action_show_page()
+    public function action_show()
     {
         $id  = $this->request->param('id');
         $uri = $this->request->param('uri');
@@ -120,7 +120,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->template->content = View::factory('templates/pages/new', $this->view);
     }
 
-    public function action_delete_page()
+    public function action_delete()
     {
         $id   = $this->request->param('id');
         $page = new Model_Page($id);
@@ -139,6 +139,37 @@ class Controller_Pages extends Controller_Base_preDispatch
         }
 
         $this->redirect($url);
+    }
+
+    public function action_promote()
+    {
+        $id   = $this->request->param('id');
+        $page = new Model_Page($id);
+
+        if ($this->user->isAdmin) {
+
+            $toggle_to_list = Arr::get($_GET, 'list', '');
+
+            switch ($toggle_to_list) {
+                case 'news':
+                    $page->is_news_page = 1 - $page->is_news_page;
+                    $page->togglePageInFeed('news');
+                    break;
+
+                case 'menu':
+                    $page->is_menu_item = 1 - $page->is_menu_item;
+                    break;
+            }
+
+            $page->update();
+
+        } else {
+
+            self::error_page('Недостаточно прав для добавления страницы в список');
+            return FALSE;
+        }
+
+        $this->redirect('/p/' . $page->id . '/' . $page->uri);
     }
 
     public function get_form()

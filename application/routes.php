@@ -14,7 +14,7 @@ $FEED_KEYS = Model_Page::FEED_KEY_NEWS.'|'.Model_Page::FEED_KEY_TEACHERS_BLOGS.'
 /**
  * Static pages
  */
-Route::set('INDEX', '(<feed_key>(/))(<page_number>)',
+Route::set('INDEX', '(<feed_key>(/))(<page_number>)', // #TODO rewrite expression for: IF <feed_key> && <page_number> THEN need this slash (/)
     array(
         'feed_key' => $FEED_KEYS,
         'page_number' => $DIGIT,
@@ -43,14 +43,19 @@ Route::set('NEW_PAGE', 'p/save')->defaults(array(
     'action' => 'save'
 ));
 
-Route::set('DELETE_PAGE', 'p/<id>/<uri>/delete', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
-    'controller' => 'pages',
-    'action' => 'delete_page'
-));
-
 Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
-    'action' => 'show_page'
+    'action' => 'show'
+));
+
+Route::set('ACTION_FOR_PAGE', 'p/<id>/<uri>/<action>',
+    array(
+        'id' => $DIGIT,
+        'uri' => $STRING,
+        'action' => 'delete|promote'
+    )
+)->defaults(array(
+    'controller' => 'pages',
 ));
 
 
