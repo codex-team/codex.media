@@ -223,6 +223,10 @@ class Model_Page extends Model_preDispatch
         return self::rowsToModels($menu_pages);
     }
 
+
+    /**
+     * Feed functions
+     */
     private function getFeedType()
     {
         if ($this->is_news_page)
@@ -234,52 +238,55 @@ class Model_Page extends Model_preDispatch
         return self::FEED_KEY_BLOGS;
     }
 
-    public function addPageToFeed()
+    private function returnFeedModelForPage($key = '')
     {
-        $this->feed_key = $this->getFeedType();
+        $this->feed_key = $key ?: $this->getFeedType();
 
         switch ($this->feed_key) {
 
             case self::FEED_KEY_NEWS:
                 $feed = new Model_Feed_News();
-                $feed->add($this->id, $this->date);
                 break;
 
             case self::FEED_KEY_TEACHERS_BLOGS:
                 $feed = new Model_Feed_Teachers();
-                $feed->add($this->id, $this->date);
                 break;
-
-            default: break;
         }
 
-        $feed = new Model_Feed_All();
+        return $feed ?: false;
+    }
 
+    public function togglePageInFeed($key)
+    {
+        $feed = self::returnFeedModelForPage($key);
+
+        if ($feed->scan($this->id)) {
+
+            $feed->remove($this->id);
+        } else {
+
+            $feed->add($this->id, $this->date);
+        }
+    }
+
+    public function addPageToFeed()
+    {
+        $feed = self::returnFeedModelForPage();
+        $feed->add($this->id, $this->date);
+
+        $feed = new Model_Feed_All();
         $feed->add($this->id, $this->date);
     }
 
     public function removePageFromFeed()
     {
-        $this->feed_key = $this->getFeedType();
-
-        switch ($this->feed_key) {
-
-            case self::FEED_KEY_NEWS:
-                $feed = new Model_Feed_News();
-                $feed->remove($this->id);
-                break;
-
-            case self::FEED_KEY_TEACHERS_BLOGS:
-                $feed = new Model_Feed_Teachers();
-                $feed->remove($this->id);
-                break;
-
-            default: break;
-        }
+        $feed = self::returnFeedModelForPage();
+        $feed->remove($this->id);
 
         $feed = new Model_Feed_All();
         $feed->remove($this->id);
     }
+    /***/
 
     /**
      * Функция находит первый блок paragraph и возвращает его в качестве превью
