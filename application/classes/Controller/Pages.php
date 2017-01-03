@@ -153,7 +153,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             switch ($toggle_to_list) {
                 case 'news':
                     $page->is_news_page = 1 - $page->is_news_page;
-                    $page->togglePageInFeed('news');
+                    $page->togglePageInFeed('news', $page->is_news_page);
                     break;
 
                 case 'menu':
