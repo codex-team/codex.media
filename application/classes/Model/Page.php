@@ -102,7 +102,7 @@ class Model_Page extends Model_preDispatch
     {
         $this->content = json_encode($this->blocks);
 
-        return Dao_Pages::update()
+        $page = Dao_Pages::update()
             ->where('id', '=', $this->id)
             ->set('id',             $this->id)
             ->set('status',         $this->status)
@@ -113,9 +113,11 @@ class Model_Page extends Model_preDispatch
             ->set('is_menu_item',   $this->is_menu_item)
             ->set('is_news_page',   $this->is_news_page)
             ->set('rich_view',      $this->rich_view)
-            ->set('dt_pin',         $this->dt_pin)
-            ->clearcache('page:' . $this->id, array('site_menu'))
-            ->execute();
+            ->set('dt_pin',         $this->dt_pin);
+
+        $page->clearcache('page:' . $this->id, array('site_menu'));
+
+        return $page->execute();
     }
 
     public function setAsRemoved()
@@ -260,7 +262,7 @@ class Model_Page extends Model_preDispatch
     {
         $feed = self::returnFeedModelForPage($key);
 
-        if ($feed->scan($this->id)) {
+        if ($feed->isExist($this->id)) {
 
             $feed->remove($this->id);
         } else {

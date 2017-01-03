@@ -148,7 +148,7 @@ class Model_Feed_Abstract extends Model {
     /**
      * Поиск значения в фидах
      */
-    public function scan($item_id)
+    public function isExist($item_id)
     {
         return in_array($this->timeline_key, $this->redis->scan($item_id));
     }
