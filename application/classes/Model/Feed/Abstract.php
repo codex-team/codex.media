@@ -84,6 +84,8 @@ class Model_Feed_Abstract extends Model {
      */
     public function add($item_id, $item_score)
     {
+        $item_score = $item_score ?: strtotime("now");
+
         $value = $this->composeValueIdentity($item_id);
 
         if ($this->redis->zRank($this->timeline_key, $value) !== false) {

@@ -226,9 +226,7 @@ class Model_Page extends Model_preDispatch
     }
 
 
-    /**
-     * Feed functions
-     */
+/** Feed functions */
     private function getFeedType()
     {
         if ($this->is_news_page)
@@ -275,17 +273,17 @@ class Model_Page extends Model_preDispatch
             $feed->remove($this->id);
         } else {
 
-            $feed->add($this->id, $this->date);
+            $feed->add($this->id);
         }
     }
 
     public function addPageToFeed()
     {
         $feed = self::returnFeedModelForPage();
-        $feed->add($this->id, $this->date);
+        $feed->add($this->id);
 
         $feed = new Model_Feed_All();
-        $feed->add($this->id, $this->date);
+        $feed->add($this->id);
     }
 
     public function removePageFromFeed()
@@ -296,7 +294,7 @@ class Model_Page extends Model_preDispatch
         $feed = new Model_Feed_All();
         $feed->remove($this->id);
     }
-    /***/
+/***/
 
     /**
      * Функция находит первый блок paragraph и возвращает его в качестве превью
