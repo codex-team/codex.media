@@ -304,7 +304,7 @@ class Model_Page extends Model_preDispatch
     private function getDescription()
     {
         $blocks = $this->blocks;
-        $description = 'описание отсутствует';
+        $description = '';
 
         if ($blocks) {
 

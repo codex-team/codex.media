@@ -2,6 +2,9 @@
 
 class Controller_Pages extends Controller_Base_preDispatch
 {
+    /**
+     * Show page
+     */
     public function action_show()
     {
         $id  = $this->request->param('id');
@@ -49,6 +52,9 @@ class Controller_Pages extends Controller_Base_preDispatch
         }
     }
 
+    /**
+     * Open form for edit page or save it
+     */
     public function action_save()
     {
         /** check permissions for cteate or edit subpage */
@@ -120,6 +126,9 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->template->content = View::factory('templates/pages/new', $this->view);
     }
 
+    /**
+     * Set "as removed" for page
+     */
     public function action_delete()
     {
         $id   = $this->request->param('id');
@@ -141,33 +150,33 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->redirect($url);
     }
 
+    /**
+     * Add or remove page to feed list or menu list
+     */
     public function action_promote()
     {
         $id   = $this->request->param('id');
         $page = new Model_Page($id);
 
-        if ($this->user->isAdmin) {
-
-            $toggle_to_list = Arr::get($_GET, 'list', '');
-
-            switch ($toggle_to_list) {
-                case 'news':
-                    $page->is_news_page = 1 - $page->is_news_page;
-                    $page->togglePageInFeed('news', $page->is_news_page);
-                    break;
-
-                case 'menu':
-                    $page->is_menu_item = 1 - $page->is_menu_item;
-                    break;
-            }
-
-            $page->update();
-
-        } else {
-
+        if (!$this->user->isAdmin) {
             self::error_page('Недостаточно прав для добавления страницы в список');
             return FALSE;
         }
+
+        $toggle_to_list = Arr::get($_GET, 'list', '');
+
+        switch ($toggle_to_list) {
+            case 'news':
+                $page->is_news_page = 1 - $page->is_news_page;
+                $page->togglePageInFeed('news', $page->is_news_page);
+                break;
+
+            case 'menu':
+                $page->is_menu_item = 1 - $page->is_menu_item;
+                break;
+        }
+
+        $page->update();
 
         $this->redirect('/p/' . $page->id . '/' . $page->uri);
     }
