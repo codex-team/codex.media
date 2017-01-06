@@ -32,9 +32,9 @@ class Model_Page extends Model_preDispatch
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS    = 3;
 
-    const FEED_KEY_NEWS           = 'news';
-    const FEED_KEY_TEACHERS_BLOGS = 'teachers';
-    const FEED_KEY_BLOGS          = 'all';
+    // const FEED_KEY_NEWS           = 'news';
+    // const FEED_KEY_TEACHERS_BLOGS = 'teachers';
+    // const FEED_KEY_BLOGS          = 'all';
 
     public function __construct($id = 0)
     {
@@ -150,7 +150,7 @@ class Model_Page extends Model_preDispatch
             $comment->delete();
         }
 
-        $this->removePageFromFeed();
+        $this->removePageFromFeeds();
 
         return true;
     }
@@ -227,34 +227,34 @@ class Model_Page extends Model_preDispatch
 
 
 /** Feed functions */
-    private function getFeedType()
-    {
-        if ($this->is_news_page)
-            return self::FEED_KEY_NEWS;
-
-        if ($this->author->status >= Model_User::USER_STATUS_TEACHER)
-            return self::FEED_KEY_TEACHERS_BLOGS;
-
-        return self::FEED_KEY_BLOGS;
-    }
-
-    private function returnFeedModelForPage($key = '')
-    {
-        $this->feed_key = $key ?: $this->getFeedType();
-
-        switch ($this->feed_key) {
-
-            case self::FEED_KEY_NEWS:
-                $feed = new Model_Feed_News();
-                break;
-
-            case self::FEED_KEY_TEACHERS_BLOGS:
-                $feed = new Model_Feed_Teachers();
-                break;
-        }
-
-        return $feed ?: false;
-    }
+    // private function getFeedType()
+    // {
+    //     if ($this->is_news_page)
+    //         return self::FEED_KEY_NEWS;
+    //
+    //     if ($this->author->status >= Model_User::USER_STATUS_TEACHER)
+    //         return self::FEED_KEY_TEACHERS_BLOGS;
+    //
+    //     return self::FEED_KEY_BLOGS;
+    // }
+    //
+    // private function returnFeedModelForPage($key = '')
+    // {
+    //     $this->feed_key = $key ?: $this->getFeedType();
+    //
+    //     switch ($this->feed_key) {
+    //
+    //         case self::FEED_KEY_NEWS:
+    //             $feed = new Model_Feed_News();
+    //             break;
+    //
+    //         case self::FEED_KEY_TEACHERS_BLOGS:
+    //             $feed = new Model_Feed_Teachers();
+    //             break;
+    //     }
+    //
+    //     return $feed ?: false;
+    // }
 
     /**
      * Add or remove page from feed by existing page in feed or by value
@@ -277,18 +277,46 @@ class Model_Page extends Model_preDispatch
         }
     }
 
-    public function addPageToFeed()
+    // public function addPageToFeed()
+    // {
+    //     $feed = self::returnFeedModelForPage();
+    //     $feed->add($this->id);
+    //
+    //     $feed = new Model_Feed_All();
+    //     $feed->add($this->id);
+    // }
+    //
+    // public function removePageFromFeed()
+    // {
+    //     $feed = self::returnFeedModelForPage();
+    //     $feed->remove($this->id);
+    //
+    //     $feed = new Model_Feed_All();
+    //     $feed->remove($this->id);
+    // }
+
+    public function addPageToFeeds()
     {
-        $feed = self::returnFeedModelForPage();
-        $feed->add($this->id);
+        if ($this->is_news_page) {
+            $feed = new Model_Feed_News();
+            $feed->add($this->id);
+        }
+
+        if ($this->author->status >= Model_User::USER_STATUS_TEACHER) {
+            $feed = new Model_Feed_Teachers();
+            $feed->add($this->id);
+        }
 
         $feed = new Model_Feed_All();
         $feed->add($this->id);
     }
 
-    public function removePageFromFeed()
+    public function removePageFromFeeds()
     {
-        $feed = self::returnFeedModelForPage();
+        $feed = new Model_Feed_News();
+        $feed->remove($this->id);
+
+        $feed = new Model_Feed_Teachers();
         $feed->remove($this->id);
 
         $feed = new Model_Feed_All();
