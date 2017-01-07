@@ -256,26 +256,27 @@ class Model_Page extends Model_preDispatch
     //     return $feed ?: false;
     // }
 
+    // #TODO remove this shit and use add/remove functions. or create update function
     /**
      * Add or remove page from feed by existing page in feed or by value
      *
      * @key feed key
      * @force_set_by_value value that we need to toggle for result
      */
-    public function togglePageInFeed($key, $force_set_by_value = false)
-    {
-        $feed = self::returnFeedModelForPage($key);
-
-        $remove_from_feed = $force_set_by_value === false ? $feed->isExist($this->id) : !$force_set_by_value;
-
-        if ($remove_from_feed) {
-
-            $feed->remove($this->id);
-        } else {
-
-            $feed->add($this->id);
-        }
-    }
+    // public function togglePageInFeed($key, $force_set_by_value = false)
+    // {
+    //     $feed = self::returnFeedModelForPage($key);
+    //
+    //     $remove_from_feed = $force_set_by_value === false ? $feed->isExist($this->id) : !$force_set_by_value;
+    //
+    //     if ($remove_from_feed) {
+    //
+    //         $feed->remove($this->id);
+    //     } else {
+    //
+    //         $feed->add($this->id);
+    //     }
+    // }
 
     // public function addPageToFeed()
     // {
