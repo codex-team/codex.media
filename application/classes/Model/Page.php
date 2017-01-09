@@ -32,10 +32,6 @@ class Model_Page extends Model_preDispatch
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS    = 3;
 
-    // const FEED_KEY_NEWS           = 'news';
-    // const FEED_KEY_TEACHERS_BLOGS = 'teachers';
-    // const FEED_KEY_BLOGS          = 'all';
-
     public function __construct($id = 0)
     {
         if (!$id) return;
@@ -227,34 +223,6 @@ class Model_Page extends Model_preDispatch
 
 
 /** Feed functions */
-    // private function getFeedType()
-    // {
-    //     if ($this->is_news_page)
-    //         return self::FEED_KEY_NEWS;
-    //
-    //     if ($this->author->status >= Model_User::USER_STATUS_TEACHER)
-    //         return self::FEED_KEY_TEACHERS_BLOGS;
-    //
-    //     return self::FEED_KEY_BLOGS;
-    // }
-    //
-    // private function returnFeedModelForPage($key = '')
-    // {
-    //     $this->feed_key = $key ?: $this->getFeedType();
-    //
-    //     switch ($this->feed_key) {
-    //
-    //         case self::FEED_KEY_NEWS:
-    //             $feed = new Model_Feed_News();
-    //             break;
-    //
-    //         case self::FEED_KEY_TEACHERS_BLOGS:
-    //             $feed = new Model_Feed_Teachers();
-    //             break;
-    //     }
-    //
-    //     return $feed ?: false;
-    // }
 
     /**
      * Add or remove page from feed by existing page in feed or by value
