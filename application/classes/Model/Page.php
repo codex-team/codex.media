@@ -32,6 +32,10 @@ class Model_Page extends Model_preDispatch
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS    = 3;
 
+    const FEED_KEY_NEWS           = 'news';
+    const FEED_KEY_TEACHERS_BLOGS = 'teachers';
+    const FEED_KEY_BLOGS          = 'all';
+
     public function __construct($id = 0)
     {
         if (!$id) return;
@@ -121,6 +125,9 @@ class Model_Page extends Model_preDispatch
         $this->status = self::STATUS_REMOVED_PAGE;
         $this->update();
 
+        /** remove from feeds */
+        $this->removePageFromFeeds();
+
         /* remove files */
         $files = Model_File::getPageFiles($this->id);
 
@@ -128,14 +135,6 @@ class Model_Page extends Model_preDispatch
 
             $file->is_removed = 1;
             $file->update();
-        }
-
-        /* remove childs */
-        $childrens = $this->getChildrenPagesByParent($this->id);
-
-        foreach ($childrens as $page) {
-
-            $page->setAsRemoved();
         }
 
         /* remove comments */
@@ -146,7 +145,13 @@ class Model_Page extends Model_preDispatch
             $comment->delete();
         }
 
-        $this->removePageFromFeeds();
+        /* remove childs */
+        $childrens = $this->getChildrenPagesByParent($this->id);
+
+        foreach ($childrens as $page) {
+
+            $page->setAsRemoved();
+        }
 
         return true;
     }
@@ -223,6 +228,23 @@ class Model_Page extends Model_preDispatch
 
 
 /** Feed functions */
+    private function returnFeedModelByKey($key = '')
+    {
+        $feed = false;
+
+        switch ($key) {
+
+            case self::FEED_KEY_NEWS:
+                $feed = new Model_Feed_News();
+                break;
+
+            case self::FEED_KEY_TEACHERS_BLOGS:
+                $feed = new Model_Feed_Teachers();
+                break;
+        }
+
+        return $feed ?: false;
+    }
 
     /**
      * Add or remove page from feed by existing page in feed or by value
@@ -232,8 +254,11 @@ class Model_Page extends Model_preDispatch
      */
     public function togglePageInFeed($key, $force_set_by_value = false)
     {
-        $feed = self::returnFeedModelForPage($key);
+        $feed = self::returnFeedModelByKey($key);
 
+        if (!$feed) return false;
+
+        /** get way for this action. ADD or REMOVE page from feed */
         $remove_from_feed = $force_set_by_value === false ? $feed->isExist($this->id) : !$force_set_by_value;
 
         if ($remove_from_feed) {
@@ -244,24 +269,6 @@ class Model_Page extends Model_preDispatch
             $feed->add($this->id);
         }
     }
-
-    // public function addPageToFeed()
-    // {
-    //     $feed = self::returnFeedModelForPage();
-    //     $feed->add($this->id);
-    //
-    //     $feed = new Model_Feed_All();
-    //     $feed->add($this->id);
-    // }
-    //
-    // public function removePageFromFeed()
-    // {
-    //     $feed = self::returnFeedModelForPage();
-    //     $feed->remove($this->id);
-    //
-    //     $feed = new Model_Feed_All();
-    //     $feed->remove($this->id);
-    // }
 
     public function addPageToFeeds()
     {
