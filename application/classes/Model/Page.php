@@ -270,6 +270,9 @@ class Model_Page extends Model_preDispatch
         }
     }
 
+    /**
+     * Add page to feed by page's params
+     */
     public function addPageToFeeds()
     {
         if ($this->is_news_page) {
@@ -286,6 +289,9 @@ class Model_Page extends Model_preDispatch
         $feed->add($this->id);
     }
 
+    /**
+     * Remove page from all feeds
+     */
     public function removePageFromFeeds()
     {
         $feed = new Model_Feed_News();
