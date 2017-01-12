@@ -32,6 +32,7 @@ class Model_Page extends Model_preDispatch
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS    = 3;
 
+    /** #TODO create one model_feed_pages */
     const FEED_KEY_NEWS           = 'news';
     const FEED_KEY_TEACHERS_BLOGS = 'teachers';
     const FEED_KEY_BLOGS          = 'all';
