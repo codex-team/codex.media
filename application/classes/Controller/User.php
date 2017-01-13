@@ -19,6 +19,7 @@ class Controller_User extends Controller_Base_preDispatch
 
         $this->view['userPages'] = $viewUser->getUserPages();
         $this->view['viewUser']  = $viewUser;
+        
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/users/profile', $this->view);
     }
