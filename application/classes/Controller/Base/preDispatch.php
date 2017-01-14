@@ -151,9 +151,11 @@ class Controller_Base_preDispatch extends Controller_Template
     {
         if (!class_exists("Redis")) return null;
 
+        $password = Kohana::$config->load('redis.password');
+
         $redis = new Redis();
         $redis->connect('127.0.0.1', 6379);
-        $redis->auth('21gJs32hv3ks');
+        $redis->auth($password);
         $redis->select(0);
 
         return $redis;
