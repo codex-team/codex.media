@@ -123,7 +123,6 @@ class Model_Feed_Abstract extends Model {
 
         $stop = $this->redis->zCard($this->timeline_key) > $stop ? $stop : 0;
 
-        // ?!?
         $stop = $numberOfItems ? $numberOfItems + $offset : 0;
 
         $items = $this->redis->zRevRange($this->timeline_key, $offset, $stop - 1);
