@@ -1,0 +1,208 @@
+/**
+* CodeX Team stylesheets
+*/
+
+/**
+*
+* Base elements rules
+* ================================================
+*
+*/
+
+.hide { display: none !important; }
+.block { display: block; }
+.p_rel { position: relative; }
+.pointer { cursor: pointer; }
+
+a {
+    color: #4e88d6;
+}
+
+a:hover {
+    color: #d25555;
+    text-decoration: underline;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/**
+* Clearfix hack
+*/
+.clearfix::before,
+.clearfix::after {
+    content: " ";
+    display: table;
+}
+
+.clearfix::after {
+    clear: both;
+}
+
+/**
+* Floating shorthands
+*/
+.fl_l {
+    float: left;
+}
+
+.fl_r {
+    float: right;
+}
+
+.constrain {
+    overflow: hidden;
+}
+
+/**
+* Forms elements
+* =========================================
+*/
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="url"],
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 2px;
+    border: 0;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    background: #f4f5f8;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+    background: #eef5fd;
+}
+
+.button,
+input[type="submit"] {
+    user-select: none;
+    border-radius: 30px;
+    border: 0;
+    display: inline-block;
+    padding: 12px 24px;
+    color: #3f4b63;
+    vertical-align: top;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: inherit;
+    background: #ecf3f9;
+    line-height: 1em;
+}
+
+.button:hover,
+input[type="submit"]:hover {
+    background: #4592da;
+    color: #fff;
+    text-decoration: none;
+}
+
+/**
+* Add class 'master' to make BLUE button
+*/
+.button.master,
+input[type="submit"] {
+    background: #5c95cf;
+    color: #fff;
+}
+
+.button.master:hover,
+input[type="submit"]:hover {
+    background: #3c7ab9;
+    color: #fff;
+}
+
+/**
+* Styles for disabled buttons and inputs
+*/
+.button.disabled,
+input[disabled] {
+    background: #eaecf1;
+    color: #a9afc1;
+}
+
+.button.disabled:hover,
+input[disabled]:hover {
+    background: #eaecf1;
+    color: #a9afc1;
+}
+
+/*
+* Imrove padding on buttons with icons
+*/
+.button i {
+    margin: 0 0.74em 0 -0.3em;
+}
+
+/**
+* Information message block
+*/
+.info_block {
+    padding: 30px;
+    font-size: 15px;
+    background: #f5f8fb;
+    color: #406eab;
+    border-radius: 2px;
+}
+
+/**
+* Delete button
+*/
+.button-delete {
+    padding: 10px;
+    margin: -10px;
+    text-align: center;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.button-delete:hover {
+    background-color: rgb(217, 0, 0);
+    color: #fff;
+}
+
+.button-delete__ready-to-delete {
+    color: rgb(217, 0, 0);
+}
+
+/**
+* Base site styles
+* =================================
+*/
+body {
+    background: #f9f9fb;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 13px;
+}
+
+
+/**
+* End
+* =================================
+*/
+
+/**
+* Mobile viewport styles
+* =================================
+*/
+@media all and (max-width: 800px) {
+    /** End of mobile viewport */
+}
+
+/**
+* Retina displays styles
+*/
+@media print, (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 1.25dppx), (min-resolution: 120dpi) {
+    /** HD displays overrides */
+}

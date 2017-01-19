@@ -1,0 +1,133 @@
+aside {
+    display: block;
+    width: 300px;
+    position: fixed;
+    min-height: 100%;
+    background: #fff;
+    border-right: 1px solid #f5f7f8;
+}
+
+.main_logo {
+    display: block;
+    border-bottom: 1px solid #f5f7f8;
+    padding: 25px 30px;
+    color: #475262;
+    text-decoration: none;
+    line-height: 1.1em;
+    font-size: 15px;
+}
+
+.main_logo:hover {
+    background: #f9fafb;
+}
+
+.main_logo > .spb_shield {
+    display: block;
+    width: 26px;
+    height: 32px;
+    background: url('/public/app/img/spb-shield.png') no-repeat;
+    margin-right: 25px;
+}
+
+aside .menu {
+    font-size: 16px;
+    margin: 20px 0;
+}
+
+aside .menu a {
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 12px 25px;
+    color: #3d485a;
+    text-decoration: none;
+}
+
+aside .menu a:hover {
+    color: #d65252;
+}
+
+aside .submenu {
+    font-size: 13px;
+    margin: 20px 0;
+}
+
+aside .submenu a {
+    display: block;
+    padding: 5px 25px;
+    color: #626a76;
+}
+
+aside .submenu a:hover {
+    color: #8d97a6;
+}
+
+aside .button {
+    display: block;
+    margin: 25px;
+}
+
+.button.logout {
+    background: #2d3136;
+    color: #606469;
+}
+
+.button.logout:hover {
+    background: #202328;
+}
+
+aside .user_panel {
+    padding: 15px 25px;
+    display: block;
+    color: #657280;
+    text-decoration: none;
+    border-bottom: 1px solid #f5f7f8;
+    font-size: 14px;
+}
+
+aside .user_panel:hover {
+    background: #f6f8fa;
+}
+
+aside .user_panel img {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 30px;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+aside .logout {
+    margin-top: 20px;
+    margin-right: 20px;
+    color: #c6cad4;
+}
+
+@media (--mobile) {
+    aside {
+        position: static;
+        width: auto;
+    }
+
+    aside .menu {
+        margin: 10px 0;
+    }
+
+    aside .menu a {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    aside li:last-of-type a {
+        padding-bottom: 0;
+    }
+
+    aside .button {
+        margin: 20px;
+    }
+
+    aside .user_panel {
+        padding: 15px 20px;
+    }
+}

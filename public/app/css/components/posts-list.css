@@ -1,0 +1,147 @@
+/**
+* Posts list item
+*/
+.post-list-item {
+    margin: 5px 0 5px 5px;
+    padding: 40px 60px 35px;
+    font-size: 15px;
+}
+
+.post-list-item__title {
+    display: inline-block;
+    font-size: 1.65em;
+    margin-bottom: 1em;
+    color: inherit;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.post-list-item__body {
+    line-height: 1.55em;
+    letter-spacing: -0.1px;
+}
+
+.post-list-item time {
+    display: inline-block;
+    margin-bottom: 7px;
+}
+
+.post-list-item__footer {
+    border-top: 1px solid #f5f7f8;
+    margin-top: 35px;
+    padding-top: 35px;
+    font-size: 1em;
+    letter-spacing: 0.2px;
+    color: #8a96ae;
+}
+
+.post-list-item__read_more,
+.post-list-item__comments {
+    display: inline-block;
+    text-decoration: none;
+    margin-right: 25px;
+    color: inherit;
+}
+
+.post-list-item__read_more {
+    color: #656e89;
+    font-weight: bold;
+}
+
+/**
+    * Important post list item (rich-view)
+    */
+.post-list-item_view_rich {
+    padding: 0;
+    color: #233558;
+}
+
+.post-list-item_view_rich:hover {
+    background: #30344a;
+    color: #e4eeff;
+}
+
+.post-list-item_view_rich .post-list-item__title {
+    display: block;
+    padding: 45px;
+}
+
+.post-list-item_view_rich .footer {
+    display: none;
+}
+
+.post-list-item_view_rich h3 {
+    margin: 0;
+    text-align: center;
+    font-size: 1.34em;
+    letter-spacing: 0.2px;
+}
+
+/**
+    * Pinned post list item
+    */
+.post-list-item_pinned {
+    position: relative;
+}
+
+.post-list-item_pinned::after {
+    position: absolute;
+    right: 55px;
+    top: 50px;
+    display: block;
+    content: '\e811';
+    font-family: 'codex-edu';
+    color: #5e6575;
+    font-size: 15px;
+}
+
+@media (--tablet) {
+    .post-list-item {
+        padding: 30px;
+    }
+}
+
+@media (--mobile) {
+    /**
+    * Articles list - mobile
+    */
+    .post-list-item {
+        padding: 15px;
+        margin: 5px;
+    }
+
+    .post-list-item__title {
+        font-size: 1.15em;
+    }
+
+    .post-list-item_pinned .post-list-item__title {
+        margin-right: 22px;
+    }
+
+    .post-list-item_pinned::after {
+        top: 15px;
+        right: 15px;
+        font-size: 12px;
+    }
+
+    .post-list-item__body {
+        font-size: 14px;
+    }
+
+    .post-list-item__footer {
+        margin-top: 15px;
+        padding-top: 15px;
+    }
+
+    .post-list-item time {
+        max-width: 70px;
+        margin: 0;
+        margin-top: -0.4em;
+        text-align: right;
+        font-size: 0.6em;
+    }
+
+    .post-list-item__comments {
+        display: none;
+    }
+}

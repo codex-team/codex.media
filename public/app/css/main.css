@@ -1,0 +1,28 @@
+/** File with style-variables */
+@import url('variables.css');
+
+/** Main styles */
+@import url('normalize.css');
+@import url('base.css');
+
+/**
+* Animations
+*/
+@import url('animations.css');
+
+/**
+* Icons
+*/
+@import url('icons.css');
+
+/**
+* Old unrefactored styles
+*/
+@import url('legacy.css');
+
+/**
+* Components
+*/
+@import url('components/aside.css');
+@import url('components/posts-list.css');
+@import url('components/codex-special.css');

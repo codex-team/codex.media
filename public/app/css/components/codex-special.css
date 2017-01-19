@@ -1,0 +1,91 @@
+/**
+* Special verison styles
+*/
+
+.special-big .sidebar {
+    display: none;
+}
+
+.special-big .page_wrap {
+    margin-right: 5px;
+}
+
+.special-big .post-list-item__title {
+    font-size: 1.4em !important;
+}
+
+.special-white aside,
+.special-white .main_logo,
+.special-white .w_island,
+.special-white .post-list-item__footer,
+.special-white .banner_preview,
+.special-white aside .user_panel,
+.special-white .atlas_form input,
+.special-white .atlas_form textarea,
+.special-white .atlas_form .actions {
+    border-color: #282829 !important;
+}
+
+.special-white .main_logo {
+    text-decoration: none !important;
+}
+
+.special-white .main_logo:hover {
+    background: #000 !important;
+}
+
+.special-white .button {
+    color: #fff !important;
+    background: #009449 !important;
+}
+
+.special-blue aside,
+.special-blue .main_logo,
+.special-blue .w_island,
+.special-blue .post-list-item__footer,
+.special-blue .banner_preview,
+.special-blue aside .user_panel,
+.special-blue .atlas_form input,
+.special-blue .atlas_form textarea,
+.special-blue .atlas_form .actions {
+    border-color: #93c9ef !important;
+}
+
+.special-blue .main_logo {
+    text-decoration: none !important;
+}
+
+.special-blue .main_logo:hover {
+    background: #000 !important;
+}
+
+.special-blue .button {
+    color: #fff !important;
+    background: #009449 !important;
+}
+
+.special-green aside,
+.special-green .main_logo,
+.special-green .w_island,
+.special-green .post-list-item__footer,
+.special-green .banner_preview,
+.special-green aside .user_panel,
+.special-green .atlas_form input,
+.special-green .atlas_form textarea,
+.special-green .atlas_form .actions {
+    border-color: #4a3d37 !important;
+}
+
+.special-green .main_logo {
+    text-decoration: none !important;
+}
+
+.special-green .main_logo:hover {
+    background: #000 !important;
+}
+
+.special-green .button {
+    color: #fff !important;
+    background: #009449 !important;
+}
+

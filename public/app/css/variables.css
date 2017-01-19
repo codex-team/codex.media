@@ -1,0 +1,26 @@
+:root {
+    /** Texts */
+    --grayText: #6e758a;
+    --hoverColor: #374990;
+
+    /** Borders */
+    --lightGrayLine: #eceff3;
+
+    /** Backgrounds */
+    --grayBackground: #f7f7f9;
+    --lightGrayBackground: #fbfbfc;
+
+    /** Bounce timing function for transition */
+    --bounceTiming: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+
+    /** General margin size between islands */
+    --islandMargin: 20px;
+}
+
+/**
+* Custom media queries
+*/
+@custom-media --tablet all and (max-width: 1050px);
+@custom-media --mobile all and (max-width: 980px);
+@custom-media --retina all and (-webkit-min-device-pixel-ratio: 1.5);
+

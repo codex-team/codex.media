@@ -137,7 +137,8 @@
         </div>
     <? endif ?>
 
-    <? if($user->id): ?>
+    <? if ($user->id): ?>
+
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
             <?= Form::hidden('csrf', Security::token()); ?>
             <textarea id="add_comment_textarea" name="add_comment_textarea" rows="5"></textarea>
@@ -147,8 +148,20 @@
             <span id="add_answer_to" class="add_answer_to"></span>
             <span class="cancel_answer" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
         </form>
+
+        <script>
+
+            codex.docReady(function(){
+
+                /**
+                * Comments module
+                */
+                codex.comments.init();
+
+            });
+
+        </script>
+
     <? endif ?>
 
 </div>
-
-<script src="/public/js/comment.js"></script>
