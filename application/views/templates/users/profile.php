@@ -6,8 +6,9 @@
     	<h1 class="name">
     		<?= $viewUser->name ?>
     		<? /*
+                // галочка для отметки учителей
     			switch ($viewUser->status){
-    				case Model_User::USER_STATUS_ADMIN 	    : echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
+    				//case Model_User::USER_STATUS_ADMIN 	    : echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
     				case Model_User::USER_STATUS_TEACHER 	: echo "[преподаватель]"; break;
     				case Model_User::USER_STATUS_BANNED 	: echo "[заблокирован]"; break;
     		   	}
@@ -43,9 +44,7 @@
     <div class="action-line  clear">
         <? if($viewUser->isMe): ?>
             <a class="textbutton fl_r" href="/user/settings"><i class="icon-cog"></i> Настройки</a>
-        <? endif; ?>
-        <? if($viewUser->isMe && $user->isTeacher): ?>
-            <a class="button iconic green" href="/p/save?type=<?= Model_Page::TYPE_USER_PAGE ?>"><i class="icon-plus"></i> Создать страницу</a>
+            <a class="button iconic green" href="/p/save"><i class="icon-plus"></i> Создать страницу</a>
         <? else: ?>
             <span class="info">
                 Зарегистрирован <?= $methods->ltime(strtotime($viewUser->dt_reg)) ?>

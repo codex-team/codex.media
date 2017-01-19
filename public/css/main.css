@@ -508,7 +508,7 @@ input[type="submit"] {
 
 
 .loading:after{
-    content: '●●●';
+    content: '● ● ●';
     display: inline-block;
     margin-left: 5px;
 
@@ -838,7 +838,7 @@ aside .logout {
 
 .breadcrumb {
     padding: 27px 30px;
-    border-bottom: 1px solid #f5f7f8;
+    border-bottom: 1px solid transparent;
     font-size: 15px;
     min-height: 22px;
     color: #a3a7b5;
@@ -1383,11 +1383,11 @@ aside .logout {
     border-radius: 20px;
 }
     .textbutton.click-again-to-approve {
-        padding: 6px 30px;
+        padding: 6px 15px;
     }
 
     .delete_button.click-again-to-approve {
-        padding: 6px 30px;
+        padding: 6px 15px;
     }
 
 
@@ -1528,6 +1528,7 @@ aside .logout {
 
     .contacts_map #map {
         height: 100vh;
+        min-height: 500px
     }
 
 
@@ -1913,6 +1914,10 @@ aside .logout {
     }
 }
 
+.page_content p {
+     margin: 20px 0;
+}
+
 
 
 /**
@@ -1999,8 +2004,8 @@ aside .logout {
     }
 
     /**
-    * Articles list - mobile
-    */
+     * Articles list - mobile
+     */
     .post-list-item {
         padding: 15px;
         margin: 5px;

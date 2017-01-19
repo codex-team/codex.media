@@ -5,7 +5,7 @@
         <a class="post-list-item__title" href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a>
         <? if (!$page->rich_view): ?>
             <div class="post-list-item__body">
-                <?= $page->content ?>
+                <?= $page->description ?>
             </div>
         <? endif ?>
         <div class="post-list-item__footer">

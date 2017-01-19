@@ -97,9 +97,7 @@ class Controller_Base_preDispatch extends Controller_Template
         $this->session = Session::instance();
 
         $uid  = Controller_Auth_Base::checkAuth();
-        $user = new Model_User($uid ?: 0);
-
-        $this->user = $user;
+        $this->user = new Model_User($uid ?: 0);
         View::set_global('user', $this->user);
 
     }
@@ -153,9 +151,14 @@ class Controller_Base_preDispatch extends Controller_Template
     {
         if (!class_exists("Redis")) return null;
 
+        $redis_host = Kohana::$config->load('redis.host') ?: '127.0.0.1';
+        $redis_port = Kohana::$config->load('redis.port') ?: '6379';
+        $redis_pass = Kohana::$config->load('redis.password');
+
+
         $redis = new Redis();
-        $redis->connect('127.0.0.1', 6379);
-        $redis->auth('21gJs32hv3ks');
+        $redis->connect($redis_host, $redis_port);
+        $redis->auth($redis_pass);
         $redis->select(0);
 
         return $redis;

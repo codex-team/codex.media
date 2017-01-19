@@ -1,38 +1,5 @@
 <div class="w_island w_island_centercol">
 
-    <? /*
-
-    <div class="breadcrumb" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-
-        <? if ($page->parent->id): ?>
-
-            <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri ?>" itemprop="title" class="nav_chain">
-                <?= $page->parent->title ?>
-            </a>
-
-        <? else: ?>
-
-            <? if ($page->type != Model_Page::TYPE_USER_PAGE): ?>
-
-                <a class="nav_chain" href="/" itemprop="url">
-                    <span itemprop="title">Главная</span>
-                </a>
-
-            <? else: ?>
-
-                <a class="nav_chain" href="/user/<?= $page->author->id ?>" itemprop="url">
-                    <span itemprop="title"><?= $page->author->name ?></span>
-                </a>
-
-            <? endif ?>
-
-        <? endif ?>
-
-    </div>
-
-    */ ?>
-
-
     <? /* Page title */ ?>
     <h1 class="page_title">
     	<?= $page->title ?>
@@ -40,45 +7,46 @@
 
     <? /* Page info */ ?>
     <div class="page-information">
-        <? if ($page->type != Model_Page::TYPE_SITE_PAGE): ?>
-            <time class="page-information__time"><?= $methods->ftime(strtotime($page->date)) ?></time>
-        <? endif; ?>
-        <? if ($page->type == Model_Page::TYPE_USER_PAGE): ?>
-            <a class="page-information__author" href="/user/<?= $page->author->id ?>">
-                <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
-                <span class="page-information__author_name"><?= $page->author->name ?></span>
-            </a>
-        <? endif ?>
+        <time class="page-information__time"><?= $methods->ftime(strtotime($page->date)) ?></time>
+        <a class="page-information__author" href="/user/<?= $page->author->id ?>">
+            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
+            <span class="page-information__author_name"><?= $page->author->name ?></span>
+        </a>
     </div>
 
     <? /* Page content */ ?>
-    <? if ($page->content): ?>
+    <? if ($page->blocks_array): ?>
         <article class="page_content">
-        	<?= nl2br($page->content) ?>
+            <? for ($i = 0; $i < count($page->blocks_array); $i++): ?>
+                <?= $page->blocks_array[$i]; ?>
+            <? endfor ?>
         </article>
     <? endif ?>
 
-    <? /* Show childs only for non-news pages */ ?>
-    <? if ($page->type != Model_Page::TYPE_SITE_NEWS): ?>
-        <? if ($page->childrens): ?>
-            <ul class="page_childrens clear <?= !$page->content ? 'page_childrens--empty-content' : '' ?>">
-                <? foreach ($page->childrens as $children): ?>
-                    <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
-                <? endforeach ?>
-            </ul>
-        <? endif; ?>
+    <? /* Child pages */ ?>
+    <? if ($page->childrens): ?>
+        <ul class="page_childrens clear <?= !$page->content ? 'page_childrens--empty-content' : '' ?>">
+            <? foreach ($page->childrens as $children): ?>
+                <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
+            <? endforeach ?>
+        </ul>
     <? endif ?>
 
-    <? /* Admin page buttons  */ ?>
-    <? if( $can_modify_this_page ): ?>
+    <? /* Manage page buttons */ ?>
+    <? if ($can_modify_this_page): ?>
         <div class="action-line action-line__onpage clear">
-            <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i> Редактировать</a>
-            <? if ($page->type != Model_Page::TYPE_SITE_NEWS): ?>
+            <? if ($page->author->id == $user->id ): ?>
+                <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i>Редактировать</a>
                 <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
+            <? endif ?>
+            <? if ($user->status == Model_User::USER_STATUS_ADMIN): ?>
+                <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=menu"><?= $page->is_menu_item ? 'убрать из меню' : 'добавить в меню' ?></i></a>
+                <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=news"><?= $page->is_news_page ? 'убрать из новостей' : 'добавить в новости' ?></a>
             <? endif ?>
             <a class="textbutton js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
         </div>
     <? endif ?>
+
 </div>
 
 <? /* Page's images block */ ?>
@@ -90,7 +58,7 @@
             </a>
         <? endforeach ?>
     </div>
-<? endif; ?>
+<? endif ?>
 
 <? /* Page's files block */ ?>
 <? if ($page->files): ?>
@@ -107,12 +75,13 @@
     		<? endforeach ?>
     	</table>
     </div>
-<? endif; ?>
+<? endif ?>
 
+<? /* Comments block */ ?>
 <div class="page_comments w_island" style="margin: 5px 0 5px 5px" id="page_comments">
 
-    <? if ($comments): ?>
-        <? foreach ($comments as $comment): ?>
+    <? if ($page->comments): ?>
+        <? foreach ($page->comments as $comment): ?>
             <div class="comment_wrapper clear <?= $comment->parent_comment ? 'answer_wrapper' : '' ?>"
                  id="comment_<?= $comment->id ?>">
                 <a href="/user/<?= $comment->author->id ?>">
@@ -133,7 +102,7 @@
                             <i class="icon-right-dir"></i>
                             <?= $comment->parent_comment->author->name ?>
                         </span>
-                    <? endif; ?>
+                    <? endif ?>
 
 
                     <p><?= $comment->text ?></p>
@@ -145,18 +114,18 @@
                             <i class="icon-reply"></i>
                             Ответить
                         </span>
-                    <? endif; ?>
+                    <? endif ?>
 
                     <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
                         <a class="delete_button js-approval-button"
                            href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             Удалить
                         </a>
-                    <? endif; ?>
+                    <? endif ?>
                 </div>
 
             </div>
-        <? endforeach; ?>
+        <? endforeach ?>
     <? else: ?>
         <div class="empty_motivatior">
             <i class="icon_nocomments"></i><br/>
@@ -166,7 +135,8 @@
                 <a class="button main" href="/auth">Авторизоваться</a>
             <? endif ?>
         </div>
-    <? endif; ?>
+    <? endif ?>
+
     <? if($user->id): ?>
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
             <?= Form::hidden('csrf', Security::token()); ?>
@@ -177,9 +147,8 @@
             <span id="add_answer_to" class="add_answer_to"></span>
             <span class="cancel_answer" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
         </form>
-    <? else: ?>
+    <? endif ?>
 
-    <? endif; ?>
 </div>
 
 <script src="/public/js/comment.js"></script>

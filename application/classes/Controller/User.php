@@ -19,6 +19,7 @@ class Controller_User extends Controller_Base_preDispatch
 
         $this->view['userPages'] = $viewUser->getUserPages();
         $this->view['viewUser']  = $viewUser;
+        
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/users/profile', $this->view);
     }
@@ -94,7 +95,7 @@ class Controller_User extends Controller_Base_preDispatch
             if (!$error) {
 
                 $fields['password'] = Controller_Auth_Base::createPasswordHash($newPassword);
-            }   
+            }
 
             //если пустое поле, то не заносим его в базу и модель, за исключением телефона
             foreach ($fields as $key => $value) {

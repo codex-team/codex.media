@@ -1,18 +1,27 @@
 <form class="atlas_form w_island" action="/p/save" id="atlasForm" method="post" name="atlas">
 
     <?
+        /** if there is no information about page */
+        if (!isset($page)) {
+            $page = new Model_Page();
+        }
+
         /** Name of object's type in genitive declension */
-        $object_name = $page->type == Model_Page::TYPE_SITE_NEWS ? 'новости' : 'страницы';
+        $object_name = $page->is_news_page ? 'новости' : 'страницы';
     ?>
 
     <?= Form::hidden('csrf', Security::token()); ?>
-    <?= Form::hidden('type', $page->type); ?>
     <?= Form::hidden('id', $page->id); ?>
     <?= Form::hidden('id_parent', $page->id_parent); ?>
 
-    <input class="title_input" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
-    <textarea name="content" rows="5" placeholder="Содержание <?= $object_name ?>"><?= $page->content ?></textarea>
 
+    <input class="title_input" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
+
+    <?= View::factory('templates/pages/editor', array(
+        'page' => $page,
+    )); ?>
+
+    <? /** Add attaches through JS */ ?>
     <div class="attaches" id="formAttaches">
 
         <? if (isset($attachments)): ?>
@@ -41,7 +50,7 @@
 
         <span class="button main fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
 
-
+        <? /**
         <? if ($user->isAdmin && $page->type == Model_Page::TYPE_SITE_NEWS): ?>
 
             <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Закрепить новость">
@@ -60,6 +69,7 @@
             </div>
 
         <? endif ?>
+        */ ?>
 
         <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_FILE ?>')"><i class="icon-attach"></i>Прикрепить файл</span>
 

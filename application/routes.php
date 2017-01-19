@@ -8,11 +8,18 @@
 $DIGIT  = '\d+';
 $STRING = '[-a-zA-Z\d]+';
 
+$FEED_KEYS = Model_Page::FEED_KEY_NEWS.'|'.Model_Page::FEED_KEY_TEACHERS_BLOGS.'|'.Model_Page::FEED_KEY_BLOGS;
+
 
 /**
  * Static pages
  */
-Route::set('INDEX', '(<page_number>)', array('page_number' => $DIGIT))->defaults(array(
+Route::set('INDEX', '(<feed_key>(/))(<page_number>)', // #TODO rewrite expression for: IF <feed_key> && <page_number> THEN need this slash (/)
+    array(
+        'feed_key' => $FEED_KEYS,
+        'page_number' => $DIGIT,
+    )
+)->defaults(array(
     'controller' => 'index',
     'action' => 'index'
 ));
@@ -36,14 +43,19 @@ Route::set('NEW_PAGE', 'p/save')->defaults(array(
     'action' => 'save'
 ));
 
-Route::set('DELETE_PAGE', 'p/<id>/<uri>/delete', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
-    'controller' => 'pages',
-    'action' => 'delete_page'
-));
-
 Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
     'controller' => 'pages',
-    'action' => 'show_page'
+    'action' => 'show'
+));
+
+Route::set('ACTION_FOR_PAGE', 'p/<id>/<uri>/<action>',
+    array(
+        'id' => $DIGIT,
+        'uri' => $STRING,
+        'action' => 'delete|promote'
+    )
+)->defaults(array(
+    'controller' => 'pages',
 ));
 
 
@@ -89,10 +101,10 @@ Route::set('PAGE_FILES_EDITING', 'ajax/edit_file/<type>')->defaults(array(
     'action'          => 'edit_file'
 ));
 
-Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
-    'controller'      => 'parser',
-    'action'          => 'get_page'
-));
+// Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
+//     'controller'      => 'parser',
+//     'action'          => 'get_page'
+// ));
 
 
 /**

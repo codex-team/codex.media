@@ -30,10 +30,11 @@ class Model_User extends Model
     public $isOnline            = 0;
     public $lastOnline          = 0;
 
-    const USER_STATUS_ADMIN         = 2;
-    const USER_STATUS_TEACHER       = 1;
-    const USER_STATUS_REGISTERED    = 0;
-    const USER_STATUS_BANNED        = -1;
+    const USER_STATUS_ADMIN      = 3;
+    const USER_STATUS_TEACHER    = 2;
+    const USER_STATUS_REGISTERED = 1;
+    const USER_STATUS_GUEST      = 0;
+    const USER_STATUS_BANNED     = -1;
 
     public function __construct($uid = null)
     {
@@ -44,7 +45,7 @@ class Model_User extends Model
         self::fillByRow($user);
     }
 
-    public function fillByRow($user)
+    private function fillByRow($user)
     {
         if ($user) {
 
@@ -169,7 +170,7 @@ class Model_User extends Model
         $pages = Dao_Pages::select()
             ->where('author', '=', $this->id)
             ->where('status', '=', Model_Page::STATUS_SHOWING_PAGE)
-            ->where('type', '=', Model_Page::TYPE_USER_PAGE)
+            // ->where('type', '=', Model_Page::TYPE_USER_PAGE)
             ->where('id_parent', '=', $id_parent)
             ->order_by('id','DESC')
             ->execute();

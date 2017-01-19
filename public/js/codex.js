@@ -310,13 +310,32 @@ codex.transport = {
 
         atlasForm.appendChild(attachesInput);
 
-        atlasForm.submit();
+        /** CodeX.Editor */
+        var form = document.forms['editor-demo'],
+            JSONinput = document.getElementById('json_result');
 
+        /**
+         * Save blocks
+         */
+        codex.editor.saver.saveBlocks();
+
+        setTimeout(function() {
+
+            /**
+             * Fill in INPUT items
+             */
+            INPUT.items = codex.editor.state.jsonOutput;
+            INPUT.count = INPUT.items.length;
+
+            JSONinput.innerHTML = JSON.stringify(codex.editor.state.jsonOutput);
+
+            /**
+             * Send form
+             */
+             atlasForm.submit();
+
+        }, 100);
     }
-
-
-
-
 };
 
 
@@ -383,6 +402,10 @@ codex.appender = {
         var request_url = this.settings.url + (parseInt(this.page) + 1),
             separator   = '<a href="' + request_url + '"><div class="article post-list-item w_island separator">Page ' + (parseInt(this.page) + 1) + '</div></a>';
 
+        if (this.settings.getParams) {
+
+            request_url += '?' + codex.appender.serialize(this.settings.getParams);
+        }
 
         codex.core.ajax({
             type: 'post',
@@ -402,7 +425,8 @@ codex.appender = {
                     if (!response.pages) return;
 
                     /* Append items */
-                    codex.appender.block_for_items.innerHTML += separator + response.pages;
+                    //codex.appender.block_for_items.innerHTML += separator;
+                    codex.appender.block_for_items.innerHTML += response.pages;
 
                     /* Next page */
                     codex.appender.page++;
@@ -476,6 +500,29 @@ codex.appender = {
                 codex.appender.load();
             }
         },
+    },
+
+    /**
+     * Transform object to string for GET request
+     */
+    serialize : function(obj, prefix) {
+        var str = [],
+            p;
+
+        for (p in obj) {
+
+            if (obj.hasOwnProperty(p)) {
+
+                var k = prefix ? prefix + "[" + p + "]" : p,
+                    v = obj[p];
+
+                str.push((v !== null && typeof v === "object") ?
+                serialize(v, k) :
+                encodeURIComponent(k) + "=" + encodeURIComponent(v));
+            }
+        }
+
+        return str.join("&");
     },
 };
 
@@ -556,7 +603,6 @@ codex.content = {
         }
     }
 };
-
 
 
 codex.documentIsReady(function(){

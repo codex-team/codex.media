@@ -5,28 +5,28 @@
     </ul>
 </div>
 
-<div>    
+<div>
 
     <? if (count($users) == 0): ?>
 
-        <p>Список пользователей пуст</p>        
-    
+        <p>Список пользователей пуст</p>
+
     <? else: ?>
 
         <table class="p_table">
-            <? foreach ($users as $user_table_row): ?>                
+            <? foreach ($users as $user_table_row): ?>
                     <tr>
-                        <td class="ava">      
+                        <td class="ava">
                             <a href="/user/<?= $user_table_row->id ?>">
                                 <img class="list_teacher_ava" src="<?= $user_table_row->photo ?>">
-                            </a>     
-                        </td>    
+                            </a>
+                        </td>
                         <td>
                             <a href="/user/<?= $user_table_row->id ?>">
                                 <?= $user_table_row->name ?>
-                            </a>    
-                        </td>                                        
-                    </tr>                
+                            </a>
+                        </td>
+                    </tr>
             <? endforeach; ?>
         </table>
 

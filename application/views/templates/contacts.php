@@ -29,7 +29,11 @@
 
 <script type="text/javascript">
 
-	ymaps.ready(init);
+	codex.documentIsReady(function(){
+
+		ymaps.ready(init);
+
+	});
 
 	var myMap,
 		myPlacemark;
