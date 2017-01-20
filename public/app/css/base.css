@@ -15,12 +15,12 @@
 .pointer { cursor: pointer; }
 
 a {
-    color: #4e88d6;
+    color: inherit;
+    text-decoration: none;
 }
 
 a:hover {
-    color: #d25555;
-    text-decoration: underline;
+    color: inherit;
 }
 
 textarea {
@@ -174,6 +174,29 @@ input[disabled]:hover {
 
 .button-delete__ready-to-delete {
     color: rgb(217, 0, 0);
+}
+
+/**
+* Cancel default list styles
+*/
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+}
+
+/**
+* SVG icons styles
+*/
+svg {
+    fill: currentColor;
+    vertical-align: middle;
+    margin-top: -2px;
+    max-height: 100%;
 }
 
 /**

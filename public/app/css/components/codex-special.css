@@ -2,6 +2,11 @@
 * Special verison styles
 */
 
+html body aside .codex-special__toolbar {
+    margin: 0 -13px -18px !important;
+    font-size: 14px !important;
+}
+
 .special-big .sidebar {
     display: none;
 }

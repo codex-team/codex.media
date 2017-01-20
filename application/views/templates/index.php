@@ -14,30 +14,29 @@
 <? endif ?>
 <? /***/ ?>
 
-
-<? /** menu for pages lists */ ?>
-<div class="list_users_heading">
-    <ul class="page_menu">
-        <li><?= $feed_key != Model_Page::FEED_KEY_NEWS && $feed_key ?
-            '<a href="/'.Model_Page::FEED_KEY_NEWS.'">Новости</a></li>' : 'Новости' ?></li>
-
-        <li><?= $feed_key != Model_Page::FEED_KEY_TEACHERS_BLOGS ?
-            '<a href="/'.Model_Page::FEED_KEY_TEACHERS_BLOGS.'">Блоги</a>' : 'Блоги' ?></li>
-
-        <li><?= $feed_key != Model_Page::FEED_KEY_BLOGS ?
-            '<a href="/'.Model_Page::FEED_KEY_BLOGS.'">Все записи</a>' : 'Все записи' ?></li>
-
-
-    </ul>
-</div>
-<? /***/ ?>
-
+<ul class="island tabs">
+    <li>
+        <a class="tabs__tab <?= $active_tab == Model_Page::FEED_KEY_NEWS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Page::FEED_KEY_NEWS ?>">
+            Новости
+        </a>
+    </li>
+    <li>
+        <a class="tabs__tab <?= $active_tab == Model_Page::FEED_KEY_TEACHERS_BLOGS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Page::FEED_KEY_TEACHERS_BLOGS ?>">
+            Блоги преподавателей
+        </a>
+    </li>
+    <li>
+        <a class="tabs__tab <?= $active_tab == Model_Page::FEED_KEY_BLOGS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Page::FEED_KEY_BLOGS ?>">
+            Все записи
+        </a>
+    </li>
+</ul>
 
 <? /** pages list */ ?>
 <? if ($pages): ?>
 
     <div id="list_of_news" class="news">
-        <?= View::factory('templates/news_list', array( 'pages'=> $pages)); ?>
+        <?= View::factory('templates/posts_list', array( 'pages'=> $pages)); ?>
     </div>
 
     <? if ($next_page): ?>
@@ -47,7 +46,7 @@
                 codex.appender.init({
                     button_id       : 'button_load_news',
                     current_page    : '<?= $page_number ?>',
-                    url             : '<?= $feed_key ? "/".$feed_key."/" : "/" ?>',
+                    url             : '<?= $active_tab ? "/".$active_tab."/" : "/" ?>',
                     target_block_id : 'list_of_news',
                     auto_loading    : true,
                 });

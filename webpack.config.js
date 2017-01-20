@@ -13,7 +13,7 @@ module.exports = {
 
     output: {
         filename: './public/build/bundle.js',
-        library: 'testApp'
+        library: 'codex'
     },
 
     module: {

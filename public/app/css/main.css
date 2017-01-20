@@ -4,6 +4,7 @@
 /** Main styles */
 @import url('normalize.css');
 @import url('base.css');
+@import url('layout.css');
 
 /**
 * Animations
@@ -18,11 +19,15 @@
 /**
 * Old unrefactored styles
 */
-@import url('legacy.css');
+
+/* @import url('legacy.css'); */
 
 /**
 * Components
 */
+@import url('components/footer.css');
 @import url('components/aside.css');
+@import url('components/islands.css');
+@import url('components/tabs.css');
 @import url('components/posts-list.css');
 @import url('components/codex-special.css');

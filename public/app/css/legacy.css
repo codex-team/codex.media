@@ -25,17 +25,6 @@
     width: 300px;
 }
 
-.main_wrap {
-    max-width: 1500px;
-    margin: 0 auto;
-}
-
-.page_wrap {
-    color: #222;
-    margin: 0 300px;
-    overflow: auto;
-}
-
 .page_menu {
     padding: 23px;
     list-style: none;
@@ -688,10 +677,6 @@ a .separator:hover {
     margin: 30px 30px 0 0;
 }
 
-.list_users_heading {
-    padding-left: 7px;
-}
-
 .p_table {
     width: 100%;
 }
@@ -1106,25 +1091,6 @@ td.ava {
     */
     .sidebar {
         display: none;
-    }
-
-    /**
-    * Left site menu
-    */
-    .mobile_menu_toggler {
-        width: 40px;
-        height: 34px;
-        background: url('/public/app/img/icon-menu.svg?v=2') no-repeat center center;
-        margin: 13px 10px 0 0;
-        cursor: pointer;
-    }
-
-    .mobile_menu_holder {
-        display: none;
-    }
-
-    .mobile_menu_holder--opened {
-        display: block;
     }
 
     .site_footer {

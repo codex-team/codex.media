@@ -1,0 +1,56 @@
+/**
+* New layout
+*/
+.center-col {
+    max-width: 1010px;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.right-col {
+    width: 300px;
+}
+
+.main-col {
+    max-width: 640px;
+}
+
+/**
+* Columns 300 and 650 layout
+*/
+.grid-col {
+    width: 300px;
+}
+
+.grid-col--left {
+    float: left;
+    border-right: 1px solid #e4e8ef;
+    margin-right: var(--islandMargin);
+    padding: var(--islandMargin) var(--islandMargin) var(--islandMargin) 0;
+}
+
+.grid-content {
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: var(--islandMargin) 0;
+}
+
+@media (--mobile) {
+    .center-col {
+        padding: 0;
+    }
+
+    .grid-col {
+        width: auto;
+        padding: 0;
+        margin: 0;
+        float: none;
+        border: 0;
+    }
+
+    .grid-content {
+        padding: 0;
+    }
+}
+

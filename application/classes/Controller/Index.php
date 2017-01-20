@@ -44,7 +44,7 @@ class Controller_Index extends Controller_Base_preDispatch
             $response = array();
             $response['success']    = 1;
             $response['next_page']  = $next_page;
-            $response['pages']      = View::factory('templates/news_list', array('pages' => $pages))->render();
+            $response['pages']      = View::factory('templates/posts_list', array('pages' => $pages))->render();
 
             $this->auto_render = false;
             $this->response->headers('Content-Type', 'application/json; charset=utf-8');
@@ -55,7 +55,7 @@ class Controller_Index extends Controller_Base_preDispatch
             $this->view['pages']        = $pages;
             $this->view['next_page']    = $next_page;
             $this->view['page_number']  = $page_number;
-            $this->view['feed_key']     = $feed_key;
+            $this->view['active_tab']   = $feed_key ?: Model_Page::FEED_KEY_NEWS;
 
             $this->template->content = View::factory('templates/index', $this->view);
         }

@@ -1,27 +1,16 @@
-aside {
-    display: block;
-    width: 300px;
-    position: fixed;
-    min-height: 100%;
-    background: #fff;
-    border-right: 1px solid #f5f7f8;
-}
-
-.main_logo {
-    display: block;
-    border-bottom: 1px solid #f5f7f8;
-    padding: 25px 30px;
-    color: #475262;
-    text-decoration: none;
+.site-head {
+    display: flex;
+    border-bottom: 1px solid var(--lightGrayLine);
+    padding: 25px var(--islandPadding);
     line-height: 1.1em;
     font-size: 15px;
 }
 
-.main_logo:hover {
-    background: #f9fafb;
+.site-head:hover {
+    background: var(--lightGrayBackground);
 }
 
-.main_logo > .spb_shield {
+.spb_shield {
     display: block;
     width: 26px;
     height: 32px;
@@ -29,40 +18,23 @@ aside {
     margin-right: 25px;
 }
 
-aside .menu {
+.main-aside .menu {
     font-size: 16px;
     margin: 20px 0;
 }
 
-aside .menu a {
+.main-aside .menu a {
     display: block;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
-    padding: 12px 25px;
-    color: #3d485a;
-    text-decoration: none;
+    padding: 10px 25px;
 }
 
-aside .menu a:hover {
-    color: #d65252;
+.main-aside .menu a:hover {
+    color: var(--hoverColor);
 }
 
-aside .submenu {
-    font-size: 13px;
-    margin: 20px 0;
-}
-
-aside .submenu a {
-    display: block;
-    padding: 5px 25px;
-    color: #626a76;
-}
-
-aside .submenu a:hover {
-    color: #8d97a6;
-}
-
-aside .button {
+.main-aside .button {
     display: block;
     margin: 25px;
 }
@@ -76,20 +48,18 @@ aside .button {
     background: #202328;
 }
 
-aside .user_panel {
-    padding: 15px 25px;
+.main-aside .user_panel {
     display: block;
-    color: #657280;
-    text-decoration: none;
-    border-bottom: 1px solid #f5f7f8;
+    padding: 15px var(--islandPadding);
+    border-bottom: 1px solid var(--lightGrayLine);
     font-size: 14px;
 }
 
-aside .user_panel:hover {
+.main-aside .user_panel:hover {
     background: #f6f8fa;
 }
 
-aside .user_panel img {
+.main-aside .user_panel img {
     display: inline-block;
     vertical-align: middle;
     border-radius: 30px;
@@ -98,36 +68,62 @@ aside .user_panel img {
     margin-right: 10px;
 }
 
-aside .logout {
+.main-aside .logout {
     margin-top: 20px;
     margin-right: 20px;
     color: #c6cad4;
 }
 
+/**
+* Mobile menu holder and toggler
+*/
+.mobile-menu-toggler {
+    display: none;
+}
+
 @media (--mobile) {
-    aside {
-        position: static;
-        width: auto;
+    .site-head {
+        padding: 10px 15px;
+        line-height: 1.3em;
+        font-size: 13px;
     }
 
-    aside .menu {
+    /**
+    * Mobile site menu
+    */
+    .mobile-menu-holder {
+        display: none;
+        margin-bottom: 15px;
+    }
+
+    .mobile-menu-holder--opened {
+        display: block;
+    }
+
+    .mobile-menu-toggler {
+        display: inline-flex;
+        margin: auto 0 auto auto;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .main-aside .menu {
         margin: 10px 0;
     }
 
-    aside .menu a {
-        padding: 10px 20px;
-        font-size: 16px;
+    .main-aside .menu a {
+        padding: 10px 15px;
     }
 
-    aside li:last-of-type a {
+    .main-aside li:last-of-type a {
         padding-bottom: 0;
     }
 
-    aside .button {
-        margin: 20px;
+    .main-aside .button {
+        margin: 15px;
     }
 
-    aside .user_panel {
-        padding: 15px 20px;
+    .main-aside .user_panel {
+        padding: 13px 15px;
     }
 }

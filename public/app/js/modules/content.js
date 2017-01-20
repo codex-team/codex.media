@@ -1,7 +1,24 @@
 /**
 * Operations with pages
 */
-module.exports = {
+module.exports = (function () {
+
+    /**
+    * Toggles mobile menu
+    * Handles clicks on the hamburger icon in header
+    */
+    var toggleMobileMenu = function ( event ) {
+
+        var menu = document.getElementById('js-mobile-menu-holder'),
+            openedClass = 'mobile-menu-holder--opened';
+
+        menu.classList.toggle(openedClass);
+
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        event.preventDefault();
+
+    };
 
     /**
     * Module uses for toggle custom checkboxes
@@ -11,7 +28,7 @@ module.exports = {
     *    <input type="checkbox" name="" value="1"/>
     * </span>
     */
-    customCheckboxes : {
+    var customCheckboxes = {
 
         /**
         * This class specifies checked custom-checkbox
@@ -50,9 +67,9 @@ module.exports = {
             }
 
         }
-    },
+    };
 
-    approvalButtons : {
+    var approvalButtons = {
 
         CLICKED_CLASS : 'click-again-to-approve',
 
@@ -83,5 +100,14 @@ module.exports = {
             }
 
         }
-    }
-};
+    };
+
+    return {
+
+        toggleMobileMenu : toggleMobileMenu,
+        customCheckboxes : customCheckboxes,
+        approvalButtons : approvalButtons
+
+    };
+
+}());

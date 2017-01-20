@@ -1,0 +1,14 @@
+.site-footer {
+    padding: 20px;
+    font-size: 12px;
+    color: var(--mediumText);
+    line-height: 1.4em;
+}
+
+.site-footer a {
+    color: var(--linkColor);
+}
+
+.site-footer a:hover {
+    color: var(--hoverColor);
+}
