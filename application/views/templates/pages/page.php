@@ -1,22 +1,24 @@
-<div class="w_island w_island_centercol">
-
-    <? /* Page title */ ?>
-    <h1 class="page_title">
-    	<?= $page->title ?>
-    </h1>
+<div class="island island--padded">
 
     <? /* Page info */ ?>
-    <div class="page-information">
-        <time class="page-information__time"><?= $methods->ftime(strtotime($page->date)) ?></time>
-        <a class="page-information__author" href="/user/<?= $page->author->id ?>">
+    <div class="article-information">
+        <time class="article-information__time">
+            <?= $methods->ftime(strtotime($page->date)) ?>
+        </time>
+        <a class="article-information__author" href="/user/<?= $page->author->id ?>">
             <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
-            <span class="page-information__author_name"><?= $page->author->name ?></span>
+            <?= $page->author->name ?>
         </a>
     </div>
 
+    <? /* Page title */ ?>
+    <h1 class="article-title">
+    	<?= $page->title ?>
+    </h1>
+
     <? /* Page content */ ?>
     <? if ($page->blocks_array): ?>
-        <article class="page_content">
+        <article class="article-content">
             <? for ($i = 0; $i < count($page->blocks_array); $i++): ?>
                 <?= $page->blocks_array[$i]; ?>
             <? endfor ?>

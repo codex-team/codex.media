@@ -1,13 +1,9 @@
 .site-head {
     display: flex;
     border-bottom: 1px solid var(--lightGrayLine);
-    padding: 25px var(--islandPadding);
-    line-height: 1.1em;
+    padding: var(--islandPadding);
+    line-height: 1.2em;
     font-size: 15px;
-}
-
-.site-head:hover {
-    background: var(--lightGrayBackground);
 }
 
 .spb_shield {
@@ -15,11 +11,11 @@
     width: 26px;
     height: 32px;
     background: url('/public/app/img/spb-shield.png') no-repeat;
-    margin-right: 25px;
+    margin-right: var(--islandPadding);
 }
 
 .main-aside .menu {
-    font-size: 16px;
+    font-size: 15px;
     margin: 20px 0;
 }
 
@@ -27,16 +23,11 @@
     display: block;
     font-size: 14px;
     font-weight: bold;
-    padding: 10px 25px;
+    padding: 10px var(--islandPadding);
 }
 
 .main-aside .menu a:hover {
     color: var(--hoverColor);
-}
-
-.main-aside .button {
-    display: block;
-    margin: 25px;
 }
 
 .button.logout {
@@ -73,6 +64,18 @@
     margin-right: 20px;
     color: #c6cad4;
 }
+
+.aside-section {
+    padding: var(--islandPadding);
+    border-top: 1px solid var(--lightGrayLine);
+    border-bottom: 1px solid var(--lightGrayLine);
+}
+
+.aside-section .button {
+    display: block;
+    text-align: center;
+}
+
 
 /**
 * Mobile menu holder and toggler

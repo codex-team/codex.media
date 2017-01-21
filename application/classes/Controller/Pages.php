@@ -43,7 +43,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             $this->view['can_modify_this_page'] = $this->user->id == $page->author->id;
             $this->view['page']                 = $page;
 
-            $this->template->content = View::factory('templates/page', $this->view);
+            $this->template->content = View::factory('templates/pages/page', $this->view);
 
         } else {
 

@@ -24,6 +24,10 @@
     margin-top: var(--islandMargin);
 }
 
+.island--centered {
+    text-align: center;
+}
+
 @media (--mobile) {
     .island--stretched {
         margin: 0;

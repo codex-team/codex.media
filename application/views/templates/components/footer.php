@@ -1,19 +1,17 @@
 <footer class="site-footer">
 
     <? /* Contacts */ ?>
-    <p><?= $site_info['full_name'] ?></p>
-    <p>
-        <a href="/contacts">
-            <?= $site_info['address'] ?>
-        </a>
-    </p>
-    <p>
-        Телефон:&nbsp;<?= $site_info['phone'] ?><br />
-        Факс:&nbsp;<?= $site_info['fax'] ?><br />
-        Почта:&nbsp;<?= $site_info['email'] ?>
-    </p>
+    <?= $site_info['full_name'] ?>
 
-    <? /* codex-special block */ ?>
-    <div id="js-contrast-version-holder"></div>
+    <a class="site-footer__contacts" href="/contacts">
+        <?= $site_info['address'] ?>
+    </a>
+
+    Телефон:&nbsp;<?= $site_info['phone'] ?><br />
+    Факс:&nbsp;<?= $site_info['fax'] ?><br />
+    Почта:&nbsp;<?= $site_info['email'] ?>
 
 </footer>
+
+<? /* codex-special block */ ?>
+<div id="js-contrast-version-holder"></div>

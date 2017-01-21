@@ -145,6 +145,36 @@ input[disabled]:hover {
     margin: 0 0.74em 0 -0.3em;
 }
 
+.button--vk,
+.button--twitter,
+.button--facebook {
+    color: #fff;
+}
+
+.button--vk {
+    background: #507299;
+}
+
+.button--vk:hover {
+    background: color(#507299 lightness(-10%));
+}
+
+.button--facebook {
+    background: #4267b2;
+}
+
+.button--facebook:hover {
+    background: color(#4267b2 lightness(-10%));
+}
+
+.button--twitter {
+    background: #1DA1F2;
+}
+
+.button--twitter:hover {
+    background: color(#1DA1F2 lightness(-10%));
+}
+
 /**
 * Information message block
 */

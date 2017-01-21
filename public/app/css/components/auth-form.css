@@ -1,0 +1,22 @@
+.auth-form {
+    max-width: 300px;
+    margin: 40px auto;
+}
+
+.auth-form__footer {
+    border-top: 1px solid var(--lightGrayLine);
+    padding-top: var(--islandPadding);
+    font-size: 14px;
+    margin-top: var(--islandPadding);
+    margin-bottom: 10px;
+}
+
+.auth-form__footer a {
+    display: inline-block;
+    margin-right: 1.5em;
+    color: var(--linkColor);
+}
+
+.auth-form__footer a:hover {
+    color: var(--hoverColor);
+}

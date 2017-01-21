@@ -1,0 +1,33 @@
+.article-information {
+    color: var(--grayText);
+    margin-bottom: 10px;
+}
+
+.article-information__time {
+    display: inline-block;
+    margin-right: 1em;
+}
+
+.article-information__author img {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    vertical-align: bottom;
+    margin-right: 1em;
+}
+
+.article-title {
+    margin-top: 0;
+    font-size: 30px;
+    line-height: 1.3em;
+}
+
+.article-content {
+    font-size: 15px;
+    line-height: 1.6em;
+
+    /*font-family: '/*Lora';
+    font-size: 19.2px;
+    line-height: 1.64em;
+    color: rgba(0,0,0,.8);*/
+}

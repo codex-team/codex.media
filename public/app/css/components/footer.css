@@ -1,5 +1,5 @@
 .site-footer {
-    padding: 20px;
+    padding: var(--islandPadding);
     font-size: 12px;
     color: var(--mediumText);
     line-height: 1.4em;
@@ -11,4 +11,9 @@
 
 .site-footer a:hover {
     color: var(--hoverColor);
+}
+
+.site-footer__contacts {
+    display: block;
+    margin: 1em 0;
 }

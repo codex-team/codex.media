@@ -122,86 +122,6 @@ a .separator:hover {
     color: #d85459;
 }
 
-.page_landing {
-    padding: 150px 100px 80px;
-    text-align: center;
-    font-size: 1.2em;
-    color: #4c6b9c;
-}
-
-.page_landing .title {
-    font-size: 1.6em;
-    margin-bottom: 15px;
-}
-
-.page_landing .desc {
-    margin-bottom: 20px;
-}
-
-.page_landing a i {
-    margin-right: 9px;
-}
-
-
-/**
-* Auth form
-*/
-.page_simple_form {
-    max-width: 300px;
-    margin: 0 auto;
-    color: #535d71;
-    text-align: center;
-}
-
-.page_simple_form h3 {
-    font-size: 16px;
-    text-align: center;
-}
-
-.page_simple_form label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.page_simple_form input {
-    border-radius: 0;
-    margin-top: -1px;
-}
-
-.page_simple_form input:first-child {
-    margin-top: 0;
-    border-radius: 3px 3px 0 0;
-}
-
-.page_simple_form input:last-child {
-    border-radius: 0 0 3px 3px;
-}
-
-.page_simple_form fieldset {
-    margin: 25px 0;
-}
-
-.page_simple_form button {
-    padding: 12px 30px;
-}
-
-.page_simple_form .invalid {
-    box-shadow: 0 0 0 2px rgb(255, 221, 221);
-}
-
-.page_footer_links {
-    border-top: 1px solid #dce6f5;
-    padding-top: 35px;
-    text-align: center;
-    font-size: 16px;
-    max-width: 500px;
-    margin: 40px auto;
-}
-
-.page_footer_links a {
-    display: inline-block;
-    margin: 0 10px;
-}
 
 .page_form {
     padding: 30px;
@@ -267,36 +187,7 @@ a .separator:hover {
     padding: 30px 100px;
 }
 
-.page-information {
-    padding: 0 100px;
-    color: #8a96ae;
-}
 
-.page-information__time {
-    display: inline-block;
-    margin-right: 20px;
-    font-size: 12px;
-}
-
-.page-information__author {
-    display: inline-block;
-    text-decoration: none;
-    font-size: 12px;
-    color: inherit;
-}
-
-.page-information__author img {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    vertical-align: bottom;
-    margin-right: 5px;
-}
-
-.page-information__author_name {
-    border-bottom: 1px solid #d3d6e0;
-    padding-bottom: 1px;
-}
 
 .page_image {
     margin: 0px 0px 5px 5px;
