@@ -48,6 +48,7 @@
         "document": true,
         "module": true,
         "require" : true,
-        "codex" : true
+        "codex" : true,
+        "console" : true
     }
 }

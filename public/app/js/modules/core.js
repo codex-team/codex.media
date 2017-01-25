@@ -2,43 +2,54 @@
 * Significant core methods
 */
 
-/* eslint-disable */
-
 module.exports = {
 
     /** Logging method */
-    log : function( str, prefix, type, arg ){
+    log : function (str, prefix, type, arg) {
 
-        var static_length = 32;
+        var staticLength = 32;
 
-        if ( prefix ){
-            prefix = prefix.length < static_length ? prefix : prefix.substr( 0, static_length - 2 );
+        if (prefix) {
 
-            while ( prefix.length < static_length - 1 ){
+            prefix = prefix.length < staticLength ? prefix : prefix.substr( 0, staticLength - 2 );
+
+            while (prefix.length < staticLength - 1) {
+
                 prefix += ' ';
+
             }
 
             prefix += ':';
             str = prefix + str;
+
         }
 
         type = type || 'log';
 
-        try { if ( 'console' in window && window.console[ type ] ){
-                if ( arg ) console[ type ]( str , arg );
-                else console[ type ]( str );
-        }}catch(e){}
+        try {
+
+            if ('console' in window && window.console[ type ]) {
+
+                if (arg) console[type](str, arg);
+                else console[type](str);
+
+            }
+
+        } catch(e) {}
+
     },
 
     /**
     * @return {object} dom element real offset
     */
-    getOffset : function ( elem ){
+    getOffset : function (elem) {
 
         var docElem, win, rect, doc;
 
-        if ( !elem ) {
+        if (!elem) {
+
             return;
+
         }
 
         /**
@@ -46,14 +57,20 @@ module.exports = {
         * Running getBoundingClientRect on a
         * disconnected node in IE throws an error
         */
-        if ( !elem.getClientRects().length ) {
-            return { top: 0, left: 0 };
+        if (!elem.getClientRects().length) {
+
+            return {
+                top: 0,
+                left: 0
+            };
+
         }
 
         rect = elem.getBoundingClientRect();
 
         /** Make sure element is not hidden (display: none) */
-        if ( rect.width || rect.height ) {
+        if (rect.width || rect.height) {
+
             doc = elem.ownerDocument;
             win = window;
             docElem = doc.documentElement;
@@ -62,19 +79,21 @@ module.exports = {
                 top: rect.top + win.pageYOffset - docElem.clientTop,
                 left: rect.left + win.pageXOffset - docElem.clientLeft
             };
+
         }
 
         /** Return zeros for disconnected and hidden elements (gh-2310) */
         return rect;
+
     },
 
     /**
     * Checks if element visible on screen at the moment
     * @param {Element} - HTML NodeElement
     */
-    isElementOnScreen : function ( el ){
+    isElementOnScreen : function (el) {
 
-        var elPositon    = spark.core.getOffset(el).top,
+        var elPositon    = codex.core.getOffset(el).top,
             screenBottom = window.scrollY + window.innerHeight;
 
         return screenBottom > elPositon;
@@ -85,7 +104,7 @@ module.exports = {
     * Returns computed css styles for element
     * @param {Element} el
     */
-    css : function( el ){
+    css : function (el) {
 
         return window.getComputedStyle(el);
 
@@ -95,7 +114,9 @@ module.exports = {
     * Helper for inserting one element after another
     */
     insertAfter : function (target, element) {
+
         target.parentNode.insertBefore(element, target.nextSibling);
+
     },
 
     /**
@@ -104,20 +125,24 @@ module.exports = {
     * @param {Element} replaceWith
     */
     replace : function (nodeToReplace, replaceWith) {
+
         return nodeToReplace.parentNode.replaceChild(replaceWith, nodeToReplace);
+
     },
 
     /**
     * Helper for insert one element before another
     */
     insertBefore : function (target, element) {
+
         target.parentNode.insertBefore(element, target);
+
     },
 
     /**
     * Returns random {int} between numbers
     */
-    random : function(min, max) {
+    random : function (min, max) {
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -130,22 +155,23 @@ module.exports = {
     * @param {string} eventName      - name of event
     * @param {function} callback     - callback function
     */
-    delegateEvent : function (parentNode, targetSelector, eventName, callback ) {
+    delegateEvent : function (parentNode, targetSelector, eventName, callback) {
 
-        parentNode.addEventListener(eventName, function(event) {
+        parentNode.addEventListener(eventName, function (event) {
 
             var el = event.target, matched;
 
-            while ( el && !matched ){
+            while (el && !matched) {
 
                 matched = el.matches(targetSelector);
 
-                if ( !matched ) el = el.parentElement;
+                if (!matched) el = el.parentElement;
+
             }
 
             if (matched) {
 
-                callback.call( event.target, event, el );
+                callback.call(event.target, event, el);
 
             }
 
@@ -174,7 +200,9 @@ module.exports = {
     * Check object for DOM node
     */
     isDomNode : function (el) {
+
         return el && typeof el === 'object' && el.nodeType && el.nodeType == this.nodeTypes.TAG;
+
     },
 
     /**
@@ -205,10 +233,10 @@ module.exports = {
 
         // } else {
 
-            contentHolder = document.createElement('div');
-            contentHolder.innerHTML = inputString.trim();
+        contentHolder = document.createElement('div');
+        contentHolder.innerHTML = inputString.trim();
 
-            childs = contentHolder.childNodes;
+        childs = contentHolder.childNodes;
 
         // }
 
@@ -218,8 +246,10 @@ module.exports = {
         */
         for (var i = 0, node; !!(node = childs[i]); i++) {
 
-            if (node.nodeType == spark.core.nodeTypes.TEXT && !node.textContent.trim()) {
+            if (node.nodeType == codex.core.nodeTypes.TEXT && !node.textContent.trim()) {
+
                 continue;
+
             }
 
             parsedNodes.push(node);
@@ -235,7 +265,7 @@ module.exports = {
     * @require ES5 - Object.keys
     * @param {object}
     */
-    isEmpty : function( obj ) {
+    isEmpty : function (obj) {
 
         return Object.keys(obj).length === 0;
 
@@ -245,33 +275,45 @@ module.exports = {
     * Check for Element visibility
     * @param {Element} el
     */
-    isVisible : function(el) {
+    isVisible : function (el) {
+
         return el.offsetParent !== null;
+
     },
 
-    setCookie : function (name, value, expires, path, domain){
-        var str = name + '='+value;
+    setCookie : function (name, value, expires, path, domain) {
+
+        var str = name + '=' + value;
+
         if (expires) str += '; expires=' + expires.toGMTString();
         if (path)    str += '; path=' + path;
         if (domain)  str += '; domain=' + domain;
+
         document.cookie = str;
+
     },
 
-    getCookie : function(name) {
+    getCookie : function (name) {
+
         var dc = document.cookie;
 
-        var prefix = name + "=";
-        var begin = dc.indexOf("; " + prefix);
+        var prefix = name + '=',
+            begin = dc.indexOf('; ' + prefix);
+
         if (begin == -1) {
+
             begin = dc.indexOf(prefix);
             if (begin !== 0) return null;
+
         } else
             begin += 2;
 
-        var end = document.cookie.indexOf(";", begin);
+        var end = document.cookie.indexOf(';', begin);
+
         if (end == -1) end = dc.length;
 
         return unescape(dc.substring(begin + prefix.length, end));
+
     }
 
 };
