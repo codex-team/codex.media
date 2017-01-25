@@ -6,11 +6,9 @@
  *        current_page    : '<?= $page_number ?>',    // current_page number
  *        url             : '/',                      // url for ajax-requests
  *        target_block_id : 'list_of_news',           // target for appending
- *        auto_loading    : true,                     // allow loading when reach bottom while scrolling
+ *        autoLoading    : true,                     // allow loading when reach bottom while scrolling
  *    });
  */
-
-/* eslint-disable */
 
 var appender = {
 
@@ -19,65 +17,62 @@ var appender = {
 
     settings : null,
 
-    block_for_items : null,
+    blockForItems : null,
 
-    load_more_button : null,
+    loadMoreButton : null,
 
     /**
      * Button's text for saving it.
-     * On its place dots will be  while news are loading
+     * On its place dots will be while news are loading
      */
-    button_text : null,
+    buttonText : null,
 
     init : function (settings) {
 
         this.settings = settings;
 
         /* Checking for existing button and field for loaded info */
-        this.load_more_button = document.getElementById(this.settings.button_id);
+        this.loadMoreButton = document.getElementById(this.settings.button_id);
 
-        if (!this.load_more_button) return false;
+        if (!this.loadMoreButton) return false;
 
-        this.block_for_items = document.getElementById(this.settings.target_block_id);
+        this.blockForItems = document.getElementById(this.settings.target_block_id);
 
-        if (!this.block_for_items) return false;
+        if (!this.blockForItems) return false;
 
         this.page        = settings.current_page;
-        this.button_text = this.load_more_button.innerHTML;
+        this.buttonText = this.loadMoreButton.innerHTML;
 
-        if (this.settings.auto_loading) this.auto_loading.is_allowed = true;
+        if (this.settings.autoLoading) this.autoLoading.isAllowed = true;
 
-        this.load_more_button.addEventListener('click', function (event){
+        this.loadMoreButton.addEventListener('click', function (event) {
 
             codex.appender.load();
 
             event.preventDefault();
 
-            codex.appender.auto_loading.init();
+            codex.appender.autoLoading.init();
 
         }, false);
+
     },
 
     load : function () {
 
-        var request_url = this.settings.url + (parseInt(this.page) + 1);
-            // separator   = '<a href="' + request_url + '"><div class="article post-list-item w_island separator">Page ' + (parseInt(this.page) + 1) + '</div></a>';
-
-        if (this.settings.getParams) {
-
-            request_url += '?' + codex.appender.serialize(this.settings.getParams);
-        }
+        var requestUrl = this.settings.url + (parseInt(this.page) + 1);
+            // separator   = '<a href="' + requestUrl + '"><div class="article post-list-item w_island separator">Page ' + (parseInt(this.page) + 1) + '</div></a>';
 
         codex.core.ajax({
             type: 'post',
-            url: request_url,
+            url: requestUrl,
             data: {},
             beforeSend : function () {
 
-                codex.appender.load_more_button.innerHTML = ' ';
-                codex.appender.load_more_button.classList.add('loading');
+                codex.appender.loadMoreButton.innerHTML = ' ';
+                codex.appender.loadMoreButton.classList.add('loading');
+
             },
-            success : function(response) {
+            success : function (response) {
 
                 response = JSON.parse(response);
 
@@ -86,15 +81,17 @@ var appender = {
                     if (!response.pages) return;
 
                     /* Append items */
-                    //codex.appender.block_for_items.innerHTML += separator;
-                    codex.appender.block_for_items.innerHTML += response.pages;
+                    // codex.appender.blockForItems.innerHTML += separator;
+                    codex.appender.blockForItems.innerHTML += response.pages;
 
                     /* Next page */
                     codex.appender.page++;
 
-                    if (codex.appender.settings.auto_loading) {
+                    if (codex.appender.settings.autoLoading) {
+
                         /* Removing restriction for auto loading */
-                        codex.appender.auto_loading.can_load = true;
+                        codex.appender.autoLoading.canLoad = true;
+
                     }
 
                     /* Checking for next page's existing. If no — hide the button for loading news and remove listener */
@@ -103,88 +100,76 @@ var appender = {
                 } else {
 
                     codex.core.showException('Не удалось подгрузить новости');
+
                 }
 
-                codex.appender.load_more_button.classList.remove('loading');
-                codex.appender.load_more_button.innerHTML = codex.appender.button_text;
+                codex.appender.loadMoreButton.classList.remove('loading');
+                codex.appender.loadMoreButton.innerHTML = codex.appender.buttonText;
+
             }
 
         });
+
     },
 
     disable : function () {
 
-        codex.appender.load_more_button.style.display = "none";
+        codex.appender.loadMoreButton.style.display = 'none';
 
-        if (codex.appender.auto_loading.is_launched) {
+        if (codex.appender.autoLoading.isLaunched) {
 
-            codex.appender.auto_loading.disable();
+            codex.appender.autoLoading.disable();
+
         }
+
     },
 
-    auto_loading : {
+    autoLoading : {
 
-        is_allowed : false,
+        isAllowed : false,
 
-        is_launched : false,
+        isLaunched : false,
 
         /**
          * Possibility to load news by scrolling.
          * Restriction for reduction requests which could be while scrolling
          */
-        can_load : true,
+        canLoad : true,
 
         init : function () {
 
-            if (!this.is_allowed) return;
+            if (!this.isAllowed) return;
 
-            window.addEventListener("scroll", codex.appender.auto_loading.scrollEvent);
+            window.addEventListener('scroll', codex.appender.autoLoading.scrollEvent);
 
-            codex.appender.auto_loading.is_launched = true;
+            codex.appender.autoLoading.isLaunched = true;
+
         },
 
         disable : function () {
 
-            window.removeEventListener("scroll", codex.appender.auto_loading.scrollEvent);
+            window.removeEventListener('scroll', codex.appender.autoLoading.scrollEvent);
 
-            codex.appender.auto_loading.is_launched = false;
+            codex.appender.autoLoading.isLaunched = false;
+
         },
 
         scrollEvent : function () {
 
-            var scroll_reached_end = window.pageYOffset + window.innerHeight >= document.body.clientHeight;
+            var scrollReachedEnd = window.pageYOffset + window.innerHeight >= document.body.clientHeight;
 
-            if (scroll_reached_end && codex.appender.auto_loading.can_load) {
+            if (scrollReachedEnd && codex.appender.autoLoading.canLoad) {
 
-                codex.appender.auto_loading.can_load = false;
+                codex.appender.autoLoading.canLoad = false;
 
                 codex.appender.load();
+
             }
+
         },
+
     },
 
-    /**
-     * Transform object to string for GET request
-     */
-    serialize : function(obj, prefix) {
-        var str = [],
-            p;
-
-        for (p in obj) {
-
-            if (obj.hasOwnProperty(p)) {
-
-                var k = prefix ? prefix + "[" + p + "]" : p,
-                    v = obj[p];
-
-                str.push((v !== null && typeof v === "object") ?
-                serialize(v, k) :
-                encodeURIComponent(k) + "=" + encodeURIComponent(v));
-            }
-        }
-
-        return str.join("&");
-    },
 };
 
 module.exports = appender;
