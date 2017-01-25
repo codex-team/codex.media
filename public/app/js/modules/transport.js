@@ -2,8 +2,6 @@
 * File transport module
 */
 
-/* eslint-disable */
-
 var transport = {
 
     form : null,
@@ -31,7 +29,9 @@ var transport = {
         this.input = document.getElementById('transportInput');
 
         if (!this.form || !this.input) {
+
             return false;
+
         }
 
         this.input.addEventListener('change', this.fileSelected);
@@ -51,17 +51,21 @@ var transport = {
     },
 
     fileSelected : function () {
+
         codex.transport.form.submit();
         codex.transport.clear();
+
     },
 
     prepareForm : function (params) {
 
         if (!this.transportTypeInput) {
+
             this.transportTypeInput      = document.createElement('input');
             this.transportTypeInput.type = 'hidden';
             this.transportTypeInput.name = 'type';
             this.form.appendChild(this.transportTypeInput);
+
         }
 
         this.transportTypeInput.value = params.type;
@@ -81,19 +85,25 @@ var transport = {
 
             this.storeFile(response);
             // this.appendFileToInput(response.filename);
+
         } else {
+
             codex.core.showException(response.message);
+
         }
+
     },
 
     /**
     * Store file in memory
     * Attaches list will be sent form submitting
     */
-    storeFile : function(file){
+    storeFile : function (file) {
 
         if (!file || !file.id) {
+
             return;
+
         }
 
         this.files[file.id] = {
@@ -112,13 +122,13 @@ var transport = {
     appendFileRow : function (file) {
 
         var attachesZone = document.getElementById('formAttaches'),
-            row          = document.createElement('div');
-            filename     = document.createElement('span');
+            row          = document.createElement('div'),
+            filename     = document.createElement('span'),
             deleteButton = document.createElement('span');
 
         row.classList.add('item');
 
-        switch (file.type){
+        switch (file.type) {
             case '1': filename.classList.add('item_file'); break;
             case '2': filename.classList.add('item_image'); break;
             default: break;
@@ -128,19 +138,20 @@ var transport = {
         filename.setAttribute('contentEditable', true);
 
         deleteButton.classList.add('fl_r', 'button-delete', 'icon-trash');
-        deleteButton.addEventListener('click', function(){
+        deleteButton.addEventListener('click', function () {
 
-            if (this.parentNode.dataset.ready_for_delete) {
+            if (this.parentNode.dataset.readyForDelete) {
 
                 delete codex.transport.files[file.id];
                 this.parentNode.remove();
+
             }
 
-            this.parentNode.dataset.ready_for_delete = true;
+            this.parentNode.dataset.readyForDelete = true;
             this.classList.add('button-delete__ready-to-delete');
             this.innerHTML = 'Удалить документ';
 
-        } , false);
+        }, false);
 
         row.appendChild(filename);
         row.appendChild(deleteButton);
@@ -156,13 +167,15 @@ var transport = {
     /**
     * Saves filename from input to this.files object
     */
-    storeFileName : function(){
+    storeFileName : function () {
 
         /**
         * Clear previous keydown-timeout
         */
-        if (codex.transport.keydownFinishedTimeout){
-            clearTimeout(codex.transport.keydownFinishedTimeout);
+        if (codex.transport.keydownFinishedTimeout) {
+
+            window.clearTimeout(codex.transport.keydownFinishedTimeout);
+
         }
 
         var input = this;
@@ -170,13 +183,15 @@ var transport = {
         /**
         * Start waiting to input finished, then save value to this.files
         */
-        codex.transport.keydownFinishedTimeout = setTimeout(function() {
+        codex.transport.keydownFinishedTimeout = window.setTimeout(function () {
 
             var id    = input.dataset.id,
                 title = input.textContent.trim();
 
             if (title) {
+
                 codex.transport.files[id].title = title;
+
             }
 
         }, 300);
@@ -189,7 +204,7 @@ var transport = {
     * Prepares and submit form
     * Send attaches by json-encoded stirng with hidden input
     */
-    submitAtlasForm : function(){
+    submitAtlasForm : function () {
 
         var atlasForm = document.forms.atlas;
 
@@ -211,7 +226,7 @@ var transport = {
          */
         codex.editor.saver.saveBlocks();
 
-        setTimeout(function () {
+        window.setTimeout(function () {
 
             JSONinput.innerHTML = JSON.stringify(codex.editor.state.jsonOutput);
 
@@ -223,6 +238,7 @@ var transport = {
         }, 100);
 
     }
+
 };
 
 module.exports = transport;
