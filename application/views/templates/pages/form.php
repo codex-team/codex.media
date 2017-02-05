@@ -1,4 +1,4 @@
-<form class="atlas_form w_island" action="/p/save" id="atlasForm" method="post" name="atlas">
+<form class="atlas_form island island--padded" action="/p/save" id="atlasForm" method="post" name="atlas">
 
     <?
         /** if there is no information about page */
@@ -28,7 +28,7 @@
 
             <script type="text/javascript">
 
-                codex.documentIsReady(function(){
+                codex.docReady(function(){
 
                     var files = <?= $attachments ?>;
 

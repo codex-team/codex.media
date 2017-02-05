@@ -42,7 +42,7 @@
 <script>
 
     /** Document is ready */
-    codex.documentIsReady(function(){
+    codex.docReady(function(){
 
         codex.editor.start({
 
