@@ -44,7 +44,7 @@
     </div>
 
 
-    <div id="utils" class="hidden">
+    <!-- <div id="utils" class="hidden">
 
         <iframe name="transport" _onload="transport.checkErrorLoading(event)"></iframe>
 
@@ -54,7 +54,7 @@
 
         </form>
 
-    </div>
+    </div> -->
 
 
     <? /* Scripts */ ?>

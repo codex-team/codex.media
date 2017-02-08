@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'codex_editor';
-    src: url('fonts/codex-editor.eot?20895205');
-    src: url('fonts/codex-editor.eot?20895205#iefix') format('embedded-opentype'),
-    url('fonts/codex-editor.woff?20895205') format('woff'),
-    url('fonts/codex-editor.ttf?20895205') format('truetype'),
-    url('fonts/codex-editor.svg?20895205#codex_editor') format('svg');
+    src: url('fonts/codex_editor/codex-editor.eot?20895205');
+    src: url('fonts/codex_editor/codex-editor.eot?20895205#iefix') format('embedded-opentype'),
+    url('fonts/codex_editor/codex-editor.woff?20895205') format('woff'),
+    url('fonts/codex_editor/codex-editor.ttf?20895205') format('truetype'),
+    url('fonts/codex_editor/codex-editor.svg?20895205#codex_editor') format('svg');
     font-weight: normal;
     font-style: normal;
 }

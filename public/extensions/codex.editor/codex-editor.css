@@ -16,6 +16,10 @@
     position: relative;
 }
 
+    .codex-editor .hide {
+        display: none;
+    }
+
 /**
 * Working zone - redactor
 */
@@ -23,6 +27,11 @@
     position: relative;
     padding-bottom: 120px;
     min-height: 350px;
+}
+
+
+.ce-block__content a {
+    color: #186baa;
 }
 
 /*.ce-redactor * {
@@ -51,14 +60,17 @@
     display: block;
 }
 
-.ce-toolbar__content {
-    position: relative;
-}
+    .ce-toolbar__content {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
+    }
 /**
 * Plus button
 */
 .ce-toolbar__plus{
-    background-image: url('fonts/icon-plus.svg');
+    position: absolute;
+    background-image: url('fonts/codex_editor/icon-plus.svg');
     background-position: center center;
     background-repeat: no-repeat;
     text-align: center;
@@ -134,9 +146,10 @@
     position: absolute;
     right: 10px;
     border-radius: 2px;
-    padding: 2px 4px;
-    /*background: #f9f9fb;*/
+    padding: 4px 5px;
+    background: #f9f9fb;
 }
+
 
 /**
 * Settings button
@@ -295,7 +308,10 @@
 .ce-toolbar-inline__buttons button{
     background: none;
     border: 0;
-    padding: 12px 8px;
+    margin: 0 !important;
+    height: auto !important;
+    padding: 13px 9px;
+    line-height: 1em;
     color: inherit;
     font-size: 12px;
     cursor: pointer;
@@ -321,7 +337,8 @@
         background: transparent !important;
         border : 0 !important;
         box-sizing: border-box !important;
-        padding: 10px;
+        padding: 12px;
+        font-size: 13px;
         width: 100%;
         color: #fff;
         outline: none;
@@ -356,14 +373,14 @@
     left: 17px;
     top: 13px;
     font-size: 16px;
-    color: #ef4a4a;
+    /*color: #ef4a4a;*/
+    color: #7d6060;
 }
 
 /**
 * Block content holder
 */
-.ce-block__content,
-.ce-toolbar__content {
+.ce-block__content{
     max-width: 600px;
     margin: 0 auto;
     padding: 1px;
@@ -383,14 +400,14 @@
 /**
 * Loading bar class
 */
-.ce-redactor__loader{
+.ce-redactor__loader {
     background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, #f5f9ff 4px, #eaedef 8px) !important;
     background-size: 56px 56px;
-    animation: loading-bar 1.3s infinite linear;
+    animation: loading-bar 600ms infinite linear;
 }
 
 @keyframes loading-bar {
-    100% { background-position: -56px 0 }
+    100% { background-position: -56% 0 }
 }
 
 
@@ -398,15 +415,50 @@
 * Mobile viewport styles
 * =================================
 */
-@media all and (max-width: 800px){
+@media all and (max-width: 1000px){
 
     .ce-block{
         margin: 0;
-        padding-left: 5px;
-        padding-right: 5px;
     }
-    .ce-block__content{
-        margin: 0 15px;
+    .ce-block__content,
+    .ce-toolbar__content
+    {
+        padding: 0 25px;
+    }
+
+    .ce-toolbar {
+        margin-top: 5px;
+    }
+
+    .ce-toolbar__actions {
+        right: 0;
+        top: -10px;
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .ce-toolbar__settings-btn {
+        display: block;
+        margin-bottom: 3px;
+    }
+
+    .ce-toolbar__plus {
+        margin-left: -25px;
+    }
+
+    .ce-toolbar__plus,
+    .ce-toolbar__tools li {
+        width: 22px;
+        height: 22px;
+    }
+
+    .ce-toolbar__tools li i {
+        line-height: 22px;
+    }
+
+    .ce-toolbar__tools {
+        left: 30px;
+        font-size: 13px;
     }
 
 }

@@ -1,110 +1,147 @@
 /**
  * Instagram plugin
- * Renders url to Instagram Embed
- *
- * @author Codex Team
- * @copyright Khaydarov Murod
- *
  * @version 1.0.0
  */
+var instagram = (function(instagram) {
 
-/** Include to Build css */
-var instagramTool = {
+    var methods = {
+
+        render : function(content) {
+
+            codex.editor.content.switchBlock(codex.editor.content.currentNode, content, 'instagram');
+
+            setTimeout(function() {
+                window.instgrm.Embeds.process();
+            }, 200);
+
+        },
+
+        /**
+         * Drawing html content.
+         *
+         * @param url
+         * @returns {Element} blockquote - HTML template for Instagram Embed JS
+         */
+        instagramBlock : function(url) {
+
+            var blockquote = codex.editor.draw.node('BLOCKQUOTE', 'instagram-media instagram', {}),
+                div        = codex.editor.draw.node('DIV', '', {}),
+                paragraph  = codex.editor.draw.node('P', 'ce-paste__instagram--p', {}),
+                anchor     = codex.editor.draw.node('A', '', { href : url });
+
+            blockquote.dataset.instgrmVersion = 4;
+
+            paragraph.appendChild(anchor);
+            div.appendChild(paragraph);
+            blockquote.appendChild(div);
+
+            return blockquote;
+
+        }
+    };
 
     /**
      * Prepare before usage
      * Load important scripts to render embed
      */
-    prepare : function() {
+    instagram.prepare = function() {
 
-        var script = "//platform.instagram.com/en_US/embeds.js";
+        return new Promise(function(resolve, reject){
 
-        /**
-         * Load widget
-         */
-        codex.editor.core.importScript(script, 'instagramAPI');
-    },
+            codex.editor.core.importScript("https://platform.instagram.com/en_US/embeds.js", 'instagram-api').then(function(){
+                resolve();
+            }).catch(function(){
+                reject(Error('Instagram API was not loaded'));
+            });
+
+        });
+    };
 
     /**
+     * @private
+     *
      * Make instagram embed via Widgets method
      */
-    make : function(data) {
+    var make_ = function(data, isInternal) {
 
-        if (!data.url)
+        if (!data.instagram_url)
             return;
 
+        var block = methods.instagramBlock(data.instagram_url);
 
-        var block = instagramTool.content.instagramBlock(data.url);
-        instagramTool.content.render(block);
-    },
+        if (isInternal) {
+
+            setTimeout(function() {
+
+                /** Render block */
+                methods.render(block);
+
+            }, 200);
+        }
+
+        if (!isInternal) {
+            methods.render(block);
+        }
+
+        return block;
+    };
+
+    instagram.validate = function(data) {
+        return true;
+    };
 
     /**
      * Saving JSON output.
      * Upload data via ajax
      */
-    save : function(blockContent) {
+    instagram.save = function(blockContent) {
 
         var data;
 
+        if (!blockContent)
+            return;
+
         /** Example */
         data = {
-            media:true,
-            conversation:false,
-            user:{
-            },
-            url: blockContent.src
+            instagram_url: blockContent.src
         };
 
         return data;
 
-    },
+    };
+
+    instagram.validate = function(data) {
+
+        var checkUrl = new RegExp("http?.+instagram.com\/p?.");
+
+        if (!data.instagram_url || checkUrl.exec(data.instagram_url).length == 0)
+            return;
+
+        return true;
+    };
 
     /**
      * Render data
      */
-    render : function(data) {
-        return instagramTool.make(data);
-    }
-
-};
-
-instagramTool.content = {
-
-    render : function(content) {
-
-        codex.editor.content.switchBlock(codex.editor.content.currentNode, content, 'instagram');
-
-        var blockContent = codex.editor.content.currentNode.childNodes[0];
-        blockContent.classList.add('ce-redactor__loader');
-
-        window.instgrm.Embeds.process();
-
-        setTimeout(function(){
-            blockContent.classList.remove('ce-redactor__loader');
-        }, 500);
-    },
+    instagram.render = function(data) {
+        return make_(data);
+    };
 
     /**
-     * Drawing html content.
-     *
+     * callback for instagram url's coming from pasteTool
+     * Using instagram Embed Widgete to render
      * @param url
-     * @returns {Element} blockquote - HTML template for Instagram Embed JS
      */
-    instagramBlock : function(url) {
+    instagram.urlPastedCallback = function(url) {
+        var data = {
+            instagram_url: url
+        };
 
-        var blockquote = codex.editor.draw.node('BLOCKQUOTE', 'instagram-media instagram', {}),
-            div        = codex.editor.draw.node('DIV', '', {}),
-            paragraph  = codex.editor.draw.node('P', 'ce-paste__instagram--p', {}),
-            anchor     = codex.editor.draw.node('A', '', { href : url });
+        make_(data, true);
 
-        blockquote.dataset.instgrmVersion = 4;
+    };
 
-        paragraph.appendChild(anchor);
-        div.appendChild(paragraph);
-        blockquote.appendChild(div);
+    return instagram;
 
-        return blockquote;
+})({});
 
-    },
-
-};

@@ -66,10 +66,11 @@ class Controller_Transport extends Controller_Base_preDispatch
         }
 
         finish:
-        $script = '<script>window.parent.codex.transport.response(' . @json_encode($this->transportResponse) . ')</script>';
+        // $script = '<script>window.parent.codex.transport.response(' . @json_encode($this->transportResponse) . ')</script>';
+        $response = @json_encode($this->transportResponse);
 
         $this->auto_render = false;
-        $this->response->body($script);
+        $this->response->body($response);
     }
 
     private function save()

@@ -4,110 +4,9 @@
 
 var transport = {
 
-    // transport.input = null;
-    //
-    // /**
-    //  * @property {Object} arguments - keep plugin settings and defined callbacks
-    //  */
-    // transport.arguments = null;
-    //
-    // /**
-    //  * [new]
-    //  * create input elem
-    //  */
-    // transport.prepare = function () {
-    //
-    //     var input = document.createElement('INPUT');
-    //
-    //     input.type = 'file';
-    //     input.addEventListener('change', editor.transport.fileSelected);
-    //
-    //     editor.transport.input = input;
-    //
-    // };
-    //
-    // /** Clear input when files is uploaded */
-    // transport.clearInput = function () {
-    //
-    //     /** Remove old input */
-    //     this.input = null;
-    //
-    //     /** Prepare new one */
-    //     this.prepare();
-    //
-    // };
-    //
-    // /**
-    //  * Callback for file selection
-    //  * @param {Event} event
-    //  */
-    // transport.fileSelected = function () {
-    //
-    //     var input       = this,
-    //         files       = input.files,
-    //         formdData   = new FormData();
-    //
-    //     formdData.append('files', files[0], files[0].name);
-    //
-    //     editor.transport.ajax({
-    //         data : formdData,
-    //         beforeSend : editor.transport.arguments.beforeSend,
-    //         success    : editor.transport.arguments.success,
-    //         error      : editor.transport.arguments.error
-    //     });
-    //
-    // };
-    //
-    // /**
-    //  * Use plugin callbacks
-    //  * @protected
-    //  */
-    // transport.selectAndUpload = function (args) {
-    //
-    //     this.arguments = args;
-    //     this.input.click();
-    //
-    // };
-    //
-    // /**
-    //  * Ajax requests module
-    //  * @todo use core.ajax
-    //  */
-    // transport.ajax = function (params) {
-    //
-    //     var xhr = new XMLHttpRequest(),
-    //         beforeSend = typeof params.beforeSend == 'function' ? params.beforeSend : function () {},
-    //         success    = typeof params.success    == 'function' ? params.success : function () {},
-    //         error      = typeof params.error      == 'function' ? params.error   : function () {};
-    //
-    //     beforeSend();
-    //
-    //     xhr.open('POST', editor.settings.uploadImagesUrl, true);
-    //
-    //     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    //
-    //     xhr.onload = function () {
-    //
-    //         if (xhr.status === 200) {
-    //
-    //             success(xhr.responseText);
-    //
-    //         } else {
-    //
-    //             editor.core.log('request error: %o', xhr);
-    //             error();
-    //
-    //         }
-    //
-    //     };
-    //
-    //     xhr.send(params.data);
-    //     this.clearInput();
-    //
-    // };
-
-    form : null,
     input : null,
+
+    formdData : null,
 
     /**
     * @uses for store inputed filename to this.files
@@ -127,80 +26,80 @@ var transport = {
 
     init : function () {
 
-        // this.form  = document.getElementById('transportForm');
-        // this.input = document.getElementById('transportInput');
+        var input = document.createElement('INPUT');
 
-        this.createUtils();
+        input.multiple = 'multiple';
+        input.type     = 'file';
+        input.addEventListener('change', this.fileSelected);
 
-        if (!this.form || !this.input) {
-
-            return false;
-
-        }
-
-        this.input.addEventListener('change', this.fileSelected);
+        this.input = input;
 
     },
 
-    createUtils : function () {
+    clearInput : function () {
 
-        return
+        /** Remove old input */
+        this.input = null;
+
+        this.type = null;
+
+        this.formdData = null;
+
+        /** Prepare new one */
+        this.init();
 
     },
 
     /**
-    * Chose-file button click handler
+    * Choose-file button click handler
     */
     selectFile : function (event, type) {
 
-        this.prepareForm({
-            type : type
-        });
+        this.type = type;
+
         this.input.click();
 
     },
 
     fileSelected : function () {
 
-        codex.transport.form.submit();
-        codex.transport.clear();
+        var type        = transport.type,
+            input       = this,
+            files       = input.files,
+            formdData   = null,
+            result      = null;
 
-    },
+        for (var i = 0; i < files.length; i++) {
 
-    prepareForm : function (params) {
+            formdData = new FormData();
 
-        if (!this.transportTypeInput) {
+            formdData.append('type', type);
 
-            this.transportTypeInput      = document.createElement('input');
-            this.transportTypeInput.type = 'hidden';
-            this.transportTypeInput.name = 'type';
-            this.form.appendChild(this.transportTypeInput);
+            formdData.append('files', files[i], files[i].name);
+
+            result = transport.ajaxSendFiles(formdData);
+
+            transport.response(result);
 
         }
 
-        this.transportTypeInput.value = params.type;
-
-    },
-
-    clear : function () {
-
-        this.type = null;
-        this.input.value = null;
+        transport.clearInput();
 
     },
 
     response : function (response) {
 
-        if (response.success && response.title) {
+        console.log(response);
 
-            this.storeFile(response);
-            // this.appendFileToInput(response.filename);
-
-        } else {
-
-            codex.core.showException(response.message);
-
-        }
+        // if (response.success && response.title) {
+        //
+        //     this.storeFile(response);
+        //
+        // } else {
+        //
+        //     // codex.core.showException(response.message);
+        //
+        // }
 
     },
 
@@ -210,11 +109,7 @@ var transport = {
     */
     storeFile : function (file) {
 
-        if (!file || !file.id) {
-
-            return;
-
-        }
+        if (!file || !file.id) return;
 
         this.files[file.id] = {
             'title' : file.title,
@@ -304,7 +199,7 @@ var transport = {
 
             }
 
-        }, 300);
+        }, 200);
 
 
     },
@@ -347,7 +242,25 @@ var transport = {
 
         }, 100);
 
-    }
+    },
+
+    ajaxSendFiles : function (data) {
+
+        var xhr  = new XMLHttpRequest();
+
+        xhr.open('POST', '/file/transport', true);
+
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        xhr.onload = function () {
+
+            return xhr.responseText;
+
+        };
+
+        xhr.send(data);
+
+    },
 
 };
 
