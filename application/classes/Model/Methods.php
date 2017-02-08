@@ -31,7 +31,7 @@ class Model_Methods extends Model
          */
         if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
 
-        if (!is_dir($path)) mkdir($path, 0777, true);
+        if (!is_dir($path)) mkdir($path);
 
         if ($file = Upload::save($file, NULL, $path)) {
 
