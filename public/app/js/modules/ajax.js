@@ -58,15 +58,7 @@ var ajax = (function () {
 
     function isFormData(object) {
 
-        if (typeof object.append === 'function') {
-
-            return true;
-
-        } else {
-
-            return false;
-
-        }
+        return typeof object.append === 'function';
 
     };
 
