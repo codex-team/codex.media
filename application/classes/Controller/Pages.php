@@ -266,7 +266,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             $file_on_page = (boolean) $file->page;
             $filename_changed = $file->title != $file_row['title'];
 
-            if (!$file_on_page or $filename_changed) {
+            if (!$file_on_page || $filename_changed) {
 
                 $file->page  = $page_id;
                 $file->title = $file_row['title'];
