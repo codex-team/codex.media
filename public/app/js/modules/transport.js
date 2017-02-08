@@ -83,10 +83,17 @@ var transport = {
             type : 'POST',
             url : '/file/transport',
             data : formData,
-            success : transport.response
+            success : transport.response,
+            beforeSend : transport.beforeSend,
         });
 
         transport.clearInput();
+
+    },
+
+    beforeSend : function () {
+
+        // add loader
 
     },
 
@@ -94,6 +101,8 @@ var transport = {
     * Save file info into page form or show exception
     */
     response : function (response) {
+
+        // stop loader
 
         response = JSON.parse(response);
 
