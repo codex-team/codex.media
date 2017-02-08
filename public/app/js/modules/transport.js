@@ -4,10 +4,13 @@
 
 var transport = {
 
+    /**
+    * Field for file
+    */
     input : null,
 
     /**
-    * Input where current transport type stored
+    * Current transport type
     */
     type : null,
 
@@ -22,11 +25,13 @@ var transport = {
     */
     files : {},
 
+    /**
+    * Create element and add listener
+    */
     init : function () {
 
         var input = document.createElement('INPUT');
 
-        // input.multiple = 'multiple';
         input.type = 'file';
         input.addEventListener('change', this.fileSelected);
 
@@ -34,6 +39,9 @@ var transport = {
 
     },
 
+    /**
+    * Clear input and type. Ready for getting new file
+    */
     clearInput : function () {
 
         /** Remove old input */
@@ -57,54 +65,41 @@ var transport = {
 
     },
 
+    /**
+    * Send file to server when select
+    */
     fileSelected : function () {
 
         var type        = transport.type,
             input       = this,
             files       = input.files,
-            formdData   = new FormData();
+            formData    = new FormData();
 
-        formdData.append('type', type);
+        formData.append('type', type);
 
-        // for (var i = 0; i < files.length; i++) {
-        //
-        //     formdData.append('files', files[i], files[i].name);
-        //
-        // }
+        formData.append('files', files[0], files[0].name);
 
-        formdData.append('files', files[0], files[0].name);
-
-        transport.ajaxSendFiles(formdData);
+        codex.ajax.call({
+            type : 'POST',
+            url : '/file/transport',
+            data : formData,
+            success : transport.response
+        });
 
         transport.clearInput();
 
     },
 
-    ajaxSendFiles : function (data) {
-
-        var xhr  = new XMLHttpRequest();
-
-        xhr.open('POST', '/file/transport', true);
-
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-
-        xhr.onload = function () {
-
-            transport.response(xhr.responseText);
-
-        };
-
-        xhr.send(data);
-
-    },
-
+    /**
+    * Save file info into page form or show exception
+    */
     response : function (response) {
 
         response = JSON.parse(response);
 
         if (response.success && response.title) {
 
-            this.storeFile(response);
+            transport.storeFile(response);
 
         } else {
 
@@ -216,7 +211,6 @@ var transport = {
 
 
     },
-
 
     /**
     * Prepares and submit form

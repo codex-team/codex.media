@@ -51,6 +51,5 @@
         "codex" : true,
         "console" : true,
         "FormData" : true,
-        "XMLHttpRequest" : true,
     }
 }

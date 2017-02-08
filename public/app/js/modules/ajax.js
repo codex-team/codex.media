@@ -11,13 +11,13 @@ var ajax = (function () {
         if (!data || !data.url) return;
 
         var XMLHTTP          = window.XMLHttpRequest ? new window.XMLHttpRequest() : new window.ActiveXObject('Microsoft.XMLHTTP'),
-            successFunction = function () {};
+            successFunction  = function () {};
 
         data.async           = true;
         data.type            = data.type || 'GET';
         data.data            = data.data || '';
         data['content-type'] = data['content-type'] || 'application/json; charset=utf-8';
-        successFunction     = data.success || successFunction ;
+        successFunction      = data.success || successFunction;
 
         if (data.type == 'GET' && data.data) {
 
@@ -38,7 +38,9 @@ var ajax = (function () {
         }
 
         XMLHTTP.open(data.type, data.url, data.async);
-        XMLHTTP.setRequestHeader('Content-type', data['content-type'] );
+
+        if (!isFormData(data.data)) XMLHTTP.setRequestHeader('Content-type', data['content-type']);
+
         XMLHTTP.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         XMLHTTP.onreadystatechange = function () {
 
@@ -51,6 +53,20 @@ var ajax = (function () {
         };
 
         XMLHTTP.send(data.data);
+
+    };
+
+    function isFormData(object) {
+
+        if (typeof object.append === 'function') {
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
 
     };
 
