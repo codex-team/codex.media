@@ -6,7 +6,10 @@ var transport = {
 
     input : null,
 
-    formdData : null,
+    /**
+    * Input where current transport type stored
+    */
+    type : null,
 
     /**
     * @uses for store inputed filename to this.files
@@ -19,17 +22,12 @@ var transport = {
     */
     files : {},
 
-    /**
-    * Input where current transport type stored
-    */
-    transportTypeInput: null,
-
     init : function () {
 
         var input = document.createElement('INPUT');
 
-        input.multiple = 'multiple';
-        input.type     = 'file';
+        // input.multiple = 'multiple';
+        input.type = 'file';
         input.addEventListener('change', this.fileSelected);
 
         this.input = input;
@@ -42,8 +40,6 @@ var transport = {
         this.input = null;
 
         this.type = null;
-
-        this.formdData = null;
 
         /** Prepare new one */
         this.init();
@@ -66,40 +62,55 @@ var transport = {
         var type        = transport.type,
             input       = this,
             files       = input.files,
-            formdData   = null,
-            result      = null;
+            formdData   = new FormData();
 
-        for (var i = 0; i < files.length; i++) {
+        formdData.append('type', type);
 
-            formdData = new FormData();
+        // for (var i = 0; i < files.length; i++) {
+        //
+        //     formdData.append('files', files[i], files[i].name);
+        //
+        // }
 
-            formdData.append('type', type);
+        formdData.append('files', files[0], files[0].name);
 
-            formdData.append('files', files[i], files[i].name);
-
-            result = transport.ajaxSendFiles(formdData);
-
-            transport.response(result);
-
-        }
+        transport.ajaxSendFiles(formdData);
 
         transport.clearInput();
 
     },
 
+    ajaxSendFiles : function (data) {
+
+        var xhr  = new XMLHttpRequest();
+
+        xhr.open('POST', '/file/transport', true);
+
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        xhr.onload = function () {
+
+            transport.response(xhr.responseText);
+
+        };
+
+        xhr.send(data);
+
+    },
+
     response : function (response) {
 
-        console.log(response);
+        response = JSON.parse(response);
 
-        // if (response.success && response.title) {
-        //
-        //     this.storeFile(response);
-        //
-        // } else {
-        //
-        //     // codex.core.showException(response.message);
-        //
-        // }
+        if (response.success && response.title) {
+
+            this.storeFile(response);
+
+        } else {
+
+            codex.core.showException(response.message);
+
+        }
 
     },
 
@@ -193,6 +204,8 @@ var transport = {
             var id    = input.dataset.id,
                 title = input.textContent.trim();
 
+            console.log(title);
+
             if (title) {
 
                 codex.transport.files[id].title = title;
@@ -221,6 +234,8 @@ var transport = {
         attachesInput.name = 'attaches';
         attachesInput.value = JSON.stringify(this.files);
 
+        console.log(attachesInput.value);
+
         atlasForm.appendChild(attachesInput);
 
         /** CodeX.Editor */
@@ -241,24 +256,6 @@ var transport = {
             atlasForm.submit();
 
         }, 100);
-
-    },
-
-    ajaxSendFiles : function (data) {
-
-        var xhr  = new XMLHttpRequest();
-
-        xhr.open('POST', '/file/transport', true);
-
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-
-        xhr.onload = function () {
-
-            return xhr.responseText;
-
-        };
-
-        xhr.send(data);
 
     },
 
