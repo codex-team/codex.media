@@ -39,7 +39,14 @@ var ajax = (function () {
 
         XMLHTTP.open(data.type, data.url, data.async);
 
-        if (!isFormData(data.data)) XMLHTTP.setRequestHeader('Content-type', data['content-type']);
+        /**
+        * If we send FormData, we need no content-type header
+        */
+        if (!isFormData(data.data)) {
+
+            XMLHTTP.setRequestHeader('Content-type', data['content-type']);
+
+        }
 
         XMLHTTP.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         XMLHTTP.onreadystatechange = function () {
@@ -56,6 +63,11 @@ var ajax = (function () {
 
     };
 
+    /**
+     * Function for checking is it FormData object to send.
+     * @param data
+     * @return boolean
+     */
     function isFormData(object) {
 
         return typeof object.append === 'function';

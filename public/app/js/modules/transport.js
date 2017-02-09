@@ -83,15 +83,15 @@ var transport = {
             type : 'POST',
             url : '/file/transport',
             data : formData,
-            success : transport.response,
-            beforeSend : transport.beforeSend,
+            success : transport.responseForPageForm,
+            beforeSend : transport.beforeSendPageForm,
         });
 
         transport.clearInput();
 
     },
 
-    beforeSend : function () {
+    beforeSendPageForm : function () {
 
         // add loader
 
@@ -100,7 +100,7 @@ var transport = {
     /**
     * Save file info into page form or show exception
     */
-    response : function (response) {
+    responseForPageForm : function (response) {
 
         // stop loader
 
@@ -208,8 +208,6 @@ var transport = {
             var id    = input.dataset.id,
                 title = input.textContent.trim();
 
-            console.log(title);
-
             if (title) {
 
                 codex.transport.files[id].title = title;
@@ -236,8 +234,6 @@ var transport = {
         attachesInput.type = 'hidden';
         attachesInput.name = 'attaches';
         attachesInput.value = JSON.stringify(this.files);
-
-        console.log(attachesInput.value);
 
         atlasForm.appendChild(attachesInput);
 
