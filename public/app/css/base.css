@@ -168,11 +168,11 @@ input[disabled]:hover {
 }
 
 .button--twitter {
-    background: #1DA1F2;
+    background: #1da1f2;
 }
 
 .button--twitter:hover {
-    background: color(#1DA1F2 lightness(-10%));
+    background: color(#1da1f2 lightness(-10%));
 }
 
 /**
@@ -184,6 +184,29 @@ input[disabled]:hover {
     background: #f5f8fb;
     color: #406eab;
     border-radius: 2px;
+}
+
+/**
+* Empty items placeholder
+*/
+.empty-motivator {
+    text-align: center;
+    color: var(--grayText);
+    padding: 35px !important;
+    font-size: 14px;
+    line-height: 1.4em;
+}
+
+.empty-motivator svg {
+    height: 45px;
+}
+
+.empty-motivator p {
+    margin: 5px 0 0;
+}
+
+.empty-motivator .button {
+    margin-top: 1.4em;
 }
 
 /**

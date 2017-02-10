@@ -80,7 +80,7 @@
 <? endif ?>
 
 <? /* Comments block */ ?>
-<div class="page_comments w_island" style="margin: 5px 0 5px 5px" id="page_comments">
+<div class="island island--padded island--margined" id="page_comments">
 
     <? if ($page->comments): ?>
         <? foreach ($page->comments as $comment): ?>
@@ -129,12 +129,11 @@
             </div>
         <? endforeach ?>
     <? else: ?>
-        <div class="empty_motivatior">
-            <i class="icon_nocomments"></i><br/>
-            Станьте первым, кто оставит свой комментарий к данному материалу.
+        <div class="empty-motivator">
+            <? include(DOCROOT . "public/app/svg/comments.svg") ?>
+            <p>Станьте первым, кто оставит <br/> комментарий к данному материалу.</p>
             <? if (!$user->id): ?>
-                <br/>
-                <a class="button main" href="/auth">Авторизоваться</a>
+                <a class="button master" href="/auth">Авторизоваться</a>
             <? endif ?>
         </div>
     <? endif ?>
