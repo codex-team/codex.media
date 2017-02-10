@@ -61,17 +61,11 @@
                 },
             },
 
-            data : INPUT,
+            data : {
+                items : <?= json_encode($page->blocks) ?: '[]' ?> ,
+            },
         });
     });
-
-
-    /**
-     * Redactor input
-     */
-    var INPUT = {
-        items : <?= json_encode($page->blocks) ?: '[]' ?> ,
-    };
 
 </script>
 
