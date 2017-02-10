@@ -1,4 +1,4 @@
-<form class="atlas_form w_island" action="/p/save" id="atlasForm" method="post" name="atlas">
+<form class="writing island island--padded" action="/p/save" id="atlasForm" method="post" name="atlas">
 
     <?
         /** if there is no information about page */
@@ -15,7 +15,7 @@
     <?= Form::hidden('id_parent', $page->id_parent); ?>
 
 
-    <input class="title_input" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
+    <input class="writing__title" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
 
     <?= View::factory('templates/pages/editor', array(
         'page' => $page,
@@ -28,7 +28,7 @@
 
             <script type="text/javascript">
 
-                codex.documentIsReady(function(){
+                codex.docReady(function(){
 
                     var files = <?= $attachments ?>;
 
@@ -72,7 +72,6 @@
         */ ?>
 
         <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_FILE ?>')"><i class="icon-attach"></i>Прикрепить файл</span>
-
         <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_IMAGE ?>')"><i class="icon-picture"></i>Прикрепить фото</span>
 
     </div>

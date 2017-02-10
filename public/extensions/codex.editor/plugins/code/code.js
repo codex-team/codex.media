@@ -1,25 +1,20 @@
 /**
- * Code Plugin
+ * Code Plugin\
  * Creates code tag and adds content to this tag
- *
- * @author Codex Team
- * @version 1.0.0
  */
 
-var codeTool = {
+var code = (function(code) {
 
-    baseClass : "ce-code",
+    var baseClass = "ce-code";
 
     /**
      * Make initial header block
      * @param {object} JSON with block data
      * @return {Element} element to append
      */
-    make : function (data) {
+    var make_ = function (data) {
 
-        var tag = document.createElement('code');
-
-        tag.classList.add(codeTool.baseClass);
+        var tag = codex.editor.draw.node('CODE', [baseClass], {});
 
         if (data && data.text) {
             tag.innerHTML = data.text;
@@ -28,32 +23,36 @@ var codeTool = {
         tag.contentEditable = true;
 
         return tag;
-
-    },
+    };
 
     /**
      * Method to render HTML block from JSON
      */
-    render : function (data) {
+    code.render = function (data) {
 
-        return codeTool.make(data);
-
-    },
+        return make_(data);
+    };
 
     /**
      * Method to extract JSON data from HTML block
      */
-    save : function (blockContent){
+    code.save = function (blockContent){
 
         var data = {
-                text : null,
-            };
-
-        data.text = blockContent.innerHTML;
-
+            text : blockContent.innerHTML
+        };
         return data;
 
-    }
+    };
 
-};
+    code.validate = function(data) {
 
+        if (data.text.trim() == '')
+            return;
+
+        return true;
+    };
+
+    return code;
+
+})({});

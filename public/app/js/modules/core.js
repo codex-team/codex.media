@@ -314,6 +314,6 @@ module.exports = {
 
         return unescape(dc.substring(begin + prefix.length, end));
 
-    }
+    },
 
 };

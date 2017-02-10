@@ -43,20 +43,6 @@
 
     </div>
 
-
-    <div id="utils" class="hidden">
-
-        <iframe name="transport" _onload="transport.checkErrorLoading(event)"></iframe>
-
-        <form id="transportForm" method="post" enctype="multipart/form-data"  target="transport" action="/file/transport" accept-charset="utf-8" >
-
-            <input type="file" name="files" id="transportInput"/>
-
-        </form>
-
-    </div>
-
-
     <? /* Scripts */ ?>
 
     <script src="/public/extensions/codex.special/codex-special.v.1.0.2.min.js?v=2"></script>

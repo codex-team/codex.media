@@ -4,8 +4,17 @@
 
 var transport = {
 
-    form : null,
+    transportURL : '/file/transport',
+
+    /**
+    * Field for file
+    */
     input : null,
+
+    /**
+    * Current transport type
+    */
+    type : null,
 
     /**
     * @uses for store inputed filename to this.files
@@ -19,76 +28,92 @@ var transport = {
     files : {},
 
     /**
-    * Input where current transport type stored
+    * Create element and add listener
     */
-    transportTypeInput: null,
+    prepare : function () {
 
-    init : function () {
+        var input = document.createElement('INPUT');
 
-        this.form  = document.getElementById('transportForm');
-        this.input = document.getElementById('transportInput');
+        input.type = 'file';
+        input.addEventListener('change', this.fileSelected);
 
-        if (!this.form || !this.input) {
-
-            return false;
-
-        }
-
-        this.input.addEventListener('change', this.fileSelected);
+        this.input = input;
 
     },
 
     /**
-    * Chose-file button click handler
+    * Clear input and type. Ready for getting new file
+    */
+    clearInput : function () {
+
+        /** Remove old input */
+        this.input = null;
+
+        this.type = null;
+
+    },
+
+    /**
+    * Choose-file button click handler
     */
     selectFile : function (event, type) {
 
-        this.prepareForm({
-            type : type
-        });
+        this.prepare();
+
+        this.type = type;
+
         this.input.click();
 
     },
 
+    /**
+    * Send file to server when select
+    */
     fileSelected : function () {
 
-        codex.transport.form.submit();
-        codex.transport.clear();
+        var type        = transport.type,
+            input       = this,
+            files       = input.files,
+            formData    = new FormData();
+
+        formData.append('type', type);
+
+        formData.append('files', files[0], files[0].name);
+
+        codex.ajax.call({
+            type : 'POST',
+            url : transport.transportURL,
+            data : formData,
+            success : transport.responseForPageForm,
+            beforeSend : transport.beforeSendPageForm,
+        });
+
+        transport.clearInput();
 
     },
 
-    prepareForm : function (params) {
+    beforeSendPageForm : function () {
 
-        if (!this.transportTypeInput) {
-
-            this.transportTypeInput      = document.createElement('input');
-            this.transportTypeInput.type = 'hidden';
-            this.transportTypeInput.name = 'type';
-            this.form.appendChild(this.transportTypeInput);
-
-        }
-
-        this.transportTypeInput.value = params.type;
+        // add loader
 
     },
 
-    clear : function () {
+    /**
+    * Save file info into page form or show exception
+    */
+    responseForPageForm : function (response) {
 
-        this.type = null;
-        this.input.value = null;
+        // stop loader
 
-    },
-
-    response : function (response) {
+        response = JSON.parse(response);
 
         if (response.success && response.title) {
 
-            this.storeFile(response);
-            // this.appendFileToInput(response.filename);
+            transport.storeFile(response);
 
         } else {
 
-            codex.core.showException(response.message);
+            codex.alerts.show(response.message);
 
         }
 
@@ -100,11 +125,7 @@ var transport = {
     */
     storeFile : function (file) {
 
-        if (!file || !file.id) {
-
-            return;
-
-        }
+        if (!file || !file.id) return;
 
         this.files[file.id] = {
             'title' : file.title,
@@ -194,11 +215,10 @@ var transport = {
 
             }
 
-        }, 300);
+        }, 200);
 
 
     },
-
 
     /**
     * Prepares and submit form
@@ -237,7 +257,7 @@ var transport = {
 
         }, 100);
 
-    }
+    },
 
 };
 

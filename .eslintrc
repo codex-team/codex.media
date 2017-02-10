@@ -49,6 +49,7 @@
         "module": true,
         "require" : true,
         "codex" : true,
-        "console" : true
+        "console" : true,
+        "FormData" : true,
     }
 }
