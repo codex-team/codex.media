@@ -60,7 +60,7 @@
             data : {
                 items : <?= json_encode($page->blocks) ?: '[]' ?> ,
             },
-        }
+        });
     });
 
 </script>
