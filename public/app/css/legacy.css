@@ -766,22 +766,6 @@ td.ava {
     margin-top: 30px;
 }
 
-.icon_nocomments {
-    display: inline-block;
-    background: url('/public/app/img/icon-nocomments@2x.png') no-repeat;
-    background-size: 70px 61px;
-    width: 70px;
-    height: 61px;
-}
-
-.icon_noarticles {
-    display: inline-block;
-    background: url('/public/app/img/icon-noarticles@2x.png') no-repeat;
-    background-size: 66px 85px;
-    width: 66px;
-    height: 85px;
-}
-
 /**
 * Стили для формы создания страницы
 */
