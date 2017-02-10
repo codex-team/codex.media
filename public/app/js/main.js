@@ -21,11 +21,6 @@ codex = (function (codex) {
     codex.init = function () {
 
         /**
-        * Prepare transport module
-        */
-        codex.transport.init();
-
-        /**
         * Stylize custom checkboxes
         */
         codex.content.customCheckboxes.init();
@@ -71,6 +66,7 @@ codex.content   = require('./modules/content');
 codex.appender  = require('./modules/appender');
 codex.parser    = require('./modules/parser');
 codex.comments  = require('./modules/comments');
+codex.alerts      = require('./modules/alerts');
 
 module.exports = codex;
 

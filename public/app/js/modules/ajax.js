@@ -65,7 +65,7 @@ var ajax = (function () {
 
     /**
      * Function for checking is it FormData object to send.
-     * @param data
+     * @param {Object} object to check
      * @return boolean
      */
     function isFormData(object) {

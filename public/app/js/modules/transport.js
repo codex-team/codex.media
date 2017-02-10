@@ -4,6 +4,8 @@
 
 var transport = {
 
+    transportURL : '/file/transport',
+
     /**
     * Field for file
     */
@@ -28,7 +30,7 @@ var transport = {
     /**
     * Create element and add listener
     */
-    init : function () {
+    prepare : function () {
 
         var input = document.createElement('INPUT');
 
@@ -59,6 +61,8 @@ var transport = {
     */
     selectFile : function (event, type) {
 
+        this.prepare();
+
         this.type = type;
 
         this.input.click();
@@ -81,7 +85,7 @@ var transport = {
 
         codex.ajax.call({
             type : 'POST',
-            url : '/file/transport',
+            url : transport.transportURL,
             data : formData,
             success : transport.responseForPageForm,
             beforeSend : transport.beforeSendPageForm,
@@ -112,7 +116,7 @@ var transport = {
 
         } else {
 
-            codex.core.showException(response.message);
+            codex.alerts.show(response.message);
 
         }
 

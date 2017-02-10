@@ -61,7 +61,7 @@
                 },
             },
 
-            data : INPUT
+            data : INPUT,
         });
     });
 
@@ -71,7 +71,6 @@
      */
     var INPUT = {
         items : <?= json_encode($page->blocks) ?: '[]' ?> ,
-        count : 0,
     };
 
 </script>
