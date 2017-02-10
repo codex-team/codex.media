@@ -51,9 +51,6 @@ var transport = {
 
         this.type = null;
 
-        /** Prepare new one */
-        this.init();
-
     },
 
     /**
