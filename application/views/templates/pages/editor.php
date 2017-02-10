@@ -65,8 +65,6 @@
                 items : <?= json_encode($page->blocks) ?: '[]' ?> ,
             },
         });
-
-        codex.editor.renderer.makeBlocksFromData();
     });
 
 </script>
