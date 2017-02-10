@@ -3,14 +3,6 @@
 
     <?= View::factory('templates/pages/form'); ?>
 
-    <style>
-        .ce-redactor {
-            padding-top: 40px;
-            min-height: 200px;
-            padding-bottom: 40px;
-        }
-    </style>
-
 <? endif ?>
 <? /***/ ?>
 

@@ -17,11 +17,6 @@
 @import url('icons.css');
 
 /**
-* Alerts
-*/
-@import url('alerts.css');
-
-/**
 * Old unrefactored styles
 */
 
@@ -38,3 +33,4 @@
 @import url('components/auth-form.css');
 @import url('components/article.css');
 @import url('components/codex-special.css');
+@import url('components/writing.css');

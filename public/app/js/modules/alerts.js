@@ -1,25 +1,45 @@
-var alerts = {
+/**
+* Notifications tips module
+*/
+module.exports = (function () {
 
-    show : function (message) {
+    require('../../css/modules/alerts.css');
 
-        var wrapper = document.querySelector('.exceptionWrapper'),
-            notify;
+    var CSS_ = {
+        wrapper : 'exceptionWrapper',
+        exception : 'clientException'
+    };
 
-        if (!wrapper) {
+    var wrapper_ = null;
 
-            wrapper = document.createElement('div');
-            wrapper.classList.add('exceptionWrapper');
+    function prepare_() {
 
-            document.body.appendChild(wrapper);
+        if ( wrapper_ ) {
+
+            return true;
 
         }
 
-        notify = document.createElement('div');
-        notify.classList.add('clientException');
+        wrapper_ = document.createElement('DIV');
+        wrapper_.classList.add(CSS_.wrapper);
 
+        document.body.appendChild(wrapper_);
+
+    }
+
+    /**
+    * @param {String} message - may content HTML
+    */
+    function show(message) {
+
+        prepare_();
+
+        var notify = document.createElement('DIV');
+
+        notify.classList.add(CSS_.exception);
         notify.innerHTML = message;
 
-        wrapper.appendChild(notify);
+        wrapper_.appendChild(notify);
 
         notify.classList.add('bounceIn');
 
@@ -31,6 +51,8 @@ var alerts = {
 
     }
 
-};
+    return {
+        show : show
+    };
 
-module.exports = alerts;
+})({});

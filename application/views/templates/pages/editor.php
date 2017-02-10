@@ -1,10 +1,29 @@
 <!-- editot start -->
 
-<textarea hidden name="html" id="codex_editor" cols="30" rows="10" style="width: 100%;height: 300px;"></textarea>
-<textarea hidden name="content" id="json_result" cols="30" rows="10" style="width: 100%;height: 300px;"></textarea>
+<div class="editor-wrapper">
+    <textarea hidden name="html" id="codex_editor" cols="30" rows="10" style="width: 100%;height: 300px;"></textarea>
+</div>
+<? /* <textarea hidden name="content" id="json_result" cols="30" rows="10" style="width: 100%;height: 300px;"></textarea> */ ?>
+
+
 
 
 <!-- Developers plugin -->
+
+<style>
+    /**
+    * Temporary editor overrides
+    */
+    .ce-block {
+        margin: 0;
+    }
+</style>
+
+
+<!-- Editor scripts and styles -->
+<script src="/public/extensions/codex.editor/codex-editor.js?v=?<?=filemtime('public/extensions/codex.editor/codex-editor.js'); ?>"></script>
+<link rel="stylesheet" href="/public/extensions/codex.editor/codex-editor.css?v=<?=filemtime('public/extensions/codex.editor/codex-editor.css'); ?>" />
+
 
 <script src="/public/extensions/codex.editor/plugins/paragraph/paragraph.js?<?= filemtime('public/extensions/codex.editor/plugins/paragraph/paragraph.js'); ?>"></script>
 <link rel="stylesheet" href="/public/extensions/codex.editor/plugins/paragraph/paragraph.css?<?= filemtime('public/extensions/codex.editor/plugins/paragraph/paragraph.css'); ?>">
@@ -15,10 +34,6 @@
 <script src="/public/extensions/codex.editor/plugins/paste/paste.js?<?= filemtime('public/extensions/codex.editor/plugins/paste/paste.js'); ?>"></script>
 <script src="/public/extensions/codex.editor/plugins/paste/patterns.js?<?= filemtime('public/extensions/codex.editor/plugins/paste/patterns.js'); ?>"></script>
 <link rel="stylesheet" href="/public/extensions/codex.editor/plugins/paste/paste.css?<?= filemtime('public/extensions/codex.editor/plugins/paste/paste.css'); ?>">
-
-<!-- Editor scripts and styles -->
-<script src="/public/extensions/codex.editor/codex-editor.js?v=?<?=filemtime('public/extensions/codex.editor/codex-editor.js'); ?>"></script>
-<link rel="stylesheet" href="/public/extensions/codex.editor/codex-editor.css?v=<?=filemtime('public/extensions/codex.editor/codex-editor.css'); ?>" />
 
 <script>
 
@@ -65,18 +80,8 @@
                 items : <?= json_encode($page->blocks) ?: '[]' ?> ,
             },
         });
-
-        codex.editor.renderer.makeBlocksFromData();
     });
 
 </script>
-
-<style>
-
-.ce-redactor{
-    padding-top: 50px;
-}
-
-</style>
 
 <!-- editor end -->
