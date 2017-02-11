@@ -73,7 +73,7 @@
 
         <div id="list_of_news" class="news">
 
-            <?= View::factory('templates/news_list', array( 'pages'=> $userPages)); ?>
+            <?= View::factory('templates/posts_list', array( 'pages'=> $userPages)); ?>
 
         </div>
 

@@ -1,0 +1,113 @@
+/**
+* Стили для формы создания страницы
+*/
+.writing {
+    position: relative;
+    font-size: 15px;
+    line-height: 1.6em;
+}
+
+.writing__title {
+    background: transparent !important;
+    outline: none;
+    -webkit-appearance: none;
+    margin-bottom: 15px;
+    padding: 0 !important;
+    font-size: 20px !important;
+}
+
+.writing .actions {
+    margin-top: -1px;
+    padding: 20px 25px;
+    border-top: 1px solid #f5f6fb;
+    background: #fdfdfe;
+}
+
+.writing .toggler {
+    padding: 6px;
+    margin: 8px 12px 0 0;
+    border: 1px solid #d7deec;
+    border-radius: 20px;
+    color: #6a7590;
+    cursor: pointer;
+}
+
+.writing .toggler:hover {
+    background: #fff;
+}
+
+.writing .toggler.checked {
+    background: #3b4b69;
+    border-color: #3b4b69;
+    color: #f9f9ff;
+}
+
+.writing .button {
+    padding: 12px 30px;
+    font-size: 1em;
+    margin-left: 10px;
+}
+
+.writing .attach {
+    display: inline-block;
+    padding: 12px 0 10px;
+    color: #7d869a;
+    cursor: pointer;
+    margin-right: 30px;
+}
+
+.writing .attach:hover,
+.writing .import:hover {
+    color: #3b496a;
+}
+
+.writing .attach i {
+    margin-right: 10px;
+}
+
+.writing .title_input {
+    padding-right: 200px;
+}
+
+.writing .attaches .item {
+    padding: 20px 30px;
+}
+
+.writing .attaches .item_file::before {
+    display: inline-block;
+    margin-right: 12px;
+    content: '\e818';
+    font-family: 'codex-edu';
+    vertical-align: middle;
+}
+
+.writing .attaches .item_image::before {
+    display: inline-block;
+    margin-right: 12px;
+    content: '\e804';
+    font-family: 'codex-edu';
+    vertical-align: middle;
+}
+
+.writing .attaches .item:not(:first-of-type) {
+    border-top: 1px solid #f5f7f8;
+}
+
+
+/**
+* Editor styles overrides
+*/
+
+.editor-wrapper {
+    margin: 0 -15px;
+}
+
+.editor-wrapper .ce-block__content {
+    max-width: 578px;
+}
+
+.editor-wrapper .ce-block {
+    margin: 0;
+}
+
+

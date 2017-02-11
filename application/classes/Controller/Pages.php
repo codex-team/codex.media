@@ -43,7 +43,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             $this->view['can_modify_this_page'] = $this->user->id == $page->author->id;
             $this->view['page']                 = $page;
 
-            $this->template->content = View::factory('templates/page', $this->view);
+            $this->template->content = View::factory('templates/pages/page', $this->view);
 
         } else {
 
@@ -263,7 +263,10 @@ class Controller_Pages extends Controller_Base_preDispatch
 
             $file = new Model_File($file_row['id']);
 
-            if (!$file->page) {
+            $file_on_page = (boolean) $file->page;
+            $filename_changed = $file->title != $file_row['title'];
+
+            if (!$file_on_page || $filename_changed) {
 
                 $file->page  = $page_id;
                 $file->title = $file_row['title'];

@@ -1,0 +1,132 @@
+.site-head {
+    display: flex;
+    border-bottom: 1px solid var(--lightGrayLine);
+    padding: var(--islandPadding);
+    line-height: 1.2em;
+    font-size: 15px;
+}
+
+.spb_shield {
+    display: block;
+    width: 26px;
+    height: 32px;
+    background: url('/public/app/img/spb-shield.png') no-repeat;
+    margin-right: var(--islandPadding);
+}
+
+.main-aside .menu {
+    font-size: 15px;
+    margin: 20px 0;
+}
+
+.main-aside .menu a {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px var(--islandPadding);
+}
+
+.main-aside .menu a:hover {
+    color: var(--hoverColor);
+}
+
+.button.logout {
+    background: #2d3136;
+    color: #606469;
+}
+
+.button.logout:hover {
+    background: #202328;
+}
+
+.main-aside .user_panel {
+    display: block;
+    padding: 15px var(--islandPadding);
+    border-bottom: 1px solid var(--lightGrayLine);
+    font-size: 14px;
+}
+
+.main-aside .user_panel:hover {
+    background: #f6f8fa;
+}
+
+.main-aside .user_panel img {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 30px;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.main-aside .logout {
+    margin-top: 20px;
+    margin-right: 20px;
+    color: #c6cad4;
+}
+
+.aside-section {
+    padding: var(--islandPadding);
+    border-top: 1px solid var(--lightGrayLine);
+    border-bottom: 1px solid var(--lightGrayLine);
+}
+
+.aside-section .button {
+    display: block;
+    text-align: center;
+}
+
+
+/**
+* Mobile menu holder and toggler
+*/
+.mobile-menu-toggler {
+    display: none;
+}
+
+@media (--mobile) {
+    .site-head {
+        padding: 10px 15px;
+        line-height: 1.3em;
+        font-size: 13px;
+    }
+
+    /**
+    * Mobile site menu
+    */
+    .mobile-menu-holder {
+        display: none;
+        margin-bottom: 15px;
+    }
+
+    .mobile-menu-holder--opened {
+        display: block;
+    }
+
+    .mobile-menu-toggler {
+        display: inline-flex;
+        margin: auto 0 auto auto;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .main-aside .menu {
+        margin: 10px 0;
+    }
+
+    .main-aside .menu a {
+        padding: 10px 15px;
+    }
+
+    .main-aside li:last-of-type a {
+        padding-bottom: 0;
+    }
+
+    .main-aside .button {
+        margin: 15px;
+    }
+
+    .main-aside .user_panel {
+        padding: 13px 15px;
+    }
+}

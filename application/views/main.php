@@ -19,116 +19,29 @@
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700&subset=cyrillic" rel="stylesheet">
 
 
-    <link rel="stylesheet" type="text/css" media="all" href="/public/css/main.css?v=<?= filemtime('public/css/main.css'); ?>">
+    <link rel="stylesheet" type="text/css" media="all" href="/public/build/bundle.css?v=<?= filemtime('public/build/bundle.css'); ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
 
-    <script src="/public/js/codex.js?v=<?= filemtime('public/js/codex.js'); ?>"></script>
+    <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>"></script>
 
 </head>
 <body>
 
-    <div class="main_wrap">
+    <div class="center-col">
 
         <? /* Left */ ?>
-        <aside>
+        <div class="grid-col grid-col--left">
 
-            <div class="mobile_menu_toggler fl_r" onclick="document.getElementById('js-mobile-menu-holder').classList.toggle('mobile_menu_holder--opened')"></div>
+            <?= View::factory('templates/components/aside')->render(); ?>
 
-            <a class="main_logo clear" href="/">
-
-                <i class="spb_shield fl_l"></i>
-
-                <div class="r_col">
-                    <?= $site_info['title'] ?><br>
-                    <?= $site_info['city'] ?>
-                </div>
-
-            </a>
-
-            <div class="mobile_menu_holder" id="js-mobile-menu-holder">
-
-                <? /* User badge */ ?>
-                <? if ( $user->id ): ?>
-                    <a class="fl_r logout" href="/logout" data-title="Выйти">
-
-                        <i class="icon-logout"></i>
-
-                    </a>
-
-                    <a class="user_panel cf" href="/user/<?= $user->id ?>">
-
-                        <img src="<?= $user->photo ?>" />
-                        <span class="user_panel__name overflow_long"><?= $user->name ?></span>
-
-                    </a>
-                <? endif ?>
-
-                <? /* Menu */ ?>
-                <ul class="menu">
-
-                    <? foreach ($site_menu as $item): ?>
-                        <li><a href="/p/<?= $item->id ?>/<?= $item->uri ?>"><?= $item->title ?></a></li>
-                    <? endforeach ?>
-
-                </ul>
-
-                <? /* Log in button */ ?>
-                <? if (!$user->id): ?>
-                    <a class="button green" href="/auth">Войти на сайт</a>
-                <? endif ?>
-
-                <? /* Footer */ ?>
-                <footer class="site_footer">
-
-                    <? /* Contacts */ ?>
-                    <p><?= $site_info['full_name'] ?></p>
-                    <p>
-                        <a href="/contacts">
-                            <?= $site_info['address'] ?>
-                        </a>
-                    </p>
-                    <p>
-                        Телефон:&nbsp;<?= $site_info['phone'] ?><br />
-                        Факс:&nbsp;<?= $site_info['fax'] ?><br />
-                        Почта:&nbsp;<?= $site_info['email'] ?>
-                    </p>
-
-                    <? /* codex-special block */ ?>
-                    <div id="js-contrast-version-holder"></div>
-
-                </footer>
-
-
-            </div>
-
-        </aside>
+        </div>
 
         <? /* Main block for page */ ?>
-        <div class="page_wrap">
+        <div class="grid-content">
             <?= $content ?>
         </div>
 
-        <? /* Side block */ ?>
-        <div class="sidebar">
-
-            <? //include(APPPATH .'views/templates/sidebar.php') ?>
-
-        </div>
-
     </div>
-
-    <div id="utils" class="hidden">
-
-        <iframe name="transport" _onload="transport.checkErrorLoading(event)"></iframe>
-
-        <form id="transportForm" method="post" enctype="multipart/form-data"  target="transport" action="/file/transport" accept-charset="utf-8" >
-
-            <input type="file" name="files" id="transportInput"/>
-
-        </form>
-
-    </div>
-
 
     <? /* Scripts */ ?>
 

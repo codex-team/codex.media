@@ -1,0 +1,36 @@
+/** File with style-variables */
+@import url('variables.css');
+
+/** Main styles */
+@import url('normalize.css');
+@import url('base.css');
+@import url('layout.css');
+
+/**
+* Animations
+*/
+@import url('animations.css');
+
+/**
+* Icons
+*/
+@import url('icons.css');
+
+/**
+* Old unrefactored styles
+*/
+
+/* @import url('legacy.css'); */
+
+/**
+* Components
+*/
+@import url('components/footer.css');
+@import url('components/aside.css');
+@import url('components/islands.css');
+@import url('components/tabs.css');
+@import url('components/posts-list.css');
+@import url('components/auth-form.css');
+@import url('components/article.css');
+@import url('components/codex-special.css');
+@import url('components/writing.css');

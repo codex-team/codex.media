@@ -1,0 +1,113 @@
+/**
+* Posts list item
+*/
+.post-list-item {
+    padding: calc(0.7 * var(--islandPadding)) var(--islandPadding);
+    font-size: 15px;
+    margin-bottom: var(--islandMargin);
+}
+
+.post-list-item__header {
+    margin-bottom: 1em;
+    color: var(--grayText);
+    font-size: 0.8em;
+}
+
+.post-list-item__date {
+    margin-right: 1em;
+}
+
+.post-list-item__author img {
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 50%;
+    vertical-align: text-top;
+    margin-right: 0.8em;
+}
+
+.post-list-item__title {
+    display: inline-block;
+    margin-bottom: 0.5em;
+    font-size: 1.5em;
+    line-height: 1.5em;
+}
+
+.post-list-item--big .post-list-item__title {
+    font-size: 1.8em;
+}
+
+.post-list-item__body {
+    line-height: 1.55em;
+    letter-spacing: -0.1px;
+}
+
+.post-list-item__footer {
+    border-top: 1px solid var(--lightGrayLine);
+    margin-top: calc(0.7 * var(--islandPadding));
+    padding-top: calc(0.7 * var(--islandPadding));
+    font-size: 0.9em;
+    color: var(--grayText);
+}
+
+.post-list-item__comments:hover,
+.post-list-item__date:hover,
+.post-list-item__author:hover {
+    color: var(--hoverColor);
+}
+
+.post-list-item__comments svg {
+    margin-right: 0.5em;
+}
+
+/**
+* Pinned post list item
+*/
+.post-list-item_pinned {
+    position: relative;
+}
+
+.post-list-item_pinned::after {
+    position: absolute;
+    right: 55px;
+    top: 50px;
+    display: block;
+    content: '\e811';
+    font-family: 'codex-edu';
+    color: #5e6575;
+    font-size: 15px;
+}
+
+@media (--mobile) {
+    /**
+    * Articles list - mobile
+    */
+    .post-list-item {
+        padding: 15px;
+    }
+
+    .post-list-item__title {
+        font-size: 1.15em;
+    }
+
+    .post-list-item_pinned .post-list-item__title {
+        margin-right: 22px;
+    }
+
+    .post-list-item_pinned::after {
+        top: 15px;
+        right: 15px;
+        font-size: 12px;
+    }
+
+    .post-list-item__body {
+        font-size: 14px;
+    }
+
+    .post-list-item__footer {
+        margin-top: 15px;
+        padding-top: 15px;
+    }
+
+
+}
