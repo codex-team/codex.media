@@ -11,7 +11,7 @@
     	</div>
 
         <div class="profile__about">
-    		<!-- Учитель русского языка и литературы -->
+    		<? /* Учитель русского языка и литературы */ ?>
     	</div>
 
         <div class="profile__social-buttons">
@@ -46,13 +46,16 @@
 
     </div>
 
-    <!-- <? if (isset($setUserStatus) && $setUserStatus): ?>
+    <? /*
+    <? if (isset($setUserStatus) && $setUserStatus): ?>
     	<div class="info_block align_c">
     		Обновления сохранены
     	</div>
-    <? endif; ?> -->
+    <? endif; ?>
+    */ ?>
 
-    <!-- <div class="action-line  clear">
+    <? /*
+    <div class="action-line  clear">
         <? if($viewUser->isMe): ?>
             <a class="textbutton fl_r" href="/user/settings"><i class="icon-cog"></i> Настройки</a>
             <a class="button iconic green" href="/p/save"><i class="icon-plus"></i> Создать страницу</a>
@@ -64,9 +67,11 @@
         <? if ($user->isAdmin): ?>
             <span class="textbutton pointer fl_r" onclick="document.getElementById('pageAction').classList.toggle('hide')"><i class="icon-vcard"></i> Действия</span>
         <? endif ?>
-    </div> -->
+    </div>
+    */ ?>
 
-    <!-- <? if ($user->isAdmin): ?>
+    <? /*
+    <? if ($user->isAdmin): ?>
         <ul class="action-line page_actions hide" id="pageAction">
             <? if (!$viewUser->isTeacher): ?>
                 <li><a href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a></li>
@@ -79,7 +84,8 @@
                 <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Разблокировать</a></li>
             <? endif ?>
         </ul>
-    <? endif ?> -->
+    <? endif ?>
+    */ ?>
 </div>
 
 <ul class="island tabs island--margined">
