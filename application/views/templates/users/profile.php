@@ -82,6 +82,19 @@
     <? endif ?> -->
 </div>
 
+<ul class="island tabs island--margined">
+    <li>
+        <a class="tabs__tab tabs__tab--current">
+            Блог
+        </a>
+    </li>
+    <li>
+        <a class="tabs__tab">
+            Комментарии
+        </a>
+    </li>
+</ul>
+
 
 <div id="list_of_news" class="news">
 
