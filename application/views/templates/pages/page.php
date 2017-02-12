@@ -80,6 +80,44 @@
 <? endif ?>
 
 <? /* Comments block */ ?>
+<? if ($user->id): ?>
+
+    <div class="island island--margined island--padded comment__form clearfix">
+
+        <span class="comment__form--ava">
+            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
+        </span>
+
+        <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST">
+            <?= Form::hidden('csrf', Security::token()); ?>
+
+            <span class="comment__form--text-wrapper">
+            <textarea id="add_comment_textarea" name="add_comment_textarea" class="comment__form--text" rows="1" placeholder="Ваш комментарий..."></textarea>
+            </span>
+
+            <input type="hidden" name="parent_id" value="0" id="parent_id"/>
+            <input type="hidden" name="root_id" value="0" id="root_id"/>
+            <input id="add_comment_button" type="submit" class="comment__form--submit-button" value="Оправить" />
+            <span id="add_answer_to" class="add_answer_to"></span>
+            <span class="cancel_answer hide" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
+        </form>
+
+        <script>
+
+            codex.docReady(function(){
+
+                /**
+                * Comments module
+                */
+                codex.comments.init();
+
+            });
+
+        </script>
+    </div>
+
+<? endif ?>
+
 <div class="island island--padded island--margined" id="page_comments">
 
     <? if ($page->comments): ?>
@@ -136,33 +174,6 @@
                 <a class="button master" href="/auth">Авторизоваться</a>
             <? endif ?>
         </div>
-    <? endif ?>
-
-    <? if ($user->id): ?>
-
-        <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
-            <?= Form::hidden('csrf', Security::token()); ?>
-            <textarea id="add_comment_textarea" name="add_comment_textarea" rows="5"></textarea>
-            <input type="hidden" name="parent_id" value="0" id="parent_id"/>
-            <input type="hidden" name="root_id" value="0" id="root_id"/>
-            <input id="add_comment_button" disabled type="submit" value="Оставить комментарий" />
-            <span id="add_answer_to" class="add_answer_to"></span>
-            <span class="cancel_answer" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
-        </form>
-
-        <script>
-
-            codex.docReady(function(){
-
-                /**
-                * Comments module
-                */
-                codex.comments.init();
-
-            });
-
-        </script>
-
     <? endif ?>
 
 </div>
