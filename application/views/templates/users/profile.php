@@ -1,6 +1,6 @@
 <div class="island island--padded">
 
-    <div class="profile">
+    <div class="profile clearfix">
 
         <div class="profile__ava">
     		<img src="<?= $viewUser->photo_medium ?>" />
@@ -18,28 +18,28 @@
 
         	<? if ($viewUser->vk): ?>
                 <a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
-                    <div class="profile__social-button profile__social-button--vk">
+                    <span class="profile__social-button profile__social-button--vk">
                         <i class="icon-vkontakte"></i>
                         <?= $viewUser->vk_uri ? $viewUser->vk_uri : $viewUser->vk_name ?>
-                    </div>
+                    </span>
                 </a>
         	<? endif; ?>
 
         	<? if ($viewUser->facebook): ?>
                 <a href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
-                    <div class="profile__social-button profile__social-button--facebook">
+                    <span class="profile__social-button profile__social-button--facebook">
                         <i class="icon-facebook"></i>
                         <?= $viewUser->facebook_name ? $viewUser->facebook_name : $viewUser->name ?>
-                    </div>
+                    </span>
                 </a>
         	<? endif ?>
 
         	<? if ($viewUser->twitter): ?>
                 <a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
-                    <div class="profile__social-button profile__social-button--twitter">
+                    <span class="profile__social-button profile__social-button--twitter">
                         <i class="icon-twitter"></i>
                         <?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?>
-                    </div>
+                    </span>
                 </a>
         	<? endif ?>
         </div>
