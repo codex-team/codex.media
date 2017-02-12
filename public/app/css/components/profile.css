@@ -1,64 +1,50 @@
-.profile {
-    height: auto;
-    display:block;
-}
-.profile::after {
-    content: '';
-    display: block;
-    clear: both;
-}
+.profile {}
 
 .profile__ava {
-    display: block;
-    float: right;
-    position: relative;
-    overflow: hidden;
+  float : right;
 }
 
 .profile__ava img {
-    border-radius: 50%;
-    height: 6em;
+  height        : 100px;
+  border-radius : 50%;
 }
 
 .profile__name {
-    display: block;
-    font-size: 2em;
-    font-weight: bold;
-    letter-spacing: 0.3px;
+  font-size      : 2em;
+  font-weight    : bold;
+  letter-spacing : 0.3px;
 }
 
 .profile__about {
-    margin: 15px auto;
-    display: block;
-    color: gray;
-    font-size: 1.2em;
-    letter-spacing: 0.3px;
+  margin         : 15px auto;
+  color          : var(--grayText);
+  font-size      : 1.2em;
+  letter-spacing : 0.3px;
 }
 
 .profile__social-buttons {
-    margin-top: 20px;
+  margin-top : 20px;
 }
 
 .profile__social-button {
-    font-size: 1.1em;
-    display: inline-block;
-    margin: 0 15px 0 0;
-    padding: 7px 7px;
-    border: 1px solid;
-    border-radius: 2px;
+  margin        : 0 15px 0 0;
+  padding       : 7px 7px;
+  border        : 1px solid;
+  border-radius : 2px;
+  font-size     : 1.1em;
 }
 
 .profile__social-button--twitter {
-    border-color: color(var(--twitterColor) lightness(+30%));
-    color: color(var(--twitterColor) lightness(+10%));
+  color        : color(var(--twitterColor) lightness(+10%));
+  border-color : color(var(--twitterColor) lightness(+30%));
 }
 
 .profile__social-button--vk {
-    border-color: color(var(--vkColor) lightness(+30%));
-    color: color(var(--vkColor) lightness(+10%));
+  color        : color(var(--vkColor) lightness(+10%));
+  border-color : color(var(--vkColor) lightness(+30%));
 }
 
 .profile__social-button--facebook {
-    border-color: color(var(--facebookColor) lightness(+30%));
-    color: color(var(--facebookColor) lightness(+10%));
+  color        : color(var(--facebookColor) lightness(+10%));
+  border-color : color(var(--facebookColor) lightness(+30%));
 }
