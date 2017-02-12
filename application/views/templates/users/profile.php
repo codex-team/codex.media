@@ -46,13 +46,13 @@
 
     </div>
 
-    <? /*
-    <? if (isset($setUserStatus) && $setUserStatus): ?>
+    <? /* */ ?>
+    <? if (isset($isUpdateSaved) && $isUpdateSaved): ?>
     	<div class="info_block align_c">
     		Обновления сохранены
     	</div>
     <? endif; ?>
-    */ ?>
+    <? /**/ ?>
 
     <? /*
     <div class="action-line  clear">
@@ -70,9 +70,9 @@
     </div>
     */ ?>
 
-    <? /*
+    <? /* */ ?>
     <? if ($user->isAdmin): ?>
-        <ul class="action-line page_actions hide" id="pageAction">
+        <ul class="action-line page_actions" id="pageAction">
             <? if (!$viewUser->isTeacher): ?>
                 <li><a href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a></li>
             <? else: ?>
@@ -85,7 +85,7 @@
             <? endif ?>
         </ul>
     <? endif ?>
-    */ ?>
+    <? /* */ ?>
 </div>
 
 <ul class="island tabs island--margined">
