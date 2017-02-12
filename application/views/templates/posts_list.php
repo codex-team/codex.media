@@ -1,12 +1,12 @@
 <? if ($pages): ?>
 
-    <? foreach ($pages as $page): ?>
+    <? foreach ($pages as $index => $page): ?>
 
         <? /**
             * if the elem is the first
             * $page === reset($pages)
             */ ?>
-        <article class="island <? $page === reset($pages) ? 'island--margined' : '' ?> post-list-item <?= $page->rich_view ? 'post-list-item--big' : '' ?> <?= $page->dt_pin ? 'post-list-item_pinned' : '' ?>">
+        <article class="island <?= $index != 0 ? 'island--margined' : '' ?> post-list-item <?= $page->rich_view ? 'post-list-item--big' : '' ?> <?= $page->dt_pin ? 'post-list-item_pinned' : '' ?>">
 
             <div class="post-list-item__header">
                 <time class="post-list-item__date">
