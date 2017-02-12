@@ -15,9 +15,9 @@
     overflow: hidden;
 }
 
-.profile-ava__pic {
+.profile-ava img {
     border-radius: 50%;
-    height: 100px;
+    height: 6em;
 }
 
 .profile-name {

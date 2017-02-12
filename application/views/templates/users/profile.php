@@ -3,7 +3,7 @@
     <div class="profile">
 
         <div class="profile-ava">
-    		<img class="profile-ava__pic" src="<?= $viewUser->photo_medium ?>" />
+    		<img src="<?= $viewUser->photo_medium ?>" />
     	</div>
 
     	<div class="profile-name">
