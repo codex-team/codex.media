@@ -14,33 +14,33 @@
     		<!-- Учитель русского языка и литературы -->
     	</div>
 
-        <div class="profile-social">
+        <div class="profile__social-buttons">
 
         	<? if ($viewUser->vk): ?>
-                <div class="profile-social__link profile-social__link--vk">
-            		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
+                <a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
+                    <div class="profile__social-button profile__social-button--vk">
                         <i class="icon-vkontakte"></i>
                         <?= $viewUser->vk_uri ? $viewUser->vk_uri : $viewUser->vk_name ?>
-                    </a>
-                </div>
+                    </div>
+                </a>
         	<? endif; ?>
 
         	<? if ($viewUser->facebook): ?>
-                <div class="profile-social__link profile-social__link--facebook">
-            		<a href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
+                <a href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
+                    <div class="profile__social-button profile__social-button--facebook">
                         <i class="icon-facebook"></i>
                         <?= $viewUser->facebook_name ? $viewUser->facebook_name : $viewUser->name ?>
-                    </a>
-                </div>
+                    </div>
+                </a>
         	<? endif ?>
 
         	<? if ($viewUser->twitter): ?>
-                <div class="profile-social__link profile-social__link--twitter">
-            		<a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
+                <a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
+                    <div class="profile__social-button profile__social-button--twitter">
                         <i class="icon-twitter"></i>
                         <?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?>
-                    </a>
-                </div>
+                    </div>
+                </a>
         	<? endif ?>
         </div>
 

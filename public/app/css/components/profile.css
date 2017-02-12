@@ -35,11 +35,11 @@
     letter-spacing: 0.3px;
 }
 
-.profile-social {
+.profile__social-buttons {
     margin-top: 20px;
 }
 
-.profile-social__link {
+.profile__social-button {
     font-size: 1.1em;
     display: inline-block;
     margin: 0 15px 0 0;
@@ -48,17 +48,17 @@
     border-radius: 2px;
 }
 
-.profile-social__link--twitter {
+.profile__social-button--twitter {
     border-color: color(var(--twitterColor) lightness(+30%));
     color: color(var(--twitterColor) lightness(+10%));
 }
 
-.profile-social__link--vk {
+.profile__social-button--vk {
     border-color: color(var(--vkColor) lightness(+30%));
     color: color(var(--vkColor) lightness(+10%));
 }
 
-.profile-social__link--facebook {
+.profile__social-button--facebook {
     border-color: color(var(--facebookColor) lightness(+30%));
     color: color(var(--facebookColor) lightness(+10%));
 }
