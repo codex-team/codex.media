@@ -10,16 +10,20 @@ class Controller_User extends Controller_Base_preDispatch
 
         $viewUser = new Model_User($user_id);
 
+        if (!$viewUser->id) {
+            throw HTTP_Exception::factory(404);
+        }
+
         if ($this->user->isAdmin && $new_status) {
 
-            $this->view['setUserStatus'] = $viewUser->setUserStatus(self::translate_user_status($new_status));
+            $this->view['isUpdateSaved'] = $viewUser->setUserStatus(self::translate_user_status($new_status));
         }
 
         $viewUser->isMe = $viewUser->id == $this->user->id;
 
         $this->view['userPages'] = $viewUser->getUserPages();
         $this->view['viewUser']  = $viewUser;
-        
+
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/users/profile', $this->view);
     }

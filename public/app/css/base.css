@@ -199,6 +199,7 @@ input[disabled]:hover {
 
 .empty-motivator svg {
     height: 45px;
+    margin-bottom: 10px;
 }
 
 .empty-motivator p {
