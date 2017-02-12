@@ -1,50 +1,61 @@
 .profile {}
 
 .profile__ava {
-  float : right;
+    float: right;
+    height: 100px;
+    border-radius: 50%;
+    margin-left: 30px;
 }
 
-.profile__ava img {
-  height        : 100px;
-  border-radius : 50%;
+@media (--mobile) {
+    .profile__ava {
+        height: 60px;
+    }
 }
 
 .profile__name {
-  font-size      : 2em;
-  font-weight    : bold;
-  letter-spacing : 0.3px;
+    font-size: 2.4em;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+@media (--mobile) {
+    .profile__name {
+        font-size: 1.8em;
+    }
 }
 
 .profile__about {
-  margin         : 15px auto;
-  color          : var(--grayText);
-  font-size      : 1.2em;
-  letter-spacing : 0.3px;
+    margin: 15px auto;
+    color: var(--grayText);
+    font-size: 1.2em;
+    letter-spacing: 0.3px;
 }
 
 .profile__social-buttons {
-  margin-top : 20px;
+    margin-top: 20px;
 }
 
 .profile__social-button {
-  margin        : 0 15px 0 0;
-  padding       : 7px 7px;
-  border        : 1px solid;
-  border-radius : 2px;
-  font-size     : 1.1em;
+    display: inline-block;
+    margin-right: 15px;
+    padding: 5px 10px;
+    border: 1px solid;
+    border-radius: 3px;
 }
 
 .profile__social-button--twitter {
-  color        : color(var(--twitterColor) lightness(+10%));
-  border-color : color(var(--twitterColor) lightness(+30%));
+    color: var(--twitterColor);
+    border-color: color(var(--twitterColor) alpha(-80%));
 }
 
 .profile__social-button--vk {
-  color        : color(var(--vkColor) lightness(+10%));
-  border-color : color(var(--vkColor) lightness(+30%));
+    color: var(--vkColor);
+    border-color: color(var(--vkColor) alpha(-80%));
 }
 
 .profile__social-button--facebook {
-  color        : color(var(--facebookColor) lightness(+10%));
-  border-color : color(var(--facebookColor) lightness(+30%));
+    color: var(--facebookColor);
+    border-color: color(var(--facebookColor) alpha(-80%));
 }
+

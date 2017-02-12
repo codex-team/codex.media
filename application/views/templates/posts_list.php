@@ -39,8 +39,8 @@
 <? else: ?>
 
     <div class="island island--padded island--centered">
-        <div class="empty_motivatior">
-            <? /* <i class="icon_noarticles"></i><br/> */ ?>
+        <div class="empty-motivator">
+            <? include(DOCROOT . "public/app/svg/article.svg") ?><br>
             <?= $emptyListMessage ?: 'Список статей пуст' ?>
         </div>
     </div>

@@ -2,17 +2,18 @@
 
     <div class="profile clearfix">
 
-        <div class="profile__ava">
-    		<img src="<?= $viewUser->photo_medium ?>" />
-    	</div>
+    	<img class="profile__ava" src="<?= $viewUser->photo_medium ?>" />
 
     	<div class="profile__name">
     		<?= $viewUser->name ?>
     	</div>
 
-        <div class="profile__about">
-    		<? /* Учитель русского языка и литературы */ ?>
-    	</div>
+        <? if (!empty($viewUser->bio)): ?>
+            <div class="profile__about">
+        		<? /* Учитель русского языка и литературы */ ?>
+        	</div>
+        <? endif ?>
+
 
         <div class="profile__social-buttons">
 
@@ -78,7 +79,7 @@
             <? else: ?>
                 <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Отключить аккаунт преподавателя</a></li>
             <? endif ?>
-            <? if ($viewUser->status !=  Model_User::USER_STATUS_BANNED ): ?>
+            <? if ($viewUser->status != Model_User::USER_STATUS_BANNED ): ?>
                 <li><a href="/user/<?= $viewUser->id ?>?newStatus=banned">Заблокировать</a></li>
             <? else: ?>
                 <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Разблокировать</a></li>
@@ -95,7 +96,7 @@
         </a>
     </li>
     <li>
-        <a class="tabs__tab">
+        <a class="tabs__tab" >
             Комментарии
         </a>
     </li>

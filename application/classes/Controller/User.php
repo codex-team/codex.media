@@ -10,6 +10,10 @@ class Controller_User extends Controller_Base_preDispatch
 
         $viewUser = new Model_User($user_id);
 
+        if (!$viewUser->id) {
+            throw HTTP_Exception::factory(404);
+        }
+
         if ($this->user->isAdmin && $new_status) {
 
             $this->view['isUpdateSaved'] = $viewUser->setUserStatus(self::translate_user_status($new_status));
