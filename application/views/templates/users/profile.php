@@ -1,47 +1,58 @@
-<div class="w_island w_island_centercol">
-    <div class="user_page">
-    	<div class="ava">
-    		<img src="<?= $viewUser->photo_medium ?>" />
+<div class="island island--padded">
+
+    <div class="profile">
+
+        <div class="profile-ava">
+    		<img class="profile-ava__pic" src="<?= $viewUser->photo_medium ?>" />
     	</div>
-    	<h1 class="name">
+
+    	<div class="profile-name">
     		<?= $viewUser->name ?>
-    		<? /*
-                // галочка для отметки учителей
-    			switch ($viewUser->status){
-    				//case Model_User::USER_STATUS_ADMIN 	    : echo "[администратор]"; break;   # надо будет убрать, чтобы не светить админские профили
-    				case Model_User::USER_STATUS_TEACHER 	: echo "[преподаватель]"; break;
-    				case Model_User::USER_STATUS_BANNED 	: echo "[заблокирован]"; break;
-    		   	}
-                */
-    		?>
-    	</h1>
-        <div class="social">
+    	</div>
+
+        <div class="profile-about">
+    		<!-- Учитель русского языка и литературы -->
+    	</div>
+
+        <div class="profile-social">
+
         	<? if ($viewUser->vk): ?>
-        		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
-                    <i class="icon-vkontakte"></i>
-                    <?= $viewUser->vk_uri ? $viewUser->vk_uri : $viewUser->vk_name ?>
-                </a>
+                <div class="profile-social__link profile-social__link_vk">
+            		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
+                        <i class="icon-vkontakte"></i>
+                        <?= $viewUser->vk_uri ? $viewUser->vk_uri : $viewUser->vk_name ?>
+                    </a>
+                </div>
         	<? endif; ?>
+
         	<? if ($viewUser->facebook): ?>
-        		<a href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
-                    <i class="icon-facebook"></i>
-                    <?= $viewUser->facebook_name ? $viewUser->facebook_name : $viewUser->name ?>
-                </a>
+                <div class="profile-social__link profile-social__link_facebook">
+            		<a href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
+                        <i class="icon-facebook"></i>
+                        <?= $viewUser->facebook_name ? $viewUser->facebook_name : $viewUser->name ?>
+                    </a>
+                </div>
         	<? endif ?>
+
         	<? if ($viewUser->twitter): ?>
-        		<a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
-                    <i class="icon-twitter"></i>
-                    <?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?>
-                </a>
+                <div class="profile-social__link profile-social__link_twitter">
+            		<a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
+                        <i class="icon-twitter"></i>
+                        <?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?>
+                    </a>
+                </div>
         	<? endif ?>
         </div>
+
     </div>
-    <? if (isset($setUserStatus) && $setUserStatus): ?>
+
+    <!-- <? if (isset($setUserStatus) && $setUserStatus): ?>
     	<div class="info_block align_c">
     		Обновления сохранены
     	</div>
-    <? endif; ?>
-    <div class="action-line  clear">
+    <? endif; ?> -->
+
+    <!-- <div class="action-line  clear">
         <? if($viewUser->isMe): ?>
             <a class="textbutton fl_r" href="/user/settings"><i class="icon-cog"></i> Настройки</a>
             <a class="button iconic green" href="/p/save"><i class="icon-plus"></i> Создать страницу</a>
@@ -53,8 +64,9 @@
         <? if ($user->isAdmin): ?>
             <span class="textbutton pointer fl_r" onclick="document.getElementById('pageAction').classList.toggle('hide')"><i class="icon-vcard"></i> Действия</span>
         <? endif ?>
-    </div>
-    <? if ($user->isAdmin): ?>
+    </div> -->
+
+    <!-- <? if ($user->isAdmin): ?>
         <ul class="action-line page_actions hide" id="pageAction">
             <? if (!$viewUser->isTeacher): ?>
                 <li><a href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a></li>
@@ -67,21 +79,12 @@
                 <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Разблокировать</a></li>
             <? endif ?>
         </ul>
-    <? endif ?>
+    <? endif ?> -->
 </div>
-	<? if ($userPages): ?>
 
-        <div id="list_of_news" class="news">
 
-            <?= View::factory('templates/posts_list', array( 'pages'=> $userPages)); ?>
+<div id="list_of_news" class="news">
 
-        </div>
+    <?= View::factory('templates/posts_list', array('pages'=> $userPages)); ?>
 
-	<? else: ?>
-        <div class="w_island w_island_centercol">
-    		<div class="empty_motivatior">
-                <i class="icon_noarticles"></i><br/>
-                К чему нам ваши статьи и страницы
-            </div>
-        </div>
-    <? endif ?>
+</div>
