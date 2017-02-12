@@ -2,7 +2,11 @@
 
     <? foreach ($pages as $page): ?>
 
-        <article class="island island--margined post-list-item <?= $page->rich_view ? 'post-list-item--big' : '' ?> <?= $page->dt_pin ? 'post-list-item_pinned' : '' ?>">
+        <? /**
+            * if the elem is the first
+            * $page === reset($pages)
+            */ ?>
+        <article class="island <? $page === reset($pages) ? 'island--margined' : '' ?> post-list-item <?= $page->rich_view ? 'post-list-item--big' : '' ?> <?= $page->dt_pin ? 'post-list-item_pinned' : '' ?>">
 
             <div class="post-list-item__header">
                 <time class="post-list-item__date">
@@ -34,7 +38,7 @@
 
 <? else: ?>
 
-    <div class="island island--padded island--margined island--centered">
+    <div class="island island--padded island--centered">
         <div class="empty_motivatior">
             <!-- <i class="icon_noarticles"></i><br/> -->
             Постов нет
