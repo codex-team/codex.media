@@ -2,22 +2,22 @@
 
     <div class="profile">
 
-        <div class="profile-ava">
+        <div class="profile__ava">
     		<img src="<?= $viewUser->photo_medium ?>" />
     	</div>
 
-    	<div class="profile-name">
+    	<div class="profile__name">
     		<?= $viewUser->name ?>
     	</div>
 
-        <div class="profile-about">
+        <div class="profile__about">
     		<!-- Учитель русского языка и литературы -->
     	</div>
 
         <div class="profile-social">
 
         	<? if ($viewUser->vk): ?>
-                <div class="profile-social__link profile-social__link_vk">
+                <div class="profile-social__link profile-social__link--vk">
             		<a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
                         <i class="icon-vkontakte"></i>
                         <?= $viewUser->vk_uri ? $viewUser->vk_uri : $viewUser->vk_name ?>
@@ -26,7 +26,7 @@
         	<? endif; ?>
 
         	<? if ($viewUser->facebook): ?>
-                <div class="profile-social__link profile-social__link_facebook">
+                <div class="profile-social__link profile-social__link--facebook">
             		<a href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
                         <i class="icon-facebook"></i>
                         <?= $viewUser->facebook_name ? $viewUser->facebook_name : $viewUser->name ?>
@@ -35,7 +35,7 @@
         	<? endif ?>
 
         	<? if ($viewUser->twitter): ?>
-                <div class="profile-social__link profile-social__link_twitter">
+                <div class="profile-social__link profile-social__link--twitter">
             		<a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
                         <i class="icon-twitter"></i>
                         <?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?>

@@ -8,26 +8,26 @@
     clear: both;
 }
 
-.profile-ava {
+.profile__ava {
     display: block;
     float: right;
     position: relative;
     overflow: hidden;
 }
 
-.profile-ava img {
+.profile__ava img {
     border-radius: 50%;
     height: 6em;
 }
 
-.profile-name {
+.profile__name {
     display: block;
     font-size: 2em;
     font-weight: bold;
     letter-spacing: 0.3px;
 }
 
-.profile-about {
+.profile__about {
     margin: 15px auto;
     display: block;
     color: gray;
@@ -48,17 +48,17 @@
     border-radius: 2px;
 }
 
-.profile-social__link_twitter {
+.profile-social__link--twitter {
     border-color: color(var(--twitterColor) lightness(+30%));
     color: color(var(--twitterColor) lightness(+10%));
 }
 
-.profile-social__link_vk {
+.profile-social__link--vk {
     border-color: color(var(--vkColor) lightness(+30%));
     color: color(var(--vkColor) lightness(+10%));
 }
 
-.profile-social__link_facebook {
+.profile-social__link--facebook {
     border-color: color(var(--facebookColor) lightness(+30%));
     color: color(var(--facebookColor) lightness(+10%));
 }
