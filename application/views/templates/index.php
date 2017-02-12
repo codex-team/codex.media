@@ -6,7 +6,7 @@
 <? endif ?>
 <? /***/ ?>
 
-<ul class="island tabs island--margined">
+<ul class="island tabs <?= $user->id ? 'island--margined' : '' ?>">
     <li>
         <a class="tabs__tab <?= $active_tab == Model_Page::FEED_KEY_NEWS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Page::FEED_KEY_NEWS ?>">
             Новости
