@@ -1,0 +1,64 @@
+.profile {
+    height: auto;
+    display:block;
+}
+.profile::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.profile-ava {
+    display: block;
+    float: right;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-ava__pic {
+    border-radius: 50%;
+    height: 100px;
+}
+
+.profile-name {
+    display: block;
+    font-size: 2em;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+}
+
+.profile-about {
+    margin: 15px auto;
+    display: block;
+    color: gray;
+    font-size: 1.2em;
+    letter-spacing: 0.3px;
+}
+
+.profile-social {
+    margin-top: 20px;
+}
+
+.profile-social__link {
+    font-size: 1.1em;
+    display: inline-block;
+    margin: 0 15px 0 0;
+    padding: 7px 7px;
+    border: 1px solid;
+    border-radius: 2px;
+}
+
+.profile-social__link_twitter {
+    border-color: color(var(--twitterColor) lightness(+30%));
+    color: color(var(--twitterColor) lightness(+10%));
+}
+
+.profile-social__link_vk {
+    border-color: color(var(--vkColor) lightness(+30%));
+    color: color(var(--vkColor) lightness(+10%));
+}
+
+.profile-social__link_facebook {
+    border-color: color(var(--facebookColor) lightness(+30%));
+    color: color(var(--facebookColor) lightness(+10%));
+}
