@@ -41,7 +41,7 @@
     <div class="island island--padded island--centered">
         <div class="empty_motivatior">
             <!-- <i class="icon_noarticles"></i><br/> -->
-            Постов нет
+            <?= $emptyListMessage ?: 'Список статей пуст' ?>
         </div>
     </div>
 
