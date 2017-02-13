@@ -12,13 +12,12 @@
     width: 100%;
     /*background: none;*/
 }
-.comment-form__text--wrapper {
-    overflow: hidden;
-}
 
 .comment-form__submit-button {
     float: right;
 }
+
+
 
 .comments-list {}
 
