@@ -86,14 +86,14 @@
 
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST">
 
-            <span class="comment-form__photo">
-                <img src="<?= $user->photo ?>" alt="<?= $user->name ?>">
-            </span>
+            <img class="comment-form__photo" src="<?= $user->photo ?>" alt="<?= $user->name ?>">
 
             <?= Form::hidden('csrf', Security::token()); ?>
             <input id="add_comment_button" type="submit" class="comment-form__submit-button" value="Оправить" />
 
-            <textarea class="comment-form__text"  id="add_comment_textarea" name="add_comment_textarea"rows="1" placeholder="Ваш комментарий..."></textarea>
+            <div class="constrain comment-form__text-wrapper">
+                <textarea class="comment-form__text"  id="add_comment_textarea" name="add_comment_textarea"rows="1" placeholder="Ваш комментарий..."></textarea>
+            </div>
 
             <input type="hidden" name="parent_id" value="0" id="parent_id"/>
             <input type="hidden" name="root_id" value="0" id="root_id"/>

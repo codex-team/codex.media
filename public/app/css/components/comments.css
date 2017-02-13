@@ -1,20 +1,22 @@
 .comment-form {
 }
 
-.comment-form__photo img {
+.comment-form__photo {
     float: left;
-    height: 35px;
+    height: 39px;
     border-radius: 50%;
     margin-right: 10px;
 }
 
 .comment-form__text {
     width: 100%;
-    /*background: none;*/
+    background: none;
 }
 
 .comment-form__submit-button {
     float: right;
+    margin-left: 10px;
+    display: none;
 }
 
 
