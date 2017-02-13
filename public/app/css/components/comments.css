@@ -1,23 +1,22 @@
-.comment__form {
+.comment-form {
 }
 
-.comment__form--ava img {
+.comment-form__photo img {
     float: left;
     height: 35px;
     border-radius: 50%;
     margin-right: 10px;
 }
 
-.comment__form--text {
+.comment-form__text {
     width: 100%;
-    background: none;
+    /*background: none;*/
 }
-.comment__form--text-wrapper {
+.comment-form__text--wrapper {
     overflow: hidden;
-    display: inline-block;
 }
 
-.comment__form--submit-button {
+.comment-form__submit-button {
     float: right;
 }
 

@@ -45,7 +45,7 @@
                 <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=menu"><?= $page->is_menu_item ? 'убрать из меню' : 'добавить в меню' ?></i></a>
                 <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=news"><?= $page->is_news_page ? 'убрать из новостей' : 'добавить в новости' ?></a>
             <? endif ?>
-            <a class="textbutton js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
+            <a class="button js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
         </div>
     <? endif ?>
 
@@ -82,22 +82,23 @@
 <? /* Comments block */ ?>
 <? if ($user->id): ?>
 
-    <div class="island island--margined island--padded comment__form clearfix">
+    <div class="island island--margined island--padded comment-form clearfix">
 
-        <span class="comment__form--ava">
-            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
+        <span class="comment-form__photo">
+            <img src="<?= $user->photo ?>" alt="<?= $user->name ?>">
         </span>
 
         <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST">
             <?= Form::hidden('csrf', Security::token()); ?>
+            <input id="add_comment_button" type="submit" class="comment-form__submit-button" value="Оправить" />
 
-            <span class="comment__form--text-wrapper">
-            <textarea id="add_comment_textarea" name="add_comment_textarea" class="comment__form--text" rows="1" placeholder="Ваш комментарий..."></textarea>
+            <span class="comment-form__text--wrapper">
+                <textarea id="add_comment_textarea" name="add_comment_textarea" class="comment-form__text" rows="1" placeholder="Ваш комментарий..."></textarea>
             </span>
 
             <input type="hidden" name="parent_id" value="0" id="parent_id"/>
             <input type="hidden" name="root_id" value="0" id="root_id"/>
-            <input id="add_comment_button" type="submit" class="comment__form--submit-button" value="Оправить" />
+
             <span id="add_answer_to" class="add_answer_to"></span>
             <span class="cancel_answer hide" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
         </form>
@@ -118,11 +119,11 @@
 
 <? endif ?>
 
-<div class="island island--padded island--margined" id="page_comments">
+<div class="comments-list" id="page_comments">
 
     <? if ($page->comments): ?>
         <? foreach ($page->comments as $comment): ?>
-            <div class="comment_wrapper clear <?= $comment->parent_comment ? 'answer_wrapper' : '' ?>"
+            <div class="island island--padded comment_wrapper clear <?= $comment->parent_comment ? 'answer_wrapper' : 'island--margined' ?>"
                  id="comment_<?= $comment->id ?>">
                 <a href="/user/<?= $comment->author->id ?>">
                     <img class="comment_left" src="<?= $comment->author->photo ?>">
@@ -157,7 +158,7 @@
                     <? endif ?>
 
                     <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
-                        <a class="delete_button js-approval-button"
+                        <a class="button--delete js-approval-button"
                            href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
                             Удалить
                         </a>
