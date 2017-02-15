@@ -11,7 +11,6 @@
     background: transparent !important;
     outline: none;
     -webkit-appearance: none;
-    margin-bottom: 15px;
     padding: 0 !important;
     font-size: 20px !important;
 }
@@ -110,4 +109,7 @@
     margin: 0;
 }
 
-
+#editor_body {
+    display: none;
+    margin-top: 15px;
+}
