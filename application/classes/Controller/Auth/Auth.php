@@ -146,7 +146,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         return TRUE;
     }
 
-
+    public function recover()
+    {
+      phpinfo();
+    }
     /**
     * Login method
     * @author Savchenko Petr (vk.com/specc)
