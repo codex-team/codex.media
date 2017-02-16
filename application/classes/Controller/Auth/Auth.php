@@ -148,6 +148,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
     public function recover()
     {
+  
       phpinfo();
     }
     /**
