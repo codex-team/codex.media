@@ -9,13 +9,13 @@ var comments = (function () {
         commentsList  = null;
 
     var nodes_ = {
-        form                 : null,
-        parentId            : null,
-        rootId              : null,
+        form               : null,
+        parentId           : null,
+        rootId             : null,
         addCommentButton   : null,
         addAnswerTo        : null,
         cancelAnswerButton : null,
-        textarea             : ''
+        textarea           : ''
     };
 
     function init() {
@@ -28,7 +28,7 @@ var comments = (function () {
         nodes_.cancelAnswerButton = document.getElementById('cancel_answer');
         nodes_.textarea           = nodes_.form.add_comment_textarea;
         commentsList              = document.getElementById('page_comments');
-        answerButtons             = document.getElementsByClassName('answer_button');
+        answerButtons             = document.getElementsByClassName('comment-actions__button--answer');
 
         // Чистим textarea после загрузки страницы
         clearTextarea_();
