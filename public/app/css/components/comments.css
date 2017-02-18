@@ -51,7 +51,7 @@
     font-size: 1.3em;
 }
 
-.comment__actions {
+.comment__actions--button {
     padding: 8px 15px;
     cursor: pointer;
 }

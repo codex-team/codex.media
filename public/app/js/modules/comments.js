@@ -28,7 +28,7 @@ var comments = (function () {
         nodes_.cancelAnswerButton = document.getElementById('cancel_answer');
         nodes_.textarea           = nodes_.form.add_comment_textarea;
         commentsList              = document.getElementById('page_comments');
-        answerButtons             = document.getElementsByClassName('comment__actions--answer');
+        answerButtons             = document.getElementsByClassName('comment__actions--button-answer');
 
         // Чистим textarea после загрузки страницы
         clearTextarea_();
