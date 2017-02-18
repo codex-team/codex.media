@@ -138,6 +138,16 @@ input[disabled]:hover {
     color: #a9afc1;
 }
 
+/**
+* JS approval buttons
+*/
+.button--delete {
+}
+
+.click-again-to-approve {
+    background-color: red;
+}
+
 /*
 * Imrove padding on buttons with icons
 */
