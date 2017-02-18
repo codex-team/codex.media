@@ -82,98 +82,21 @@
 <? /* Comments block */ ?>
 <? if ($user->id): ?>
 
-    <div class="island island--margined island--padded comment-form clearfix">
+    <?= View::factory('templates/pages/comments/new-comment-form', array('page' => $page, 'user' => $user)); ?>
 
-        <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST">
+    <script>
 
-            <img class="comment-form__photo" src="<?= $user->photo ?>" alt="<?= $user->name ?>">
+        codex.docReady(function(){
 
-            <?= Form::hidden('csrf', Security::token()); ?>
-            <input id="add_comment_button" type="submit" class="comment-form__submit-button" value="Оправить" />
+            /**
+            * Comments module
+            */
+            codex.comments.init();
 
-            <div class="constrain comment-form__text-wrapper">
-                <textarea class="comment-form__text"  id="add_comment_textarea" name="add_comment_textarea"rows="1" placeholder="Ваш комментарий..."></textarea>
-            </div>
+        });
 
-            <input type="hidden" name="parent_id" value="0" id="parent_id"/>
-            <input type="hidden" name="root_id" value="0" id="root_id"/>
-
-            <span class="add_answer_to" id="add_answer_to"></span>
-            <span class="cancel_answer hide" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
-        </form>
-
-        <script>
-
-            codex.docReady(function(){
-
-                /**
-                * Comments module
-                */
-                codex.comments.init();
-
-            });
-
-        </script>
-    </div>
+    </script>
 
 <? endif ?>
 
-<div class="comments-list" id="page_comments">
-
-    <? if ($page->comments): ?>
-        <? foreach ($page->comments as $comment): ?>
-            <div class="island island--padded comment_wrapper clear <?= $comment->parent_comment ? 'answer_wrapper' : 'island--margined' ?>"
-                 id="comment_<?= $comment->id ?>">
-                <a href="/user/<?= $comment->author->id ?>">
-                    <img class="comment_left" src="<?= $comment->author->photo ?>">
-                </a>
-                <div class="comment_right">
-
-                    <time>
-                        <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
-                    </time>
-
-                    <a href="/user/<?= $comment->author->id ?>" class="author_name">
-                        <?= $comment->author->name ?>
-                    </a>
-
-                    <? if ($comment->parent_comment): ?>
-                        <span class="to_user">
-                            <i class="icon-right-dir"></i>
-                            <?= $comment->parent_comment->author->name ?>
-                        </span>
-                    <? endif ?>
-
-
-                    <p><?= $comment->text ?></p>
-
-                    <? if ($user->id): ?>
-                        <span class="answer_button" id="answer_button_<?= $comment->id ?>"
-                              data-comment-id="<?= $comment->id ?>"
-                              data-root-id="<?= $comment->root_id ?>">
-                            <i class="icon-reply"></i>
-                            Ответить
-                        </span>
-                    <? endif ?>
-
-                    <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
-                        <a class="button--delete js-approval-button"
-                           href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
-                            Удалить
-                        </a>
-                    <? endif ?>
-                </div>
-
-            </div>
-        <? endforeach ?>
-    <? else: ?>
-        <div class="empty-motivator">
-            <? include(DOCROOT . "public/app/svg/comments.svg") ?>
-            <p>Станьте первым, кто оставит <br/> комментарий к данному материалу.</p>
-            <? if (!$user->id): ?>
-                <a class="button master" href="/auth">Авторизоваться</a>
-            <? endif ?>
-        </div>
-    <? endif ?>
-
-</div>
+<?= View::factory('templates/pages/comments/comments-list', array('page' => $page, 'user' => $user)); ?>
