@@ -24,3 +24,36 @@
 .comments-list {}
 
 .comment {}
+
+.comment-header {}
+
+.comment-header__author-photo {
+    float: left;
+    margin-right: 10px;
+}
+.comment-header__author-photo img {
+    height: 39px;
+    border-radius: 50%;
+}
+
+.comment-header__author-name {
+    display: block;
+    font-size: 1.5em;
+}
+
+.comment-header__time {
+    display: block;
+    color: var(--grayText);
+}
+
+.comment-content {
+    margin-top: 20px;
+    font-size: 1.3em;
+}
+
+.comment-actions {}
+
+.comment-actions__button {
+    padding: 8px 15px;
+    cursor: pointer;
+}
