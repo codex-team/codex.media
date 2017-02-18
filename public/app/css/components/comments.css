@@ -25,35 +25,33 @@
 
 .comment {}
 
-.comment-header {}
+.comment__header {}
 
-.comment-header__author-photo {
+.comment__author-photo {
     float: left;
     margin-right: 10px;
 }
-.comment-header__author-photo img {
+.comment__author-photo img {
     height: 39px;
     border-radius: 50%;
 }
 
-.comment-header__author-name {
+.comment__author-name {
     display: block;
     font-size: 1.5em;
 }
 
-.comment-header__time {
+.comment__time {
     display: block;
     color: var(--grayText);
 }
 
-.comment-content {
+.comment__content {
     margin-top: 20px;
     font-size: 1.3em;
 }
 
-.comment-actions {}
-
-.comment-actions__button {
+.comment__actions {
     padding: 8px 15px;
     cursor: pointer;
 }
