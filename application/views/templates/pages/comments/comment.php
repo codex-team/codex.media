@@ -31,16 +31,16 @@
     </div>
 
 
+    <? /* remove buttons
     <div class="comment__actions">
 
-        <? /* #TODO add 'reply' function
-        <? if ($user->id): ?>
-            <span class="comment__actions--button comment__actions--button-answer" id="answer_button_<?= $comment->id ?>" data-comment-id="<?= $comment->id ?>" data-root-id="<?= $comment->root_id ?>">
-                <i class="icon-reply"></i>
-                Ответить
-            </span>
-        <? endif ?>
-        */ ?>
+        #TODO add 'reply' function
+        // <? if ($user->id): ?>
+        //     <span class="comment__actions--button comment__actions--button-answer" id="answer_button_<?= $comment->id ?>" data-comment-id="<?= $comment->id ?>" data-root-id="<?= $comment->root_id ?>">
+        //         <i class="icon-reply"></i>
+        //         Ответить
+        //     </span>
+        // <? endif ?>
 
         <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
             <a class="comment__actions--button button--delete js-approval-button"
@@ -51,4 +51,5 @@
         <? endif ?>
 
     </div>
+    */ ?>
 </div>
