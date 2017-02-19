@@ -1,4 +1,4 @@
-<div class="island island--padded comment_wrapper clear <?= $comment->parent_comment ? 'answer_wrapper' : 'island--margined' ?>"
+<div class="comment island island--padded clear <?= $comment->parent_comment ? 'answer_wrapper' : 'island--margined' ?>"
      id="comment_<?= $comment->id ?>">
 
     <div class="comment__header clearfix">
@@ -7,27 +7,29 @@
             <img src="<?= $comment->author->photo ?>">
         </a>
 
-        <a class="comment__author-name constrain" href="/user/<?= $comment->author->id ?>">
-            <?= $comment->author->name ?>
+        <div class="constrain">
+            <a class="comment__author-name" href="/user/<?= $comment->author->id ?>">
+                <?= $comment->author->name ?>
 
-            <? /* #TODO add 'reply' function
-            <? if ($comment->parent_comment): ?>
-                <span class="comment">
-                    <i class="icon-right-dir"></i>
-                    <?= $comment->parent_comment->author->name ?>
-                </span>
-            <? endif ?>
-            */ ?>
-        </a>
+                <? /* #TODO add 'reply' function
+                <? if ($comment->parent_comment): ?>
+                    <span class="comment">
+                        <i class="icon-right-dir"></i>
+                        <?= $comment->parent_comment->author->name ?>
+                    </span>
+                <? endif ?>
+                */ ?>
+            </a>
 
-        <time class="comment__time constrain">
-            <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
-        </time>
+            <time class="comment__time">
+                <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
+            </time>
+        </div>
 
     </div>
 
     <div class="comment__content">
-        <p><?= $comment->text ?></p>
+        <?= $comment->text ?>
     </div>
 
 

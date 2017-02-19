@@ -1,9 +1,12 @@
 .comment-form {
+    padding-top: 15px !important;
+    padding-bottom: 11px !important;
 }
 
 .comment-form__photo {
     float: left;
-    height: 39px;
+    height: 30px;
+    width: 30px;
     border-radius: 50%;
     margin-right: 10px;
 }
@@ -11,17 +14,21 @@
 .comment-form__text {
     width: 100%;
     background: none;
+    padding: 7px;
 }
 
 .comment-form__submit-button {
     float: right;
     margin-left: 10px;
     display: none;
+    padding: 9px 18px !important;
 }
 
 
 
 .comments-list {}
+
+
 
 .comment {}
 
@@ -32,26 +39,28 @@
     margin-right: 10px;
 }
 .comment__author-photo img {
-    height: 39px;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
 }
 
 .comment__author-name {
     display: block;
-    font-size: 1.5em;
+    font-size: 15px;
+    margin: 3px auto;
 }
 
 .comment__time {
     display: block;
     color: var(--grayText);
+    font-size: 11px;
 }
 
 .comment__content {
     margin-top: 20px;
-    font-size: 1.3em;
+    font-size: 15px;
 }
 
-.comment__actions--button {
 /*.comment__actions--button {
     padding: 8px 15px;
     cursor: pointer;
