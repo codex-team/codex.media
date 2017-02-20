@@ -23,6 +23,8 @@
 
             initialBlockPlugin : 'paragraph',
 
+            hideToolbar: <?= !empty($hideEditorToolbar) && $hideEditorToolbar ? 'true' : 'false' ?>,
+
             tools : {
                 paragraph: {
                     type: 'paragraph',
