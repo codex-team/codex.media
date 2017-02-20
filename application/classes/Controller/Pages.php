@@ -77,8 +77,6 @@ class Controller_Pages extends Controller_Base_preDispatch
         $csrfToken = Arr::get($_POST, 'csrf');
 
         $openFullScreen = (int) Arr::get($_POST, 'openFullScreen') === 1;
-        $this->view['editorHideToolbar'] = !$openFullScreen;
-
 
         if (Security::check($csrfToken)) {
 

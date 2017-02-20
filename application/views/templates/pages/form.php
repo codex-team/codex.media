@@ -19,6 +19,7 @@
 
     <?= View::factory('templates/pages/editor', array(
         'page' => $page,
+        'hideEditorToolbar' => !empty($hideEditorToolbar) ? $hideEditorToolbar : false
     )); ?>
 
     <? /** Add attaches through JS */ ?>
