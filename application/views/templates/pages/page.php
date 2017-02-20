@@ -38,8 +38,8 @@
     <? if ($can_modify_this_page): ?>
         <div class="action-line action-line__onpage clear">
             <? if ($page->author->id == $user->id ): ?>
-                <a class="button iconic green" href="/p/save?id=<?= $page->id ?>"><i class="icon-pencil"></i>Редактировать</a>
-                <a class="button iconic green" href="/p/save?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
+                <a class="button iconic green" href="/p/writing?id=<?= $page->id ?>"><i class="icon-pencil"></i>Редактировать</a>
+                <a class="button iconic green" href="/p/writing?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
             <? endif ?>
             <? if ($user->status == Model_User::USER_STATUS_ADMIN): ?>
                 <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=menu"><?= $page->is_menu_item ? 'убрать из меню' : 'добавить в меню' ?></i></a>

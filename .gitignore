@@ -1,6 +1,9 @@
 application/cache/*
 application/logs/*
 upload/*
+vendor/*
+.env
+
 phpmyadmin/*
 pma/*
 .DS_Store
@@ -14,6 +17,7 @@ sftp-config.json
 public/img/covers/*
 /nbproject/private/
 node_modules/
+
 *~
 
 .ftpconfig
