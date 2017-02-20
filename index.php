@@ -74,14 +74,16 @@ if ( ! is_dir($modules) AND is_dir(DOCROOT.$modules))
 if ( ! is_dir($system) AND is_dir(DOCROOT.$system))
 	$system = DOCROOT.$system;
 
+// Make the vendor relative to the docroot.
+if ( ! is_dir($vendor) AND is_dir(DOCROOT.$vendor))
+	$vendor = DOCROOT.$vendor;
+
 // Define the absolute paths for configured directories
 define('APPPATH', realpath($application).DIRECTORY_SEPARATOR);
 define('MODPATH', realpath($modules).DIRECTORY_SEPARATOR);
 define('SYSPATH', realpath($system).DIRECTORY_SEPARATOR);
 define('VENDORPATH', realpath($vendor).DIRECTORY_SEPARATOR);
 
-if ( ! is_dir($vendor) AND is_dir(DOCROOT.$vendor))
-	$vendor = DOCROOT.$vendor;
 
 // Clean up the configuration vars
 unset($application, $modules, $system, $vendor);
