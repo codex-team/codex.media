@@ -67,7 +67,7 @@ class Model_Page extends Model_preDispatch
                 }
             }
 
-            $this->blocks = json_decode($this->content);
+            $this->blocks = json_decode($this->content)->data;
 
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);

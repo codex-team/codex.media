@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+use CodexEditor\CodexEditor;
+
 class Controller_Pages extends Controller_Base_preDispatch
 {
     /**
@@ -77,6 +79,13 @@ class Controller_Pages extends Controller_Base_preDispatch
         $csrfToken = Arr::get($_POST, 'csrf');
 
         if (Security::check($csrfToken)) {
+
+            /**
+             * @var $editor - Editor's backend
+             * Gives pure data
+             */
+            $editor = new CodexEditor(Arr::get($_POST, 'content'));
+            $_POST['content'] = $editor->getData();
 
             /** Сабмит формы */
             $page = self::get_form();
