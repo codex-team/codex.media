@@ -138,11 +138,13 @@ input[disabled]:hover {
     color: #a9afc1;
 }
 
+::placeholder {
+    color: var(--grayText);
+}
+
 /**
 * JS approval buttons
 */
-.button--delete {
-}
 
 .click-again-to-approve {
     background-color: red;

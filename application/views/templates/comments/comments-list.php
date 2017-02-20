@@ -3,7 +3,7 @@
     <? if ($page->comments): ?>
 
         <? foreach ($page->comments as $comment): ?>
-            <?= View::factory('templates/pages/comments/comment', array('page' => $page, 'user' => $user, 'comment' => $comment)); ?>
+            <?= View::factory('templates/comments/comment', array('page' => $page, 'user' => $user, 'comment' => $comment)); ?>
         <? endforeach ?>
 
     <? else: ?>

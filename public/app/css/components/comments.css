@@ -1,6 +1,5 @@
 .comment-form {
-    padding-top: 15px !important;
-    padding-bottom: 11px !important;
+    padding: 15px var(--islandPadding);
 }
 
 .comment-form__photo {
@@ -8,36 +7,40 @@
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 15px;
 }
 
 .comment-form__text {
     width: 100%;
+    margin-top: 4px;
+    padding: 0;
+    resize: none;
+}
+
+.comment-form__text,
+.comment-form__text:focus {
     background: none;
-    padding: 7px;
+}
+
+.comment-form__text:focus,
+.comment-form__text:not(:invalid) {
+    height: 7em;
 }
 
 .comment-form__submit-button {
     float: right;
-    margin-left: 10px;
-    display: none;
-    padding: 9px 18px !important;
+    margin-left: 15px;
+    padding: 9px 19px !important;
 }
 
-
-
-.comments-list {}
-
-
-
-.comment {}
-
-.comment__header {}
-
+/**
+* Comments list
+*/
 .comment__author-photo {
     float: left;
-    margin-right: 10px;
+    margin-right: 15px;
 }
+
 .comment__author-photo img {
     height: 40px;
     width: 40px;
@@ -45,23 +48,22 @@
 }
 
 .comment__author-name {
-    display: block;
+    display: inline-block;
     font-size: 15px;
-    margin: 3px auto;
+    margin: 2px 0 3px;
 }
 
 .comment__time {
-    display: block;
     color: var(--grayText);
     font-size: 11px;
 }
 
-.comment__content {
+.comment__text {
     margin-top: 20px;
-    font-size: 15px;
 }
 
-/*.comment__actions--button {
-    padding: 8px 15px;
-    cursor: pointer;
-}*/
+.comment-form__text,
+.comment__text {
+    font-size: 15px;
+    line-height: 1.5em;
+}

@@ -1,4 +1,4 @@
-<div class="comment-form island island--margined island--padded clearfix">
+<div class="comment-form island island--margined clearfix">
 
     <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST">
 
@@ -8,7 +8,7 @@
         <input class="comment-form__submit-button" id="add_comment_button" type="submit" value="Оправить" />
 
         <div class="constrain">
-            <textarea class="comment-form__text"  id="add_comment_textarea" name="add_comment_textarea"rows="1" placeholder="Ваш комментарий..."></textarea>
+            <textarea class="comment-form__text" required id="add_comment_textarea" name="add_comment_textarea" rows="1" placeholder="Ваш комментарий..."></textarea>
         </div>
 
         <input type="hidden" name="parent_id" value="0" id="parent_id"/>

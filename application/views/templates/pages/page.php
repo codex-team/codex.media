@@ -82,7 +82,7 @@
 <? /* Comments block */ ?>
 <? if ($user->id): ?>
 
-    <?= View::factory('templates/pages/comments/new-comment-form', array('page' => $page, 'user' => $user)); ?>
+    <?= View::factory('templates/comments/new-comment-form', array('page' => $page, 'user' => $user)); ?>
 
     <script>
 
@@ -99,4 +99,4 @@
 
 <? endif ?>
 
-<?= View::factory('templates/pages/comments/comments-list', array('page' => $page, 'user' => $user)); ?>
+<?= View::factory('templates/comments/comments-list', array('page' => $page, 'user' => $user)); ?>
