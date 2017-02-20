@@ -92,6 +92,8 @@ class Controller_Pages extends Controller_Base_preDispatch
                 $this->view['attachments'] = json_encode($page->attachments);
 
                 $this->template->content = View::factory('templates/pages/writing', $this->view);
+                return;
+
 
             }
 
