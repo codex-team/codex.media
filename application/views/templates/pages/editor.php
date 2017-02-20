@@ -3,19 +3,14 @@
     <textarea hidden name="content" id="json_result" cols="30" rows="10" style="width: 100%;height: 300px;"></textarea>
 </div>
 
-<script src="/public/extensions/codex.editor/codex-editor.js?v=?<?=filemtime('public/extensions/codex.editor/codex-editor.js'); ?>"></script>
-<link rel="stylesheet" href="/public/extensions/codex.editor/codex-editor.css?v=<?=filemtime('public/extensions/codex.editor/codex-editor.css'); ?>" />
+<script src="https://cdn.ifmo.su/editor/v1.5/codex-editor.js"></script>
+<link rel="stylesheet" href="https://cdn.ifmo.su/editor/v1.5/codex-editor.css" />
 
+<script src="https://cdn.ifmo.su/editor/v1.5/plugins/paragraph/paragraph.js"></script>
+<link rel="stylesheet" href="https://cdn.ifmo.su/editor/v1.5/plugins/paragraph/paragraph.css">
 
-<script src="/public/extensions/codex.editor/plugins/paragraph/paragraph.js?<?= filemtime('public/extensions/codex.editor/plugins/paragraph/paragraph.js'); ?>"></script>
-<link rel="stylesheet" href="/public/extensions/codex.editor/plugins/paragraph/paragraph.css?<?= filemtime('public/extensions/codex.editor/plugins/paragraph/paragraph.css'); ?>">
-
-<script src="/public/extensions/codex.editor/plugins/header/header.js?<?= filemtime('public/extensions/codex.editor/plugins/header/header.js'); ?>"></script>
-<link rel="stylesheet" href="/public/extensions/codex.editor/plugins/header/header.css?<?= filemtime('public/extensions/codex.editor/plugins/header/header.css'); ?>">
-
-<script src="/public/extensions/codex.editor/plugins/paste/paste.js?<?= filemtime('public/extensions/codex.editor/plugins/paste/paste.js'); ?>"></script>
-<script src="/public/extensions/codex.editor/plugins/paste/patterns.js?<?= filemtime('public/extensions/codex.editor/plugins/paste/patterns.js'); ?>"></script>
-<link rel="stylesheet" href="/public/extensions/codex.editor/plugins/paste/paste.css?<?= filemtime('public/extensions/codex.editor/plugins/paste/paste.css'); ?>">
+<script src="https://cdn.ifmo.su/editor/v1.5/plugins/header/header.js"></script>
+<link rel="stylesheet" href="https://cdn.ifmo.su/editor/v1.5/plugins/header/header.css">
 
 <script>
 
@@ -36,7 +31,9 @@
                     validate: paragraph.validate,
                     save: paragraph.save,
                     allowedToPaste: true,
-                    showInlineToolbar: true
+                    showInlineToolbar: true,
+                    destroy: paragraph.destroy,
+                    allowRenderOnPaste: true
                 },
                 heading_styled: {
                     type: 'heading_styled',
@@ -46,16 +43,9 @@
                     render: header.render,
                     validate: header.validate,
                     save: header.save,
+                    destroy: header.destroy,
                     displayInToolbox: true
-                },
-                paste: {
-                    type: 'paste',
-                    prepare: paste.prepare,
-                    make: paste.make,
-                    save: paste.save,
-                    enableLineBreaks: false,
-                    callbacks: paste.pasted
-                },
+                }
             },
 
             data : {
