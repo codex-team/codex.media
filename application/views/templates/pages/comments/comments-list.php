@@ -8,7 +8,7 @@
 
     <? else: ?>
 
-        <div class="empty-motivator">
+        <div class="empty-motivator island island--margined island--padded">
 
             <? include(DOCROOT . "public/app/svg/comments.svg") ?>
             <p>Станьте первым, кто оставит <br/> комментарий к данному материалу.</p>
