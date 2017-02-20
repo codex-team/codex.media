@@ -48,8 +48,8 @@
 
     <div class="actions clear">
 
-        <span class="button main fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
-        <span class="button main fl_r" onclick="codex.transport.submitAtlasForm(true)">Развернуть</span>
+        <span class="button master fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
+        <span class="button fl_r" onclick="codex.transport.submitAtlasForm(true)">На весь экран</span>
 
         <? /**
         <? if ($user->isAdmin && $page->type == Model_Page::TYPE_SITE_NEWS): ?>
@@ -72,8 +72,8 @@
         <? endif ?>
         */ ?>
 
-        <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_FILE ?>')"><i class="icon-attach"></i>Прикрепить файл</span>
-        <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_IMAGE ?>')"><i class="icon-picture"></i>Прикрепить фото</span>
+        <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_FILE ?>')"><i class="icon-attach"></i></span>
+        <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_IMAGE ?>')"><i class="icon-picture"></i></span>
 
     </div>
 
