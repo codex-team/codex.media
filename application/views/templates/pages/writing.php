@@ -1,22 +1,31 @@
-<div class="breadcrumb">
+<div class="island">
 
-    <a class="nav_chain" href="/">Главная</a> »
-    <span class="nav_chain">
+    <div class="writing-navigation">
+
+        <a href="/" rel="nofollow">
+            <img class="writing-navigation__back-icon" src="<?= $user->photo ?>">
+            Главная
+        </a>
+        <? include(DOCROOT . "public/app/svg/arrow-right.svg") ?>
         <?
     		$action = isset($page->id) && $page->id ? 'Редактирование' : 'Создание';
-    		$object = $page->is_news_page ? 'новости' : 'страницы';
+    		$object = $page->is_news_page ? 'новости' : 'материала';
 
         	echo $action . ' ' . $object;
         ?>
-</span>
+    </div>
 
 </div>
 
-<?= View::factory('templates/pages/form', array(
-    'page'        => $page,
-    'attachments' => $attachments,
-)); ?>
+<div class="writing--fullscreen">
+    <?= View::factory('templates/pages/form', array(
+        'page'        => $page,
+        'attachments' => $attachments,
+    )); ?>
+</div>
 
 <style>
-    .grid-col--left  {display: none}
+    .grid-col--left  {
+        display: none
+    }
 </style>

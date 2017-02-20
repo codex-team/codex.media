@@ -1,4 +1,4 @@
-<form class="writing island island--padded" action="/p/writing" id="atlasForm" method="post" name="atlas">
+<form class="writing island" action="/p/writing" id="atlasForm" method="post" name="atlas">
 
     <?
         /** if there is no information about page */
@@ -14,8 +14,9 @@
     <?= Form::hidden('id', $page->id); ?>
     <?= Form::hidden('id_parent', $page->id_parent); ?>
 
-
-    <input class="writing__title" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
+    <div class="writing__title-wrapper">
+        <input class="writing__title" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
+    </div>
 
     <?= View::factory('templates/pages/editor', array(
         'page' => $page,
@@ -50,7 +51,10 @@
     <div class="actions clear">
 
         <span class="button master fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
-        <span class="button fl_r" onclick="codex.transport.openEditorFullscrean()">На весь экран</span>
+
+        <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
+            <span class="button fl_r" onclick="codex.transport.openEditorFullscrean()">На весь экран</span>
+        <? endif ?>
 
         <? /**
         <? if ($user->isAdmin && $page->type == Model_Page::TYPE_SITE_NEWS): ?>
