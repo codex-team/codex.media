@@ -23,7 +23,7 @@
     font-size: 42px !important;
 }
 
-.writing .actions {
+.writing__actions {
     margin: 0  -30px;
     padding: 20px 25px;
     border-top: 1px solid #f5f6fb;
@@ -127,7 +127,7 @@
 .editor-wrapper .ce-block__content,
 .writing-navigation,
 .writing__title-wrapper,
-.writing--fullscreen .actions {
+.writing__actions-content {
     margin: 0 auto;
     max-width: 578px;
 }
