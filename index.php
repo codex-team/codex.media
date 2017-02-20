@@ -80,8 +80,11 @@ define('MODPATH', realpath($modules).DIRECTORY_SEPARATOR);
 define('SYSPATH', realpath($system).DIRECTORY_SEPARATOR);
 define('VENDORPATH', realpath($vendor).DIRECTORY_SEPARATOR);
 
+if ( ! is_dir($vendor) AND is_dir(DOCROOT.$vendor))
+	$vendor = DOCROOT.$vendor;
+
 // Clean up the configuration vars
-unset($application, $modules, $system);
+unset($application, $modules, $system, $vendor);
 
 if (file_exists('install'.EXT))
 {
