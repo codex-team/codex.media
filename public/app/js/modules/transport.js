@@ -224,11 +224,19 @@ var transport = {
     * Prepares and submit form
     * Send attaches by json-encoded stirng with hidden input
     */
-    submitAtlasForm : function () {
+    submitAtlasForm : function (openEditorFlag) {
 
         var atlasForm = document.forms.atlas;
 
         if (!atlasForm) return;
+
+        var openEditorFlagInput = document.createElement('input');
+
+        openEditorFlagInput.type = 'hidden';
+        openEditorFlagInput.name = 'openEditorFlag';
+        openEditorFlagInput.value = openEditorFlag;
+
+        atlasForm.append(openEditorFlagInput);
 
         var attachesInput = document.createElement('input');
 

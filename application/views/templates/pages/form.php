@@ -1,4 +1,4 @@
-<form class="writing island island--padded" action="/p/save" id="atlasForm" method="post" name="atlas">
+<form class="writing island island--padded" action="/p/writing" id="atlasForm" method="post" name="atlas">
 
     <?
         /** if there is no information about page */
@@ -49,6 +49,7 @@
     <div class="actions clear">
 
         <span class="button main fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
+        <span class="button main fl_r" onclick="codex.transport.submitAtlasForm(true)">Развернуть</span>
 
         <? /**
         <? if ($user->isAdmin && $page->type == Model_Page::TYPE_SITE_NEWS): ?>
