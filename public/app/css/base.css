@@ -138,6 +138,18 @@ input[disabled]:hover {
     color: #a9afc1;
 }
 
+::placeholder {
+    color: var(--grayText);
+}
+
+/**
+* JS approval buttons
+*/
+
+.click-again-to-approve {
+    background-color: red;
+}
+
 /*
 * Imrove padding on buttons with icons
 */

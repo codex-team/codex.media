@@ -45,7 +45,7 @@
                 <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=menu"><?= $page->is_menu_item ? 'убрать из меню' : 'добавить в меню' ?></i></a>
                 <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=news"><?= $page->is_news_page ? 'убрать из новостей' : 'добавить в новости' ?></a>
             <? endif ?>
-            <a class="textbutton js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
+            <a class="button js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
         </div>
     <? endif ?>
 
@@ -80,89 +80,23 @@
 <? endif ?>
 
 <? /* Comments block */ ?>
-<div class="island island--padded island--margined" id="page_comments">
+<? if ($user->id): ?>
 
-    <? if ($page->comments): ?>
-        <? foreach ($page->comments as $comment): ?>
-            <div class="comment_wrapper clear <?= $comment->parent_comment ? 'answer_wrapper' : '' ?>"
-                 id="comment_<?= $comment->id ?>">
-                <a href="/user/<?= $comment->author->id ?>">
-                    <img class="comment_left" src="<?= $comment->author->photo ?>">
-                </a>
-                <div class="comment_right">
+    <?= View::factory('templates/comments/new-comment-form', array('page' => $page, 'user' => $user)); ?>
 
-                    <time>
-                        <?= date_format(date_create($comment->dt_create), 'd F Y') ?>
-                    </time>
+    <script>
 
-                    <a href="/user/<?= $comment->author->id ?>" class="author_name">
-                        <?= $comment->author->name ?>
-                    </a>
+        codex.docReady(function(){
 
-                    <? if ($comment->parent_comment): ?>
-                        <span class="to_user">
-                            <i class="icon-right-dir"></i>
-                            <?= $comment->parent_comment->author->name ?>
-                        </span>
-                    <? endif ?>
+            /**
+            * Comments module
+            */
+            codex.comments.init();
 
+        });
 
-                    <p><?= $comment->text ?></p>
+    </script>
 
-                    <? if ($user->id): ?>
-                        <span class="answer_button" id="answer_button_<?= $comment->id ?>"
-                              data-comment-id="<?= $comment->id ?>"
-                              data-root-id="<?= $comment->root_id ?>">
-                            <i class="icon-reply"></i>
-                            Ответить
-                        </span>
-                    <? endif ?>
+<? endif ?>
 
-                    <? if ($user->id == $comment->author->id || $user->isAdmin): ?>
-                        <a class="delete_button js-approval-button"
-                           href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
-                            Удалить
-                        </a>
-                    <? endif ?>
-                </div>
-
-            </div>
-        <? endforeach ?>
-    <? else: ?>
-        <div class="empty-motivator">
-            <? include(DOCROOT . "public/app/svg/comments.svg") ?>
-            <p>Станьте первым, кто оставит <br/> комментарий к данному материалу.</p>
-            <? if (!$user->id): ?>
-                <a class="button master" href="/auth">Авторизоваться</a>
-            <? endif ?>
-        </div>
-    <? endif ?>
-
-    <? if ($user->id): ?>
-
-        <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST" class="comment_form mt20">
-            <?= Form::hidden('csrf', Security::token()); ?>
-            <textarea id="add_comment_textarea" name="add_comment_textarea" rows="5"></textarea>
-            <input type="hidden" name="parent_id" value="0" id="parent_id"/>
-            <input type="hidden" name="root_id" value="0" id="root_id"/>
-            <input id="add_comment_button" disabled type="submit" value="Оставить комментарий" />
-            <span id="add_answer_to" class="add_answer_to"></span>
-            <span class="cancel_answer" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
-        </form>
-
-        <script>
-
-            codex.docReady(function(){
-
-                /**
-                * Comments module
-                */
-                codex.comments.init();
-
-            });
-
-        </script>
-
-    <? endif ?>
-
-</div>
+<?= View::factory('templates/comments/comments-list', array('page' => $page, 'user' => $user)); ?>
