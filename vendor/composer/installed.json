@@ -6,12 +6,12 @@
         "target-dir": "Symfony/Component/Yaml",
         "source": {
             "type": "git",
-            "url": "https://github.com/symfony/Yaml",
+            "url": "https://github.com/symfony/yaml.git",
             "reference": "v2.1.0-RC2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/symfony/Yaml/zipball/v2.1.0-RC2",
+            "url": "https://api.github.com/repos/symfony/yaml/zipball/v2.1.0-RC2",
             "reference": "v2.1.0-RC2",
             "shasum": ""
         },
@@ -53,12 +53,12 @@
         "version_normalized": "1.1.3.0",
         "source": {
             "type": "git",
-            "url": "git://github.com/sebastianbergmann/php-text-template.git",
+            "url": "https://github.com/sebastianbergmann/php-text-template.git",
             "reference": "1.1.3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/sebastianbergmann/php-text-template/zipball/1.1.3",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/1.1.3",
             "reference": "1.1.3",
             "shasum": ""
         },
@@ -98,20 +98,20 @@
         "version_normalized": "1.2.1.0",
         "source": {
             "type": "git",
-            "url": "git://github.com/sebastianbergmann/phpunit-mock-objects.git",
+            "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
             "reference": "1.2.1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/sebastianbergmann/phpunit-mock-objects/zipball/1.2.1",
+            "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/1.2.1",
             "reference": "1.2.1",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.3",
-            "phpunit/php-text-template": ">=1.1.1@stable",
             "ext-reflection": "*",
-            "ext-spl": "*"
+            "ext-spl": "*",
+            "php": ">=5.3.3",
+            "phpunit/php-text-template": ">=1.1.1@stable"
         },
         "suggest": {
             "ext-soap": "*"
@@ -150,12 +150,12 @@
         "version_normalized": "1.0.4.0",
         "source": {
             "type": "git",
-            "url": "git://github.com/sebastianbergmann/php-timer.git",
+            "url": "https://github.com/sebastianbergmann/php-timer.git",
             "reference": "1.0.4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/sebastianbergmann/php-timer/zipball/1.0.4",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/1.0.4",
             "reference": "1.0.4",
             "shasum": ""
         },
@@ -195,12 +195,12 @@
         "version_normalized": "1.1.5.0",
         "source": {
             "type": "git",
-            "url": "git://github.com/sebastianbergmann/php-token-stream.git",
+            "url": "https://github.com/sebastianbergmann/php-token-stream.git",
             "reference": "1.1.5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/sebastianbergmann/php-token-stream/zipball/1.1.5",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/1.1.5",
             "reference": "1.1.5",
             "shasum": ""
         },
@@ -241,12 +241,12 @@
         "version_normalized": "1.3.3.0",
         "source": {
             "type": "git",
-            "url": "git://github.com/sebastianbergmann/php-file-iterator.git",
+            "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
             "reference": "1.3.3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/sebastianbergmann/php-file-iterator/zipball/1.3.3",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/1.3.3",
             "reference": "1.3.3",
             "shasum": ""
         },
@@ -287,20 +287,20 @@
         "version_normalized": "1.2.6.0",
         "source": {
             "type": "git",
-            "url": "git://github.com/sebastianbergmann/php-code-coverage.git",
+            "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
             "reference": "1.2.6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/sebastianbergmann/php-code-coverage/zipball/1.2.6",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/1.2.6",
             "reference": "1.2.6",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3",
             "phpunit/php-file-iterator": ">=1.3.0@stable",
-            "phpunit/php-token-stream": ">=1.1.3@stable",
-            "phpunit/php-text-template": ">=1.1.1@stable"
+            "phpunit/php-text-template": ">=1.1.1@stable",
+            "phpunit/php-token-stream": ">=1.1.3@stable"
         },
         "suggest": {
             "ext-dom": "*",
@@ -330,8 +330,8 @@
         "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
         "homepage": "https://github.com/sebastianbergmann/php-code-coverage",
         "keywords": [
-            "testing",
             "coverage",
+            "testing",
             "xunit"
         ]
     },
@@ -341,33 +341,33 @@
         "version_normalized": "3.7.8.0",
         "source": {
             "type": "git",
-            "url": "git://github.com/sebastianbergmann/phpunit.git",
+            "url": "https://github.com/sebastianbergmann/phpunit.git",
             "reference": "3.7.8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/sebastianbergmann/phpunit/zipball/3.7.8",
+            "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3.7.8",
             "reference": "3.7.8",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.3",
-            "phpunit/php-file-iterator": ">=1.3.1",
-            "phpunit/php-text-template": ">=1.1.1",
-            "phpunit/php-code-coverage": ">=1.2.1",
-            "phpunit/php-timer": ">=1.0.2",
-            "phpunit/phpunit-mock-objects": ">=1.2.0",
-            "symfony/yaml": ">=2.1.0",
             "ext-dom": "*",
             "ext-pcre": "*",
             "ext-reflection": "*",
-            "ext-spl": "*"
+            "ext-spl": "*",
+            "php": ">=5.3.3",
+            "phpunit/php-code-coverage": ">=1.2.1",
+            "phpunit/php-file-iterator": ">=1.3.1",
+            "phpunit/php-text-template": ">=1.1.1",
+            "phpunit/php-timer": ">=1.0.2",
+            "phpunit/phpunit-mock-objects": ">=1.2.0",
+            "symfony/yaml": ">=2.1.0"
         },
         "suggest": {
-            "phpunit/php-invoker": ">=1.1.0",
             "ext-json": "*",
             "ext-simplexml": "*",
-            "ext-tokenizer": "*"
+            "ext-tokenizer": "*",
+            "phpunit/php-invoker": ">=1.1.0"
         },
         "time": "2012-10-16 22:37:08",
         "bin": [
@@ -402,9 +402,94 @@
         "description": "The PHP Unit Testing framework.",
         "homepage": "http://www.phpunit.de/",
         "keywords": [
-            "testing",
             "phpunit",
+            "testing",
             "xunit"
         ]
+    },
+    {
+        "name": "ezyang/htmlpurifier",
+        "version": "v4.8.0",
+        "version_normalized": "4.8.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ezyang/htmlpurifier.git",
+            "reference": "d0c392f77d2f2a3dcf7fcb79e2a1e2b8804e75b2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d0c392f77d2f2a3dcf7fcb79e2a1e2b8804e75b2",
+            "reference": "d0c392f77d2f2a3dcf7fcb79e2a1e2b8804e75b2",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2"
+        },
+        "time": "2016-07-16 12:58:58",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "HTMLPurifier": "library/"
+            },
+            "files": [
+                "library/HTMLPurifier.composer.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL"
+        ],
+        "authors": [
+            {
+                "name": "Edward Z. Yang",
+                "email": "admin@htmlpurifier.org",
+                "homepage": "http://ezyang.com"
+            }
+        ],
+        "description": "Standards compliant HTML filter written in PHP",
+        "homepage": "http://htmlpurifier.org/",
+        "keywords": [
+            "html"
+        ]
+    },
+    {
+        "name": "codex.editor/backend",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/codex-team/codex.editor.backend.git",
+            "reference": "3b537b8b1710310c43ff243d1031681c8bbd4da4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/codex-team/codex.editor.backend/zipball/3b537b8b1710310c43ff243d1031681c8bbd4da4",
+            "reference": "3b537b8b1710310c43ff243d1031681c8bbd4da4",
+            "shasum": ""
+        },
+        "require": {
+            "ezyang/htmlpurifier": "^4.8",
+            "php": ">=5.6"
+        },
+        "time": "2017-02-20 16:57:19",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "CodexEditor\\": "CodexEditor"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "khaydarov",
+                "email": "murod.haydarov@inbox.ru"
+            }
+        ],
+        "description": "Codex Editor server side example"
     }
 ]
