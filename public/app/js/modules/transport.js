@@ -224,19 +224,13 @@ var transport = {
     * Prepares and submit form
     * Send attaches by json-encoded stirng with hidden input
     */
-    submitAtlasForm : function (openEditorFlag) {
+    submitAtlasForm : function () {
 
         var atlasForm = document.forms.atlas;
 
         if (!atlasForm) return;
 
-        var openEditorFlagInput = document.createElement('input');
 
-        openEditorFlagInput.type = 'hidden';
-        openEditorFlagInput.name = 'openEditorFlag';
-        openEditorFlagInput.value = openEditorFlag;
-
-        atlasForm.append(openEditorFlagInput);
 
         var attachesInput = document.createElement('input');
 
@@ -266,6 +260,24 @@ var transport = {
         }, 100);
 
     },
+
+    /**
+    * Submits editor form for opening in full-screan page without saving
+    */
+    openEditorFullscrean : function () {
+
+        var atlasForm = document.forms.atlas,
+            openEditorFlagInput = document.createElement('input');
+
+        openEditorFlagInput.type = 'hidden';
+        openEditorFlagInput.name = 'openFullScreen';
+        openEditorFlagInput.value = 1;
+
+        atlasForm.append(openEditorFlagInput);
+
+        this.submitAtlasForm();
+
+    }
 
 };
 

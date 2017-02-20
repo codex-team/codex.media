@@ -49,7 +49,7 @@
     <div class="actions clear">
 
         <span class="button master fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
-        <span class="button fl_r" onclick="codex.transport.submitAtlasForm(true)">На весь экран</span>
+        <span class="button fl_r" onclick="codex.transport.openEditorFullscrean()">На весь экран</span>
 
         <? /**
         <? if ($user->isAdmin && $page->type == Model_Page::TYPE_SITE_NEWS): ?>

@@ -76,8 +76,8 @@ class Controller_Pages extends Controller_Base_preDispatch
         $errors    = array();
         $csrfToken = Arr::get($_POST, 'csrf');
 
-        $open_editor_flag = Arr::get($_POST, 'openEditorFlag', false);
-        $this->view['editorHideToolbar'] = $open_editor_flag;
+        $openFullScreen = (int) Arr::get($_POST, 'openFullScreen') === 1;
+        $this->view['editorHideToolbar'] = !$openFullScreen;
 
 
         if (Security::check($csrfToken)) {
@@ -85,7 +85,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             /** Сабмит формы */
             $page = self::get_form();
 
-            if ($open_editor_flag) {
+            if ($openFullScreen) {
 
                 $this->view['page']   = $page;
                 $this->view['errors'] = $errors;
@@ -93,7 +93,6 @@ class Controller_Pages extends Controller_Base_preDispatch
 
                 $this->template->content = View::factory('templates/pages/writing', $this->view);
                 return;
-
 
             }
 
