@@ -250,7 +250,7 @@ var transport = {
 
         window.setTimeout(function () {
 
-            JSONinput.innerHTML = JSON.stringify(codex.editor.state.jsonOutput);
+            JSONinput.innerHTML = JSON.stringify({ data: codex.editor.state.jsonOutput} );
 
             /**
              * Send form

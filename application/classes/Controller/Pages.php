@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+use CodexEditor\CodexEditor;
+
 class Controller_Pages extends Controller_Base_preDispatch
 {
     /**
@@ -79,6 +81,23 @@ class Controller_Pages extends Controller_Base_preDispatch
         $openFullScreen = (int) Arr::get($_POST, 'openFullScreen') === 1;
 
         if (Security::check($csrfToken)) {
+
+            // Empty JSON
+            if (Arr::get($_POST, 'content') != '[]') {
+
+                $content = Arr::get($_POST, 'content');
+
+                try {
+
+                    $editor = new CodexEditor($content);
+                    $_POST['content'] = $editor->getData();
+
+                } catch ( Exception $e) {
+
+                    // Handle this situation
+                }
+
+            }
 
             /** Сабмит формы */
             $page = self::get_form();
