@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.4.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.4.0
@@ -92,7 +92,10 @@ abstract class PHPUnit_Util_PHP
     protected function getPhpBinary()
     {
         if ($this->phpBinary === NULL) {
-            if (defined("PHP_BINARY")) {
+            if (($e = getenv("PHP_BINARY")) !== false) {
+                $this->phpBinary = $e;
+            }
+            else if (defined("PHP_BINARY")) {
                 $this->phpBinary = PHP_BINARY;
             } else if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
                 if (strpos($_SERVER['_'], 'phpunit') !== FALSE) {
@@ -127,7 +130,7 @@ abstract class PHPUnit_Util_PHP
             if (!is_readable($this->phpBinary)) {
                 $this->phpBinary = 'php';
             } else {
-                $this->phpBinary = escapeshellcmd($this->phpBinary);
+                $this->phpBinary = escapeshellarg($this->phpBinary);
             }
         }
 
@@ -222,8 +225,9 @@ abstract class PHPUnit_Util_PHP
      */
     protected function processChildResult(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr)
     {
+        $time = 0;
+
         if (!empty($stderr)) {
-            $time = 0;
             $result->addError(
               $test,
               new PHPUnit_Framework_Exception(trim($stderr)), $time
@@ -233,13 +237,16 @@ abstract class PHPUnit_Util_PHP
                 throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
             });
             try {
-                $childResult = unserialize($stdout);
+                if (strpos($stdout, "#!/usr/bin/env php\n") === 0) {
+                    $stdout = substr($stdout, 19);
+                }
+
+                $childResult = unserialize(str_replace("#!/usr/bin/env php\n", '', $stdout));
                 restore_error_handler();
             } catch (ErrorException $e) {
                 restore_error_handler();
                 $childResult = FALSE;
 
-                $time = 0;
                 $result->addError(
                   $test, new PHPUnit_Framework_Exception(trim($stdout), 0, $e), $time
                 );

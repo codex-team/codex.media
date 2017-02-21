@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
@@ -90,7 +90,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
@@ -388,12 +388,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @return string
+     * @return boolean
      * @since  Method available since Release 3.6.0
      */
     public function hasOutput()
     {
-        if (empty($this->output)) {
+        if (strlen($this->output) === 0) {
             return FALSE;
         }
 
@@ -692,7 +692,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $result->convertErrorsToExceptions($this->useErrorHandler);
         }
 
-        if (!$this->handleDependencies()) {
+        if (!$this instanceof PHPUnit_Framework_Warning && !$this->handleDependencies()) {
             return;
         }
 
@@ -735,6 +735,18 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $strict = 'FALSE';
             }
 
+            if (defined('PHPUNIT_COMPOSER_INSTALL')) {
+                $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, TRUE);
+            } else {
+                $composerAutoload = '\'\'';
+            }
+
+            if (defined('__PHPUNIT_PHAR__')) {
+                $phar = var_export(__PHPUNIT_PHAR__, TRUE);
+            } else {
+                $phar = '\'\'';
+            }
+
             $data            = var_export(serialize($this->data), TRUE);
             $dependencyInput = var_export(serialize($this->dependencyInput), TRUE);
             $includePath     = var_export(get_include_path(), TRUE);
@@ -746,6 +758,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
             $template->setVar(
               array(
+                'composerAutoload'               => $composerAutoload,
+                'phar'                           => $phar,
                 'filename'                       => $class->getFileName(),
                 'className'                      => $class->getName(),
                 'methodName'                     => $this->name,
@@ -845,6 +859,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         catch (Exception $e) {
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
             $this->statusMessage = $e->getMessage();
+        }
+
+        // Clean up mock objects' internal state saved in static members.
+        foreach ($this->mockObjects as $mockObject) {
+            $mockObject->__phpunit_cleanup();
         }
 
         // Clean up the mock objects.
@@ -1285,14 +1304,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Returns a mock object for the specified class.
      *
-     * @param  string  $originalClassName
-     * @param  array   $methods
-     * @param  array   $arguments
-     * @param  string  $mockClassName
-     * @param  boolean $callOriginalConstructor
-     * @param  boolean $callOriginalClone
-     * @param  boolean $callAutoload
-     * @param  boolean $cloneArguments
+     * @param  string     $originalClassName       Name of the class to mock.
+     * @param  array|null $methods                 When provided, only methods whose names are in the array
+     *                                             are replaced with a configurable test double. The behavior
+     *                                             of the other methods is not changed.
+     *                                             Providing null means that no methods will be replaced.
+     * @param  array      $arguments               Parameters to pass to the original class' constructor.
+     * @param  string     $mockClassName           Class name for the generated test double class.
+     * @param  boolean    $callOriginalConstructor Can be used to disable the call to the original class' constructor.
+     * @param  boolean    $callOriginalClone       Can be used to disable the call to the original class' clone constructor.
+     * @param  boolean    $callAutoload            Can be used to disable __autoload() during the generation of the test double class.
+     * @param  boolean    $cloneArguments
      * @return PHPUnit_Framework_MockObject_MockObject
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.0.0

@@ -2,7 +2,7 @@
 /**
  * PHP_CodeCoverage
  *
- * Copyright (c) 2009-2012, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2009-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,8 +36,8 @@
  *
  * @category   PHP
  * @package    CodeCoverage
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      File available since Release 1.1.0
@@ -48,8 +48,8 @@
  *
  * @category   PHP
  * @package    CodeCoverage
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      Class available since Release 1.1.0
@@ -64,7 +64,7 @@ class PHP_CodeCoverage_Report_HTML_Renderer_Dashboard extends PHP_CodeCoverage_R
     {
         $classes  = $node->getClassesAndTraits();
         $template = new Text_Template(
-          $this->templatePath . 'dashboard.html'
+          $this->templatePath . 'dashboard.html', '{{', '}}'
         );
 
         $this->setCommonTemplateVariables($template, $node);
@@ -228,29 +228,13 @@ class PHP_CodeCoverage_Report_HTML_Renderer_Dashboard extends PHP_CodeCoverage_R
         return $buffer;
     }
 
-    protected function getBreadcrumbs(PHP_CodeCoverage_Report_Node $node)
+    protected function getActiveBreadcrumb(PHP_CodeCoverage_Report_Node $node, $isDirectory)
     {
-        $breadcrumbs = '';
-
-        $path = $node->getPathAsArray();
-
-        foreach ($path as $step) {
-            if ($step !== $node) {
-                $breadcrumbs .= sprintf(
-                  '        <li><a href="%s.html">%s</a> <span class="divider">/</span></li>' . "\n",
-                  $step->getId(),
-                  $step->getName()
-                );
-            } else {
-                $breadcrumbs .= sprintf(
-                  '        <li><a href="%s.html">%s</a></li>' . "\n" .
-                  '        <li class="active">(Dashboard)</li>' . "\n",
-                  $step->getId(),
-                  $step->getName()
-                );
-            }
-        }
-
-        return $breadcrumbs;
+        return sprintf(
+          '        <li><a href="%s.html">%s</a></li>' . "\n" .
+          '        <li class="active">(Dashboard)</li>' . "\n",
+          $node->getId(),
+          $node->getName()
+        );
     }
 }

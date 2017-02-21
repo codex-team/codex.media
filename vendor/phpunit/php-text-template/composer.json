@@ -5,28 +5,25 @@
     "keywords": [
         "template"
     ],
-    "homepage": "http://www.phpunit.de/",
+    "homepage": "https://github.com/sebastianbergmann/php-text-template/",
     "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Sebastian Bergmann",
-            "email": "sb@sebastian-bergmann.de",
+            "email": "sebastian@phpunit.de",
             "role": "lead"
         }
     ],
     "support": {
-        "issues": "https://github.com/sebastianbergmann/php-text-template/issues",
-        "irc": "irc://irc.freenode.net/phpunit"
+        "issues": "https://github.com/sebastianbergmann/php-text-template/issues"
     },
     "require": {
         "php": ">=5.3.3"
     },
     "autoload": {
         "classmap": [
-            "Text/"
+            "src/"
         ]
-    },
-    "include-path": [
-        ""
-    ]
+    }
 }
+

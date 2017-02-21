@@ -2,7 +2,7 @@
 /**
  * PHP_CodeCoverage
  *
- * Copyright (c) 2009-2012, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2009-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,8 +36,8 @@
  *
  * @category   PHP
  * @package    CodeCoverage
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      File available since Release 1.0.0
@@ -48,8 +48,8 @@
  *
  * @category   PHP
  * @package    CodeCoverage
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      Class available since Release 1.0.0
@@ -114,25 +114,9 @@ class PHP_CodeCoverage_Util
                 switch (get_class($token)) {
                     case 'PHP_Token_COMMENT':
                     case 'PHP_Token_DOC_COMMENT': {
-                        $count = substr_count($token, "\n");
-                        $line  = $token->getLine();
-
-                        for ($i = $line; $i < $line + $count; $i++) {
-                            self::$ignoredLines[$filename][$i] = TRUE;
-                        }
-
-                        if ($token instanceof PHP_Token_DOC_COMMENT) {
-                            // Workaround for the fact the DOC_COMMENT token
-                            // does not include the final \n character in its
-                            // text.
-                            if (substr(trim($lines[$i-1]), -2) == '*/') {
-                                self::$ignoredLines[$filename][$i] = TRUE;
-                            }
-
-                            break;
-                        }
 
                         $_token = trim($token);
+                        $_line  = trim($lines[$token->getLine() - 1]);
 
                         if ($_token == '// @codeCoverageIgnore' ||
                             $_token == '//@codeCoverageIgnore') {
@@ -148,6 +132,26 @@ class PHP_CodeCoverage_Util
                         else if ($_token == '// @codeCoverageIgnoreEnd' ||
                                  $_token == '//@codeCoverageIgnoreEnd') {
                             $stop = TRUE;
+                        }
+
+                        // be sure the comment doesn't have some token BEFORE it on the same line...
+                        // it would not be safe to ignore the whole line in those cases.
+                        if (0 === strpos($_token, $_line)) {
+                            $count = substr_count($token, "\n");
+                            $line  = $token->getLine();
+
+                            for ($i = $line; $i < $line + $count; $i++) {
+                                self::$ignoredLines[$filename][$i] = TRUE;
+                            }
+
+                            if ($token instanceof PHP_Token_DOC_COMMENT) {
+                                // Workaround for the fact the DOC_COMMENT token
+                                // does not include the final \n character in its
+                                // text.
+                                if (substr(trim($lines[$i-1]), -2) == '*/') {
+                                    self::$ignoredLines[$filename][$i] = TRUE;
+                                }
+                            }
                         }
                     }
                     break;
@@ -180,9 +184,11 @@ class PHP_CodeCoverage_Util
                                   $classes[$token->getName()]['methods']
                                 );
 
-                                $lastMethod = array_pop(
-                                  $classes[$token->getName()]['methods']
-                                );
+                                do {
+                                    $lastMethod = array_pop(
+                                      $classes[$token->getName()]['methods']
+                                    );
+                                } while ($lastMethod !== NULL && substr($lastMethod['signature'], 0, 18) == 'anonymous function');
 
                                 if ($lastMethod === NULL) {
                                     $lastMethod = $firstMethod;
@@ -200,15 +206,6 @@ class PHP_CodeCoverage_Util
                                     self::$ignoredLines[$filename][$i] = TRUE;
                                 }
                             }
-                        }
-                    }
-                    break;
-
-                    case 'PHP_Token_INTERFACE': {
-                        $endLine = $token->getEndLine();
-
-                        for ($i = $token->getLine(); $i <= $endLine; $i++) {
-                            self::$ignoredLines[$filename][$i] = TRUE;
                         }
                     }
                     break;

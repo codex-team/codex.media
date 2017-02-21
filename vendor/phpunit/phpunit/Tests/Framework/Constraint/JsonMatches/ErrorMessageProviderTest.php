@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2002-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.0
@@ -45,7 +45,7 @@
 /**
  * @package    PHPUnit
  * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2011-2012 Bastian Feder <php@bastian-feder.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.0
@@ -56,7 +56,7 @@ class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends PHPUnit_
      * @dataProvider translateTypeToPrefixDataprovider
      * @covers PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix
      */
-    public function testTranslatTypeToPrefix($expected, $type)
+    public function testTranslateTypeToPrefix($expected, $type)
     {
         $this->assertEquals(
             $expected,
@@ -86,27 +86,27 @@ class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends PHPUnit_
                 NULL, 'json_error_none', ''
             ),
             'JSON_ERROR_DEPTH' => array(
-                'Maximum stack depth exceeded', 'json_error_depth', ''
+                'Maximum stack depth exceeded', JSON_ERROR_DEPTH, ''
             ),
             'prefixed JSON_ERROR_DEPTH' => array(
-                'TUX: Maximum stack depth exceeded', 'json_error_depth', 'TUX: '
+                'TUX: Maximum stack depth exceeded', JSON_ERROR_DEPTH, 'TUX: '
             ),
             'JSON_ERROR_STATE_MISMatch' => array(
-                'Underflow or the modes mismatch', 'json_error_state_mismatch', ''
+                'Underflow or the modes mismatch', JSON_ERROR_STATE_MISMATCH, ''
             ),
             'JSON_ERROR_CTRL_CHAR' => array(
-                'Unexpected control character found', 'json_error_ctrl_char', ''
+                'Unexpected control character found', JSON_ERROR_CTRL_CHAR, ''
             ),
             'JSON_ERROR_SYNTAX' => array(
-                'Syntax error, malformed JSON', 'json_error_syntax', ''
+                'Syntax error, malformed JSON', JSON_ERROR_SYNTAX, ''
             ),
             'JSON_ERROR_UTF8`' => array(
                 'Malformed UTF-8 characters, possibly incorrectly encoded',
-                'json_error_utf8',
+                JSON_ERROR_UTF8,
                 ''
             ),
             'Invalid error indicator' => array(
-                'Unknown error', 'invalid_error_indicator', ''
+                'Unknown error', 55, ''
             ),
         );
     }

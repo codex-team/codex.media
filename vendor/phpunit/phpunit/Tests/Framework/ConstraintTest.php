@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
@@ -52,7 +52,7 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPAR
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
@@ -3534,6 +3534,99 @@ EOF
 
         try {
             $constraint->evaluate(array(1,2));
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              <<<EOF
+Failed asserting that actual size 2 does not match expected size 2.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_SameSize
+     */
+    public function testConstraintSameSizeWithAnArray()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_SameSize(array(1,2,3,4,5));
+
+        $this->assertTrue($constraint->evaluate(array(6,7,8,9,10), '', TRUE));
+        $this->assertFalse($constraint->evaluate(array(1,2,3,4), '', TRUE));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_SameSize
+     */
+    public function testConstraintSameSizeWithAnIteratorWhichDoesNotImplementCountable()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_SameSize(new TestIterator(array(1,2,3,4,5)));
+
+        $this->assertTrue($constraint->evaluate(new TestIterator(array(6,7,8,9,10)), '', TRUE));
+        $this->assertFalse($constraint->evaluate(new TestIterator(array(1,2,3,4)), '', TRUE));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_SameSize
+     */
+    public function testConstraintSameSizeWithAnObjectImplementingCountable()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_SameSize(new ArrayObject(array(1,2,3,4,5)));
+
+        $this->assertTrue($constraint->evaluate(new ArrayObject(array(6,7,8,9,10)), '', TRUE));
+        $this->assertFalse($constraint->evaluate(new ArrayObject(array(1,2,3,4)), '', TRUE));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_SameSize
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintSameSizeFailing()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_SameSize(array(1,2,3,4,5));
+
+        try {
+            $constraint->evaluate(array(1,2));
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              <<<EOF
+Failed asserting that actual size 2 matches expected size 5.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_SameSize
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintNotSameSizeFailing()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+          new PHPUnit_Framework_Constraint_SameSize(array(1,2))
+        );
+
+        try {
+            $constraint->evaluate(array(3,4));
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Runner
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
@@ -49,14 +49,14 @@
  * @package    PHPUnit
  * @subpackage Runner
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
 class PHPUnit_Runner_Version
 {
-    const VERSION = '3.7.8';
+    const VERSION = '3.7.38';
     protected static $version;
 
     /**
@@ -72,10 +72,10 @@ class PHPUnit_Runner_Version
             if (is_dir(dirname(dirname(__DIR__)) . '/.git')) {
                 $dir = getcwd();
                 chdir(__DIR__);
-                $version = exec('git describe --tags');
+                $version = exec('git describe --tags 2>&1', $output, $returnCode);
                 chdir($dir);
 
-                if ($version) {
+                if ($version && $returnCode === 0) {
                     if (count(explode('.', self::VERSION)) == 3) {
                         self::$version = $version;
                     } else {
@@ -83,6 +83,8 @@ class PHPUnit_Runner_Version
 
                         self::$version = self::VERSION . '-' . $version[2];
                     }
+                } else {
+                    self::$version = self::VERSION . '-dev';
                 }
             }
         }

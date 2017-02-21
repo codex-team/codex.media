@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
@@ -50,6 +50,7 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPAR
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Author.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Book.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithToString.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'SampleArrayAccess.php';
 
 /**
  *
@@ -57,7 +58,7 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPAR
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
@@ -268,7 +269,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertArrayHasKey
      */
-    public function testAssertArrayHasKeyAcceptsArrayAccessValue()
+    public function testAssertArrayHasKeyAcceptsArrayObjectValue()
     {
         $array = new ArrayObject();
         $array['foo'] = 'bar';
@@ -279,9 +280,30 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertArrayHasKey
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
-    public function testAssertArrayHasKeyProperlyFailsWithArrayAccessValue()
+    public function testAssertArrayHasKeyProperlyFailsWithArrayObjectValue()
     {
         $array = new ArrayObject();
+        $array['bar'] = 'bar';
+        $this->assertArrayHasKey('foo', $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     */
+    public function testAssertArrayHasKeyAcceptsArrayAccessValue()
+    {
+        $array = new SampleArrayAccess();
+        $array['foo'] = 'bar';
+        $this->assertArrayHasKey('foo', $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertArrayHasKeyProperlyFailsWithArrayAccessValue()
+    {
+        $array = new SampleArrayAccess();
         $array['bar'] = 'bar';
         $this->assertArrayHasKey('foo', $array);
     }
@@ -300,7 +322,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertArrayNotHasKey
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
-    public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue()
+    public function testAssertArrayNotHasKeyProperlyFailsWithArrayAccessValue()
     {
         $array = new ArrayObject();
         $array['bar'] = 'bar';
@@ -632,6 +654,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array(array(array(2.3)), array(array(4.2)), 0.5),
             array(new Struct(2.3), new Struct(4.2), 0.5),
             array(array(new Struct(2.3)), array(new Struct(4.2)), 0.5),
+            // NAN
+            array(NAN, NAN),
             // arrays
             array(array(), array(0 => 1)),
             array(array(0 => 1), array()),
@@ -2836,6 +2860,29 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertTag
      */
+    public function testAssertTagCdataContentTrue()
+    {
+        $matcher = array('tag' => 'script',
+                         'content' => 'alert(\'Hello, world!\');');
+        $this->assertTag($matcher, $this->html);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertTag
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertTagCdataContentFalse()
+    {
+        $matcher = array('tag' => 'script',
+                         'content' => 'asdf');
+        $this->assertTag($matcher, $this->html);
+    }
+
+
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertTag
+     */
     public function testAssertTagAttributesTrueA()
     {
         $matcher = array('tag' => 'span',
@@ -4009,6 +4056,63 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertSameSize
+     */
+    public function testAssertSameSize()
+    {
+        $this->assertSameSize(array(1,2), array(3,4));
+
+        try {
+            $this->assertSameSize(array(1,2), array(1,2,3));
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertSameSize
+     */
+    public function testAssertSameSizeThrowsExceptionIfExpectedIsNotCountable()
+    {
+
+        try {
+            $this->assertSameSize('a', array());
+        }
+
+        catch (PHPUnit_Framework_Exception $e) {
+            $this->assertEquals('Argument #1 of PHPUnit_Framework_Assert::assertSameSize() must be a countable', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertSameSize
+     */
+    public function testAssertSameSizeThrowsExceptionIfActualIsNotCountable()
+    {
+
+        try {
+            $this->assertSameSize(array(), '');
+        }
+
+        catch (PHPUnit_Framework_Exception $e) {
+            $this->assertEquals('Argument #2 of PHPUnit_Framework_Assert::assertSameSize() must be a countable', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString
      */
     public function testAssertJsonStringEqualsJsonString()
@@ -4028,7 +4132,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         try {
             $this->assertJsonStringEqualsJsonString($expected, $actual);
-        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
         $this->fail('Expected exception not found');
@@ -4052,7 +4156,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonStringNotEqualsJsonStringErrorRaised($expected, $actual)
     {
-        $this->assertJsonStringNotEqualsJsonString($expected, $actual);
+        try {
+            $this->assertJsonStringNotEqualsJsonString($expected, $actual);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+        $this->fail('Expected exception not found');
     }
 
     /**

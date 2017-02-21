@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+use CodexEditor\CodexEditor;
+
 class Controller_Pages extends Controller_Base_preDispatch
 {
     /**
@@ -196,12 +198,17 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function get_form()
     {
+        /**
+         * @var $editor - Editor's backend
+         * Gives pure data
+         */
+        $editor = new CodexEditor(Arr::get($_POST, 'content'));
         $id   = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
         $page = new Model_Page($id);
 
         $page->id_parent     = (int) Arr::get($_POST, 'id_parent',    0);
         $page->title         =       Arr::get($_POST, 'title',        '');
-        $page->content       =       Arr::get($_POST, 'content',      '');
+        $page->content       =       $editor->getData();
         // $page->is_menu_item  = (int) Arr::get($_POST, 'is_menu_item', 0);
         // $page->is_news_page  = (int) Arr::get($_POST, 'is_news_page', 0);
         $page->rich_view     = (int) Arr::get($_POST, 'rich_view',    0);

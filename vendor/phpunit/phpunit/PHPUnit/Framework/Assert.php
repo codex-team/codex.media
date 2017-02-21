@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
@@ -78,7 +78,7 @@ abstract class PHPUnit_Framework_Assert
         }
         if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              1, 'array or ArrayAccess'
+              2, 'array or ArrayAccess'
             );
         }
 
@@ -104,7 +104,7 @@ abstract class PHPUnit_Framework_Assert
         }
         if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              1, 'array or ArrayAccess'
+              2, 'array or ArrayAccess'
             );
         }
 
@@ -1578,7 +1578,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts that a string ends with a given prefix.
+     * Asserts that a string ends with a given suffix.
      *
      * @param  string $suffix
      * @param  string $string
@@ -1601,7 +1601,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts that a string ends not with a given prefix.
+     * Asserts that a string ends not with a given suffix.
      *
      * @param  string $suffix
      * @param  string $string
@@ -1773,6 +1773,9 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = FALSE, $message = '')
     {
+        $expectedElement = clone $expectedElement;
+        $actualElement   = clone $actualElement;
+
         self::assertEquals(
           $expectedElement->tagName,
           $actualElement->tagName,
@@ -1957,13 +1960,13 @@ abstract class PHPUnit_Framework_Assert
      * match criteria for the assertion:
      *
      *  - `id`           : the node with the given id attribute must match the
-     *                     corresponsing value.
+     *                     corresponding value.
      *  - `tag`          : the node type must match the corresponding value.
-     *  - `attributes`   : a hash. The node's attributres must match the
-     *                     corresponsing values in the hash.
+     *  - `attributes`   : a hash. The node's attributes must match the
+     *                     corresponding values in the hash.
      *  - `content`      : The text content must match the given value.
      *  - `parent`       : a hash. The node's parent must match the
-     *                     corresponsing hash.
+     *                     corresponding hash.
      *  - `child`        : a hash. At least one of the node's immediate children
      *                     must meet the criteria described by the hash.
      *  - `ancestor`     : a hash. At least one of the node's ancestors must
@@ -2135,6 +2138,22 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a string is a valid JSON string.
+     *
+     * @param  string $filename
+     * @param  string $message
+     * @since  Method available since Release 3.7.20
+     */
+    public static function assertJson($expectedJson, $message = '')
+    {
+        if (!is_string($expectedJson)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        self::assertThat($expectedJson, self::isJson(), $message);
+    }
+
+    /**
      * Asserts that two given JSON encoded objects or arrays are equal.
      *
      * @param string $expectedJson
@@ -2143,24 +2162,13 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message = '')
     {
-        $expected = json_decode($expectedJson);
-        if ($jsonError = json_last_error()) {
-            $message .=
-                PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
-                    $jsonError,
-                    PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix('expected')
-                );
-        }
+        self::assertJson($expectedJson, $message);
+        self::assertJson($actualJson, $message);
 
+        $expected = json_decode($expectedJson);
         $actual   = json_decode($actualJson);
-        if ($jsonError = json_last_error()) {
-            $message .=
-                PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
-                    $jsonError,
-                    PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix('actual')
-                );
-        }
-        return self::assertEquals($expected, $actual, $message);
+
+        self::assertEquals($expected, $actual, $message);
     }
 
     /**
@@ -2172,23 +2180,11 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $message = '')
     {
-        $expected = json_decode($expectedJson);
-        if ($jsonError = json_last_error()) {
-            $message .=
-                PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
-                    $jsonError,
-                    PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix('expected')
-                );
-        }
+        self::assertJson($expectedJson, $message);
+        self::assertJson($actualJson, $message);
 
+        $expected = json_decode($expectedJson);
         $actual   = json_decode($actualJson);
-        if ($jsonError = json_last_error()) {
-            $message .=
-                PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
-                    $jsonError,
-                    PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix('actual')
-                );
-        }
 
         self::assertNotEquals($expected, $actual, $message);
     }
@@ -2203,14 +2199,14 @@ abstract class PHPUnit_Framework_Assert
     public static function assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = '')
     {
         self::assertFileExists($expectedFile, $message);
+        $expectedJson = file_get_contents($expectedFile);
 
-        if (!is_string($actualJson)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
+        self::assertJson($expectedJson, $message);
+        self::assertJson($actualJson, $message);
 
         // call constraint
         $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
-            file_get_contents($expectedFile)
+          $expectedJson
         );
 
         self::assertThat($actualJson, $constraint, $message);
@@ -2226,14 +2222,14 @@ abstract class PHPUnit_Framework_Assert
     public static function assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message = '')
     {
         self::assertFileExists($expectedFile, $message);
+        $expectedJson = file_get_contents($expectedFile);
 
-        if (!is_string($actualJson)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
+        self::assertJson($expectedJson, $message);
+        self::assertJson($actualJson, $message);
 
         // call constraint
         $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
-            file_get_contents($expectedFile)
+          $expectedJson
         );
 
         self::assertThat($actualJson, new PHPUnit_Framework_Constraint_Not($constraint), $message);
@@ -2254,9 +2250,12 @@ abstract class PHPUnit_Framework_Assert
         $actualJson = file_get_contents($actualFile);
         $expectedJson = file_get_contents($expectedFile);
 
+        self::assertJson($expectedJson, $message);
+        self::assertJson($actualJson, $message);
+
         // call constraint
         $constraintExpected = new PHPUnit_Framework_Constraint_JsonMatches(
-            file_get_contents($expectedFile)
+          $expectedJson
         );
 
         $constraintActual = new PHPUnit_Framework_Constraint_JsonMatches($actualJson);
@@ -2280,9 +2279,12 @@ abstract class PHPUnit_Framework_Assert
         $actualJson = file_get_contents($actualFile);
         $expectedJson = file_get_contents($expectedFile);
 
+        self::assertJson($expectedJson, $message);
+        self::assertJson($actualJson, $message);
+
         // call constraint
         $constraintExpected = new PHPUnit_Framework_Constraint_JsonMatches(
-            file_get_contents($expectedFile)
+          $expectedJson
         );
 
         $constraintActual = new PHPUnit_Framework_Constraint_JsonMatches($actualJson);
@@ -2376,6 +2378,7 @@ abstract class PHPUnit_Framework_Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_Callback matcher object.
      *
+     * @param callable $callback
      * @return PHPUnit_Framework_Constraint_Callback
      */
     public static function callback($callback)
@@ -2392,6 +2395,17 @@ abstract class PHPUnit_Framework_Assert
     public static function isFalse()
     {
         return new PHPUnit_Framework_Constraint_IsFalse;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_IsJson matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_IsJson
+     * @since  Method available since Release 3.7.20
+     */
+    public static function isJson()
+    {
+        return new PHPUnit_Framework_Constraint_IsJson;
     }
 
     /**
@@ -2523,6 +2537,7 @@ abstract class PHPUnit_Framework_Assert
     {
         return new PHPUnit_Framework_Constraint_IsEmpty;
     }
+
     /**
      * Returns a PHPUnit_Framework_Constraint_FileExists matcher object.
      *
