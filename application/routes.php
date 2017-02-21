@@ -38,7 +38,7 @@ Route::set('CONTACTS', 'contacts')->defaults(array(
 /**
  * Pages section
  */
-Route::set('NEW_PAGE', 'p/save')->defaults(array(
+Route::set('NEW_PAGE', 'p/writing')->defaults(array(
     'controller' => 'pages',
     'action' => 'save'
 ));
@@ -57,6 +57,7 @@ Route::set('ACTION_FOR_PAGE', 'p/<id>/<uri>/<action>',
 )->defaults(array(
     'controller' => 'pages',
 ));
+
 
 
 /**

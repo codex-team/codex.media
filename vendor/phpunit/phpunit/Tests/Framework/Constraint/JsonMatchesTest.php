@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2002-2011 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.0
@@ -45,7 +45,7 @@
 /**
  * @package    PHPUnit
  * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2011 Bastian Feder <php@bastian-feder.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.0
@@ -58,7 +58,6 @@ class Framework_Constraint_JsonMatchesTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Constraint_JsonMatches::evaluate
      * @covers PHPUnit_Framework_Constraint_JsonMatches::matches
      * @covers PHPUnit_Framework_Constraint_JsonMatches::__construct
-     * @covers PHPUnit_Framework_Constraint_JsonMatches::getJsonError
      */
     public function testEvaluate($expected, $jsonOther, $jsonValue)
     {

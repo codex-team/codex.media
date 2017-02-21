@@ -78,10 +78,23 @@ class Controller_Pages extends Controller_Base_preDispatch
         $errors    = array();
         $csrfToken = Arr::get($_POST, 'csrf');
 
+        $openFullScreen = (int) Arr::get($_POST, 'openFullScreen') === 1;
+
         if (Security::check($csrfToken)) {
 
             /** Сабмит формы */
             $page = self::get_form();
+
+            if ($openFullScreen) {
+
+                $this->view['page']   = $page;
+                $this->view['errors'] = $errors;
+                $this->view['attachments'] = json_encode($page->attachments);
+
+                $this->template->content = View::factory('templates/pages/writing', $this->view);
+                return;
+
+            }
 
             if ($page->title && Arr::get($_POST, 'title', '')) {
 
@@ -125,7 +138,7 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->view['errors'] = $errors;
         $this->view['attachments'] = json_encode($page->attachments);
 
-        $this->template->content = View::factory('templates/pages/new', $this->view);
+        $this->template->content = View::factory('templates/pages/writing', $this->view);
     }
 
     /**

@@ -2,7 +2,7 @@
 /**
  * PHP_CodeCoverage
  *
- * Copyright (c) 2009-2012, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2009-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,8 +36,8 @@
  *
  * @category   PHP
  * @package    CodeCoverage
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      File available since Release 1.0.0
@@ -62,8 +62,8 @@ if (!function_exists('trait_exists')) {
  *
  * @category   PHP
  * @package    CodeCoverage
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      Class available since Release 1.0.0
@@ -446,6 +446,11 @@ class PHP_CodeCoverage
               $testClassName, $id->getName()
             );
 
+            if ($linesToBeCovered === FALSE) {
+                $data = array();
+                return;
+            }
+
             if ($this->mapTestClassNameToCoveredClassName &&
                 empty($linesToBeCovered)) {
                 $testedClass = substr($testClassName, 0, -4);
@@ -611,11 +616,11 @@ class PHP_CodeCoverage
         }
 
         if (strpos($docComment, '@coversNothing') !== FALSE) {
-            return $result;
+            return FALSE;
         }
 
         $classShortcut = preg_match_all(
-          '(@coversDefaultClass\s+(?P<coveredClass>.*?)\s*$)m',
+          '(@coversDefaultClass\s+(?P<coveredClass>[^\s]++)\s*$)m',
           $class->getDocComment(),
           $matches
         );
@@ -634,7 +639,7 @@ class PHP_CodeCoverage
         }
 
         $match = preg_match_all(
-          '(@covers\s+(?P<coveredElement>.*?)\s*(\(\s*\))?\s*$)m',
+          '(@covers\s+(?P<coveredElement>[^\s()]++)[\s()]*$)m',
           $docComment,
           $matches
         );

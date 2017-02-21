@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.4.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.4.0
@@ -193,17 +193,16 @@ class PHPUnit_Util_GlobalState
         $files     = get_included_files();
         $prefix    = FALSE;
         $result    = '';
-        $script    = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
 
-        if (substr($script, -5) == '.phar') {
-            $prefix = 'phar://' . $script . '/';
+        if (defined('__PHPUNIT_PHAR__')) {
+            $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
         }
 
         for ($i = count($files) - 1; $i > 0; $i--) {
             $file = $files[$i];
 
-            if ($prefix !== FALSE) {
-                $file = str_replace($prefix, '', $file);
+            if ($prefix !== FALSE && strpos($file, $prefix) === 0) {
+                continue;
             }
 
             if (!isset($blacklist[$file]) && is_file($file)) {
@@ -296,7 +295,7 @@ class PHPUnit_Util_GlobalState
                 strpos($declaredClasses[$i], 'PHP_CodeCoverage') !== 0 &&
                 strpos($declaredClasses[$i], 'PHP_Invoker') !== 0 &&
                 strpos($declaredClasses[$i], 'PHP_Timer') !== 0 &&
-                strpos($declaredClasses[$i], 'PHP_TokenStream') !== 0 &&
+                strpos($declaredClasses[$i], 'PHP_Token_Stream') !== 0 &&
                 strpos($declaredClasses[$i], 'Symfony') !== 0 &&
                 strpos($declaredClasses[$i], 'Text_Template') !== 0 &&
                 !$declaredClasses[$i] instanceof PHPUnit_Framework_Test) {
@@ -384,6 +383,7 @@ class PHPUnit_Util_GlobalState
     public static function phpunitFiles()
     {
         if (self::$phpunitFiles === NULL) {
+            self::$phpunitFiles = array();
             self::addDirectoryContainingClassToPHPUnitFilesList('File_Iterator');
             self::addDirectoryContainingClassToPHPUnitFilesList('PHP_CodeCoverage');
             self::addDirectoryContainingClassToPHPUnitFilesList('PHP_Invoker');

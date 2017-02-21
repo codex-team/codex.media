@@ -2,7 +2,7 @@
 /**
  * PHP_CodeCoverage
  *
- * Copyright (c) 2009-2012, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2009-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,8 +36,8 @@
  *
  * @category   PHP
  * @package    CodeCoverage
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      File available since Release 1.1.0
@@ -62,8 +62,8 @@ if (!defined('T_CALLABLE')) {
  *
  * @category   PHP
  * @package    CodeCoverage
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      Class available since Release 1.1.0
@@ -106,7 +106,7 @@ class PHP_CodeCoverage_Report_HTML_Renderer_File extends PHP_CodeCoverage_Report
      */
     public function render(PHP_CodeCoverage_Report_Node_File $node, $file)
     {
-        $template = new Text_Template($this->templatePath . 'file.html');
+        $template = new Text_Template($this->templatePath . 'file.html', '{{', '}}');
 
         $template->setVar(
           array(
@@ -126,10 +126,10 @@ class PHP_CodeCoverage_Report_HTML_Renderer_File extends PHP_CodeCoverage_Report
      */
     protected function renderItems(PHP_CodeCoverage_Report_Node_File $node)
     {
-        $template = new Text_Template($this->templatePath . 'file_item.html');
+        $template = new Text_Template($this->templatePath . 'file_item.html', '{{', '}}');
 
         $methodItemTemplate = new Text_Template(
-          $this->templatePath . 'method_item.html'
+          $this->templatePath . 'method_item.html', '{{', '}}'
         );
 
         $items = $this->renderItemTemplate(
@@ -148,7 +148,7 @@ class PHP_CodeCoverage_Report_HTML_Renderer_File extends PHP_CodeCoverage_Report
             'testedMethodsPercentAsString' => $node->getTestedMethodsPercent(),
             'testedClassesPercent'         => $node->getTestedClassesAndTraitsPercent(FALSE),
             'testedClassesPercentAsString' => $node->getTestedClassesAndTraitsPercent(),
-            'crap'                         => '<acronym title="Change Risk Anti-Patterns (CRAP) Index">CRAP</acronym>'
+            'crap'                         => '<abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr>'
           )
         );
 
@@ -331,7 +331,7 @@ class PHP_CodeCoverage_Report_HTML_Renderer_File extends PHP_CodeCoverage_Report
             $popoverContent = '';
             $popoverTitle   = '';
 
-            if (!isset($ignoredLines[$i]) && isset($coverageData[$i])) {
+            if (!isset($ignoredLines[$i]) && array_key_exists($i, $coverageData)) {
                 $numTests = count($coverageData[$i]);
 
                 if ($coverageData[$i] === NULL) {
@@ -394,7 +394,7 @@ class PHP_CodeCoverage_Report_HTML_Renderer_File extends PHP_CodeCoverage_Report
 
             if (!empty($popoverTitle)) {
                 $popover = sprintf(
-                  ' data-title="%s" data-content="%s" data-placement="bottom"',
+                  ' data-title="%s" data-content="%s" data-placement="bottom" data-html="true"',
                   $popoverTitle,
                   htmlspecialchars($popoverContent)
                 );

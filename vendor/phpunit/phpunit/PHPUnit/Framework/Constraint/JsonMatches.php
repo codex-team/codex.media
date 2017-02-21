@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2011 Bastian Feder <php@bastian-feder.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.7.0
@@ -83,32 +83,16 @@ class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constra
     protected function matches($other)
     {
         $decodedOther = json_decode($other);
-        if (!is_object($decodedOther)) {
-            $this->failure_reason = $this->getJsonError();
+        if (json_last_error()) {
             return FALSE;
         }
 
         $decodedValue = json_decode($this->value);
-        if (!is_object($decodedValue)) {
-            $this->failure_reason = $this->getJsonError();
+        if (json_last_error()) {
             return FALSE;
         }
 
         return $decodedOther == $decodedValue;
-    }
-
-    /**
-     * Finds the last occurd JSON error.
-     *
-     * @param string $messagePrefix
-     * @return string The last JSON error prefixed with $messagePrefix.
-     */
-    protected function getJsonError($messagePrefix = 'Json error!')
-    {
-        return PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
-            json_last_error(),
-            $messagePrefix
-        );
     }
 
     /**

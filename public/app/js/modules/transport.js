@@ -230,6 +230,8 @@ var transport = {
 
         if (!atlasForm) return;
 
+
+
         var attachesInput = document.createElement('input');
 
         attachesInput.type = 'hidden';
@@ -256,6 +258,24 @@ var transport = {
             atlasForm.submit();
 
         }, 100);
+
+    }
+
+    /**
+    * Submits editor form for opening in full-screan page without saving
+    */
+    openEditorFullscrean : function () {
+
+        var atlasForm = document.forms.atlas,
+            openEditorFlagInput = document.createElement('input');
+
+        openEditorFlagInput.type = 'hidden';
+        openEditorFlagInput.name = 'openFullScreen';
+        openEditorFlagInput.value = 1;
+
+        atlasForm.append(openEditorFlagInput);
+
+        this.submitAtlasForm();
 
     }
 

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
@@ -168,7 +168,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
@@ -535,10 +535,23 @@ class PHPUnit_Util_Configuration
         }
 
         foreach (array('var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
-            if ($array == 'var') {
-                $target = &$GLOBALS;
-            } else {
-                $target = &$GLOBALS['_' . strtoupper($array)];
+            // See https://github.com/sebastianbergmann/phpunit/issues/277
+            switch ($array) {
+                case 'var':
+                    $target = &$GLOBALS;
+                    break;
+
+                case 'env':
+                    $target = &$_ENV;
+                    break;
+
+                case 'server':
+                    $target = &$_SERVER;
+                    break;
+
+                default:
+                    $target = &$GLOBALS['_' . strtoupper($array)];
+                    break;
             }
 
             foreach ($configuration[$array] as $name => $value) {
@@ -816,7 +829,7 @@ class PHPUnit_Util_Configuration
             if ($testSuiteFilter && $directoryNode->parentNode->getAttribute('name') != $testSuiteFilter) {
                 continue;
             }
-            
+
             $directory = (string)$directoryNode->nodeValue;
 
             if (empty($directory)) {
@@ -864,7 +877,7 @@ class PHPUnit_Util_Configuration
             if ($testSuiteFilter && $fileNode->parentNode->getAttribute('name') != $testSuiteFilter) {
                 continue;
             }
-            
+
             $file = (string)$fileNode->nodeValue;
 
             if (empty($file)) {

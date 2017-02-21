@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.3.0
@@ -45,10 +45,10 @@
 
 // Workaround for http://bugs.php.net/bug.php?id=47987,
 // see https://github.com/sebastianbergmann/phpunit/issues#issue/125 for details
-require_once 'PHPUnit/Framework/Error.php';
-require_once 'PHPUnit/Framework/Error/Notice.php';
-require_once 'PHPUnit/Framework/Error/Warning.php';
-require_once 'PHPUnit/Framework/Error/Deprecated.php';
+require_once __DIR__ . '/../Framework/Error.php';
+require_once __DIR__ . '/../Framework/Error/Notice.php';
+require_once __DIR__ . '/../Framework/Error/Warning.php';
+require_once __DIR__ . '/../Framework/Error/Deprecated.php';
 
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
@@ -56,7 +56,7 @@ require_once 'PHPUnit/Framework/Error/Deprecated.php';
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.3.0

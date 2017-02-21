@@ -2,7 +2,7 @@
 /**
  * PHP_CodeCoverage
  *
- * Copyright (c) 2009-2012, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2009-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,8 +37,8 @@
  * @category   PHP
  * @package    CodeCoverage
  * @subpackage Tests
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      File available since Release 1.0.0
@@ -58,8 +58,8 @@ if (!defined('TEST_FILES_PATH')) {
  * @category   PHP
  * @package    CodeCoverage
  * @subpackage Tests
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      Class available since Release 1.0.0
@@ -78,8 +78,12 @@ class PHP_CodeCoverage_FilterTest extends PHPUnit_Framework_TestCase
           TEST_FILES_PATH . 'BankAccountTest.php',
           TEST_FILES_PATH . 'CoverageClassExtendedTest.php',
           TEST_FILES_PATH . 'CoverageClassTest.php',
+          TEST_FILES_PATH . 'CoverageFunctionParenthesesTest.php',
+          TEST_FILES_PATH . 'CoverageFunctionParenthesesWhitespaceTest.php',
           TEST_FILES_PATH . 'CoverageFunctionTest.php',
           TEST_FILES_PATH . 'CoverageMethodOneLineAnnotationTest.php',
+          TEST_FILES_PATH . 'CoverageMethodParenthesesTest.php',
+          TEST_FILES_PATH . 'CoverageMethodParenthesesWhitespaceTest.php',
           TEST_FILES_PATH . 'CoverageMethodTest.php',
           TEST_FILES_PATH . 'CoverageNoneTest.php',
           TEST_FILES_PATH . 'CoverageNotPrivateTest.php',
@@ -105,6 +109,7 @@ class PHP_CodeCoverage_FilterTest extends PHPUnit_Framework_TestCase
           TEST_FILES_PATH . 'NamespaceCoveragePublicTest.php',
           TEST_FILES_PATH . 'NamespaceCoveredClass.php',
           TEST_FILES_PATH . 'NotExistingCoveredElementTest.php',
+          TEST_FILES_PATH . 'source_with_class_and_anonymous_function.php',
           TEST_FILES_PATH . 'source_with_ignore.php',
           TEST_FILES_PATH . 'source_with_namespace.php',
           TEST_FILES_PATH . 'source_with_oneline_annotations.php',
@@ -262,6 +267,8 @@ class PHP_CodeCoverage_FilterTest extends PHPUnit_Framework_TestCase
      */
     public function testIsFile()
     {
+        $this->assertFalse($this->filter->isFile('vfs://root/a/path'));
+        $this->assertFalse($this->filter->isFile('xdebug://debug-eval'));
         $this->assertFalse($this->filter->isFile('eval()\'d code'));
         $this->assertFalse($this->filter->isFile('runtime-created function'));
         $this->assertFalse($this->filter->isFile('assert code'));

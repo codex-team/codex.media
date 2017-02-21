@@ -6,9 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/File/Iterator.php',
-    'File_Iterator_Facade' => $vendorDir . '/phpunit/php-file-iterator/File/Iterator/Facade.php',
-    'File_Iterator_Factory' => $vendorDir . '/phpunit/php-file-iterator/File/Iterator/Factory.php',
+    'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/src/Iterator.php',
+    'File_Iterator_Facade' => $vendorDir . '/phpunit/php-file-iterator/src/Facade.php',
+    'File_Iterator_Factory' => $vendorDir . '/phpunit/php-file-iterator/src/Factory.php',
     'PHPUnit_Extensions_GroupTestSuite' => $vendorDir . '/phpunit/phpunit/PHPUnit/Extensions/GroupTestSuite.php',
     'PHPUnit_Extensions_PhptTestCase' => $vendorDir . '/phpunit/phpunit/PHPUnit/Extensions/PhptTestCase.php',
     'PHPUnit_Extensions_PhptTestCase_Logger' => $vendorDir . '/phpunit/phpunit/PHPUnit/Extensions/PhptTestCase/Logger.php',
@@ -52,6 +52,7 @@ return array(
     'PHPUnit_Framework_Constraint_IsFalse' => $vendorDir . '/phpunit/phpunit/PHPUnit/Framework/Constraint/IsFalse.php',
     'PHPUnit_Framework_Constraint_IsIdentical' => $vendorDir . '/phpunit/phpunit/PHPUnit/Framework/Constraint/IsIdentical.php',
     'PHPUnit_Framework_Constraint_IsInstanceOf' => $vendorDir . '/phpunit/phpunit/PHPUnit/Framework/Constraint/IsInstanceOf.php',
+    'PHPUnit_Framework_Constraint_IsJson' => $vendorDir . '/phpunit/phpunit/PHPUnit/Framework/Constraint/IsJson.php',
     'PHPUnit_Framework_Constraint_IsNull' => $vendorDir . '/phpunit/phpunit/PHPUnit/Framework/Constraint/IsNull.php',
     'PHPUnit_Framework_Constraint_IsTrue' => $vendorDir . '/phpunit/phpunit/PHPUnit/Framework/Constraint/IsTrue.php',
     'PHPUnit_Framework_Constraint_IsType' => $vendorDir . '/phpunit/phpunit/PHPUnit/Framework/Constraint/IsType.php',
@@ -184,7 +185,7 @@ return array(
     'PHP_CodeCoverage_Util' => $vendorDir . '/phpunit/php-code-coverage/PHP/CodeCoverage/Util.php',
     'PHP_CodeCoverage_Util_InvalidArgumentHelper' => $vendorDir . '/phpunit/php-code-coverage/PHP/CodeCoverage/Util/InvalidArgumentHelper.php',
     'PHP_CodeCoverage_Version' => $vendorDir . '/phpunit/php-code-coverage/PHP/CodeCoverage/Version.php',
-    'PHP_Timer' => $vendorDir . '/phpunit/php-timer/PHP/Timer.php',
+    'PHP_Timer' => $vendorDir . '/phpunit/php-timer/src/Timer.php',
     'PHP_Token' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_TokenWithScope' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_TokenWithScopeAndVisibility' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
@@ -208,6 +209,7 @@ return array(
     'PHP_Token_CHARACTER' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_CLASS' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_CLASS_C' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
+    'PHP_Token_CLASS_NAME_CONSTANT' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_CLONE' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_CLOSE_BRACKET' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_CLOSE_CURLY' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
@@ -256,6 +258,7 @@ return array(
     'PHP_Token_EXTENDS' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_FILE' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_FINAL' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
+    'PHP_Token_FINALLY' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_FOR' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_FOREACH' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_FUNCTION' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
@@ -347,5 +350,6 @@ return array(
     'PHP_Token_WHILE' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_WHITESPACE' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
     'PHP_Token_XOR_EQUAL' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
-    'Text_Template' => $vendorDir . '/phpunit/php-text-template/Text/Template.php',
+    'PHP_Token_YIELD' => $vendorDir . '/phpunit/php-token-stream/PHP/Token.php',
+    'Text_Template' => $vendorDir . '/phpunit/php-text-template/src/Template.php',
 );

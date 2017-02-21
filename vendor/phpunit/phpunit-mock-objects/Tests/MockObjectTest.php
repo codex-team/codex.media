@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2010-2012, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2010-2013, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit_MockObject
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2010-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2010-2013 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
@@ -48,6 +48,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPA
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AnInterface.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'FunctionCallback.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallback.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallbackByReference.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'PartialMockTestClass.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'SomeClass.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'StaticMockTestClass.php';
@@ -59,7 +60,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPA
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @author     Patrick Mueller <elias0@gmx.net>
  * @author     Frank Kleine <mikey@stubbles.net>
- * @copyright  2010-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2010-2013 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -320,6 +321,47 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->method('doSomething');
     }
 
+    public function testClonedMockObjectShouldStillEqualTheOriginal()
+    {
+        $a = $this->getMock('stdClass');
+        $b = clone $a;
+        $this->assertEquals($a, $b);
+    }
+
+    public function testMockObjectsConstructedIndepentantlyShouldBeEqual()
+    {
+        $a = $this->getMock('stdClass');
+        $b = $this->getMock('stdClass');
+        $this->assertEquals($a, $b);
+    }
+
+    public function testMockObjectsConstructedIndepentantlyShouldNotBeTheSame()
+    {
+        $a = $this->getMock('stdClass');
+        $b = $this->getMock('stdClass');
+        $this->assertNotSame($a, $b);
+    }
+
+    public function testClonedMockObjectCanBeUsedInPlaceOfOriginalOne()
+    {
+        $x = $this->getMock('stdClass');
+        $y = clone $x;
+
+        $mock = $this->getMock('stdClass', array('foo'));
+        $mock->expects($this->once())->method('foo')->with($this->equalTo($x));
+        $mock->foo($y);
+    }
+
+    public function testClonedMockObjectIsNotIdenticalToOriginalOne()
+    {
+        $x = $this->getMock('stdClass');
+        $y = clone $x;
+
+        $mock = $this->getMock('stdClass', array('foo'));
+        $mock->expects($this->once())->method('foo')->with($this->logicalNot($this->identicalTo($x)));
+        $mock->foo($y);
+    }
+
     public function testStaticMethodCallWithArgumentCloningEnabled()
     {
         $expectedObject = new StdClass;
@@ -423,7 +465,22 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock->doSomethingElse($expectedObject);
 
         $this->assertEquals(1, count($actualArguments));
-        $this->assertNotSame($expectedObject, $actualArguments[0]);
+        $this->assertSame($expectedObject, $actualArguments[0]);
+    }
+
+    public function testArgumentCloningOptionGeneratesUniqueMock()
+    {
+        $mockWithCloning = $this->getMockBuilder('SomeClass')
+                                ->setMethods(array('doSomethingElse'))
+                                ->enableArgumentCloning()
+                                ->getMock();
+
+        $mockWithoutCloning = $this->getMockBuilder('SomeClass')
+                                   ->setMethods(array('doSomethingElse'))
+                                   ->disableArgumentCloning()
+                                   ->getMock();
+
+        $this->assertNotEquals($mockWithCloning, $mockWithoutCloning);
     }
 
     public function testVerificationOfMethodNameFailsWithoutParameters()
@@ -506,6 +563,45 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         }
 
         $this->resetMockObjects();
+    }
+
+    public function testMockArgumentsPassedByReference() {
+        $foo = $this->getMockBuilder('MethodCallbackByReference')
+                    ->setMethods(array('bar'))
+                    ->disableOriginalConstructor()
+                    ->disableArgumentCloning()
+                    ->getMock();
+
+        $foo->expects($this->any())
+            ->method('bar')
+            ->will($this->returnCallback(array($foo, 'callback')));
+
+        $a = $b = $c = 0;
+
+        $foo->bar($a, $b, $c);
+
+        $this->assertEquals(1, $b);
+    }
+
+    public function testMockArgumentsPassedByReference2() {
+        $foo = $this->getMockBuilder('MethodCallbackByReference')
+                    ->disableOriginalConstructor()
+                    ->disableArgumentCloning()
+                    ->getMock();
+
+        $foo->expects($this->any())
+            ->method('bar')
+            ->will($this->returnCallback(
+            function ($a, &$b, $c) {
+                $b = 1;
+            }
+            ));
+
+        $a = $b = $c = 0;
+
+        $foo->bar($a, $b, $c);
+
+        $this->assertEquals(1, $b);
     }
 
     /**

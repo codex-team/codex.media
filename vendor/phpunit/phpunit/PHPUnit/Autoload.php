@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,11 +36,30 @@
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.5.0
  */
+
+if (defined('PHPUNIT_COMPOSER_INSTALL')) {
+    return;
+}
+
+$paths = array(
+  __DIR__ . '/../vendor',
+  __DIR__ . '/../../..'
+);
+
+foreach ($paths as $path) {
+    if (@is_dir($path . '/composer') &&
+        @is_file($path . '/autoload.php')) {
+        require_once $path . '/autoload.php';
+        define('PHPUNIT_COMPOSER_INSTALL', $path . '/autoload.php');
+
+        return;
+    }
+}
 
 require_once 'File/Iterator/Autoload.php';
 require_once 'PHP/CodeCoverage/Autoload.php';
@@ -99,6 +118,7 @@ spl_autoload_register(
             'phpunit_framework_constraint_isfalse' => '/Framework/Constraint/IsFalse.php',
             'phpunit_framework_constraint_isidentical' => '/Framework/Constraint/IsIdentical.php',
             'phpunit_framework_constraint_isinstanceof' => '/Framework/Constraint/IsInstanceOf.php',
+            'phpunit_framework_constraint_isjson' => '/Framework/Constraint/IsJson.php',
             'phpunit_framework_constraint_isnull' => '/Framework/Constraint/IsNull.php',
             'phpunit_framework_constraint_istrue' => '/Framework/Constraint/IsTrue.php',
             'phpunit_framework_constraint_istype' => '/Framework/Constraint/IsType.php',
@@ -183,6 +203,26 @@ spl_autoload_register(
 
       if (isset($classes[$cn])) {
           require $path . $classes[$cn];
+      }
+  }
+);
+
+// Symfony Yaml autoloader
+spl_autoload_register(
+  function ($class) {
+      if (0 === strpos(ltrim($class, '/'), 'Symfony\Component\Yaml')) {
+          $file = sprintf(
+            'Symfony/Component/Yaml%s.php',
+
+            substr(
+              str_replace('\\', '/', $class),
+              strlen('Symfony\Component\Yaml')
+            )
+          );
+
+          if (stream_resolve_include_path($file)) {
+              require_once $file;
+          }
       }
   }
 );

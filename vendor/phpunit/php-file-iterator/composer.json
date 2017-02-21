@@ -6,7 +6,7 @@
         "iterator",
         "filesystem"
     ],
-    "homepage": "http://www.phpunit.de/",
+    "homepage": "https://github.com/sebastianbergmann/php-file-iterator/",
     "license": "BSD-3-Clause",
     "authors": [
         {
@@ -24,10 +24,13 @@
     },
     "autoload": {
         "classmap": [
-            "File/"
+            "src/"
         ]
     },
-    "include-path": [
-        ""
-    ]
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.4.x-dev"
+        }
+    }
 }
+

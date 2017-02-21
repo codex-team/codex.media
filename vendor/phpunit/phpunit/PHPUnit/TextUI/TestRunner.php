@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage TextUI
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
@@ -50,7 +50,7 @@
  * @package    PHPUnit
  * @subpackage TextUI
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
@@ -151,7 +151,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (is_integer($arguments['repeat'])) {
-            $suite = new PHPUnit_Extensions_RepeatedTest(
+            $test = new PHPUnit_Extensions_RepeatedTest(
               $suite,
               $arguments['repeat'],
               $arguments['filter'],
@@ -159,6 +159,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               $arguments['excludeGroups'],
               $arguments['processIsolation']
             );
+
+            $suite = new PHPUnit_Framework_TestSuite();
+            $suite->addTest($test);
         }
 
         $result = $this->createTestResult();
@@ -205,11 +208,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        if (!$this->printer instanceof PHPUnit_Util_Log_TAP &&
-            !self::$versionStringPrinted) {
+        if (!$this->printer instanceof PHPUnit_Util_Log_TAP) {
             $this->printer->write(
               PHPUnit_Runner_Version::getVersionString() . "\n\n"
             );
+
+            self::$versionStringPrinted = TRUE;
 
             if (isset($arguments['configuration'])) {
                 $this->printer->write(

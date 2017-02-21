@@ -2,7 +2,7 @@
 /**
  * PHP_CodeCoverage
  *
- * Copyright (c) 2009-2012, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2009-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,8 +37,8 @@
  * @category   PHP
  * @package    CodeCoverage
  * @subpackage Tests
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      File available since Release 1.0.0
@@ -63,8 +63,8 @@ require_once TEST_FILES_PATH . 'BankAccountTest.php';
  * @category   PHP
  * @package    CodeCoverage
  * @subpackage Tests
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2009-2012 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2009-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/php-code-coverage
  * @since      Class available since Release 1.0.0
@@ -234,13 +234,10 @@ class PHP_CodeCoverageTest extends PHP_CodeCoverage_TestCase
     }
 
     /**
-     * Add parenthesis to the covers annotation below in a couple of different ways to make sure it
-     * works as expected
-     *
-     * @covers PHP_CodeCoverage::start()
-     * @covers PHP_CodeCoverage::stop( )
-     * @covers PHP_CodeCoverage::append ()
-     * @covers PHP_CodeCoverage::applyListsFilter ( )
+     * @covers PHP_CodeCoverage::start
+     * @covers PHP_CodeCoverage::stop
+     * @covers PHP_CodeCoverage::append
+     * @covers PHP_CodeCoverage::applyListsFilter
      * @covers PHP_CodeCoverage::initializeFilesThatAreSeenTheFirstTime
      * @covers PHP_CodeCoverage::applyCoversAnnotationFilter
      * @covers PHP_CodeCoverage::getTests
@@ -309,8 +306,12 @@ class PHP_CodeCoverageTest extends PHP_CodeCoverage_TestCase
             );
         }
 
-        else if ($test === 'CoverageNoneTest' || $test === 'CoverageNothingTest') {
+        else if ($test === 'CoverageNoneTest') {
             $expected = array();
+        }
+
+        else if ($test === 'CoverageNothingTest') {
+            $expected = false;
         }
 
         else if ($test === 'CoverageFunctionTest') {
@@ -392,6 +393,66 @@ class PHP_CodeCoverageTest extends PHP_CodeCoverage_TestCase
           $this->coverage,
           'CoverageTwoDefaultClassAnnotations',
           'testSomething'
+        );
+    }
+
+    /**
+     * @covers PHP_CodeCoverage::getLinesToBeCovered
+     */
+    public function testFunctionParenthesesAreAllowed()
+    {
+        $this->assertSame(
+          array(TEST_FILES_PATH . 'CoveredFunction.php' => range(2, 4)),
+          $this->getLinesToBeCovered->invoke(
+            $this->coverage,
+            'CoverageFunctionParenthesesTest',
+            'testSomething'
+          )
+        );
+    }
+
+    /**
+     * @covers PHP_CodeCoverage::getLinesToBeCovered
+     */
+    public function testFunctionParenthesesAreAllowedWithWhitespace()
+    {
+        $this->assertSame(
+          array(TEST_FILES_PATH . 'CoveredFunction.php' => range(2, 4)),
+          $this->getLinesToBeCovered->invoke(
+            $this->coverage,
+            'CoverageFunctionParenthesesWhitespaceTest',
+            'testSomething'
+          )
+        );
+    }
+
+    /**
+     * @covers PHP_CodeCoverage::getLinesToBeCovered
+     */
+    public function testMethodParenthesesAreAllowed()
+    {
+        $this->assertSame(
+          array(TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)),
+          $this->getLinesToBeCovered->invoke(
+            $this->coverage,
+            'CoverageMethodParenthesesTest',
+            'testSomething'
+          )
+        );
+    }
+
+    /**
+     * @covers PHP_CodeCoverage::getLinesToBeCovered
+     */
+    public function testMethodParenthesesAreAllowedWithWhitespace()
+    {
+        $this->assertSame(
+          array(TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)),
+          $this->getLinesToBeCovered->invoke(
+            $this->coverage,
+            'CoverageMethodParenthesesWhitespaceTest',
+            'testSomething'
+          )
         );
     }
 
@@ -492,7 +553,7 @@ class PHP_CodeCoverageTest extends PHP_CodeCoverage_TestCase
           ),
           array(
             'CoverageNothingTest',
-            array()
+            false
           )
         );
     }
