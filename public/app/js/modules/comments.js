@@ -2,18 +2,20 @@ var comments = (function () {
 
     var form     = null,
         textarea = null,
-        sendCommentsFormURL = '';
+        sendCommentsFormURL = '',
+        commentsList = null;
 
     function init() {
 
         form     = document.getElementById('comment_form');
         textarea = document.getElementById('add_comment_textarea');
+        commentsList = document.getElementById('commentsList');
 
         sendCommentsFormURL = form.action;
 
         textarea.addEventListener('keydown', keydownSubmitHandler_, false);
 
-        form.addEventListener('submit', sendFormByAjax, false);
+        form.addEventListener('submit', sendFormByAjax_, false);
 
     }
 
@@ -27,13 +29,13 @@ var comments = (function () {
 
         if ( CtrlPressed && EnterPressed ) {
 
-            sendFormByAjax(event);
+            sendFormByAjax_(event);
 
         }
 
     }
 
-    function sendFormByAjax(event) {
+    function sendFormByAjax_(event) {
 
         event.preventDefault();
 
@@ -60,12 +62,13 @@ var comments = (function () {
 
                 response = JSON.parse(response);
 
-
                 console.log(response);
 
                 if (response.success) {
 
-                    // #TODO добавить комментарий в ленту
+                    commentsList.innerHTML += response.comment;
+
+                    clearForm();
 
                 } else {
 
@@ -76,6 +79,14 @@ var comments = (function () {
             }
 
         });
+
+    }
+
+    function clearForm() {
+
+        console.log('clearForm');
+
+        textarea.value = '';
 
     }
 

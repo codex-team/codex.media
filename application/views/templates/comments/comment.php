@@ -40,12 +40,12 @@
     ?>
 
     <?
-        /* if ($user->id == $comment->author->id || $user->isAdmin): ?>
+         if ($user->id == $comment->author->id || $user->isAdmin): ?>
         <a class="comment__actions--button button--delete js-approval-button"
            href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete-comment/<?= $comment->id ?>">
            <i class="icon-trash"></i>
            Удалить
         </a>
-    <? endif */ ?>
+    <? endif ?>
 
 </div>

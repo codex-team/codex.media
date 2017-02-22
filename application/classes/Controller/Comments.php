@@ -41,7 +41,10 @@ class Controller_Comments extends Controller_Base_preDispatch
         $comment->parent_comment['id'] = Arr::get($_POST, 'parent_id', '0');
         $comment->author['id']         = $this->user->id;
         $comment->root_id              = Arr::get($_POST, 'root_id', '0');
-        $comment->insert();
+        
+        $comment_id = $comment->insert();
+
+        $comment = Model_Comment::get($comment_id);
 
 
         finish:
@@ -55,7 +58,7 @@ class Controller_Comments extends Controller_Base_preDispatch
                 $response['error'] = $error;
             } else {
                 $response['success'] = 1;
-                $response['comment'] = isset($comment) ? $comment : null;
+                $response['comment'] = View::factory('templates/comments/comment', array('page' => $page, 'user' => $this->user, 'comment' => $comment))->render();
             }
 
             $this->auto_render = false;

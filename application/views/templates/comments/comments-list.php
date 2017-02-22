@@ -1,4 +1,4 @@
-<div class="comments-list" id="page_comments">
+<div class="comments-list" id="commentsList">
 
     <? if ($page->comments): ?>
 
