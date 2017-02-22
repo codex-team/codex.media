@@ -82,23 +82,6 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         if (Security::check($csrfToken)) {
 
-            // Empty JSON
-            if (Arr::get($_POST, 'content') != '[]') {
-
-                $content = Arr::get($_POST, 'content');
-
-                try {
-
-                    $editor = new CodexEditor($content);
-                    $_POST['content'] = $editor->getData();
-
-                } catch ( Exception $e) {
-
-                    // Handle this situation
-                }
-
-            }
-
             /** Сабмит формы */
             $page = self::get_form();
 
@@ -215,19 +198,35 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function get_form()
     {
+        $content = Arr::get($_POST, 'content', '');
+
+        try {
+
+            $editor = new CodexEditor($content);
+            $JSONData = $editor->getData();
+
+        } catch ( Exception $e) {
+
+            // Empty JSON
+            $JSONData = '';
+
+        }
+
         $id   = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
         $page = new Model_Page($id);
 
         $page->id_parent     = (int) Arr::get($_POST, 'id_parent',    0);
         $page->title         =       Arr::get($_POST, 'title',        '');
-        $page->content       =       Arr::get($_POST, 'content',      '');
+        $page->content       =       $JSONData;
         // $page->is_menu_item  = (int) Arr::get($_POST, 'is_menu_item', 0);
         // $page->is_news_page  = (int) Arr::get($_POST, 'is_news_page', 0);
         $page->rich_view     = (int) Arr::get($_POST, 'rich_view',    0);
         $page->dt_pin        =       Arr::get($_POST, 'dt_pin',       null);
         $page->author        =       $this->user;
 
-        $page->blocks        = json_decode($page->content);
+        // get only blocks from JSON data
+        $blocks = json_decode($page->content);
+        $page->blocks        = $blocks ? $blocks->data : '';
 
         return $page;
     }

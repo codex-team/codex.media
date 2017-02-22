@@ -67,9 +67,8 @@ class Model_Page extends Model_preDispatch
                 }
             }
 
-            // get only blocks
-            $this->blocks = json_decode($this->content)
-                    ->data;
+            $content = json_decode($this->content);
+            $this->blocks = $content->data;
 
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
@@ -82,8 +81,6 @@ class Model_Page extends Model_preDispatch
 
     public function insert()
     {
-        $this->content = json_encode($this->blocks);
-
         $page = Dao_Pages::insert()
             ->set('author',         $this->author->id)
             ->set('id_parent',      $this->id_parent)
@@ -103,8 +100,6 @@ class Model_Page extends Model_preDispatch
 
     public function update()
     {
-        $this->content = json_encode($this->blocks);
-
         $page = Dao_Pages::update()
             ->where('id', '=', $this->id)
             ->set('id',             $this->id)

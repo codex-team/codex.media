@@ -250,7 +250,17 @@ var transport = {
 
         window.setTimeout(function () {
 
-            JSONinput.innerHTML = JSON.stringify({ data: codex.editor.state.jsonOutput} );
+            var blocksCount = codex.editor.state.jsonOutput.length;
+
+            if (!blocksCount) {
+
+                JSONinput.innerHTML = '';
+
+            } else {
+
+                JSONinput.innerHTML = JSON.stringify({ data: codex.editor.state.jsonOutput} );
+
+            }
 
             /**
              * Send form
