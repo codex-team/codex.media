@@ -2,15 +2,15 @@
 
 Class Model_Comment extends Model_preDispatch
 {
-    public $id;
-    public $author;
-    public $text;
-    public $page_id;
-    public $root_id;
-    public $parent_id;
-    public $parent_comment;
-    public $dt_create;
-    public $is_removed;
+    public $id             = 0;
+    public $author         = null;
+    public $text           = '';
+    public $page_id        = 0;
+    public $root_id        = 0;
+    public $parent_id      = 0;
+    public $parent_comment = null;
+    public $dt_create      = null;
+    public $is_removed     = 0;
 
     public function __construct($id = 0)
     {
@@ -37,6 +37,25 @@ Class Model_Comment extends Model_preDispatch
     }
 
     /**
+     * Заполняет объект строкой из БД.
+     */
+    private function fillByRow($comment_row)
+    {
+        if (!empty($comment_row['id'])) {
+            $this->id         = $comment_row['id'];
+            $this->author     = new Model_User($comment_row['user_id']);
+            $this->text       = $comment_row['text'];
+            $this->page_id    = $comment_row['page_id'];
+            $this->root_id    = $comment_row['root_id'];
+            $this->parent_id  = $comment_row['parent_id'];
+            $this->dt_create  = $comment_row['dt_create'];
+            $this->is_removed = $comment_row['is_removed'];
+        }
+
+        return $this;
+    }
+
+    /**
      * Добавляет комментарий в БД.
      */
     public function insert()
@@ -51,7 +70,6 @@ Class Model_Comment extends Model_preDispatch
             ->execute();
 
         if ($this->root_id == 0) {
-
             Dao_Comments::update()
                 ->where('id', '=', $idAndRowAffected)
                 ->set('root_id', $idAndRowAffected)
@@ -94,26 +112,6 @@ Class Model_Comment extends Model_preDispatch
         }
 
         return false;
-    }
-
-    /**
-     * Заполняет объект строкой из БД.
-     */
-    private function fillByRow($comment_row)
-    {
-        if (!empty($comment_row['id'])) {
-
-            $this->id         = $comment_row['id'];
-            $this->author     = new Model_User($comment_row['user_id']);
-            $this->text       = $comment_row['text'];
-            $this->page_id    = $comment_row['page_id'];
-            $this->root_id    = $comment_row['root_id'];
-            $this->parent_id  = $comment_row['parent_id'];
-            $this->dt_create  = $comment_row['dt_create'];
-            $this->is_removed = $comment_row['is_removed'];
-        }
-
-        return $this;
     }
 
     /**

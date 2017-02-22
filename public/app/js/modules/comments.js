@@ -1,19 +1,19 @@
-/**
-* Comments module
-* @author Ivan Zhuravlev
-*/
-
 var comments = (function () {
 
     var form     = null,
-        textarea = null;
+        textarea = null,
+        sendCommentsFormURL = '';
 
     function init() {
 
         form     = document.getElementById('comment_form');
         textarea = document.getElementById('add_comment_textarea');
 
+        sendCommentsFormURL = form.action;
+
         textarea.addEventListener('keydown', keydownSubmitHandler_, false);
+
+        form.addEventListener('submit', sendFormByAjax, false);
 
     }
 
@@ -27,9 +27,55 @@ var comments = (function () {
 
         if ( CtrlPressed && EnterPressed ) {
 
-            form.submit();
+            sendFormByAjax(event);
 
         }
+
+    }
+
+    function sendFormByAjax(event) {
+
+        event.preventDefault();
+
+        var elems = form.elements,
+            formData = new FormData();
+
+        for (var i = 0 ; i < elems.length ; i++) {
+
+            if (elems[i].name) {
+
+                formData.append(elems[i].name, elems[i].value);
+
+            }
+
+        };
+
+
+        codex.ajax.call({
+            type: 'POST',
+            url: sendCommentsFormURL,
+            data: formData,
+            beforeSend : function () {},
+            success : function (response) {
+
+                response = JSON.parse(response);
+
+
+                console.log(response);
+
+                if (response.success) {
+
+                    // #TODO добавить комментарий в ленту
+
+                } else {
+
+                    codex.alerts.show(response.error);
+
+                }
+
+            }
+
+        });
 
     }
 
