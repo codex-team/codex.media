@@ -1,4 +1,4 @@
-<div class="comments-list" id="commentsList">
+<div class="comments-list" id="commentsList" data-count="<?= count($page->comments) ?: '0' ?>">
 
     <? if ($page->comments): ?>
 

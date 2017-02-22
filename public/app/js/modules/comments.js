@@ -62,11 +62,17 @@ var comments = (function () {
 
                 response = JSON.parse(response);
 
-                console.log(response);
-
                 if (response.success) {
 
+                    if (commentsList.dataset.count == 0) {
+
+                        commentsList.innerHTML = '';
+
+                    }
+
                     commentsList.innerHTML += response.comment;
+
+                    commentsList.dataset.count++;
 
                     clearForm();
 
@@ -84,9 +90,9 @@ var comments = (function () {
 
     function clearForm() {
 
-        console.log('clearForm');
-
         textarea.value = '';
+
+        textarea.blur();
 
     }
 
