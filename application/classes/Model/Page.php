@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+use CodexEditor\CodexEditor;
+
 class Model_Page extends Model_preDispatch
 {
     public $id              = 0;
@@ -67,13 +69,32 @@ class Model_Page extends Model_preDispatch
                 }
             }
 
-            $content = json_decode($this->content);
+            try {
 
-            if (!isset($content->data)) {
-                return null;
+                $config = Kohana::$config->load('editor');
+                $pageContent = new CodexEditor($this->content, $config);
+                $this->content = $pageContent->getData();
+
+            } catch (Exception $e) {
+
+                throw new Kohana_Exception("Error in content structure" . $e->getMessage());
+
             }
 
-            $this->blocks = $content->data;
+            try {
+
+                $pageConfig = json_decode($this->content);
+
+                // get only blocks as array
+                if (property_exists($pageConfig, 'data')) {
+                    $this->blocks = $pageConfig->data;
+                }
+
+            } catch (Exception $e) {
+
+                throw new Kohana_Exception("Error: data is not exist" . $e->getMessage());
+
+            }
 
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
