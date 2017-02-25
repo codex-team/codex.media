@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "35ab7bdd89d5d708efe86903582f8e93",
-    "content-hash": "083a64286305a7b0043b5936f872e7d6",
+    "hash": "343f942fcb80ea0528b7a4b53844d024",
+    "content-hash": "b8b4de7bec4862074d39ed2e95d2a054",
     "packages": [
         {
             "name": "codex-team/codex.editor",
-            "version": "dev-structure-config",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codex-team/codex.editor.backend.git",
-                "reference": "7400c0258a9a0b7cf3f0f615bc300112f348b16c"
+                "reference": "0ff1961c0e74c840a6db9eff7090f5296a24ba3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codex-team/codex.editor.backend/zipball/7400c0258a9a0b7cf3f0f615bc300112f348b16c",
-                "reference": "7400c0258a9a0b7cf3f0f615bc300112f348b16c",
+                "url": "https://api.github.com/repos/codex-team/codex.editor.backend/zipball/0ff1961c0e74c840a6db9eff7090f5296a24ba3e",
+                "reference": "0ff1961c0e74c840a6db9eff7090f5296a24ba3e",
                 "shasum": ""
             },
             "require": {
@@ -42,7 +42,7 @@
                 }
             ],
             "description": "Codex Editor server side example",
-            "time": "2017-02-25 15:44:15"
+            "time": "2017-02-25 16:08:22"
         },
         {
             "name": "ezyang/htmlpurifier",
