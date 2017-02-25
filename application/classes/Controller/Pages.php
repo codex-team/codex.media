@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+use CodexEditor\CodexEditor;
+
 class Controller_Pages extends Controller_Base_preDispatch
 {
     /**
@@ -196,19 +198,49 @@ class Controller_Pages extends Controller_Base_preDispatch
 
     public function get_form()
     {
+        $config = Kohana::$config->load('editor');
+        $content = Arr::get($_POST, 'content', '');
+
+        try {
+
+            $editor = new CodexEditor($content, $config);
+            $JSONData = $editor->getData();
+
+        } catch ( Exception $e) {
+
+            // Empty JSON
+            $JSONData = json_encode('[]');
+
+
+        }
+        
         $id   = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
         $page = new Model_Page($id);
 
         $page->id_parent     = (int) Arr::get($_POST, 'id_parent',    0);
         $page->title         =       Arr::get($_POST, 'title',        '');
-        $page->content       =       Arr::get($_POST, 'content',      '');
         // $page->is_menu_item  = (int) Arr::get($_POST, 'is_menu_item', 0);
         // $page->is_news_page  = (int) Arr::get($_POST, 'is_news_page', 0);
         $page->rich_view     = (int) Arr::get($_POST, 'rich_view',    0);
         $page->dt_pin        =       Arr::get($_POST, 'dt_pin',       null);
         $page->author        =       $this->user;
 
-        $page->blocks        = json_decode($page->content);
+        try {
+
+            $pageContent = json_decode($JSONData);
+
+            // get only blocks from JSON data
+            if (property_exists($pageContent, 'data')) {
+                $page->blocks  = $pageContent->data;
+
+                // save content if everything is okay
+                $page->content = $JSONData;
+            }
+
+        } catch (Exception $e) {
+
+            throw new Kohana_Exception("Syntax Error" . $e->getMessage());
+        }
 
         return $page;
     }
