@@ -209,10 +209,11 @@ class Controller_Pages extends Controller_Base_preDispatch
         } catch ( Exception $e) {
 
             // Empty JSON
-            $JSONData = '';
+            $JSONData = json_encode('[]');
+
 
         }
-
+        
         $id   = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
         $page = new Model_Page($id);
 
