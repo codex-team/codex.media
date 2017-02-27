@@ -58,12 +58,37 @@
     font-size: 11px;
 }
 
+.comment__replied {
+    border: 1px solid var(--lightGrayLine);
+    margin: 20px auto;
+    padding: 20px;
+    width: auto;
+}
+.comment__replied-source {
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+.comment__replied-author {
+    color: var(--grayText);
+    margin-right: 20px;
+}
+.comment__replied-date {
+    color: var(--grayText);
+}
+
 .comment__text {
-    margin-top: 20px;
+    margin: 20px auto;
 }
 
 .comment-form__text,
 .comment__text {
     font-size: 15px;
     line-height: 1.5em;
+}
+
+
+.comment__actions--button {
+    float: right;
+    padding: 5px;
+    border-radius: 2px;
 }
