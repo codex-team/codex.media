@@ -7,6 +7,16 @@ class Controller_Comments extends Controller_Base_preDispatch
         $error = '';
 
         /**
+         * Checking for CSRF
+         */
+        $csrfToken = Arr::get($_POST, 'csrf');
+        if (!Security::check($csrfToken)) {
+            $error = 'Ошибка валидации CSRF-токена';
+            goto finish;
+        }
+        /***/
+
+        /**
          * Checking for authorized user
          */
         if ($this->user->status < Model_User::USER_STATUS_REGISTERED) {
@@ -41,11 +51,10 @@ class Controller_Comments extends Controller_Base_preDispatch
         $comment->parent_comment['id'] = Arr::get($_POST, 'parent_id', '0');
         $comment->author['id']         = $this->user->id;
         $comment->root_id              = Arr::get($_POST, 'root_id', '0');
-        
         $comment_id = $comment->insert();
 
         $comment = Model_Comment::get($comment_id);
-
+        $comment->parent_comment = $comment->parent_id ? Model_Comment::get($comment->parent_id) : null;
 
         finish:
 
