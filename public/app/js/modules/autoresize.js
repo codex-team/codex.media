@@ -1,3 +1,5 @@
+module.exports = (function () {
+
 var textareaClicked = function (event) {
 
     var textarea = event.target;
@@ -6,13 +8,11 @@ var textareaClicked = function (event) {
 
 var init = function () {
 
-
-
     var textareas = document.getElementsByClassName('js-autoresizable');
 
     if (textareas.length) for (var i = 0; i <= textareas.length - 1; i++) {
 
-        textareas[i].addEventListener('keydown',textareaClicked , false);
+        textareas[i].addEventListener('keydown', textareaClicked, false);
 
     }
 
@@ -29,3 +29,5 @@ var checkScrollHeight = function(textarea) {
         textarea.style.overflow = 'hidden';
 
     };
+
+}

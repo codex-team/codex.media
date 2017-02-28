@@ -69,7 +69,7 @@ codex.appender  = require('./modules/appender');
 codex.parser    = require('./modules/parser');
 codex.comments  = require('./modules/comments');
 codex.alerts      = require('./modules/alerts');
-codex.autoresize = require)'/modules/autoresize');
+codex.autoresize = require('./modules/autoresize');
 
 module.exports = codex;
 
