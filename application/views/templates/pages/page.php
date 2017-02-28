@@ -82,7 +82,9 @@
 <? /* Comments block */ ?>
 <? if ($user->id): ?>
 
-    <?= View::factory('templates/comments/new-comment-form', array('page' => $page, 'user' => $user)); ?>
+    <div class="comment-form island island--margined clearfix">
+        <?= View::factory('templates/comments/new-comment-form', array('page' => $page, 'user' => $user)); ?>
+    </div>
 
     <script>
 
