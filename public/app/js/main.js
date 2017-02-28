@@ -30,6 +30,8 @@ codex = (function (codex) {
         */
         codex.content.approvalButtons.init();
 
+        codex.autoresize.init();
+
         /**
         * Init CodeX Special module for contrast version
         * @see https://github.com/codex-team/codex.special
@@ -67,6 +69,7 @@ codex.appender  = require('./modules/appender');
 codex.parser    = require('./modules/parser');
 codex.comments  = require('./modules/comments');
 codex.alerts      = require('./modules/alerts');
+codex.autoresize = require)'/modules/autoresize');
 
 module.exports = codex;
 
