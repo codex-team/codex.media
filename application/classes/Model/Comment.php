@@ -84,7 +84,8 @@ Class Model_Comment extends Model_preDispatch
         $comment_rows = Dao_Comments::select()
             ->where('page_id', '=', $page_id)
             ->where('is_removed', '=', 0)
-            ->order_by('root_id', 'ASC')
+            // ->order_by('root_id', 'ASC')
+            ->order_by('id', 'ASC')
             ->cached(Date::MINUTE * 5, 'comments_page:' . $page_id)
             ->execute();
 
