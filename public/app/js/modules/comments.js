@@ -1,6 +1,6 @@
 var comments = (function () {
 
-    var commentsList = null,
+    var commentsList        = null,
         sendCommentsFormURL = '',
         classNameReplyForms = 'comment-form__text';
 
@@ -22,6 +22,7 @@ var comments = (function () {
 
             var textarea = textareas[i];
 
+            // ctrl(cmd) + enter
             textarea.addEventListener('keydown', keydownSubmitHandler_, false);
 
             // form.addEventListener('submit', sendFormByAjax_, false);
