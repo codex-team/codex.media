@@ -1,30 +1,34 @@
-module.exports = (function () {
+module.exports = (function (autoresize) {
 
-    var textareaClicked = function (event) {
+    autoresize.textareaClicked = function (event) {
 
         var textarea = event.target;
 
         console.log(textarea);
 
+        autoresize.checkScrollHeight(textarea);
+
     };
 
-    var init = function () {
+    autoresize.init = function () {
 
         var textareas = document.getElementsByClassName('js-autoresizable');
 
-        console.log(init);
+        if (textareas.length) {
 
-        if (textareas.length) for (var i = 0; i <= textareas.length - 1; i++) {
+            for (var i = 0; i <= textareas.length - 1; i++) {
 
-            textareas[i].addEventListener('keydown', textareaClicked, false);
+                textareas[i].addEventListener('keydown', autoresize.textareaClicked, false);
+
+            }
 
         }
 
     };
 
-    var checkScrollHeight = function (textarea) {
+    autoresize.checkScrollHeight = function (textarea) {
 
-        console.log(checkScrollHeight);
+        textarea.style.overflow = 'hidden';
 
         if (textarea.scrollHeight > textarea.clientHeight) {
 
@@ -32,14 +36,8 @@ module.exports = (function () {
 
         }
 
-        textarea.style.overflow = 'hidden';
-
     };
 
-    return {
-        textareaClicked : textareaClicked,
-        init : init,
-        checkScrollHeight : checkScrollHeight
-    };
+    return autoresize;
 
-});
+}({}));

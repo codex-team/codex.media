@@ -8,7 +8,7 @@
         <input class="comment-form__submit-button" id="add_comment_button" type="submit" value="Оправить" />
 
         <div class="constrain">
-            <textarea class="comment-form__text" required id="add_comment_textarea" name="add_comment_textarea" rows="1" placeholder="Ваш комментарий..."></textarea>
+            <textarea class="comment-form__text js-autoresizable" required id="add_comment_textarea" name="add_comment_textarea" rows="1" placeholder="Ваш комментарий..."></textarea>
         </div>
 
         <input type="hidden" name="parent_id" value="0" id="parent_id"/>
