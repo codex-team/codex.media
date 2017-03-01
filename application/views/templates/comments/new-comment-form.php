@@ -10,4 +10,8 @@
         <textarea class="comment-form__text" data-parentId="<?= $parent_id ?>" data-rootId="<?= $root_id ?>"
         data-sendCommentAction="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" required rows="1" placeholder="Ваш комментарий..."></textarea>
     </div>
+<? else: ?>
+    <div>
+        <a href="/auth">Авторизуйтесь, чтобы оставить комментарий</a>
+    </div>
 <? endif ?>
