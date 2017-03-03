@@ -53,6 +53,8 @@
         <?= $comment->text ?>
     </div>
 
-    <?= View::factory('templates/comments/new-comment-form', array('page' => $page, 'user' => $user, 'parent_id' => $comment->id, 'root_id' =>  $comment->root_id )); ?>
+    <div>
+        <?= View::factory('templates/comments/new-comment-form', array('page' => $page, 'user' => $user, 'parent_id' => $comment->id, 'root_id' =>  $comment->root_id )); ?>
+    </div>
 
 </div>
