@@ -1,4 +1,4 @@
-<div class="comment island island--padded clear island--margined" id="comment_<?= $comment->id ?>">
+<div class="comment island island--padded clear island--margined <?= isset($isNewComment) ? 'comment--highlited' : '' ?>" id="comment_<?= $comment->id ?>">
 
     <div class="comment__header clearfix">
 
