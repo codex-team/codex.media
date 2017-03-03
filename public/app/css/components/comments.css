@@ -1,4 +1,6 @@
-.comment-form {
+.comment-form {}
+
+.comment-form__island {
     padding: 15px var(--islandPadding);
 }
 
@@ -8,6 +10,14 @@
     width: 30px;
     border-radius: 50%;
     margin-right: 15px;
+}
+
+.comment-form__placeholder {
+    width: 100%;
+    margin-top: 6px;
+    font-size: 15px;
+    padding: 0;
+    color: var(--grayText);
 }
 
 .comment-form__text {
@@ -27,9 +37,9 @@
     height: 7em;
 }
 
-.comment-form__submit-button {
-    float: right;
-    margin-left: 15px;
+.comment-form__button {
+    /*float: right;*/
+    margin-top: 15px;
     padding: 9px 19px !important;
 }
 
@@ -91,4 +101,12 @@
     float: right;
     padding: 5px;
     border-radius: 2px;
+}
+
+
+.comment {
+    transition: background-color 2500ms ease-out;
+}
+.comment--highlited {
+    background-color: var(--highlithed);
 }
