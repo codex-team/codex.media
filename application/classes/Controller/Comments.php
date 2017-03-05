@@ -46,7 +46,7 @@ class Controller_Comments extends Controller_Base_preDispatch
         /***/
 
         $comment = new Model_Comment();
-        $comment->page_id              = $this->request->param('id');
+        $comment->page_id              = $page->id;
         $comment->text                 = $text;
         $comment->parent_comment['id'] = Arr::get($_POST, 'parent_id', '0');
         $comment->author['id']         = $this->user->id;
@@ -67,7 +67,7 @@ class Controller_Comments extends Controller_Base_preDispatch
                 $response['error'] = $error;
             } else {
                 $response['success'] = 1;
-                $response['comment'] = View::factory('templates/comments/comment', array('page' => $page, 'user' => $this->user, 'comment' => $comment))->render();
+                $response['comment'] = View::factory('templates/comments/comment', array('user' => $this->user, 'comment' => $comment))->render();
                 $response['commentId'] = $comment->id;
             }
 
