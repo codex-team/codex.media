@@ -50,6 +50,7 @@ Class Model_Comment extends Model_preDispatch
             $this->parent_id  = $comment_row['parent_id'];
             $this->dt_create  = $comment_row['dt_create'];
             $this->is_removed = $comment_row['is_removed'];
+            $this->page       = new Model_Page($this->page_id);
         }
 
         return $this;
