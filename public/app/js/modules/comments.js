@@ -1,10 +1,17 @@
 module.exports = (function () {
 
-    var commentsList = null;
+    var commentsList = null,
+        anchor       = document.location.hash;
 
     function init() {
 
         commentsList = document.getElementById('commentsList');
+
+        if (anchor) {
+
+            highligthAnchor();
+
+        }
 
     }
 
@@ -115,7 +122,10 @@ module.exports = (function () {
     /** Highligth comment by id for a time */
     function highligthComment(commentId) {
 
-        var comment = document.getElementById('comment_' + commentId);
+        var commentId = 'comment_' + commentId,
+            comment = document.getElementById(commentId);
+
+        console.log(commentId, comment);
 
         comment.classList.add('comment--highlited');
 
@@ -164,7 +174,9 @@ module.exports = (function () {
             beforeSend : function () {},
             success : function (response) {
 
-                response = JSON.parse(response);;
+                console.log(actionURL);
+
+                response = JSON.parse(response);
 
                 if (response.success) {
 
@@ -195,6 +207,15 @@ module.exports = (function () {
         });
 
     }
+
+    /** Highligth comment if anchor */
+    function highligthAnchor() {
+
+        var commentId = anchor.slice(anchor.lastIndexOf('_') + 1);
+
+        highligthComment(commentId);
+
+    };
 
     return {
         init : init,

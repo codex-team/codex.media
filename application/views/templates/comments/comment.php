@@ -20,6 +20,7 @@
 
             <time class="comment__time">
                 <?= $methods->ftime(strtotime($comment->dt_create)); ?>
+                <a href="/p/<?= $comment->page_id ?>#comment_<?= $comment->id ?>"><?= $methods->ftime(strtotime($comment->dt_create)); ?></a>
             </time>
         </div>
 
