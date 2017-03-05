@@ -6,7 +6,7 @@
 <? if ($user->id): ?>
     <img class="comment-form__photo" src="<?= $user->photo ?>" alt="<?= $user->name ?>">
 
-    <div class="constrain comment-form"
+    <div class="constrain comment-form-wrapper" id="replyFormToComment<?= $parent_id ?>"
         data-parentId="<?= $parent_id ?>"
         data-rootId="<?= $root_id ?>"
         data-sendCommentAction="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment">
