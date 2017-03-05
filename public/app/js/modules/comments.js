@@ -109,6 +109,22 @@ module.exports = (function () {
         formWrapper.appendChild(holder);
 
     }
+
+    /** Highligth comment by id for a time */
+    function highligthComment(commentId) {
+
+        var comment = document.getElementById('comment_' + commentId);
+
+        comment.classList.add('comment--highlited');
+
+        window.setTimeout(function () {
+
+            comment.classList.remove('comment--highlited');
+
+        }, 1000);
+
+    }
+
     /*
      * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
      */
@@ -162,9 +178,7 @@ module.exports = (function () {
 
                     window.scrollTo(0, document.body.scrollHeight);
 
-                    var comment = document.getElementById('comment_' + response.commentId);
-
-                    comment.classList.remove('comment--highlited');
+                    highligthComment(response.commentId);
 
                     removeForm(parentId);
 
