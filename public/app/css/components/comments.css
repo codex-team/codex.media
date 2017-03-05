@@ -47,6 +47,12 @@
 }
 .comment__replied-date {
     color: var(--grayText);
+    margin-right: 20px;
+}
+
+.comment__replied-page {
+    color: var(--grayText);
+    font-size: 15px;
 }
 
 .comment__text {
