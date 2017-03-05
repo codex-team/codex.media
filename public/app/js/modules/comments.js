@@ -98,6 +98,17 @@ module.exports = (function () {
         }
 
     }
+
+    function removeForm(commentId) {
+
+        var formWrapper = document.getElementById('replyFormToComment' + commentId),
+            form   = formWrapper.getElementsByClassName('comments-form')[0],
+            holder = createHolder();
+
+        form.remove();
+        formWrapper.appendChild(holder);
+
+    }
     /*
      * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
      */
@@ -155,7 +166,7 @@ module.exports = (function () {
 
                     comment.classList.remove('comment--highlited');
 
-                    removeForm(form);
+                    removeForm(parentId);
 
                 } else {
 
@@ -166,16 +177,6 @@ module.exports = (function () {
             }
 
         });
-
-    }
-
-    function removeForm(form) {
-
-        var parent = form.parentNode,
-            holder = createHolder();
-
-        form.remove();
-        parent.appendChild(holder);
 
     }
 
