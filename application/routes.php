@@ -63,7 +63,7 @@ Route::set('ACTION_FOR_PAGE', 'p/<id>/<uri>/<action>',
 /**
  * User section
  */
-Route::set('PROFILE', 'user/<id>', array('id' => $DIGIT))->defaults(array(
+Route::set('PROFILE', 'user/<id>(/<list>)', array('id' => $DIGIT, 'list' => 'pages|comments'))->defaults(array(
     'controller' => 'user',
     'action' => 'profile'
 ));
