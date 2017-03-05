@@ -26,7 +26,7 @@
             <? include(DOCROOT . "public/app/svg/comments.svg") ?>
             <?= $emptyListMessage ?: 'Комментариев нет.' ?>
 
-            <? if (!$user->id): ?>
+            <? if (!$user->id && isset($page)): ?>
                 <a class="button master" href="/auth">Авторизоваться</a>
             <? endif ?>
 

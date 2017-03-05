@@ -1,3 +1,7 @@
+.article {
+    margin-bottom: var(--islandMargin);
+}
+
 .article-information {
     color: var(--grayText);
     margin-bottom: 10px;
