@@ -1,4 +1,4 @@
-var comments = (function () {
+module.exports = (function () {
 
     var commentsList = null;
 
@@ -185,5 +185,3 @@ var comments = (function () {
     };
 
 }());
-
-module.exports = comments;
