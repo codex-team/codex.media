@@ -67,7 +67,7 @@ class Controller_Comments extends Controller_Base_preDispatch
                 $response['error'] = $error;
             } else {
                 $response['success'] = 1;
-                $response['comment'] = View::factory('templates/comments/comment', array('user' => $this->user, 'comment' => $comment))->render();
+                $response['comment'] = View::factory('templates/comments/comment', array('user' => $this->user, 'comment' => $comment, 'isOnPage' => true))->render();
                 $response['commentId'] = $comment->id;
             }
 

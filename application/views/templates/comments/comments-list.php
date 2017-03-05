@@ -15,7 +15,7 @@
                 'user' => $user,
                 'comment' => $comment,
                 'index' => $index,
-                'showAnswerForm' => isset($page)
+                'isOnPage' => isset($page) ? $page : null,
             )); ?>
         <? endforeach ?>
 

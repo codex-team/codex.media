@@ -25,26 +25,37 @@
 
     </div>
 
-    <? if ($comment->parent_comment): ?>
+    <? if ($comment->parent_comment || !$isOnPage): ?>
+
+        <?
+            $source = isset($comment->parent_comment->text)      ? $comment->parent_comment->text      : $comment->page->title;
+            $author = isset($comment->parent_comment->author)    ? $comment->parent_comment->author    : $comment->page->author;
+            $date   = isset($comment->parent_comment->dt_create) ? $comment->parent_comment->dt_create : $comment->page->date;
+        ?>
+
         <div class="comment__replied">
 
             <div class="comment__replied-source">
-                <?= $comment->parent_comment->text ?>
+                <?= $source ?>
             </div>
 
             <span class="comment__replied-author">
-                <a href="/user/<?= $comment->parent_comment->author->id ?>">
-                    <?= $comment->parent_comment->author->name ?>
+                <a href="/user/<?= $author->id ?>">
+                    <?= $author->name ?>
                 </a>
             </span>
 
             <span class="comment__replied-date">
-                <?= $methods->ftime(strtotime($comment->parent_comment->dt_create)); ?>
+                <?= $methods->ftime(strtotime($date)) ?>
             </span>
 
-            <? /* <span class="comment__replied-page">
-                <?= $comment->parent_comment->text ?>
-            </span> */ ?>
+            <? if ($comment->parent_comment && !$isOnPage): ?>
+                <span class="comment__replied-page">
+                    <a href="/p/<?= $comment->page->id ?>">
+                        <?= $comment->page->title ?>
+                    </a>
+                </span>
+            <? endif ?>
 
         </div>
     <? endif ?>
@@ -55,7 +66,7 @@
 
 
     <div class="comment__footer">
-        <? if (isset($showAnswerForm) && $showAnswerForm): ?>
+        <? if ($isOnPage): ?>
             <div class="comment__footer-form">
                 <?= View::factory('templates/comments/new-comment-form', array('comment' => $comment, 'page_id' => $comment->page_id, 'user' => $user, 'parent_id' => $comment->id, 'root_id' =>  $comment->root_id )); ?>
             </div>
