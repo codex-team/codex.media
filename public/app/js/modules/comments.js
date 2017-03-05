@@ -28,6 +28,7 @@ module.exports = (function () {
             button       = createButton(),
             form         = document.createElement('DIV');
 
+        form.classList.add('comments-form');
         form.dataset.parentid          = holderParent.dataset.parentid;
         form.dataset.rootid            = holderParent.dataset.rootid;
         form.dataset.sendcommentaction = holderParent.dataset.sendcommentaction;
@@ -72,6 +73,7 @@ module.exports = (function () {
 
     }
 
+    /** Show holder for comment-form */
     function createHolder() {
 
         var holder = document.createElement('DIV');
@@ -128,20 +130,20 @@ module.exports = (function () {
     /*
      * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
      */
-    function keydownSubmitHandler_(event) {
+    function keydownSubmitHandler(event) {
 
         var CtrlPressed  = event.ctrlKey || event.metaKey,
             EnterPressed = event.keyCode == 13;
 
         if ( CtrlPressed && EnterPressed ) {
 
-            sendFormByAjax_(event);
+            sendFormByAjax(event);
 
         }
 
     }
 
-    function sendFormByAjax_(event) {
+    function sendFormByAjax(event) {
 
         var form      = event.target.parentNode,
             text      = returnTextareaByForm(form).value,
@@ -162,7 +164,7 @@ module.exports = (function () {
             beforeSend : function () {},
             success : function (response) {
 
-                response = JSON.parse(response);
+                response = JSON.parse(response);;
 
                 if (response.success) {
 
