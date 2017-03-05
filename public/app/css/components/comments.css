@@ -1,12 +1,12 @@
 /** Comment */
 .comment {}
 
-.comment:not(.comment--highlited) {
-    transition: background-color 2500ms ease-out;
-}
 
-.comment--highlited {
+.comment--highligthed {
     background-color: var(--highlithed);
+}
+.comment--highligthed-transition {
+    transition: background-color 2500ms ease-out;
 }
 
 

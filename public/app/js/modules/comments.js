@@ -125,13 +125,18 @@ module.exports = (function () {
         var commentId = 'comment_' + commentId,
             comment = document.getElementById(commentId);
 
-        console.log(commentId, comment);
-
-        comment.classList.add('comment--highlited');
+        comment.classList.add('comment--highligthed');
 
         window.setTimeout(function () {
 
-            comment.classList.remove('comment--highlited');
+            comment.classList.add('comment--highligthed-transition');
+            comment.classList.remove('comment--highligthed');
+
+            window.setTimeout(function () {
+
+                comment.classList.remove('comment--highligthed-transition');
+
+            }, 2500);
 
         }, 1000);
 
@@ -173,8 +178,6 @@ module.exports = (function () {
             data: formData,
             beforeSend : function () {},
             success : function (response) {
-
-                console.log(actionURL);
 
                 response = JSON.parse(response);
 
