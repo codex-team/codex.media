@@ -47,7 +47,8 @@ var comments = (function () {
         textarea.placeholder = holder.innerHTML;
         textarea.rows = 1;
         textarea.required = true;
-        textarea.addEventListener('keydown', keydownSubmitHandler_, false);
+        textarea.addEventListener('keydown', keydownSubmitHandler, false);
+        textarea.addEventListener('blur', blurTextareaHandler, false);
 
         return textarea;
 
@@ -83,6 +84,20 @@ var comments = (function () {
 
     }
 
+    /** Remove form on textarea blur */
+    function blurTextareaHandler(event) {
+
+        var textarea = event.target,
+            form     = textarea.parentNode,
+            parentId = form.dataset.parentid;
+
+        if (!textarea.value) {
+
+            removeForm(parentId);
+
+        }
+
+    }
     /*
      * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
      */
