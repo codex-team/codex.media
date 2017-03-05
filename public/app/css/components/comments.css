@@ -1,56 +1,19 @@
-.comment-form {}
+/** Comment */
+.comment {}
 
-.comment-form__island {
-    padding: 15px var(--islandPadding);
+.comment:not(.comment--highlited) {
+    transition: background-color 2500ms ease-out;
 }
 
-.comment-form__photo {
-    float: left;
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    margin-right: 15px;
+.comment--highlited {
+    background-color: var(--highlithed);
 }
 
-.comment-form__placeholder {
-    width: 100%;
-    margin-top: 6px;
-    font-size: 15px;
-    padding: 0;
-    color: var(--grayText);
-}
 
-.comment-form__text {
-    width: 100%;
-    margin-top: 4px;
-    padding: 0;
-    resize: none;
-}
-
-.comment-form__text,
-.comment-form__text:focus {
-    background: none;
-}
-
-.comment-form__text:focus,
-.comment-form__text:not(:invalid) {
-    height: 7em;
-}
-
-.comment-form__button {
-    /*float: right;*/
-    margin-top: 15px;
-    padding: 9px 19px !important;
-}
-
-/**
-* Comments list
-*/
 .comment__author-photo {
     float: left;
     margin-right: 15px;
 }
-
 .comment__author-photo img {
     height: 40px;
     width: 40px;
@@ -88,25 +51,62 @@
 
 .comment__text {
     margin: 20px auto;
-}
-
-.comment-form__text,
-.comment__text {
     font-size: 15px;
     line-height: 1.5em;
 }
-
 
 .comment__actions--button {
     float: right;
     padding: 5px;
     border-radius: 2px;
 }
+/***/
 
 
-.comment {
-    transition: background-color 2500ms ease-out;
+/** Comment form */
+.comment-form-wrapper {}
+
+.comment-form__island {
+    padding: 15px var(--islandPadding);
 }
-.comment--highlited {
-    background-color: var(--highlithed);
+
+.comment-form__photo {
+    float: left;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 15px;
 }
+
+.comment-form__placeholder {
+    width: 100%;
+    margin-top: 7px;
+    font-size: 15px;
+    padding: 0;
+    color: var(--grayText);
+}
+
+.comment-form__text {
+    width: 100%;
+    margin-top: 4px;
+    padding: 0;
+    resize: none;
+    font-size: 15px;
+    line-height: 1.5em;
+}
+
+.comment-form__text,
+.comment-form__text:focus {
+    background: none;
+}
+
+.comment-form__text:focus,
+.comment-form__text:not(:invalid) {
+    height: 7em;
+}
+
+.comment-form__button {
+    margin-top: 15px;
+    padding: 9px 19px !important;
+}
+/***/
