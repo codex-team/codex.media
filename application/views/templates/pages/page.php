@@ -83,22 +83,13 @@
 <? if ($user->id): ?>
 
     <div class="comment-form__island island island--margined clearfix">
-        <?= View::factory('templates/comments/new-comment-form', array('page' => $page, 'user' => $user)); ?>
+        <?= View::factory('templates/comments/new-comment-form', array('page_id' => $page->id, 'user' => $user)); ?>
     </div>
-
-    <script>
-
-        codex.docReady(function(){
-
-            /**
-            * Comments module
-            */
-            codex.comments.init();
-
-        });
-
-    </script>
 
 <? endif ?>
 
-<?= View::factory('templates/comments/comments-list', array('page' => $page, 'user' => $user)); ?>
+<?= View::factory('templates/comments/comments-list', array(
+    'page' => $page,
+    'user' => $user,
+    'emptyListMessage' => '<p>Станьте первым, кто оставит <br/> комментарий к данному материалу.</p>'
+)); ?>

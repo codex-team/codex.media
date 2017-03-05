@@ -60,6 +60,21 @@
     padding: 5px;
     border-radius: 2px;
 }
+
+.comment__footer {
+    border-top: 1px solid var(--lightGrayLine);
+    color: var(--grayText);
+}
+.comment__footer-form {
+    padding-top: 15px;
+}
+.comment__footer-link {
+    padding-top: calc(0.7 * var(--islandPadding));
+    font-size: 0.9em;
+}
+.comment__footer-link svg {
+    margin-right: 0.5em;
+}
 /***/
 
 
@@ -68,6 +83,7 @@
 
 .comment-form__island {
     padding: 15px var(--islandPadding);
+    margin: var(--islandMargin) auto;
 }
 
 .comment-form__photo {
