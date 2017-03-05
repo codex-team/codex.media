@@ -61,7 +61,7 @@ module.exports = (function () {
 
         button.classList.add('comment-form__button', 'button');
         button.innerHTML = 'Оставить комментарий';
-        button.addEventListener('click', sendFormByAjax_, false);
+        button.addEventListener('click', sendFormByAjax, false);
 
         return button;
 
