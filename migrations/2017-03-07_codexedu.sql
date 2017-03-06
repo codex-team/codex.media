@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 21, 2016 at 09:13 AM
+-- Host: localhost
+-- Generation Time: Mar 06, 2017 at 09:50 PM
 -- Server version: 5.7.16
--- PHP Version: 5.6.27
+-- PHP Version: 5.6.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -16,13 +16,19 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `codexedu`
+--
+CREATE DATABASE IF NOT EXISTS `codexedu` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `codexedu`;
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `comments`
 --
 
--- DROP TABLE IF EXISTS `comments`;
+DROP TABLE IF EXISTS `comments`;
 CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
@@ -33,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `dt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_removed` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=494 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -41,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
 -- Table structure for table `files`
 --
 
--- DROP TABLE IF EXISTS `files`;
+DROP TABLE IF EXISTS `files`;
 CREATE TABLE IF NOT EXISTS `files` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `page` int(10) UNSIGNED DEFAULT NULL,
@@ -56,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `files` (
   `type` tinyint(13) NOT NULL COMMENT 'Тип файла из контроллера Transport',
   `file_hash` binary(16) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -64,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `files` (
 -- Table structure for table `pages`
 --
 
--- DROP TABLE IF EXISTS `pages`;
+DROP TABLE IF EXISTS `pages`;
 CREATE TABLE IF NOT EXISTS `pages` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `type` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
@@ -77,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `author` int(10) UNSIGNED NOT NULL,
   `is_menu_item` tinyint(1) NOT NULL DEFAULT '0',
+  `is_news_page` tinyint(1) NOT NULL DEFAULT '0',
   `rich_view` tinyint(1) DEFAULT '0',
   `dt_pin` timestamp NULL DEFAULT NULL,
   `source_link` varchar(140) DEFAULT NULL,
@@ -84,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
   KEY `type` (`type`,`id_parent`),
   KEY `id_parent` (`id_parent`),
   KEY `type_2` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -100,6 +107,11 @@ CREATE TABLE IF NOT EXISTS `settings` (
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `settings`
+--
+
+TRUNCATE TABLE `settings`;
 --
 -- Dumping data for table `settings`
 --
@@ -121,7 +133,7 @@ INSERT INTO `settings` (`name`, `value`, `label`) VALUES
 -- Table structure for table `users`
 --
 
--- DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
@@ -146,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `is_removed` tinyint(1) NOT NULL DEFAULT '0',
   `telegram_chat_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -154,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Table structure for table `users_sessions`
 --
 
--- DROP TABLE IF EXISTS `users_sessions`;
+DROP TABLE IF EXISTS `users_sessions`;
 CREATE TABLE IF NOT EXISTS `users_sessions` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `uid` int(10) UNSIGNED NOT NULL,
@@ -168,12 +180,8 @@ CREATE TABLE IF NOT EXISTS `users_sessions` (
   `autologin` smallint(4) DEFAULT NULL COMMENT 'autologin type',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=193 DEFAULT CHARSET=utf8;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
-/* Remove `site_info` table */
-DROP TABLE IF EXISTS `site_info`;
