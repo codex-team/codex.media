@@ -25,7 +25,7 @@ module.exports = (function () {
         holderParent.removeChild(holder);
         holderParent.appendChild(form);
 
-        returnTextareaByForm(form).focus();
+        getFormTextarea(form).focus();
 
     }
 
@@ -78,7 +78,8 @@ module.exports = (function () {
 
     }
 
-    function returnTextareaByForm(form) {
+    /* Return textarea for given form */
+    function getFormTextarea(form) {
 
         return form.getElementsByTagName('TEXTAREA')[0];
 
@@ -165,7 +166,7 @@ module.exports = (function () {
     function sendFormByAjax(event) {
 
         var form      = event.target.parentNode,
-            text      = returnTextareaByForm(form).value,
+            text      = getFormTextarea(form).value,
             formData  = new FormData(),
             rootId    = form.dataset.rootId,
             parentId  = form.dataset.parentId,
