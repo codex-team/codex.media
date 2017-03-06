@@ -154,12 +154,12 @@ class Controller_Base_preDispatch extends Controller_Template
         $redis_host = Kohana::$config->load('redis.host') ?: '127.0.0.1';
         $redis_port = Kohana::$config->load('redis.port') ?: '6379';
         $redis_pass = Kohana::$config->load('redis.password');
-
+        $redis_db   = Kohana::$config->load('redis.database') ?: '0';
 
         $redis = new Redis();
         $redis->connect($redis_host, $redis_port);
         $redis->auth($redis_pass);
-        $redis->select(0);
+        $redis->select($redis_db);
 
         return $redis;
     }
