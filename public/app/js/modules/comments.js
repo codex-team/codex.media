@@ -142,9 +142,9 @@ module.exports = (function () {
 
                 comment.classList.remove('comment--highligthed-transition');
 
-            }, 1000);
+            }, 500);
 
-        }, 1000);
+        }, 500);
 
     }
 
