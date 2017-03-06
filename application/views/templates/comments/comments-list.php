@@ -44,7 +44,9 @@
         /**
         * Comments module
         */
-        codex.comments.init();
+        codex.comments.init({
+            listID : "commentsList",
+        });
 
     });
 

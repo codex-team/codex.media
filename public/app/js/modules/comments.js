@@ -3,9 +3,9 @@ module.exports = (function () {
     var commentsList = null,
         anchor       = document.location.hash;
 
-    function init() {
+    function init(data) {
 
-        commentsList = document.getElementById('commentsList');
+        commentsList = document.getElementById(data.listID);
 
         if (anchor) {
 
