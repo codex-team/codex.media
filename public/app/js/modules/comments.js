@@ -15,11 +15,12 @@ module.exports = (function () {
 
     }
 
-    function appendForm(elem) {
+    /** Remove holder and append form for comment */
+    function appendForm(placeholder) {
 
-        var holder = elem.target,
+        var holder       = placeholder.target,
             holderParent = holder.parentNode,
-            form  = createForm(holder);
+            form         = createForm(holder);
 
         holderParent.removeChild(holder);
         holderParent.appendChild(form);
@@ -28,6 +29,7 @@ module.exports = (function () {
 
     }
 
+    /** Return form for comment */
     function createForm(holder) {
 
         var holderParent = holder.parentNode,
@@ -47,6 +49,7 @@ module.exports = (function () {
 
     }
 
+    /** Return textarea for form for comment */
     function createTextarea(holder) {
 
         var textarea = document.createElement('TEXTAREA');
@@ -62,6 +65,7 @@ module.exports = (function () {
 
     }
 
+    /** Return submit button for form*/
     function createButton() {
 
         var button = document.createElement('DIV');
@@ -108,11 +112,12 @@ module.exports = (function () {
 
     }
 
+    /** Remove form by commentId and put back placeholder */
     function removeForm(commentId) {
 
         var formWrapper = document.getElementById('replyFormToComment' + commentId),
-            form   = formWrapper.getElementsByClassName('comments-form')[0],
-            holder = createHolder();
+            form        = formWrapper.getElementsByClassName('comments-form')[0],
+            holder      = createHolder();
 
         form.remove();
         formWrapper.appendChild(holder);
@@ -142,15 +147,13 @@ module.exports = (function () {
 
     }
 
-    /*
-     * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
-     */
+    /** Catch Ctrl+Enter or Cmd+Enter for send form */
     function keydownSubmitHandler(event) {
 
-        var CtrlPressed  = event.ctrlKey || event.metaKey,
-            EnterPressed = event.keyCode == 13;
+        var ctrlPressed  = event.ctrlKey || event.metaKey,
+            enterPressed = event.keyCode == 13;
 
-        if ( CtrlPressed && EnterPressed ) {
+        if ( ctrlPressed && enterPressed ) {
 
             sendFormByAjax(event);
 
@@ -158,6 +161,7 @@ module.exports = (function () {
 
     }
 
+    /** Ajax function for submit comment */
     function sendFormByAjax(event) {
 
         var form      = event.target.parentNode,
@@ -183,24 +187,29 @@ module.exports = (function () {
 
                 if (response.success) {
 
-                    // если на странице не было ни одного комментария, то удаляем мотиватор
+                    // if no comments are in comments list, then remove motivator
                     if (commentsList.dataset.count == 0) {
 
                         commentsList.innerHTML = '';
 
                     }
 
+                    // Append new comment to comments list
                     commentsList.innerHTML += response.comment;
                     commentsList.dataset.count++;
 
+                    // Scroll down to new comment
                     window.scrollTo(0, document.body.scrollHeight);
 
+                    // Highligth new comment
                     highligthComment(response.commentId);
 
+                    // Remove form and return placeholder
                     removeForm(parentId);
 
                 } else {
 
+                    // Show error
                     codex.alerts.show(response.error);
 
                 }
@@ -211,7 +220,7 @@ module.exports = (function () {
 
     }
 
-    /** Highligth comment if anchor */
+    /** Highligth comment if anchor is in url */
     function highligthAnchor() {
 
         var commentId = anchor.slice(anchor.lastIndexOf('_') + 1);
