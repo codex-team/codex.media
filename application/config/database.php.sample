@@ -18,9 +18,9 @@ return array
 			 *
 			 * Ports and sockets may be appended to the hostname.
 			 */
-			'hostname'   => '',
-			'database'   => '',
-			'username'   => '',
+			'hostname'   => '127.0.0.1',
+			'database'   => 'codexedu',
+			'username'   => 'root',
 			'password'   => '',
 			'persistent' => FALSE,
 		),
