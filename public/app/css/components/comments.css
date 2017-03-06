@@ -70,6 +70,9 @@
 .comment__footer {
     border-top: 1px solid var(--lightGrayLine);
     color: var(--grayText);
+    margin: 0 -30px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 .comment__footer-form {
     padding-top: 15px;
