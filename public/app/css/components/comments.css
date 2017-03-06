@@ -6,7 +6,7 @@
     background-color: var(--hightlighted);
 }
 .comment--highligthed-transition {
-    transition: background-color 2500ms ease-out;
+    transition: background-color 1000ms ease-out;
 }
 
 
