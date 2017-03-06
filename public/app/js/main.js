@@ -66,7 +66,7 @@ codex.content   = require('./modules/content');
 codex.appender  = require('./modules/appender');
 codex.parser    = require('./modules/parser');
 codex.comments  = require('./modules/comments');
-codex.alerts      = require('./modules/alerts');
+codex.alerts    = require('./modules/alerts');
 
 module.exports = codex;
 

@@ -1,19 +1,32 @@
-<div class="comments-list" id="page_comments">
+<?
+    $count = isset($page) ? count($page->comments) : '0'
+?>
 
-    <? if ($page->comments): ?>
+<div class="comments-list" id="commentsList" data-count="<?= $count ?>">
 
-        <? foreach ($page->comments as $comment): ?>
-            <?= View::factory('templates/comments/comment', array('page' => $page, 'user' => $user, 'comment' => $comment)); ?>
+    <?
+        $comments = isset($page) ? $page->comments : $comments;
+    ?>
+
+    <? if ($comments): ?>
+
+        <? foreach ($comments as $index => $comment): ?>
+            <?= View::factory('templates/comments/comment', array(
+                'user' => $user,
+                'comment' => $comment,
+                'index' => $index,
+                'isOnPage' => isset($page) ? $page : null,
+            )); ?>
         <? endforeach ?>
 
     <? else: ?>
 
-        <div class="empty-motivator island island--margined island--padded">
+        <div class="empty-motivator island island--padded">
 
             <? include(DOCROOT . "public/app/svg/comments.svg") ?>
-            <p>Станьте первым, кто оставит <br/> комментарий к данному материалу.</p>
+            <?= $emptyListMessage ?: 'Комментариев нет.' ?>
 
-            <? if (!$user->id): ?>
+            <? if (!$user->id && isset($page)): ?>
                 <a class="button master" href="/auth">Авторизоваться</a>
             <? endif ?>
 
@@ -22,3 +35,19 @@
     <? endif ?>
 
 </div>
+
+
+<script>
+
+    codex.docReady(function(){
+
+        /**
+        * Comments module
+        */
+        codex.comments.init({
+            listID : "commentsList",
+        });
+
+    });
+
+</script>
