@@ -9,9 +9,9 @@
     <img class="comment-form__photo" src="<?= $user->photo ?>" alt="<?= $user->name ?>">
 
     <div class="constrain comment-form-wrapper" id="replyFormToComment<?= $parent_id ?>"
-        data-parentId="<?= $parent_id ?>"
-        data-rootId="<?= $root_id ?>"
-        data-sendCommentAction="add-comment/p-<?= $page_id ?>">
+        data-parent-id="<?= $parent_id ?>"
+        data-root-id="<?= $root_id ?>"
+        data-action="add-comment/p-<?= $page_id ?>">
 
         <div class="comment-form__placeholder" onclick="codex.comments.appendForm(event);">Ваш комментарий...</div>
 

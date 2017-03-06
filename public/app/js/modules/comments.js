@@ -36,9 +36,9 @@ module.exports = (function () {
             form         = document.createElement('DIV');
 
         form.classList.add('comments-form');
-        form.dataset.parentid          = holderParent.dataset.parentid;
-        form.dataset.rootid            = holderParent.dataset.rootid;
-        form.dataset.sendcommentaction = holderParent.dataset.sendcommentaction;
+        form.dataset.parentId = holderParent.dataset.parentId;
+        form.dataset.rootId   = holderParent.dataset.rootId;
+        form.dataset.action   = holderParent.dataset.action;
 
         form.appendChild(textarea);
         form.appendChild(button);
@@ -98,7 +98,7 @@ module.exports = (function () {
 
         var textarea = event.target,
             form     = textarea.parentNode,
-            parentId = form.dataset.parentid;
+            parentId = form.dataset.parentId;
 
         if (!textarea.value) {
 
@@ -163,9 +163,9 @@ module.exports = (function () {
         var form      = event.target.parentNode,
             text      = returnTextareaByForm(form).value,
             formData  = new FormData(),
-            rootId    = form.dataset.rootid,
-            parentId  = form.dataset.parentid,
-            actionURL = form.dataset.sendcommentaction;
+            rootId    = form.dataset.rootId,
+            parentId  = form.dataset.parentId,
+            actionURL = form.dataset.action;
 
         formData.append('root_id', rootId);
         formData.append('parent_id', parentId);
