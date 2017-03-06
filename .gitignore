@@ -1,6 +1,12 @@
 application/cache/*
 application/logs/*
 
+upload/*
+!upload
+
+vendor/*
+!vendor
+
 .env
 
 phpmyadmin/*
