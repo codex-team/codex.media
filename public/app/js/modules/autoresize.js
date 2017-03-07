@@ -6,7 +6,15 @@ module.exports = (function () {
     /**
     * Textareas initialization
     */
-    function init() {
+    function init(textarea) {
+
+        if (textarea) {
+
+            textarea.addEventListener('input', textareaClicked, false);
+
+            return true;
+
+        }
 
         var textareas = document.getElementsByClassName('js-autoresizable');
 

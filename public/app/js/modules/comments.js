@@ -61,6 +61,8 @@ module.exports = (function () {
         textarea.addEventListener('keydown', keydownSubmitHandler, false);
         textarea.addEventListener('blur', blurTextareaHandler, false);
 
+        codex.autoresize.init(textarea);
+
         return textarea;
 
     }
