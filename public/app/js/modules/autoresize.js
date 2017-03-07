@@ -42,10 +42,12 @@ module.exports = (function () {
 
             textarea.style.height = textarea.scrollHeight + 'px';
 
-    };
+        }
 
-    return {
-        init: init
+        return {
+            init: init
+        };
+
     };
 
 }());
