@@ -1,3 +1,7 @@
+.article {
+    margin-bottom: var(--islandMargin);
+}
+
 .article-information {
     color: var(--grayText);
     margin-bottom: 10px;
@@ -30,4 +34,7 @@
     font-size: 19.2px;
     line-height: 1.64em;
     color: rgba(0,0,0,.8);*/
+}
+.article-content a {
+    text-decoration: underline;
 }

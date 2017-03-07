@@ -91,23 +91,16 @@
 
 <ul class="island tabs island--margined">
     <li>
-        <a class="tabs__tab tabs__tab--current">
+        <a class="tabs__tab <?= $list == 'pages' || !$list ? 'tabs__tab--current' : '' ?>" href='/user/<?= $viewUser->id ?>'>
             Блог
         </a>
     </li>
     <li>
-        <a class="tabs__tab" >
+        <a class="tabs__tab <?= $list == 'comments' ? 'tabs__tab--current' : '' ?>" href='/user/<?= $viewUser->id ?>/comments'>
             Комментарии
         </a>
     </li>
 </ul>
 
 
-<div id="list_of_news" class="post-list">
-
-    <?= View::factory('templates/posts_list', array(
-        'pages'=> $userPages,
-        'emptyListMessage' => 'Тут появятся статьи и заметки'
-    )); ?>
-
-</div>
+<?= $listFactory ?>
