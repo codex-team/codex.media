@@ -30,7 +30,7 @@ codex = (function (codex) {
         */
         codex.content.approvalButtons.init();
 
-        codex.autoresize.init();
+        codex.autoresizeTextarea.init();
 
         /**
         * Init CodeX Special module for contrast version
@@ -61,15 +61,15 @@ codex.docReady = function (f) {
 /**
 * Load modules
 */
-codex.core       = require('./modules/core');
-codex.ajax       = require('./modules/ajax');
-codex.transport  = require('./modules/transport');
-codex.content    = require('./modules/content');
-codex.appender   = require('./modules/appender');
-codex.parser     = require('./modules/parser');
-codex.comments   = require('./modules/comments');
-codex.alerts     = require('./modules/alerts');
-codex.autoresize = require('./modules/autoresize');
+codex.core      = require('./modules/core');
+codex.ajax      = require('./modules/ajax');
+codex.transport = require('./modules/transport');
+codex.content   = require('./modules/content');
+codex.appender  = require('./modules/appender');
+codex.parser    = require('./modules/parser');
+codex.comments  = require('./modules/comments');
+codex.alerts    = require('./modules/alerts');
+codex.autoresizeTextarea = require('./modules/autoresizeTextarea');
 
 module.exports = codex;
 

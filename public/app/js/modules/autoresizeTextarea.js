@@ -6,15 +6,7 @@ module.exports = (function () {
     /**
     * Textareas initialization
     */
-    function init(textarea) {
-
-        if (textarea) {
-
-            textarea.addEventListener('input', textareaClicked, false);
-
-            return true;
-
-        }
+    var init = function () {
 
         var textareas = document.getElementsByClassName('js-autoresizable');
 
@@ -22,7 +14,7 @@ module.exports = (function () {
 
             for (var i = 0; i < textareas.length; i++) {
 
-                textareas[i].addEventListener('input', textareaClicked, false);
+                addListener(textareas[i]);
 
             }
 
@@ -31,9 +23,18 @@ module.exports = (function () {
     };
 
     /**
+    * Add input event listener to textarea
+    */
+    var addListener = function (textarea) {
+
+        textarea.addEventListener('input', textareaChanged, false);
+
+    };
+
+    /**
     * Hanging events on textareas
     */
-    var textareaClicked = function (event) {
+    var textareaChanged = function (event) {
 
         var textarea = event.target;
 
@@ -55,7 +56,8 @@ module.exports = (function () {
     };
 
     return {
-        init: init
+        init: init,
+        addListener : addListener
     };
 
 }());
