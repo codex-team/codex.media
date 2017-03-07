@@ -54,12 +54,14 @@ module.exports = (function () {
 
         var textarea = document.createElement('TEXTAREA');
 
-        textarea.classList.add('comment-form__text');
+        textarea.classList.add('comment-form__text', 'js-autoresizable');
         textarea.placeholder = holder.innerHTML;
         textarea.rows = 1;
         textarea.required = true;
         textarea.addEventListener('keydown', keydownSubmitHandler, false);
         textarea.addEventListener('blur', blurTextareaHandler, false);
+
+        codex.autoresizeTextarea.addListener(textarea);
 
         return textarea;
 
