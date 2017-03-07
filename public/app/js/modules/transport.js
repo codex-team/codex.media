@@ -250,17 +250,7 @@ var transport = {
 
         window.setTimeout(function () {
 
-            var blocksCount = codex.editor.state.jsonOutput.length;
-
-            if (!blocksCount) {
-
-                JSONinput.innerHTML = '';
-
-            } else {
-
-                JSONinput.innerHTML = JSON.stringify({ data: codex.editor.state.jsonOutput} );
-
-            }
+            JSONinput.innerHTML = JSON.stringify(codex.editor.state.jsonOutput);
 
             /**
              * Send form

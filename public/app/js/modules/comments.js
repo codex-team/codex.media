@@ -1,238 +1,218 @@
-module.exports = (function () {
+/**
+* Comments module
+* @author Ivan Zhuravlev
+*/
 
-    var commentsList = null,
-        anchor       = document.location.hash;
+var comments = (function () {
 
-    function init(data) {
+    var form     = null,
+        textarea = null;
 
-        commentsList = document.getElementById(data.listID);
+    function init() {
 
-        if (anchor) {
+        form     = document.getElementById('comment_form');
+        textarea = document.getElementById('add_comment_textarea');
 
-            highligthAnchor();
+        textarea.addEventListener('keydown', keydownSubmitHandler_, false);
+
+    }
+
+    /*
+     * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
+     */
+    function keydownSubmitHandler_(event) {
+
+        var CtrlPressed  = event.ctrlKey || event.metaKey,
+            EnterPressed = event.keyCode == 13;
+
+        if ( CtrlPressed && EnterPressed ) {
+
+            form.submit();
 
         }
 
     }
-
-    /** Remove holder and append form for comment */
-    function appendForm(placeholder) {
-
-        var holder       = placeholder.target,
-            holderParent = holder.parentNode,
-            form         = createForm(holder);
-
-        holderParent.removeChild(holder);
-        holderParent.appendChild(form);
-
-        getFormTextarea(form).focus();
-
-    }
-
-    /** Return form for comment */
-    function createForm(holder) {
-
-        var holderParent = holder.parentNode,
-            textarea     = createTextarea(holder),
-            button       = createButton(),
-            form         = document.createElement('DIV');
-
-        form.classList.add('comments-form');
-        form.dataset.parentId = holderParent.dataset.parentId;
-        form.dataset.rootId   = holderParent.dataset.rootId;
-        form.dataset.action   = holderParent.dataset.action;
-
-        form.appendChild(textarea);
-        form.appendChild(button);
-
-        return form;
-
-    }
-
-    /** Return textarea for form for comment */
-    function createTextarea(holder) {
-
-        var textarea = document.createElement('TEXTAREA');
-
-        textarea.classList.add('comment-form__text');
-        textarea.placeholder = holder.innerHTML;
-        textarea.rows = 1;
-        textarea.required = true;
-        textarea.addEventListener('keydown', keydownSubmitHandler, false);
-        textarea.addEventListener('blur', blurTextareaHandler, false);
-
-        return textarea;
-
-    }
-
-    /** Return submit button for form*/
-    function createButton() {
-
-        var button = document.createElement('DIV');
-
-        button.classList.add('comment-form__button', 'button');
-        button.innerHTML = 'Оставить комментарий';
-        button.addEventListener('click', sendFormByAjax, false);
-
-        return button;
-
-    }
-
-    /* Return textarea for given form */
-    function getFormTextarea(form) {
-
-        return form.getElementsByTagName('TEXTAREA')[0];
-
-    }
-
-    /** Show holder for comment-form */
-    function createHolder() {
-
-        var holder = document.createElement('DIV');
-
-        holder.classList.add('comment-form__placeholder');
-        holder.addEventListener('click', appendForm, false);
-        holder.innerHTML = 'Ваш комментарий...';
-
-        return holder;
-
-    }
-
-    /** Remove form on textarea blur */
-    function blurTextareaHandler(event) {
-
-        var textarea = event.target,
-            form     = textarea.parentNode,
-            parentId = form.dataset.parentId;
-
-        if (!textarea.value) {
-
-            removeForm(parentId);
-
-        }
-
-    }
-
-    /** Remove form by commentId and put back placeholder */
-    function removeForm(commentId) {
-
-        var formWrapper = document.getElementById('replyFormToComment' + commentId),
-            form        = formWrapper.getElementsByClassName('comments-form')[0],
-            holder      = createHolder();
-
-        form.remove();
-        formWrapper.appendChild(holder);
-
-    }
-
-    /** Highligth comment by id for a time */
-    function highligthComment(commentId) {
-
-        var commentId = 'comment_' + commentId,
-            comment = document.getElementById(commentId);
-
-        comment.classList.add('comment--highligthed');
-
-        window.setTimeout(function () {
-
-            comment.classList.add('comment--highligthed-transition');
-            comment.classList.remove('comment--highligthed');
-
-            window.setTimeout(function () {
-
-                comment.classList.remove('comment--highligthed-transition');
-
-            }, 500);
-
-        }, 500);
-
-    }
-
-    /** Catch Ctrl+Enter or Cmd+Enter for send form */
-    function keydownSubmitHandler(event) {
-
-        var ctrlPressed  = event.ctrlKey || event.metaKey,
-            enterPressed = event.keyCode == 13;
-
-        if ( ctrlPressed && enterPressed ) {
-
-            sendFormByAjax(event);
-
-        }
-
-    }
-
-    /** Ajax function for submit comment */
-    function sendFormByAjax(event) {
-
-        var form      = event.target.parentNode,
-            text      = getFormTextarea(form).value,
-            formData  = new FormData(),
-            rootId    = form.dataset.rootId,
-            parentId  = form.dataset.parentId,
-            actionURL = form.dataset.action;
-
-        formData.append('root_id', rootId);
-        formData.append('parent_id', parentId);
-        formData.append('comment_text', text);
-        formData.append('csrf', window.csrf);
-
-        codex.ajax.call({
-            type: 'POST',
-            url: actionURL,
-            data: formData,
-            beforeSend : function () {},
-            success : function (response) {
-
-                response = JSON.parse(response);
-
-                if (response.success) {
-
-                    // if no comments are in comments list, then remove motivator
-                    if (commentsList.dataset.count == 0) {
-
-                        commentsList.innerHTML = '';
-
-                    }
-
-                    // Append new comment to comments list
-                    commentsList.innerHTML += response.comment;
-                    commentsList.dataset.count++;
-
-                    // Scroll down to new comment
-                    window.scrollTo(0, document.body.scrollHeight);
-
-                    // Highligth new comment
-                    highligthComment(response.commentId);
-
-                    // Remove form and return placeholder
-                    removeForm(parentId);
-
-                } else {
-
-                    // Show error
-                    codex.alerts.show(response.error);
-
-                }
-
-            }
-
-        });
-
-    }
-
-    /** Highligth comment if anchor is in url */
-    function highligthAnchor() {
-
-        var commentId = anchor.slice(anchor.lastIndexOf('_') + 1);
-
-        highligthComment(commentId);
-
-    };
 
     return {
-        init : init,
-        appendForm : appendForm
+        init: init
     };
 
+    // var answerButtons = null,
+    //     commentsList  = null;
+    //
+    // var nodes_ = {
+    //     form               : null,
+    //     parentId           : null,
+    //     rootId             : null,
+    //     addCommentButton   : null,
+    //     addAnswerTo        : null,
+    //     cancelAnswerButton : null,
+    //     textarea           : ''
+    // };
+    //
+    // function init() {
+    //
+    //     nodes_.form               = document.getElementById('comment_form');
+    //     nodes_.parentId           = nodes_.form['parent_id'];
+    //     nodes_.rootId             = nodes_.form['root_id'];
+    //     nodes_.addCommentButton   = nodes_.form.addCommentButton;
+    //     nodes_.addAnswerTo        = document.getElementById('addAnswerTo');
+    //     nodes_.cancelAnswerButton = document.getElementById('cancel_answer');
+    //     nodes_.textarea           = nodes_.form.add_comment_textarea;
+    //     commentsList              = document.getElementById('page_comments');
+    //     answerButtons             = document.getElementsByClassName('comment__actions--button-answer');
+    //
+    //     // Чистим textarea после загрузки страницы
+    //     clearTextarea_();
+    //
+    //     // Добавляенм слушатель события ввода в textarea
+    //     nodes_.textarea.addEventListener('input', textareaInputHandler_, false);
+    //
+    //     // Добавляем слушатель события клика по "ответить"
+    //     for (var i = 0; i < answerButtons.length; i++) {
+    //
+    //         answerButtons[i].addEventListener('click', replyButtonClickHandler_, false);
+    //
+    //     }
+    //
+    //     // Добавляем слушатель события клика по крестику
+    //     nodes_.cancelAnswerButton.addEventListener('click', canselReplyButtonClickHandler_, false);
+    //
+    //     nodes_.textarea.addEventListener('keydown', keydownSubmitHandler_, false);
+    //
+    // }
+    //
+    // /**
+    //  * Очищаем textarea после перезагрузки страницы
+    //  */
+    // function clearTextarea_() {
+    //
+    //     nodes_.textarea.value = '';
+    //
+    // }
+    //
+    // /**
+    //  * Обработчик клика по крестику
+    //  */
+    // function canselReplyButtonClickHandler_() {
+    //
+    //     // Вставляем поле ввода комментария под список комментариев
+    //     commentsList.appendChild(nodes_.form);
+    //
+    //     prepareForm_({
+    //         parentId : 0,
+    //         rootId   : 0
+    //     });
+    //
+    // }
+    //
+    // /**
+    //  * Обработчик клика по "Ответить"
+    //  */
+    // function replyButtonClickHandler_(event) {
+    //
+    //     var button, comment;
+    //
+    //     /**
+    //      * Проверяем, является ли кнопкой то, на что нажал пользователь (у кнопки есть дата-атрибут)
+    //      * Если да, то обращаемся к кнопке напрямую, через event.target
+    //      * Если нет (т.е. кликнули на иконку), то - через event.target.parentNode
+    //      */
+    //     if (event.target.dataset.commentId) {
+    //
+    //         button = event.target;
+    //
+    //     } else {
+    //
+    //         button = event.target.parentNode;
+    //
+    //     }
+    //
+    //     comment = document.getElementById('comment_' + button.dataset.commentId);
+    //     // Вставляем поле добавления комментария под нужный комментарий
+    //     comment.appendChild(nodes_.form);
+    //
+    //     prepareForm_({
+    //         parentId : button.dataset.commentId,
+    //         rootId   : button.dataset.rootId,
+    //     });
+    //
+    // }
+    //
+    // /**
+    //  * Принимаем массив settings. Оформляем форму
+    //  */
+    // function prepareForm_(settings) {
+    //
+    //     // console.log(settings.rootId);
+    //
+    //     // Заполняем hidden поля формы значениями rootId и parentId или нулями.
+    //     nodes_.parentId = settings.parentId;
+    //     nodes_.rootId   = settings.rootId;
+    //
+    //     // console.log(nodes_.parentId);
+    //
+    //     if (settings.parentId) {
+    //
+    //         // Берем имя автора из соответствующего тега в родительском комментарии
+    //         var parentAuthor = document.querySelector('#comment_' + settings.parentId + ' .author_name').innerHTML;
+    //
+    //         nodes_.addAnswerTo.innerHTML = '<i class="icon-right-dir"></i> ' + parentAuthor;
+    //
+    //         // Изменяем текст кнопки в форме
+    //         nodes_.addCommentButton.value = 'Ответить';
+    //
+    //     } else {
+    //
+    //         nodes_.addAnswerTo.innerHTML = '';
+    //
+    //         // Изменяем текст кнопки в форме
+    //         nodes_.addCommentButton.value = 'Оставить комментарий';
+    //
+    //     }
+    //
+    // }
+    //
+    // /**
+    //  * Обработчик ввода в textarea
+    //  */
+    // function textareaInputHandler_() {
+    //
+    //     enableButton_();
+    //
+    // }
+    //
+    // /**
+    //  * Отключаем кнопку submit, если поле пустое или поле только с пробелами
+    //  */
+    // function enableButton_() {
+    //
+    //     var fieldValue = nodes_.textarea.value.trim();
+    //
+    //     nodes_.addCommentButton.disabled = !fieldValue;
+    //
+    // }
+    //
+    // /*
+    //  * Если нажаты сочетания Ctrl+Enter или Cmd+Enter, отправляем комментарий
+    //  */
+    // function keydownSubmitHandler_(event) {
+    //
+    //     var CtrlPressed  = event.ctrlKey || event.metaKey,
+    //         EnterPressed = event.keyCode == 13;
+    //
+    //     if ( CtrlPressed && EnterPressed ) {
+    //
+    //         form.submit();
+    //
+    //     }
+    //
+    // }
+    //
+    // return {
+    //     init: init
+    // };
+
 }());
+
+module.exports = comments;

@@ -47,12 +47,6 @@
 
     <script src="/public/extensions/codex.special/codex-special.v.1.0.2.min.js?v=2"></script>
 
-    <script>
-
-        window.csrf = '<?= Security::token(); ?>';
-
-    </script>
-
     <? /* end Scripts */ ?>
 
 

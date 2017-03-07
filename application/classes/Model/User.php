@@ -60,9 +60,9 @@ class Model_User extends Model
 
             if (!$this->photo || !$this->photo_medium || !$this->photo_big){
 
-                $this->photo        = '/public/app/img/default_ava_small.png';
-                $this->photo_medium = '/public/app/img/default_ava.png';
-                $this->photo_big    = '/public/app/img/default_ava_big.png';
+                $this->photo        = '/public/img/default_ava_small.png';
+                $this->photo_medium = '/public/img/default_ava.png';
+                $this->photo_big    = '/public/img/default_ava_big.png';
             }
 
             $this->isTeacher        = $this->isTeacher();

@@ -5,7 +5,6 @@ class Controller_User extends Controller_Base_preDispatch
     public function action_profile()
     {
         $user_id = $this->request->param('id');
-        $list = $this->request->param('list') ?: 'pages';
 
         $new_status = Arr::get($_GET, 'newStatus');
 
@@ -21,20 +20,9 @@ class Controller_User extends Controller_Base_preDispatch
         }
 
         $viewUser->isMe = $viewUser->id == $this->user->id;
+
+        $this->view['userPages'] = $viewUser->getUserPages();
         $this->view['viewUser']  = $viewUser;
-
-        switch ($list) {
-            case 'comments':
-                $this->view['userComments'] = Model_Comment::getCommentsByUserId($user_id);
-                break;
-
-            default:
-                $this->view['userPages'] = $viewUser->getUserPages();
-                break;
-        }
-
-        $this->view['list']      = $list;
-        $this->view['listFactory'] = View::factory('/templates/users/' . $list, $this->view);
 
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/users/profile', $this->view);

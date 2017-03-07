@@ -63,7 +63,7 @@ Route::set('ACTION_FOR_PAGE', 'p/<id>/<uri>/<action>',
 /**
  * User section
  */
-Route::set('PROFILE', 'user/<id>(/<list>)', array('id' => $DIGIT, 'list' => 'pages|comments'))->defaults(array(
+Route::set('PROFILE', 'user/<id>', array('id' => $DIGIT))->defaults(array(
     'controller' => 'user',
     'action' => 'profile'
 ));
@@ -137,12 +137,15 @@ Route::set('LOGOUT', 'logout')->defaults(array(
 /**
  * Comments
  */
-Route::set('ADD_COMMENT_SCRIPT', 'add-comment/p-<id>', array('id' => $DIGIT))->defaults(array(
+Route::set('ADD_COMMENT_SCRIPT', 'p/<id>/<uri>/add-comment', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
     'controller' => 'comments',
     'action' => 'add'
 ));
 
-Route::set('DEL_COMMENT_SCRIPT', 'delete-comment/<comment_id>', array('comment_id' => $DIGIT))
+Route::set('DEL_COMMENT_SCRIPT', 'p/<id>/<uri>/delete-comment/<comment_id>', array(
+        'id'         => $DIGIT,
+        'uri'        => $STRING,
+        'comment_id' => $DIGIT))
     ->defaults(array(
         'controller' => 'comments',
         'action'     => 'delete'

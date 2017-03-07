@@ -135,7 +135,7 @@ class Controller_Base_preDispatch extends Controller_Template
 
             } else {
 
-                $_POST[$key] = strip_tags(trim($value), '<br><em><del><p><a><b><strong><i><strike><blockquote><ul><li><ol><img><tr><table><td><th><span><h1><h2><h3><iframe>' );
+                $_POST[$key] = Security::xss_clean( strip_tags(trim($value), '<br><em><del><p><a><b><strong><i><strike><blockquote><ul><li><ol><img><tr><table><td><th><span><h1><h2><h3><iframe>' ));
             }
         }
 
@@ -151,17 +151,15 @@ class Controller_Base_preDispatch extends Controller_Template
     {
         if (!class_exists("Redis")) return null;
 
-        $redis_config = Kohana::$config->load('redis');
+        $redis_host = Kohana::$config->load('redis.host') ?: '127.0.0.1';
+        $redis_port = Kohana::$config->load('redis.port') ?: '6379';
+        $redis_pass = Kohana::$config->load('redis.password');
 
-        $redis_host = Arr::get($redis_config, 'host', '127.0.0.1');
-        $redis_port = Arr::get($redis_config, 'port', '6379');
-        $redis_pass = Arr::get($redis_config, 'password', '');
-        $redis_db   = Arr::get($redis_config, 'database', '0');
 
         $redis = new Redis();
         $redis->connect($redis_host, $redis_port);
         $redis->auth($redis_pass);
-        $redis->select($redis_db);
+        $redis->select(0);
 
         return $redis;
     }

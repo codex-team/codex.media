@@ -1,7 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-use CodexEditor\CodexEditor;
-
 class Model_Page extends Model_preDispatch
 {
     public $id              = 0;
@@ -69,35 +67,11 @@ class Model_Page extends Model_preDispatch
                 }
             }
 
-            try {
-
-                $config = Kohana::$config->load('editor');
-                $pageContent = new CodexEditor($this->content, $config);
-                $this->content = $pageContent->getData();
-
-            } catch (Exception $e) {
-
-                throw new Kohana_Exception("Error in content structure" . $e->getMessage());
-
-            }
-
-            try {
-
-                $pageConfig = json_decode($this->content);
-
-                // get only blocks as array
-                if (property_exists($pageConfig, 'data')) {
-                    $this->blocks = $pageConfig->data;
-                }
-
-            } catch (Exception $e) {
-
-                throw new Kohana_Exception("Error: data is not exist" . $e->getMessage());
-
-            }
+            $this->blocks = json_decode($this->content);
 
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
+
             $this->description = $this->getDescription();
         }
 
@@ -106,6 +80,8 @@ class Model_Page extends Model_preDispatch
 
     public function insert()
     {
+        $this->content = json_encode($this->blocks);
+
         $page = Dao_Pages::insert()
             ->set('author',         $this->author->id)
             ->set('id_parent',      $this->id_parent)
@@ -125,6 +101,8 @@ class Model_Page extends Model_preDispatch
 
     public function update()
     {
+        $this->content = json_encode($this->blocks);
+
         $page = Dao_Pages::update()
             ->where('id', '=', $this->id)
             ->set('id',             $this->id)

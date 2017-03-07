@@ -20,7 +20,7 @@ a {
 }
 
 a:hover {
-    color: var(--hoverColor);
+    color: inherit;
 }
 
 textarea {

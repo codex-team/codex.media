@@ -14,9 +14,6 @@ if (is_file(APPPATH.'classes/Kohana'.EXT)) {
     require SYSPATH.'classes/Kohana'.EXT;
 }
 
-// Load Composer autoload
-require VENDORPATH.'autoload'.EXT;
-
 /**
  * Set the default time zone.
  *
@@ -71,7 +68,7 @@ I18n::lang('en-us');
  * saying "Couldn't find constant Kohana::<INVALID_ENV_NAME>"
  */
 if (isset($_SERVER['KOHANA_ENV'])) {
-
+    
     Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
 }
 
