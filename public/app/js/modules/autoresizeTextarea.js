@@ -24,6 +24,8 @@ module.exports = (function () {
 
     /**
     * Add input event listener to textarea
+    *
+    * @param {object} textarea — node which need to be able to autoresize
     */
     var addListener = function (textarea) {
 
