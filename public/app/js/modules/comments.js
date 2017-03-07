@@ -54,7 +54,7 @@ module.exports = (function () {
 
         var textarea = document.createElement('TEXTAREA');
 
-        textarea.classList.add('comment-form__text');
+        textarea.classList.add('comment-form__text', 'js-autoresizable');
         textarea.placeholder = holder.innerHTML;
         textarea.rows = 1;
         textarea.required = true;
