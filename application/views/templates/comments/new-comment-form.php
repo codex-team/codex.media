@@ -1,24 +1,23 @@
-<div class="comment-form island island--margined clearfix">
+<?
+    $parent_id = isset($comment) ? $comment->id      : '0';
+    $root_id   = isset($comment) ? $comment->root_id : '0';
+    $page_id   = isset($comment) ? $comment->page_id : $page_id;
+?>
 
-    <form action="/p/<?= $page->id ?>/<?= $page->uri ?>/add-comment" id="comment_form" method="POST">
+<? if ($user->id): ?>
 
-        <img class="comment-form__photo" src="<?= $user->photo ?>" alt="<?= $user->name ?>">
+    <img class="comment-form__photo" src="<?= $user->photo ?>" alt="<?= $user->name ?>">
 
-        <?= Form::hidden('csrf', Security::token()); ?>
-        <input class="comment-form__submit-button" id="add_comment_button" type="submit" value="Оправить" />
+    <div class="constrain comment-form-wrapper" id="replyFormToComment<?= $parent_id ?>"
+        data-parent-id="<?= $parent_id ?>"
+        data-root-id="<?= $root_id ?>"
+        data-action="add-comment/p-<?= $page_id ?>">
 
-        <div class="constrain">
-            <textarea class="comment-form__text js-autoresizable" required id="add_comment_textarea" name="add_comment_textarea" rows="1" placeholder="Ваш комментарий..."></textarea>
-        </div>
+        <div class="comment-form__placeholder" onclick="codex.comments.appendForm(event);">Ваш комментарий...</div>
+    </div>
 
-        <input type="hidden" name="parent_id" value="0" id="parent_id"/>
-        <input type="hidden" name="root_id" value="0" id="root_id"/>
+<? else: ?>
 
-        <? /*
-        <span class="add_answer_to" id="add_answer_to"></span>
-        <span class="cancel_answer hide" id="cancel_answer" name="cancel_answer"><i class="icon-cancel"></i></span>
-        */ ?>
+    <a href="/auth">Авторизуйтесь, чтобы оставить комментарий</a>
 
-    </form>
-
-</div>
+<? endif ?>
