@@ -14,6 +14,7 @@
         data-action="add-comment/p-<?= $page_id ?>">
 
         <div class="comment-form__placeholder" onclick="codex.comments.appendForm(event);">Ваш комментарий...</div>
+
     </div>
 
 <? else: ?>
