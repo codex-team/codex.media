@@ -1,24 +1,22 @@
-module.exports = (function (autoresize) {
+module.exports = (function () {
 
-    autoresize.textareaClicked = function (event) {
+    var textareaClicked = function (event) {
 
         var textarea = event.target;
 
-        console.log(textarea);
-
-        autoresize.checkScrollHeight(textarea);
+        checkScrollHeight(textarea);
 
     };
 
-    autoresize.init = function () {
+    function init() {
 
         var textareas = document.getElementsByClassName('js-autoresizable');
 
         if (textareas.length) {
 
-            for (var i = 0; i <= textareas.length - 1; i++) {
+            for (var i = 0; i < textareas.length; i++) {
 
-                textareas[i].addEventListener('keydown', autoresize.textareaClicked, false);
+                textareas[i].addEventListener('input', textareaClicked, false);
 
             }
 
@@ -26,11 +24,13 @@ module.exports = (function (autoresize) {
 
     };
 
-    autoresize.checkScrollHeight = function (textarea) {
-
-        textarea.style.overflow = 'hidden';
+    var checkScrollHeight = function (textarea) {
 
         if (textarea.scrollHeight > textarea.clientHeight) {
+
+            textarea.style.height = textarea.scrollHeight + 'px';
+
+        } else {
 
             textarea.style.height = textarea.scrollHeight + 'px';
 
@@ -38,6 +38,8 @@ module.exports = (function (autoresize) {
 
     };
 
-    return autoresize;
+    return {
+        init: init
+    };
 
-}({}));
+}());
