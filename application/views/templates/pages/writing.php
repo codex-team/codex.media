@@ -1,4 +1,4 @@
-<div class="island">
+<div class="island writing-navigation__holder">
 
     <div class="writing-navigation">
 

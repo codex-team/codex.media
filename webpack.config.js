@@ -69,6 +69,8 @@ module.exports = {
 
     ],
 
+    devtool: "source-map",
+
     /** Пересборка при изменениях */
     watch: true,
     watchOptions: {
