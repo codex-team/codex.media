@@ -227,6 +227,9 @@ module.exports = (function () {
             },
             success : function (response) {
 
+                var comment,
+                    emptyCommentsBlock;
+
                 submitBtn.classList.remove('loading');
 
                 response = JSON.parse(response);
@@ -236,16 +239,16 @@ module.exports = (function () {
                     /** Remove form and return placeholder */
                     removeForm(form, parentId);
 
-                    // if no comments are in comments list, then remove motivator
-                    if (commentsList.dataset.count === 0) {
+                    emptyCommentsBlock = document.querySelector('.js-empty-comments');
 
-                        commentsList.innerHTML = '';
+                    if (emptyCommentsBlock) {
+
+                        emptyCommentsBlock.remove();
 
                     }
 
-                    // Append new comment to comments list
-                    commentsList.innerHTML += response.comment;
-                    commentsList.dataset.count++;
+                    comment = codex.core.parseHTML(response.comment)[0];
+                    commentsList.appendChild(comment);
 
                     // Scroll down to new comment
                     window.scrollTo(0, document.body.scrollHeight);
