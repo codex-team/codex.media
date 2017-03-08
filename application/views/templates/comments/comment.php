@@ -67,24 +67,13 @@
 
     <div class="comment__footer">
 
-        <? if ($isOnPage): ?>
-
-                <?= View::factory('templates/comments/form', array(
-                        'comment'   => $comment,
-                        'page_id'   => $comment->page_id,
-                        'user'      => $user,
-                        'parent_id' => $comment->id,
-                        'root_id'   =>  $comment->root_id
-                )); ?>
-
-        <? else: ?>
-            <div class="comment__footer-link">
-                <a href="/p/<?= $comment->page_id ?>#comment_<?= $comment->id ?>" rel="nofollow">
-                    <? include(DOCROOT . "public/app/svg/comment.svg") ?>
-                    Комментировать
-                </a>
-            </div>
-        <? endif ?>
+        <?= View::factory('templates/comments/form', array(
+                'comment'   => $comment,
+                'page_id'   => $comment->page_id,
+                'user'      => $user,
+                'parent_id' => $comment->id,
+                'root_id'   =>  $comment->root_id
+        )); ?>
 
     </div>
 

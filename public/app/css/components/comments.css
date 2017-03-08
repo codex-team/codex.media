@@ -49,15 +49,7 @@
     border-top: 1px solid var(--lightGrayLine);
     color: var(--grayText);
     font-size: 15px;
-}
-
-.comment__footer-link {
-    padding-top: calc(0.7 * var(--islandPadding));
-    font-size: 0.9em;
-}
-
-.comment__footer-link svg {
-    margin-right: 0.5em;
+    line-height: 26px;
 }
 
 /**

@@ -19,6 +19,8 @@
 
 <? else: ?>
 
-    <a href="/auth">Авторизуйтесь, чтобы оставить комментарий</a>
+    <a href="/auth">
+        <? include(DOCROOT . "public/app/svg/comment.svg") ?>  Комментировать
+    </a>
 
 <? endif ?>
