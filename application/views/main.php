@@ -29,16 +29,20 @@
 
     <div class="center-col">
 
-        <? /* Left */ ?>
-        <div class="grid-col grid-col--left">
+        <div class="grid-cols-wrapper">
 
-            <?= View::factory('templates/components/aside')->render(); ?>
+            <? /* Left */ ?>
+            <div class="grid-col grid-col--left">
 
-        </div>
+                <?= View::factory('templates/components/aside')->render(); ?>
 
-        <? /* Main block for page */ ?>
-        <div class="grid-content">
-            <?= $content ?>
+            </div>
+
+            <? /* Main block for page */ ?>
+            <div class="grid-content">
+                <?= $content ?>
+            </div>
+
         </div>
 
     </div>

@@ -24,7 +24,7 @@
     --bounceTiming: cubic-bezier(0.6, -0.28, 0.735, 0.045);
 
     /** General margin size between islands */
-    --islandMargin: 20px;
+    --islandMargin: 15px;
 
     /** Island inner padding */
     --islandPadding: 30px;

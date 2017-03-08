@@ -97,15 +97,24 @@ input[type="submit"] {
     cursor: pointer;
     text-decoration: none;
     font-family: inherit;
-    background: #ecf3f9;
+    background-color: #ecf3f9;
     line-height: 1em;
 }
 
 .button:hover,
 input[type="submit"]:hover {
-    background: #4592da;
+    background-color: #4592da;
     color: #fff;
     text-decoration: none;
+}
+
+/**
+* Loading bar class
+*/
+.button.loading {
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgb(187, 205, 228) 4px, #ecf3f9 8px) !important;
+    background-size: 56px 56px;
+    animation: loading-bar 600ms infinite linear;
 }
 
 /**
@@ -113,14 +122,20 @@ input[type="submit"]:hover {
 */
 .button.master,
 input[type="submit"] {
-    background: #5c95cf;
+    background-color: #5c95cf;
     color: #fff;
 }
 
 .button.master:hover,
 input[type="submit"]:hover {
-    background: #3c7ab9;
+    background-color: #3c7ab9;
     color: #fff;
+}
+
+.master.loading {
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, #7ca9d0 4px, #7ca9d0 8px) !important;
+    background-size: 56px 56px;
+    animation: loading-bar 600ms infinite linear;
 }
 
 /**

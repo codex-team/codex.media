@@ -1,4 +1,4 @@
-<div class="comment island island--padded clear <?= isset($index) && $index == 0 ? '' : 'island--margined' ?>" id="comment_<?= $comment->id ?>">
+<div class="comment island island--padded clear <?= isset($index) && $index == 0 ? '' : 'island--margined' ?>" id="comment<?= $comment->id ?>">
 
     <div class="comment__header clearfix">
 
@@ -17,10 +17,7 @@
             <a class="comment__author-name" href="/user/<?= $comment->author->id ?>">
                 <?= $comment->author->name ?>
             </a><br>
-
-            <time class="comment__time">
-                <a href="/p/<?= $comment->page_id ?>#comment_<?= $comment->id ?>"><?= $methods->ftime(strtotime($comment->dt_create)); ?></a>
-            </time>
+            <a class="comment__time" href="/p/<?= $comment->page_id ?>#comment<?= $comment->id ?>"><?= $methods->ftime(strtotime($comment->dt_create)); ?></a>
         </div>
 
     </div>
@@ -28,34 +25,38 @@
     <? if ($comment->parent_comment || !$isOnPage): ?>
 
         <?
-            $source = isset($comment->parent_comment->text)      ? $comment->parent_comment->text      : $comment->page->title;
-            $author = isset($comment->parent_comment->author)    ? $comment->parent_comment->author    : $comment->page->author;
-            $date   = isset($comment->parent_comment->dt_create) ? $comment->parent_comment->dt_create : $comment->page->date;
+            $target = array(
+                'text' => isset($comment->parent_comment->text)      ? $comment->parent_comment->text      : $comment->page->title,
+                'author' => isset($comment->parent_comment->author)    ? $comment->parent_comment->author    : $comment->page->author,
+                'date'   => isset($comment->parent_comment->dt_create) ? $comment->parent_comment->dt_create : $comment->page->date,
+                'url'    => '/p/' . $comment->page->id . ( !empty($comment->parent_comment->id) ? '#comment' . $comment->parent_comment->id : ''),
+            );
         ?>
 
-        <div class="comment__replied">
+        <div class="comment-target <?= !empty($comment->parent_comment->id) ? 'comment-target--reply' : 'comment-target--page' ?>">
 
-            <div class="comment__replied-source">
-                <?= $source ?>
-            </div>
+            <a class="comment-target__text" href="<?= $target['url'] ?>" rel="nofollow">
+                <?= $target['text'] ?>
+            </a>
 
-            <span class="comment__replied-author">
-                <a href="/user/<?= $author->id ?>">
-                    <?= $author->name ?>
+            <? if (!empty($target['author']->id)): ?>
+                <a class="comment-target__author" href="/user/<?= $target['author']->id ?>">
+                    <?= $target['author']->name ?>
                 </a>
-            </span>
-
-            <span class="comment__replied-date">
-                <?= $methods->ftime(strtotime($date)) ?>
-            </span>
+            <? endif ?>
 
             <? if ($comment->parent_comment && !$isOnPage): ?>
-                <span class="comment__replied-page">
-                    <a href="/p/<?= $comment->page->id ?>">
-                        <?= $comment->page->title ?>
-                    </a>
+                <span class="comment-target__arrow">
+                    <? include(DOCROOT . "public/app/svg/arrow-right.svg") ?>
                 </span>
+                <a class="comment-target__page" href="/p/<?= $comment->page->id ?>">
+                    <?= $comment->page->title ?>
+                </a>
             <? endif ?>
+
+            <a class="comment-target__date" href="<?= $target['url'] ?>">
+                <?= $methods->ftime(strtotime($target['date'])) ?>
+            </a>
 
         </div>
     <? endif ?>
@@ -64,12 +65,18 @@
         <?= $comment->text ?>
     </div>
 
-
     <div class="comment__footer">
+
         <? if ($isOnPage): ?>
-            <div class="comment__footer-form">
-                <?= View::factory('templates/comments/new-comment-form', array('comment' => $comment, 'page_id' => $comment->page_id, 'user' => $user, 'parent_id' => $comment->id, 'root_id' =>  $comment->root_id )); ?>
-            </div>
+
+                <?= View::factory('templates/comments/form', array(
+                        'comment'   => $comment,
+                        'page_id'   => $comment->page_id,
+                        'user'      => $user,
+                        'parent_id' => $comment->id,
+                        'root_id'   =>  $comment->root_id
+                )); ?>
+
         <? else: ?>
             <div class="comment__footer-link">
                 <a href="/p/<?= $comment->page_id ?>#comment_<?= $comment->id ?>" rel="nofollow">
@@ -78,6 +85,7 @@
                 </a>
             </div>
         <? endif ?>
+
     </div>
 
 </div>

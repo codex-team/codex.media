@@ -6,14 +6,14 @@
 
 <? if ($user->id): ?>
 
-    <img class="comment-form__photo" src="<?= $user->photo ?>" alt="<?= $user->name ?>">
-
-    <div class="constrain comment-form-wrapper" id="replyFormToComment<?= $parent_id ?>"
+    <div class="comment-form__placeholder" onclick="codex.comments.reply( this );" id="reply<?= $parent_id ?>"
         data-parent-id="<?= $parent_id ?>"
         data-root-id="<?= $root_id ?>"
         data-action="add-comment/p-<?= $page_id ?>">
 
-        <div class="comment-form__placeholder" onclick="codex.comments.appendForm(event);">Ваш комментарий...</div>
+        <img class="comment-form__photo" src="<?= $user->photo ?>" alt="<?= $user->name ?>">
+        <span class="comment-form__placeholder-text">Ваш комментарий...</span>
+        <span class="comment-form__placeholder-name"><?= $user->name ?></span>
 
     </div>
 

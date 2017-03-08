@@ -1,11 +1,30 @@
+/**
+ * Comments module
+ * @author  @guryn @neSpecc
+ * @copyright CodeX Team https://github.com/codex-team
+ * @version 1.1.0
+ */
 module.exports = (function () {
 
     var commentsList = null,
         anchor       = document.location.hash;
 
+    var CSS_ = {
+        replyForm : 'comments-form',
+        replyTextarea : 'comment-form__text',
+        replyOpened : 'comment-form__placeholder--opened',
+        replySubmitButton : 'comment-form__button',
+        highlighted : 'comment--highligthed'
+    };
+
+    /**
+     * Initialize comments
+     * @param  {object} data        params
+     * @param  {sring} data.listId  comments list wrapper id
+     */
     function init(data) {
 
-        commentsList = document.getElementById(data.listID);
+        commentsList = document.getElementById(data.listId);
 
         if (anchor) {
 
@@ -15,32 +34,59 @@ module.exports = (function () {
 
     }
 
-    /** Remove holder and append form for comment */
-    function appendForm(placeholder) {
+    /**
+     * Remove holder and append form for comment
+     * @param  {Element} placeholder 'Write reply...' button
+     */
+    function reply( replyButton ) {
 
-        var holder       = placeholder.target,
-            holderParent = holder.parentNode,
-            form         = createForm(holder);
+        /** If reply already opened, do noting */
+        if ( replyButton.classList.contains( CSS_.replyOpened ) ) {
 
-        holderParent.removeChild(holder);
-        holderParent.appendChild(form);
+            return;
 
+        }
+
+        /** Get reply params from dataset */
+        var replyParams = {
+            parentId : replyButton.dataset.parentId,
+            rootId   : replyButton.dataset.rootId,
+            action   : replyButton.dataset.action
+        };
+
+        /** Create reply form */
+        var form = createForm( replyParams );
+
+        /** Insert form after reply button */
+        codex.core.insertAfter( replyButton, form );
+
+        replyButton.classList.add( CSS_.replyOpened );
         getFormTextarea(form).focus();
 
     }
 
-    /** Return form for comment */
-    function createForm(holder) {
+    /**
+     * Returns reply form
+     *
+     * @param  {object} params
+     * @param  {Number} params.parentId     parent comment's id
+     * @param  {Number} params.rootId       root comment's id
+     * @param  {String} params.action       URL for saving
+     *
+     * @return {Element} element that holds textarea and submit-button
+     */
+    function createForm( params ) {
 
-        var holderParent = holder.parentNode,
-            textarea     = createTextarea(holder),
+        var textarea     = createTextarea(),
             button       = createButton(),
             form         = document.createElement('DIV');
 
-        form.classList.add('comments-form');
-        form.dataset.parentId = holderParent.dataset.parentId;
-        form.dataset.rootId   = holderParent.dataset.rootId;
-        form.dataset.action   = holderParent.dataset.action;
+        form.classList.add(CSS_.replyForm);
+
+        /** Store data in Textarea */
+        textarea.dataset.parentId = params.parentId;
+        textarea.dataset.rootId   = params.rootId;
+        textarea.dataset.action   = params.action;
 
         form.appendChild(textarea);
         form.appendChild(button);
@@ -50,14 +96,13 @@ module.exports = (function () {
     }
 
     /** Return textarea for form for comment */
-    function createTextarea(holder) {
+    function createTextarea() {
 
         var textarea = document.createElement('TEXTAREA');
 
-        textarea.classList.add('comment-form__text', 'js-autoresizable');
-        textarea.placeholder = holder.innerHTML;
-        textarea.rows = 1;
-        textarea.required = true;
+        textarea.classList.add(CSS_.replyTextarea);
+        textarea.placeholder = 'Ваш комментарий';
+
         textarea.addEventListener('keydown', keydownSubmitHandler, false);
         textarea.addEventListener('blur', blurTextareaHandler, false);
 
@@ -72,11 +117,25 @@ module.exports = (function () {
 
         var button = document.createElement('DIV');
 
-        button.classList.add('comment-form__button', 'button');
-        button.innerHTML = 'Оставить комментарий';
-        button.addEventListener('click', sendFormByAjax, false);
+        button.classList.add( CSS_.replySubmitButton, 'button', 'master');
+        button.textContent = 'Отправить';
+
+        button.addEventListener('click', submitClicked_, false);
 
         return button;
+
+    }
+
+    /**
+     * Reply submit button click handler
+     */
+    function submitClicked_() {
+
+        var submit = this,
+            form   = submit.parentNode,
+            textarea = getFormTextarea(form);
+
+        send_( textarea );
 
     }
 
@@ -87,111 +146,98 @@ module.exports = (function () {
 
     }
 
-    /** Show holder for comment-form */
-    function createHolder() {
+    /**
+     * Remove form on textarea blur
+     * @param  {Event} blur Event
+     */
+    function blurTextareaHandler( event ) {
 
-        var holder = document.createElement('DIV');
+        var textarea  = event.target,
+            form      = textarea.parentNode,
+            commentId = textarea.dataset.parentId;
 
-        holder.classList.add('comment-form__placeholder');
-        holder.addEventListener('click', appendForm, false);
-        holder.innerHTML = 'Ваш комментарий...';
+        if (!textarea.value.trim()) {
 
-        return holder;
-
-    }
-
-    /** Remove form on textarea blur */
-    function blurTextareaHandler(event) {
-
-        var textarea = event.target,
-            form     = textarea.parentNode,
-            parentId = form.dataset.parentId;
-
-        if (!textarea.value) {
-
-            removeForm(parentId);
+            removeForm(form, commentId);
 
         }
 
     }
 
-    /** Remove form by commentId and put back placeholder */
-    function removeForm(commentId) {
+    /**
+     * Removes reply form
+     * @param  {Element} form
+     * @param  {Number} commentId   reply target comment id
+     */
+    function removeForm( form, commentId ) {
 
-        var formWrapper = document.getElementById('replyFormToComment' + commentId),
-            form        = formWrapper.getElementsByClassName('comments-form')[0],
-            holder      = createHolder();
+        var replyButton = document.getElementById('reply' + commentId );
 
         form.remove();
-        formWrapper.appendChild(holder);
+        replyButton.classList.remove(CSS_.replyOpened);
 
     }
 
-    /** Highligth comment by id for a time */
-    function highligthComment(commentId) {
-
-        var commentId = 'comment_' + commentId,
-            comment = document.getElementById(commentId);
-
-        comment.classList.add('comment--highligthed');
-
-        window.setTimeout(function () {
-
-            comment.classList.add('comment--highligthed-transition');
-            comment.classList.remove('comment--highligthed');
-
-            window.setTimeout(function () {
-
-                comment.classList.remove('comment--highligthed-transition');
-
-            }, 500);
-
-        }, 500);
-
-    }
-
-    /** Catch Ctrl+Enter or Cmd+Enter for send form */
+    /**
+     * Catch Ctrl+Enter or Cmd+Enter for send form
+     * @param  {Event} event    Keydown Event
+     */
     function keydownSubmitHandler(event) {
 
         var ctrlPressed  = event.ctrlKey || event.metaKey,
-            enterPressed = event.keyCode == 13;
+            enterPressed = event.keyCode == 13,
+            textarea = event.target;
 
         if ( ctrlPressed && enterPressed ) {
 
-            sendFormByAjax(event);
+            send_( textarea );
+
+            event.preventDefault();
 
         }
 
     }
 
-    /** Ajax function for submit comment */
-    function sendFormByAjax(event) {
+    /**
+     * Ajax function for submit comment
+     * @param {Element} textarea    input with dataset and text
+     */
+    function send_( textarea ) {
 
-        var form      = event.target.parentNode,
-            text      = getFormTextarea(form).value,
-            formData  = new FormData(),
-            rootId    = form.dataset.rootId,
-            parentId  = form.dataset.parentId,
-            actionURL = form.dataset.action;
+        var formData  = new FormData(),
+            form      = textarea.parentNode,
+            submitBtn = form.querySelector('.' + CSS_.replySubmitButton),
+            rootId    = textarea.dataset.rootId,
+            parentId  = textarea.dataset.parentId,
+            actionURL = textarea.dataset.action;
 
         formData.append('root_id', rootId);
         formData.append('parent_id', parentId);
-        formData.append('comment_text', text);
+        formData.append('comment_text', textarea.value);
         formData.append('csrf', window.csrf);
 
         codex.ajax.call({
             type: 'POST',
             url: actionURL,
             data: formData,
-            beforeSend : function () {},
+            beforeSend : function () {
+
+                submitBtn.classList.add('loading');
+
+            },
             success : function (response) {
+
+                submitBtn.classList.remove('loading');
 
                 response = JSON.parse(response);
 
                 if (response.success) {
 
+                    /** Remove form and return placeholder */
+                    removeForm(form, parentId);
+
                     // if no comments are in comments list, then remove motivator
-                    if (commentsList.dataset.count == 0) {
+                    if (commentsList.dataset.count === 0) {
 
                         commentsList.innerHTML = '';
 
@@ -207,12 +253,9 @@ module.exports = (function () {
                     // Highligth new comment
                     highligthComment(response.commentId);
 
-                    // Remove form and return placeholder
-                    removeForm(parentId);
 
                 } else {
 
-                    // Show error
                     codex.alerts.show(response.error);
 
                 }
@@ -223,18 +266,41 @@ module.exports = (function () {
 
     }
 
+    /**
+     * Highligth comment by id for a time
+     * @param  {Number} commentId   id comment to highlight
+     */
+    function highligthComment(commentId) {
+
+        var comment = document.getElementById('comment' + commentId);
+
+        comment.classList.add(CSS_.highlighted);
+
+        window.setTimeout(function () {
+
+            comment.classList.remove(CSS_.highlighted);
+
+        }, 500);
+
+    }
+
     /** Highligth comment if anchor is in url */
     function highligthAnchor() {
 
-        var commentId = anchor.slice(anchor.lastIndexOf('_') + 1);
+        var numbers = anchor.match(/\d+/),
+            commentId;
+
+        if (!numbers) return;
+
+        commentId = numbers[0];
 
         highligthComment(commentId);
 
-    };
+    }
 
     return {
         init : init,
-        appendForm : appendForm
+        reply : reply
     };
 
 }());
