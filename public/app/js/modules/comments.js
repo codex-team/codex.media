@@ -10,17 +10,17 @@ module.exports = (function () {
         anchor       = document.location.hash;
 
     var CSS_ = {
-        replyForm : 'comments-form',
-        replyTextarea : 'comment-form__text',
-        replyOpened : 'comment-form__placeholder--opened',
+        replyForm :         'comments-form',
+        replyTextarea :     'comment-form__text',
+        replyOpened :       'comment-form__placeholder--opened',
         replySubmitButton : 'comment-form__button',
-        highlighted : 'comment--highligthed'
+        highlighted :       'comment--highligthed'
     };
 
     /**
      * Initialize comments
-     * @param  {object} data        params
-     * @param  {sring} data.listId  comments list wrapper id
+     * @param {object} data        params
+     * @param {sring} data.listId  comments list wrapper id
      */
     function init(data) {
 
@@ -36,7 +36,7 @@ module.exports = (function () {
 
     /**
      * Remove holder and append form for comment
-     * @param  {Element} placeholder 'Write reply...' button
+     * @param {Element} placeholder 'Write reply...' button
      */
     function reply( replyButton ) {
 
@@ -68,10 +68,10 @@ module.exports = (function () {
     /**
      * Returns reply form
      *
-     * @param  {object} params
-     * @param  {Number} params.parentId     parent comment's id
-     * @param  {Number} params.rootId       root comment's id
-     * @param  {String} params.action       URL for saving
+     * @param {object} params
+     * @param {Number} params.parentId     parent comment's id
+     * @param {Number} params.rootId       root comment's id
+     * @param {String} params.action       URL for saving
      *
      * @return {Element} element that holds textarea and submit-button
      */
@@ -148,7 +148,7 @@ module.exports = (function () {
 
     /**
      * Remove form on textarea blur
-     * @param  {Event} blur Event
+     * @param {Event} blur Event
      */
     function blurTextareaHandler( event ) {
 
@@ -166,8 +166,8 @@ module.exports = (function () {
 
     /**
      * Removes reply form
-     * @param  {Element} form
-     * @param  {Number} commentId   reply target comment id
+     * @param {Element} form
+     * @param {Number} commentId   reply target comment id
      */
     function removeForm( form, commentId ) {
 
@@ -180,7 +180,7 @@ module.exports = (function () {
 
     /**
      * Catch Ctrl+Enter or Cmd+Enter for send form
-     * @param  {Event} event    Keydown Event
+     * @param {Event} event    Keydown Event
      */
     function keydownSubmitHandler(event) {
 
@@ -271,7 +271,7 @@ module.exports = (function () {
 
     /**
      * Highligth comment by id for a time
-     * @param  {Number} commentId   id comment to highlight
+     * @param {Number} commentId   id comment to highlight
      */
     function highligthComment(commentId) {
 

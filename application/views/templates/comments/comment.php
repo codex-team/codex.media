@@ -26,7 +26,7 @@
 
         <?
             $target = array(
-                'text' => isset($comment->parent_comment->text)      ? $comment->parent_comment->text      : $comment->page->title,
+                'text'   => isset($comment->parent_comment->text)      ? $comment->parent_comment->text      : $comment->page->title,
                 'author' => isset($comment->parent_comment->author)    ? $comment->parent_comment->author    : $comment->page->author,
                 'date'   => isset($comment->parent_comment->dt_create) ? $comment->parent_comment->dt_create : $comment->page->date,
                 'url'    => '/p/' . $comment->page->id . ( !empty($comment->parent_comment->id) ? '#comment' . $comment->parent_comment->id : ''),

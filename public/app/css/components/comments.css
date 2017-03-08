@@ -6,7 +6,7 @@
 }
 
 .comment--highligthed {
-    background-color: var(--hightlighted);
+    background-color: var(--lightGrayBackground);
 }
 
 .comment__author-photo {

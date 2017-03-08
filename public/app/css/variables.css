@@ -18,7 +18,6 @@
     /** Backgrounds */
     --grayBackground: #f7f7f9;
     --lightGrayBackground: #fbfbfc;
-    --hightlighted: #fafbfd;
 
     /** Bounce timing function for transition */
     --bounceTiming: cubic-bezier(0.6, -0.28, 0.735, 0.045);
