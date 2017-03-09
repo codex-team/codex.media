@@ -21,14 +21,14 @@
                 'type'  => 'email',
                 'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'signup_email'),
             ),
-            'password' => array(
+            'password'  => array(
                 'label' => 'Пароль',
                 'type'  => 'password',
             ),
             'password_repeat' => array(
                 'label' => 'Повторите пароль',
                 'type'  => 'password',
-                'id' => 'password_repeat'
+                'id'    => 'password_repeat'
             )
         ); ?>
 
