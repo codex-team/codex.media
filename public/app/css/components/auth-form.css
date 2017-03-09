@@ -20,3 +20,7 @@
 .auth-form__footer a:hover {
     color: var(--hoverColor);
 }
+
+.auth-form__error {
+    margin-bottom: 12px;
+}
