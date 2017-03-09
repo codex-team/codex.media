@@ -23,4 +23,10 @@
 
 .auth-form__error {
     margin-bottom: 12px;
+    color: #F44336;
+}
+
+.auth-field__error {
+    box-shadow: 0 0 5px #F44336;
+    border: 1px solid #F44336;
 }

@@ -33,9 +33,13 @@
         ); ?>
 
         <? foreach ($regFields as $fieldName => $field): ?>
-            <p>
-                <input placeholder="<?= Arr::get($field, 'label') ?>" type="<?= Arr::get($field, 'type', 'text') ?>" name="signup_<?= $fieldName?>" id="signup_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>" />
-            </p>
+            <? if (isset($signup_error_fields[$fieldName])): ?>
+                <p class="auth-field__error">
+            <? else: ?>
+                <p>
+            <? endif; ?>
+                    <input placeholder="<?= Arr::get($field, 'label') ?>" type="<?= Arr::get($field, 'type', 'text') ?>" name="signup_<?= $fieldName?>" id="signup_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>" />
+                </p>
         <? endforeach ?>
 
         <?= Form::hidden('csrf', Security::token()); ?>
