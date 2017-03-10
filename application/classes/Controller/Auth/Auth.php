@@ -130,7 +130,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         /** Check for correct passsword repeation */
         if ($fields['password'] != $fields['password_repeat']) {
 
-            $this->view['signup_error_fields']['password_repeat'] = 'Подтвердждение пароля не пройдено. Проверьте правильность ввода';
+            $this->view['signup_error_fields']['password_repeat'] = 'Подтверждение пароля не пройдено. Проверьте правильность ввода';
             return FALSE;
         }
 
