@@ -123,7 +123,7 @@ Route::set('AUTH_PAGE', 'auth(/<method>)')->defaults(array(
     'action' => 'auth'
 ));
 
-Route::set('SIGNUP', '<action>(/<hash>)', array('action' => 'signup|confirm'))->defaults(array(
+Route::set('SIGNUP', '<action>(/<hash>)', array('action' => 'signup|confirm', 'hash' => $STRING))->defaults(array(
     'controller' => 'auth_signup',
     'action' => 'signup'
 ));

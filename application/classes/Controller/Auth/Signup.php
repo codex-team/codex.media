@@ -3,8 +3,8 @@
 class Controller_Auth_Signup extends Controller_Auth_Base
 {
     /** Where we should redirect user after success authorisation */
-    const URL_TO_REDIRECT_AFTER_SUCCES_AUTH = '/';
-    const CONFIRMATION_HASHES_KEY = 'codex.org.confirmation.hashes';
+    const URL_TO_REDIRECT_AFTER_SUCCES_AUTH    = '/';
+    const CONFIRMATION_HASHES_KEY              = 'codex.org.confirmation.hashes';
 
     public function action_signup()
     {
@@ -115,7 +115,7 @@ class Controller_Auth_Signup extends Controller_Auth_Base
         $message = View::factory('templates/emails/confirm', array('user' => $user, 'hash' => $hash));
 
         $email = new Email();
-        $email->send($user->email, 'somemail@gmail.com', "Добро пожаловать на ".$_SERVER['HTTP_HOST']."!", $message, true);
+        $email->send($user->email, $GLOBALS['SITE_MAIL'], "Добро пожаловать на ".$_SERVER['HTTP_HOST']."!", $message, true);
 
 
     }
@@ -127,12 +127,16 @@ class Controller_Auth_Signup extends Controller_Auth_Base
         $id = $this->redis->hGet(self::CONFIRMATION_HASHES_KEY, $hash);
 
         if (!$id) {
+            $error_text = 'Ваш аккаунт уже подтвержден';
+            $this->template->content = View::factory('templates/error', array('error_text' => $error_text));
             return;
         }
 
         $user = new Model_User($id);
 
         if (!$user->id) {
+            $error_text = 'Пользователя, почту которого вы хотите подтвердить, не существует :(';
+            $this->template->content = View::factory('templates/error', array('error_text' => $error_text));
             return;
         }
 
