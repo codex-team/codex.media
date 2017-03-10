@@ -1,4 +1,4 @@
-<div class="w_island w_island_centercol">
+<div class="island island--padded">
     <div class="breadcrumb">
 
         <a class="nav_chain" href="/user/<?= $user->id ?>"><?= $user->name ?></a> »

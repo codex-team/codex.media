@@ -70,42 +70,35 @@
     color: #c6cad4;
 }
 
-.main-aside .confirm-reminder__wrapper {
-    background: #fff;
-    color: var(--redColor);
-}
-.main-aside .confirm-reminder__wrapper:hover {
-    color: color(var(--redColor) blackness(+40%));
-}
-
-.main-aside .confirm-reminder {
+/**
+* Email confirmation
+*/
+.confirm-reminder {
     display: block;
-    padding: 15px var(--islandPadding);
+    box-shadow: inset 3px 0 0 0 var(--redColor);
+    padding: 15px 23px 15px 30px;
     border-bottom: 1px solid var(--lightGrayLine);
     font-size: 14px;
     cursor: pointer;
+    color: var(--redColor);
 }
 
-.main-aside .confirm-reminder__attention {
+.confirm-reminder:hover {
+    background: var(--lightGrayBackground);
+}
+
+.confirm-reminder__attention {
     display: inline-block;
     vertical-align: middle;
+    margin-right: 5px;
+    margin-top: -1px;
+}
+.confirm-reminder__attention svg {
     width: 18px;
-    height: 20px;
-    margin: 0 6px;
 }
 
-.main-aside .confirm-reminder__message {
-    display: inline-block;
-    vertical-align: middle;
-    width: 70%;
-    margin: 0 10px;
-}
-
-.main-aside .confirm-reminder__arrow {
-    width: 15px;
+.confirm-reminder__arrow svg {
     height: 15px;
-    margin-top: 18px;
-    margin-right: 20px;
 }
 
 .aside-section {
