@@ -80,3 +80,11 @@
     animation-duration: 400ms;
     animation-iteration-count: 1;
 }
+
+/**
+ * Loading bar
+ * @usage Add class .loader to Element
+ */
+@keyframes loading-bar {
+    100% { background-position: -56% 0; }
+}
