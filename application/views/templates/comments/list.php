@@ -21,7 +21,7 @@
 
     <? else: ?>
 
-        <div class="empty-motivator island island--padded">
+        <div class="empty-motivator island island--padded js-empty-comments">
 
             <? include(DOCROOT . "public/app/svg/comments.svg") ?>
             <?= $emptyListMessage ?: 'Комментариев нет.' ?>
@@ -45,7 +45,7 @@
         * Comments module
         */
         codex.comments.init({
-            listID : "commentsList",
+            listId : "commentsList",
         });
 
     });

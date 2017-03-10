@@ -13,10 +13,14 @@
     background: transparent !important;
     outline: none;
     -webkit-appearance: none;
-    padding: 0 0 5px!important;
+    padding: 0 0 5px !important;
     font-size: 24px !important;
     font-weight: 700;
     letter-spacing: 0.01em;
+}
+
+.writing--fullscreen .island {
+    box-shadow: none;
 }
 
 .writing--fullscreen .writing__title {
@@ -106,6 +110,10 @@
     margin-right: 10px;
 }
 
+.writing-navigation__holder {
+    box-shadow: none;
+}
+
 .writing-navigation {
     padding-top: 30px;
     color: var(--grayText);
@@ -141,7 +149,7 @@
         padding: 15px;
     }
 
-    .writing-navigation  {
+    .writing-navigation {
         padding: 15px 15px 0;
     }
 

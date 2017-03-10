@@ -1,3 +1,8 @@
+.main-aside {
+    position: sticky;
+    top: var(--islandMargin);
+}
+
 .site-head {
     display: flex;
     border-bottom: 1px solid var(--lightGrayLine);
