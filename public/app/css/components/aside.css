@@ -70,6 +70,44 @@
     color: #c6cad4;
 }
 
+.main-aside .confirm-reminder__wrapper {
+    background: #fff;
+    color: var(--redColor);
+}
+.main-aside .confirm-reminder__wrapper:hover {
+    color: color(var(--redColor) blackness(+40%));
+}
+
+.main-aside .confirm-reminder {
+    display: block;
+    padding: 15px var(--islandPadding);
+    border-bottom: 1px solid var(--lightGrayLine);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.main-aside .confirm-reminder__attention {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 20px;
+    margin: 0 6px;
+}
+
+.main-aside .confirm-reminder__message {
+    display: inline-block;
+    vertical-align: middle;
+    width: 70%;
+    margin: 0 10px;
+}
+
+.main-aside .confirm-reminder__arrow {
+    width: 15px;
+    height: 15px;
+    margin-top: 18px;
+    margin-right: 20px;
+}
+
 .aside-section {
     padding: var(--islandPadding);
     border-top: 1px solid var(--lightGrayLine);

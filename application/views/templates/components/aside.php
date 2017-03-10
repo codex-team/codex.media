@@ -33,6 +33,25 @@
             </a>
         <? endif ?>
 
+        <? if ($user->id && !$user->isConfirmed): ?>
+
+        <span class="confirm-reminder__wrapper">
+            <a class="confirm-reminder__arrow fl_r" href="/user/settings">
+                <? include(DOCROOT . "public/app/svg/arrow-right.svg") ?>
+            </a>
+
+            <a class="confirm-reminder" href="/user/settings">
+
+                <span class="confirm-reminder__attention">
+                    <? include(DOCROOT . "public/app/svg/attention.svg") ?>
+                </span>
+                <span class="confirm-reminder__message">Подтвердите e-mail</span>
+
+            </a>
+        </span>
+
+        <? endif; ?>
+
         <? /* Menu */ ?>
         <ul class="menu">
 
