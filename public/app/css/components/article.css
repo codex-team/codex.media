@@ -43,16 +43,10 @@
     display: inline-block;
     margin-right: 15px;
     padding: 5px 10px;
-
-    /*width: 160px;*/
-    /*height: px;*/
-
     border-radius: 3px;
     font-size: 13px;
-
     color: white;
     background: #30588F;
-
 }
 
 .article-share__button--twitter {
