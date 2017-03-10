@@ -4,7 +4,6 @@ class Controller_Auth_Signup extends Controller_Auth_Base
 {
     /** Where we should redirect user after success authorisation */
     const URL_TO_REDIRECT_AFTER_SUCCES_AUTH    = '/';
-    const CONFIRMATION_HASHES_KEY              = 'codex.org.confirmation.hashes';
 
     public function action_signup()
     {
@@ -45,7 +44,9 @@ class Controller_Auth_Signup extends Controller_Auth_Base
 
                 parent::initAuthSession($userId);
 
-                $this->sendConfirmationEmail(new Model_User($userId));
+                $model = new Model_Auth();
+
+                $model->sendConfirmationEmail(new Model_User($userId));
 
                 /** Redirect user after succeeded auth */
                 $this->redirect( self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH );
@@ -113,25 +114,13 @@ class Controller_Auth_Signup extends Controller_Auth_Base
     }
 
 
-    protected function sendConfirmationEmail($user) {
-
-        $hash = hash('md5', self::AUTH_PASSWORD_SALT.$user->email);
-
-        $this->redis->hset(self::CONFIRMATION_HASHES_KEY, $hash, $user->id);
-
-        $message = View::factory('templates/emails/confirm', array('user' => $user, 'hash' => $hash));
-
-        $email = new Email();
-        $email->send($user->email, $GLOBALS['SITE_MAIL'], "Добро пожаловать на ".$_SERVER['HTTP_HOST']."!", $message, true);
-
-
-    }
-
     public function action_confirm() {
 
         $hash = $this->request->param('hash');
 
-        $id = $this->redis->hGet(self::CONFIRMATION_HASHES_KEY, $hash);
+        $model = new Model_Auth();
+
+        $id = $model->getUserIdByConfirmationHash($hash);
 
         if (!$id) {
             $error_text = 'Ваш аккаунт уже подтвержден';
@@ -148,8 +137,6 @@ class Controller_Auth_Signup extends Controller_Auth_Base
         }
 
         $user->updateUser($user->id, array('isConfirmed' => 1));
-
-        $this->redis->hDel(self::CONFIRMATION_HASHES_KEY, $hash);
 
         $this->redirect('/user/'.$id);
 
