@@ -4,5 +4,5 @@
     перейдите по <a href="<?= $_SERVER['HTTP_HOST']; ?>/confirm/<?= $hash; ?>" style="color: blue;">ссылке</a>.
 </div>
 <div>
-    Если вы не регистрировались на нашем сайте, пожалуйста, напишите в службу поддержки - <a href="mailto: <?= $GLOBALS['SITE_SUPPORT']; ?>" style="color: blue;"><?= $GLOBALS['SITE_SUPPORT']; ?></a>
+    Если вы не регистрировались на нашем сайте, можете смело удалять это письмо.
 </div>
