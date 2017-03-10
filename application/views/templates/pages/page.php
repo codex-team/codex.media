@@ -86,9 +86,6 @@
 
 </div>
 
-123
-
-
 <? /* Comments block */ ?>
 <? if ($user->id): ?>
 
