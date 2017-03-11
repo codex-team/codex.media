@@ -34,10 +34,15 @@ module.exports = {
     init : function () {
 
         /** Create scroll-up button */
-        this.button = document.createElement('DIV');
+        var arrow = document.createElement('DIV');
+
+        arrow.classList.add('scroll-up__arrow');
+
+        /** Create wrapper for scrollUp arrow */
         this.button = document.createElement('DIV');
         this.button.classList.add('scroll-up');
 
+        this.button.appendChild(arrow);
         document.body.appendChild(this.button);
 
         /** Bind click event on scroll-up button */

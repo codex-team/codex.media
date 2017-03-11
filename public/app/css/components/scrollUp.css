@@ -1,11 +1,29 @@
 /**
  * ScrollUp
  */
- .scroll-up {
+.scroll-up {
+    height: 100%;
     position: fixed;
     top: 0;
     width: 16%;
+    opacity: 0;
+}
+
+.scroll-up:before {
+    font-family: "codex_ic";
+    content: '\e80f';
+}
+
+.scroll-up.show {
+    opacity: 1;
+    cursor: pointer;
+}
+
+ .scroll-up__arrow {
+    position: fixed;
+    top: 0;
     height: 100%;
+    width: 16%;
     border-radius: 2px;
     background-image: url(/public/app/svg/arrow-up.svg);
     background-position: 42px 34px;
@@ -14,23 +32,13 @@
     text-align: center;
     cursor: pointer;
     color: rgba(85, 97, 125, 0.6);
-    opacity: 0;
     transition: opacity 150ms ease-in;
 }
 
-    .scroll-up:hover {
+    .scroll-up:hover .scroll-up__arrow {
         width: 100px;
         background: rgba(255,255,255,0.8);
         background-image: url(/public/app/svg/arrow-up.svg);
         background-position: 42px 34px;
         background-repeat: no-repeat;
-    }
-
-    .scroll-up:before {
-        font-family: "codex_ic";
-        content: '\e80f';
-    }
-
-    .scroll-up.show {
-        opacity: 1;
     }
