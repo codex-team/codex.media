@@ -81,7 +81,7 @@
         'offer' => 'Если вам понравилась статья, поделитесь ссылкой на нее',
         'url'   => 'https://' . Arr::get($_SERVER, 'HTTP_HOST', Arr::get($_SERVER, 'SERVER_NAME', 'edu.ifmo.su')) . '/p/' . $page->id,
         'title' => html_entity_decode($page->title),
-        'desc'  => html_entity_decode($page->description),
+        'desc'  => '',
     )); ?>
 
 </div>

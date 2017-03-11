@@ -55,7 +55,7 @@
     border-color: color(var(--twitterColor) alpha(-80%));
 }
 .article-sharing__button--twitter:hover {
-    background-color: color(var(--twitterColor) alpha(-30%));
+    background-color: color(var(--twitterColor) lightness(-10%));
 }
 
 .article-sharing__button--vk {
@@ -63,7 +63,7 @@
     border-color: color(var(--vkColor) alpha(-80%));
 }
 .article-sharing__button--vk:hover {
-    background-color: color(var(--vkColor) alpha(-30%));
+    background-color: color(var(--vkColor) lightness(-10%));
 }
 
 .article-sharing__button--facebook {
@@ -71,5 +71,5 @@
     border-color: color(var(--facebookColor) alpha(-80%));
 }
 .article-sharing__button--facebook:hover {
-    background-color: color(var(--facebookColor) alpha(-30%));
+    background-color: color(var(--facebookColor) lightness(-10%));
 }
