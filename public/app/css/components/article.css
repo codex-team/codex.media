@@ -54,13 +54,22 @@
     background-color: color(var(--twitterColor));
     border-color: color(var(--twitterColor) alpha(-80%));
 }
+.article-sharing__button--twitter:hover {
+    background-color: color(var(--twitterColor) alpha(-30%));
+}
 
 .article-sharing__button--vk {
     background-color: color(var(--vkColor));
     border-color: color(var(--vkColor) alpha(-80%));
 }
+.article-sharing__button--vk:hover {
+    background-color: color(var(--vkColor) alpha(-30%));
+}
 
 .article-sharing__button--facebook {
     background-color: color(var(--facebookColor));
     border-color: color(var(--facebookColor) alpha(-80%));
+}
+.article-sharing__button--facebook:hover {
+    background-color: color(var(--facebookColor) alpha(-30%));
 }
