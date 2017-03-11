@@ -70,6 +70,7 @@ codex.parser    = require('./modules/parser');
 codex.comments  = require('./modules/comments');
 codex.alerts    = require('./modules/alerts');
 codex.autoresizeTextarea = require('./modules/autoresizeTextarea');
+codex.scrollUp  = require('./modules/scrollUp');
 
 module.exports = codex;
 
