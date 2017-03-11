@@ -3,11 +3,13 @@
  */
  .scroll-up {
     position: fixed;
-    bottom: 30px;
-    left: 30px;
-    padding: 32px 27px;
+    top: 0;
+    width: 100px;
+    height: 100%;
     border-radius: 2px;
-    background: rgba(93, 104, 156, 0.08);
+    background-image: url(/public/app/svg/arrow-up.svg);
+    background-position: 50% 5%;
+    background-repeat: no-repeat;
     font-size: 18px;
     text-align: center;
     cursor: pointer;
@@ -17,7 +19,10 @@
 }
 
     .scroll-up:hover {
-        background: rgba(93, 104, 156, 0.15);
+        background: rgba(255,255,255,0.8);
+        background-image: url(/public/app/svg/arrow-up.svg);
+        background-position: 50% 5%;
+        background-repeat: no-repeat;
     }
 
     .scroll-up:before {

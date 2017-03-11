@@ -35,6 +35,7 @@ module.exports = {
 
         /** Create scroll-up button */
         this.button = document.createElement('DIV');
+        this.button = document.createElement('DIV');
         this.button.classList.add('scroll-up');
 
         document.body.appendChild(this.button);
