@@ -107,6 +107,13 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
 
         /** Check for correct email */
+        if (!Valid::email($fields['name'])) {
+
+            $this->view['signup_error_fields']['name'] = 'Не указано имя пользователя';
+            return FALSE;
+        }
+
+        /** Check for correct email */
         if (!Valid::email($fields['email'])) {
 
             $this->view['signup_error_fields']['email'] = 'Некорректный email';
@@ -130,7 +137,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         /** Check for correct passsword repeation */
         if ($fields['password'] != $fields['password_repeat']) {
 
-            $this->view['signup_error_fields']['password_repeat'] = 'Подтвердждение пароля не пройдено. Проверьте правильность ввода';
+            $this->view['signup_error_fields']['password_repeat'] = 'Подтверждение пароля не пройдено. Проверьте правильность ввода';
             return FALSE;
         }
 
