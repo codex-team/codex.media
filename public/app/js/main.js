@@ -42,6 +42,8 @@ codex = (function (codex) {
 
         codex.core.log('Initialized', 'App init', 'info');
 
+        codex.scrollUp.init();
+
     };
 
     return codex;

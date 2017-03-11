@@ -2,6 +2,7 @@
 * Module for scroll-up button
 */
 module.exports = {
+
     SCROLL_UP_OFFSET : 100,
 
     button : null,
@@ -32,10 +33,10 @@ module.exports = {
     */
     init : function () {
 
-        /** Find scroll-up button */
+        /** Create scroll-up button */
         this.button = document.createElement('DIV');
-
         this.button.classList.add('scroll-up');
+
         document.body.appendChild(this.button);
 
         /** Bind click event on scroll-up button */
