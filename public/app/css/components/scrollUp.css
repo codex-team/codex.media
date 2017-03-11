@@ -4,11 +4,11 @@
  .scroll-up {
     position: fixed;
     top: 0;
-    width: 100px;
+    width: 16%;
     height: 100%;
     border-radius: 2px;
     background-image: url(/public/app/svg/arrow-up.svg);
-    background-position: 50% 5%;
+    background-position: 42px 34px;
     background-repeat: no-repeat;
     font-size: 18px;
     text-align: center;
@@ -19,9 +19,10 @@
 }
 
     .scroll-up:hover {
+        width: 100px;
         background: rgba(255,255,255,0.8);
         background-image: url(/public/app/svg/arrow-up.svg);
-        background-position: 50% 5%;
+        background-position: 42px 34px;
         background-repeat: no-repeat;
     }
 
