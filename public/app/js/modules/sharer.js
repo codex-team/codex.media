@@ -2,7 +2,7 @@ var sharer = {
 
     init : function () {
 
-        var shareButtons = document.querySelectorAll('.sharing .but, .sharing .main_but, .quiz__sharing .but');
+        var shareButtons = document.querySelectorAll('.sharing .but, .sharing .main_but, .quiz__sharing .but, .sharing .article-sharing__button');
 
         for (var i = shareButtons.length - 1; i >= 0; i--) {
 
