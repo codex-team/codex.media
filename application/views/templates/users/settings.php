@@ -36,12 +36,6 @@
             </div>
 
 
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" value="<?= $user->email; ?>">
-
-            <label for="phone">Номер телефона</label>
-            <input type="text" name="phone" id="phone" value="<?= $user->phone; ?>">
-
             <? if ($user->password):?>
 
                 <label for="current_password">Текущий пароль</label>
@@ -79,5 +73,13 @@
             <? endif; ?>
 
         </div>
+
     </div>
+
 </div>
+
+<?= View::factory('templates/components/email_confirm_island'); ?>
+
+<script>
+    codex.profileSettings.init();
+</script>

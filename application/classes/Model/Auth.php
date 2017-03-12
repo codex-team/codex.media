@@ -17,7 +17,7 @@ class Model_Auth extends Model_preDispatch
         $message = View::factory('templates/emails/confirm', array('user' => $user, 'hash' => $hash));
 
         $email = new Email();
-        $email->send($user->email, $GLOBALS['SITE_MAIL'], "Добро пожаловать на ".$_SERVER['HTTP_HOST']."!", $message, true);
+        return $email->send($user->email, $GLOBALS['SITE_MAIL'], "Добро пожаловать на ".$_SERVER['HTTP_HOST']."!", $message, true);
 
     }
 

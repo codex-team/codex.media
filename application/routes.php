@@ -102,6 +102,11 @@ Route::set('PAGE_FILES_EDITING', 'ajax/edit_file/<type>')->defaults(array(
     'action'          => 'edit_file'
 ));
 
+Route::set('REPEAT_CONFIRMATION_EMAIL_SENDING', 'ajax/confirmation-email')->defaults(array(
+    'controller'      => 'ajax',
+    'action'          => 'send_confirmation_email'
+));
+
 // Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
 //     'controller'      => 'parser',
 //     'action'          => 'get_page'
