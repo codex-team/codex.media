@@ -1,6 +1,6 @@
 <div class="sharing">
 
-    <span class="article-sharing__button article-sharing__button--vk"
+    <span class="sharing__button sharing__button--vk js-share"
           data-share-type="shareVk"
           data-url="<?= $url ?>"
           data-title="<?= $title ?>"
@@ -10,7 +10,7 @@
         Нравится
     </span>
 
-    <span class="article-sharing__button article-sharing__button--facebook"
+    <span class="sharing__button sharing__button--facebook js-share"
           data-share-type="shareFacebook"
           data-url="<?= $url ?>"
           data-title="<?= $title ?>"
@@ -20,7 +20,7 @@
         Share
     </span>
 
-    <span class="article-sharing__button article-sharing__button--twitter"
+    <span class="sharing__button sharing__button--twitter js-share"
           data-share-type="shareTwitter"
           data-url="<?= $url ?>"
           data-title="<?= $title ?>"
