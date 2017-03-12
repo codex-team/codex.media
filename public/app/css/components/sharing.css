@@ -1,0 +1,38 @@
+.sharing__button {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    color: white;
+    background: #30588f;
+    cursor: pointer;
+}
+
+.sharing__button i {
+    margin: 0 3px 0 -3px;
+}
+
+.sharing__button--twitter {
+    background-color: color(var(--twitterColor));
+}
+
+.sharing__button--twitter:hover {
+    background-color: color(var(--twitterColor) lightness(-10%));
+}
+
+.sharing__button--vk {
+    background-color: color(var(--vkColor));
+}
+
+.sharing__button--vk:hover {
+    background-color: color(var(--vkColor) lightness(-10%));
+}
+
+.sharing__button--facebook {
+    background-color: color(var(--facebookColor));
+}
+
+.sharing__button--facebook:hover {
+    background-color: color(var(--facebookColor) lightness(-10%));
+}
