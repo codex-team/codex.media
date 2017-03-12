@@ -17,7 +17,7 @@
           data-desc="<?= $desc ?>"
           title="Forward in Facebook">
         <i class="icon-facebook"></i>
-        Поделиться
+        Share
     </span>
 
     <span class="article-sharing__button article-sharing__button--twitter"
@@ -27,7 +27,7 @@
           data-desc="<?= $desc ?>"
           title="Forward in Twitter">
         <i class="icon-twitter"></i>
-        Твитнуть
+        Tweet
     </span>
 
 </div>
