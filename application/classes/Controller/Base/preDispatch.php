@@ -38,6 +38,8 @@ class Controller_Base_preDispatch extends Controller_Template
         $GLOBALS['SITE_NAME']        = $site['name'];
         $GLOBALS['SITE_SLOGAN']      = $site['slogan'];
         $GLOBALS['SITE_DESCRIPTION'] = $site['description'];
+        $GLOBALS['SITE_MAIL']        = $site['mail'];
+        $GLOBALS['SITE_SUPPORT']     = $site['support'];
         $GLOBALS['FROM_ACTION']      = $this->request->action();
 
         // XSS clean in POST and GET requests

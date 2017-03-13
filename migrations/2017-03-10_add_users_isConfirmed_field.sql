@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `isConfirmed` TINYINT NOT NULL DEFAULT '1'

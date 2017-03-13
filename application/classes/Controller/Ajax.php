@@ -46,4 +46,23 @@ class Controller_Ajax extends Controller_Base_preDispatch
         $this->auto_render = false;
         $this->response->body(@json_encode($response) );
     }
+
+    public function action_send_confirmation_email() {
+
+        $model = new Model_Auth();
+
+        $isSucces = $model->sendConfirmationEmail($this->user);
+
+        $message = $isSucces?'Письмо отправлено':'Во время отправки письма произошла ошибка';
+        $result  = $isSucces?'ok':'error';
+
+        $response = array(
+            "result"    => $result,
+            "message"   =>  $message
+        );
+
+        $this->auto_render = false;
+        $this->response->body(@json_encode($response));
+
+    }
 }
