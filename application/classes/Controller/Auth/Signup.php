@@ -131,7 +131,7 @@ class Controller_Auth_Signup extends Controller_Auth_Base
         $user = new Model_User($id);
 
         if (!$user->id) {
-            $error_text = 'Пользователя, почту которого вы хотите подтвердить, не существует :(';
+            $error_text = 'Переданы некорректные данные';
             $this->template->content = View::factory('templates/error', array('error_text' => $error_text));
             return;
         }
@@ -139,15 +139,6 @@ class Controller_Auth_Signup extends Controller_Auth_Base
         $user->updateUser($user->id, array('isConfirmed' => 1));
 
         $this->redirect('/user/'.$id);
-
-    }
-
-    public function action_show() {
-
-        $this->view['user'] = new Model_User(4);
-        $this->view['hash'] = 1;
-
-        $this->template->content = View::factory('/templates/emails/confirm', $this->view);
 
     }
 
