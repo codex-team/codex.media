@@ -133,6 +133,11 @@ Route::set('LOGOUT', 'logout')->defaults(array(
     'action' => 'logout'
 ));
 
+Route::set('RECOVER', 'recover')->defaults(array(
+    'controller' => 'auth_auth',
+    'action' => 'recover'
+));
+
 
 /**
  * Comments
