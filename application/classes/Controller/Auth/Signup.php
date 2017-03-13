@@ -67,7 +67,7 @@ class Controller_Auth_Signup extends Controller_Auth_Base
         if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
 
         /** Check for correct name */
-        if (!Valid::not_empty($fields['name'])) {
+        if (!$fields['name']) {
 
             $this->view['signup_error_fields']['name'] = 'Не указано имя пользователя';
             return FALSE;
