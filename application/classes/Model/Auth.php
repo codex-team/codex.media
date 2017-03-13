@@ -29,7 +29,9 @@ class Model_Auth extends Model_preDispatch
      */
     private function generateConfirmationHash($user) {
 
-        $hash = hash('sha256', $user->id.$_SERVER['SALT'].$user->email);
+        $salt = Arr::get($_SERVER, 'SALT', 'thisIsSalt');
+
+        $hash = hash('sha256', $user->id . $salt . $user->email);
 
         $this->redis->hset(self::CONFIRMATION_HASHES_KEY, $hash, $user->id);
 
