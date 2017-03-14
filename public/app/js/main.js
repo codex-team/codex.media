@@ -72,6 +72,7 @@ codex.alerts             = require('./modules/alerts');
 codex.autoresizeTextarea = require('./modules/autoresizeTextarea');
 codex.profileSettings    = require('./modules/profileSettings');
 codex.sharer             = require('./modules/sharer');
+codex.writing            = require('./modules/writing');
 
 module.exports = codex;
 

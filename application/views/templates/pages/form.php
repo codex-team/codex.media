@@ -18,10 +18,7 @@
         <input class="writing__title" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
     </div>
 
-    <?= View::factory('templates/pages/editor', array(
-        'page' => $page,
-        'hideEditorToolbar' => !empty($hideEditorToolbar) ? $hideEditorToolbar : false
-    )); ?>
+    <div class="editor-wrapper" id="placeForEditor"></div>
 
     <? /** Add attaches through JS */ ?>
     <div class="attaches" id="formAttaches">
@@ -57,7 +54,7 @@
                 <span class="button fl_r" onclick="codex.transport.openEditorFullscrean()">На весь экран</span>
             <? endif ?>
 
-            <? /**
+            <? /*
             <? if ($user->isAdmin && $page->type == Model_Page::TYPE_SITE_NEWS): ?>
 
                 <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Закрепить новость">
@@ -80,8 +77,28 @@
 
             <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_FILE ?>')"><i class="icon-attach"></i></span>
             <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_IMAGE ?>')"><i class="icon-picture"></i></span>
+
         </div>
 
     </div>
 
 </form>
+
+
+<script>
+
+    /** Document is ready */
+    codex.docReady(function(){
+
+        codex.writing.init({
+            hideEditorToolbar : <?= !empty($hideEditorToolbar) && $hideEditorToolbar ? 'true' : 'false' ?>,
+            items : <?= json_encode($page->blocks) ?: '[]' ?>,
+
+            targetId : 'placeForEditor',
+            pageId   : <?= $page->id ?>,
+            parentId : <?= $page->id_parent ?>,
+        });
+
+    });
+
+</script>
