@@ -33,6 +33,13 @@
             </a>
         <? endif ?>
 
+        <? /* Email confirmation */ ?>
+        <? if ($user->id && !$user->isConfirmed): ?>
+
+            <?= View::factory('templates/components/email_confirm')->render(); ?>
+
+        <? endif; ?>
+
         <? /* Menu */ ?>
         <ul class="menu">
 

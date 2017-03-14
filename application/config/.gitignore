@@ -2,3 +2,4 @@ oauth.php
 database.php
 social.php
 redis.php
+email.php

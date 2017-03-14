@@ -65,9 +65,40 @@
 }
 
 .main-aside .logout {
-    margin-top: 20px;
+    margin-top: 22px;
     margin-right: 20px;
     color: #c6cad4;
+}
+
+/**
+* Email confirmation
+*/
+.confirm-reminder {
+    display: block;
+    box-shadow: inset 3px 0 0 0 var(--redColor);
+    padding: 15px 23px 15px 30px;
+    border-bottom: 1px solid var(--lightGrayLine);
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--redColor);
+}
+
+.confirm-reminder:hover {
+    background: var(--lightGrayBackground);
+}
+
+.confirm-reminder__attention {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+    margin-top: -1px;
+}
+.confirm-reminder__attention svg {
+    width: 18px;
+}
+
+.confirm-reminder__arrow svg {
+    height: 15px;
 }
 
 .aside-section {

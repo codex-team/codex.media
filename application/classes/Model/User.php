@@ -10,6 +10,7 @@ class Model_User extends Model
     public $photo_big           = '';
     public $email               = '';
     public $phone               = '';
+    public $isConfirmed         = 0;
 
     public $twitter             = '';
     public $twitter_name        = '';

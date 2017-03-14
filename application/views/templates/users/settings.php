@@ -1,4 +1,4 @@
-<div class="w_island w_island_centercol">
+<div class="island island--padded">
     <div class="breadcrumb">
 
         <a class="nav_chain" href="/user/<?= $user->id ?>"><?= $user->name ?></a> »
@@ -35,12 +35,6 @@
 
             </div>
 
-
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" value="<?= $user->email; ?>">
-
-            <label for="phone">Номер телефона</label>
-            <input type="text" name="phone" id="phone" value="<?= $user->phone; ?>">
 
             <? if ($user->password):?>
 
@@ -79,5 +73,13 @@
             <? endif; ?>
 
         </div>
+
     </div>
+
 </div>
+
+<?= View::factory('templates/components/email_confirm_island'); ?>
+
+<script>
+    codex.profileSettings.init();
+</script>
