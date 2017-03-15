@@ -2,11 +2,12 @@
  * ScrollUp
  */
 .scroll-up {
-    height: 100%;
     position: fixed;
     top: 0;
-    width: 100px;
+    height: 100%;
+    width: 16%;
     opacity: 0;
+    cursor: auto;
 }
 
 .scroll-up.show {
@@ -15,20 +16,22 @@
 }
 
  .scroll-up__arrow {
-    position:relative;
-    float: left;
-    height: 100vh;
-    width: 16vw;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    width: 100px;
     background-image: url(/public/app/svg/arrow-up.svg);
-    background-position: 42px 34px;
+    background-position: center 34px;
     background-repeat: no-repeat;
-    cursor: pointer;
     transition: opacity 150ms ease-in;
 }
 
-    .scroll-up:hover {
+    .scroll-up:hover .scroll-up__arrow{
         background: rgba(255,255,255,0.8);
+
+        /*Задавать изображение обязательно, ибо иначе заливает всё фоном.*/
         background-image: url(/public/app/svg/arrow-up.svg);
-        background-position: 42px 34px;
+        background-position: center 34px;
         background-repeat: no-repeat;
+
     }
