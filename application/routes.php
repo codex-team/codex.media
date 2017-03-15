@@ -138,15 +138,6 @@ Route::set('LOGOUT', 'logout')->defaults(array(
     'action' => 'logout'
 ));
 
-Route::set('SEND_RESET_PASSWORD_EMAIL', 'reset')->defaults(array(
-    'controller' => 'auth_auth',
-    'action' => 'reset'
-));
-Route::set('SET_NEW_PASSWORD', 'reset/<hash>')->defaults(array(
-    'controller' => 'auth_auth',
-    'action' => 'reset_password'
-));
-
 
 /**
  * Comments
