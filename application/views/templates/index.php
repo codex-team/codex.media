@@ -44,11 +44,11 @@
     <script>
         codex.docReady(function() {
             codex.appender.init({
-                buttonId       : 'button_load_news',
-                currentPage    : '<?= $page_number ?>',
-                url             : '<?= $active_tab ? "/".$active_tab."/" : "/" ?>',
+                buttonId      : 'button_load_news',
+                currentPage   : '<?= $page_number ?>',
+                url           : '<?= $active_tab ? "/".$active_tab."/" : "/" ?>',
                 targetBlockId : 'list_of_news',
-                autoLoading    : true,
+                autoLoading   : true,
             });
         });
     </script>

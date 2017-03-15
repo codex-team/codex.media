@@ -2,11 +2,11 @@
  * Appender is being used for ajax-loading next pages of lists
  *
  *    codex.appender.init({
- *        buttonId       : 'button_load_news',       // button for listening
- *        currentPage    : '<?= $page_number ?>',    // currentPage number
- *        url             : '/',                      // url for ajax-requests
+ *        buttonId      : 'button_load_news',       // button for listening
+ *        currentPage   : '<?= $page_number ?>',    // currentPage number
+ *        url           : '/',                      // url for ajax-requests
  *        targetBlockId : 'list_of_news',           // target for appending
- *        autoLoading    : true,                     // allow loading when reach bottom while scrolling
+ *        autoLoading   : true,                     // allow loading when reach bottom while scrolling
  *    });
  */
 
