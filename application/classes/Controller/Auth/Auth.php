@@ -19,6 +19,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         if ($redirect = Arr::get($_GET, 'redirect')) {
 
             $this->session->set('redirect', htmlspecialchars_decode($redirect));
+
         }
 
         /** To handle login/signup form submitting */
@@ -439,9 +440,121 @@ class Controller_Auth_Auth extends Controller_Auth_Base
     */
     public function action_logout()
     {
+
         parent::deleteSession();
         parent::clearAuthCookie();
 
         $this->redirect('/auth');
+
     }
+
+    public function action_reset() {
+
+        $this->title = 'Восстановление пароля';
+        $this->description = 'Страница для восстановления пароля';
+
+        $email = Arr::get($_POST, 'reset_email', '');
+
+        $this->reset($email);
+
+        $this->template->content = View::factory('/templates/auth/reset_password', $this->view);
+
+    }
+
+    private function reset($email) {
+
+        /** Check for CSRF token*/
+        if (!Security::check(Arr::get($_POST, 'csrf', ''))) return;
+
+        /** Check for correct email */
+        if (!Valid::email($email)) {
+            $this->view['reset_password_error_fields']['email'] = 'Некорректный email';
+            return;
+        }
+
+        $user = Model_User::getByFields(array('email' => $email));
+
+        if (!$user->id) {
+
+            $this->view['reset_password_error_fields']['email'] = 'Пользователь с таким email не найден';
+
+            /** Generates new CSRF token */
+            Security::token(TRUE);
+
+            return;
+        }
+
+        $model = new Model_Auth($user);
+
+        $model->sendResetPasswordEmail();
+
+    }
+
+    public function action_reset_password() {
+
+        $hash = $this->request->param('hash');
+
+        $model = new Model_Auth();
+
+        $id = $model->getUserIdByHash($hash, 'reset');
+
+        if (!$id) {
+            $error_text = 'Ссылка не действительна';
+            $this->template->content = View::factory('templates/error', array('error_text' => $error_text));
+            return;
+        }
+
+        $user = new Model_User($id);
+
+        if (!$user->id) {
+            $error_text = 'Переданы некорректные данные';
+            $this->template->content = View::factory('templates/error', array('error_text' => $error_text));
+            return;
+        }
+
+        $fields = array(
+            'password' => Arr::get($_POST, 'reset_password', ''),
+            'password_repeat' => Arr::get($_POST, 'reset_password_repeat', '')
+        );
+
+        if ($this->checkNewPassword($fields)) {
+
+            $user->updateUser($id, array('password' => parent::createPasswordHash($fields['password'])));
+            $model->deleteHash($hash, 'reset');
+            $this->redirect('/auth');
+
+        }
+
+        $this->template->content = View::factory('templates/auth/new_password', $this->view);
+
+
+    }
+
+    private function checkNewPassword($fields) {
+
+        /** Check for CSRF token*/
+        if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
+
+        if (!$fields['password']) {
+            $this->view['reset_password_error_fields']['password'] = 'Введите пароль';
+            return FALSE;
+        }
+
+        if (!$fields['password_repeat']) {
+            $this->view['reset_password_error_fields']['password_repeat'] = 'Повторите пароль';
+            return FALSE;
+        }
+
+        if ($fields['password_repeat'] != $fields['password']) {
+            $this->view['reset_password_error_fields']['password_repeat'] = 'Пароли не совпадают';
+            return FALSE;
+        }
+
+        /** Generates new CSRF token */
+        Security::token(TRUE);
+
+        return TRUE;
+
+    }
+
 }

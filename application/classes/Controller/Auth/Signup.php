@@ -44,9 +44,9 @@ class Controller_Auth_Signup extends Controller_Auth_Base
 
                 parent::initAuthSession($userId);
 
-                $model = new Model_Auth();
+                $model = new Model_Auth(new Model_User($userId));
 
-                $model->sendConfirmationEmail(new Model_User($userId));
+                $model->sendConfirmationEmail();
 
                 /** Redirect user after succeeded auth */
                 $this->redirect( self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH );
@@ -120,13 +120,15 @@ class Controller_Auth_Signup extends Controller_Auth_Base
 
         $model = new Model_Auth();
 
-        $id = $model->getUserIdByConfirmationHash($hash);
+        $id = $model->getUserIdByHash($hash, 'confirmation');
 
         if (!$id) {
             $error_text = 'Ваш аккаунт уже подтвержден';
             $this->template->content = View::factory('templates/error', array('error_text' => $error_text));
             return;
         }
+
+        $model->deleteHash($hash, 'confirmation');
 
         $user = new Model_User($id);
 
