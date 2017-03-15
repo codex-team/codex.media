@@ -36,7 +36,7 @@
 </div>
 
 <? if ($next_page): ?>
-    <a class="load_more_button" id="button_load_news" href="/<?= $page_number + 1 ?>">
+    <a class="load_more_button" id="buttonLoadNews" href="/<?= $page_number + 1 ?>">
         <div class="island island--padded island--centered island--stretched">
             Показать больше новостей
         </div>
@@ -44,7 +44,7 @@
     <script>
         codex.docReady(function() {
             codex.appender.init({
-                buttonId      : 'button_load_news',
+                buttonId      : 'buttonLoadNews',
                 currentPage   : '<?= $page_number ?>',
                 url           : '<?= $active_tab ? "/".$active_tab."/" : "/" ?>',
                 targetBlockId : 'list_of_news',
