@@ -2,12 +2,13 @@
 
     <form class="auth-form" action="" method="post">
 
-        <h3>Восстановление пароля</h3>
+        <h3><?= $header ?></h3>
 
         <? $regFields = array(
             'email'  => array(
                 'label' => 'Ваш email',
-                'type'  => 'email',
+                'type'  => $email?'hidden':'email',
+                'value' => $email
             )
         ); ?>
 
@@ -29,7 +30,9 @@
             <? endforeach; ?>
         <? endif; ?>
 
-        <button class="button master">Отправить</button>
+        <button class="button master"><?= $email?'Отправить еще раз':'Отправить';?></button>
 
     </form>
+
+
 </div>

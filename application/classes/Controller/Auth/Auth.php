@@ -451,9 +451,18 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         $this->title = 'Восстановление пароля';
         $this->description = 'Страница для восстановления пароля';
 
+        $this->view['header'] = 'Восстановление пароля';
+        $this->view['email']  = '';
+
         $email = Arr::get($_POST, 'reset_email', '');
 
-        $this->reset($email);
+        if($this->reset($email)) {
+
+            $this->view['header'] = 'Мы отправили письмо с инструкциями на вашу почту';
+            $this->view['email'] = $email;
+
+        }
+
         $this->template->content = View::factory('/templates/auth/reset_password', $this->view);
 
     }
@@ -461,12 +470,12 @@ class Controller_Auth_Auth extends Controller_Auth_Base
     private function reset($email) {
 
         /** Check for CSRF token*/
-        if (!Security::check(Arr::get($_POST, 'csrf', ''))) return;
+        if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
 
         /** Check for correct email */
         if (!Valid::email($email)) {
             $this->view['reset_password_error_fields']['email'] = 'Некорректный email';
-            return;
+            return FALSE;
         }
 
         $user = Model_User::getByFields(array('email' => $email));
@@ -474,11 +483,13 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         if (!$user->id) {
 
             $this->view['reset_password_error_fields']['email'] = 'Пользователь с таким email не найден';
-
+            return FALSE;
         }
 
         $model = new Model_Auth($user);
         $model->sendResetPasswordEmail();
+
+        return TRUE;
 
     }
 
