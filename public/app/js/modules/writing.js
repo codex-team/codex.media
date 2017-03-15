@@ -178,6 +178,7 @@ module.exports = (function () {
 
             holder.classList.add(hidePlaceholderClass);
 
+            holder.onclick = null;
 
         },
 
