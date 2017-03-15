@@ -2,55 +2,57 @@ module.exports = (function () {
 
     var writing = {
 
-        plugins : [
-            'paragraph',
-            'header',
-            'code'
-        ],
-
-        settings : {
-
+        settings_ : {
             hideEditorToolbar  : false,
             textareaId         : 'codexEditor_time' + Date.now(),
+            titleId            : 'editorWritingTitle',
             initialBlockPlugin : 'paragraph',
             items              : [],
+            plugins : [
+                'paragraph',
+                'header',
+            ],
 
             targetId : null,
             pageId   : null,
             parentId : null,
-
         },
 
-        form : null,
+        form_ : null,
 
         init : function (settings) {
 
             writing.mergeSettings_(settings);
 
-            writing.createEditor_();
-
         },
 
+        /**
+         * Fill module's settings by settings from params
+         *
+         * @param  {Object} settings  list of params from init
+         */
         mergeSettings_ : function (settings) {
 
             for (var key in settings) {
 
-                writing.settings[key] = settings[key];
+                writing.settings_[key] = settings[key];
 
             }
 
         },
 
-        createEditor_ : function () {
+        /**
+         * Function for create form or editor's target and load editor's sources
+         */
+        createEditor : function () {
 
-            /** 1. Create form */
-            // writing.createForm_();
-            var target = document.getElementById(writing.settings.targetId);
+            /** 1. Create form or textarea for editor */
+            var target = document.getElementById(writing.settings_.targetId);
 
-            writing.appendWrapperWithTextareasToTarget_(target);
+            writing.appendTextareasToTarget_(target);
 
             /** 2. Load resources */
-            loadEditorResources(writing.plugins, (function () {
+            loadEditorResources(writing.settings_.plugins, (function () {
 
                 /** After load */
                 writing.startEditor_();
@@ -59,64 +61,72 @@ module.exports = (function () {
 
         },
 
-        // createForm_ : function () {
-        //
-        //     var target = document.getElementById(writing.settings.targetId);
-        //
-        //     writing.form = document.createElement('FORM'),
-        //     writing.form.action = '/p/writing';
-        //     writing.form.method = 'post';
-        //     writing.form.classList.add('writing', 'island');
-        //     writing.createAndAppendFormElem_('csrf', window.csrf);
-        //     writing.createAndAppendFormElem_('id', writing.settings.pageId);
-        //     writing.createAndAppendFormElem_('id_parent', writing.settings.parentId);
-        //     writing.appendWrapperWithTextareasToTarget_(writing.form);
-        //
-        //     target.appendChild(writing.form);
-        //
-        // },
-        //
-        // createAndAppendFormElem_ : function (name, value) {
-        //
-        //     var elem = document.createElement('INPUT');
-        //
-        //     elem.name   = name;
-        //     elem.value  = value;
-        //     elem.hidden = true;
-        //
-        //     writing.form.appendChild(elem);
-        //
-        // },
+        /**
+         * Append textareas for codex.editor
+         *
+         * @param  {Element} target
+         */
+        appendTextareasToTarget_ : function (target) {
 
-        appendWrapperWithTextareasToTarget_ : function (target) {
+            var textareaHtml, textareaContent;
 
-            console.log(target);
+            textareaHtml = writing.createElem_('TEXTAREA', {
+                name   : 'html',
+                id     : writing.settings_.textareaId,
+                hidden : true,
+            }, []);
 
-            var textareaHtml    = document.createElement('TEXTAREA'),
-                textareaContent = document.createElement('TEXTAREA');
-
-            textareaHtml.name = 'html';
-            textareaHtml.id = writing.settings.textareaId;
-            textareaHtml.hidden = true;
-
-            textareaContent.name = 'content';
-            textareaContent.id = 'json_result';
-            textareaContent.hidden = true;
+            textareaContent = writing.createElem_('TEXTAREA', {
+                name   : 'content',
+                id     : 'json_result',
+                hidden : true,
+            }, []);
 
             target.appendChild(textareaHtml);
             target.appendChild(textareaContent);
 
         },
 
+        /**
+         * Create element and return it
+         *
+         * @param  {String} tag
+         * @param  {Object} params  pairs { key: value, ... }
+         * @param  {Array} classes  list of classes for new element
+         * @return {Element}
+         */
+        createElem_ : function (tag, params, classes) {
+
+            var elem = document.createElement(tag);
+
+            for (var param in params) {
+
+                elem[param] = params[param];
+
+            }
+
+            for (var i in classes) {
+
+                elem.classList.add(classes[i]);
+
+            }
+
+            return elem;
+
+        },
+
+        /**
+         * Run editor
+         */
         startEditor_ : function () {
 
             codex.editor.start({
 
-                textareaId:  writing.settings.textareaId,
+                textareaId:  writing.settings_.textareaId,
 
-                initialBlockPlugin : writing.settings.initialBlockPlugin,
+                initialBlockPlugin : writing.settings_.initialBlockPlugin,
 
-                hideToolbar: writing.settings.hideEditorToolbar,
+                hideToolbar: writing.settings_.hideEditorToolbar,
 
                 tools : {
                     paragraph: {
@@ -144,28 +154,54 @@ module.exports = (function () {
                 },
 
                 data : {
-                    items : writing.settings.items,
+                    items : writing.settings_.items,
                 }
             });
+
+            document.getElementById(writing.settings_.titleId).focus();
+
+        },
+
+        /**
+         * Show form and hide placeholder
+         *
+         * @param  {Element} targetClicked       placeholder with wrapper
+         * @param  {String} formId               remove 'hide' from this form by id
+         * @param  {String} hidePlaceholderClass add this class to placeholder
+         */
+        openEditor : function (targetClicked, formId, hidePlaceholderClass) {
+
+            var holder = targetClicked,
+                parent = holder.parentNode;
+
+            writing.createEditor();
+            document.getElementById(formId).classList.remove('hide');
+
+            parent.classList.add(hidePlaceholderClass);
+
 
         },
 
     };
 
-    window.filesLeftToLoad = 0;
-
     /**
      * Load editor resources and append block with them to body
      *
-     * @param  {Array}    plugins — list of plugins to load
-     * @param  {Function} onLoad  — function to run after loading resources
+     * @param  {Array}    plugins list of plugins to load
+     * @param  {Function} onLoad  function to run after loading resources
      */
     var loadEditorResources = (function () {
 
         var editorResources = {
 
+            /**
+             * Editor's version
+             */
             version_ : '1.5',
 
+            /**
+             * Objects with script and style Elements of editor and plugins
+             */
             nodes_ : {
 
                 editor : {
@@ -176,14 +212,25 @@ module.exports = (function () {
 
             },
 
+            /**
+             * Variable for function that should be runned onLoad all resources
+             */
             loadFunction_ : null,
 
+            /**
+             * Init function for load editor's resources
+             *
+             * @param  {Array} plugins list of plugins which should be loaded
+             * @param  {Function} onLoad  call this function when all editor's files are ready
+             */
             load : function (plugins, onLoad) {
 
+                /** Set function which should be runned when resources are load */
                 editorResources.loadFunction_ = onLoad;
 
                 var resources;
 
+                /** Load  */
                 editorResources.loadCore_();
 
                 for (var i = 0; i < plugins.length; i++) {
@@ -192,13 +239,18 @@ module.exports = (function () {
 
                 }
 
+                /** Wait for load editor + plugins scripts */
                 window.filesLeftToLoad = 1 + plugins.length;
 
+                /** Create and append editor's resources to body */
                 resources = editorResources.createPackage_();
                 document.body.appendChild(resources);
 
             },
 
+            /**
+             * Add editor core script and style to the editorResources.nodes_.editor
+             */
             loadCore_ : function () {
 
                 var url = 'https://cdn.ifmo.su/editor/v' + editorResources.version_ + '/codex-editor',
@@ -210,6 +262,11 @@ module.exports = (function () {
 
             },
 
+            /**
+             * Add plugin script and styles Elements to the array editorResources.nodes_.plugins
+             *
+             * @param  {String} plugin plugin's name
+             */
             loadPlugin_ : function (plugin) {
 
                 var url = 'https://cdn.ifmo.su/editor/v' + editorResources.version_ + '/plugins/' + plugin + '/' + plugin,
@@ -224,12 +281,12 @@ module.exports = (function () {
             },
 
             /**
-            * Return element with resource by type
-            *
-            * @param  {String} type — 'style' or 'script'
-            * @param  {String} url  — path to the resource
-            * @return {Element}
-            */
+             * Return element with resource by type
+             *
+             * @param  {String} type 'style' or 'script'
+             * @param  {String} url  path to the resource
+             * @return {Element}
+             */
             loadResource_ : function (type, url) {
 
                 if (!type || !url) {
@@ -286,6 +343,11 @@ module.exports = (function () {
 
             },
 
+            /**
+             * Return div with all editor scripts and styles
+             *
+             * @return {Element}
+             */
             createPackage_ : function () {
 
                 var divPackage = document.createElement('DIV');
@@ -306,6 +368,9 @@ module.exports = (function () {
 
             },
 
+            /**
+             * Call loadFunction_ when all resource files are ready
+             */
             onLoad_ : function () {
 
                 window.filesLeftToLoad--;
@@ -325,7 +390,9 @@ module.exports = (function () {
     })();
 
     return {
-        init : writing.init,
+        init         : writing.init,
+        createEditor : writing.createEditor,
+        openEditor   : writing.openEditor,
     };
 
 })();

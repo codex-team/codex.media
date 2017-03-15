@@ -55,6 +55,9 @@
 
         window.csrf = '<?= Security::token(); ?>';
 
+        /** Set a global variable for custom docReady function */
+        window.filesLeftToLoad = 0;
+
     </script>
 
     <? /* end Scripts */ ?>

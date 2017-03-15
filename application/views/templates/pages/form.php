@@ -7,7 +7,7 @@
         }
 
         /** Name of object's type in genitive declension */
-        $object_name = $page->is_news_page ? 'новости' : 'страницы';
+        // $object_name = $page->is_news_page ? 'новости' : 'страницы';
     ?>
 
     <?= Form::hidden('csrf', Security::token()); ?>
@@ -15,7 +15,7 @@
     <?= Form::hidden('id_parent', $page->id_parent); ?>
 
     <div class="writing__title-wrapper">
-        <input class="writing__title" type="text" name="title" placeholder="Заголовок <?= $object_name ?>" value="<?= $page->title ?>">
+        <input class="writing__title" type="text" name="title" placeholder="Заголовок" value="<?= $page->title ?>" id="editorWritingTitle">
     </div>
 
     <div class="editor-wrapper" id="placeForEditor"></div>
@@ -55,7 +55,7 @@
             <? endif ?>
 
             <? /*
-            <? if ($user->isAdmin && $page->type == Model_Page::TYPE_SITE_NEWS): ?>
+            <? if ($user->isAdmin && $page->is_news_page): ?>
 
                 <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Закрепить новость">
                     <input type="checkbox" name="dt_pin" value="<?= $page->dt_pin ? $page->dt_pin : date('Y-m-d H:i:s') ?>" <?= isset($page->dt_pin) ? 'checked="checked"' : '' ?>/>
@@ -84,7 +84,6 @@
 
 </form>
 
-
 <script>
 
     /** Document is ready */
@@ -99,6 +98,9 @@
             parentId : <?= $page->id_parent ?>,
         });
 
+        <? if (!isset($hideEditorToolbar) || !$hideEditorToolbar): ?>
+        codex.writing.createEditor();
+        <? endif ?>
     });
 
 </script>

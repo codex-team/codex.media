@@ -1,7 +1,7 @@
 <? /** add form for new page */ ?>
 <? if ($user->id): ?>
 
-    <?= View::factory('templates/pages/form', array(
+    <?= View::factory('templates/pages/form_wrapper', array(
         'hideEditorToolbar' => true
     )); ?>
 
