@@ -45,8 +45,6 @@ var appender = {
 
         if (this.settings.autoLoading) this.autoLoading.isAllowed = true;
 
-        console.log(this.autoLoading.isAllowed);
-
         this.loadMoreButton.addEventListener('click', function (event) {
 
             codex.appender.load();
