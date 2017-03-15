@@ -171,13 +171,12 @@ module.exports = (function () {
          */
         openEditor : function (targetClicked, formId, hidePlaceholderClass) {
 
-            var holder = targetClicked,
-                parent = holder.parentNode;
+            var holder = targetClicked;
 
             writing.createEditor();
             document.getElementById(formId).classList.remove('hide');
 
-            parent.classList.add(hidePlaceholderClass);
+            holder.classList.add(hidePlaceholderClass);
 
 
         },
