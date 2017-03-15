@@ -2,10 +2,10 @@
  * Appender is being used for ajax-loading next pages of lists
  *
  *    codex.appender.init({
- *        button_id       : 'button_load_news',       // button for listening
- *        current_page    : '<?= $page_number ?>',    // current_page number
+ *        buttonId       : 'button_load_news',       // button for listening
+ *        currentPage    : '<?= $page_number ?>',    // currentPage number
  *        url             : '/',                      // url for ajax-requests
- *        target_block_id : 'list_of_news',           // target for appending
+ *        targetBlockId : 'list_of_news',           // target for appending
  *        autoLoading    : true,                     // allow loading when reach bottom while scrolling
  *    });
  */
@@ -32,18 +32,20 @@ var appender = {
         this.settings = settings;
 
         /* Checking for existing button and field for loaded info */
-        this.loadMoreButton = document.getElementById(this.settings.button_id);
+        this.loadMoreButton = document.getElementById(this.settings.buttonId);
 
         if (!this.loadMoreButton) return false;
 
-        this.blockForItems = document.getElementById(this.settings.target_block_id);
+        this.blockForItems = document.getElementById(this.settings.targetBlockId);
 
         if (!this.blockForItems) return false;
 
-        this.page        = settings.current_page;
+        this.page        = settings.currentPage;
         this.buttonText = this.loadMoreButton.innerHTML;
 
         if (this.settings.autoLoading) this.autoLoading.isAllowed = true;
+
+        console.log(this.autoLoading.isAllowed);
 
         this.loadMoreButton.addEventListener('click', function (event) {
 
@@ -62,7 +64,7 @@ var appender = {
         var requestUrl = this.settings.url + (parseInt(this.page) + 1);
             // separator   = '<a href="' + requestUrl + '"><div class="article post-list-item w_island separator">Page ' + (parseInt(this.page) + 1) + '</div></a>';
 
-        codex.core.ajax({
+        codex.ajax.call({
             type: 'post',
             url: requestUrl,
             data: {},
