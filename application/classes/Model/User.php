@@ -37,13 +37,15 @@ class Model_User extends Model
     const USER_STATUS_GUEST      = 0;
     const USER_STATUS_BANNED     = -1;
 
-    public function __construct($uid = null)
+    public function __construct($needle = null)
     {
-        if (!$uid) return;
 
-        $user = self::get($uid);
+        if (Valid::email($needle)) {
+            self::getByEmail($needle);
+        } elseif(!empty($needle)) {
+            self::get($needle);
+        }
 
-        self::fillByRow($user);
     }
 
     private function fillByRow($user)
@@ -95,7 +97,20 @@ class Model_User extends Model
             ->cached(Date::HOUR, 'user:' . $id)
             ->execute();
 
-        return self::fillByRow($user);
+       return $this->fillByRow($user);
+
+    }
+
+    public function getByEmail($email) {
+
+        $user = Dao_Users::select()
+            ->where('email', '=', $email)
+            ->limit(1)
+            ->cached(Date::HOUR, 'user:email:' . $email)
+            ->execute();
+
+        return $this->fillByRow($user);
+
     }
 
     public function updateUser($user_id, $fields)
@@ -209,16 +224,4 @@ class Model_User extends Model
         return $users;
     }
 
-    public static function getByFields($fields) {
-
-        $select = Dao_Users::select('id')
-            ->limit(1);
-
-        foreach ($fields as $field => $value) $select->where($field, '=', $value);
-
-        $selection = $select->execute();
-
-        return new Model_User($selection['id']);
-
-    }
 }

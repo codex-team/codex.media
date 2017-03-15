@@ -3,6 +3,9 @@
 class Model_Auth extends Model_preDispatch
 {
 
+    const CONRIFM_HASH_KEYS = 'confirmation';
+    const RESET_HASH_KEYS   = 'reset';
+
     private $HASHES_KEYS = array(
         'confirmation' => 'codex.org.confirmation.hashes',
         'reset'        => 'codex.org.reset.hashes'
@@ -28,7 +31,7 @@ class Model_Auth extends Model_preDispatch
      */
     public function sendConfirmationEmail() {
 
-        $hash = $this->generateHash('confirmation');
+        $hash = $this->generateHash(self::CONRIFM_HASH_KEYS);
 
         $message = View::factory('templates/emails/confirm', array('user' => $this->user, 'hash' => $hash));
 
@@ -37,6 +40,11 @@ class Model_Auth extends Model_preDispatch
 
     }
 
+    /**
+     * Adds pair hash => id to redis and sends email with reset link
+     *
+     * @param $user
+     */
     public function sendResetPasswordEmail() {
 
         $hash = $this->generateHash('reset');

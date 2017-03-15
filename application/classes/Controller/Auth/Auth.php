@@ -446,6 +446,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
     }
 
+    /**
+     * Action for /reset route
+     */
     public function action_reset() {
 
         $this->title = 'Восстановление пароля';
@@ -456,7 +459,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         $email = Arr::get($_POST, 'reset_email', '');
 
-        if($this->reset($email)) {
+        if ($this->checkEmail($email)) {
 
             $this->view['header'] = 'Мы отправили письмо с инструкциями на вашу почту';
             $this->view['email'] = $email;
@@ -467,7 +470,13 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
     }
 
-    private function reset($email) {
+    /**
+     * Checks if email valid and sets error text to $this->view
+     *
+     * @param $email
+     * @return bool
+     */
+    private function checkEmail($email) {
 
         /** Check for CSRF token*/
         if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
@@ -478,7 +487,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
             return FALSE;
         }
 
-        $user = Model_User::getByFields(array('email' => $email));
+        $user = new Model_User($email);
 
         if (!$user->id) {
 
@@ -486,20 +495,23 @@ class Controller_Auth_Auth extends Controller_Auth_Base
             return FALSE;
         }
 
-        $model = new Model_Auth($user);
-        $model->sendResetPasswordEmail();
+        $model_auth = new Model_Auth($user);
+        $model_auth->sendResetPasswordEmail();
 
         return TRUE;
 
     }
 
+    /**
+     * Action for reset link
+     */
     public function action_reset_password() {
 
         $hash = $this->request->param('hash');
 
-        $model = new Model_Auth();
+        $model_auth = new Model_Auth();
 
-        $id = $model->getUserIdByHash($hash, 'reset');
+        $id = $model_auth->getUserIdByHash($hash, Model_Auth::RESET_HASH_KEYS);
 
         if (!$id) {
 
@@ -529,7 +541,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         if ($this->checkNewPassword($fields)) {
 
             $user->updateUser($id, array('password' => parent::createPasswordHash($fields['password'])));
-            $model->deleteHash($hash, 'reset');
+            $model_auth->deleteHash($hash, Model_Auth::RESET_HASH_KEYS);
 
             $this->redirect('/auth');
 
@@ -539,6 +551,13 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
     }
 
+
+    /**
+     * Validation for new password
+     *
+     * @param $fields
+     * @return bool
+     */
     private function checkNewPassword($fields) {
 
         /** Check for CSRF token*/
