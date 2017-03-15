@@ -208,4 +208,17 @@ class Model_User extends Model
 
         return $users;
     }
+
+    public static function getByFields($fields) {
+
+        $select = Dao_Users::select('id')
+            ->limit(1);
+
+        foreach ($fields as $field => $value) $select->where($field, '=', $value);
+
+        $selection = $select->execute();
+
+        return new Model_User($selection['id']);
+
+    }
 }
