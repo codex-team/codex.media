@@ -1,0 +1,14 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.');
+
+return array
+(
+    'driver'	=> 'smtp',
+    'options'	=> array
+    (
+        'hostname'	=> 'ssl://smtp.gmail.com',
+        'username'	=> '',
+        'password'	=> '',
+        'port'		=> '465',
+        'auth'      => true
+    ),
+);
