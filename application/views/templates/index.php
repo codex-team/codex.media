@@ -36,10 +36,8 @@
 </div>
 
 <? if ($next_page): ?>
-    <a class="load_more_button" id="buttonLoadNews" href="/<?= $page_number + 1 ?>">
-        <div class="island island--padded island--centered island--stretched">
-            Показать больше новостей
-        </div>
+    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/<?= $page_number + 1 ?>">
+        Показать больше новостей
     </a>
     <script>
         codex.docReady(function() {

@@ -40,7 +40,7 @@ var appender = {
 
         if (!this.blockForItems) return false;
 
-        this.page        = settings.currentPage;
+        this.page       = settings.currentPage;
         this.buttonText = this.loadMoreButton.innerHTML;
 
         if (this.settings.autoLoading) this.autoLoading.isAllowed = true;
@@ -68,7 +68,6 @@ var appender = {
             data: {},
             beforeSend : function () {
 
-                codex.appender.loadMoreButton.innerHTML = ' ';
                 codex.appender.loadMoreButton.classList.add('loading');
 
             },
@@ -104,7 +103,6 @@ var appender = {
                 }
 
                 codex.appender.loadMoreButton.classList.remove('loading');
-                codex.appender.loadMoreButton.innerHTML = codex.appender.buttonText;
 
             }
 
