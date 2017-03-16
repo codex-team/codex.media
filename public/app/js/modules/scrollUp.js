@@ -51,6 +51,13 @@ module.exports = {
         /** Global window scroll handler */
         window.addEventListener('scroll', codex.scrollUp.windowScrollHandler);
 
+        /** Autoresize */
+        window.addEventListener('resize', function () {
+
+            this.button.style.ClientwWidth
+
+        }, false);
+
     }
 
 };

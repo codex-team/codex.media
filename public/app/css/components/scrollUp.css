@@ -1,6 +1,7 @@
 /**
  * ScrollUp
  */
+
 .scroll-up {
     position: fixed;
     top: 0;
@@ -35,3 +36,29 @@
         background-repeat: no-repeat;
 
     }
+
+@media all and (max-width: 1185px) {
+    .scroll-up{
+        height: 80px;
+        width: 80px;
+        top: 90vh;
+        left: auto;
+        bottom: 0;
+        right: 0;
+        padding: 12px 14px;
+    }
+
+    .scroll-up__arrow {
+        top: 90vh;
+        left: auto;
+        bottom: 0;
+        right: 0;
+    }
+
+    .scroll-up:hover .scroll-up__arrow{
+        background: rgba(93, 104, 156, 0.15);
+        background-image: url(/public/app/svg/arrow-up.svg);
+        background-position: center 34px;
+        background-repeat: no-repeat;
+    }
+}
