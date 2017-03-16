@@ -1,3 +1,12 @@
+<div class="island tabs">
+
+        <!--<a class="nav_chain" href="/user/<?= $user->id ?>"><?= $user->name ?></a> »-->
+
+        <span class="nav_chain" style="padding: 20px 15px;margin-right: 69%;">Профиль</span>
+        <span style="padding: 20px 15px;"><a href="\user\settings" class="nav_chain">Настройки</a></span>
+
+
+    </div>
 <div class="island island--padded">
 
     <div class="profile clearfix">

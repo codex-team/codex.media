@@ -1,16 +1,21 @@
+<div class="island tabs">
+        <span class="nav_chain" style="padding: 20px 15px; margin-right: 430px;">
+        <!--
+        <img src="C:\OpenServer\domains\codex.edu\public\app\svg\arrow-left.svg">
+        -->
+       <i class="icon-vkontakte"></i>
+        <a class="nav_chain" href="/user/<?= $user->id ?>">Профиль</a></span>
+        <span style="padding: 20px 15px;margin-left: -15px; "><a href = "/logout" data-title="Выйти" class="nav_chain">Выйти</a></span>
+</div>
+
 <div class="island island--padded">
-    <div class="breadcrumb">
-
-        <a class="nav_chain" href="/user/<?= $user->id ?>"><?= $user->name ?></a> »
-        <span class="nav_chain">Настройки аккаунта</span>
-
-    </div>
-
+    
     <? if ($success): ?>
         <div class="info_block align_c">
             Обновления сохранены
         </div>
     <? endif; ?>
+
     <? if ($error): ?>
         <div class="info_block align_c" style="background-color:#EBA4B5; color:#F7053E;">
             <? foreach ($error as $info): ?>
@@ -18,64 +23,126 @@
             <? endforeach; ?>
         </div>
     <? endif; ?>
+
     <div class="profile_panel clear">
 
         <form class="base_form" method="POST" action="user/settings" enctype="multipart/form-data">
-
             <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
+            
+                
+                <img style="float: right;height: 100px;border-radius: 50%;margin-left: 30px;" src="<?= $user->photo_medium ?>" />
 
-            <div class="prifile_settings--ava-holder">
-
-                <img class="profile_settings--ava" src="<?= $user->photo_medium ?>" />
-
-                <span class="button fileinput iconic">
+               <!-- <span class="button fileinput iconic">
                     <i class="icon-picture"></i> Изменить фотографию
                     <input type="file" name="new_ava">
-                </span>
+                </span>-->
+                <div style="width: 400px;">
+                    <label >Фамилия и Имя</label>
+                    <input type="text" name="text" style="margin-top: 10px; margin-bottom: 15px;"></input>
 
-            </div>
+                    <label style="margin-top: 30px; margin-right: 69%;height: 100px;">О себе</label>
+                    <textarea style="margin-top: 10px; margin-bottom: 20px; height: 65px;"></textarea>
+                </div>
 
-
-            <? if ($user->password):?>
-
-                <label for="current_password">Текущий пароль</label>
-                <input type="password" name="current_password" id="current_password">
-            <? endif; ?>
-
-                <label for="login_password">Новый пароль</label>
-                <input type="password" name="new_password" id="login_password">
-
-                <label for="repeat_password">Повторите пароль</label>
-                <input type="password" name="repeat_password" id="repeat_password">
-
-
-            <input type="submit" name="submit" value="Сохранить"/>
-
-
+            
         </form>
 
-        <div class="social_linking">
+        <div class="profile__social-buttons">
+       
 
             <? if ( $user->vk == ( NULL || '' ) ): ?>
-                <a class="button iconic" href="/auth/vk?state=attach"><i class="icon-vkontakte"></i> Прикрепить профиль ВКонтакте</a>
+                
+               
+                    <a href="//vk.com/vengerov1" target="_blank">
+                    <span class="profile__social-button profile__social-button--vk">
+                        <i class="icon-vkontakte"></i>
+                        Привязать                     
+                    </span>
+                    </a>
+                
             <? else: ?>
-                <a class="button iconic" href="/auth/vk?state=remove"><i class="icon-vkontakte"></i> Открепить профиль ВКонтакте</a>
+               
+                    <a href="//vk.com/vengerov1" target="_blank">
+                    <span class="profile__social-button profile__social-button--vk">
+                        <i class="icon-vkontakte"></i>
+                        vengerov1                   
+                    </span>
+                    </a>
+                
             <? endif; ?>
+
             <? if ( $user->facebook == ( NULL || '' ) ): ?>
-                <a class="button iconic" href="/auth/fb?state=attach"><i class="icon-facebook"></i> Прикрепить профиль Facebook</a>
+                
+                  
+                    <a href="/auth/fb?state=attach" target="_blank">
+                    <span class="profile__social-button profile__social-button--facebook">
+                        <i class="icon-facebook"></i>
+                        Привязать                     
+                    </span>
+                    </a>
+                
+
             <? else: ?>
-                <a class="button iconic" href="/auth/fb?state=remove"><i class="icon-facebook"></i> Открепить профиль Facebook</a>
+
+                
+                    <a href="/auth/fb?state=remove" target="_blank">
+                    <span class="profile__social-button profile__social-button--facebook">
+                        <i class="icon-facebook"></i>
+                        Привязать                  
+                    </span>
+                    </a>
+                
+
+            <? endif; ?>
+
+            <? if ( $user->twitter == ( NULL || '' ) ): ?>
+
+               
+                    <a href="/auth/fb?state=remove" target="_blank">
+                    <span class="profile__social-button profile__social-button--facebook">
+                        <i class="icon-twitter"></i>
+                        Привязать                    
+                    </span>
+                    </a>
+                
+
+            <? else: ?>
+
+                
+                    <a href="/auth/fb?state=remove" target="_blank">
+                    <span class="profile__social-button profile__social-button--facebook">
+                        <i class="icon-instagram"></i>
+                        Привязать                   
+                    </span>
+                    </a>
+                
             <? endif; ?>
             <? if ( $user->twitter == ( NULL || '' ) ): ?>
-                <a class="button iconic" href="/auth/tw?state=attach"><i class="icon-twitter"></i> Прикрепить профиль Twitter</a>
+
+               
+                    <a href="/auth/fb?state=remove" target="_blank">
+                    <span class="profile__social-button profile__social-button--facebook">
+                        <i class="icon-facebook"></i>
+                        Привязать                      
+                    </span>
+                    </a>
+               
+
             <? else: ?>
-                <a class="button iconic" href="/auth/tw?state=remove"><i class="icon-twitter"></i> Открепить профиль Twitter</a>
+            
+                
+                    <a href="/auth/fb?state=remove" target="_blank">
+                    <span class="profile__social-button profile__social-button--facebook">
+                        <i class="icon-facebook"></i>
+                        Привязать                   
+                    </span>
+                    </a>
+              
             <? endif; ?>
 
+        
+            </div>
         </div>
-
-    </div>
-
 </div>
 
 <?= View::factory('templates/components/email_confirm_island'); ?>
