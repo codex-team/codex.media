@@ -37,12 +37,20 @@ class Model_User extends Model
     const USER_STATUS_GUEST      = 0;
     const USER_STATUS_BANNED     = -1;
 
+    /**
+     * Model_User constructor.
+     *
+     * Model_User constructor could be called with $needle param.
+     * If $needle consists valid user id or user email, model will be filled with user data
+     *
+     * @param string|int|null $needle
+     */
     public function __construct($needle = null)
     {
 
         if (Valid::email($needle)) {
             self::getByEmail($needle);
-        } elseif(!empty($needle)) {
+        } elseif(Valid::digit($needle)) {
             self::get($needle);
         }
 
