@@ -38,7 +38,7 @@ class Model_Auth extends Model_preDispatch
 
         $hash = $this->generateHash(self::TYPE_EMAIL_CONFIRM);
 
-        $message = View::factory('templates/emails/confirm', array('user' => $this->user, 'hash' => $hash));
+        $message = View::factory('templates/emails/auth/confirm', array('user' => $this->user, 'hash' => $hash));
 
         $email = new Email();
         return $email->send($this->user->email, $GLOBALS['SITE_MAIL'], "Добро пожаловать на ".$_SERVER['HTTP_HOST']."!", $message, true);
@@ -54,7 +54,7 @@ class Model_Auth extends Model_preDispatch
 
         $hash = $this->generateHash(self::TYPE_EMAIL_RESET);
 
-        $message = View::factory('templates/emails/reset', array('user' => $this->user, 'hash' => $hash));
+        $message = View::factory('templates/emails/auth/reset', array('user' => $this->user, 'hash' => $hash));
 
         $email = new Email();
         return $email->send($this->user->email, $GLOBALS['SITE_MAIL'], "Сброс пароля на ".$_SERVER['HTTP_HOST']."!", $message, true);
