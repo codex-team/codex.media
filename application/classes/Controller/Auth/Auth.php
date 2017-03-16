@@ -511,7 +511,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         $model_auth = new Model_Auth();
 
-        $id = $model_auth->getUserIdByHash($hash, Model_Auth::RESET_HASH_KEYS);
+        $id = $model_auth->getUserIdByHash($hash, Model_Auth::TYPE_EMAIL_RESET);
 
         if (!$id) {
 
@@ -541,7 +541,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         if ($this->checkNewPassword($fields)) {
 
             $user->updateUser($id, array('password' => parent::createPasswordHash($fields['password'])));
-            $model_auth->deleteHash($hash, Model_Auth::RESET_HASH_KEYS);
+            $model_auth->deleteHash($hash, Model_Auth::TYPE_EMAIL_RESET);
 
             $this->redirect('/auth');
 

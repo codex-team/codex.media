@@ -122,7 +122,7 @@ class Controller_Auth_Signup extends Controller_Auth_Base
 
         $model_auth = new Model_Auth();
 
-        $id = $model_auth->getUserIdByHash($hash, Model_Auth::CONRIFM_HASH_KEYS);
+        $id = $model_auth->getUserIdByHash($hash, Model_Auth::TYPE_EMAIL_CONFIRM);
 
         if (!$id) {
             $error_text = 'Ваш аккаунт уже подтвержден';
@@ -130,7 +130,7 @@ class Controller_Auth_Signup extends Controller_Auth_Base
             return;
         }
 
-        $model_auth->deleteHash($hash, Model_Auth::CONRIFM_HASH_KEYS);
+        $model_auth->deleteHash($hash, Model_Auth::TYPE_EMAIL_CONFIRM);
 
         $user = new Model_User($id);
 

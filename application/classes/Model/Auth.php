@@ -3,12 +3,17 @@
 class Model_Auth extends Model_preDispatch
 {
 
-    const CONRIFM_HASH_KEYS = 'confirmation';
-    const RESET_HASH_KEYS   = 'reset';
+    const TYPE_EMAIL_CONFIRM = 'confirmation';
+    const TYPE_EMAIL_RESET   = 'reset';
+
+    /**
+     * Salt should be in .env file, but if it doesn't, we use this fallback salt
+     */
+    const DEFAULT_EMAIL_HASH_SALT = 'OKexL2iOXbhoJFw1Flb8';
 
     private $HASHES_KEYS = array(
-        'confirmation' => 'codex.org.confirmation.hashes',
-        'reset'        => 'codex.org.reset.hashes'
+        self::TYPE_EMAIL_CONFIRM => 'codex.org.confirmation.hashes',
+        self::TYPE_EMAIL_RESET  => 'codex.org.reset.hashes'
     );
 
     public $user;
@@ -31,7 +36,7 @@ class Model_Auth extends Model_preDispatch
      */
     public function sendConfirmationEmail() {
 
-        $hash = $this->generateHash(self::CONRIFM_HASH_KEYS);
+        $hash = $this->generateHash(self::TYPE_EMAIL_CONFIRM);
 
         $message = View::factory('templates/emails/confirm', array('user' => $this->user, 'hash' => $hash));
 
@@ -47,7 +52,7 @@ class Model_Auth extends Model_preDispatch
      */
     public function sendResetPasswordEmail() {
 
-        $hash = $this->generateHash('reset');
+        $hash = $this->generateHash(self::TYPE_EMAIL_RESET);
 
         $message = View::factory('templates/emails/reset', array('user' => $this->user, 'hash' => $hash));
 
@@ -65,7 +70,7 @@ class Model_Auth extends Model_preDispatch
      */
     private function generateHash($type) {
 
-        $salt = Arr::get($_SERVER, 'SALT', 'thisIsSalt');
+        $salt = Arr::get($_SERVER, 'SALT', self::DEFAULT_EMAIL_HASH_SALT);
 
         $hash = hash('sha256', $this->user->id . $salt . $this->user->email);
 
