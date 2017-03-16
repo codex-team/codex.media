@@ -34,8 +34,25 @@
     margin: 15px 0;
 }
 
+.profile-settings__buttons {
+    margin: 10px 0;
+}
+
+.profile-settings__submit {
+    padding: 12px 24px;
+    border-radius: 3px;
+    background: #73A8EE;
+    color: #fff;
+    cursor: pointer;
+    max-width: 120px;
+}
+
+.profile-settings__submit:hover {
+    background: color(#73A8EE blackness(+10%));
+    color: #FFF;
+}
+
 .profile-settings__button {
-    display: inline-block;
     padding: 10px;
     margin: 10px 0;
     border-radius: 3px;

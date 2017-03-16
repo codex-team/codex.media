@@ -147,6 +147,8 @@
 
 <?= View::factory('templates/components/email_confirm_island'); ?>
 
+<?= View::factory('templates/components/password_change_island'); ?>
+
 <script>
     codex.profileSettings.init();
 </script>
