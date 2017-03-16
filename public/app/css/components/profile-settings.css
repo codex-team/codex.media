@@ -38,33 +38,6 @@
     margin: 10px 0;
 }
 
-.profile-settings__submit {
-    padding: 12px 24px;
-    border-radius: 3px;
-    background: #73A8EE;
-    color: #fff;
-    cursor: pointer;
-    max-width: 120px;
-}
-
-.profile-settings__submit:hover {
-    background: color(#73A8EE blackness(+10%));
-    color: #FFF;
-}
-
-.profile-settings__button {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 3px;
-    background: #73A8EE;
-    color: #fff;
-    cursor: pointer;
-}
-
-.profile-settings__button:hover {
-    background: color(#73A8EE blackness(+10%));
-}
-
 .profile-settings__button.loading {
     background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgb(187, 205, 228) 4px, #ecf3f9 8px) !important;
     background-size: 56px 56px;
