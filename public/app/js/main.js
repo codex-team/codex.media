@@ -61,16 +61,18 @@ codex.docReady = function (f) {
 /**
 * Load modules
 */
-codex.core      = require('./modules/core');
-codex.ajax      = require('./modules/ajax');
-codex.transport = require('./modules/transport');
-codex.content   = require('./modules/content');
-codex.appender  = require('./modules/appender');
-codex.parser    = require('./modules/parser');
-codex.comments  = require('./modules/comments');
-codex.alerts    = require('./modules/alerts');
-codex.popupMenu = require('./modules/popupMenu');
+codex.core               = require('./modules/core');
+codex.ajax               = require('./modules/ajax');
+codex.transport          = require('./modules/transport');
+codex.content            = require('./modules/content');
+codex.appender           = require('./modules/appender');
+codex.parser             = require('./modules/parser');
+codex.comments           = require('./modules/comments');
+codex.alerts             = require('./modules/alerts');
+codex.popupMenu          = require('./modules/popupMenu');
 codex.autoresizeTextarea = require('./modules/autoresizeTextarea');
+codex.profileSettings    = require('./modules/profileSettings');
+codex.sharer             = require('./modules/sharer');
 
 module.exports = codex;
 

@@ -51,109 +51,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         $this->template->content = View::factory('/templates/auth/auth', $this->view);
     }
 
-    public function action_signup()
-    {
-        $this->title = 'Регистрация';
-        $this->description = 'Страница для регистрации пользователей';
-
-        $this->signup();
-
-        $this->template->content = View::factory('/templates/auth/signup', $this->view);
-    }
-
-    /**
-    * Users registration method
-    * @author Savchenko Petr (vk.com/specc)
-    */
-    public function signup()
-    {
-        $signupForm = array(
-            'email'           => Arr::get($_POST, 'signup_email'),
-            'name'            => preg_replace("/[ ]+/", " ", trim(Arr::get($_POST, 'signup_name'))),
-            'password'        => Arr::get($_POST, 'signup_password'),
-            'password_repeat' => Arr::get($_POST, 'signup_password_repeat'),
-        );
-
-        /** Check for correct-filling form  */
-        if (self::checkSignupFields($signupForm)) {
-
-            /** Saves new user */
-            $userId = parent::insertUser(array(
-                'email'        => $signupForm['email'],
-                'password'     => parent::createPasswordHash($signupForm['password']),
-                'name'         => $signupForm['name']
-            ));
-
-            if ($userId) {
-
-                parent::initAuthSession($userId);
-
-                /** Redirect user after succeeded auth */
-                $this->redirect( self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH );
-            }
-        }
-    }
-
-
-    /**
-    * Checks for correct-filling form
-    * Fills $this->view['signup_error_fields'] with errors texts
-    * @return bool - checking result
-    * @author Savchenko Petr (vk.com/specc)
-    */
-    protected function checkSignupFields($fields)
-    {
-        /** Check for CSRF token*/
-        if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
-
-        /** Check for correct email */
-        if (!Valid::email($fields['name'])) {
-
-            $this->view['signup_error_fields']['name'] = 'Не указано имя пользователя';
-            return FALSE;
-        }
-
-        /** Check for correct email */
-        if (!Valid::email($fields['email'])) {
-
-            $this->view['signup_error_fields']['email'] = 'Некорректный email';
-            return FALSE;
-        }
-
-        /** Check for password existing */
-        if (!$fields['password']) {
-
-            $this->view['signup_error_fields']['password'] = 'Не указан пароль';
-            return FALSE;
-        }
-
-        /** Check for password-repeation existing */
-        if (!$fields['password_repeat']) {
-
-            $this->view['signup_error_fields']['password_repeat'] = 'Не заполнено подтверждение пароля';
-            return FALSE;
-        }
-
-        /** Check for correct passsword repeation */
-        if ($fields['password'] != $fields['password_repeat']) {
-
-            $this->view['signup_error_fields']['password_repeat'] = 'Подтверждение пароля не пройдено. Проверьте правильность ввода';
-            return FALSE;
-        }
-
-        /** Generates new CSRF token */
-        Security::token(TRUE);
-
-        /** Check for email exisiting in DB  */
-        if (!$this->user->hasUniqueEmail($fields['email'])) {
-
-            $this->view['signup_error_text'] = 'Адрес <b>' . $fields['email'] . '</b> уже зарегистрирован <a href="/auth">Войти на сайт</a>';
-            return FALSE;
-        }
-        return TRUE;
-    }
-
-
     /**
     * Login method
     * @author Savchenko Petr (vk.com/specc)
@@ -546,5 +443,150 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         parent::clearAuthCookie();
 
         $this->redirect('/auth');
+
+    }
+
+    /**
+     * Action for /reset route
+     */
+    public function action_reset() {
+
+        $this->title = 'Восстановление пароля';
+        $this->description = 'Страница для восстановления пароля';
+
+        $this->view['header'] = 'Восстановление пароля';
+        $this->view['email']  = '';
+
+        $email = Arr::get($_POST, 'reset_email', '');
+
+        if ($this->checkEmail($email)) {
+
+            $this->view['header'] = 'Мы отправили письмо с инструкциями на вашу почту';
+            $this->view['email'] = $email;
+
+        }
+
+        $this->template->content = View::factory('/templates/auth/reset_password', $this->view);
+
+    }
+
+    /**
+     * Checks if email valid and sets error text to $this->view
+     *
+     * @param $email
+     * @return bool
+     */
+    private function checkEmail($email) {
+
+        /** Check for CSRF token*/
+        if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
+
+        /** Check for correct email */
+        if (!Valid::email($email)) {
+            $this->view['reset_password_error_fields']['email'] = 'Некорректный email';
+            return FALSE;
+        }
+
+        $user = new Model_User($email);
+
+        if (!$user->id) {
+
+            $this->view['reset_password_error_fields']['email'] = 'Пользователь с таким email не найден';
+            return FALSE;
+        }
+
+        $model_auth = new Model_Auth($user);
+        $model_auth->sendResetPasswordEmail();
+
+        return TRUE;
+
+    }
+
+    /**
+     * Action for reset link
+     */
+    public function action_reset_password() {
+
+        $hash = $this->request->param('hash');
+
+        $model_auth = new Model_Auth();
+
+        $id = $model_auth->getUserIdByHash($hash, Model_Auth::TYPE_EMAIL_RESET);
+
+        if (!$id) {
+
+            $error_text = 'Ссылка не действительна';
+            $this->template->content = View::factory('templates/error', array('error_text' => $error_text));
+            return;
+
+        }
+
+        $user = new Model_User($id);
+
+        if (!$user->id) {
+
+            $error_text = 'Переданы некорректные данные';
+            $this->template->content = View::factory('templates/error', array('error_text' => $error_text));
+            return;
+
+        }
+
+        $fields = array(
+
+            'password' => Arr::get($_POST, 'reset_password', ''),
+            'password_repeat' => Arr::get($_POST, 'reset_password_repeat', '')
+
+        );
+
+        if ($this->checkNewPassword($fields)) {
+
+            $user->updateUser($id, array('password' => parent::createPasswordHash($fields['password'])));
+            $model_auth->deleteHash($hash, Model_Auth::TYPE_EMAIL_RESET);
+
+            $this->redirect('/auth');
+
+        }
+
+        $this->template->content = View::factory('templates/auth/new_password', $this->view);
+
+    }
+
+
+    /**
+     * Validation for new password
+     *
+     * @param $fields
+     * @return bool
+     */
+    private function checkNewPassword($fields) {
+
+        /** Check for CSRF token*/
+        if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
+
+        if (!$fields['password']) {
+
+            $this->view['reset_password_error_fields']['password'] = 'Введите пароль';
+            return FALSE;
+
+        }
+
+        if (!$fields['password_repeat']) {
+
+            $this->view['reset_password_error_fields']['password_repeat'] = 'Повторите пароль';
+            return FALSE;
+
+        }
+
+        if ($fields['password_repeat'] != $fields['password']) {
+
+            $this->view['reset_password_error_fields']['password_repeat'] = 'Пароли не совпадают';
+            return FALSE;
+
+        }
+
+        /** Generates new CSRF token */
+        Security::token(TRUE);
+
+        return TRUE;
     }
 }

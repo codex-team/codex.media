@@ -10,6 +10,7 @@ class Model_User extends Model
     public $photo_big           = '';
     public $email               = '';
     public $phone               = '';
+    public $isConfirmed         = 0;
 
     public $twitter             = '';
     public $twitter_name        = '';
@@ -36,13 +37,23 @@ class Model_User extends Model
     const USER_STATUS_GUEST      = 0;
     const USER_STATUS_BANNED     = -1;
 
-    public function __construct($uid = null)
+    /**
+     * Model_User constructor.
+     *
+     * Model_User constructor could be called with $needle param.
+     * If $needle consists valid user id or user email, model will be filled with user data
+     *
+     * @param string|int|null $needle
+     */
+    public function __construct($needle = null)
     {
-        if (!$uid) return;
 
-        $user = self::get($uid);
+        if (Valid::email($needle)) {
+            self::getByEmail($needle);
+        } elseif(Valid::digit($needle)) {
+            self::get($needle);
+        }
 
-        self::fillByRow($user);
     }
 
     private function fillByRow($user)
@@ -94,7 +105,20 @@ class Model_User extends Model
             ->cached(Date::HOUR, 'user:' . $id)
             ->execute();
 
-        return self::fillByRow($user);
+       return $this->fillByRow($user);
+
+    }
+
+    public function getByEmail($email) {
+
+        $user = Dao_Users::select()
+            ->where('email', '=', $email)
+            ->limit(1)
+            ->cached(Date::HOUR, 'user:email:' . $email)
+            ->execute();
+
+        return $this->fillByRow($user);
+
     }
 
     public function updateUser($user_id, $fields)
@@ -207,4 +231,5 @@ class Model_User extends Model
 
         return $users;
     }
+
 }
