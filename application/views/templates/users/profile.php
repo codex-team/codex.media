@@ -2,8 +2,8 @@
 
         <!--<a class="nav_chain" href="/user/<?= $user->id ?>"><?= $user->name ?></a> »-->
 
-        <span class="nav_chain" style="padding: 20px 15px;margin-right: 69%;">Профиль</span>
-        <span style="padding: 20px 15px;"><a href="\user\settings" class="nav_chain">Настройки</a></span>
+        <span class="profile-settings__profile-button-link " >Профиль</span>
+        <span class="profile-settings__logout"><a href="\user\settings" class="nav_chain">Настройки</a></span>
 
 
     </div>
