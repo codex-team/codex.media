@@ -42,8 +42,6 @@ codex = (function (codex) {
 
         codex.core.log('Initialized', 'App init', 'info');
 
-        codex.scrollUp.init();
-
     };
 
     return codex;
@@ -74,7 +72,6 @@ codex.alerts             = require('./modules/alerts');
 codex.autoresizeTextarea = require('./modules/autoresizeTextarea');
 codex.profileSettings    = require('./modules/profileSettings');
 codex.sharer             = require('./modules/sharer');
-codex.scrollUp           = require('./modules/scrollUp');
 
 module.exports = codex;
 
