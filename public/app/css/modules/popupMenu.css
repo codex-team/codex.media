@@ -1,0 +1,21 @@
+.island-settings {
+    display : inline-block;
+    position : relative;
+    float : right;
+    width : 21px;
+    height : 13px;
+    cursor : pointer;
+}
+
+.popup-menu {
+    position : absolute;
+    right : 0;
+    background : #eee;
+    z-index : 999;
+}
+
+.popup-menu a {
+    display : block;
+    padding : 0 5px;
+    line-height : 20px;
+}

@@ -69,6 +69,7 @@ codex.appender  = require('./modules/appender');
 codex.parser    = require('./modules/parser');
 codex.comments  = require('./modules/comments');
 codex.alerts    = require('./modules/alerts');
+codex.popupMenu = require('./modules/popupMenu');
 codex.autoresizeTextarea = require('./modules/autoresizeTextarea');
 
 module.exports = codex;
