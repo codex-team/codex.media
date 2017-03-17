@@ -1,35 +1,39 @@
-<div class="island island--padded article">
+<article class="article island island--padded">
 
     <? /* Page info */ ?>
-    <div class="article-information">
-        <time class="article-information__time">
+    <div class="article__information">
+        <time class="article__time">
             <?= $methods->ftime(strtotime($page->date)) ?>
         </time>
-        <a class="article-information__author" href="/user/<?= $page->author->id ?>">
+        <a class="article__author" href="/user/<?= $page->author->id ?>">
             <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
             <?= $page->author->name ?>
         </a>
     </div>
 
     <? /* Page title */ ?>
-    <h1 class="article-title">
+    <h1 class="article__title">
     	<?= $page->title ?>
     </h1>
 
     <? /* Page content */ ?>
     <? if ($page->blocks_array): ?>
-        <article class="article-content">
+        <div class="article__content">
             <? for ($i = 0; $i < count($page->blocks_array); $i++): ?>
                 <?= $page->blocks_array[$i]; ?>
             <? endfor ?>
-        </article>
+        </div>
     <? endif ?>
 
     <? /* Child pages */ ?>
     <? if ($page->childrens): ?>
-        <ul class="page_childrens clear <?= !$page->content ? 'page_childrens--empty-content' : '' ?>">
+        <ul class="children-pages">
             <? foreach ($page->childrens as $children): ?>
-                <li><a href="/p/<?= $children->id ?>/<?= $children->uri ?>"><?= $children->title ?></a></li>
+                <li class="children-pages__item">
+                    <a class="children-pages__link" href="/p/<?= $children->id ?>/<?= $children->uri ?>">
+                        <?= $children->title ?>
+                    </a>
+                </li>
             <? endforeach ?>
         </ul>
     <? endif ?>
@@ -84,7 +88,7 @@
         'desc'  => ' ',
     )); ?>
 
-</div>
+</article>
 
 <? /* Comments block */ ?>
 <? if ($user->id): ?>
