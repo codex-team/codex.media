@@ -51,5 +51,6 @@
         "codex" : true,
         "console" : true,
         "FormData" : true,
+        "Promise" : true
     }
 }
