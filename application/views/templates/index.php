@@ -36,15 +36,17 @@
 </div>
 
 <? if ($next_page): ?>
-    <a class="load_more_button w_island" id="button_load_news" href="/<?= $page_number + 1 ?>">Показать больше новостей</a>
+    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/<?= $page_number + 1 ?>">
+        Показать больше новостей
+    </a>
     <script>
-        codex.documentIsReady(function() {
+        codex.docReady(function() {
             codex.appender.init({
-                button_id       : 'button_load_news',
-                current_page    : '<?= $page_number ?>',
-                url             : '<?= $active_tab ? "/".$active_tab."/" : "/" ?>',
-                target_block_id : 'list_of_news',
-                auto_loading    : true,
+                buttonId      : 'buttonLoadNews',
+                currentPage   : '<?= $page_number ?>',
+                url           : '<?= $active_tab ? "/".$active_tab."/" : "/" ?>',
+                targetBlockId : 'list_of_news',
+                autoLoading   : true,
             });
         });
     </script>

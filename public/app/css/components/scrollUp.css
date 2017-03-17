@@ -6,9 +6,9 @@
     position: fixed;
     top: 0;
     height: 100%;
-    width: 16%;
     opacity: 0;
     cursor: auto;
+    background-color: red;
 }
 
 .scroll-up.show {
@@ -40,7 +40,8 @@
 @media all and (max-width: 1185px) {
     .scroll-up{
         height: 80px;
-        width: 80px;
+        width: 72px;
+        max-width: 72px;
         top: 90vh;
         left: auto;
         bottom: 0;

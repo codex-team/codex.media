@@ -5,23 +5,44 @@ module.exports = {
 
     SCROLL_UP_OFFSET : 100,
 
+    CENTER_COLUMN_WIDTH : 1010,
+
+    WRAPPER_WIDTH : 100,
+
     button : null,
 
-    scrollPage : function () {
+    scrollPage : function (yCoords) {
 
-        window.scrollTo(0, 0);
+        window.scrollTo(0, yCoords);
 
     },
 
     windowScrollHandler : function () {
 
-        if (window.pageYOffset > codex.scrollUp.SCROLL_UP_OFFSET) {
+        var notTheTop = window.pageYOffset > codex.scrollUp.SCROLL_UP_OFFSET;
+
+        if (notTheTop) {
 
             codex.scrollUp.button.classList.add('show');
 
         } else {
 
             codex.scrollUp.button.classList.remove('show');
+
+        }
+
+    },
+
+    resize : function () {
+
+        var clientWidth = document.body.clientWidth,
+            wrapperWitdh = (clientWidth - codex.scrollUp.CENTER_COLUMN_WIDTH) / 2;
+
+        codex.scrollUp.button.style.width = wrapperWitdh + 'px';
+
+        if (wrapperWitdh < codex.scrollUp.WRAPPER_WIDTH) {
+
+            codex.scrollUp.button.style.width = codex.scrollUp.button.style['min-width'];
 
         }
 
@@ -52,11 +73,13 @@ module.exports = {
         window.addEventListener('scroll', codex.scrollUp.windowScrollHandler);
 
         /** Autoresize */
-        window.addEventListener('resize', function () {
+        window.addEventListener('resize', codex.scrollUp.resize, false);
 
-            this.button.style.ClientwWidth
+        /** Set size */
+        this.resize();
 
-        }, false);
+        /* Check heigth */
+        this.windowScrollHandler();
 
     }
 
