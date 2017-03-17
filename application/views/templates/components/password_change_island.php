@@ -15,8 +15,6 @@
             <button class="button master">Сменить пароль</button>
         </div>
 
-        <?php if (isset($error)) echo Debug::vars($error); ?>
-
     </form>
 
 </div>
