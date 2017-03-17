@@ -8,6 +8,7 @@
     height: 100%;
     opacity: 0;
     cursor: auto;
+    background-color: red;
 }
 
 .scroll-up.show {
