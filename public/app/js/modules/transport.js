@@ -21,7 +21,7 @@
  * });
  *
  * You can handle all of this event like:
- *  - what should happen before data sending with XMLHPPT
+ *  - what should happen before data sending with XMLHTTP
  *  - what should after success request
  *  - error handler
  */
