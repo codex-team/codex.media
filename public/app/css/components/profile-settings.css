@@ -74,20 +74,23 @@
     margin-left: 30px;
 }
 
-.profile-settings__textaria {
+.profile-settings__textarea {
     margin-top: 10px;
     margin-bottom: 20px; 
     height: 65px;
 }
 
 .profile-settings__block {
-    width: 400px;
+    width: 65%;
 }
 .profile-settings__fio {
     margin-top: 10px;
     margin-bottom: 15px;   
 }
-.profile-settings__profile-button-link {
+.profile-settings__profile-nav {
     padding: 20px 15px; 
     margin-right: 69%;
+}
+.profile__settings_buttom {
+    padding: 20px 15px;
 }

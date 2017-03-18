@@ -59,7 +59,3 @@
     border-color: color(var(--facebookColor) alpha(-80%));
 }
 
-.profile__settings_buttom {
-    padding: 20px 15px;
-}
-

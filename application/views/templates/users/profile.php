@@ -1,69 +1,62 @@
-<div class="island tabs">
-
-        <!--<a class="nav_chain" href="/user/<?= $user->id ?>"><?= $user->name ?></a> »-->
-
-        <span class="profile-settings__profile-button-link " >Профиль</span>
-        <span class="profile-settings__logout"><a href="\user\settings" class="nav_chain">Настройки</a></span>
-
-
-    </div>
 <div class="island island--padded">
+    <span class="profile-settings__profile-nav ">Профиль</span>
+    <span class="profile-settings__logout"><a href="\user\settings" class="nav_chain">Настройки</a></span>
+</div>
 
+<div class="island island--padded">
+    
     <div class="profile clearfix">
-
-    	<img class="profile__ava" src="<?= $viewUser->photo_medium ?>" />
-
-    	<div class="profile__name">
+    	
+        <img class="profile__ava" src="<?= $viewUser->photo_medium ?>" />
+        <div class="profile__name">
     		<?= $viewUser->name ?>
-    	</div>
-
+        </div>
         <? if (!empty($viewUser->bio)): ?>
-            <div class="profile__about">
-        		<? /* Учитель русского языка и литературы */ ?>
-        	</div>
+        <div class="profile__about">
+            <? /* Учитель русского языка и литературы */ ?>
+        </div>
         <? endif ?>
-
-
         <div class="profile__social-buttons">
 
-        	<? if ($viewUser->vk): ?>
-                <a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
-                    <span class="profile__social-button profile__social-button--vk">
-                        <i class="icon-vkontakte"></i>
-                        <?= $viewUser->vk_uri ? $viewUser->vk_uri : $viewUser->vk_name ?>
-                    </span>
-                </a>
-        	<? endif; ?>
+            <? if ($viewUser->vk): ?>
+            <a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
+                <span class="profile__social-button profile__social-button--vk">
+                    <i class="icon-vkontakte"></i>
+                    <?= $viewUser->vk_uri ? $viewUser->vk_uri : $viewUser->vk_name ?>
+                </span>
+            </a>
 
-        	<? if ($viewUser->facebook): ?>
-                <a href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
-                    <span class="profile__social-button profile__social-button--facebook">
-                        <i class="icon-facebook"></i>
-                        <?= $viewUser->facebook_name ? $viewUser->facebook_name : $viewUser->name ?>
-                    </span>
-                </a>
-        	<? endif ?>
+            <? endif; ?>
 
-        	<? if ($viewUser->twitter): ?>
-                <a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
-                    <span class="profile__social-button profile__social-button--twitter">
-                        <i class="icon-twitter"></i>
-                        <?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?>
-                    </span>
-                </a>
-        	<? endif ?>
+            <? if ($viewUser->facebook): ?>
+            <a href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
+                <span class="profile__social-button profile__social-button--facebook">
+                    <i class="icon-facebook"></i>
+                    <?= $viewUser->facebook_name ? $viewUser->facebook_name : $viewUser->name ?>
+                </span>
+            </a>
+            <? endif ?>
+            <? if ($viewUser->twitter): ?>
+            <a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
+                <span class="profile__social-button profile__social-button--twitter">
+                    <i class="icon-twitter"></i>
+                    ?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?>
+                </span>
+            </a>
+            <? endif ?>
         </div>
+    </div>
+</div>
 
+<? /* */ ?>
+<? if (isset($isUpdateSaved) && $isUpdateSaved): ?>
+
+    <div class="info_block align_c">
+        Обновления сохранены
     </div>
 
-    <? /* */ ?>
-    <? if (isset($isUpdateSaved) && $isUpdateSaved): ?>
-    	<div class="info_block align_c">
-    		Обновления сохранены
-    	</div>
-    <? endif; ?>
-    <? /**/ ?>
-
+<? endif; ?>
+<? /**/ ?>
     <? /*
     <div class="action-line  clear">
         <? if($viewUser->isMe): ?>
@@ -81,22 +74,23 @@
     */ ?>
 
     <? /* */ ?>
-    <? if ($user->isAdmin): ?>
-        <ul class="action-line page_actions" id="pageAction">
-            <? if (!$viewUser->isTeacher): ?>
-                <li><a href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a></li>
-            <? else: ?>
-                <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Отключить аккаунт преподавателя</a></li>
-            <? endif ?>
-            <? if ($viewUser->status != Model_User::USER_STATUS_BANNED ): ?>
-                <li><a href="/user/<?= $viewUser->id ?>?newStatus=banned">Заблокировать</a></li>
-            <? else: ?>
-                <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Разблокировать</a></li>
-            <? endif ?>
-        </ul>
-    <? endif ?>
-    <? /* */ ?>
-</div>
+<? if ($user->isAdmin): ?>
+    <ul class="action-line page_actions" id="pageAction">
+        <? if (!$viewUser->isTeacher): ?>
+            <li><a href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a></li>
+        <? else: ?>
+            <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Отключить аккаунт преподавателя</a></li>
+<? endif ?>
+
+<? if ($viewUser->status != Model_User::USER_STATUS_BANNED ): ?>
+        <li><a href="/user/<?= $viewUser->id ?>?newStatus=banned">Заблокировать</a></li>
+<? else: ?>
+        <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Разблокировать</a></li>
+<? endif ?>
+    </ul>
+<? endif ?>
+<? /* */ ?>
+
 
 <ul class="island tabs island--margined">
     <li>
