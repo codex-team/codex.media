@@ -26,7 +26,7 @@
         <a class="article__comments-counter" href="<?= $page->url ?>#comments">
             <? include(DOCROOT . "public/app/svg/comment.svg") ?>
             <? if ($page->commentsCount > 0): ?>
-                <?= count($page->commentsCount) . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
+                <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
             <? else: ?>
                 Комментировать
             <? endif ?>

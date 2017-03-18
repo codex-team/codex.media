@@ -2,7 +2,7 @@
 
 use CodexEditor\CodexEditor;
 
-class Model_Page extends Model_preDispatch
+class Model_Page extends Model
 {
     public $id              = 0;
     public $status          = 0;
@@ -24,6 +24,7 @@ class Model_Page extends Model_preDispatch
     public $description     = '';
     public $blocks          = array();
 
+    public $commentsCount   = 0;
     public $attachments     = array();
     public $files           = array();
     public $images          = array();
@@ -102,6 +103,7 @@ class Model_Page extends Model_preDispatch
             $this->author = new Model_User($page_row['author']);
             $this->description = $this->getDescription();
             $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
+            $this->commentsCount = $this->getCommentsCount();
         }
 
         return $this;
@@ -355,5 +357,32 @@ class Model_Page extends Model_preDispatch
         }
 
         return $description;
+    }
+
+    /**
+     * Returns comments count for current page
+     * Uses cache with TAG 'comment:by:page:<PAGE_ID>' that clears in comments insertion/deletion
+     * @return int comments count
+     */
+    public function getCommentsCount()
+    {
+        $cache = Cache::instance('memcacheimp');
+        $cacheKey = 'comments:count:by:page:' . $this->id;
+
+        $cached = $cache->get($cacheKey);
+
+        if ( $cached) {
+            return $cached;
+        }
+
+        $count = DB::select('id')->from('comments')
+            ->where('page_id', '=', $this->id)
+            ->where('is_removed', '=', 0)
+            ->execute()
+            ->count();
+
+        $cache->set($cacheKey, $count, array('comments:by:page:' . $this->id), Date::MINUTE * 5);
+
+        return $count;
     }
 }

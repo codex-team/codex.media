@@ -9,6 +9,7 @@ class Controller_Pages extends Controller_Base_preDispatch
      */
     public function action_show()
     {
+
         $id  = $this->request->param('id');
         $uri = $this->request->param('uri');
 
@@ -27,7 +28,6 @@ class Controller_Pages extends Controller_Base_preDispatch
             $page->files     = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
             $page->images    = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
             $page->comments  = Model_Comment::getCommentsByPageId($id);
-            $page->commentsCount = count($page->comments);
 
             /** Render blocks */
             $page->blocks_array= array();

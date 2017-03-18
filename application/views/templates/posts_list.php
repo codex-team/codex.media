@@ -29,7 +29,11 @@
             <div class="post-list-item__footer">
                 <a class="post-list-item__comments" href="/p/<?= $page->id ?>/<?= $page->uri ?>" rel="nofollow">
                     <? include(DOCROOT . "public/app/svg/comment.svg") ?>
-                    Комментировать
+                    <? if ($page->commentsCount > 0): ?>
+                        <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
+                    <? else: ?>
+                        Комментировать
+                    <? endif ?>
                 </a>
             </div>
         </article>
