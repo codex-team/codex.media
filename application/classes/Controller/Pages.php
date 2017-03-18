@@ -9,6 +9,7 @@ class Controller_Pages extends Controller_Base_preDispatch
      */
     public function action_show()
     {
+
         $id  = $this->request->param('id');
         $uri = $this->request->param('uri');
 
