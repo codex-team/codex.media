@@ -27,6 +27,15 @@
 </head>
 <body>
 
+    <div class="stretched-cover">
+
+            <a class="stretched-cover__change-button">
+                <i class="stretched-cover__change-button--icon icon-camera"></i>
+                Изменить обложку
+            </a>
+
+    </div>
+
     <div class="center-col">
 
         <div class="grid-cols-wrapper">

@@ -1,6 +1,30 @@
 /**
 * New layout
 */
+
+/**
+ * Cover
+ */
+.stretched-cover {
+    position: relative;
+    height: var(--coverHeight);
+    background: #202840;
+}
+
+.stretched-cover__change-button {
+    position: absolute;
+    bottom: 20px;
+    right: 100px;
+    background: rgba(0, 0, 0, .3);
+    padding: 10px;
+    color: #fff;
+}
+
+.stretched-cover__change-button--icon{
+
+}
+
+
 .center-col {
     max-width: 1010px;
     margin: 0 auto;
@@ -25,8 +49,7 @@
 }
 
 .grid-col--left {
-    border-right: 1px solid rgba(79, 109, 162, 0.1);
-    margin-right: var(--islandMargin);
+    margin-top: -100px;
     padding: var(--islandMargin) var(--islandMargin) var(--islandMargin) 0;
 }
 
@@ -38,7 +61,8 @@
 
 .grid-content {
     box-sizing: border-box;
-    padding: var(--islandMargin) 0;
+    border-left: 1px solid rgba(79, 109, 162, 0.1);
+    padding: var(--islandMargin) var(--islandMargin) 0 var(--islandMargin);
     flex: 2 0%;
 }
 
