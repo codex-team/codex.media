@@ -92,7 +92,7 @@ class Controller_Base_preDispatch extends Controller_Template
         $this->redis = $this->_redis();
         View::set_global('redis', $this->redis);
 
-        $this->memcache = $memcache = Cache::instance('memcache');
+        $this->memcache = $memcache = Cache::instance('memcacheimp');
         View::set_global('memcache', $memcache);
 
         /** Session */

@@ -2,7 +2,7 @@
 
 use CodexEditor\CodexEditor;
 
-class Model_Page extends Model_preDispatch
+class Model_Page extends Model
 {
     public $id              = 0;
     public $status          = 0;
@@ -10,6 +10,8 @@ class Model_Page extends Model_preDispatch
     public $uri             = '';
     public $author;
     public $id_parent       = 0;
+
+    public $url             = 0;
 
     public $rich_view       = 0;
     public $dt_pin;
@@ -22,6 +24,7 @@ class Model_Page extends Model_preDispatch
     public $description     = '';
     public $blocks          = array();
 
+    public $commentsCount   = 0;
     public $attachments     = array();
     public $files           = array();
     public $images          = array();
@@ -99,6 +102,8 @@ class Model_Page extends Model_preDispatch
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
             $this->description = $this->getDescription();
+            $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
+            $this->commentsCount = $this->getCommentsCount();
         }
 
         return $this;
@@ -344,26 +349,40 @@ class Model_Page extends Model_preDispatch
 
                 if ($block->type == 'paragraph') {
 
-                    $description = $block->data->text ?: $description;
+                    $description = $block->data->text;
 
                     break;
                 }
-
-                /**
-                 * Поиск блока с параметром cover = true
-                 */
-                /*
-                if (property_exists($block, 'cover')) {
-
-                    if ($block->cover == True) {
-
-                        $description = $block->data->text;
-                    }
-                }
-                */
             }
         }
 
         return $description;
+    }
+
+    /**
+     * Returns comments count for current page
+     * Uses cache with TAG 'comment:by:page:<PAGE_ID>' that clears in comments insertion/deletion
+     * @return int comments count
+     */
+    public function getCommentsCount()
+    {
+        $cache = Cache::instance('memcacheimp');
+        $cacheKey = 'comments:count:by:page:' . $this->id;
+
+        $cached = $cache->get($cacheKey);
+
+        if ( $cached) {
+            return $cached;
+        }
+
+        $count = DB::select('id')->from('comments')
+            ->where('page_id', '=', $this->id)
+            ->where('is_removed', '=', 0)
+            ->execute()
+            ->count();
+
+        $cache->set($cacheKey, $count, array('comments:by:page:' . $this->id), Date::MINUTE * 5);
+
+        return $count;
     }
 }
