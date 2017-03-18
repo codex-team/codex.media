@@ -14,11 +14,10 @@ module.exports = {
 
     button : null,
 
-    screenWidth : document.body.clientWidth,
+    resizeTrigger : null,
 
-
-
-    /** Scroll the document to the begin position
+    /**
+    * Scroll the document to the begin position
     * @param {number} yCoords Y-coordinate
     */
     scrollPage : function (yCoords) {
@@ -64,6 +63,17 @@ module.exports = {
 
     },
 
+
+    /**
+    * Delay for resize
+    */
+    sizeChanged : function () {
+
+        window.clearTimeout(codex.scrollUp.resizeTrigger);
+        codex.scrollUp.resizeTrigger = window.setTimeout(codex.scrollUp.resize, 100);
+
+    },
+
     /**
     * Init method
     * Fired after document is ready
@@ -89,7 +99,7 @@ module.exports = {
         window.addEventListener('scroll', codex.scrollUp.windowScrollHandler);
 
         /** Autoresize */
-        window.addEventListener('resize', codex.scrollUp.resize, false);
+        window.addEventListener('resize', codex.scrollUp.sizeChanged, false);
 
         /** Set size */
         this.resize();
