@@ -32,6 +32,34 @@ codex = (function (codex) {
 
         codex.autoresizeTextarea.init();
 
+        codex.dropdownMenu({
+            holderClass: 'js-dropdown-menu--holder',
+            menuClass: 'js-dropdown-menu--menu',
+            menuOptions: {
+
+                'Открыть Google': function () {
+
+                    window.location.assign('https://google.com');
+
+                },
+                'Открыть Яндекс': function () {
+
+                    window.location.assign('https://yandex.ru');
+
+                },
+                'Открыть ВКонтакте': function () {
+
+                    window.location.assign('https://vk.com');
+
+                },
+                'Очень-очень длинное (нет) название варианта выбора': function () {
+
+                    window.alert('Всем сохранять спокойствие, работает колбэк');
+
+                }
+            }
+        });
+
         /**
         * Init CodeX Special module for contrast version
         * @see https://github.com/codex-team/codex.special
@@ -69,7 +97,7 @@ codex.appender           = require('./modules/appender');
 codex.parser             = require('./modules/parser');
 codex.comments           = require('./modules/comments');
 codex.alerts             = require('./modules/alerts');
-codex.popupMenu          = require('./modules/popupMenu');
+codex.dropdownMenu       = require('./modules/dropdownMenu');
 codex.autoresizeTextarea = require('./modules/autoresizeTextarea');
 codex.profileSettings    = require('./modules/profileSettings');
 codex.sharer             = require('./modules/sharer');

@@ -9,13 +9,11 @@
         <article class="island <?= $index != 0 ? 'island--margined' : '' ?> post-list-item <?= $page->rich_view ? 'post-list-item--big' : '' ?> <?= $page->dt_pin ? 'post-list-item_pinned' : '' ?>">
 
             <div class="post-list-item__header">
-                <span class="js-popup-menu--holder island-settings" data-menu-options='{
-                    "Google":"window.location.assign(\"https://google.com\")",
-                    "Yandex":"window.location.assign(\"https://yandex.ru\")",
-                    "VK":"window.location.assign(\"https://vk.com\")"
-                }'>
-                    <? include(DOCROOT . 'public/app/svg/settings.svg'); ?>
-                </span>
+                <? if ($user->isAdmin || $user->id == $page->author->id): ?>
+                    <span class="js-dropdown-menu--holder island-settings">
+                        <? include(DOCROOT . 'public/app/svg/settings.svg'); ?>
+                    </span>
+                <? endif ?>
                 <time class="post-list-item__date">
                     <a href="/p/<?= $page->id ?>/<?= $page->uri ?>">
                         <?= date_format(date_create($page->date), 'd F Y, G:i') ?>
