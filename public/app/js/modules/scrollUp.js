@@ -1,6 +1,9 @@
 /**
 * Module for scroll-up button
+* @author @scytem @guryn
 */
+
+
 module.exports = {
 
     SCROLL_UP_OFFSET : 100,
@@ -11,12 +14,22 @@ module.exports = {
 
     button : null,
 
+    screenWidth : document.body.clientWidth,
+
+
+
+    /** Scroll the document to the begin position
+    * @param {number} yCoords Y-coordinate
+    */
     scrollPage : function (yCoords) {
 
         window.scrollTo(0, yCoords);
 
     },
 
+    /**
+    * Hiding Scroll-up button if user on the top of page
+    */
     windowScrollHandler : function () {
 
         var notTheTop = window.pageYOffset > codex.scrollUp.SCROLL_UP_OFFSET;
@@ -33,6 +46,9 @@ module.exports = {
 
     },
 
+    /**
+    * Resize hover/click area touching user width of screen
+    */
     resize : function () {
 
         var clientWidth = document.body.clientWidth,
