@@ -11,6 +11,8 @@ class Model_Page extends Model_preDispatch
     public $author;
     public $id_parent       = 0;
 
+    public $url             = 0;
+
     public $rich_view       = 0;
     public $dt_pin;
     public $is_menu_item    = 0;
@@ -99,6 +101,7 @@ class Model_Page extends Model_preDispatch
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
             $this->description = $this->getDescription();
+            $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
         }
 
         return $this;
@@ -344,23 +347,10 @@ class Model_Page extends Model_preDispatch
 
                 if ($block->type == 'paragraph') {
 
-                    $description = $block->data->text ?: $description;
+                    $description = $block->data->text;
 
                     break;
                 }
-
-                /**
-                 * Поиск блока с параметром cover = true
-                 */
-                /*
-                if (property_exists($block, 'cover')) {
-
-                    if ($block->cover == True) {
-
-                        $description = $block->data->text;
-                    }
-                }
-                */
             }
         }
 

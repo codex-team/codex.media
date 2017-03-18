@@ -1,15 +1,38 @@
 <article class="article island island--padded">
 
+    <? if (!empty($page->parent->id)): ?>
+        <div class="article__parent">
+            <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri?>">
+                <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
+                <?= $page->parent->title ?>
+            </a>
+        </div>
+    <? endif ?>
+
     <? /* Page info */ ?>
-    <div class="article__information">
+    <header class="article__information">
+
         <time class="article__time">
-            <?= $methods->ftime(strtotime($page->date)) ?>
+            <a href="<?= $page->url ?>">
+                <?= $methods->ftime(strtotime($page->date)) ?>
+            </a>
         </time>
+
         <a class="article__author" href="/user/<?= $page->author->id ?>">
             <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
             <?= $page->author->name ?>
         </a>
-    </div>
+
+        <a class="article__comments-counter" href="<?= $page->url ?>#comments">
+            <? include(DOCROOT . "public/app/svg/comment.svg") ?>
+            <? if ($page->commentsCount > 0): ?>
+                <?= count($page->commentsCount) . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
+            <? else: ?>
+                Комментировать
+            <? endif ?>
+        </a>
+
+    </header>
 
     <? /* Page title */ ?>
     <h1 class="article__title">
@@ -64,23 +87,6 @@
         </div>
     <? endif ?>
 
-    <? /* Page's files block */ ?>
-    <? if ($page->files): ?>
-        <div class="w_island files" style="margin: 5px 0 5px 5px">
-        	<table class="page_files">
-        		<? foreach ($page->files as $file): ?>
-        			<tr>
-        				<td class="ext"><span class="ext_tag"><?= $file->extension ?></span></td>
-        				<td class="title"><a href="/file/<?= $file->file_hash_hex ?>"><?= $file->title ?></a></td>
-        				<td>
-        					<p class="size"><?= (int)$file->size < 1000 ? $file->size . PHP_EOL . 'КБ' : ceil($file->size / 1000) . PHP_EOL . 'МБ' ?></p>
-        				</td>
-        			</tr>
-        		<? endforeach ?>
-        	</table>
-        </div>
-    <? endif ?>
-
     <?= View::factory('templates/components/share', array(
         'offer' => 'Если вам понравилась статья, поделитесь ссылкой на нее',
         'url'   => 'https://' . Arr::get($_SERVER, 'HTTP_HOST', Arr::get($_SERVER, 'SERVER_NAME', 'edu.ifmo.su')) . '/p/' . $page->id,
@@ -93,7 +99,7 @@
 <? /* Comments block */ ?>
 <? if ($user->id): ?>
 
-    <div class="comment-form__island island island--margined clearfix">
+    <div class="comment-form__island island island--margined clearfix" id="comments">
         <?= View::factory('templates/comments/form', array('page_id' => $page->id, 'user' => $user)); ?>
     </div>
 

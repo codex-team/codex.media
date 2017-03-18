@@ -8,12 +8,15 @@
 
 .article__information {
     color: var(--grayText);
-    margin-bottom: 10px;
+    font-size: 14px;
 }
 
-.article__time {
+.article__time,
+.article__author,
+.article__comments-counter {
     display: inline-block;
-    margin-right: 1em;
+    margin: 0 1em 15px 0;
+    white-space: nowrap;
 }
 
 .article__author img {
@@ -22,6 +25,11 @@
     border-radius: 50%;
     vertical-align: bottom;
     margin-right: 1em;
+}
+
+.article__comments-counter svg {
+    display: inline-block;
+    margin-right: .8em;
 }
 
 .article__title {
@@ -34,15 +42,51 @@
 .article__content {
     font-size: 17px;
     line-height: 1.6em;
+}
 
+.article__content--typed {
     font-family: 'Lora';
     font-size: 19.2px;
     line-height: 1.64em;
-    color: rgba(0,0,0,.8);
+    color: rgba(0, 0, 0, 0.8);
 }
 
-.article-content a {
-    text-decoration: underline;
+.article__content a {
+    padding-bottom: 1px;
+    color: var(--linkColor);
+    border-bottom: 1px solid color(var(--linkColor) lightness(+35%));
+}
+
+.article__content a:hover {
+    color: var(--hoverColor);
+    border-bottom: 1px solid color(var(--hoverColor) lightness(+35%));
+}
+
+/**
+ * Article parent
+ */
+
+.article__parent {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--lightGrayLine);
+    font-size: 14px;
+    line-height: 1.45em;
+    color: var(--grayText);
+}
+
+.article__parent a {
+    position: relative;
+    display: block;
+    padding-left: 2em;
+}
+
+.article__parent svg {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -0.35em;
+    height: 0.9em;
 }
 
 /**
@@ -54,6 +98,7 @@
 
 .children-pages__item {
     position: relative;
+    padding-right: 20px;
 }
 
 .children-pages__item:not(:last-of-type) {
@@ -78,4 +123,31 @@
     font-size: 18px;
     line-height: 1.4em;
     font-weight: 600;
+}
+
+@media (--mobile) {
+    .article {
+        padding: 20px;
+    }
+
+    .article__parent,
+    .article__information {
+        font-size: 12px;
+    }
+
+    .article__parent {
+        padding-bottom: 15px;
+    }
+
+    .article__title {
+        font-size: 28px;
+    }
+
+    .article__content {
+        font-size: 15px;
+    }
+
+    .children-pages__link {
+        font-size: 16px;
+    }
 }

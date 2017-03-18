@@ -10,7 +10,7 @@
 
             <div class="post-list-item__header">
                 <time class="post-list-item__date">
-                    <a href="/p/<?= $page->id ?>/<?= $page->uri ?>">
+                    <a href="<?= $page->url ?>">
                         <?= date_format(date_create($page->date), 'd F Y, G:i') ?>
                     </a>
                 </time>
