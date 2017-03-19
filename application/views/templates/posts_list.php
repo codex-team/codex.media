@@ -10,7 +10,7 @@
 
             <div class="post-list-item__header">
                 <time class="post-list-item__date">
-                    <a href="/p/<?= $page->id ?>/<?= $page->uri ?>">
+                    <a href="<?= $page->url ?>">
                         <?= date_format(date_create($page->date), 'd F Y, G:i') ?>
                     </a>
                 </time>
@@ -29,7 +29,11 @@
             <div class="post-list-item__footer">
                 <a class="post-list-item__comments" href="/p/<?= $page->id ?>/<?= $page->uri ?>" rel="nofollow">
                     <? include(DOCROOT . "public/app/svg/comment.svg") ?>
-                    Комментировать
+                    <? if ($page->commentsCount > 0): ?>
+                        <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
+                    <? else: ?>
+                        Комментировать
+                    <? endif ?>
                 </a>
             </div>
         </article>
