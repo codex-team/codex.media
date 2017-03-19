@@ -73,6 +73,7 @@ codex.autoresizeTextarea = require('./modules/autoresizeTextarea');
 codex.profileSettings    = require('./modules/profileSettings');
 codex.sharer             = require('./modules/sharer');
 codex.writing            = require('./modules/writing');
+codex.loader             = require('./modules/loader');
 
 module.exports = codex;
 
