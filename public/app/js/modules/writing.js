@@ -20,9 +20,15 @@ module.exports = (function () {
 
         form_ : null,
 
-        init : function (settings) {
+        prepare : function (settings) {
 
             writing.mergeSettings_(settings);
+
+            loadEditorResources(writing.settings_.plugins, function () {
+
+                return Promise.resolve();
+
+            });
 
         },
 
@@ -41,25 +47,19 @@ module.exports = (function () {
 
         },
 
-        /**
-         * Function for create form or editor's target and load editor's sources
-         */
-        createEditor : function () {
-
-            /** 1. Create form or textarea for editor */
-            var target = document.getElementById(writing.settings_.targetId);
-
-            writing.appendTextareasToTarget_(target);
-
-            /** 2. Load resources */
-            loadEditorResources(writing.settings_.plugins, (function () {
-
-                /** After load */
-                writing.startEditor_();
-
-            }));
-
-        },
+        // /**
+        //  * Function for create form or editor's target and load editor's sources
+        //  */
+        // init : function (targetClicked, formId, hidePlaceholderClass) {
+        //
+        //     /** 1. Create form or textarea for editor */
+        //     var target = document.getElementById(writing.settings_.targetId);
+        //
+        //     writing.appendTextareasToTarget_(target);
+        //
+        //     writing.startEditor_();
+        //
+        // },
 
         /**
          * Append textareas for codex.editor
@@ -162,6 +162,16 @@ module.exports = (function () {
 
         },
 
+        init : function () {
+
+            /** 1. Create form or textarea for editor */
+            var target = document.getElementById(writing.settings_.targetId);
+
+            writing.appendTextareasToTarget_(target);
+            writing.startEditor_();
+
+        },
+
         /**
          * Show form and hide placeholder
          *
@@ -169,16 +179,15 @@ module.exports = (function () {
          * @param  {String} formId               remove 'hide' from this form by id
          * @param  {String} hidePlaceholderClass add this class to placeholder
          */
-        openEditor : function (targetClicked, formId, hidePlaceholderClass) {
+        open : function (targetClicked, formId, hidePlaceholderClass) {
 
             var holder = targetClicked;
 
-            writing.createEditor();
             document.getElementById(formId).classList.remove('hide');
-
             holder.classList.add(hidePlaceholderClass);
-
             holder.onclick = null;
+
+            writing.init();
 
         },
 
@@ -200,22 +209,9 @@ module.exports = (function () {
             version_ : '1.5',
 
             /**
-             * Objects with script and style Elements of editor and plugins
-             */
-            nodes_ : {
-
-                editor : {
-                    script : null,
-                    style : null,
-                },
-                plugins : [],
-
-            },
-
-            /**
              * Variable for function that should be runned onLoad all resources
              */
-            loadFunction_ : null,
+            _loadFunction : null,
 
             /**
              * Init function for load editor's resources
@@ -226,162 +222,58 @@ module.exports = (function () {
             load : function (plugins, onLoad) {
 
                 /** Set function which should be runned when resources are load */
-                editorResources.loadFunction_ = onLoad;
+                editorResources._loadFunction = onLoad;
 
-                var resources;
+                var queue = Promise.resolve();
 
-                /** Load  */
-                editorResources.loadCore_();
+                queue.then(
+                    editorResources._loadCore()
+                );
 
                 for (var i = 0; i < plugins.length; i++) {
 
-                    editorResources.loadPlugin_(plugins[i]);
+                    queue.then(
+                        editorResources._loadPlugin(plugins[i])
+                    );
 
-                }
+                };
 
-                /** Wait for load editor + plugins scripts */
-                window.filesLeftToLoad = 1 + plugins.length;
+                queue.then(function () {
 
-                /** Create and append editor's resources to body */
-                resources = editorResources.createPackage_();
-                document.body.appendChild(resources);
+                    editorResources._loadFunction();
+
+                    Promise.resolve();
+
+                });
+
+            },
+
+            _loadPlugin : function (plugin) {
+
+                var url = 'https://cdn.ifmo.su/editor/v' + editorResources.version_ + '/plugins/' + plugin + '/' + plugin,
+                    scriptUrl = url + '.js',
+                    styleUrl  = url + '.css';
+
+                return Promise.resolve()
+                    .then(codex.loader.importScript(scriptUrl, plugin))
+                    .then(codex.loader.importStyle(styleUrl, plugin));
 
             },
 
             /**
              * Add editor core script and style to the editorResources.nodes_.editor
              */
-            loadCore_ : function () {
+            _loadCore : function () {
 
                 var url = 'https://cdn.ifmo.su/editor/v' + editorResources.version_ + '/codex-editor',
                     scriptUrl = url + '.js',
                     styleUrl  = url + '.css';
 
-                editorResources.nodes_.editor.script = editorResources.loadResource_('script', scriptUrl);
-                editorResources.nodes_.editor.style  = editorResources.loadResource_('style', styleUrl);
+                return Promise.resolve()
+                    .then(codex.loader.importScript(scriptUrl, 'editor-core'))
+                    .then(codex.loader.importStyle(styleUrl, 'editor-core'));
 
-            },
-
-            /**
-             * Add plugin script and styles Elements to the array editorResources.nodes_.plugins
-             *
-             * @param  {String} plugin plugin's name
-             */
-            loadPlugin_ : function (plugin) {
-
-                var url = 'https://cdn.ifmo.su/editor/v' + editorResources.version_ + '/plugins/' + plugin + '/' + plugin,
-                    scriptUrl = url + '.js',
-                    styleUrl  = url + '.css';
-
-                editorResources.nodes_.plugins.push({
-                    'script' : editorResources.loadResource_('script', scriptUrl),
-                    'style'  : editorResources.loadResource_('style', styleUrl)
-                });
-
-            },
-
-            /**
-             * Return element with resource by type
-             *
-             * @param  {String} type 'style' or 'script'
-             * @param  {String} url  path to the resource
-             * @return {Element}
-             */
-            loadResource_ : function (type, url) {
-
-                if (!type || !url) {
-
-                    return false;
-
-                }
-
-                switch (type) {
-                    case 'script':
-                        return editorResources.loadResourceJS_(url);
-                    case 'style':
-                        return editorResources.loadResourceCSS_(url);
-                    default:
-                        return false;
-                }
-
-            },
-
-            /**
-             * Create and return element with script by url
-             *
-             * @param  {String} url
-             * @return {Element}
-             */
-            loadResourceJS_ : function (url) {
-
-                var script = document.createElement('SCRIPT');
-
-                script.type   = 'text/javascript';
-                script.src    = url;
-                script.async  = true;
-                script.onload = editorResources.onLoad_;
-
-                return script;
-
-            },
-
-            /**
-             * Create and return stylesheet element by url
-             *
-             * @param  {String} url
-             * @return {Element}
-             */
-            loadResourceCSS_ : function (url) {
-
-                var style = document.createElement('LINK');
-
-                style.type = 'text/css';
-                style.href = url;
-                style.rel  = 'stylesheet';
-
-                return style;
-
-            },
-
-            /**
-             * Return div with all editor scripts and styles
-             *
-             * @return {Element}
-             */
-            createPackage_ : function () {
-
-                var divPackage = document.createElement('DIV');
-
-                /** Append core */
-                divPackage.appendChild(editorResources.nodes_.editor.script);
-                divPackage.appendChild(editorResources.nodes_.editor.style);
-
-                /** Append plugins */
-                for (var i = 0; i < editorResources.nodes_.plugins.length; i++) {
-
-                    divPackage.appendChild(editorResources.nodes_.plugins[i].script);
-                    divPackage.appendChild(editorResources.nodes_.plugins[i].style);
-
-                };
-
-                return divPackage;
-
-            },
-
-            /**
-             * Call loadFunction_ when all resource files are ready
-             */
-            onLoad_ : function () {
-
-                window.filesLeftToLoad--;
-
-                if (window.filesLeftToLoad === 0) {
-
-                    editorResources.loadFunction_();
-
-                }
-
-            },
+            }
 
         };
 
@@ -390,9 +282,9 @@ module.exports = (function () {
     })();
 
     return {
-        init         : writing.init,
-        createEditor : writing.createEditor,
-        openEditor   : writing.openEditor,
+        init    : writing.init,
+        prepare : writing.prepare,
+        open    : writing.open,
     };
 
 })();

@@ -20,38 +20,13 @@
 
     <div class="editor-wrapper" id="placeForEditor"></div>
 
-    <? /** Add attaches through JS */ ?>
-    <div class="attaches" id="formAttaches">
-
-        <? if (isset($attachments)): ?>
-
-            <script type="text/javascript">
-
-                codex.docReady(function(){
-
-                    var files = <?= $attachments ?>;
-
-                    codex.transport.files = files;
-
-                    for (var item in files) {
-
-                        codex.transport.appendFileRow(files[item]);
-                    };
-                });
-
-            </script>
-
-        <? endif ?>
-
-    </div>
-
     <div class="writing__actions clear">
         <div class="writing__actions-content">
 
             <span class="button master fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
-                <span class="button fl_r" onclick="codex.transport.openEditorFullscrean()">На весь экран</span>
+                <span class="button fl_r" onclick="codex.transport.openEditorFullscreen()">На весь экран</span>
             <? endif ?>
 
             <? /*
@@ -75,9 +50,6 @@
             <? endif ?>
             */ ?>
 
-            <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_FILE ?>')"><i class="icon-attach"></i></span>
-            <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_IMAGE ?>')"><i class="icon-picture"></i></span>
-
         </div>
 
     </div>
@@ -89,17 +61,25 @@
     /** Document is ready */
     codex.docReady(function(){
 
-        codex.writing.init({
-            hideEditorToolbar : <?= !empty($hideEditorToolbar) && $hideEditorToolbar ? 'true' : 'false' ?>,
-            items : <?= json_encode($page->blocks) ?: '[]' ?>,
+        var editorReady = Promise.resolve()
+            .then(function () {
+                return codex.writing.prepare({
+                    hideEditorToolbar : <?= !empty($hideEditorToolbar) && $hideEditorToolbar ? 'true' : 'false' ?>,
+                    items : <?= json_encode($page->blocks) ?: '[]' ?>,
 
-            targetId : 'placeForEditor',
-            pageId   : <?= $page->id ?>,
-            parentId : <?= $page->id_parent ?>,
-        });
+                    targetId : 'placeForEditor',
+                    pageId   : <?= $page->id ?>,
+                    parentId : <?= $page->id_parent ?>,
+                });
+            });
 
-        <? if (!isset($hideEditorToolbar) || !$hideEditorToolbar): ?>
-        codex.writing.createEditor();
+        <? if (!isset($hideEditorToolbar) || !$hideEditorToolbar): ?>;
+            editorReady.then(function(){
+
+                window.setTimeout(codex.writing.init, 0);
+                return Promise.resolve();
+
+            });
         <? endif ?>
     });
 
