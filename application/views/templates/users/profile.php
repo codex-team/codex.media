@@ -1,6 +1,8 @@
 <div class="island island--padded">
     <span class="profile-settings__profile-nav ">Профиль</span>
-    <span class="profile-settings__logout"><a href="\user\settings" class="nav_chain">Настройки</a></span>
+    <a href="\user\settings" class="nav_chain profile-settings__logout">
+        Настройки
+    </a>
 </div>
 
 <div class="island island--padded">
@@ -12,37 +14,33 @@
     		<?= $viewUser->name ?>
         </div>
         <? if (!empty($viewUser->bio)): ?>
-        <div class="profile__about">
-            <? /* Учитель русского языка и литературы */ ?>
-        </div>
+            <div class="profile__about">
+                <?= $user->bio ?>
+            </div>
         <? endif ?>
         <div class="profile__social-buttons">
 
             <? if ($viewUser->vk): ?>
-            <a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
-                <span class="profile__social-button profile__social-button--vk">
-                    <i class="icon-vkontakte"></i>
-                    <?= $viewUser->vk_uri ? $viewUser->vk_uri : $viewUser->vk_name ?>
-                </span>
-            </a>
+                <a href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
+                    <span class="profile__social-button profile__social-button--vk">
+                        <i class="icon-vkontakte"></i>
+                        <?= $viewUser->vk_uri ? $viewUser->vk_uri : $viewUser->vk_name ?>
+                    </span>
+                </a>
 
             <? endif; ?>
 
             <? if ($viewUser->facebook): ?>
-            <a href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
-                <span class="profile__social-button profile__social-button--facebook">
+                <a class="profile__social-button profile__social-button--facebook" href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
                     <i class="icon-facebook"></i>
                     <?= $viewUser->facebook_name ? $viewUser->facebook_name : $viewUser->name ?>
-                </span>
-            </a>
+                </a>
             <? endif ?>
             <? if ($viewUser->twitter): ?>
-            <a href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
-                <span class="profile__social-button profile__social-button--twitter">
+                <a class="profile__social-button profile__social-button--twitter" href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
                     <i class="icon-twitter"></i>
                     ?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?>
-                </span>
-            </a>
+                </a>
             <? endif ?>
         </div>
     </div>
@@ -74,21 +72,20 @@
     */ ?>
 
     <? /* */ ?>
-<? if ($user->isAdmin): ?>
-    <ul class="action-line page_actions" id="pageAction">
-        <? if (!$viewUser->isTeacher): ?>
-            <li><a href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a></li>
-        <? else: ?>
-            <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Отключить аккаунт преподавателя</a></li>
-<? endif ?>
-
-<? if ($viewUser->status != Model_User::USER_STATUS_BANNED ): ?>
-        <li><a href="/user/<?= $viewUser->id ?>?newStatus=banned">Заблокировать</a></li>
-<? else: ?>
-        <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Разблокировать</a></li>
-<? endif ?>
-    </ul>
-<? endif ?>
+    <? if ($user->isAdmin): ?>
+        <ul class="action-line page_actions" id="pageAction">
+            <? if (!$viewUser->isTeacher): ?>
+                <li><a href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a></li>
+            <? else: ?>
+                <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Отключить аккаунт преподавателя</a></li>
+            <? endif ?>
+            <? if ($viewUser->status != Model_User::USER_STATUS_BANNED ): ?>
+                <li><a href="/user/<?= $viewUser->id ?>?newStatus=banned">Заблокировать</a></li>
+            <? else: ?>
+                <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Разблокировать</a></li>
+            <? endif ?>
+        </ul>
+    <? endif ?>
 <? /* */ ?>
 
 
