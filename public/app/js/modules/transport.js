@@ -83,11 +83,11 @@ module.exports = ( function (transport) {
             formData   = new FormData(),
             files      = transport.input.files;
 
-        for (var i = 0; i < files.length; i++) {
+        // for (var i = 0; i < files.length; i++) {
 
-            formData.append('files[]', files[i], files[i].name);
+        formData.append('files', files[0], files[0].name);
 
-        }
+        // }
 
         codex.ajax.call({
             type : 'POST',

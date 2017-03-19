@@ -20,6 +20,16 @@
     color: #fff;
 }
 
+.stretched-cover__branding {
+    filter: blur(15px);
+}
+
+.stretched-cover__branding::after {
+    width: 100%;
+    height: 100%;
+    background: red;
+}
+
 .stretched-cover__change-button:hover {
     color: #0c84cf;
     cursor: pointer;

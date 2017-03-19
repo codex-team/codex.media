@@ -27,12 +27,14 @@
 </head>
 <body>
 
-    <div class="stretched-cover" id="changeCoverButton">
+    <div class="stretched-cover">
 
-            <a class="stretched-cover__change-button">
-                <i class="stretched-cover__change-button--icon icon-camera"></i>
-                Изменить обложку
-            </a>
+        <img id="brandingCover" src="" width="100%" height="100%">
+
+        <a id="changeCoverButton" class="stretched-cover__change-button">
+            <i class="stretched-cover__change-button--icon icon-camera"></i>
+            Изменить обложку
+        </a>
 
     </div>
 
@@ -66,7 +68,8 @@
 
         codex.docReady(function() {
 
-            var changeCoverButton = document.getElementById('changeCoverButton');
+            var changeCoverButton = document.getElementById('changeCoverButton'),
+                brandingCover = document.getElementById('brandingCover');
 
             changeCoverButton.addEventListener('click', function() {
 
@@ -74,13 +77,38 @@
                     url : '/file/transport/',
                     accept : 'image/*',
                     beforeSend : function() {
-                        console.log('starting');
+
+                        var fileReader = new FileReader(),
+                            input = codex.transport.input,
+                            uploadedfile = input.files[0];
+
+                        /** Load from Browsers memory */
+                        fileReader.readAsDataURL(uploadedfile);
+                        fileReader.onload = function(e) {
+
+                            brandingCover.classList.add('stretched-cover__branding');
+                            brandingCover.src = e.target.result;
+
+                        };
+
+
                     },
-                    success : function() {
-                        console.log('alles Gut!');
+                    success : function(result) {
+
+                        var data = JSON.parse(result);
+
+                        if ( data.success ) {
+
+//                            brandingCover.src =  меняем вот тут файл
+                            brandingCover.classList.remove('stretched-cover__branding');
+
+                        }
+
                     },
                     error : function() {
-                        console.log('Etwas schlecht passiert');
+
+                        brandingCover.src = '';
+
                     }
                 })
 
