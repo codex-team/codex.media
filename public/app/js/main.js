@@ -32,34 +32,44 @@ codex = (function (codex) {
 
         codex.autoresizeTextarea.init();
 
-        codex.dropdownMenu({
-            holderClass: 'js-dropdown-menu--holder',
-            menuClass: 'js-dropdown-menu--menu',
-            menuCSSClass: 'dropdown-menu',
-            menuClosedClass: 'dropdown-menu--closed',
-            menuOptions: {
+        var dummyDict = {
 
-                'Открыть Google': function () {
+            'Открыть Google': function () {
 
-                    window.location.assign('https://google.com');
+                window.location.assign('https://google.com');
 
-                },
-                'Открыть Яндекс': function () {
+            },
+            'Открыть Яндекс': function () {
 
-                    window.location.assign('https://yandex.ru');
+                window.location.assign('https://yandex.ru');
 
-                },
-                'Открыть ВКонтакте': function () {
+            },
+            'Открыть ВКонтакте': function () {
 
-                    window.location.assign('https://vk.com');
+                window.location.assign('https://vk.com');
 
-                },
-                'Очень-очень длинное (нет) название варианта': function () {
+            },
+            'Очень-очень длинное (нет) название варианта': function () {
 
-                    window.alert('Всем сохранять спокойствие, работает колбэк');
+                window.alert('Всем сохранять спокойствие, работает колбэк');
 
-                }
             }
+        };
+
+        codex.dropdownMenu({
+            holderClass: 'js-dropdown-menu-page--holder',
+            menuClass: 'js-dropdown-menu-page--menu',
+            menuCSSClass: 'dropdown-menu-page',
+            menuClosedClass: 'dropdown-menu-page--closed',
+            menuOptions: dummyDict
+        });
+
+        codex.dropdownMenu({
+            holderClass: 'js-dropdown-menu-comment--holder',
+            menuClass: 'js-dropdown-menu-comment--menu',
+            menuCSSClass: 'dropdown-menu-comment',
+            menuClosedClass: 'dropdown-menu-comment--closed',
+            menuOptions: dummyDict
         });
 
         /**

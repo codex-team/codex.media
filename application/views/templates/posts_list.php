@@ -10,7 +10,7 @@
 
             <div class="post-list-item__header">
                 <? if ($user->isAdmin || $user->id == $page->author->id): ?>
-                    <span class="js-dropdown-menu--holder island-settings">
+                    <span class="js-dropdown-menu-page--holder island-settings">
                         <? include(DOCROOT . 'public/app/svg/settings.svg'); ?>
                     </span>
                 <? endif ?>

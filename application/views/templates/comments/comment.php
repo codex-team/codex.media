@@ -2,6 +2,12 @@
 
     <div class="comment__header clearfix">
 
+        <? if ($user->isAdmin || $user->id == $comment->author->id): ?>
+            <span class="island-settings js-dropdown-menu-comment--holder">
+                <? include(DOCROOT . 'public/app/svg/settings.svg') ?>
+            </span>
+        <? endif ?>
+
         <a class="comment__author-photo" href="/user/<?= $comment->author->id ?>">
             <img src="<?= $comment->author->photo ?>">
         </a>

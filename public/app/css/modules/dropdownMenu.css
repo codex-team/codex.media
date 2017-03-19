@@ -1,13 +1,12 @@
 .island-settings {
-    display : inline-block;
     position : relative;
     float : right;
-    width : 21px;
-    height : 13px;
     cursor : pointer;
+    color : #6e758a;
 }
 
-.dropdown-menu {
+.dropdown-menu-page,
+.dropdown-menu-comment {
     position : absolute;
     right : 0;
     top : calc(100% + 10px);
@@ -19,7 +18,8 @@
     background : white;
 }
 
-.dropdown-menu:before {
+.dropdown-menu-page:before,
+.dropdown-menu-comment:before {
     content : '';
     position : absolute;
     top : -10px;
@@ -28,7 +28,8 @@
     border-bottom : 5px solid #c6cbd2;
 }
 
-.dropdown-menu:after {
+.dropdown-menu-page:after,
+.dropdown-menu-comment:after {
     content : '';
     position : absolute;
     right : 5px;
@@ -37,11 +38,13 @@
     border-bottom : 4px solid white;
 }
 
-.dropdown-menu--closed {
+.dropdown-menu-page--closed,
+.dropdown-menu-comment--closed {
     display : none;
 }
 
-.dropdown-menu a {
+.dropdown-menu-page a,
+.dropdown-menu-comment a {
     display : block;
     padding : 0 10px;
     white-space : nowrap;
@@ -50,6 +53,7 @@
     color : #4d5260;
 }
 
-.dropdown-menu a:hover {
+.dropdown-menu-page a:hover,
+.dropdown-menu-comment a:hover {
     background : #ecf3f9;
 }
