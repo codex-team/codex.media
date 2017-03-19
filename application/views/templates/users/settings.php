@@ -1,4 +1,4 @@
-<div class="island island--padded">
+<div class="profile-settings__island-navigation">
 
     <a  class="profile-settings__profile-nav"  href="/user/<?= $user->id ?>">
         <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
@@ -31,21 +31,18 @@
     <? endif; ?>
 
     <form method="POST" action="user/settings" enctype="multipart/form-data">
+   
 
         <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
+        <div class="profile-settings_block-ava">
 
-        <button type="button" name="profile_ava" class="profile__settings_ava-button" onclick=" /** тут короче надо транспорт ебашить */">
+                <button type="file" name="profile_ava" class="profile__settings_ava-button" onclick="codex.upload.init();">
+                    <? include(DOCROOT . "public/app/svg/camera.svg") ?>
             
-            <? include(DOCROOT . "public/app/svg/camera.svg") ?>
-            
-        </button>
+                </button>
 
-        <img class="profile-settings__ava" src="<?= $user->photo_medium ?>">
-
-        
-        <!--
-        <input type="file" name="profile_ava" class="">
-        -->
+                <img class="profile-settings__ava" src="<?= $user->photo_medium ?>">    
+        </div>  
 
         <div class="profile-settings__block">
             <label>
@@ -117,5 +114,5 @@
 <?= View::factory('templates/components/email_confirm_island'); ?>
 
 <script>
-    codex.profileSettings.init();
+
 </script>

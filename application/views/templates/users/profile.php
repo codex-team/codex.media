@@ -1,6 +1,6 @@
-<div class="island island--padded">
-    <span class="profile-settings__profile-nav ">Профиль</span>
-    <a href="\user\settings" class="nav_chain profile-settings__logout">
+<div class="profile__island-navigation">
+    <span class="profile__profile-nav ">Профиль</span>
+    <a href="\user\settings" class="nav_chain profile__logout">
         Настройки
     </a>
 </div>
