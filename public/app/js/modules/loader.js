@@ -24,7 +24,7 @@ module.exports = {
             script = document.createElement('SCRIPT');
             script.async = true;
             script.defer = true;
-            script.id = codex.loader.prefixJS + instanceName;
+            script.id    = codex.loader.prefixJS + instanceName;
 
             script.onload = function () {
 
@@ -51,7 +51,7 @@ module.exports = {
 
             var style;
 
-            /** Script is already loaded */
+            /** Style is already loaded */
             if ( !instanceName ) {
 
                 reject('Instance name is missed');
