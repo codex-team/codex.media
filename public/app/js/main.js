@@ -35,6 +35,8 @@ codex = (function (codex) {
         codex.dropdownMenu({
             holderClass: 'js-dropdown-menu--holder',
             menuClass: 'js-dropdown-menu--menu',
+            menuCSSClass: 'dropdown-menu',
+            menuClosedClass: 'dropdown-menu--closed',
             menuOptions: {
 
                 'Открыть Google': function () {
@@ -52,7 +54,7 @@ codex = (function (codex) {
                     window.location.assign('https://vk.com');
 
                 },
-                'Очень-очень длинное (нет) название варианта выбора': function () {
+                'Очень-очень длинное (нет) название варианта': function () {
 
                     window.alert('Всем сохранять спокойствие, работает колбэк');
 

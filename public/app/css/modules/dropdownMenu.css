@@ -37,6 +37,10 @@
     border-bottom : 4px solid white;
 }
 
+.dropdown-menu--closed {
+    display : none;
+}
+
 .dropdown-menu a {
     display : block;
     padding : 0 10px;

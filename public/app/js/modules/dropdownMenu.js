@@ -5,12 +5,24 @@
 
 module.exports = function (settings) {
 
+    /**
+    * Module settings
+    * @var {string} holderClass - menu toggle button class
+    * @var {string} menuClass - menu block class
+    * @var {string} menuClosedClass - closed menu block class
+    * @var {string} menuCSSClass - menu block css class
+    * @var {Element} menuBlock - menu block element
+    * @var {object} menuOptions - associated list of menu options
+    */
     var holderClass = null,
         menuClass = null,
+        menuClosedClass = null,
+        menuCSSClass = null,
         menuBlock = null,
         menuOptions = null;
 
     /**
+    * @private
     * Creates an option block
     * @param {string} title - textContent of the HTML element
     * @param {function} callback - onclick action
@@ -27,14 +39,14 @@ module.exports = function (settings) {
     };
 
     /**
+    * @private
     * Creates the dropdown menu block
     */
     var _createMenuBlock = function () {
 
         var block = document.createElement('div');
 
-        block.classList.add(menuClass, 'dropdown-menu');
-        block.style.display = 'none';
+        block.classList.add(menuClass, menuClosedClass, menuCSSClass);
 
         for (var option in menuOptions) {
 
@@ -47,39 +59,40 @@ module.exports = function (settings) {
     };
 
     /**
+    * @private
     * Toggles menu of the event target
     */
     var _toggleMenu = function (event) {
 
         var target = event.currentTarget;
 
-        var flag = false;
+        console.log('Triggering click event on', target);
 
-        if (menuBlock.style.display != 'none') {
+        if (!target.classList.contains(holderClass)) {
 
-            if (menuBlock.parentNode == target) {
+            menuBlock.classList.add(menuClosedClass);
 
-                flag = true;
+        } else {
+
+            event.stopPropagation();
+
+            if (!(target == menuBlock.parentNode)) {
+
+                target.appendChild(menuBlock);
+                menuBlock.classList.remove(menuClosedClass);
+
+            } else {
+
+                menuBlock.classList.toggle(menuClosedClass);
 
             }
 
-            menuBlock.style.display = 'none';
-
         }
-
-        if (flag) {
-
-            return;
-
-        }
-
-        menuBlock.style.display = '';
-
-        target.appendChild(menuBlock);
 
     };
 
     /**
+    * @private
     * Adds event listener to every element with class holderClass
     */
     var _addClickListeners = function () {
@@ -92,12 +105,21 @@ module.exports = function (settings) {
 
         };
 
+        document.body.addEventListener('click', _toggleMenu);
+
     };
 
+    /**
+    * @public
+    * Initializes the module with given settings
+    * @param {object} options - module settings
+    */
     var init = function (options) {
 
         holderClass = options.holderClass;
         menuClass = options.menuClass;
+        menuClosedClass = options.menuClosedClass;
+        menuCSSClass = options.menuCSSClass;
         menuOptions = options.menuOptions;
         menuBlock = _createMenuBlock();
 
