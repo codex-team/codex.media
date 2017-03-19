@@ -26,9 +26,9 @@
 
 .main-aside .menu a {
     display: block;
-    font-size: 14px;
-    font-weight: bold;
     padding: 10px var(--islandPadding);
+    font-size: 14px;
+    line-height: 1.5em;
 }
 
 .main-aside .menu a:hover {

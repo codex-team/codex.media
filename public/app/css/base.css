@@ -258,6 +258,22 @@ input[disabled]:hover {
 }
 
 /**
+ * Appender button
+ */
+ .button--load-more {
+     display: block;
+     font-size: 17px;
+     color: #566379;
+     text-decoration: none;
+ }
+
+ .button--load-more:hover {
+     background-color: #edf0f8;
+     color: #607292;
+     border-color: #e3e9f6;
+ }
+
+/**
 * Cancel default list styles
 */
 ul,

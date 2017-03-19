@@ -43,7 +43,7 @@
     </form>
 
     <div class="auth-form__footer">
-        <a href="/recover">Восстановить пароль</a>
+        <a href="/reset">Восстановить пароль</a>
         <a href="/signup">Регистрация</a>
     </div>
 
