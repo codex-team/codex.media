@@ -1,9 +1,12 @@
 .file-attached {
-    border: 1px solid var(--lightGrayLine);
+    display: block;
+    border: 1px solid var(--lightGrayLine) !important;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 44, 0.03);
     border-radius: 3px;
-    padding: 20px 30px;
+    padding: 20px 30px !important;
     font-size: 15px;
+    margin: 10px 0;
+    color: inherit !important;
 }
 
 .file-attached__info {

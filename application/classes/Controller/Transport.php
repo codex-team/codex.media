@@ -9,13 +9,19 @@ class Controller_Transport extends Controller_Base_preDispatch
     private $type  = null;
     private $files = null;
 
+    private $typesAvailable = array(
+        Model_File::EDITOR_FILE,
+        Model_File::EDITOR_IMAGE,
+        Model_File::USER_PHOTO,
+    );
+
     /**
      * Codex Editor Attaches tool server-side
      */
     public function action_upload()
     {
         $this->files = Arr::get($_FILES, 'files');
-        $this->type  = Model_File::EDITOR_FILE;
+        $this->type  = $this->request->param('type');
 
         $file = new Model_File();
 
@@ -23,16 +29,16 @@ class Controller_Transport extends Controller_Base_preDispatch
             goto finish;
         }
 
-        $filename = $file->upload($this->type, $this->files);
+        $uploadedFile = $file->upload($this->type, $this->files, $this->user->id);
 
-        if ( $filename ) {
-
+        if ( $uploadedFile ) {
             $this->transportResponse['success'] = 1;
             $this->transportResponse['data'] = array(
-                'url'       => $filename,
-                'name'      => 'File title',
-                'extension' => 'jpg',
-                'size'      => 2000
+                'url'       => $uploadedFile->filepath,
+                'title'     => $uploadedFile->title,
+                'name'      => $uploadedFile->file_hash_hex,
+                'extension' => $uploadedFile->extension,
+                'size'      => $uploadedFile->size
             );
         } else {
             $this->transportResponse['message'] = 'Error while uploading';
@@ -64,6 +70,11 @@ class Controller_Transport extends Controller_Base_preDispatch
             return false;
         }
 
+        if ( !in_array($this->type, $this->typesAvailable) ){
+            $this->transportResponse['message'] = 'Wrong type passed';
+            return false;
+        }
+
         if (!Upload::size($this->files, '2M')) {
 
             $this->transportResponse['message'] = 'File size exceeded limit';
@@ -92,28 +103,18 @@ class Controller_Transport extends Controller_Base_preDispatch
             goto finish;
         }
 
-        $this->transportResponse['type'] = $this->type;
+        /**
+         * @todo  TESTING
+         */
+        $file = new Model_File();
+        $file->type = $this->type;
 
-        $filename = $this->save();
+        $uploadedFile = $file->upload($this->type, $this->files, $this->user->id);
 
-        if ($filename) {
+        if ($uploadedFile) {
 
             $this->transportResponse['success'] = 1;
-
-            $filename_without_ext = substr($this->files['name'], 0, strrpos($this->files['name'], '.' ));
-            $title = $this->methods->getUriByTitle($filename_without_ext);
-
-            $saved = new Model_File;
-            $saved->filename  = $filename;
-            $saved->title     = $title;
-            $saved->author    = $this->user->id;
-            $saved->size      = Arr::get($this->files, 'size', 0) / 1000;
-            $saved->extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            $saved->type      = $this->type;
-            $saved->insert();
-
-            $this->transportResponse['title']    = $saved->title;
-            $this->transportResponse['id']       = $saved->id;
+            $this->transportResponse['uploadedFile'] = $uploadedFile;
         }
 
         finish:
@@ -121,44 +122,5 @@ class Controller_Transport extends Controller_Base_preDispatch
 
         $this->auto_render = false;
         $this->response->body($response);
-    }
-
-    private function save()
-    {
-        $filename = null;
-        $upload_path = Model_File::getUploadPathByType($this->type);
-
-        switch ($this->type) {
-
-            // case Model_File::PAGE_IMAGE:
-            //     $filename = $this->methods->saveImage( $this->files , $upload_path );
-            //     break;
-
-            // case Model_File::PAGE_FILE:
-            //     $filename = $this->methods->saveFile( $this->files , $upload_path );
-            //     break;
-
-            default:
-                $this->transportResponse['message'] = 'Wrong transport type';
-                return false;
-        }
-
-        if (!$filename) {
-
-            $this->transportResponse['message'] = 'Error while saving';
-            return false;
-        }
-
-        return $filename;
-
-        // $data = array(
-        //     'page'      => $page_id,
-        //     'filename'  => $filename,
-        //     'title'     => $title ? $title : $this->rus_lat($file['name']),
-        //     'author'    => $this->user->id,
-        //     'size'      => $file['size'] / 1000,
-        //     'extension' => strtolower(pathinfo($filename, PATHINFO_EXTENSION)),
-        // );
-                // $this->response['callback'] = 'callback.uploadpageFile.success(' . json_encode($data) . ')';
     }
 }

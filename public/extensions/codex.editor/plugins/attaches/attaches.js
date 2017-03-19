@@ -5,6 +5,13 @@
  * @param {Nubmer}  config.maxSize   - Maximum allowed file size in KB
  * @param {String}  config.accept    - Accepted MIME-types. By default, accepts all
  *
+ * Backend should return response with
+ * 'url'       - Full path to the uploaded file
+ * 'title'     - File title,
+ * 'name'      - File name without extension,
+ * 'extension' - File extension,
+ * 'size'      - File size
+ *
  * @author @gohabereg
  * @version 1.0.0
  */
@@ -39,16 +46,17 @@ var cdxAttaches = function () {
 
         defaultFormWrapper : 'cdx-attaches__default-wrapper',
         defaultFormButton  : 'cdx-attaches__default-button',
+
         progressBar        : 'cdx-attaches__progress-bar',
-        wrapper            : 'cdx-attaches__files-wrapper',
+        wrapper            : 'cdx-attaches__wrapper',
         loader             : 'cdx-attaches__loader',
         crossButton        : 'cdx-attaches__cross-button',
 
         file: {
-            name          : 'cdx-attaches__file-name',
+            title          : 'cdx-attaches__file-name',
             collapsedName : 'cdx-attaches__file-name--collapsed',
-            extension     : 'cdx-attaches__file-extension',
-            size          : 'cdx-attaches__file-size'
+            extension     : 'cdx-attaches__extension',
+            size          : 'cdx-attaches__size'
         }
 
     };
@@ -58,7 +66,7 @@ var cdxAttaches = function () {
         defaultForm: function () {
 
             var wrapper = editor.draw.node('div', elementsClasses.defaultFormWrapper),
-                button = editor.draw.node('span', elementsClasses.defaultFormButton);
+                button = editor.draw.node('div', elementsClasses.defaultFormButton);
 
             button.addEventListener('click', upload.fire);
             button.innerHTML = '<i class="cdx-attaches__icon cdx-attaches__icon--inline"></i> Загрузить файл';
@@ -72,12 +80,13 @@ var cdxAttaches = function () {
         uploadedFile: function (data) {
 
             var wrapper   = editor.draw.node('div', elementsClasses.wrapper),
-                name      = editor.draw.node('input', elementsClasses.file.name),
+                name      = editor.draw.node('input', elementsClasses.file.title),
                 extension = editor.draw.node('span', elementsClasses.file.extension),
                 size      = editor.draw.node('span', elementsClasses.file.size);
 
             wrapper.dataset.url   = data.url;
-            name.value            = data.name;
+            wrapper.dataset.name  = data.name;
+            name.value            = data.title || '';
             extension.textContent = data.extension.toUpperCase();
             size.textContent      = data.size;
 
@@ -97,7 +106,7 @@ var cdxAttaches = function () {
 
                 var wrapper     = editor.draw.node('div', elementsClasses.wrapper),
                     progress    = editor.draw.node('progress', elementsClasses.progressBar),
-                    name        = editor.draw.node('span', elementsClasses.file.name),
+                    name        = editor.draw.node('span', elementsClasses.file.title),
                     crossButton = editor.draw.node('span', elementsClasses.crossButton);
 
                 progress.max = 100;
@@ -168,7 +177,7 @@ var cdxAttaches = function () {
 
         current: null,
 
-        aborted: true,
+        aborted: false,
 
         /**
          * Fired codex.editor.transport selectAndUpload methods
@@ -343,7 +352,8 @@ var cdxAttaches = function () {
         var data = {
 
             url: block.dataset.url,
-            name: block.querySelector('.' + elementsClasses.file.name).value,
+            name: block.dataset.name,
+            title: block.querySelector('.' + elementsClasses.file.title).value,
             extension: block.querySelector('.' + elementsClasses.file.extension).textContent,
             size: block.querySelector('.' + elementsClasses.file.size).textContent,
 
@@ -361,7 +371,7 @@ var cdxAttaches = function () {
 
         }
 
-        if (!data.name || !data.name.trim()) {
+        if (!data.title || !data.title.trim()) {
 
             return false;
 

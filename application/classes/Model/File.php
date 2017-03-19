@@ -8,12 +8,19 @@ class Model_File extends Model
     public $is_removed  = 0;
 
     public $extension   = '';
+    public $mime        = '';
     public $filename    = '';
     public $author      = 0;
     public $size        = 0;
     public $date        = null;
     public $status      = 0;
     public $type        = 0;
+
+
+    /**
+     * File destination
+     * @var string
+     */
     public $filepath    = '';
 
     public $file_hash     = '';
@@ -21,19 +28,7 @@ class Model_File extends Model
 
     const EDITOR_IMAGE = 1;
     const EDITOR_FILE  = 2;
-
-    /**
-     * @var конфиг с размерами вырезаемых изображений
-     * первый параметр - вырезать квадрат (true) или просто ресайзить с сохранением пропрорций (false)
-     */
-    public $IMAGE_SIZES_CONFIG = array(
-        'o'  => array(false, 1500, 1500),
-        'b'  => array(true , 200),
-        'm'  => array(true , 100),
-        's'  => array(true , 50),
-    );
-
-
+    const USER_PHOTO   = 3;
 
     public function __construct($id = null, $file_hash_hex = null, $row = array())
     {
@@ -52,49 +47,77 @@ class Model_File extends Model
     {
         $config = Kohana::$config->load('upload');
 
-        return $config[$this->type]['path'] . $this->filename;
+        return $config[$this->type]['path'] . '/' . $this->filename;
     }
 
     /**
      * Uploads file to the server
      * @param  int  $type file type constant
      * @param  array $file file object
+     * @param  int $user_id  author
      * @return string   uploaded file name
      */
-    public function upload($type, $file)
+    public function upload($type, $file, $user_id)
     {
         $this->type = $type;
 
         $config = Kohana::$config->load('upload');
         $path   = $config[$this->type]['path'];
 
-        return $this->saveFile($file, $path);
+        /**
+         * @todo Add check for type=images here and use $this->saveImage()
+         */
+        $this->filename  = $this->saveFile($file, $path);
+
+        if (!$this->filename) {
+            return false;
+        }
+
+        $this->title     = basename($file['name']);
+        $this->filepath  = $path . '/' . $this->filename;
+        $this->size      = $this->getSize();
+        $this->mime      = $this->getMime();
+        $this->extension = $this->getExtension();
+
+        return $this->insert();
+
     }
 
 
-    // public static function size($filename) {
+    /**
+     * Returns size of file
+     * @return int
+     */
+    public function getSize(){
 
-    //     return filesize($filename);
+        return filesize($this->filepath);
 
-    // }
+    }
 
-    // public static function name ($filename) {
+    /**
+     * Returns file mime type by filepath
+     * @return string mime-type
+     */
+    public function getMime(){
 
-    //     $filename = basename($filename);
+        return File::mime($this->filepath);
 
-    //     $filename = self::rus2translit($filename);
+    }
 
-    //     return pathinfo($filename, PATHINFO_FILENAME);
+    /**
+     * Returns file extension by mime-type
+     * @return string  extension
+     */
+    public function getExtension(){
 
-    // }
+        return File::ext_by_mime($this->mime);
 
-    // public static function extension ($filename) {
+    }
 
-    //     $filename = basename($filename);
 
-    //     return strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
-    // }
+
+
 
 
 
@@ -148,6 +171,7 @@ class Model_File extends Model
                  ->set('author',    $this->author)
                  ->set('size',      $this->size)
                  ->set('extension', $this->extension)
+                 ->set('mime',      $this->mime)
                  ->set('type',      $this->type);
         }
 
@@ -229,9 +253,11 @@ class Model_File extends Model
 
             $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.jpg';
 
-            $image = Image::factory($file);
+            $image  = Image::factory($file);
+            $config = Kohana::$config->load('upload');
+            $sizesConfig = $config[$this->type]['sizes'];
 
-            foreach ($this->IMAGE_SIZES_CONFIG as $prefix => $sizes) {
+            foreach ($sizesConfig as $prefix => $sizes) {
 
                 $isSquare = !!$sizes[0];
                 $width    = $sizes[1];
@@ -280,6 +306,16 @@ class Model_File extends Model
         return FALSE;
     }
 
+    /**
+     * Saves file to the server
+     *
+     * @param  array    $file   file array from input
+     * @param  string   $path   path to store file
+     * @return string   saved file name
+     *
+     * @todo  Add translited file title to file name
+     * @todo  Check extension by mime type — see https://kohanaframework.org/3.3/guide-api/File#mime
+     */
     public function saveFile($file , $path)
     {
         /**

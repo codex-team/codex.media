@@ -163,6 +163,7 @@ class Model_User extends Model
     public function saveAvatar($file, $path)
     {
         $model    = new Model_File();
+        $model->type = Model_File::USER_PHOTO;
         $filename = $model->saveImage($file, $path);
 
         $fields = array(

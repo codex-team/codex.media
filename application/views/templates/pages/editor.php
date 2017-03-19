@@ -87,8 +87,8 @@
                     destroy: cdxAttaches.destroy,
                     appendCallback: cdxAttaches.appendCallback,
                     config: {
-                        fetchUrl: '/upload',
-                        maxSize: 50000,
+                        fetchUrl: '/upload/<?= Model_File::EDITOR_FILE ?>',
+                        maxSize: 25000,
                     }
                 }
             },
