@@ -20,6 +20,11 @@
     color: #fff;
 }
 
+.stretched-cover__change-button:hover {
+    color: #0c84cf;
+    cursor: pointer;
+}
+
 .stretched-cover__change-button--icon{
 
 }
@@ -49,7 +54,6 @@
 }
 
 .grid-col--left {
-    margin-top: -100px;
     padding: var(--islandMargin) var(--islandMargin) var(--islandMargin) 0;
 }
 

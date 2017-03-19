@@ -1,6 +1,7 @@
 .main-aside {
     position: sticky;
     top: var(--islandMargin);
+    margin-top: -100px;
 }
 
 .site-head {

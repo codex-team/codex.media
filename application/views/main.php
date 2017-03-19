@@ -27,7 +27,7 @@
 </head>
 <body>
 
-    <div class="stretched-cover">
+    <div class="stretched-cover" id="changeCoverButton">
 
             <a class="stretched-cover__change-button">
                 <i class="stretched-cover__change-button--icon icon-camera"></i>
@@ -63,6 +63,30 @@
     <script>
 
         window.csrf = '<?= Security::token(); ?>';
+
+        codex.docReady(function() {
+
+            var changeCoverButton = document.getElementById('changeCoverButton');
+
+            changeCoverButton.addEventListener('click', function() {
+
+                codex.transport.init({
+                    url : '/file/transport/',
+                    accept : 'image/*',
+                    beforeSend : function() {
+                        console.log('starting');
+                    },
+                    success : function() {
+                        console.log('alles Gut!');
+                    },
+                    error : function() {
+                        console.log('Etwas schlecht passiert');
+                    }
+                })
+
+            });
+
+        });
 
     </script>
 
