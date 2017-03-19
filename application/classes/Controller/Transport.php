@@ -10,6 +10,77 @@ class Controller_Transport extends Controller_Base_preDispatch
     private $files = null;
 
     /**
+     * Codex Editor Attaches tool server-side
+     */
+    public function action_upload()
+    {
+        $this->files = Arr::get($_FILES, 'files');
+        $this->type  = Model_File::EDITOR_FILE;
+
+        $file = new Model_File();
+
+        if ( !$this->check() ){
+            goto finish;
+        }
+
+        $filename = $file->upload($this->type, $this->files);
+
+        if ( $filename ) {
+
+            $this->transportResponse['success'] = 1;
+            $this->transportResponse['data'] = array(
+                'url'       => $filename,
+                'name'      => 'File title',
+                'extension' => 'jpg',
+                'size'      => 2000
+            );
+        } else {
+            $this->transportResponse['message'] = 'Error while uploading';
+        }
+
+        finish:
+        $response = @json_encode($this->transportResponse);
+
+        $this->auto_render = false;
+        $this->response->body($response);
+
+    }
+
+    /**
+     * Make necessary verifications
+     * @return Boolean
+     */
+    private function check()
+    {
+        if (!$this->user->id) {
+
+            $this->transportResponse['message'] = 'Access denied';
+            return false;
+        }
+
+        if (!$this->type) {
+
+            $this->transportResponse['message'] = 'Transport type missed';
+            return false;
+        }
+
+        if (!Upload::size($this->files, '2M')) {
+
+            $this->transportResponse['message'] = 'File size exceeded limit';
+            return false;
+        }
+
+        if (!$this->files || !Upload::not_empty($this->files) || !Upload::valid($this->files)){
+
+            $this->transportResponse['message'] = 'File is missing or damaged';
+            return false;
+        }
+
+        return true;
+
+    }
+
+    /**
     * File transport module
     */
     public function action_file_uploader()
@@ -17,27 +88,7 @@ class Controller_Transport extends Controller_Base_preDispatch
         $this->type  = Arr::get($_POST , 'type' , false);
         $this->files = Arr::get($_FILES, 'files');
 
-        if (!$this->type) {
-
-            $this->transportResponse['message'] = 'Transport type missed';
-            goto finish;
-        }
-
-        if (!Upload::size($this->files, '2M')) {
-
-            $this->transportResponse['message'] = 'File size exceeded limit';
-            goto finish;
-        }
-
-        if (!$this->files || !Upload::not_empty($this->files) || !Upload::valid($this->files)){
-
-            $this->transportResponse['message'] = 'File is missing or damaged';
-            goto finish;
-        }
-
-        if (!$this->user->id) {
-
-            $this->transportResponse['message'] = 'Access denied';
+        if ( !$this->check() ){
             goto finish;
         }
 
@@ -79,13 +130,13 @@ class Controller_Transport extends Controller_Base_preDispatch
 
         switch ($this->type) {
 
-            case Model_File::PAGE_IMAGE:
-                $filename = $this->methods->saveImage( $this->files , $upload_path );
-                break;
+            // case Model_File::PAGE_IMAGE:
+            //     $filename = $this->methods->saveImage( $this->files , $upload_path );
+            //     break;
 
-            case Model_File::PAGE_FILE:
-                $filename = $this->methods->saveFile( $this->files , $upload_path );
-                break;
+            // case Model_File::PAGE_FILE:
+            //     $filename = $this->methods->saveFile( $this->files , $upload_path );
+            //     break;
 
             default:
                 $this->transportResponse['message'] = 'Wrong transport type';

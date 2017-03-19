@@ -3,7 +3,7 @@
  * Creates code tag and adds content to this tag
  */
 
-var code = (function(code) {
+var code = (function(code_plugin) {
 
     var baseClass = "ce-code";
 
@@ -14,21 +14,36 @@ var code = (function(code) {
      */
     var make_ = function (data) {
 
-        var tag = codex.editor.draw.node('CODE', [baseClass], {});
+        var tag = codex.editor.draw.node('TEXTAREA', [baseClass], {});
 
         if (data && data.text) {
-            tag.innerHTML = data.text;
+            tag.value = data.text;
         }
-
-        tag.contentEditable = true;
 
         return tag;
     };
 
     /**
+    * Escapes HTML chars
+    *
+    * @param {string} input
+    * @return {string} — escaped string
+    */
+    var escapeHTML_ = function (input) {
+
+        var div  = document.createElement('DIV'),
+            text = document.createTextNode(input);
+
+        div.appendChild(text);
+
+        return div.innerHTML;
+
+    };
+
+    /**
      * Method to render HTML block from JSON
      */
-    code.render = function (data) {
+    code_plugin.render = function (data) {
 
         return make_(data);
     };
@@ -36,16 +51,19 @@ var code = (function(code) {
     /**
      * Method to extract JSON data from HTML block
      */
-    code.save = function (blockContent){
+    code_plugin.save = function (blockContent) {
 
-        var data = {
-            text : blockContent.innerHTML
-        };
+        var escaped = escapeHTML_(blockContent.value),
+            data = {
+                text : escaped
+            };
+
+
         return data;
 
     };
 
-    code.validate = function(data) {
+    code_plugin.validate = function (data) {
 
         if (data.text.trim() == '')
             return;
@@ -53,6 +71,12 @@ var code = (function(code) {
         return true;
     };
 
-    return code;
+    code_plugin.destroy = function () {
+
+        code = null;
+
+    };
+
+    return code_plugin;
 
 })({});

@@ -1,0 +1,13 @@
+.file-attached {
+    border: 1px solid var(--lightGrayLine);
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 44, 0.03);
+    border-radius: 3px;
+    padding: 20px 30px;
+    font-size: 15px;
+}
+
+.file-attached__info {
+    float: right;
+    color: var(--grayText);
+    font-variant: small-caps;
+}

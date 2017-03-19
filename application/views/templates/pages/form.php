@@ -23,30 +23,6 @@
         'hideEditorToolbar' => !empty($hideEditorToolbar) ? $hideEditorToolbar : false
     )); ?>
 
-    <? /** Add attaches through JS */ ?>
-    <div class="attaches" id="formAttaches">
-
-        <? if (isset($attachments)): ?>
-
-            <script type="text/javascript">
-
-                codex.docReady(function(){
-
-                    var files = <?= $attachments ?>;
-
-                    codex.transport.files = files;
-
-                    for (var item in files) {
-
-                        codex.transport.appendFileRow(files[item]);
-                    };
-                });
-
-            </script>
-
-        <? endif ?>
-
-    </div>
 
     <div class="writing__actions clear">
         <div class="writing__actions-content">
@@ -77,9 +53,6 @@
 
             <? endif ?>
             */ ?>
-
-            <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_FILE ?>')"><i class="icon-attach"></i></span>
-            <span class="attach" onclick="codex.transport.selectFile(event, '<?= Model_File::PAGE_IMAGE ?>')"><i class="icon-picture"></i></span>
         </div>
 
     </div>

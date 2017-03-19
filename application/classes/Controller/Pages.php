@@ -25,12 +25,10 @@ class Controller_Pages extends Controller_Base_preDispatch
 
             $page->parent    = new Model_Page($page->id_parent);
             $page->childrens = Model_Page::getChildrenPagesByParent($page->id);
-            $page->files     = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
-            $page->images    = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
             $page->comments  = Model_Comment::getCommentsByPageId($id);
 
             /** Render blocks */
-            $page->blocks_array= array();
+            $page->blocks_array = array();
 
             for($i = 0; $i < count($page->blocks); $i++) {
 
@@ -106,10 +104,10 @@ class Controller_Pages extends Controller_Base_preDispatch
                 }
 
                 /* Link attached files to current page */
-                $this->savePageFiles($page->id);
+                // $this->savePageFiles($page->id);
 
                 /* insert page id to feeds */
-                $page->addPageToFeeds();
+                // $page->addPageToFeeds();
 
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
 
@@ -125,11 +123,11 @@ class Controller_Pages extends Controller_Base_preDispatch
             // $page_id = (int) Arr::get($_GET, 'id', 0);
             // $page    = new Model_Page($page_id);
 
-            $page->attachments = Model_File::getPageFiles($page->id, false, true);
-            $page->files       = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
-            $page->images      = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
+            // $page->attachments = Model_File::getPageFiles($page->id, false, true);
+            // $page->files       = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
+            // $page->images      = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
 
-            $this->view['attachments'] = json_encode($page->attachments);
+            // $this->view['attachments'] = json_encode($page->attachments);
 
             if (!$page_id) $page->id_parent = $page_parent;
 
@@ -137,7 +135,7 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $this->view['page']   = $page;
         $this->view['errors'] = $errors;
-        $this->view['attachments'] = json_encode($page->attachments);
+        // $this->view['attachments'] = json_encode($page->attachments);
 
         $this->template->content = View::factory('templates/pages/writing', $this->view);
     }
@@ -278,47 +276,4 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->template->content = View::factory('templates/error', $this->view);
     }
 
-    /**
-    * Gets json-encoded attaches list from input
-    * Writes this
-    */
-    private function savePageFiles($page_id)
-    {
-        $new_attaches_list = Arr::get($_POST, 'attaches');
-        $new_attaches_list = json_decode($new_attaches_list, true);
-        $old_attaches_list = Model_File::getPageFiles($page_id);
-
-        /**
-         * Delete files
-         */
-        foreach ($old_attaches_list as $id => $file) {
-
-            if (!array_key_exists($file->id, $new_attaches_list)) {
-
-                $file = new Model_File($file->id);
-                $file->is_removed = 1;
-
-                $file->update();
-            }
-        }
-
-        /**
-         * Save files
-         */
-        foreach ($new_attaches_list as $id => $file_row) {
-
-            $file = new Model_File($file_row['id']);
-
-            $file_on_page = (boolean) $file->page;
-            $filename_changed = $file->title != $file_row['title'];
-
-            if (!$file_on_page || $filename_changed) {
-
-                $file->page  = $page_id;
-                $file->title = $file_row['title'];
-
-                $file->update();
-            }
-        }
-    }
 }

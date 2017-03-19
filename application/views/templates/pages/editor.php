@@ -6,14 +6,32 @@
     <textarea hidden name="content" id="json_result" cols="30" rows="10" style="width: 100%;height: 300px;"></textarea>
 </div>
 
-<script src="https://cdn.ifmo.su/editor/v1.6/codex-editor.js"></script>
-<link rel="stylesheet" href="https://cdn.ifmo.su/editor/v1.5/codex-editor.css" />
+<? $plugins = array('paragraph', 'header', 'attaches'); ?>
 
-<script src="https://cdn.ifmo.su/editor/v1.6/plugins/paragraph/paragraph.js"></script>
-<link rel="stylesheet" href="https://cdn.ifmo.su/editor/v1.5/plugins/paragraph/paragraph.css">
+<? if ( false ): ?>
 
-<script src="https://cdn.ifmo.su/editor/v1.6/plugins/header/header.js"></script>
-<link rel="stylesheet" href="https://cdn.ifmo.su/editor/v1.5/plugins/header/header.css">
+    <script src="https://cdn.ifmo.su/editor/v1.6/codex-editor.js"></script>
+    <link rel="stylesheet" href="https://cdn.ifmo.su/editor/v1.5/codex-editor.css" />
+
+    <script src="https://cdn.ifmo.su/editor/v1.6/plugins/paragraph/paragraph.js"></script>
+    <link rel="stylesheet" href="https://cdn.ifmo.su/editor/v1.5/plugins/paragraph/paragraph.css">
+
+    <script src="https://cdn.ifmo.su/editor/v1.6/plugins/header/header.js"></script>
+    <link rel="stylesheet" href="https://cdn.ifmo.su/editor/v1.5/plugins/header/header.css">
+
+<? else: ?>
+
+    <script src="/public/extensions/codex.editor/codex-editor.js"></script>
+    <link rel="stylesheet" href="/public/extensions/codex.editor/codex-editor.css" />
+
+    <? foreach ($plugins as $plugin): ?>
+
+        <script src="/public/extensions/codex.editor/plugins/<?= $plugin ?>/<?= $plugin ?>.js"></script>
+        <link rel="stylesheet" href="/public/extensions/codex.editor/plugins/<?= $plugin ?>/<?= $plugin ?>.css">
+
+    <? endforeach; ?>
+
+<? endif; ?>
 
 <script>
 
@@ -57,11 +75,26 @@
                     save: header.save,
                     destroy: header.destroy,
                     displayInToolbox: true
+                },
+                attaches: {
+                    type: 'attaches',
+                    displayInToolbox: true,
+                    iconClassname: 'cdx-attaches__icon',
+                    prepare: cdxAttaches.prepare,
+                    render: cdxAttaches.render,
+                    save: cdxAttaches.save,
+                    validate: cdxAttaches.validate,
+                    destroy: cdxAttaches.destroy,
+                    appendCallback: cdxAttaches.appendCallback,
+                    config: {
+                        fetchUrl: '/upload',
+                        maxSize: 50000,
+                    }
                 }
             },
 
             data : {
-                items : <?= json_encode($page->blocks) ?: '[]' ?> 
+                items : <?= json_encode($page->blocks) ?: '[]' ?>
             }
         });
     });

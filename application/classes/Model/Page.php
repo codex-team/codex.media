@@ -157,7 +157,7 @@ class Model_Page extends Model
         $this->removePageFromFeeds();
 
         /* remove files */
-        $files = Model_File::getPageFiles($this->id);
+        // $files = Model_File::getPageFiles($this->id);
 
         foreach ($files as $file) {
 

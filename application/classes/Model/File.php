@@ -19,8 +19,21 @@ class Model_File extends Model
     public $file_hash     = '';
     public $file_hash_hex = '';
 
-    const PAGE_FILE  = 1;
-    const PAGE_IMAGE = 2;
+    const EDITOR_IMAGE = 1;
+    const EDITOR_FILE  = 2;
+
+    /**
+     * @var конфиг с размерами вырезаемых изображений
+     * первый параметр - вырезать квадрат (true) или просто ресайзить с сохранением пропрорций (false)
+     */
+    public $IMAGE_SIZES_CONFIG = array(
+        'o'  => array(false, 1500, 1500),
+        'b'  => array(true , 200),
+        'm'  => array(true , 100),
+        's'  => array(true , 50),
+    );
+
+
 
     public function __construct($id = null, $file_hash_hex = null, $row = array())
     {
@@ -28,6 +41,63 @@ class Model_File extends Model
 
         return self::get($id, $file_hash_hex, $row);
     }
+
+
+    /**
+     * Returns uploaded file path by type and filename
+     * @uses  config/upload.php
+     * @return stirng filepath from base dir
+     */
+    private function getFilePath()
+    {
+        $config = Kohana::$config->load('upload');
+
+        return $config[$this->type]['path'] . $this->filename;
+    }
+
+    /**
+     * Uploads file to the server
+     * @param  int  $type file type constant
+     * @param  array $file file object
+     * @return string   uploaded file name
+     */
+    public function upload($type, $file)
+    {
+        $this->type = $type;
+
+        $config = Kohana::$config->load('upload');
+        $path   = $config[$this->type]['path'];
+
+        return $this->saveFile($file, $path);
+    }
+
+
+    // public static function size($filename) {
+
+    //     return filesize($filename);
+
+    // }
+
+    // public static function name ($filename) {
+
+    //     $filename = basename($filename);
+
+    //     $filename = self::rus2translit($filename);
+
+    //     return pathinfo($filename, PATHINFO_FILENAME);
+
+    // }
+
+    // public static function extension ($filename) {
+
+    //     $filename = basename($filename);
+
+    //     return strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+    // }
+
+
+
 
     public function get($id = null, $file_hash_hex = null, $file_row = array())
     {
@@ -115,70 +185,6 @@ class Model_File extends Model
         return self::get($file_id);
     }
 
-    static public function getUploadPathByType($type)
-    {
-        switch ($type) {
-
-            case self::PAGE_FILE:
-                return 'upload/page_files/';
-                break;
-
-            case self::PAGE_IMAGE:
-                return 'upload/page_images/';
-                break;
-
-            default:
-                return 'upload/default/';
-                break;
-        }
-    }
-
-    private function getFilePath()
-    {
-        $path = self::getUploadPathByType($this->type);
-
-        $path .= $this->filename;
-
-        return $path;
-    }
-
-    static public function getPageFiles($page_id, $type = false, $json = false)
-    {
-        $page_files = Dao_Files::select()
-            ->where('page','=', $page_id)
-            ->where('is_removed','=', 0)
-            ->where('status', '=', 0);
-
-        if ($type) $page_files->where('type', '=', $type);
-
-        $page_files_rows = $page_files->order_by('id','ASC')->execute();
-
-        $page_files_array = array();
-
-
-        if (!empty($page_files_rows)) {
-
-            foreach ($page_files_rows as $file_row) {
-
-                if (!$json) {
-
-                    $page_files_array[] = new Model_File(null, null, $file_row);
-
-                } else {
-
-                    $file_id = (int) $file_row['id'];
-                    $json_file_info['id'] = $file_id;
-                    $json_file_info['title'] = $file_row['title'];
-                    $json_file_info['type'] = $file_row['type'];
-
-                    $page_files_array[$file_id] = $json_file_info;
-                }
-            }
-        }
-
-        return $page_files_array;
-    }
-
     /**
     *   Функция для скачивания файла
     *   Источник: https://habrahabr.ru/post/151795/
@@ -206,4 +212,89 @@ class Model_File extends Model
             exit;
         }
     }
+
+    /**
+    * Files uploading section
+    */
+    public function saveImage($file , $path)
+    {
+        /**
+         *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
+         */
+        if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
+
+        if (!is_dir($path)) mkdir($path);
+
+        if ($file = Upload::save($file, NULL, $path)) {
+
+            $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.jpg';
+
+            $image = Image::factory($file);
+
+            foreach ($this->IMAGE_SIZES_CONFIG as $prefix => $sizes) {
+
+                $isSquare = !!$sizes[0];
+                $width    = $sizes[1];
+                $height   = !$isSquare ? $sizes[2] : $width;
+
+                $image->background('#fff');
+
+                // Вырезание квадрата
+                if ($isSquare) {
+
+                    if ($image->width >= $image->height) {
+
+                        $image->resize( NULL , $height, true );
+
+                    } else {
+
+                        $image->resize( $width , NULL, true );
+                    }
+
+                    $image->crop( $width, $height );
+
+                    /**
+                     *   Для работы с этим методом нужно перекомпилировать php c bundled GD
+                     *   http://www.maxiwebs.co.uk/gd-bundled/compilation.php
+                     *   http://www.howtoforge.com/recompiling-php5-with-bundled-support-for-gd-on-ubuntu
+                     */
+
+                    // $image->sharpen(1.5);
+                } else {
+
+                    if ($image->width > $width || $image->height > $height) {
+
+                        $image->resize( $width , $height , true );
+                    }
+                }
+
+                $image->save($path . $prefix . '_' . $filename);
+            }
+
+            // Delete the temporary file
+            unlink($file);
+
+            return $filename;
+        }
+
+        return FALSE;
+    }
+
+    public function saveFile($file , $path)
+    {
+        /**
+         *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
+         */
+        if (!is_dir($path)) mkdir($path);
+
+        $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.' . $ext;
+
+        $file = Upload::save($file, $filename, $path);
+
+        if ($file) return $filename;
+
+        return FALSE;
+    }
+
 }
