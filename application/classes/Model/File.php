@@ -73,7 +73,7 @@ class Model_File extends Model
             return false;
         }
 
-        $this->title     = basename($file['name']);
+        $this->title     = $this->getOriginalName($file['name']);
         $this->filepath  = $path . '/' . $this->filename;
         $this->size      = $this->getSize();
         $this->mime      = $this->getMime();
@@ -111,6 +111,18 @@ class Model_File extends Model
     public function getExtension(){
 
         return File::ext_by_mime($this->mime);
+
+    }
+
+    /**
+     * Returns file extension by mime-type
+     * @return string  extension
+     */
+    public function getOriginalName($filepath){
+
+        $info = pathinfo($filepath);
+
+        return $info['filename'];
 
     }
 
