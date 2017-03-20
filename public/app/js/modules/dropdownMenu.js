@@ -134,7 +134,7 @@ module.exports = (function () {
 
         if (menuId === null) {
 
-            init();
+            _init();
 
         };
 
@@ -162,7 +162,11 @@ module.exports = (function () {
 
     };
 
-    var init = function () {
+    /**
+    * @private
+    * Assigns id's and classes and adds event listener to document body
+    */
+    var _init = function () {
 
         menuId = 'js-dropdown-menu';
         menuStyleClass = 'dropdown-menu';
@@ -175,9 +179,6 @@ module.exports = (function () {
 
     };
 
-    return {
-        init: init,
-        toggle: toggle
-    };
+    return {toggle: toggle};
 
 })();
