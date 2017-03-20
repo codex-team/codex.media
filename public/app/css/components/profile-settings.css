@@ -43,3 +43,10 @@
     background-size: 56px 56px;
     animation: loading-bar 1000ms infinite linear;
 }
+
+.profile_settings--ava
+{
+    border-radius: 100px;
+    border: 3px solid green;
+    box-shadow: 0 0 7px #666;
+}
