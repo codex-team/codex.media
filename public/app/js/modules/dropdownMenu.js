@@ -11,8 +11,8 @@ module.exports = (function () {
     * @var {string} styleClass - menu css class
     * @var {object} optionsDict - menu options' callbacks object
     */
-    var menuId = null,
-        styleClass = '',
+    var menuId = 'js-dropdown-menu',
+        styleClass = 'dropdown-menu',
         optionsDict = {
             'article' : {
                 'Редактировать': function () {
