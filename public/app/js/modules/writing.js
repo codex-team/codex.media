@@ -2,6 +2,8 @@ module.exports = (function () {
 
     var writing = {
 
+        _editorIsReady : false,
+
         _settings : {
             hideEditorToolbar  : false,
             textareaId         : 'codexEditor_time' + Date.now(),
@@ -18,17 +20,17 @@ module.exports = (function () {
             parentId : null,
         },
 
-        form_ : null,
-
         prepare : function (settings) {
 
             writing._mergeSettings(settings);
 
-            loadEditorResources(writing._settings.plugins, function () {
+            return loadEditorResources(writing._settings.plugins)
+                .then(function () {
 
-                return Promise.resolve();
+                    writing._editorIsReady = true;
+                    return Promise.resolve();
 
-            });
+                });
 
         },
 
@@ -120,8 +122,6 @@ module.exports = (function () {
          */
         _startEditor : function () {
 
-            console.log(codex.editor);
-
             codex.editor.start({
 
                 textareaId:  writing._settings.textareaId,
@@ -166,10 +166,10 @@ module.exports = (function () {
 
         init : function () {
 
+            if (!writing._editorIsReady) return;
+
             /** 1. Create form or textarea for editor */
             var target = document.getElementById(writing._settings.targetId);
-
-            console.log(target);
 
             writing._appendTextareasToTarget(target);
             writing._startEditor();
@@ -184,6 +184,8 @@ module.exports = (function () {
          * @param  {String} hidePlaceholderClass add this class to placeholder
          */
         open : function (targetClicked, formId, hidePlaceholderClass) {
+
+            if (!writing._editorIsReady) return;
 
             var holder = targetClicked;
 
@@ -201,7 +203,6 @@ module.exports = (function () {
      * Load editor resources and append block with them to body
      *
      * @param  {Array}    plugins list of plugins to load
-     * @param  {Function} onLoad  function to run after loading resources
      */
     var loadEditorResources = (function () {
 
@@ -213,42 +214,30 @@ module.exports = (function () {
             _version : '1.5',
 
             /**
-             * Variable for function that should be runned onLoad all resources
-             */
-            _loadFunction : null,
-
-            /**
              * Init function for load editor's resources
              *
              * @param  {Array} plugins list of plugins which should be loaded
-             * @param  {Function} onLoad  call this function when all editor's files are ready
              */
-            load : function (plugins, onLoad) {
+            load : function (plugins) {
 
-                /** Set function which should be runned when resources are load */
-                editorResources._loadFunction = onLoad;
+                var loadListPromises = plugins.map(editorResources._loadPlugin);
 
-                var queue = Promise.resolve();
+                loadListPromises.push(editorResources._loadCore());
 
-                queue.then(
-                    editorResources._loadCore()
-                );
+                return Promise.all(loadListPromises);
 
-                for (var i = 0; i < plugins.length; i++) {
+            },
 
-                    queue.then(
-                        editorResources._loadPlugin(plugins[i])
-                    );
+            _loadCore : function () {
 
-                };
+                var url = 'https://cdn.ifmo.su/editor/v' + editorResources._version + '/codex-editor',
+                    scriptUrl = url + '.js',
+                    styleUrl  = url + '.css';
 
-                queue.then(function () {
-
-                    editorResources._loadFunction();
-
-                    Promise.resolve();
-
-                });
+                return Promise.all([
+                    codex.loader.importScript(scriptUrl, 'editor-core'),
+                    codex.loader.importStyle(styleUrl, 'editor-core'),
+                ]);
 
             },
 
@@ -258,26 +247,12 @@ module.exports = (function () {
                     scriptUrl = url + '.js',
                     styleUrl  = url + '.css';
 
-                return Promise.resolve()
-                    .then(codex.loader.importScript(scriptUrl, plugin))
-                    .then(codex.loader.importStyle(styleUrl, plugin));
+                return Promise.all([
+                    codex.loader.importScript(scriptUrl, plugin),
+                    codex.loader.importStyle(styleUrl, plugin)
+                ]);
 
             },
-
-            /**
-             * Add editor core script and style to the editorResources.nodes_.editor
-             */
-            _loadCore : function () {
-
-                var url = 'https://cdn.ifmo.su/editor/v' + editorResources._version + '/codex-editor',
-                    scriptUrl = url + '.js',
-                    styleUrl  = url + '.css';
-
-                return Promise.resolve()
-                    .then(codex.loader.importScript(scriptUrl, 'editor-core'))
-                    .then(codex.loader.importStyle(styleUrl, 'editor-core'));
-
-            }
 
         };
 

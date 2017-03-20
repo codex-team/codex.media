@@ -75,10 +75,7 @@
 
         <? if (!isset($hideEditorToolbar) || !$hideEditorToolbar): ?>;
             editorReady.then(function(){
-
-                window.setTimeout(codex.writing.init, 10);
-                return Promise.resolve();
-
+                codex.writing.init();
             });
         <? endif ?>
     });
