@@ -7,37 +7,44 @@ module.exports = (function () {
 
     /**
     * Module settings
-    * @var {string} holderElement - menu toggle button DOM element
     * @var {string} holderClass - menu toggle button class
-    * @var {string} menuClass - menu block class
-    * @var {string} menuClosedClass - closed menu block class
-    * @var {string} styleClass - menu block css class
-    * @var {Element} menuBlock - menu block element
-    * @var {object} menuOptions - associated list of menu options
+    * @var {string} menuId - menu id
+    * @var {string} menuStyleClass - menu css class
+    * @var {object} optionsDict - menu options' callbacks object
     */
     var holderClass = null,
-        holderElement = null,
-        menuClass = null,
-        menuClosedClass = null,
-        styleClass = null,
-        menuBlock = null,
-        menuOptions = null,
+        menuId = null,
+        menuStyleClass = null,
         optionsDict = {
-            'Редактировать': function () {
+            'article': {
+                'Редактировать': function () {
 
-                window.alert('This is a dummy text. Actual callback function is not implemented');
+                    window.alert('This is a dummy text. Actual callback function is not implemented');
 
+                },
+                'Удалить': function () {
+
+                    window.alert('This is a dummy text. Actual callback function is not implemented');
+
+                },
+                'Поделиться': function () {
+
+                    window.alert('This is a dummy text. Actual callback function is not implemented');
+
+                }
             },
-            'Удалить': function () {
+            'comment': {
+                'Редактировать': function () {
 
-                window.alert('This is a dummy text. Actual callback function is not implemented');
+                    window.alert('This is a dummy text. Actual callback function is not implemented');
 
-            },
-            'Поделиться': function () {
+                },
+                'Удалить': function () {
 
-                window.alert('This is a dummy text. Actual callback function is not implemented');
+                    window.alert('This is a dummy text. Actual callback function is not implemented');
 
-            },
+                }
+            }
         };
 
     /**
@@ -48,7 +55,7 @@ module.exports = (function () {
     */
     var _createOptionBlock = function (title, callback) {
 
-        var optionBlock = document.createElement('a');
+        var optionBlock = document.createElement('div');
 
         optionBlock.textContent = title;
         optionBlock.addEventListener('click', callback);
@@ -61,15 +68,16 @@ module.exports = (function () {
     * @private
     * Creates the dropdown menu block
     */
-    var _createMenuBlock = function () {
+    var _createMenuBlock = function (entity) {
 
         var block = document.createElement('div');
 
-        block.classList.add(menuClass, menuClosedClass, styleClass);
+        block.id = menuId;
+        block.classList.add(menuStyleClass);
 
-        for (var option in menuOptions) {
+        for (var option in optionsDict[entity]) {
 
-            block.appendChild(_createOptionBlock(option, menuOptions[option]));
+            block.appendChild(_createOptionBlock(option, optionsDict[entity][option]));
 
         }
 
@@ -79,106 +87,98 @@ module.exports = (function () {
 
     /**
     * @private
-    * Checks if the menu is opened
+    * Finds a menu or returns null
     */
-    var _menuOpened = function () {
+    var _getMenu = function () {
 
-        return !menuBlock.classList.contains(menuClosedClass);
+        return document.getElementById(menuId);
 
     };
 
     /**
-    * @private
-    * Closes the menu
+    * @public
+    * Hides the menu
+    * @param {Element} menu - menu DOM Element
     */
-    var _closeMenu = function () {
+    var _hide = function (menu) {
 
-        menuBlock.classList.add(menuClosedClass);
+        if (menu) {
 
-    };
-
-    /**
-    * @private
-    * Opens the menu
-    */
-    var _openMenu = function () {
-
-        menuBlock.classList.remove(menuClosedClass);
-
-    };
-
-    /**
-    * @private
-    * Toggles menu of the event target
-    */
-    var _toggleMenu = function (event) {
-
-        var target = event.currentTarget;
-
-        if (!target.classList.contains(holderClass)) {
-
-            _closeMenu();
-
-        } else {
-
-            event.stopPropagation();
-
-            if (!(target == menuBlock.parentNode)) {
-
-                target.appendChild(menuBlock);
-                _openMenu();
-
-            } else {
-
-                if (_menuOpened()) {
-
-                    _closeMenu();
-
-                } else {
-
-                    _openMenu();
-
-                }
-
-            }
+            menu.parentNode.removeChild(menu);
 
         }
 
     };
 
     /**
-    * @private
-    * Adds event listener to the element with class holderClass
+    * @public
+    * Appends a menu of given entity to given container
+    * @param {string} entity - menu entity type
+    * @param {Element} container - menu container
     */
-    var _addClickListeners = function () {
+    var _show = function (entity, container) {
 
-        holderElement.addEventListener('click', _toggleMenu);
-        document.body.addEventListener('click', _toggleMenu);
+        container.appendChild(_createMenuBlock(entity));
+
 
     };
 
     /**
     * @public
-    * Initializes the module with given settings
-    * @param {object} options - module settings
+    * Toggles the menu state
+    * @param {MouseEvent} event - click event
+    * @param {string} entity - menu entity type
     */
-    var init = function (options) {
+    var toggle = function (event, entity) {
 
-        menuClass = 'js-dropdown-menu';
-        menuClosedClass = 'dropdown-menu--closed';
+        event.stopPropagation();
 
-        holderElement = options.holderElement;
-        holderClass = options.holderClass;
-        styleClass = options.styleClass;
-        menuOptions = options.menuOptions || optionsDict;
-        menuBlock = _createMenuBlock();
+        if (holderClass === null) {
 
-        document.body.appendChild(menuBlock);
+            init();
 
-        _addClickListeners();
+        };
+
+        var target = event.currentTarget;
+        var menu = _getMenu();
+
+        if (menu) {
+
+            if (menu.parentNode == target) {
+
+                _hide(menu);
+
+            } else {
+
+                _hide(menu);
+                _show(entity, target);
+
+            }
+
+        } else {
+
+            _show(entity, target);
+
+        }
 
     };
 
-    return {init: init};
+    var init = function () {
+
+        menuId = 'js-dropdown-menu';
+        menuStyleClass = 'dropdown-menu';
+
+        document.body.addEventListener('click', function () {
+
+            _hide(_getMenu());
+
+        });
+
+    };
+
+    return {
+        init: init,
+        toggle: toggle
+    };
 
 })();

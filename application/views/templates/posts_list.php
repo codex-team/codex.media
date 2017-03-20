@@ -10,7 +10,7 @@
 
             <div class="post-list-item__header">
                 <? if ($user->isAdmin || $user->id == $page->author->id): ?>
-                    <span class="js-dropdown-menu-page--holder island-settings">
+                    <span class="js-dropdown-menu-page--holder island-settings" onclick="codex.dropdownMenu.toggle(event, 'article')">
                         <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
                     </span>
                 <? endif ?>

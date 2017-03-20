@@ -3,7 +3,7 @@
     <div class="comment__header clearfix">
 
         <? if ($user->isAdmin || $user->id == $comment->author->id): ?>
-            <span class="island-settings js-dropdown-menu-comment--holder">
+            <span class="island-settings js-dropdown-menu-comment--holder" onclick="codex.dropdownMenu.toggle(event, 'comment')">
                 <? include(DOCROOT . 'public/app/svg/ellipsis.svg') ?>
             </span>
         <? endif ?>

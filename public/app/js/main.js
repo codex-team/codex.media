@@ -32,22 +32,6 @@ codex = (function (codex) {
 
         codex.autoresizeTextarea.init();
 
-        /*
-        codex.dropdownMenu({
-            holderClass: 'js-dropdown-menu-page--holder',
-            menuCSSClass: 'dropdown-menu-page',
-            menuOptions: optionDict
-        });
-        */
-
-        /*
-        codex.dropdownMenu({
-            holderClass: 'js-dropdown-menu-comment--holder',
-            styleClass: 'dropdown-menu-comment',
-            menuOptions: optionDict
-        });
-        */
-
         /**
         * Init CodeX Special module for contrast version
         * @see https://github.com/codex-team/codex.special
