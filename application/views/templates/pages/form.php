@@ -23,7 +23,7 @@
     <div class="writing__actions clear">
         <div class="writing__actions-content">
 
-            <span class="button master fl_r" onclick="codex.writing.submitAtlasForm()">Отправить</span>
+            <span class="button master fl_r" onclick="codex.writing.submit()">Отправить</span>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
                 <span class="button fl_r" onclick="codex.writing.openEditorFullscreen()">На весь экран</span>
@@ -61,8 +61,12 @@
     /** Document is ready */
     codex.docReady(function(){
 
+        <?
+            $hideEditorToolbar = !empty($hideEditorToolbar) && $hideEditorToolbar;
+        ?>
+
         var editorReady = codex.writing.prepare({
-                hideEditorToolbar : <?= !empty($hideEditorToolbar) && $hideEditorToolbar ? 'true' : 'false' ?>,
+                hideEditorToolbar : <?= $hideEditorToolbar ? 'true' : 'false' ?>,
                 items : <?= json_encode($page->blocks) ?: '[]' ?>,
 
                 holderId : 'placeForEditor',
@@ -70,10 +74,10 @@
                 parentId : <?= $page->id_parent ?>,
             });
 
-        <? if (!isset($hideEditorToolbar) || !$hideEditorToolbar): ?>;
-            editorReady.then(function(){
-                codex.writing.init();
-            });
+        <? if (!$hideEditorToolbar): ?>;
+            editorReady.then(
+                codex.writing.init
+            );
         <? endif ?>
     });
 

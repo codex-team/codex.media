@@ -1,32 +1,66 @@
+/**
+ * Module for load and start codex-editor
+ *
+ * Using:
+ *
+ * codex.writing.prepare({
+ *     holderId : 'placeForEditor',                                         // (required)
+ *     hideEditorToolbar : <?= $hideEditorToolbar ? 'true' : 'false' ?>,
+ *     items : <?= json_encode($page->blocks) ?: '[]' ?>,
+ *     pageId   : <?= $page->id ?>,
+ *     parentId : <?= $page->id_parent ?>,
+ * }).then(
+ *    codex.writing.init
+ * );
+ */
+
+
 module.exports = (function () {
 
     var writing = {
 
-        _editorIsReady : false,
+        editorIsReady : false,
 
-        _settings : {
+        settings : {
             hideEditorToolbar  : false,
             titleId            : 'editorWritingTitle',
             initialBlockPlugin : 'paragraph',
             items              : [],
-            plugins : [
-                'paragraph',
-                'header',
+            resources : [
+                { name : 'codex-editor', path : {
+                    script : 'https://cdn.ifmo.su/editor/v1.6/codex-editor.js',
+                    style  : 'https://cdn.ifmo.su/editor/v1.6/codex-editor.css',
+                }},
+
+                { name : 'paragraph', path : {
+                    script : 'https://cdn.ifmo.su/editor/v1.6/plugins/paragraph/paragraph.js',
+                    style  : 'https://cdn.ifmo.su/editor/v1.6/plugins/paragraph/paragraph.css',
+                }},
+                { name : 'header', path : {
+                    script : 'https://cdn.ifmo.su/editor/v1.6/plugins/header/header.js',
+                    style  : 'https://cdn.ifmo.su/editor/v1.6/plugins/header/header.css',
+                }},
             ],
 
             holderId : null,
-            pageId   : null,
-            parentId : null,
+            pageId   : 0,
+            parentId : 0,
         },
 
+        /**
+         * Prepare editor's resourses
+         *
+         * @param  {Object} settings    base settings for editor
+         * @return {Promise}            all editor's resources are ready
+         */
         prepare : function (settings) {
 
-            writing._mergeSettings(settings);
+            writing.mergeSettings(settings);
 
-            return loadEditorResources(writing._settings.plugins)
+            return loadEditorResources(writing.settings.resources)
                 .then(function () {
 
-                    writing._editorIsReady = true;
+                    writing.editorIsReady = true;
 
                 });
 
@@ -37,75 +71,28 @@ module.exports = (function () {
          *
          * @param  {Object} settings  list of params from init
          */
-        _mergeSettings : function (settings) {
+        mergeSettings : function (settings) {
 
             for (var key in settings) {
 
-                writing._settings[key] = settings[key];
+                writing.settings[key] = settings[key];
 
             }
-
-        },
-
-        /**
-         * Append textareas for codex.editor
-         *
-         * @param  {Element} target
-         */
-        _appendTextareaToTarget : function (target) {
-
-            var textareaContent;
-
-            textareaContent = writing._createElem('TEXTAREA', {
-                name   : 'content',
-                id     : 'json_result',
-                hidden : true,
-            }, []);
-
-            target.appendChild(textareaContent);
-
-        },
-
-        /**
-         * Create element and return it
-         *
-         * @param  {String} tag
-         * @param  {Object} params  pairs { key: value, ... }
-         * @param  {Array} classes  list of classes for new element
-         * @return {Element}
-         */
-        _createElem : function (tag, params, classes) {
-
-            var elem = document.createElement(tag);
-
-            for (var param in params) {
-
-                elem[param] = params[param];
-
-            }
-
-            for (var i in classes) {
-
-                elem.classList.add(classes[i]);
-
-            }
-
-            return elem;
 
         },
 
         /**
          * Run editor
          */
-        _startEditor : function () {
+        startEditor : function () {
 
             codex.editor.start({
 
-                holderId:  writing._settings.holderId,
+                holderId:  writing.settings.holderId,
 
-                initialBlockPlugin : writing._settings.initialBlockPlugin,
+                initialBlockPlugin : writing.settings.initialBlockPlugin,
 
-                hideToolbar: writing._settings.hideEditorToolbar,
+                hideToolbar: writing.settings.hideEditorToolbar,
 
                 tools : {
                     paragraph: {
@@ -133,23 +120,22 @@ module.exports = (function () {
                 },
 
                 data : {
-                    items : writing._settings.items,
+                    items : writing.settings.items,
                 }
             });
 
-            document.getElementById(writing._settings.titleId).focus();
+            document.getElementById(writing.settings.titleId).focus();
 
         },
 
+        /**
+         * Public function for run editor
+         */
         init : function () {
 
-            if (!writing._editorIsReady) return;
+            if (!writing.editorIsReady) return;
 
-            /** 1. Create form or textarea for editor */
-            var target = document.getElementById(writing._settings.holderId);
-
-            writing._appendTextareaToTarget(target);
-            writing._startEditor();
+            writing.startEditor();
 
         },
 
@@ -162,7 +148,7 @@ module.exports = (function () {
          */
         open : function (targetClicked, formId, hidePlaceholderClass) {
 
-            if (!writing._editorIsReady) return;
+            if (!writing.editorIsReady) return;
 
             var holder = targetClicked;
 
@@ -180,60 +166,41 @@ module.exports = (function () {
      * Load editor resources and append block with them to body
      *
      * @param  {Array}    plugins list of plugins to load
+     * @return {Promise}
      */
     var loadEditorResources = (function () {
 
-        var editorResources = {
+        /**
+         * @param  {Array} resources list of resources which should be loaded
+         */
+        var load = function (resources) {
 
-            /**
-             * Editor's version
-             */
-            _version : '1.6',
-
-            /**
-             * Init function for load editor's resources
-             *
-             * @param  {Array} plugins list of plugins which should be loaded
-             */
-            load : function (plugins) {
-
-                var loadListPromises = plugins.map(editorResources._loadPlugin);
-
-                loadListPromises.push(editorResources._loadCore());
-
-                return Promise.all(loadListPromises);
-
-            },
-
-            _loadCore : function () {
-
-                var url = 'https://cdn.ifmo.su/editor/v' + editorResources._version + '/codex-editor',
-                    scriptUrl = url + '.js',
-                    styleUrl  = url + '.css';
-
-                return Promise.all([
-                    codex.loader.importScript(scriptUrl, 'editor-core'),
-                    codex.loader.importStyle(styleUrl, 'editor-core'),
-                ]);
-
-            },
-
-            _loadPlugin : function (plugin) {
-
-                var url = 'https://cdn.ifmo.su/editor/v' + editorResources._version + '/plugins/' + plugin + '/' + plugin,
-                    scriptUrl = url + '.js',
-                    styleUrl  = url + '.css';
-
-                return Promise.all([
-                    codex.loader.importScript(scriptUrl, plugin),
-                    codex.loader.importStyle(styleUrl, plugin)
-                ]);
-
-            },
+            return Promise.all(
+                resources.map(loadResource)
+            );
 
         };
 
-        return editorResources.load;
+        /**
+         * Loads resource
+         *
+         * @param  {Object} resource name and paths for js and css
+         * @return {Promise}
+         */
+        function loadResource(resource) {
+
+            var name      = resource.name,
+                scriptUrl = resource.path.script,
+                styleUrl  = resource.path.style;
+
+            return Promise.all([
+                codex.loader.importScript(scriptUrl, name),
+                codex.loader.importStyle(styleUrl, name)
+            ]);
+
+        };
+
+        return load;
 
     })();
 
@@ -245,14 +212,19 @@ module.exports = (function () {
             * Prepares and submit form
             * Send attaches by json-encoded stirng with hidden input
             */
-            submitAtlasForm : function () {
+            submit : function () {
 
                 var atlasForm = document.forms.atlas;
 
                 if (!atlasForm) return;
 
                 /** CodeX.Editor */
-                var JSONinput = document.getElementById('json_result');
+                var JSONinput = document.createElement('TEXTAREA');
+
+                JSONinput.name   = 'content';
+                JSONinput.id     = 'json_result';
+                JSONinput.hidden = true;
+                atlasForm.appendChild(JSONinput);
 
                 /**
                  * Save blocks
@@ -296,7 +268,7 @@ module.exports = (function () {
 
                 atlasForm.append(openEditorFlagInput);
 
-                this.submitAtlasForm();
+                this.submit();
 
             },
 
@@ -309,7 +281,7 @@ module.exports = (function () {
         prepare : writing.prepare,
         open    : writing.open,
         openEditorFullscreen : submitForm.openEditorFullscreen,
-        submitAtlasForm      : submitForm.submitAtlasForm,
+        submit               : submitForm.submit,
     };
 
 })();

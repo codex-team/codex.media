@@ -1,8 +1,8 @@
 module.exports = {
 
-    prefixJS : 'cdx-loader-js-',
+    prefixJS : 'cdx-script-',
 
-    prefixCSS : 'cdx-loader-css-',
+    prefixCSS : 'cdx-style-',
 
     importScript : function (scriptPath, instanceName) {
 
