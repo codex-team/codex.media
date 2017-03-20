@@ -34,6 +34,11 @@
     background: #fdfdfe;
 }
 
+.writing__actions::after {
+    display: inline-block;
+    content: '';
+}
+
 .writing .toggler {
     padding: 6px;
     margin: 8px 12px 0 0;

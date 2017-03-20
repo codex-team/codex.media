@@ -23,26 +23,26 @@
     <div class="writing__actions clear">
         <div class="writing__actions-content">
 
-            <span class="button master fl_r" onclick="codex.transport.submitAtlasForm()">Отправить</span>
+            <span class="button master fl_r" onclick="codex.writing.submitAtlasForm()">Отправить</span>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
-                <span class="button fl_r" onclick="codex.transport.openEditorFullscreen()">На весь экран</span>
+                <span class="button fl_r" onclick="codex.writing.openEditorFullscreen()">На весь экран</span>
             <? endif ?>
 
             <? /*
-            <? if ($user->isAdmin && $page->is_news_page): ?>
+            <? if ($user->isAdmin): ?>
 
-                <div class="toggler fl_r js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Закрепить новость">
+                <div class="toggler fl_l js-custom-checkbox <?= $page->dt_pin ? 'checked' : '' ?>" data-title="Закрепить новость">
                     <input type="checkbox" name="dt_pin" value="<?= $page->dt_pin ? $page->dt_pin : date('Y-m-d H:i:s') ?>" <?= isset($page->dt_pin) ? 'checked="checked"' : '' ?>/>
                     <i class="icon-pin"></i>
                 </div>
 
-                <div class="toggler fl_r js-custom-checkbox <?= $page->rich_view ? 'checked' : '' ?>" data-title="Важная новость">
+                <div class="toggler fl_l js-custom-checkbox <?= $page->rich_view ? 'checked' : '' ?>" data-title="Важная новость">
                     <input type="checkbox" name="rich_view" value="1" <?= isset($page->rich_view) && $page->rich_view == 1 ? 'checked="checked"' : Arr::get($_POST, 'rich_view' , '') ?>/>
                     <i class="icon-megaphone"></i>
                 </div>
 
-                <div class="hidden toggler fl_r js-custom-checkbox <?= $page->is_menu_item ? 'checked' : '' ?>" data-title="Пункт меню">
+                <div class="hidden toggler fl_l js-custom-checkbox <?= $page->is_menu_item ? 'checked' : '' ?>" data-title="Пункт меню">
                     <input type="checkbox" name="is_menu_item" value="1" <?= isset($page->is_menu_item) && $page->is_menu_item == 1 ? 'checked="checked"' : Arr::get($_POST, 'is_menu_item' , '') ?>/>
                     <i class="icon-star"></i>
                 </div>
@@ -76,7 +76,7 @@
         <? if (!isset($hideEditorToolbar) || !$hideEditorToolbar): ?>;
             editorReady.then(function(){
 
-                window.setTimeout(codex.writing.init, 0);
+                window.setTimeout(codex.writing.init, 10);
                 return Promise.resolve();
 
             });

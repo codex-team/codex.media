@@ -2,7 +2,7 @@ module.exports = (function () {
 
     var writing = {
 
-        settings_ : {
+        _settings : {
             hideEditorToolbar  : false,
             textareaId         : 'codexEditor_time' + Date.now(),
             titleId            : 'editorWritingTitle',
@@ -22,9 +22,9 @@ module.exports = (function () {
 
         prepare : function (settings) {
 
-            writing.mergeSettings_(settings);
+            writing._mergeSettings(settings);
 
-            loadEditorResources(writing.settings_.plugins, function () {
+            loadEditorResources(writing._settings.plugins, function () {
 
                 return Promise.resolve();
 
@@ -37,11 +37,11 @@ module.exports = (function () {
          *
          * @param  {Object} settings  list of params from init
          */
-        mergeSettings_ : function (settings) {
+        _mergeSettings : function (settings) {
 
             for (var key in settings) {
 
-                writing.settings_[key] = settings[key];
+                writing._settings[key] = settings[key];
 
             }
 
@@ -53,11 +53,11 @@ module.exports = (function () {
         // init : function (targetClicked, formId, hidePlaceholderClass) {
         //
         //     /** 1. Create form or textarea for editor */
-        //     var target = document.getElementById(writing.settings_.targetId);
+        //     var target = document.getElementById(writing._settings.targetId);
         //
-        //     writing.appendTextareasToTarget_(target);
+        //     writing._appendTextareasToTarget(target);
         //
-        //     writing.startEditor_();
+        //     writing._startEditor();
         //
         // },
 
@@ -66,17 +66,17 @@ module.exports = (function () {
          *
          * @param  {Element} target
          */
-        appendTextareasToTarget_ : function (target) {
+        _appendTextareasToTarget : function (target) {
 
             var textareaHtml, textareaContent;
 
-            textareaHtml = writing.createElem_('TEXTAREA', {
+            textareaHtml = writing._createElem('TEXTAREA', {
                 name   : 'html',
-                id     : writing.settings_.textareaId,
+                id     : writing._settings.textareaId,
                 hidden : true,
             }, []);
 
-            textareaContent = writing.createElem_('TEXTAREA', {
+            textareaContent = writing._createElem('TEXTAREA', {
                 name   : 'content',
                 id     : 'json_result',
                 hidden : true,
@@ -95,7 +95,7 @@ module.exports = (function () {
          * @param  {Array} classes  list of classes for new element
          * @return {Element}
          */
-        createElem_ : function (tag, params, classes) {
+        _createElem : function (tag, params, classes) {
 
             var elem = document.createElement(tag);
 
@@ -118,15 +118,17 @@ module.exports = (function () {
         /**
          * Run editor
          */
-        startEditor_ : function () {
+        _startEditor : function () {
+
+            console.log(codex.editor);
 
             codex.editor.start({
 
-                textareaId:  writing.settings_.textareaId,
+                textareaId:  writing._settings.textareaId,
 
-                initialBlockPlugin : writing.settings_.initialBlockPlugin,
+                initialBlockPlugin : writing._settings.initialBlockPlugin,
 
-                hideToolbar: writing.settings_.hideEditorToolbar,
+                hideToolbar: writing._settings.hideEditorToolbar,
 
                 tools : {
                     paragraph: {
@@ -154,21 +156,23 @@ module.exports = (function () {
                 },
 
                 data : {
-                    items : writing.settings_.items,
+                    items : writing._settings.items,
                 }
             });
 
-            document.getElementById(writing.settings_.titleId).focus();
+            document.getElementById(writing._settings.titleId).focus();
 
         },
 
         init : function () {
 
             /** 1. Create form or textarea for editor */
-            var target = document.getElementById(writing.settings_.targetId);
+            var target = document.getElementById(writing._settings.targetId);
 
-            writing.appendTextareasToTarget_(target);
-            writing.startEditor_();
+            console.log(target);
+
+            writing._appendTextareasToTarget(target);
+            writing._startEditor();
 
         },
 
@@ -206,7 +210,7 @@ module.exports = (function () {
             /**
              * Editor's version
              */
-            version_ : '1.5',
+            _version : '1.5',
 
             /**
              * Variable for function that should be runned onLoad all resources
@@ -250,7 +254,7 @@ module.exports = (function () {
 
             _loadPlugin : function (plugin) {
 
-                var url = 'https://cdn.ifmo.su/editor/v' + editorResources.version_ + '/plugins/' + plugin + '/' + plugin,
+                var url = 'https://cdn.ifmo.su/editor/v' + editorResources._version + '/plugins/' + plugin + '/' + plugin,
                     scriptUrl = url + '.js',
                     styleUrl  = url + '.css';
 
@@ -265,7 +269,7 @@ module.exports = (function () {
              */
             _loadCore : function () {
 
-                var url = 'https://cdn.ifmo.su/editor/v' + editorResources.version_ + '/codex-editor',
+                var url = 'https://cdn.ifmo.su/editor/v' + editorResources._version + '/codex-editor',
                     scriptUrl = url + '.js',
                     styleUrl  = url + '.css';
 
@@ -281,10 +285,79 @@ module.exports = (function () {
 
     })();
 
+    var submitForm = (function () {
+
+        return {
+
+            /**
+            * Prepares and submit form
+            * Send attaches by json-encoded stirng with hidden input
+            */
+            submitAtlasForm : function () {
+
+                var atlasForm = document.forms.atlas;
+
+                if (!atlasForm) return;
+
+                /** CodeX.Editor */
+                var JSONinput = document.getElementById('json_result');
+
+                /**
+                 * Save blocks
+                 */
+                codex.editor.saver.saveBlocks();
+
+                window.setTimeout(function () {
+
+                    var blocksCount = codex.editor.state.jsonOutput.length;
+
+                    if (!blocksCount) {
+
+                        JSONinput.innerHTML = '';
+
+                    } else {
+
+                        JSONinput.innerHTML = JSON.stringify({ data: codex.editor.state.jsonOutput });
+
+                    }
+
+                    /**
+                     * Send form
+                     */
+                    atlasForm.submit();
+
+                }, 100);
+
+            },
+
+            /**
+            * Submits editor form for opening in full-screan page without saving
+            */
+            openEditorFullscreen : function () {
+
+                var atlasForm = document.forms.atlas,
+                    openEditorFlagInput = document.createElement('input');
+
+                openEditorFlagInput.type = 'hidden';
+                openEditorFlagInput.name = 'openFullScreen';
+                openEditorFlagInput.value = 1;
+
+                atlasForm.append(openEditorFlagInput);
+
+                this.submitAtlasForm();
+
+            },
+
+        };
+
+    })();
+
     return {
         init    : writing.init,
         prepare : writing.prepare,
         open    : writing.open,
+        openEditorFullscreen : submitForm.openEditorFullscreen,
+        submitAtlasForm      : submitForm.submitAtlasForm,
     };
 
 })();
