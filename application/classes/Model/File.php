@@ -47,7 +47,7 @@ class Model_File extends Model
     {
         $config = Kohana::$config->load('upload');
 
-        return $config[$this->type]['path'] . '/' . $this->filename;
+        return $config[$this->type]['path'] . $this->filename;
     }
 
     /**
@@ -61,20 +61,30 @@ class Model_File extends Model
     {
         $this->type = $type;
 
-        $config = Kohana::$config->load('upload');
-        $path   = $config[$this->type]['path'];
+        $config = Kohana::$config->load('upload')[$this->type];
+        $path   = $config['path'];
+        $saved  = false;
 
-        /**
-         * @todo Add check for type=images here and use $this->saveImage()
-         */
-        $this->filename  = $this->saveFile($file, $path);
+        switch ($type) {
+            case self::EDITOR_FILE:
+                $this->filename  = $this->saveFile($file, $path);
+                break;
+            case self::EDITOR_IMAGE:
+            case self::USER_PHOTO:
+                $saved = $this->saveImage($file, $path, $config['sizes']);
+                if ($saved) {
+                    $this->filename = 'o_' . $saved;
+                }
+                break;
+        }
+
 
         if (!$this->filename) {
             return false;
         }
 
         $this->title     = $this->getOriginalName($file['name']);
-        $this->filepath  = $path . '/' . $this->filename;
+        $this->filepath  = $path . $this->filename;
         $this->size      = $this->getSize();
         $this->mime      = $this->getMime();
         $this->extension = $this->getExtension();
@@ -90,7 +100,7 @@ class Model_File extends Model
      */
     public function getSize(){
 
-        return filesize($this->filepath);
+        return @filesize($this->filepath);
 
     }
 
@@ -184,10 +194,9 @@ class Model_File extends Model
                  ->set('size',      $this->size)
                  ->set('extension', $this->extension)
                  ->set('mime',      $this->mime)
-                 ->set('type',      $this->type);
+                 ->set('type',      $this->type)
+                 ->set('file_hash', hex2bin($this->file_hash_hex));
         }
-
-        $file->set('file_hash', hex2bin(substr($this->filename, 0, strrpos($this->filename, '.'))));
 
         $file_id = $file->execute();
 
@@ -252,7 +261,7 @@ class Model_File extends Model
     /**
     * Files uploading section
     */
-    public function saveImage($file , $path)
+    public function saveImage($file , $path, $sizesConfig)
     {
         /**
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
@@ -263,11 +272,10 @@ class Model_File extends Model
 
         if ($file = Upload::save($file, NULL, $path)) {
 
-            $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.jpg';
+            $this->file_hash_hex = bin2hex(openssl_random_pseudo_bytes(16));
+            $filename = $this->file_hash_hex . '.jpg';
 
             $image  = Image::factory($file);
-            $config = Kohana::$config->load('upload');
-            $sizesConfig = $config[$this->type]['sizes'];
 
             foreach ($sizesConfig as $prefix => $sizes) {
 
@@ -281,27 +289,16 @@ class Model_File extends Model
                 if ($isSquare) {
 
                     if ($image->width >= $image->height) {
-
                         $image->resize( NULL , $height, true );
-
                     } else {
-
                         $image->resize( $width , NULL, true );
                     }
 
                     $image->crop( $width, $height );
 
-                    /**
-                     *   Для работы с этим методом нужно перекомпилировать php c bundled GD
-                     *   http://www.maxiwebs.co.uk/gd-bundled/compilation.php
-                     *   http://www.howtoforge.com/recompiling-php5-with-bundled-support-for-gd-on-ubuntu
-                     */
-
-                    // $image->sharpen(1.5);
                 } else {
 
                     if ($image->width > $width || $image->height > $height) {
-
                         $image->resize( $width , $height , true );
                     }
                 }
@@ -335,8 +332,10 @@ class Model_File extends Model
          */
         if (!is_dir($path)) mkdir($path);
 
-        $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.' . $ext;
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+
+        $this->file_hash_hex = bin2hex(openssl_random_pseudo_bytes(16));
+        $filename = $this->file_hash_hex . '.' . $ext;
 
         $file = Upload::save($file, $filename, $path);
 

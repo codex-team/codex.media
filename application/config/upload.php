@@ -2,7 +2,7 @@
 return array
 (
     Model_File::EDITOR_IMAGE => array(
-        'path' => '/upload/pages/images',
+        'path' => 'upload/pages/images/',
         /**
          * Image sizes config
          * key - filename prefix_
@@ -19,11 +19,11 @@ return array
     ),
 
     Model_File::EDITOR_FILE => array(
-        'path' => 'upload/pages/files'
+        'path' => 'upload/pages/files/'
     ),
 
     Model_File::USER_PHOTO => array(
-        'path' => '/upload/users',
+        'path' => 'upload/users/',
         /**
          * Image sizes config
          * key - filename prefix_

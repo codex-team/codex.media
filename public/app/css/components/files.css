@@ -1,7 +1,7 @@
 .file-attached {
     display: block;
-    border: 1px solid var(--lightGrayLine) !important;
-    box-shadow: 0 2px 3px 0 rgba(34, 36, 44, 0.03);
+    border: 1px solid #ecedef !important;
+    box-shadow: 0 1px 3px 0 rgba(25, 29, 45, 0.04);
     border-radius: 3px;
     padding: 20px 30px !important;
     font-size: 15px;

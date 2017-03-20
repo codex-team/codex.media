@@ -6,7 +6,7 @@
     <textarea hidden name="content" id="json_result" cols="30" rows="10" style="width: 100%;height: 300px;"></textarea>
 </div>
 
-<? $plugins = array('paragraph', 'header', 'attaches'); ?>
+<? $plugins = array('paragraph', 'header', 'image', 'attaches'); ?>
 
 <? if ( false ): ?>
 
@@ -75,6 +75,24 @@
                     save: header.save,
                     destroy: header.destroy,
                     displayInToolbox: true
+                },
+                image: {
+                    type: 'image',
+                    iconClassname: 'ce-icon-picture',
+                    appendCallback: image.appendCallback,
+                    prepare: image.prepare,
+                    makeSettings: image.makeSettings,
+                    render: image.render,
+                    save: image.save,
+                    destroy: image.destroy,
+                    isStretched: true,
+                    showInlineToolbar: true,
+                    displayInToolbox: true,
+                    renderOnPastePatterns: image.pastePatterns,
+                    config: {
+                        uploadImage : '/upload/<?= Model_File::EDITOR_IMAGE ?>',
+                        uploadFromUrl : '/club/fetch'
+                    }
                 },
                 attaches: {
                     type: 'attaches',

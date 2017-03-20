@@ -125,6 +125,17 @@
     font-weight: 600;
 }
 
+.article__image {
+    max-width: 100%;
+}
+
+.article__image-caption {
+    color: var(--grayText);
+    margin: 0.3em 0 1em;
+    font-size: 0.9em;
+    line-height: 1.5em;
+}
+
 @media (--mobile) {
     .article {
         padding: 20px;
