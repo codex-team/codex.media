@@ -61,16 +61,13 @@
     /** Document is ready */
     codex.docReady(function(){
 
-        var editorReady = Promise.resolve()
-            .then(function () {
-                return codex.writing.prepare({
-                    hideEditorToolbar : <?= !empty($hideEditorToolbar) && $hideEditorToolbar ? 'true' : 'false' ?>,
-                    items : <?= json_encode($page->blocks) ?: '[]' ?>,
+        var editorReady = codex.writing.prepare({
+                hideEditorToolbar : <?= !empty($hideEditorToolbar) && $hideEditorToolbar ? 'true' : 'false' ?>,
+                items : <?= json_encode($page->blocks) ?: '[]' ?>,
 
-                    holderId : 'placeForEditor',
-                    pageId   : <?= $page->id ?>,
-                    parentId : <?= $page->id_parent ?>,
-                });
+                holderId : 'placeForEditor',
+                pageId   : <?= $page->id ?>,
+                parentId : <?= $page->id_parent ?>,
             });
 
         <? if (!isset($hideEditorToolbar) || !$hideEditorToolbar): ?>;

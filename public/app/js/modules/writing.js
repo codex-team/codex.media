@@ -27,7 +27,6 @@ module.exports = (function () {
                 .then(function () {
 
                     writing._editorIsReady = true;
-                    return Promise.resolve();
 
                 });
 
