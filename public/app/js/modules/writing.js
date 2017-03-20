@@ -53,7 +53,7 @@ module.exports = (function () {
          *
          * @param  {Element} target
          */
-        _appendTextareasToTarget : function (target) {
+        _appendTextareaToTarget : function (target) {
 
             var textareaContent;
 
@@ -149,7 +149,7 @@ module.exports = (function () {
             /** 1. Create form or textarea for editor */
             var target = document.getElementById(writing._settings.holderId);
 
-            writing._appendTextareasToTarget(target);
+            writing._appendTextareaToTarget(target);
             writing._startEditor();
 
         },
