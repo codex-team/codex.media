@@ -8,13 +8,13 @@ module.exports = (function () {
     /**
     * Module settings
     * @var {string} menuId - menu id
-    * @var {string} menuStyleClass - menu css class
+    * @var {string} styleClass - menu css class
     * @var {object} optionsDict - menu options' callbacks object
     */
     var menuId = null,
-        menuStyleClass = null,
+        styleClass = '',
         optionsDict = {
-            'article': {
+            'article' : {
                 'Редактировать': function () {
 
                     window.alert('This is a dummy text. Actual callback function is not implemented');
@@ -31,7 +31,7 @@ module.exports = (function () {
 
                 }
             },
-            'comment': {
+            'comment' : {
                 'Редактировать': function () {
 
                     window.alert('This is a dummy text. Actual callback function is not implemented');
@@ -72,7 +72,7 @@ module.exports = (function () {
         var block = document.createElement('div');
 
         block.id = menuId;
-        block.classList.add(menuStyleClass);
+        block.classList.add(styleClass);
 
         for (var option in optionsDict[entity]) {
 
@@ -119,7 +119,6 @@ module.exports = (function () {
 
         container.appendChild(_createMenuBlock(entity));
 
-
     };
 
     /**
@@ -132,11 +131,11 @@ module.exports = (function () {
 
         event.stopPropagation();
 
-        if (menuId === null) {
+        document.body.addEventListener('click', function () {
 
-            _init();
+            _hide(_getMenu());
 
-        };
+        });
 
         var target = event.currentTarget;
         var menu = _getMenu();
@@ -159,23 +158,6 @@ module.exports = (function () {
             _show(entity, target);
 
         }
-
-    };
-
-    /**
-    * @private
-    * Assigns id's and classes and adds event listener to document body
-    */
-    var _init = function () {
-
-        menuId = 'js-dropdown-menu';
-        menuStyleClass = 'dropdown-menu';
-
-        document.body.addEventListener('click', function () {
-
-            _hide(_getMenu());
-
-        });
 
     };
 
