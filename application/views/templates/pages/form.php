@@ -67,7 +67,7 @@
                     hideEditorToolbar : <?= !empty($hideEditorToolbar) && $hideEditorToolbar ? 'true' : 'false' ?>,
                     items : <?= json_encode($page->blocks) ?: '[]' ?>,
 
-                    targetId : 'placeForEditor',
+                    holderId : 'placeForEditor',
                     pageId   : <?= $page->id ?>,
                     parentId : <?= $page->id_parent ?>,
                 });

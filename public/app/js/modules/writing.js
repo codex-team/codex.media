@@ -6,7 +6,6 @@ module.exports = (function () {
 
         _settings : {
             hideEditorToolbar  : false,
-            textareaId         : 'codexEditor_time' + Date.now(),
             titleId            : 'editorWritingTitle',
             initialBlockPlugin : 'paragraph',
             items              : [],
@@ -15,7 +14,7 @@ module.exports = (function () {
                 'header',
             ],
 
-            targetId : null,
+            holderId : null,
             pageId   : null,
             parentId : null,
         },
@@ -49,20 +48,6 @@ module.exports = (function () {
 
         },
 
-        // /**
-        //  * Function for create form or editor's target and load editor's sources
-        //  */
-        // init : function (targetClicked, formId, hidePlaceholderClass) {
-        //
-        //     /** 1. Create form or textarea for editor */
-        //     var target = document.getElementById(writing._settings.targetId);
-        //
-        //     writing._appendTextareasToTarget(target);
-        //
-        //     writing._startEditor();
-        //
-        // },
-
         /**
          * Append textareas for codex.editor
          *
@@ -70,13 +55,7 @@ module.exports = (function () {
          */
         _appendTextareasToTarget : function (target) {
 
-            var textareaHtml, textareaContent;
-
-            textareaHtml = writing._createElem('TEXTAREA', {
-                name   : 'html',
-                id     : writing._settings.textareaId,
-                hidden : true,
-            }, []);
+            var textareaContent;
 
             textareaContent = writing._createElem('TEXTAREA', {
                 name   : 'content',
@@ -84,7 +63,6 @@ module.exports = (function () {
                 hidden : true,
             }, []);
 
-            target.appendChild(textareaHtml);
             target.appendChild(textareaContent);
 
         },
@@ -124,7 +102,7 @@ module.exports = (function () {
 
             codex.editor.start({
 
-                textareaId:  writing._settings.textareaId,
+                holderId:  writing._settings.holderId,
 
                 initialBlockPlugin : writing._settings.initialBlockPlugin,
 
@@ -169,7 +147,7 @@ module.exports = (function () {
             if (!writing._editorIsReady) return;
 
             /** 1. Create form or textarea for editor */
-            var target = document.getElementById(writing._settings.targetId);
+            var target = document.getElementById(writing._settings.holderId);
 
             writing._appendTextareasToTarget(target);
             writing._startEditor();
@@ -211,7 +189,7 @@ module.exports = (function () {
             /**
              * Editor's version
              */
-            _version : '1.5',
+            _version : '1.6',
 
             /**
              * Init function for load editor's resources
