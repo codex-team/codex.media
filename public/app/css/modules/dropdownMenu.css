@@ -39,14 +39,10 @@
     border-bottom : 4px solid white;
 }
 
-.dropdown-menu--closed {
-    display : none;
-}
-
 .dropdown-menu div {
-    padding : 0 10px;
+    padding : 0 15px;
     white-space : nowrap;
-    line-height : 2.4em;
+    line-height : 2.6em;
     font-size : 1.1em;
     color : #4d5260;
 }
