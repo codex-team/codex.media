@@ -32,45 +32,21 @@ codex = (function (codex) {
 
         codex.autoresizeTextarea.init();
 
-        var dummyDict = {
-
-            'Открыть Google': function () {
-
-                window.location.assign('https://google.com');
-
-            },
-            'Открыть Яндекс': function () {
-
-                window.location.assign('https://yandex.ru');
-
-            },
-            'Открыть ВКонтакте': function () {
-
-                window.location.assign('https://vk.com');
-
-            },
-            'Очень-очень длинное (нет) название варианта': function () {
-
-                window.alert('Всем сохранять спокойствие, работает колбэк');
-
-            }
-        };
-
+        /*
         codex.dropdownMenu({
             holderClass: 'js-dropdown-menu-page--holder',
-            menuClass: 'js-dropdown-menu-page--menu',
             menuCSSClass: 'dropdown-menu-page',
-            menuClosedClass: 'dropdown-menu-page--closed',
-            menuOptions: dummyDict
+            menuOptions: optionDict
         });
+        */
 
+        /*
         codex.dropdownMenu({
             holderClass: 'js-dropdown-menu-comment--holder',
-            menuClass: 'js-dropdown-menu-comment--menu',
-            menuCSSClass: 'dropdown-menu-comment',
-            menuClosedClass: 'dropdown-menu-comment--closed',
-            menuOptions: dummyDict
+            styleClass: 'dropdown-menu-comment',
+            menuOptions: optionDict
         });
+        */
 
         /**
         * Init CodeX Special module for contrast version

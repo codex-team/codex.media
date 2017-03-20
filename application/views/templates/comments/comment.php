@@ -4,7 +4,7 @@
 
         <? if ($user->isAdmin || $user->id == $comment->author->id): ?>
             <span class="island-settings js-dropdown-menu-comment--holder">
-                <? include(DOCROOT . 'public/app/svg/settings.svg') ?>
+                <? include(DOCROOT . 'public/app/svg/ellipsis.svg') ?>
             </span>
         <? endif ?>
 

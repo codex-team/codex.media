@@ -3,23 +3,42 @@
 * @author: @ndawn
 */
 
-module.exports = function (settings) {
+module.exports = (function () {
 
     /**
     * Module settings
+    * @var {string} holderElement - menu toggle button DOM element
     * @var {string} holderClass - menu toggle button class
     * @var {string} menuClass - menu block class
     * @var {string} menuClosedClass - closed menu block class
-    * @var {string} menuCSSClass - menu block css class
+    * @var {string} styleClass - menu block css class
     * @var {Element} menuBlock - menu block element
     * @var {object} menuOptions - associated list of menu options
     */
     var holderClass = null,
+        holderElement = null,
         menuClass = null,
         menuClosedClass = null,
-        menuCSSClass = null,
+        styleClass = null,
         menuBlock = null,
-        menuOptions = null;
+        menuOptions = null,
+        optionsDict = {
+            'Редактировать': function () {
+
+                window.alert('This is a dummy text. Actual callback function is not implemented');
+
+            },
+            'Удалить': function () {
+
+                window.alert('This is a dummy text. Actual callback function is not implemented');
+
+            },
+            'Поделиться': function () {
+
+                window.alert('This is a dummy text. Actual callback function is not implemented');
+
+            },
+        };
 
     /**
     * @private
@@ -46,7 +65,7 @@ module.exports = function (settings) {
 
         var block = document.createElement('div');
 
-        block.classList.add(menuClass, menuClosedClass, menuCSSClass);
+        block.classList.add(menuClass, menuClosedClass, styleClass);
 
         for (var option in menuOptions) {
 
@@ -60,17 +79,45 @@ module.exports = function (settings) {
 
     /**
     * @private
+    * Checks if the menu is opened
+    */
+    var _menuOpened = function () {
+
+        return !menuBlock.classList.contains(menuClosedClass);
+
+    };
+
+    /**
+    * @private
+    * Closes the menu
+    */
+    var _closeMenu = function () {
+
+        menuBlock.classList.add(menuClosedClass);
+
+    };
+
+    /**
+    * @private
+    * Opens the menu
+    */
+    var _openMenu = function () {
+
+        menuBlock.classList.remove(menuClosedClass);
+
+    };
+
+    /**
+    * @private
     * Toggles menu of the event target
     */
     var _toggleMenu = function (event) {
 
         var target = event.currentTarget;
 
-        console.log('Triggering click event on', target);
-
         if (!target.classList.contains(holderClass)) {
 
-            menuBlock.classList.add(menuClosedClass);
+            _closeMenu();
 
         } else {
 
@@ -79,11 +126,19 @@ module.exports = function (settings) {
             if (!(target == menuBlock.parentNode)) {
 
                 target.appendChild(menuBlock);
-                menuBlock.classList.remove(menuClosedClass);
+                _openMenu();
 
             } else {
 
-                menuBlock.classList.toggle(menuClosedClass);
+                if (_menuOpened()) {
+
+                    _closeMenu();
+
+                } else {
+
+                    _openMenu();
+
+                }
 
             }
 
@@ -93,18 +148,11 @@ module.exports = function (settings) {
 
     /**
     * @private
-    * Adds event listener to every element with class holderClass
+    * Adds event listener to the element with class holderClass
     */
     var _addClickListeners = function () {
 
-        var menuHolders = document.getElementsByClassName(holderClass);
-
-        for (var i = 0; i < menuHolders.length; i++) {
-
-            menuHolders[i].addEventListener('click', _toggleMenu);
-
-        };
-
+        holderElement.addEventListener('click', _toggleMenu);
         document.body.addEventListener('click', _toggleMenu);
 
     };
@@ -116,11 +164,13 @@ module.exports = function (settings) {
     */
     var init = function (options) {
 
+        menuClass = 'js-dropdown-menu';
+        menuClosedClass = 'dropdown-menu--closed';
+
+        holderElement = options.holderElement;
         holderClass = options.holderClass;
-        menuClass = options.menuClass;
-        menuClosedClass = options.menuClosedClass;
-        menuCSSClass = options.menuCSSClass;
-        menuOptions = options.menuOptions;
+        styleClass = options.styleClass;
+        menuOptions = options.menuOptions || optionsDict;
         menuBlock = _createMenuBlock();
 
         document.body.appendChild(menuBlock);
@@ -129,6 +179,6 @@ module.exports = function (settings) {
 
     };
 
-    init(settings);
+    return {init: init};
 
-};
+})();

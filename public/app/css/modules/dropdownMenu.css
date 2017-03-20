@@ -2,7 +2,7 @@
     position : relative;
     float : right;
     cursor : pointer;
-    color : #6e758a;
+    color : var(--grayText);
 }
 
 .dropdown-menu-page,
@@ -38,8 +38,7 @@
     border-bottom : 4px solid white;
 }
 
-.dropdown-menu-page--closed,
-.dropdown-menu-comment--closed {
+.dropdown-menu--closed {
     display : none;
 }
 
