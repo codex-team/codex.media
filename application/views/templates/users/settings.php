@@ -50,7 +50,7 @@
         <div class="profile__social-buttons">
        
 
-            <? if ( $user->vk == ( NULL || '' ) ): ?>
+            <? if ( !$user->vk ): ?>
                 
                
                     <a href="//vk.com/vengerov1" target="_blank">
@@ -71,7 +71,7 @@
                 
             <? endif; ?>
 
-            <? if ( $user->facebook == ( NULL || '' ) ): ?>
+            <? if ( !$user->facebook ): ?>
                 
                   
                     <a href="/auth/fb?state=attach" target="_blank">
@@ -95,7 +95,7 @@
 
             <? endif; ?>
 
-            <? if ( $user->twitter == ( NULL || '' ) ): ?>
+            <? if ( !$user->twitter ): ?>
 
                
                     <a href="/auth/fb?state=remove" target="_blank">
@@ -116,28 +116,6 @@
                     </span>
                     </a>
                 
-            <? endif; ?>
-            <? if ( $user->twitter == ( NULL || '' ) ): ?>
-
-               
-                    <a href="/auth/fb?state=remove" target="_blank">
-                    <span class="profile__social-button profile__social-button--facebook">
-                        <i class="icon-facebook"></i>
-                        Привязать                      
-                    </span>
-                    </a>
-               
-
-            <? else: ?>
-            
-                
-                    <a href="/auth/fb?state=remove" target="_blank">
-                    <span class="profile__social-button profile__social-button--facebook">
-                        <i class="icon-facebook"></i>
-                        Привязать                   
-                    </span>
-                    </a>
-              
             <? endif; ?>
 
         
