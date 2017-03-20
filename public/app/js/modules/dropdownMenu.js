@@ -7,13 +7,11 @@ module.exports = (function () {
 
     /**
     * Module settings
-    * @var {string} holderClass - menu toggle button class
     * @var {string} menuId - menu id
     * @var {string} menuStyleClass - menu css class
     * @var {object} optionsDict - menu options' callbacks object
     */
-    var holderClass = null,
-        menuId = null,
+    var menuId = null,
         menuStyleClass = null,
         optionsDict = {
             'article': {
@@ -66,7 +64,8 @@ module.exports = (function () {
 
     /**
     * @private
-    * Creates the dropdown menu block
+    * Creates the dropdown menu block of given entity
+    * @param {string} entity - menu entity type
     */
     var _createMenuBlock = function (entity) {
 
@@ -133,7 +132,7 @@ module.exports = (function () {
 
         event.stopPropagation();
 
-        if (holderClass === null) {
+        if (menuId === null) {
 
             init();
 

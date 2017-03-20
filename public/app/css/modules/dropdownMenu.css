@@ -5,6 +5,10 @@
     color : var(--grayText);
 }
 
+.island-settings:hover {
+    color : #494d5b;
+}
+
 .dropdown-menu {
     position : absolute;
     right : 0;
