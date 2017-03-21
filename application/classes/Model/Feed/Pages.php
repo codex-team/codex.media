@@ -2,13 +2,6 @@
 
 class Model_Feed_Pages extends Model_Feed_Abstract {
 
-    public function __construct($key = '')
-    {
-        $this->redis = Controller_Base_preDispatch::_redis();
-
-        $this->timeline_key = $key;
-    }
-
     /**
      * Добавляем элемент в фид, передав в score дату создания
      *
@@ -40,7 +33,11 @@ class Model_Feed_Pages extends Model_Feed_Abstract {
 
             foreach ($items as $id) {
 
-                $models_list[] = new Model_Page($id);
+                $page = new Model_Page($id);
+                $page->blocks = $page->getBlocks(true); // escapeHTML = true
+                $page->description = $page->getDescription();
+
+                $models_list[] = $page;
             }
 
             return $models_list;

@@ -34,6 +34,11 @@
     background: #fdfdfe;
 }
 
+.writing__actions::after {
+    display: inline-block;
+    content: '';
+}
+
 .writing .toggler {
     padding: 6px;
     margin: 8px 12px 0 0;
@@ -124,12 +129,58 @@
     margin: 0 3px 0 5px;
 }
 
+
+
+.writing-wrapper {
+    margin-bottom: var(--islandMargin);
+}
+
+.writing-wrapper__placeholder {
+    padding: 15px var(--islandPadding);
+    color: var(--grayText);
+    font-size: 14px;
+}
+
+.writing-wrapper__photo {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.writing-wrapper__placeholder-name {
+    display: none;
+}
+
+.writing-wrapper__placeholder {
+    cursor: pointer;
+}
+
+.writing-wrapper__placeholder--opened {
+    cursor: default;
+}
+
+.writing-wrapper__placeholder--opened .writing-wrapper__placeholder-text {
+    display: none;
+}
+
+.writing-wrapper__placeholder--opened .writing-wrapper__placeholder-name {
+    display: inline-block;
+    font-weight: 500;
+}
+
+.writing-wrapper .writing {
+    padding-top: 0px;
+    box-shadow: none;/*0 0 0 1px #ebeef6;*/
+}
+
 /**
 * Editor styles overrides
 */
 
 .editor-wrapper {
-    margin: 0 -15px;
+    margin: 0 -25px;
 }
 
 .editor-wrapper .ce-block__content,
