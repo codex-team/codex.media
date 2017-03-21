@@ -27,7 +27,7 @@
 </head>
 <body>
 
-    <div class="center-col">
+    <div class="center-col" id="js-layout-holder">
 
         <div class="grid-cols-wrapper">
 
