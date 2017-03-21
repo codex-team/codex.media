@@ -3,6 +3,24 @@
 */
 module.exports = (function () {
 
+     /**
+    * Toggles classname on passed blocks
+    * @param {string} selector
+    * @param {string} toggled classname
+    */
+    var toggle = function ( which, marker ) {
+
+        var elements = document.querySelectorAll( which );
+
+        for (var i = elements.length - 1; i >= 0; i--) {
+
+            elements[i].classList.toggle( marker );
+
+        }
+
+    };
+
+
     /**
     * Toggles mobile menu
     * Handles clicks on the hamburger icon in header
@@ -106,7 +124,8 @@ module.exports = (function () {
 
         toggleMobileMenu : toggleMobileMenu,
         customCheckboxes : customCheckboxes,
-        approvalButtons : approvalButtons
+        approvalButtons : approvalButtons,
+        toggle : toggle
 
     };
 

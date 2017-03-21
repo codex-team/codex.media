@@ -3,7 +3,7 @@
  * Email module
  *
  * Ported from Kohana 2.2.3 Core to Kohana 3.0 module
- * 
+ *
  * Updated to use Swiftmailer 4.0.4
  *
  * @package    Core
@@ -40,7 +40,7 @@ class Email {
 			case 'smtp':
 				// Set port
 				$port = empty($config['options']['port']) ? 25 : (int) $config['options']['port'];
-				
+
 				// Create SMTP Transport
 				$transport = Swift_SmtpTransport::newInstance($config['options']['hostname'], $port);
 
@@ -49,7 +49,7 @@ class Email {
 					// Set encryption
 					$transport->setEncryption($config['options']['encryption']);
 				}
-				
+
 				// Do authentication, if part of the DSN
 				empty($config['options']['username']) or $transport->setUsername($config['options']['username']);
 				empty($config['options']['password']) or $transport->setPassword($config['options']['password']);

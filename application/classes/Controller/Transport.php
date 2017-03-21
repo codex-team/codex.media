@@ -9,60 +9,39 @@ class Controller_Transport extends Controller_Base_preDispatch
     private $type  = null;
     private $files = null;
 
+    private $typesAvailable = array(
+        Model_File::EDITOR_FILE,
+        Model_File::EDITOR_IMAGE,
+        Model_File::USER_PHOTO,
+    );
+
     /**
-    * File transport module
-    */
-    public function action_file_uploader()
+     * Codex Editor Attaches tool server-side
+     */
+    public function action_upload()
     {
-        $this->type  = Arr::get($_POST , 'type' , false);
         $this->files = Arr::get($_FILES, 'files');
+        $this->type  = $this->request->param('type');
 
-        if (!$this->type) {
+        $file = new Model_File();
 
-            $this->transportResponse['message'] = 'Transport type missed';
+        if ( !$this->check() ){
             goto finish;
         }
 
-        if (!Upload::size($this->files, '2M')) {
+        $uploadedFile = $file->upload($this->type, $this->files, $this->user->id);
 
-            $this->transportResponse['message'] = 'File size exceeded limit';
-            goto finish;
-        }
-
-        if (!$this->files || !Upload::not_empty($this->files) || !Upload::valid($this->files)){
-
-            $this->transportResponse['message'] = 'File is missing or damaged';
-            goto finish;
-        }
-
-        if (!$this->user->id) {
-
-            $this->transportResponse['message'] = 'Access denied';
-            goto finish;
-        }
-
-        $this->transportResponse['type'] = $this->type;
-
-        $filename = $this->save();
-
-        if ($filename) {
-
+        if ( $uploadedFile ) {
             $this->transportResponse['success'] = 1;
-
-            $filename_without_ext = substr($this->files['name'], 0, strrpos($this->files['name'], '.' ));
-            $title = $this->methods->getUriByTitle($filename_without_ext);
-
-            $saved = new Model_File;
-            $saved->filename  = $filename;
-            $saved->title     = $title;
-            $saved->author    = $this->user->id;
-            $saved->size      = Arr::get($this->files, 'size', 0) / 1000;
-            $saved->extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            $saved->type      = $this->type;
-            $saved->insert();
-
-            $this->transportResponse['title']    = $saved->title;
-            $this->transportResponse['id']       = $saved->id;
+            $this->transportResponse['data'] = array(
+                'url'       => $uploadedFile->filepath,
+                'title'     => $uploadedFile->title,
+                'name'      => $uploadedFile->file_hash_hex,
+                'extension' => $uploadedFile->extension,
+                'size'      => $uploadedFile->size
+            );
+        } else {
+            $this->transportResponse['message'] = 'Error while uploading';
         }
 
         finish:
@@ -70,44 +49,45 @@ class Controller_Transport extends Controller_Base_preDispatch
 
         $this->auto_render = false;
         $this->response->body($response);
+
     }
 
-    private function save()
+    /**
+     * Make necessary verifications
+     * @return Boolean
+     */
+    private function check()
     {
-        $filename = null;
-        $upload_path = Model_File::getUploadPathByType($this->type);
+        if (!$this->user->id) {
 
-        switch ($this->type) {
-
-            case Model_File::PAGE_IMAGE:
-                $filename = $this->methods->saveImage( $this->files , $upload_path );
-                break;
-
-            case Model_File::PAGE_FILE:
-                $filename = $this->methods->saveFile( $this->files , $upload_path );
-                break;
-
-            default:
-                $this->transportResponse['message'] = 'Wrong transport type';
-                return false;
-        }
-
-        if (!$filename) {
-
-            $this->transportResponse['message'] = 'Error while saving';
+            $this->transportResponse['message'] = 'Access denied';
             return false;
         }
 
-        return $filename;
+        if (!$this->type) {
 
-        // $data = array(
-        //     'page'      => $page_id,
-        //     'filename'  => $filename,
-        //     'title'     => $title ? $title : $this->rus_lat($file['name']),
-        //     'author'    => $this->user->id,
-        //     'size'      => $file['size'] / 1000,
-        //     'extension' => strtolower(pathinfo($filename, PATHINFO_EXTENSION)),
-        // );
-                // $this->response['callback'] = 'callback.uploadpageFile.success(' . json_encode($data) . ')';
+            $this->transportResponse['message'] = 'Transport type missed';
+            return false;
+        }
+
+        if ( !in_array($this->type, $this->typesAvailable) ){
+            $this->transportResponse['message'] = 'Wrong type passed';
+            return false;
+        }
+
+        if (!Upload::size($this->files, '2M')) {
+
+            $this->transportResponse['message'] = 'File size exceeded limit';
+            return false;
+        }
+
+        if (!$this->files || !Upload::not_empty($this->files) || !Upload::valid($this->files)){
+
+            $this->transportResponse['message'] = 'File is missing or damaged';
+            return false;
+        }
+
+        return true;
+
     }
 }
