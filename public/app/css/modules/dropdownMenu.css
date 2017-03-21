@@ -13,6 +13,7 @@
     position : absolute;
     right : 0;
     top : calc(100% + 10px);
+    min-width : 200px;
     z-index : 999;
     padding : 5px 0;
     border : 1px solid #dbdee2;
