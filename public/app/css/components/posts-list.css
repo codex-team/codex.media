@@ -28,9 +28,10 @@
 
 .post-list-item__title {
     display: inline-block;
-    margin-bottom: 0.5em;
-    font-size: 1.5em;
-    line-height: 1.5em;
+    margin-bottom: 10px;
+    font-size: 1.7em;
+    line-height: 1.3em;
+    font-weight: 700;
 }
 
 .post-list-item--big .post-list-item__title {
@@ -40,6 +41,14 @@
 .post-list-item__body {
     line-height: 1.55em;
     letter-spacing: -0.1px;
+}
+
+.post-list-item__body p:first-of-type {
+    margin-top: 0;
+}
+
+.post-list-item__body p:last-of-type {
+    margin-bottom: 0;
 }
 
 .post-list-item__footer {

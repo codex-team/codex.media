@@ -1,3 +1,7 @@
+.profile-wrapper {
+    margin-bottom: var(--islandMargin);
+}
+
 .profile {}
 
 .profile__ava {
@@ -58,4 +62,3 @@
     color: var(--facebookColor);
     border-color: color(var(--facebookColor) alpha(-80%));
 }
-
