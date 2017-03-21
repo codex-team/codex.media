@@ -82,7 +82,6 @@ class Model_Page extends Model
 
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
-            $this->description = $this->getDescription();
             $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
             $this->commentsCount = $this->getCommentsCount();
         }
@@ -353,28 +352,25 @@ class Model_Page extends Model
         $feed = new Model_Feed_All();
         $feed->remove($this->id);
     }
-/***/
 
     /**
      * Функция находит первый блок paragraph и возвращает его в качестве превью
-     *
-     * #TODO возвращать и научиться обрабатывать блок(-и) любого типа с параметром cover = true
      */
-    private function getDescription()
+    public function getDescription()
     {
-        $blocks = $this->blocks;
+        if (empty($this->blocs)){
+            $this->blocks = $this->getBlocks();
+        }
+
         $description = '';
 
-        if ($blocks) {
+        foreach ($this->blocks as $block) {
 
-            foreach ($blocks as $block) {
+            if ($block->type == 'paragraph') {
 
-                if ($block->type == 'paragraph') {
+                $description = $block->data->text;
 
-                    $description = $block->data->text;
-
-                    break;
-                }
+                break;
             }
         }
 

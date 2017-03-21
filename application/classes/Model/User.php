@@ -200,7 +200,14 @@ class Model_User extends Model
             ->order_by('id','DESC')
             ->execute();
 
-        return Model_Page::rowsToModels($pages);
+        $models = Model_Page::rowsToModels($pages);
+
+        foreach ($models as $page) {
+            $page->blocks = $page->getBlocks(true); // escapeHTML = true
+            $page->description = $page->getDescription();
+        }
+
+        return $models;
     }
 
     public static function getUsersList($status)
