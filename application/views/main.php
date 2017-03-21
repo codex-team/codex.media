@@ -29,13 +29,11 @@
 
     <?
         if (Arr::get($site_info, 'branding')) {
-
             $branding = 'upload/branding/' . Arr::get($site_info, 'branding');
-
         }
 
     ?>
-    <div class="branding" id="brandingSection" style="background-image: url(<?=$branding; ?>)">
+    <div class="branding" id="brandingSection" style="background: #202840">
 
         <div class="branding-content center-col">
 
@@ -76,6 +74,8 @@
 
         window.csrf = '<?= Security::token(); ?>';
 
+
+
         codex.docReady(function() {
 
             var changeBrandingButton = document.getElementById('changeBrandingButton'),
@@ -104,13 +104,7 @@
                             brandingSection.style.backgroundImage = `url('${url}')`;
                             brandingSection.style.backgroundSize = "100% 100%";
 
-
                         }
-
-                    },
-                    error : function() {
-
-                        brandingCover.src = '';
 
                     }
                 })

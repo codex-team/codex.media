@@ -112,10 +112,9 @@ class Model_Settings extends Model_preDispatch
         return $paramList;
     }
 
-    public static function newBranding($filename)
+    public function newBranding($filename)
     {
-        $settings = new self();
-        $branding = $settings->get('branding');
+        $branding = $this->get('branding');
 
         if (property_exists($branding, 'name')) {
 

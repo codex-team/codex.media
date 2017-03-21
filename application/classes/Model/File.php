@@ -82,7 +82,8 @@ class Model_File extends Model
                 if ($saved) {
 
                     // save branding as site_info
-                    $branding = Model_Settings::newBranding($saved);
+                    $settings = new Model_Settings();
+                    $branding = $settings->newBranding($saved);
                     $this->filename = 'o_' . $branding;
                 }
         }
