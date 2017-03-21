@@ -2,9 +2,9 @@
  * Image plugin for codex-editor
  * @author CodeX Team <team@ifmo.su>
  *
- * @version 1.2.0
+ * @version 1.3.0
  */
-var image = (function(image) {
+var image = (function(image_plugin) {
 
     /**
      * @private
@@ -128,7 +128,7 @@ var image = (function(image) {
          */
         makeImage : function(data, imageTypeClasses, stretched, bordered) {
 
-            var file = data.file,
+            var file = data,
                 text = data.caption,
                 type     = data.type,
                 image    = ui_.image(file, imageTypeClasses),
@@ -220,15 +220,19 @@ var image = (function(image) {
      */
     var uploadButtonClicked_ = function(event) {
 
-        var beforeSend = uploadingCallbacks_.ByClick.beforeSend,
+        var url        = image_plugin.config.uploadImage,
+            beforeSend = uploadingCallbacks_.ByClick.beforeSend,
             success    = uploadingCallbacks_.ByClick.success,
             error      = uploadingCallbacks_.ByClick.error;
 
         /** Define callbacks */
         codex.editor.transport.selectAndUpload({
-            beforeSend: beforeSend,
-            success: success,
-            error: error
+            url         : url,
+            multiple    : false,
+            accept      : 'image/*',
+            beforeSend  : beforeSend,
+            success     : success,
+            error       : error
         });
     };
 
@@ -272,11 +276,7 @@ var image = (function(image) {
             /**
              * Save settings in dataset
              */
-            if (img.classList.contains(elementClasses_.imageWrapperBordered)) {
-                wrapper.dataset.bordered = true;
-            } else {
-                wrapper.dataset.bordered = false;
-            }
+            wrapper.dataset.bordered = img.classList.contains(elementClasses_.imageWrapperBordered);
 
             setTimeout(function() {
                 codex.editor.toolbar.settings.close();
@@ -302,15 +302,7 @@ var image = (function(image) {
 
             clickedSettingsItem.classList.toggle(elementClasses_.toggled);
 
-            if (img.classList.contains(elementClasses_.uploadedImage.stretched)) {
-
-                wrapper.dataset.stretched = true;
-
-            } else {
-
-                wrapper.dataset.stretched = false;
-
-            }
+            wrapper.dataset.stretched = img.classList.contains(elementClasses_.uploadedImage.stretched);
 
             setTimeout(function() {
                 codex.editor.toolbar.settings.close();
@@ -356,20 +348,18 @@ var image = (function(image) {
                         background : false,
                         border   : false,
                         isstretch : false,
-                        file : {
-                            url    : e.target.result,
-                            bigUrl : null,
-                            width  : null,
-                            height : null,
-                            additionalData : null
-                        },
+                        url    : e.target.result,
+                        bigUrl : null,
+                        width  : null,
+                        height : null,
+                        additionalData : null,
                         caption : '',
                         cover : null
                     };
 
                     var newImage = make_(data);
 
-                    codex.editor.content.switchBlock(image.holder, newImage, 'image_extended');
+                    codex.editor.content.switchBlock(image.holder, newImage);
                     newImage.classList.add(elementClasses_.imagePreview);
 
                     /**
@@ -400,11 +390,11 @@ var image = (function(image) {
                  */
                 var newImage = image.holder.getElementsByTagName('IMG')[0];
 
-                newImage.src            = parsed.data.file.url;
-                newImage.dataset.bigUrl = parsed.data.file.bigUrl;
-                newImage.dataset.width  = parsed.data.file.width;
-                newImage.dataset.height = parsed.data.file.height;
-                newImage.dataset.additionalData = parsed.data.file.additionalData;
+                newImage.src            = parsed.data.url;
+                newImage.dataset.bigUrl = parsed.data.bigUrl;
+                newImage.dataset.width  = parsed.data.width;
+                newImage.dataset.height = parsed.data.height;
+                newImage.dataset.additionalData = parsed.data.additionalData;
 
             },
 
@@ -414,7 +404,7 @@ var image = (function(image) {
                 var oldHolder = image.holder;
                 var form = ui_.makeForm();
 
-                codex.editor.content.switchBlock(oldHolder, form, 'image_extended');
+                codex.editor.content.switchBlock(oldHolder, form);
 
             }
         },
@@ -428,9 +418,7 @@ var image = (function(image) {
              */
             uploadImageFromUrl : function(path) {
 
-                var ajaxUrl = image.config.uploadUrl,
-                    file,
-                    image_plugin,
+                var image,
                     current = codex.editor.content.currentNode,
                     beforeSend,
                     success_callback;
@@ -440,16 +428,16 @@ var image = (function(image) {
 
                     var imageInfo = JSON.parse(data);
 
-                    var newImage = image_plugin.getElementsByTagName('IMG')[0];
+                    var newImage = image.getElementsByTagName('IMG')[0];
 
                     newImage.dataset.stretched = false;
-                    newImage.dataset.src = imageInfo.file.url;
-                    newImage.dataset.bigUrl = imageInfo.file.bigUrl;
-                    newImage.dataset.width = imageInfo.file.width;
-                    newImage.dataset.height = imageInfo.file.height;
-                    newImage.dataset.additionalData = imageInfo.file.additionalData;
+                    newImage.dataset.src = imageInfo.url;
+                    newImage.dataset.bigUrl = imageInfo.bigUrl;
+                    newImage.dataset.width = imageInfo.width;
+                    newImage.dataset.height = imageInfo.height;
+                    newImage.dataset.additionalData = imageInfo.additionalData;
 
-                    image_plugin.classList.remove(elementClasses_.imagePreview);
+                    image.classList.remove(elementClasses_.imagePreview);
 
                 };
 
@@ -473,19 +461,19 @@ var image = (function(image) {
                         cover: null
                     };
 
-                    image_plugin = codex.editor.tools.image_extended.render(data);
+                    image = codex.editor.tools.image_extended.render(data);
 
-                    image_plugin.classList.add(elementClasses_.imagePreview);
+                    image.classList.add(elementClasses_.imagePreview);
 
-                    var img = image_plugin.querySelector('img');
+                    var img = image.querySelector('img');
 
-                    codex.editor.content.switchBlock(codex.editor.content.currentNode, image_plugin, 'image_extended');
+                    codex.editor.content.switchBlock(codex.editor.content.currentNode, image);
 
                 };
 
                 /** Preparing data for XMLHTTP */
                 var data = {
-                    url: image.config.uploadUrl,
+                    url: image_plugin.config.uploadFromUrl,
                     type: "POST",
                     data : {
                         url: path
@@ -504,12 +492,12 @@ var image = (function(image) {
      * Image path
      * @type {null}
      */
-    image.path   = null;
+    image_plugin.path   = null;
 
 	/**
      * Plugin configuration
      */
-    image.config = null;
+    image_plugin.config = null;
 
     /**
      *
@@ -567,9 +555,9 @@ var image = (function(image) {
      * @public
      * @param config
      */
-    image.prepare = function(config) {
+    image_plugin.prepare = function(config) {
 
-        image.config = config;
+        image_plugin.config = config;
 
         return Promise.resolve();
     };
@@ -579,7 +567,7 @@ var image = (function(image) {
      *
      * this tool works when tool is clicked in toolbox
      */
-    image.appendCallback = function(event) {
+    image_plugin.appendCallback = function(event) {
 
         /** Upload image and call success callback*/
         uploadButtonClicked_(event);
@@ -592,7 +580,7 @@ var image = (function(image) {
      * @param data
      * @return {*}
      */
-    image.render = function( data ) {
+    image_plugin.render = function( data ) {
 
         return make_(data);
     };
@@ -603,7 +591,7 @@ var image = (function(image) {
      * @param block
      * @return {{background: boolean, border: boolean, isstretch: boolean, file: {url: (*|string|Object), bigUrl: (null|*), width: *, height: *, additionalData: null}, caption: (string|*|string), cover: null}}
      */
-    image.save = function ( block ) {
+    image_plugin.save = function ( block ) {
 
         var content    = block,
             image   = ui_.getImage(content),
@@ -613,13 +601,13 @@ var image = (function(image) {
             background : false,
             border : content.dataset.bordered === 'true' ? true : false,
             isstretch : content.dataset.stretched === 'true' ? true : false,
-            file : {
+            // file : {
                 url : image.dataset.src || image.src,
                 bigUrl : image.dataset.bigUrl,
                 width  : image.width,
                 height : image.height,
-                additionalData :null
-            },
+                additionalData :null,
+            // },
             caption : caption.innerHTML || '',
             cover : null
         };
@@ -633,7 +621,7 @@ var image = (function(image) {
      * Settings panel content
      * @return {Element} element contains all settings
      */
-    image.makeSettings = function () {
+    image_plugin.makeSettings = function () {
 
         var currentNode = codex.editor.content.currentNode,
             wrapper = currentNode.querySelector('.' + elementClasses_.imageWrapper),
@@ -688,8 +676,26 @@ var image = (function(image) {
     /**
      * Share as API
      */
-    image.uploadImageFromUri = uploadingCallbacks_.ByPaste.uploadImageFromUrl;
+    image_plugin.uploadImageFromUri = uploadingCallbacks_.ByPaste.uploadImageFromUrl;
 
-    return image;
+    image_plugin.pastePatterns = [
+        {
+            type: 'image',
+            regex: /(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:jpe?g|gif|png))(?:\?([^#]*))?(?:#(.*))?/i,
+            callback: image_plugin.uploadImageFromUri
+        },
+        {
+            type: 'uploadCare',
+            regex: /^https:\/\/(uploadcare\.cmtt\.ru|ucarecdn\.com|static[0-9]+\.siliconrus\.cmtt\.ru|static[0-9]+\.cmtt\.ru)/i,
+            callback: image_plugin.uploadImageFromUri
+        } ];
+
+    image_plugin.destroy = function () {
+
+        image = null;
+
+    };
+
+    return image_plugin;
 
 })({});
