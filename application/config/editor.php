@@ -6,7 +6,7 @@ return array(
     ),
 
     'Image' => array(
-        'image', 'image_extended'
+        'image'
     ),
 
     'Link' => array(

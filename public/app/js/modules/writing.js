@@ -40,11 +40,11 @@ module.exports = (function () {
         mergeSettings(initSettings);
 
         return loadEditorResources(settings.resources)
-            .then(function () {
+                .then(function () {
 
-                editorIsReady = true;
+                    editorIsReady = true;
 
-            });
+                });
 
     };
 
@@ -61,12 +61,18 @@ module.exports = (function () {
 
         }
 
-    };
+    }
 
     /**
      * Run editor
      */
     function startEditor() {
+
+        /**
+         * @todo get from server
+         */
+        var EDITOR_IMAGE = 1;
+        var EDITOR_FILE  = 2;
 
         codex.editor.start({
 
@@ -78,27 +84,60 @@ module.exports = (function () {
 
             tools : {
                 paragraph: {
-                    type: 'paragraph',
-                    iconClassname: 'ce-icon-paragraph',
-                    render: paragraph.render,
-                    validate: paragraph.validate,
-                    save: paragraph.save,
-                    allowedToPaste: true,
-                    showInlineToolbar: true,
-                    destroy: paragraph.destroy,
-                    allowRenderOnPaste: true
+                    type               : 'paragraph',
+                    iconClassname      : 'ce-icon-paragraph',
+                    render             : window.paragraph.render,
+                    validate           : window.paragraph.validate,
+                    save               : window.paragraph.save,
+                    allowedToPaste     : true,
+                    showInlineToolbar  : true,
+                    destroy            : window.paragraph.destroy,
+                    allowRenderOnPaste : true
                 },
                 header: {
-                    type: 'header',
-                    iconClassname: 'ce-icon-header',
-                    appendCallback: header.appendCallback,
-                    makeSettings: header.makeSettings,
-                    render: header.render,
-                    validate: header.validate,
-                    save: header.save,
-                    destroy: header.destroy,
-                    displayInToolbox: true
+                    type             : 'header',
+                    iconClassname    : 'ce-icon-header',
+                    appendCallback   : window.header.appendCallback,
+                    makeSettings     : window.header.makeSettings,
+                    render           : window.header.render,
+                    validate         : window.header.validate,
+                    save             : window.header.save,
+                    destroy          : window.header.destroy,
+                    displayInToolbox : true
                 },
+                image: {
+                    type                  : 'image',
+                    iconClassname         : 'ce-icon-picture',
+                    appendCallback        : window.image.appendCallback,
+                    prepare               : window.image.prepare,
+                    makeSettings          : window.image.makeSettings,
+                    render                : window.image.render,
+                    save                  : window.image.save,
+                    destroy               : window.image.destroy,
+                    isStretched           : true,
+                    showInlineToolbar     : true,
+                    displayInToolbox      : true,
+                    renderOnPastePatterns : window.image.pastePatterns,
+                    config: {
+                        uploadImage : '/upload/' + EDITOR_IMAGE,
+                        uploadFromUrl : ''
+                    }
+                },
+                attaches: {
+                    type             : 'attaches',
+                    displayInToolbox : true,
+                    iconClassname    : 'cdx-attaches__icon',
+                    prepare          : window.cdxAttaches.prepare,
+                    render           : window.cdxAttaches.render,
+                    save             : window.cdxAttaches.save,
+                    validate         : window.cdxAttaches.validate,
+                    destroy          : window.cdxAttaches.destroy,
+                    appendCallback   : window.cdxAttaches.appendCallback,
+                    config: {
+                        fetchUrl: '/upload/' + EDITOR_FILE,
+                        maxSize: 25000,
+                    }
+                }
             },
 
             data : {
@@ -108,7 +147,7 @@ module.exports = (function () {
 
         document.getElementById(settings.titleId).focus();
 
-    };
+    }
 
     /**
      * Public function for run editor
@@ -173,7 +212,7 @@ module.exports = (function () {
             codex.loader.importStyle(styleUrl, name)
         ]);
 
-    };
+    }
 
     /**
     * Prepares and submit form
@@ -235,7 +274,7 @@ module.exports = (function () {
 
         atlasForm.append(openEditorFlagInput);
 
-        this.submit();
+        submit();
 
     };
 

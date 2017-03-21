@@ -49,50 +49,56 @@
 
             <? endif ?>
             */ ?>
-
         </div>
 
     </div>
 
 </form>
 
+
+<?
+    $hideEditorToolbar = !empty($hideEditorToolbar) && $hideEditorToolbar;
+?>
 <script>
 
     /** Document is ready */
     codex.docReady(function(){
 
-        <?
-            $hideEditorToolbar = !empty($hideEditorToolbar) && $hideEditorToolbar;
-        ?>
-
-        var editorReady = codex.writing.prepare({
+        var plugins = ['paragraph', 'header', 'image', 'attaches'],
+            scriptPath = 'https://cdn.ifmo.su/editor/v1.6/',
+            settings = {
+                holderId          : 'placeForEditor',
+                pageId            : <?= $page->id ?>,
+                parentId          : <?= $page->id_parent ?>,
                 hideEditorToolbar : <?= $hideEditorToolbar ? 'true' : 'false' ?>,
-                items : <?= json_encode($page->blocks) ?: '[]' ?>,
-                resources : [
-                    { name : 'codex-editor', path : {
-                        script : 'https://cdn.ifmo.su/editor/v1.6/codex-editor.js',
-                        style  : 'https://cdn.ifmo.su/editor/v1.6/codex-editor.css',
-                    }},
+                items             : <?= json_encode($page->blocks) ?: '[]' ?>,
+                resources         : []
+            };
 
-                    { name : 'paragraph', path : {
-                        script : 'https://cdn.ifmo.su/editor/v1.6/plugins/paragraph/paragraph.js',
-                        style  : 'https://cdn.ifmo.su/editor/v1.6/plugins/paragraph/paragraph.css',
-                    }},
-                    { name : 'header', path : {
-                        script : 'https://cdn.ifmo.su/editor/v1.6/plugins/header/header.js',
-                        style  : 'https://cdn.ifmo.su/editor/v1.6/plugins/header/header.css',
-                    }},
-                ],
+        scriptPath = '/public/extensions/codex.editor/'
 
-                holderId : 'placeForEditor',
-                pageId   : <?= $page->id ?>,
-                parentId : <?= $page->id_parent ?>,
+        settings.resources.push({
+            name : 'codex-editor',
+            path : {
+                script : scriptPath + 'codex-editor.js',
+                style  : scriptPath + 'codex-editor.css',
+            }
+        });
+
+        for (var i = 0, plugin; !!(plugin = plugins[i]); i++) {
+            settings.resources.push({
+                name : plugin,
+                path : {
+                    script : scriptPath + 'plugins/' + plugin + '/' + plugin + '.js',
+                    style  : scriptPath + 'plugins/' + plugin + '/' + plugin + '.css',
+                }
             });
+        }
+
+        var editorReady = codex.writing.prepare(settings);
 
         <? if (!$hideEditorToolbar): ?>;
-            editorReady.then(
-                codex.writing.init
-            );
+            editorReady.then(codex.writing.init);
         <? endif ?>
     });
 

@@ -135,10 +135,57 @@
     display: block;
     margin-bottom: 15px;
     font-size: 15px;
+    line-height: 1.56em;
 }
 
-.comment-target__text:hover{
+.comment-target__text:hover {
     color: inherit;
+}
+
+/**
+ * Show-more toggler in comment target block
+ */
+.comment-target__show-more {
+    display: inline-block;
+    color: var(--linkColor);
+}
+
+.comment-target__show-more::before {
+    content: attr(data-text-show);
+}
+
+.comment-target__show-more svg {
+    height: 0.5em;
+    margin-left: 0.2em;
+}
+
+.comment-target__show-more:hover {
+    color: var(--hoverColor);
+}
+
+.comment-target__text-hided {
+    display: none;
+}
+
+.show-more .comment-target__text-hided {
+    display: block;
+}
+
+.show-more .comment-target__show-more {
+    margin-left: 0;
+    margin-top: 0.7em;
+}
+
+.show-more .comment-target__show-more svg {
+    transform: rotate(180deg);
+}
+
+.show-more .comment-target__short-text {
+    display: none;
+}
+
+.show-more .comment-target__show-more::before {
+    content: attr(data-text-hide);
 }
 
 .comment-target--page .comment-target__source {
@@ -148,8 +195,14 @@
 .comment-target__author,
 .comment-target__date,
 .comment-target__page {
-    color: var(--grayText);
+    display: inline-block;
     margin-right: 1em;
+    max-width: 45%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    vertical-align: text-bottom;
+    color: var(--grayText);
 }
 
 .comment-target__arrow {
