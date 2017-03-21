@@ -1,0 +1,28 @@
+
+/**
+ * Cover
+ */
+.branding {
+    position: relative;
+    height: 200px;
+    background: #202840;
+}
+
+.branding-content {
+    position: relative;
+    height: 200px;
+}
+
+.branding-content__change-button {
+    position: absolute;
+    bottom: 20px;
+    right: 15px;
+    background: rgba(0, 0, 0, .3);
+    padding: 10px;
+    color: #fff;
+}
+
+.branding-content__change-button:hover {
+    color: #0c84cf;
+    cursor: pointer;
+}

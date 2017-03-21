@@ -22,8 +22,6 @@
     /** Bounce timing function for transition */
     --bounceTiming: cubic-bezier(0.6, -0.28, 0.735, 0.045);
 
-    --coverHeight: 200px;
-
     /** General margin size between islands */
     --islandMargin: 15px;
 

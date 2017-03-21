@@ -27,14 +27,16 @@
 </head>
 <body>
 
-    <div class="stretched-cover">
+    <div class="branding" id="brandingSection" style="background: #202840">
 
-        <img id="brandingCover" src="" width="100%" height="100%">
+        <div class="branding-content center-col">
 
-        <a id="changeCoverButton" class="stretched-cover__change-button">
-            <i class="stretched-cover__change-button--icon icon-camera"></i>
-            Изменить обложку
-        </a>
+            <a id="changeBrandingButton" class="fl_r branding-content__change-button">
+                <i class="icon-camera"></i>
+                Изменить обложку
+            </a>
+
+        </div>
 
     </div>
 
@@ -68,39 +70,25 @@
 
         codex.docReady(function() {
 
-            var changeCoverButton = document.getElementById('changeCoverButton'),
-                brandingCover = document.getElementById('brandingCover');
+            var changeBrandingButton = document.getElementById('changeBrandingButton'),
+                brandingSection = document.getElementById('brandingSection');
 
-            changeCoverButton.addEventListener('click', function() {
+            changeBrandingButton.addEventListener('click', function() {
 
                 codex.transport.init({
                     url : '/file/transport/',
                     accept : 'image/*',
                     beforeSend : function() {
 
-                        var fileReader = new FileReader(),
-                            input = codex.transport.input,
-                            uploadedfile = input.files[0];
-
-                        /** Load from Browsers memory */
-                        fileReader.readAsDataURL(uploadedfile);
-                        fileReader.onload = function(e) {
-
-                            brandingCover.classList.add('stretched-cover__branding');
-                            brandingCover.src = e.target.result;
-
-                        };
-
 
                     },
                     success : function(result) {
 
                         var data = JSON.parse(result);
+                        console.log(data);
 
                         if ( data.success ) {
 
-//                            brandingCover.src =  меняем вот тут файл
-                            brandingCover.classList.remove('stretched-cover__branding');
 
                         }
 

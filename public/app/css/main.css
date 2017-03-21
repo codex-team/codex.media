@@ -25,6 +25,7 @@
 /**
 * Components
 */
+@import url('components/branding.css');
 @import url('components/footer.css');
 @import url('components/aside.css');
 @import url('components/islands.css');

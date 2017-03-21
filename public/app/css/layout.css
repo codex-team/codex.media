@@ -2,44 +2,6 @@
 * New layout
 */
 
-/**
- * Cover
- */
-.stretched-cover {
-    position: relative;
-    height: var(--coverHeight);
-    background: #202840;
-}
-
-.stretched-cover__change-button {
-    position: absolute;
-    bottom: 20px;
-    right: 100px;
-    background: rgba(0, 0, 0, .3);
-    padding: 10px;
-    color: #fff;
-}
-
-.stretched-cover__branding {
-    filter: blur(15px);
-}
-
-.stretched-cover__branding::after {
-    width: 100%;
-    height: 100%;
-    background: red;
-}
-
-.stretched-cover__change-button:hover {
-    color: #0c84cf;
-    cursor: pointer;
-}
-
-.stretched-cover__change-button--icon{
-
-}
-
-
 .center-col {
     max-width: 1010px;
     margin: 0 auto;
@@ -76,7 +38,7 @@
 .grid-content {
     box-sizing: border-box;
     border-left: 1px solid rgba(79, 109, 162, 0.1);
-    padding: var(--islandMargin) var(--islandMargin) 0 var(--islandMargin);
+    padding: var(--islandMargin) 0 0 var(--islandMargin);
     flex: 2 0%;
 }
 

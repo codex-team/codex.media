@@ -1,6 +1,9 @@
 .main-aside {
     position: sticky;
     top: var(--islandMargin);
+}
+
+.main-aside--offset-top {
     margin-top: -100px;
 }
 

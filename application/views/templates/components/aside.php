@@ -1,4 +1,4 @@
-<aside class="island main-aside">
+<aside class="island main-aside main-aside--offset-top">
 
     <a class="site-head clear" href="/">
 
