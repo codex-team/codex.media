@@ -104,8 +104,6 @@ class Model_Page extends Model
         $blocksJSON = '';
         $blocks = array();
 
-        // echo Debug::vars($this); exit();
-
         try {
 
             $CodexEditor = new CodexEditor($this->content, $config);
