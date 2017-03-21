@@ -90,37 +90,4 @@ class Controller_Transport extends Controller_Base_preDispatch
         return true;
 
     }
-
-    /**
-    * File transport module
-    */
-    public function action_file_uploader()
-    {
-        $this->type  = Arr::get($_POST , 'type' , false);
-        $this->files = Arr::get($_FILES, 'files');
-
-        if ( !$this->check() ){
-            goto finish;
-        }
-
-        /**
-         * @todo  TESTING
-         */
-        $file = new Model_File();
-        $file->type = $this->type;
-
-        $uploadedFile = $file->upload($this->type, $this->files, $this->user->id);
-
-        if ($uploadedFile) {
-
-            $this->transportResponse['success'] = 1;
-            $this->transportResponse['uploadedFile'] = $uploadedFile;
-        }
-
-        finish:
-        $response = @json_encode($this->transportResponse);
-
-        $this->auto_render = false;
-        $this->response->body($response);
-    }
 }

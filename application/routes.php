@@ -84,19 +84,9 @@ Route::set('ADMIN_PAGE', 'admin(/<page>(/<id>))')->defaults(array(
 /**
 * Ajax routes
 */
-Route::set('CodexEditor_Attaches', 'upload/<type>')->defaults(array(
+Route::set('AJAX_FILE_TRANSPORT', 'upload/<type>')->defaults(array(
     'controller'      => 'transport',
     'action'          => 'upload'
-));
-
-
-
-/**
-* Ajax routes
-*/
-Route::set('AJAX_FILE_TRANSPORT', 'file/transport')->defaults(array(
-    'controller'      => 'transport',
-    'action'          => 'file_uploader'
 ));
 
 
