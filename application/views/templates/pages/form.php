@@ -75,7 +75,7 @@
                 resources         : []
             };
 
-        scriptPath = '/public/extensions/codex.editor/'
+        // scriptPath = '/public/extensions/codex.editor/'
 
         settings.resources.push({
             name : 'codex-editor',
