@@ -40,7 +40,15 @@ codex = (function (codex) {
             blockId : 'js-contrast-version-holder',
         });
 
-        codex.core.log('Initialized', 'App init', 'info');
+        /**
+         * Activate scroll-up button
+         */
+        codex.scrollUp.init('js-layout-holder');
+
+        /**
+         * Client is ready
+         */
+        codex.core.log('Initialized', 'CodeX', 'info');
 
     };
 
@@ -75,6 +83,7 @@ codex.profileSettings    = require('./modules/profileSettings');
 codex.sharer             = require('./modules/sharer');
 codex.writing            = require('./modules/writing');
 codex.loader             = require('./modules/loader');
+codex.scrollUp           = require('./modules/scrollUp');
 
 module.exports = codex;
 
