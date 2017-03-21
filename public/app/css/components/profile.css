@@ -69,9 +69,10 @@
 .profile__profile-nav {
     padding: 20px 15px; 
     margin-right: 69%;
+    color: var(--grayText);
 }
 
 .profile__logout {
     padding: 20px 15px;
-         
+    color: var(--grayText);
 }
