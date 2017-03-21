@@ -41,7 +41,13 @@ class Model_Auth extends Model_preDispatch
         $message = View::factory('templates/emails/auth/confirm', array('user' => $this->user, 'hash' => $hash));
 
         $email = new Email();
-        return $email->send($this->user->email, $GLOBALS['SITE_MAIL'], "Добро пожаловать на ".$_SERVER['HTTP_HOST']."!", $message, false);
+        return $email->send(
+            [$this->user->name, $this->user->email],
+            ["no-reply", $GLOBALS['SITE_MAIL']],
+            "Добро пожаловать на ".$_SERVER['HTTP_HOST'],
+            $message,
+            false
+        );
 
     }
 
@@ -57,7 +63,13 @@ class Model_Auth extends Model_preDispatch
         $message = View::factory('templates/emails/auth/reset', array('user' => $this->user, 'hash' => $hash));
 
         $email = new Email();
-        return $email->send($this->user->email, $GLOBALS['SITE_MAIL'], "Сброс пароля на ".$_SERVER['HTTP_HOST']."!", $message, false);
+        return $email->send(
+            [$this->user->name, $this->user->email],
+            ["no-reply", $GLOBALS['SITE_MAIL']],
+            "Сброс пароля на ".$_SERVER['HTTP_HOST'],
+            $message,
+            false
+        );
 
 
     }
