@@ -88,6 +88,7 @@ class Model_File extends Model
         $this->size      = $this->getSize();
         $this->mime      = $this->getMime();
         $this->extension = $this->getExtension();
+        $this->author    = $user_id;
 
         return $this->insert();
 
