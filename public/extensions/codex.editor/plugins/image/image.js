@@ -348,13 +348,11 @@ var image = (function(image_plugin) {
                         background : false,
                         border   : false,
                         isstretch : false,
-                        file : {
-                            url    : e.target.result,
-                            bigUrl : null,
-                            width  : null,
-                            height : null,
-                            additionalData : null
-                        },
+                        url    : e.target.result,
+                        bigUrl : null,
+                        width  : null,
+                        height : null,
+                        additionalData : null,
                         caption : '',
                         cover : null
                     };
@@ -433,11 +431,11 @@ var image = (function(image_plugin) {
                     var newImage = image.getElementsByTagName('IMG')[0];
 
                     newImage.dataset.stretched = false;
-                    newImage.dataset.src = imageInfo.file.url;
-                    newImage.dataset.bigUrl = imageInfo.file.bigUrl;
-                    newImage.dataset.width = imageInfo.file.width;
-                    newImage.dataset.height = imageInfo.file.height;
-                    newImage.dataset.additionalData = imageInfo.file.additionalData;
+                    newImage.dataset.src = imageInfo.url;
+                    newImage.dataset.bigUrl = imageInfo.bigUrl;
+                    newImage.dataset.width = imageInfo.width;
+                    newImage.dataset.height = imageInfo.height;
+                    newImage.dataset.additionalData = imageInfo.additionalData;
 
                     image.classList.remove(elementClasses_.imagePreview);
 

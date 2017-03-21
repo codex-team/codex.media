@@ -1,4 +1,4 @@
-<div class="island island--padded">
+<div class="profile-wrapper island island--padded">
 
     <div class="profile clearfix">
 
@@ -88,6 +88,14 @@
     <? endif ?>
     <? /* */ ?>
 </div>
+
+<? if ($user->id == $viewUser->id): ?>
+
+    <?= View::factory('templates/pages/form_wrapper', array(
+        'hideEditorToolbar' => true
+    )); ?>
+
+<? endif ?>
 
 <ul class="island tabs island--margined">
     <li>

@@ -125,7 +125,15 @@
     font-weight: 600;
 }
 
+/**
+ * Article image block
+ */
+
 .article__image {
+    margin: 1em 0;
+}
+
+.article__image img {
     max-width: 100%;
 }
 

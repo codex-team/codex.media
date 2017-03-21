@@ -82,8 +82,11 @@ class Controller_Pages extends Controller_Base_preDispatch
         /**
          * @var Compose Blocks list
          */
-        $escapeHTML = false;
-        $page->blocks = $page->getBlocks($escapeHTML);
+        if ($page->content) {
+            $escapeHTML   = false;
+            $page->blocks = $page->getBlocks($escapeHTML);
+        }
+
 
 
         $errors    = array();
@@ -100,7 +103,6 @@ class Controller_Pages extends Controller_Base_preDispatch
 
                 $this->view['page']   = $page;
                 $this->view['errors'] = $errors;
-                $this->view['attachments'] = json_encode($page->attachments);
 
                 $this->template->content = View::factory('templates/pages/writing', $this->view);
                 return;
@@ -115,12 +117,6 @@ class Controller_Pages extends Controller_Base_preDispatch
                     $page = $page->insert();
                 }
 
-                /* Link attached files to current page */
-                // $this->savePageFiles($page->id);
-
-                /* insert page id to feeds */
-                // $page->addPageToFeeds();
-
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
 
             } else {
@@ -129,17 +125,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             }
 
         } else {
-        /** open form */
 
-            /** no need cause we've already got $page with $page_id */
-            // $page_id = (int) Arr::get($_GET, 'id', 0);
-            // $page    = new Model_Page($page_id);
-
-            // $page->attachments = Model_File::getPageFiles($page->id, false, true);
-            // $page->files       = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
-            // $page->images      = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
-
-            // $this->view['attachments'] = json_encode($page->attachments);
 
             if (!$page_id) $page->id_parent = $page_parent;
 
@@ -147,7 +133,6 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $this->view['page']   = $page;
         $this->view['errors'] = $errors;
-        // $this->view['attachments'] = json_encode($page->attachments);
 
         $this->template->content = View::factory('templates/pages/writing', $this->view);
     }
