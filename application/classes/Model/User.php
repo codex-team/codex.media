@@ -162,7 +162,8 @@ class Model_User extends Model
 
     public function saveAvatar($file, $path)
     {
-        $model    = new Model_Methods();
+        $model    = new Model_File();
+        $model->type = Model_File::USER_PHOTO;
         $filename = $model->saveImage($file, $path);
 
         $fields = array(
@@ -199,7 +200,14 @@ class Model_User extends Model
             ->order_by('id','DESC')
             ->execute();
 
-        return Model_Page::rowsToModels($pages);
+        $models = Model_Page::rowsToModels($pages);
+
+        foreach ($models as $page) {
+            $page->blocks = $page->getBlocks(true); // escapeHTML = true
+            $page->description = $page->getDescription();
+        }
+
+        return $models;
     }
 
     public static function getUsersList($status)

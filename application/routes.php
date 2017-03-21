@@ -81,26 +81,14 @@ Route::set('ADMIN_PAGE', 'admin(/<page>(/<id>))')->defaults(array(
     'action' => 'index'
 ));
 
-
 /**
 * Ajax routes
 */
-Route::set('AJAX_FILE_TRANSPORT', 'file/transport')->defaults(array(
+Route::set('AJAX_FILE_TRANSPORT', 'upload/<type>')->defaults(array(
     'controller'      => 'transport',
-    'action'          => 'file_uploader',
-    'show'            => true,
-    'siteHitsBlocked' => true
+    'action'          => 'upload'
 ));
 
-Route::set('PAGE_FILES_TRANSPORT', 'ajax/file_transport')->defaults(array(
-    'controller'      => 'admin',
-    'action'          => 'file_uploader'
-));
-
-Route::set('PAGE_FILES_EDITING', 'ajax/edit_file/<type>')->defaults(array(
-    'controller'      => 'ajax',
-    'action'          => 'edit_file'
-));
 
 Route::set('REPEAT_CONFIRMATION_EMAIL_SENDING', 'ajax/confirmation-email')->defaults(array(
     'controller'      => 'ajax',
