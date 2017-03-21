@@ -127,7 +127,6 @@ class Controller_User extends Controller_Base_preDispatch
 
         $this->view['error']     = $error;
         $this->view['success']   = $succesResult;
-        $this->view['user']      = $this->user;
 
         $this->template->content = View::factory('/templates/users/settings', $this->view);
     }
