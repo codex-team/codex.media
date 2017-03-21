@@ -68,6 +68,21 @@
         var editorReady = codex.writing.prepare({
                 hideEditorToolbar : <?= $hideEditorToolbar ? 'true' : 'false' ?>,
                 items : <?= json_encode($page->blocks) ?: '[]' ?>,
+                resources : [
+                    { name : 'codex-editor', path : {
+                        script : 'https://cdn.ifmo.su/editor/v1.6/codex-editor.js',
+                        style  : 'https://cdn.ifmo.su/editor/v1.6/codex-editor.css',
+                    }},
+
+                    { name : 'paragraph', path : {
+                        script : 'https://cdn.ifmo.su/editor/v1.6/plugins/paragraph/paragraph.js',
+                        style  : 'https://cdn.ifmo.su/editor/v1.6/plugins/paragraph/paragraph.css',
+                    }},
+                    { name : 'header', path : {
+                        script : 'https://cdn.ifmo.su/editor/v1.6/plugins/header/header.js',
+                        style  : 'https://cdn.ifmo.su/editor/v1.6/plugins/header/header.css',
+                    }},
+                ],
 
                 holderId : 'placeForEditor',
                 pageId   : <?= $page->id ?>,
