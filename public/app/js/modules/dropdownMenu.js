@@ -8,11 +8,11 @@ module.exports = (function () {
     /**
     * Module settings
     * @var {string} menuId - menu id
-    * @var {string} styleClass - menu css class
+    * @var {string} menuStyleClass - menu css class
     * @var {object} optionsDict - menu options' callbacks object
     */
     var menuId = 'js-dropdown-menu',
-        styleClass = 'dropdown-menu',
+        menuStyleClass = 'dropdown-menu',
         optionsDict = {
             'article' : {
                 'Редактировать': function () {
@@ -51,9 +51,9 @@ module.exports = (function () {
     * @param {string} title - textContent of the HTML element
     * @param {function} callback - onclick action
     */
-    var _createOptionBlock = function (title, callback) {
+    var createOptionBlock = function (title, callback) {
 
-        var optionBlock = document.createElement('div');
+        var optionBlock = document.createElement('DIV');
 
         optionBlock.textContent = title;
         optionBlock.addEventListener('click', callback);
@@ -67,16 +67,16 @@ module.exports = (function () {
     * Creates the dropdown menu block of given entity
     * @param {string} entity - menu entity type
     */
-    var _createMenuBlock = function (entity) {
+    var createMenuBlock = function (entity) {
 
-        var block = document.createElement('div');
+        var block = document.createElement('DIV');
 
         block.id = menuId;
-        block.classList.add(styleClass);
+        block.classList.add(menuStyleClass);
 
         for (var option in optionsDict[entity]) {
 
-            block.appendChild(_createOptionBlock(option, optionsDict[entity][option]));
+            block.appendChild(createOptionBlock(option, optionsDict[entity][option]));
 
         }
 
@@ -88,7 +88,7 @@ module.exports = (function () {
     * @private
     * Finds a menu or returns null
     */
-    var _getMenu = function () {
+    var getMenu = function () {
 
         return document.getElementById(menuId);
 
@@ -99,7 +99,7 @@ module.exports = (function () {
     * Hides the menu
     * @param {Element} menu - menu DOM Element
     */
-    var _hide = function (menu) {
+    var hide = function (menu) {
 
         if (menu) {
 
@@ -115,9 +115,9 @@ module.exports = (function () {
     * @param {string} entity - menu entity type
     * @param {Element} container - menu container
     */
-    var _show = function (entity, container) {
+    var show = function (entity, container) {
 
-        container.appendChild(_createMenuBlock(entity));
+        container.appendChild(createMenuBlock(entity));
 
     };
 
@@ -133,34 +133,34 @@ module.exports = (function () {
 
         document.body.addEventListener('click', function () {
 
-            _hide(_getMenu());
+            hide(getMenu());
 
         });
 
         var target = event.currentTarget;
-        var menu = _getMenu();
+        var menu = getMenu();
 
         if (menu) {
 
             if (menu.parentNode == target) {
 
-                _hide(menu);
+                hide(menu);
 
             } else {
 
-                _hide(menu);
-                _show(entity, target);
+                hide(menu);
+                show(entity, target);
 
             }
 
         } else {
 
-            _show(entity, target);
+            show(entity, target);
 
         }
 
     };
 
-    return {toggle: toggle};
+    return { toggle : toggle };
 
 })();
