@@ -111,4 +111,24 @@ class Model_Settings extends Model_preDispatch
 
         return $paramList;
     }
+
+    public static function newBranding($filename)
+    {
+        $settings = new self();
+        $branding = $settings->get('branding');
+
+        if (property_exists($branding, 'name')) {
+
+            $branding->value = $filename;
+            $branding->update();
+
+        } else {
+
+            $branding->value = $filename;
+            $branding->insert();
+
+        }
+
+        return $branding->value;
+    }
 }

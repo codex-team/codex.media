@@ -29,6 +29,7 @@ class Model_File extends Model
     const EDITOR_IMAGE = 1;
     const EDITOR_FILE  = 2;
     const USER_PHOTO   = 3;
+    const BRANDING     = 4;
 
     public function __construct($id = null, $file_hash_hex = null, $row = array())
     {
@@ -76,8 +77,15 @@ class Model_File extends Model
                     $this->filename = 'o_' . $saved;
                 }
                 break;
-        }
+            case self::BRANDING:
+                $saved = $this->saveImage($file, $path, $config['sizes']);
+                if ($saved) {
 
+                    // save branding as site_info
+                    $branding = Model_Settings::newBranding($saved);
+                    $this->filename = 'o_' . $branding;
+                }
+        }
 
         if (!$this->filename) {
             return false;
@@ -136,14 +144,6 @@ class Model_File extends Model
         return $info['filename'];
 
     }
-
-
-
-
-
-
-
-
 
     public function get($id = null, $file_hash_hex = null, $file_row = array())
     {

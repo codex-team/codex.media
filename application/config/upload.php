@@ -18,6 +18,24 @@ return array
         )
     ),
 
+    Model_File::BRANDING => array(
+        'path' => 'upload/branding/',
+        /**
+         * Image sizes config
+         * key - filename prefix_
+         * first argument  — need crop square or should resize with saving ratio
+         * second argument — max width
+         * third argument  — max height
+         */
+        'sizes' => array(
+            'o'  => array(false, 1500, 300),
+            'b'  => array(true , 200),
+            'm'  => array(true , 100),
+            's'  => array(true , 50),
+        )
+
+    ),
+
     Model_File::EDITOR_FILE => array(
         'path' => 'upload/pages/files/'
     ),

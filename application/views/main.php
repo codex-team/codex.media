@@ -27,7 +27,15 @@
 </head>
 <body>
 
-    <div class="branding" id="brandingSection" style="background: #202840">
+    <?
+        if (Arr::get($site_info, 'branding')) {
+
+            $branding = 'upload/branding/' . Arr::get($site_info, 'branding');
+
+        }
+
+    ?>
+    <div class="branding" id="brandingSection" style="background-image: url(<?=$branding; ?>)">
 
         <div class="branding-content center-col">
 
@@ -76,7 +84,7 @@
             changeBrandingButton.addEventListener('click', function() {
 
                 codex.transport.init({
-                    url : '/file/transport/',
+                    url : '/upload/4',
                     accept : 'image/*',
                     beforeSend : function() {
 
@@ -84,10 +92,17 @@
                     },
                     success : function(result) {
 
-                        var data = JSON.parse(result);
-                        console.log(data);
+                        var response = JSON.parse(result),
+                            file,
+                            url;
 
-                        if ( data.success ) {
+                        if ( response.success ) {
+
+                            file = response.data;
+                            url = file.url;
+
+                            brandingSection.style.backgroundImage = `url('${url}')`;
+                            brandingSection.style.backgroundSize = "100% 100%";
 
 
                         }
