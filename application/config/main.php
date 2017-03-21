@@ -6,7 +6,7 @@ return array
         'name'          => '332 школа',
         'slogan'        => 'Официальный сайт образовательного учреждения',
         'description'   => 'новости 332 школы Санкт-Петербурга, профили преподавателей, официальные документы',
-        'mail'          => 'org@ifmo.su',
+        'mail'          => 'robot.codexclub@gmail.com',
         'support'       => 'info@ifmo.su'
     ),
 );
