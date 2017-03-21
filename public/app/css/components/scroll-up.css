@@ -1,13 +1,10 @@
-/**
- * ScrollUp
- */
-
 .scroll-up {
     position: fixed;
     top: 0;
     height: 100%;
     opacity: 0;
     cursor: auto;
+    will-change: width;
 }
 
 .scroll-up.show {
@@ -15,23 +12,24 @@
     cursor: pointer;
 }
 
- .scroll-up__arrow {
-    height: 100%;
-    position: fixed;
+.scroll-up__arrow {
+    position: absolute;
     top: 0;
+    bottom: 0;
+    left: 0;
     width: 100px;
     background-image: url(/public/app/svg/arrow-up.svg);
     background-position: center 34px;
     background-repeat: no-repeat;
-    transition: opacity 150ms ease-in;
+    will-change: background-color;
 }
 
-    .scroll-up:hover .scroll-up__arrow{
-        background-color: rgba(255,255,255,0.8);
-    }
+.scroll-up:hover .scroll-up__arrow {
+    background-color: rgba(255, 255, 255, 0.8);
+}
 
 @media all and (max-width: 1185px) {
-    .scroll-up{
+    .scroll-up {
         display: none;
     }
 }

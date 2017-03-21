@@ -4,109 +4,148 @@
 */
 
 
-module.exports = {
+module.exports = (function () {
 
-    SCROLL_UP_OFFSET : 100,
 
-    CENTER_COLUMN_WIDTH : 1010,
+    /**
+     * Scroll-up will be shown after sroll reaches this value
+     * @type {Number}
+     */
+    var offsetToShow = 300;
 
-    WRAPPER_WIDTH : 100,
+    /**
+     * Size content width
+     * @type {Number}
+     */
+    var layoutWidth = 0;
 
-    button : null,
+    /**
+     * Clickable Element that holds arrow
+     * @type {Element}
+     */
+    var clickableZone = null;
 
-    resizeTrigger : null,
+    /**
+     * Window Resize stop watcher Timeout
+     * @type {timeoutId}
+     */
+    var resizeStopWatcher = null;
+
+    /**
+     * @public
+     *
+     * Init method
+     * Fired after document is ready
+     */
+    var init = function ( layoutHolderId ) {
+
+        var layout = document.getElementById(layoutHolderId);
+
+        if (!layout) {
+
+            codex.core.log('Layout center-col ID wissed', 'scrollUp', 'warn');
+            return;
+
+        }
+
+        layoutWidth = layout.offsetWidth;
+
+        clickableZone = makeUI();
+
+        /** Bind click event on scroll-up button */
+        clickableZone.addEventListener('click', scrollPage);
+
+        /** Global window scroll handler */
+        window.addEventListener('scroll', windowScrollHandler);
+
+        /** Autoresize */
+        window.addEventListener('resize', sizeChanged, false);
+
+        /** Set size */
+        resize();
+
+        /* Check heigth */
+        windowScrollHandler();
+
+    };
 
     /**
     * Scroll the document to the begin position
     * @param {number} yCoords Y-coordinate
     */
-    scrollPage : function (yCoords) {
+    var scrollPage = function (yCoords) {
 
         window.scrollTo(0, yCoords);
 
-    },
+    };
 
     /**
     * Hiding Scroll-up button if user on the top of page
     */
-    windowScrollHandler : function () {
+    var windowScrollHandler = function () {
 
-        var notTheTop = window.pageYOffset > codex.scrollUp.SCROLL_UP_OFFSET;
+        var notTheTop = window.pageYOffset > offsetToShow;
 
         if (notTheTop) {
 
-            codex.scrollUp.button.classList.add('show');
+            clickableZone.classList.add('show');
 
         } else {
 
-            codex.scrollUp.button.classList.remove('show');
+            clickableZone.classList.remove('show');
 
         }
 
-    },
+    };
 
     /**
     * Resize hover/click area touching user width of screen
     */
-    resize : function () {
+    var resize = function () {
 
-        var clientWidth = document.body.clientWidth,
-            wrapperWitdh = (clientWidth - codex.scrollUp.CENTER_COLUMN_WIDTH) / 2;
+        var windowWidth     = document.body.clientWidth,
+            leftColumtWidth = (windowWidth - layoutWidth) / 2;
 
-        codex.scrollUp.button.style.width = wrapperWitdh + 'px';
+        clickableZone.style.width = leftColumtWidth + 'px';
 
-        if (wrapperWitdh < codex.scrollUp.WRAPPER_WIDTH) {
-
-            codex.scrollUp.button.style.width = codex.scrollUp.button.style['min-width'];
-
-        }
-
-    },
+    };
 
 
     /**
     * Delay for resize
     */
-    sizeChanged : function () {
+    var sizeChanged = function () {
 
-        window.clearTimeout(codex.scrollUp.resizeTrigger);
-        codex.scrollUp.resizeTrigger = window.setTimeout(codex.scrollUp.resize, 100);
+        if ( resizeStopWatcher ) {
 
-    },
+            window.clearTimeout(resizeStopWatcher);
+
+        }
+
+        resizeStopWatcher = window.setTimeout(resize, 150);
+
+    };
 
     /**
-    * Init method
-    * Fired after document is ready
-    */
-    init : function () {
+     * Makes scroll-up arrow and wrapper
+     */
+    var makeUI = function () {
 
-        /** Create scroll-up button */
-        var arrow = document.createElement('DIV');
+        var wrapper = document.createElement('DIV'),
+            arrow   = document.createElement('DIV');
 
+        wrapper.classList.add('scroll-up');
         arrow.classList.add('scroll-up__arrow');
 
-        /** Create wrapper for scrollUp arrow */
-        this.button = document.createElement('DIV');
-        this.button.classList.add('scroll-up');
+        wrapper.appendChild(arrow);
+        document.body.appendChild(wrapper);
 
-        this.button.appendChild(arrow);
-        document.body.appendChild(this.button);
+        return wrapper;
 
-        /** Bind click event on scroll-up button */
-        this.button.addEventListener('click', codex.scrollUp.scrollPage);
+    };
 
-        /** Global window scroll handler */
-        window.addEventListener('scroll', codex.scrollUp.windowScrollHandler);
+    return {
+        init: init
+    };
 
-        /** Autoresize */
-        window.addEventListener('resize', codex.scrollUp.sizeChanged, false);
-
-        /** Set size */
-        this.resize();
-
-        /* Check heigth */
-        this.windowScrollHandler();
-
-    }
-
-};
+}());

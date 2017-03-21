@@ -40,9 +40,15 @@ codex = (function (codex) {
             blockId : 'js-contrast-version-holder',
         });
 
-        codex.core.log('Initialized', 'App init', 'info');
+        /**
+         * Activate scroll-up button
+         */
+        codex.scrollUp.init('js-layout-holder');
 
-        codex.scrollUp.init();
+        /**
+         * Client is ready
+         */
+        codex.core.log('Initialized', 'CodeX', 'info');
 
     };
 
