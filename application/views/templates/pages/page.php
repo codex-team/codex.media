@@ -76,17 +76,6 @@
         </div>
     <? endif ?>
 
-    <? /* Page's images block */ ?>
-    <? if ($page->images): ?>
-        <div class="w_island images" style="margin: 5px 0 5px 5px">
-            <? foreach ($page->images as $image): ?>
-                <a href="/upload/page_images/o_<?= $image->filename ?>" target="_blank">
-                    <img src="/upload/page_images/b_<?= $image->filename ?>" class="page_image">
-                </a>
-            <? endforeach ?>
-        </div>
-    <? endif ?>
-
     <?= View::factory('templates/components/share', array(
         'offer' => 'Если вам понравилась статья, поделитесь ссылкой на нее',
         'url'   => 'https://' . Arr::get($_SERVER, 'HTTP_HOST', Arr::get($_SERVER, 'SERVER_NAME', 'edu.ifmo.su')) . '/p/' . $page->id,
