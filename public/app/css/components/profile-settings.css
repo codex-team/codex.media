@@ -59,7 +59,7 @@
 
 .profile-settings__logout {
     padding: 20px 15px;
-    margin-left: -15px; 
+    margin-left: 25px; 
 }
 
 .profile-settings__about {
@@ -82,24 +82,35 @@
     margin-bottom: 15px;   
 }
 .profile-settings__profile-nav {
-    padding: 20px 15px; 
+    padding: 20px 0px; 
     margin-right: 69%;
+}
+
+.profile-settings__profile-nav svg {
+    margin-right: 2px; 
 }
 .profile__settings_buttom {
     padding: 20px 15px;
 }
 
 .profile__settings_ava-button {
-    width: 50px;
-    height: 50px;
-    margin-left: 25px;
-    margin-top: 25px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    border-radius: 0px #fff; 
+    border-radius: 0px #fff;
+    border: none;
+    cursor: pointer; 
     position: absolute;
-    opacity: 0.7;
     text-align: center;
+    display: none; 
+    z-index: 1;
+    outline: none;
+    background-color: transparent; 
+}
 
+.profile__settings_ava-button svg {
+    width: 30px;
+    height: 30px;   
 }
 
 .profile-settings__ava {
@@ -107,20 +118,36 @@
     height: 100px;
     border-radius: 50%;
     margin-left: 30px;
-    border-style: dashed;
-
+    
 }
 
-.profile-settings__ava:hover {
-    /** -webkit-filter: blur(5px); */
+.profile-settings_block-ava:hover .profile__settings_ava-button {
+ 
+    display: block;
+}
+
+.profile-settings_block-ava:hover .profile-settings__ava {
+    -webkit-filter: blur(5px);
 }
 
 .profile-settings_block-ava {
     width: 100px ;
     height: 100px;
     float: right;
+    position: relative;
 }
 
+.profile-settings_block-ava:hover:before  {
+    content: "";
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    left: -7px;
+    top: -7px;
+    border: 2px dashed #999;
+    display: block;
+}
 .profile-settings__island-navigation {
     background: #fff;
     border-radius: 3px;

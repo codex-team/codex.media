@@ -32,16 +32,15 @@
 
     <form method="POST" action="user/settings" enctype="multipart/form-data">
    
-
         <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
+        
         <div class="profile-settings_block-ava">
+        
+            <button type="file" name="profile_ava" class="profile__settings_ava-button" onclick="codex.upload.init();">
 
-                <button type="file" name="profile_ava" class="profile__settings_ava-button" onclick="codex.upload.init();">
-                    <? include(DOCROOT . "public/app/svg/camera.svg") ?>
-            
-                </button>
-
-                <img class="profile-settings__ava" src="<?= $user->photo_medium ?>">    
+                <? include(DOCROOT . "public/app/svg/camera.svg") ?>
+            </button>
+            <img class="profile-settings__ava" src="<?= $user->photo_medium ?>">    
         </div>  
 
         <div class="profile-settings__block">
