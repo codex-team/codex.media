@@ -42,7 +42,7 @@ class Model_Auth extends Model_preDispatch
 
         $email = new Email();
         return $email->send(
-            [$this->user->email, $this->user->name],
+            [$this->user->email],
             [$GLOBALS['SITE_MAIL'], "no-reply"],
             "Добро пожаловать на ".$_SERVER['HTTP_HOST'],
             $message,
@@ -64,7 +64,7 @@ class Model_Auth extends Model_preDispatch
 
         $email = new Email();
         return $email->send(
-            [$this->user->email, $this->user->name],
+            [$this->user->email],
             [$GLOBALS['SITE_MAIL'], "no-reply"],
             "Сброс пароля на ".$_SERVER['HTTP_HOST'],
             $message,
