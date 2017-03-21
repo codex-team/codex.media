@@ -61,7 +61,7 @@
             },
 
             data : {
-                items : <?= json_encode($page->blocks) ?: '[]' ?> 
+                items : <?= json_encode($page->blocks) ?: '[]' ?>
             }
         });
     });

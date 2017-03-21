@@ -40,21 +40,27 @@
     </h1>
 
     <? /* Page content */ ?>
-    <? if ($page->blocks_array): ?>
+    <? if (!empty($page->blocks)): ?>
         <div class="article__content">
-            <? for ($i = 0; $i < count($page->blocks_array); $i++): ?>
-                <?= $page->blocks_array[$i]; ?>
-            <? endfor ?>
+            <? foreach ($page->blocks as $block): ?>
+                <?= View::factory(
+                        'templates/editor/plugins/' . $block['type'],
+                        array(
+                        'block' => $block['data']
+                        )
+                        )->render();
+                ?>
+            <? endforeach; ?>
         </div>
     <? endif ?>
 
     <? /* Child pages */ ?>
-    <? if ($page->childrens): ?>
+    <? if ($page->children): ?>
         <ul class="children-pages">
-            <? foreach ($page->childrens as $children): ?>
+            <? foreach ($page->children as $child): ?>
                 <li class="children-pages__item">
-                    <a class="children-pages__link" href="/p/<?= $children->id ?>/<?= $children->uri ?>">
-                        <?= $children->title ?>
+                    <a class="children-pages__link" href="/p/<?= $child->id ?>/<?= $child->uri ?>">
+                        <?= $child->title ?>
                     </a>
                 </li>
             <? endforeach ?>
@@ -73,17 +79,6 @@
                 <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=news"><?= $page->is_news_page ? 'убрать из новостей' : 'добавить в новости' ?></a>
             <? endif ?>
             <a class="button js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
-        </div>
-    <? endif ?>
-
-    <? /* Page's images block */ ?>
-    <? if ($page->images): ?>
-        <div class="w_island images" style="margin: 5px 0 5px 5px">
-            <? foreach ($page->images as $image): ?>
-                <a href="/upload/page_images/o_<?= $image->filename ?>" target="_blank">
-                    <img src="/upload/page_images/b_<?= $image->filename ?>" class="page_image">
-                </a>
-            <? endforeach ?>
         </div>
     <? endif ?>
 

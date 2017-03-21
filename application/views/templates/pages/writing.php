@@ -19,13 +19,6 @@
 
 <div class="writing--fullscreen">
     <?= View::factory('templates/pages/form', array(
-        'page'        => $page,
-        'attachments' => $attachments,
+        'page'        => $page
     )); ?>
 </div>
-
-<style>
-    .grid-col--left  {
-        display: none
-    }
-</style>

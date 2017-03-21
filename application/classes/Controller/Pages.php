@@ -81,16 +81,19 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         $openFullScreen = (int) Arr::get($_POST, 'openFullScreen') === 1;
 
+
+        $page = new Model_Page($page_id);
+
+
         if (Security::check($csrfToken)) {
 
             /** Сабмит формы */
-            $page = self::get_form();
+            //$page = self::get_form();
 
             if ($openFullScreen) {
 
                 $this->view['page']   = $page;
                 $this->view['errors'] = $errors;
-                $this->view['attachments'] = json_encode($page->attachments);
 
                 $this->template->content = View::factory('templates/pages/writing', $this->view);
                 return;
@@ -125,19 +128,13 @@ class Controller_Pages extends Controller_Base_preDispatch
             // $page_id = (int) Arr::get($_GET, 'id', 0);
             // $page    = new Model_Page($page_id);
 
-            $page->attachments = Model_File::getPageFiles($page->id, false, true);
-            $page->files       = Model_File::getPageFiles($page->id, Model_File::PAGE_FILE);
-            $page->images      = Model_File::getPageFiles($page->id, Model_File::PAGE_IMAGE);
 
-            $this->view['attachments'] = json_encode($page->attachments);
-
-            if (!$page_id) $page->id_parent = $page_parent;
+            //if (!$page_id) $page->id_parent = $page_parent;
 
         }
 
         $this->view['page']   = $page;
-        $this->view['errors'] = $errors;
-        $this->view['attachments'] = json_encode($page->attachments);
+        //$this->view['errors'] = $errors;
 
         $this->template->content = View::factory('templates/pages/writing', $this->view);
     }

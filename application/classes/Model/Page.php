@@ -20,14 +20,15 @@ class Model_Page extends Model
     public $feed_key       = '';
 
     public $title           = '';
-    public $content         = '';
+    public $content         = null;
     public $description     = '';
     public $blocks          = array();
 
+    public $parent          = null;
+    public $children        = array();
+    public $comments        = array();
+
     public $commentsCount   = 0;
-    public $attachments     = array();
-    public $files           = array();
-    public $images          = array();
 
     const STATUS_SHOWING_PAGE = 0;
     const STATUS_HIDDEN_PAGE  = 1;
@@ -38,9 +39,9 @@ class Model_Page extends Model
     const LIST_PAGES_USERS    = 3;
 
     /** #TODO create one model_feed_pages */
-    const FEED_KEY_NEWS           = 'news';
-    const FEED_KEY_TEACHERS_BLOGS = 'teachers';
-    const FEED_KEY_BLOGS          = 'all';
+    const FEED_KEY_NEWS           = 'codex.org.news';
+    const FEED_KEY_TEACHERS_BLOGS = 'codex.org.teachers';
+    const FEED_KEY_BLOGS          = 'codex.org.all';
 
     public function __construct($id = 0)
     {
@@ -67,43 +68,34 @@ class Model_Page extends Model
             foreach ($page_row as $field => $value) {
 
                 if (property_exists($this, $field)) {
-
                     $this->$field = $value;
                 }
             }
 
             try {
 
-                $config = Kohana::$config->load('editor');
-                $pageContent = new CodexEditor($this->content, $config);
-                $this->content = $pageContent->getData();
+                $editorConfig = Kohana::$config->load('editor');
+                $editor = new CodexEditor($this->content, $editorConfig);
+
+                $this->blocks = $editor->getBlocks();
 
             } catch (Exception $e) {
 
-                throw new Kohana_Exception("Error in content structure" . $e->getMessage());
-
-            }
-
-            try {
-
-                $pageConfig = json_decode($this->content);
-
-                // get only blocks as array
-                if (property_exists($pageConfig, 'data')) {
-                    $this->blocks = $pageConfig->data;
-                }
-
-            } catch (Exception $e) {
-
-                throw new Kohana_Exception("Error: data is not exist" . $e->getMessage());
+                throw new Kohana_Exception("Error while parsing page content: " . $e->getMessage());
 
             }
 
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
+
+            $this->parent = new Model_Page($this->id_parent);
+            $this->children = self::getChildrenPagesByParent($this->id);
+            $this->comments = Model_Comment::getCommentsByPageId($this->id);
+
             $this->description = $this->getDescription();
             $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
             $this->commentsCount = $this->getCommentsCount();
+
         }
 
         return $this;
@@ -347,9 +339,9 @@ class Model_Page extends Model
 
             foreach ($blocks as $block) {
 
-                if ($block->type == 'paragraph') {
+                if ($block['type'] == 'paragraph') {
 
-                    $description = $block->data->text;
+                    $description = $block['data']['text'];
 
                     break;
                 }

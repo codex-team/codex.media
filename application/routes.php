@@ -44,7 +44,7 @@ Route::set('NEW_PAGE', 'p/writing')->defaults(array(
 ));
 
 Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
-    'controller' => 'pages',
+    'controller' => 'Page_Index',
     'action' => 'show'
 ));
 
