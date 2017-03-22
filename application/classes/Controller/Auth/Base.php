@@ -105,13 +105,20 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
         $security = Dao_Users::select(['email', 'password'])->where('id', '=', $uid)->execute();
         $socials  = Dao_Users::select(['twitter', 'facebook', 'vk'])->where('id', '=', $uid)->execute();
 
-        if (!empty($security['email']) && !empty($security['passwords'])) {
+        if (!empty($security[0]['email']) && !empty($security[0]['password'])) {
 
             return true;
 
-        } elseif ($socials && count($socials[0]) > 1) {
+        } elseif ($socials && isset($socials[0]) && count($socials[0])) {
 
-            return true;
+            $nonEmptySocials = 0;
+            foreach ( $socials[0] as $social ) {
+                if (!empty($social)) {
+                    $nonEmptySocials += 1;
+                }
+            }
+
+            return $nonEmptySocials > 1;
 
         } else return false;
     }
