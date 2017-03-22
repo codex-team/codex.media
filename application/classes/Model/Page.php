@@ -20,9 +20,19 @@ class Model_Page extends Model
     public $feed_key       = '';
 
     public $title           = '';
-    public $content         = '';
     public $description     = '';
-    public $blocks          = array();
+
+    /**
+     * JSON with blocks
+     * @var string
+     */
+    public $content = '';
+
+    /**
+     * Array of Blocks classes
+     * @var array
+     */
+    public $blocks = array();
 
     public $commentsCount   = 0;
     public $attachments     = array();
@@ -65,48 +75,59 @@ class Model_Page extends Model
         if (!empty($page_row)) {
 
             foreach ($page_row as $field => $value) {
-
                 if (property_exists($this, $field)) {
-
                     $this->$field = $value;
                 }
             }
 
-            try {
-
-                $config = Kohana::$config->load('editor');
-                $pageContent = new CodexEditor($this->content, $config);
-                $this->content = $pageContent->getData();
-
-            } catch (Exception $e) {
-
-                throw new Kohana_Exception("Error in content structure" . $e->getMessage());
-
-            }
-
-            try {
-
-                $pageConfig = json_decode($this->content);
-
-                // get only blocks as array
-                if (property_exists($pageConfig, 'data')) {
-                    $this->blocks = $pageConfig->data;
-                }
-
-            } catch (Exception $e) {
-
-                throw new Kohana_Exception("Error: data is not exist" . $e->getMessage());
-
-            }
-
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
-            $this->description = $this->getDescription();
             $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
             $this->commentsCount = $this->getCommentsCount();
         }
 
         return $this;
+    }
+
+    /**
+     * Fill $this->blocks from JSON object stored in $this->content
+     *
+     * @param Boolean $escapeHTML  pass TRUE to escape HTML entities
+     *
+     * @throws Kohana_Exception  error thrown by CodeXEditor vendor module
+     * @return Array - list of page blocks
+     */
+    public function getBlocks($escapeHTML = false)
+    {
+        $config = Kohana::$config->load('editor');
+
+        $blocksJSON = '';
+        $blocks = array();
+
+        try {
+
+            $CodexEditor = new CodexEditor($this->content, $config);
+            $blocksJSON  = $CodexEditor->getData($escapeHTML);
+
+            $blocks = json_decode($blocksJSON);
+
+            if (json_last_error()) {
+                throw new \Exception('Wrong JSON format: ' . json_last_error_msg());
+            }
+
+            if (property_exists($blocks, 'data')) {
+                return $blocks->data;
+            } else {
+                throw new Kohana_Exception("Error: 'data' is not exist. " . $e->getMessage());
+            }
+
+        } catch (Exception $e) {
+
+            throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
+
+        }
+
+        return array();
     }
 
     public function insert()
@@ -157,7 +178,7 @@ class Model_Page extends Model
         $this->removePageFromFeeds();
 
         /* remove files */
-        $files = Model_File::getPageFiles($this->id);
+        // $files = Model_File::getPageFiles($this->id);
 
         foreach ($files as $file) {
 
@@ -331,28 +352,25 @@ class Model_Page extends Model
         $feed = new Model_Feed_All();
         $feed->remove($this->id);
     }
-/***/
 
     /**
      * Функция находит первый блок paragraph и возвращает его в качестве превью
-     *
-     * #TODO возвращать и научиться обрабатывать блок(-и) любого типа с параметром cover = true
      */
-    private function getDescription()
+    public function getDescription()
     {
-        $blocks = $this->blocks;
+        if (empty($this->blocs)){
+            $this->blocks = $this->getBlocks();
+        }
+
         $description = '';
 
-        if ($blocks) {
+        foreach ($this->blocks as $block) {
 
-            foreach ($blocks as $block) {
+            if ($block->type == 'paragraph') {
 
-                if ($block->type == 'paragraph') {
+                $description = $block->data->text;
 
-                    $description = $block->data->text;
-
-                    break;
-                }
+                break;
             }
         }
 

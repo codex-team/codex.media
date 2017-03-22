@@ -23,15 +23,17 @@ class Controller_Pages extends Controller_Base_preDispatch
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
             }
 
+            $escapeHTML   = true;
+            $page->blocks = $page->getBlocks($escapeHTML);
+
             $page->parent    = new Model_Page($page->id_parent);
             $page->childrens = Model_Page::getChildrenPagesByParent($page->id);
             $page->comments  = Model_Comment::getCommentsByPageId($id);
 
             /** Render blocks */
-            $page->blocks_array= array();
+            $page->blocks_array = array();
 
-            for($i = 0; $i < count($page->blocks); $i++) {
-
+            for ( $i = 0; $i < count($page->blocks); $i++) {
                 $page->blocks_array[] = View::factory(
                     'templates/editor/plugins/' . $page->blocks[$i]->type,
                     array(
@@ -65,7 +67,10 @@ class Controller_Pages extends Controller_Base_preDispatch
 
         /** check permissions for edit */
         $page_id = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
+
+
         $page = new Model_Page($page_id);
+
         $is_valid_author = $page_id ? $this->user->id == $page->author->id : true;
 
         if (!$this->user->id || !$is_valid_parent || !$is_valid_author) {
@@ -73,6 +78,16 @@ class Controller_Pages extends Controller_Base_preDispatch
             self::error_page('Недостаточно прав для создания или редактирования страницы сайта');
             return FALSE;
         }
+
+        /**
+         * @var Compose Blocks list
+         */
+        if ($page->content) {
+            $escapeHTML   = false;
+            $page->blocks = $page->getBlocks($escapeHTML);
+        }
+
+
 
         $errors    = array();
         $csrfToken = Arr::get($_POST, 'csrf');
@@ -102,9 +117,6 @@ class Controller_Pages extends Controller_Base_preDispatch
                     $page = $page->insert();
                 }
 
-                /* insert page id to feeds */
-                $page->addPageToFeeds();
-
                 $this->redirect('/p/' . $page->id . '/' . $page->uri);
 
             } else {
@@ -113,7 +125,7 @@ class Controller_Pages extends Controller_Base_preDispatch
             }
 
         } else {
-        /** open form */
+
 
             if (!$page_id) $page->id_parent = $page_parent;
 
@@ -260,4 +272,5 @@ class Controller_Pages extends Controller_Base_preDispatch
         $this->view['error_text'] = $error_text;
         $this->template->content = View::factory('templates/error', $this->view);
     }
+
 }

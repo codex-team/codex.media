@@ -50,8 +50,6 @@
         "codex" : true,
         "console" : true,
         "FormData" : true,
-        "paragraph" : true,
-        "header" : true,
         "Promise" : true
     }
 }
