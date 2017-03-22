@@ -2,8 +2,10 @@
 
     <div class="writing-navigation">
 
-        <a href="/" rel="nofollow">
+        <a href="/user/<?= $user->id; ?>" rel="nofollow">
             <img class="writing-navigation__back-icon" src="<?= $user->photo ?>">
+        </a>
+        <a href="/" rel="nofollow">
             Главная
         </a>
         <? include(DOCROOT . "public/app/svg/arrow-right.svg") ?>
