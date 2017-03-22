@@ -8,7 +8,11 @@
 $DIGIT  = '\d+';
 $STRING = '[-a-zA-Z\d]+';
 
-$FEED_KEYS = Model_Feed_Pages::TYPE_ALL.'|'.Model_Feed_Pages::TYPE_TEACHERS.'|'.Model_Feed_Pages::TYPE_NEWS;
+$FEED_KEYS = implode('|', array(
+    Model_Feed_Pages::TYPE_ALL,
+    Model_Feed_Pages::TYPE_TEACHERS,
+    Model_Feed_Pages::TYPE_NEWS
+));
 
 
 /**

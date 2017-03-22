@@ -51,7 +51,7 @@
                 pageId            : <?= $page->id ?>,
                 parentId          : <?= $page->id_parent ?>,
                 hideEditorToolbar : <?= $hideEditorToolbar ? 'true' : 'false' ?>,
-                data             : <?= $page->content ?: '[]' ?>,
+                data              : <?= $page->content ?: '[]' ?>,
                 resources         : []
             };
 

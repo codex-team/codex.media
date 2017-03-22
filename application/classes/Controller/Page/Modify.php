@@ -3,42 +3,43 @@
 class Controller_Page_Modify extends Controller_Base_preDispatch
 {
 
-    public function action_save() {
+    public $page = null;
 
-        if (!$this->request->is_ajax() || !Security::check(Arr::get($_POST, 'csrf'))) {
+    public function before() {
+
+        parent::before();
+
+        $this->auto_render = false;
+
+        if (!$this->request->is_ajax()) {
             throw new HTTP_Exception_403();
         }
 
-        /** check permissions for cteate or edit subpage */
-        $page_parent = (int) Arr::get($_POST, 'parent', Arr::get($_GET, 'parent', 0));
-        $parent = new Model_Page($page_parent);
-        $is_valid_parent = $parent->id != 0 ? $this->user->id == $parent->author->id : true;
+        $this->init();
 
-        /** check permissions for edit */
-        $page_id = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
-        $page = new Model_Page($page_id);
-        $is_valid_author = $page_id ? $this->user->id == $page->author->id : true;
+    }
+
+    public function action_save() {
 
         $response = array(
             'success' => 0,
-          );
+        );
 
-        if (!$this->user->id || !$is_valid_parent || !$is_valid_author) {
+        $csrf = Arr::get($_POST, 'csrf', '');
+
+        if (!$this->page->canModify($this->user) || !Security::check($csrf)) {
 
             $response['message'] = 'Недостаточно прав для создания или редактирования страницы сайта';
 
-            $this->auto_render = false;
-            $this->response->body(@json_encode($response));
-
+            $this->response->body(json_encode($this->page));
             return;
 
         }
 
-        $page->title = Arr::get($_POST, 'title', $page->title);
-        $page->content = Arr::get($_POST, 'content', $page->content);
-        $page->id_parent = $page_parent;
+        $this->page->title = Arr::get($_POST, 'title', $this->page->title);
+        $this->page->content = Arr::get($_POST, 'content', $this->page->content);
 
-        if(!$page->title) {
+        if(!$this->page->title) {
 
             $response['message'] = 'Не заполнен заголовок';
 
@@ -49,19 +50,16 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         }
 
-        if ($page->id) {
-            $page->update();
+        if ($this->page->id) {
+            $this->page->update();
         } else {
-
-            $page->author = $this->user;
-            $page = $page->insert();
-
+            $this->page = $this->page->insert();
         }
 
         $response = array(
             'success' => 1,
             'message' => 'Страница успешно сохранена',
-            'id'      => $page->id
+            'id'      => $this->page->id
         );
 
         $this->auto_render = false;
@@ -71,10 +69,6 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
     public function action_promote() {
 
-        $this->auto_render = false;
-
-        $id   = $this->request->param('id');
-        $page = new Model_Page($id);
 
         $response = array(
             'success' => 0,
@@ -88,7 +82,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         $feed_key = Arr::get($_GET, 'list', '');
 
-        $page->toggleFeed($feed_key);
+        $this->page->toggleFeed($feed_key);
 
         $response['success'] = 1;
         $response['message'] = 'Статус страницы изменен';
@@ -99,22 +93,19 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
     public function action_delete()
     {
 
-        $id   = $this->request->param('id');
-        $page = new Model_Page($id);
 
         $response = array(
             'success' => 0,
         );
 
-        if ($this->user->isAdmin || $this->user->id == $page->author->id) {
+        if ($this->page->canModify($this->user)) {
 
-            $page->parent = new Model_Page($page->id_parent);
-            $page->setAsRemoved();
+            $this->page->setAsRemoved();
 
             $response = array(
                 'success' => 1,
                 'message' => 'Страница удалена',
-                'redirect' => $page->getUrlToParentPage()
+                'redirect' => $this->page->getUrlToParentPage()
             );
 
         } else {
@@ -128,7 +119,25 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
     }
 
+    private function init() {
 
+        $id = $this->request->param('id');
+
+        if ($id) {
+            $this->page = new Model_Page($id);
+            return;
+        }
+
+        $id = (int) Arr::get($_POST, 'id', 0);
+        $parent_id = (int) Arr::get($_POST, 'id_parent', 0);
+
+        $this->page             = new Model_Page($id);
+        $this->page->author     = $this->user;
+        $this->page->id_parent  = $parent_id;
+        $this->page->parent     = new Model_Page($parent_id);
+
+
+    }
 
 
 

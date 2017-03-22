@@ -58,6 +58,7 @@ class Model_Page extends Model
 
     private function fillByRow($page_row)
     {
+
         if (!empty($page_row)) {
 
             foreach ($page_row as $field => $value) {
@@ -71,8 +72,6 @@ class Model_Page extends Model
             $this->author = new Model_User($page_row['author']);
 
             $this->parent = new Model_Page($this->id_parent);
-            $this->children = self::getChildrenPagesByParent($this->id);
-            $this->comments = Model_Comment::getCommentsByPageId($this->id);
 
             $this->description = $this->getDescription();
             $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
@@ -157,9 +156,9 @@ class Model_Page extends Model
         }
 
         /* remove childs */
-        $childrens = $this->getChildrenPagesByParent($this->id);
+        $this->getChildrenPages();
 
-        foreach ($childrens as $page) {
+        foreach ($this->children as $page) {
 
             $page->setAsRemoved();
         }
@@ -186,15 +185,15 @@ class Model_Page extends Model
         return $pages;
     }
 
-    public static function getChildrenPagesByParent($id_parent)
+    public function getChildrenPages()
     {
         $query = Dao_Pages::select()
             ->where('status', '=', self::STATUS_SHOWING_PAGE)
-            ->where('id_parent','=', $id_parent)
+            ->where('id_parent','=', $this->id)
             ->order_by('id','ASC')
             ->execute();
 
-        return self::rowsToModels($query);
+        $this->children = self::rowsToModels($query);
     }
 
     private function getPageUri()
@@ -276,17 +275,10 @@ class Model_Page extends Model
      */
     public function removePageFromFeeds()
     {
-        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_NEWS);
-        $feed->remove($this->id);
-
-        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_ALL);
-        $feed->remove($this->id);
-
-        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_TEACHERS);
-        $feed->remove($this->id);
-
-        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MENU);
-        $feed->remove($this->id);
+        $this->removeFromFeed(Model_Feed_Pages::TYPE_NEWS);
+        $this->removeFromFeed(Model_Feed_Pages::TYPE_ALL);
+        $this->removeFromFeed(Model_Feed_Pages::TYPE_TEACHERS);
+        $this->removeFromFeed(Model_Feed_Pages::TYPE_MENU);
     }
 /***/
 
@@ -343,6 +335,10 @@ class Model_Page extends Model
         return $count;
     }
 
+    public function getComments() {
+        $this->comments = Model_Comment::getCommentsByPageId($this->id);
+    }
+
     public function getUrlToParentPage()
     {
         if ($this->id_parent != 0) {
@@ -358,4 +354,23 @@ class Model_Page extends Model
             return '/';
         }
     }
+
+    public function canModify($user) {
+
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        if ($this->parent->id && $this->parent->author->id != $user->id) {
+            return false;
+        }
+
+        if ($this->id && $this->author->id != $user->id) {
+            return false;
+        }
+
+        return true;
+
+    }
+
 }
