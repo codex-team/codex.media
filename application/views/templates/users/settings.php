@@ -23,11 +23,11 @@
     <form method="POST" action="user/settings" enctype="multipart/form-data">
         <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
         <div class="profile-settings__user-photo">
-            <div  class="profile-settings__camera" onclick="codex.upload.init();">
+            <div  class="profile-settings__camera" onclick="changePic();">
                 <? include(DOCROOT . "public/app/svg/camera.svg") ?>
             </div>
-            <img class="profile-settings__img" src="<?= $user->photo_medium ?>">    
-        </div>  
+            <img class="profile-settings__img" src="<?= $user->photo_medium ?>">
+        </div>
         <div class="profile-settings__about">
             <label class="profile-settings__name--label ">
                 Фамилия и Имя
@@ -43,44 +43,54 @@
         </div>
     </form>
 
-    <div class="profile-settings__social-buttons"> 
+    <div class="profile-settings__social-buttons">
         <? if ( !$user->vk): ?>
             <a class="profile-settings__social-button profile-settings__social-button--vk:hover" href="//vk.com/<?= $user->vk_uri ?>" target="_blank">
                 <i class="icon-vkontakte"></i>
                 Привязать
-            </a>    
+            </a>
         <? else: ?>
             <a class="profile-settings__social-button profile-settings__social-button--vk" href="//vk.com/<?= $user->vk_uri ?>" target="_blank">
                 <i class="icon-vkontakte"></i>
-                <?= $user->vk_uri ? $user->vk_uri : $user->vk_name ?>           
-            </a>                        
+                <?= $user->vk_uri ? $user->vk_uri : $user->vk_name ?>
+            </a>
         <? endif; ?>
 
         <? if ( !$user->facebook ): ?>
             <a class="profile-settings__social-button profile-settings__social-button--facebook:hover" href="/auth/fb" target="_blank">
                 <i class="icon-facebook"></i>
-                Привязать                     
+                Привязать
             </a>
         <? else: ?>
             <a class="profile-settings__social-button profile-settings__social-button--facebook" href="//fb.com/<?= $user->facebook_username ?>" target="_blank">
                 <i class="icon-facebook"></i>
-                <?= $user->facebook_name ? $user->facebook_name : $user->name ?>             
+                <?= $user->facebook_name ? $user->facebook_name : $user->name ?>
             </a>
         <? endif; ?>
         <? if ( !$user->twitter ): ?>
              <a class="profile-settings__social-button profile-settings__social-button--twitter:hover" href="/auth/fb?state=remove" target="_blank">
                 <i class="icon-twitter"></i>
-                Привязать                    
-            </a>                
+                Привязать
+            </a>
         <? else: ?>
             <a class="profile-settings__social-button profile-settings__social-button--twitter" href="<?= $user->twitter_username ?>" target="_blank">
                 <i class="icon-twitter"></i>
-                <?= $user->twitter_name ? $user->twitter_name : $user->name ?>               
+                <?= $user->twitter_name ? $user->twitter_name : $user->name ?>
             </a>
-        <? endif; ?> 
+        <? endif; ?>
     </div>
 </div>
+
 <?= View::factory('templates/components/email_confirm_island'); ?>
+
 <script>
+
+    var changePic = function () {
+
+            codex.transport.init({
+                url : 'upload/3'
+            });
+
+        };
 
 </script>
