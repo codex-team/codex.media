@@ -64,37 +64,37 @@
     padding: 20px 30px;
 }
 
-.profile-settings__link--profile {
+.profile-settings__link-profile {
     padding: 20px 0px; 
     margin-right: 69%;
 }
 
-.profile-settings__link--profile svg {
-    margin-right: 2px; 
+.profile-settings__link-profile svg {
+    margin-right: 2px;  
 }
 
-.profile-settings__link--logout {
+.profile-settings__link-logout {
     padding: 20px 15px;
     margin-left: 35px; 
 }
 
-.profile-settings__user-photo:hover .profile-settings__camera {
+.profile-settings__ava:hover .profile-settings__camera {
  
     display: block;
 }
 
-.profile-settings__user-photo:hover .profile-settings__img {
+.profile-settings__ava:hover .profile-settings__img {
     -webkit-filter: blur(5px);
 }
 
-.profile-settings__user-photo {
+.profile-settings__ava {
     width: 100px ;
     height: 100px;
     float: right;
     position: relative;
 }
 
-.profile-settings__user-photo:hover:before  {
+.profile-settings__ava:hover:before  {
     content: "";
     position: absolute;
     width: 110px;
@@ -132,7 +132,6 @@
     height: 100px;
     border-radius: 50%;
     margin-left: 30px;
-    
 }
 
 .profile-settings__about {

@@ -65,6 +65,11 @@ class Controller_User extends Controller_Base_preDispatch
 
     public function action_settings()
     {
+
+        if (!$this->user->id) {
+            throw new HTTP_Exception_403();
+        }
+
         $succesResult = false;
         $error = array();
         $csrfToken = Arr::get($_POST, 'csrf');

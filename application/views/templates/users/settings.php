@@ -1,9 +1,9 @@
 <div class="profile-settings__navigation">
-    <a class="profile-settings__link--profile"  href="/user/<?= $user->id ?>">
+    <a class="profile-settings__link-profile"  href="/user/<?= $user->id ?>">
         <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
         Профиль
     </a>
-    <a class="profile-settings__link--logout" href = "/logout" >
+    <a class="profile-settings__link-logout" href = "/logout" >
         Выйти
     </a>
 </div>
@@ -22,12 +22,14 @@
     <? endif; ?>
     <form method="POST" action="user/settings" enctype="multipart/form-data">
         <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
-        <div class="profile-settings__user-photo">
-            <div  class="profile-settings__camera" onclick=" codex.upload.init();">
+
+        <div class="profile-settings__ava">
+            <div  class="profile-settings__camera" onclick="codex.transport.selectFile( event, type );">
                 <? include(DOCROOT . "public/app/svg/camera.svg") ?>
             </div>
             <img class="profile-settings__img" src="<?= $user->photo_medium ?>">    
         </div>  
+
         <div class="profile-settings__about">
             <label class="profile-settings__name--label ">
                 Фамилия и Имя
