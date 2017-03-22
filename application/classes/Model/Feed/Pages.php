@@ -48,8 +48,7 @@ class Model_Feed_Pages extends Model_Feed_Abstract {
 
             foreach ($items as $id) {
 
-                $page = new Model_Page($id);
-                $page->description = $page->getDescription();
+                $page = new Model_Page($id, true);
 
                 $models_list[] = $page;
             }

@@ -20,7 +20,7 @@ class Model_Page extends Model
     public $feed_key       = '';
 
     public $title           = '';
-    public $content         = null;
+    public $content         = '';
     public $description     = '';
     public $blocks          = array();
 
@@ -38,11 +38,16 @@ class Model_Page extends Model
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS    = 3;
 
-    public function __construct($id = 0)
+    public function __construct($id = 0, $escapeHTML = false)
     {
         if (!$id) return;
 
         self::get($id);
+
+        $this->validateContent();
+        $this->getBlocks($escapeHTML);
+        $this->getDescription();
+
     }
 
     public function get($id = 0)
@@ -73,26 +78,8 @@ class Model_Page extends Model
 
             $this->parent = new Model_Page($this->id_parent);
 
-            $this->description = $this->getDescription();
             $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
             $this->commentsCount = $this->getCommentsCount();
-
-            if (!$this->content) return $this;
-
-            $this->getContent(true);
-
-            try {
-
-                $editorConfig = Kohana::$config->load('editor');
-                $editor = new CodexEditor($this->content, $editorConfig);
-
-                $this->blocks = $editor->getBlocks();
-
-            } catch (Exception $e) {
-
-                throw new Kohana_Exception("Error while parsing page content: " . $e->getMessage());
-
-            }
 
         }
 
@@ -206,8 +193,31 @@ class Model_Page extends Model
     }
 
 
-    public function getContent($escapeHTML = false)
+    /**
+     * Fill $this->blocks from JSON object stored in $this->content
+     *
+     * @param Boolean $escapeHTML  pass TRUE to escape HTML entities
+     *
+     * @throws Kohana_Exception  error thrown by CodeXEditor vendor module
+     * @return Array - list of page blocks
+     */
+    public function getBlocks($escapeHTML = false)
     {
+        $config = Kohana::$config->load('editor');
+
+        try {
+
+            $CodexEditor = new CodexEditor($this->content, $config);
+
+            $this->blocks = $CodexEditor->getBlocks($escapeHTML);
+
+        } catch (Exception $e) {
+            throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
+        }
+
+    }
+
+    public function validateContent($escapeHTML = false) {
 
         $config = Kohana::$config->load('editor');
 
@@ -219,7 +229,6 @@ class Model_Page extends Model
         } catch (Exception $e) {
             throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
         }
-
     }
 
     public function addToFeed($type = Model_Feed_Pages::TYPE_ALL) {
@@ -290,7 +299,6 @@ class Model_Page extends Model
     public function getDescription()
     {
         $blocks = $this->blocks;
-        $description = '';
 
         if ($blocks) {
 
@@ -298,14 +306,14 @@ class Model_Page extends Model
 
                 if ($block['type'] == 'paragraph') {
 
-                    $description = $block['data']['text'];
+                    $this->description = $block['data']['text'];
 
                     break;
                 }
             }
         }
 
-        return $description;
+        return $this->description;
     }
 
     /**

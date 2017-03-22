@@ -8,7 +8,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $id  = $this->request->param('id');
         $uri = $this->request->param('uri');
 
-        $page = new Model_Page($id);
+        $page = new Model_Page($id, true);
 
         if (!$page->id || $page->status == Model_Page::STATUS_REMOVED_PAGE) {
 
@@ -20,7 +20,6 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         }
 
         $page->getChildrenPages();
-
         $page->getComments();
 
         $this->view['can_modify_this_page'] = $page->canModify($this->user);
