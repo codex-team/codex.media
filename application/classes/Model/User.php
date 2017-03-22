@@ -202,11 +202,6 @@ class Model_User extends Model
 
         $models = Model_Page::rowsToModels($pages);
 
-        foreach ($models as $page) {
-            $page->blocks = $page->getBlocks(true); // escapeHTML = true
-            $page->description = $page->getDescription();
-        }
-
         return $models;
     }
 

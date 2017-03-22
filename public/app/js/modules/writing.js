@@ -22,7 +22,7 @@ module.exports = (function () {
             hideEditorToolbar   : false,
             titleId             : 'editorWritingTitle',
             initialBlockPlugin  : 'paragraph',
-            items               : [],
+            data                : {items: []},
             resources           : [],
             holderId            : null,
             pageId              : 0,
@@ -140,9 +140,7 @@ module.exports = (function () {
                 }
             },
 
-            data : {
-                items : settings.items,
-            }
+            data : settings.data
         });
 
         document.getElementById(settings.titleId).focus();
@@ -218,7 +216,7 @@ module.exports = (function () {
     * Prepares and submit form
     * Send attaches by json-encoded stirng with hidden input
     */
-    var submit = function () {
+    var getForm = function () {
 
         var atlasForm = document.forms.atlas;
 
@@ -237,26 +235,50 @@ module.exports = (function () {
          */
         codex.editor.saver.saveBlocks();
 
+        return atlasForm;
+
+    };
+
+    var submit = function () {
+
+        var form = getForm();
+
         window.setTimeout(function () {
 
-            var blocksCount = codex.editor.state.jsonOutput.length;
+            form.elements['content'].innerHTML = JSON.stringify({items: codex.editor.state.jsonOutput});
 
-            if (!blocksCount) {
+            codex.ajax.call({
+                url: '/p/save',
+                data: new FormData(form),
+                success: submitResponse,
+                type: 'POST'
+            });
 
-                JSONinput.innerHTML = JSON.stringify({ data : [] });
+        }, 500);
 
-            } else {
+    };
 
-                JSONinput.innerHTML = JSON.stringify({ data: codex.editor.state.jsonOutput });
+    var submitResponse = function (response) {
 
-            }
+        response = JSON.parse(response);
 
-            /**
-             * Send form
-             */
-            atlasForm.submit();
+        var host        = window.location.host,
+            protocol    = window.location.protocol,
+            id          = response.id;
 
-        }, 100);
+
+        if (response.success) {
+
+            window.location.replace(protocol+'//'+host+'/p/'+id);
+
+        } else {
+
+            codex.editor.notifications.notification({
+                type: 'warn',
+                message: response.message
+            });
+
+        }
 
     };
 
@@ -265,16 +287,16 @@ module.exports = (function () {
     */
     var openEditorFullscreen = function () {
 
-        var atlasForm = document.forms.atlas,
-            openEditorFlagInput = document.createElement('input');
 
-        openEditorFlagInput.type = 'hidden';
-        openEditorFlagInput.name = 'openFullScreen';
-        openEditorFlagInput.value = 1;
+        var form = getForm();
 
-        atlasForm.append(openEditorFlagInput);
+        window.setTimeout(function () {
 
-        submit();
+            form.elements['content'].innerHTML = JSON.stringify({ items: codex.editor.state.jsonOutput });
+
+            form.submit();
+
+        }, 500);
 
     };
 

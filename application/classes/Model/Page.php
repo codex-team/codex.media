@@ -38,11 +38,6 @@ class Model_Page extends Model
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS    = 3;
 
-    /** #TODO create one model_feed_pages */
-    const FEED_KEY_NEWS           = 'codex.org.news';
-    const FEED_KEY_TEACHERS_BLOGS = 'codex.org.teachers';
-    const FEED_KEY_BLOGS          = 'codex.org.all';
-
     public function __construct($id = 0)
     {
         if (!$id) return;
@@ -72,6 +67,21 @@ class Model_Page extends Model
                 }
             }
 
+            $this->uri    = $this->getPageUri();
+            $this->author = new Model_User($page_row['author']);
+
+            $this->parent = new Model_Page($this->id_parent);
+            $this->children = self::getChildrenPagesByParent($this->id);
+            $this->comments = Model_Comment::getCommentsByPageId($this->id);
+
+            $this->description = $this->getDescription();
+            $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
+            $this->commentsCount = $this->getCommentsCount();
+
+            if (!$this->content) return $this;
+
+            $this->getContent(true);
+
             try {
 
                 $editorConfig = Kohana::$config->load('editor');
@@ -84,17 +94,6 @@ class Model_Page extends Model
                 throw new Kohana_Exception("Error while parsing page content: " . $e->getMessage());
 
             }
-
-            $this->uri    = $this->getPageUri();
-            $this->author = new Model_User($page_row['author']);
-
-            $this->parent = new Model_Page($this->id_parent);
-            $this->children = self::getChildrenPagesByParent($this->id);
-            $this->comments = Model_Comment::getCommentsByPageId($this->id);
-
-            $this->description = $this->getDescription();
-            $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
-            $this->commentsCount = $this->getCommentsCount();
 
         }
 
@@ -148,21 +147,13 @@ class Model_Page extends Model
         /** remove from feeds */
         $this->removePageFromFeeds();
 
-        /* remove files */
-        $files = Model_File::getPageFiles($this->id);
-
-        foreach ($files as $file) {
-
-            $file->is_removed = 1;
-            $file->update();
-        }
-
         /* remove comments */
         $comments = Model_Comment::getCommentsByPageId($this->id);
 
         foreach ($comments as $comment) {
 
             $comment->delete();
+
         }
 
         /* remove childs */
@@ -174,25 +165,6 @@ class Model_Page extends Model
         }
 
         return true;
-    }
-
-    public static function getPages(
-        $limit  = 0,
-        $offset = 0,
-        $status = 0,
-        $pinned_news        = false,
-        $without_menu_items = true
-    ) {
-        $pages_query = Dao_Pages::select()->where('status', '=', $status);
-
-        if ($limit)              $pages_query->limit($limit);
-        if ($offset)             $pages_query->offset($offset);
-        if ($pinned_news)        $pages_query->order_by('dt_pin', 'DESC');
-        if ($without_menu_items) $pages_query->where('is_menu_item', '=', 0);
-
-        $pages_rows = $pages_query->order_by('id','DESC')->execute();
-
-        return self::rowsToModels($pages_rows);
     }
 
     public static function rowsToModels($page_rows)
@@ -234,79 +206,69 @@ class Model_Page extends Model
         return strtolower($title);
     }
 
-    public static function getSiteMenu()
-    {
-        $menu_pages = Dao_Pages::select()
-            ->where('status', '=', 0)
-            ->where('is_menu_item', '=', 1)
-            ->order_by('id', 'ASC')
-            ->cached(Date::MINUTE*5, 'site_menu', array('site_menu'))
-            ->execute();
 
-        return self::rowsToModels($menu_pages);
+    public function getContent($escapeHTML = false)
+    {
+
+        $config = Kohana::$config->load('editor');
+
+        try {
+
+            $CodexEditor = new CodexEditor($this->content, $config);
+            $this->content = $CodexEditor->getData($escapeHTML);
+
+        } catch (Exception $e) {
+            throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
+        }
+
     }
 
+    public function addToFeed($type = Model_Feed_Pages::TYPE_ALL) {
 
-/** Feed functions */
-    private function returnFeedModelByKey($key = '')
-    {
-        $feed = false;
-
-        switch ($key) {
-
-            case self::FEED_KEY_NEWS:
-                $feed = new Model_Feed_News();
-                break;
-
-            case self::FEED_KEY_TEACHERS_BLOGS:
-                $feed = new Model_Feed_Teachers();
-                break;
-        }
-
-        return $feed ?: false;
-    }
-
-    /**
-     * Add or remove page from feed by existing page in feed or by value
-     *
-     * @key feed key
-     * @force_set_by_value value that we need to toggle for result
-     */
-    public function togglePageInFeed($key, $force_set_by_value = false)
-    {
-        $feed = self::returnFeedModelByKey($key);
-
-        if (!$feed) return false;
-
-        /** get way for this action. ADD or REMOVE page from feed */
-        $remove_from_feed = $force_set_by_value === false ? $feed->isExist($this->id) : !$force_set_by_value;
-
-        if ($remove_from_feed) {
-
-            $feed->remove($this->id);
-        } else {
-
-            $feed->add($this->id);
-        }
-    }
-
-    /**
-     * Add page to feed by page's params
-     */
-    public function addPageToFeeds()
-    {
-        if ($this->is_news_page) {
-            $feed = new Model_Feed_News();
-            $feed->add($this->id);
-        }
-
-        if ($this->author->status >= Model_User::USER_STATUS_TEACHER) {
-            $feed = new Model_Feed_Teachers();
-            $feed->add($this->id);
-        }
-
-        $feed = new Model_Feed_All();
+        $feed = new Model_Feed_Pages($type);
         $feed->add($this->id);
+
+    }
+
+    public function removeFromFeed($type = Model_Feed_Pages::TYPE_ALL) {
+
+        $feed = new Model_Feed_Pages($type);
+        $feed->remove($this->id);
+
+    }
+
+    public function toggleFeed($type = Model_Feed_Pages::TYPE_ALL) {
+
+        $feed = new Model_Feed_Pages($type);
+
+        if (!$feed->isExist($this->id)) {
+            $this->addToFeed($type);
+        } else {
+            $this->removeFromFeed($type);
+        }
+
+    }
+
+    public static function getSiteMenu() {
+
+        $menu = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MENU);
+        return $menu->get();
+    }
+
+    public function isMenuItem() {
+
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MENU);
+
+        return $feed->isExist($this->id);
+
+    }
+
+    public function isNewsPage() {
+
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_NEWS);
+
+        return $feed->isExist($this->id);
+
     }
 
     /**
@@ -314,13 +276,16 @@ class Model_Page extends Model
      */
     public function removePageFromFeeds()
     {
-        $feed = new Model_Feed_News();
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_NEWS);
         $feed->remove($this->id);
 
-        $feed = new Model_Feed_Teachers();
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_ALL);
         $feed->remove($this->id);
 
-        $feed = new Model_Feed_All();
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_TEACHERS);
+        $feed->remove($this->id);
+
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MENU);
         $feed->remove($this->id);
     }
 /***/
@@ -330,7 +295,7 @@ class Model_Page extends Model
      *
      * #TODO возвращать и научиться обрабатывать блок(-и) любого типа с параметром cover = true
      */
-    private function getDescription()
+    public function getDescription()
     {
         $blocks = $this->blocks;
         $description = '';
@@ -376,5 +341,21 @@ class Model_Page extends Model
         $cache->set($cacheKey, $count, array('comments:by:page:' . $this->id), Date::MINUTE * 5);
 
         return $count;
+    }
+
+    public function getUrlToParentPage()
+    {
+        if ($this->id_parent != 0) {
+
+            return '/p/' . $this->parent->id . '/' . $this->parent->uri;
+
+        } elseif (!$this->is_news_page) {
+
+            return '/user/' . $this->author->id;
+
+        } else {
+
+            return '/';
+        }
     }
 }

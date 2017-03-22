@@ -75,8 +75,8 @@
                 <a class="button iconic green" href="/p/writing?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
             <? endif ?>
             <? if ($user->status == Model_User::USER_STATUS_ADMIN): ?>
-                <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=menu"><?= $page->is_menu_item ? 'убрать из меню' : 'добавить в меню' ?></i></a>
-                <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=news"><?= $page->is_news_page ? 'убрать из новостей' : 'добавить в новости' ?></a>
+                <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=menu"><?= $page->isMenuItem() ? 'убрать из меню' : 'добавить в меню' ?></i></a>
+                <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=news"><?= $page->isNewsPage() ? 'убрать из новостей' : 'добавить в новости' ?></a>
             <? endif ?>
             <a class="button js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
         </div>

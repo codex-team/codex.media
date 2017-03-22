@@ -60,9 +60,7 @@
                 }
             },
 
-            data : {
-                items : <?= json_encode($page->blocks) ?: '[]' ?>
-            }
+            data :<?= $page->content ?>
         });
     });
 

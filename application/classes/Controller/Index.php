@@ -6,26 +6,12 @@ class Controller_Index extends Controller_Base_preDispatch
 
     public function action_index()
     {
-        $feed_key    = $this->request->param('feed_key');
+        $feed_key    = $this->request->param('feed_key') ?: Model_Feed_Pages::TYPE_ALL;
         $page_number = $this->request->param('page_number') ?: 1;
 
         $offset = ($page_number - 1) * self::NEWS_LIMIT_PER_PAGE;
 
-        switch ($feed_key) {
-            /** case Model_Page::FEED_KEY_NEWS is default */
-
-            case Model_Page::FEED_KEY_TEACHERS_BLOGS:
-                $feed = new Model_Feed_Teachers();
-                break;
-
-            case Model_Page::FEED_KEY_BLOGS:
-                $feed = new Model_Feed_All();
-                break;
-
-            default:
-                $feed = new Model_Feed_News();
-                break;
-        }
+        $feed = new Model_Feed_Pages($feed_key);
 
         $pages = $feed->get(self::NEWS_LIMIT_PER_PAGE + 1, $offset);
 
@@ -55,7 +41,7 @@ class Controller_Index extends Controller_Base_preDispatch
             $this->view['pages']        = $pages;
             $this->view['next_page']    = $next_page;
             $this->view['page_number']  = $page_number;
-            $this->view['active_tab']   = $feed_key ?: Model_Page::FEED_KEY_NEWS;
+            $this->view['active_tab']   = $feed_key ?: Model_Feed_Pages::TYPE_ALL;
 
             $this->template->content = View::factory('templates/index', $this->view);
         }
