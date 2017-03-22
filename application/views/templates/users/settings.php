@@ -23,7 +23,7 @@
     <form method="POST" action="user/settings" enctype="multipart/form-data">
         <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
         <div class="profile-settings__user-photo">
-            <div  class="profile-settings__camera" onclick="codex.upload.init();">
+            <div  class="profile-settings__camera" onclick=" codex.upload.init();">
                 <? include(DOCROOT . "public/app/svg/camera.svg") ?>
             </div>
             <img class="profile-settings__img" src="<?= $user->photo_medium ?>">    

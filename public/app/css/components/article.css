@@ -125,6 +125,25 @@
     font-weight: 600;
 }
 
+/**
+ * Article image block
+ */
+
+.article__image {
+    margin: 1em 0;
+}
+
+.article__image img {
+    max-width: 100%;
+}
+
+.article__image-caption {
+    color: var(--grayText);
+    margin: 0.3em 0 1em;
+    font-size: 0.9em;
+    line-height: 1.5em;
+}
+
 @media (--mobile) {
     .article {
         padding: 20px;
