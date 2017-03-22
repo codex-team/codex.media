@@ -53,3 +53,142 @@
     background-size: 56px 56px;
     animation: loading-bar 1000ms infinite linear;
 }
+/*
+* New class-settings
+*/
+
+.profile-settings__navigation {
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px #ebeef6;
+    padding: 20px 30px;
+}
+
+.profile-settings__link--profile {
+    padding: 20px 0px; 
+    margin-right: 69%;
+}
+
+.profile-settings__link--profile svg {
+    margin-right: 2px; 
+}
+
+.profile-settings__link--logout {
+    padding: 20px 15px;
+    margin-left: 35px; 
+}
+
+.profile-settings__user-photo:hover .profile-settings__camera {
+ 
+    display: block;
+}
+
+.profile-settings__user-photo:hover .profile-settings__img {
+    -webkit-filter: blur(5px);
+}
+
+.profile-settings__user-photo {
+    width: 100px ;
+    height: 100px;
+    float: right;
+    position: relative;
+}
+
+.profile-settings__user-photo:hover:before  {
+    content: "";
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    left: -7px;
+    top: -7px;
+    border: 2px dashed #999;
+    display: block;
+}
+
+.profile-settings__camera {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border-radius: 0px #fff;
+    border: none;
+    cursor: pointer; 
+    position: absolute;
+    text-align: center;
+    display: none; 
+    z-index: 1;
+    outline: none;
+    margin-top: 30px;
+    background-color: transparent; 
+}
+
+.profile-settings__camera svg {
+    width: 30px;
+    height: 30px;   
+}
+
+.profile-settings__img {
+    float: right;
+    height: 100px;
+    border-radius: 50%;
+    margin-left: 30px;
+    
+}
+
+.profile-settings__about {
+    width: 65%;
+}
+.profile-settings__about--label {
+    margin-top: 30px; 
+    margin-right: 69%;
+    height: 100px;
+}
+
+.profile-settings__name--label {
+
+}
+
+.profile-settings__name {
+    margin-top: 10px;
+    margin-bottom: 15px;   
+}
+
+.profile-settings__textarea--user-info {
+    margin-top: 10px;
+    margin-bottom: 20px; 
+    height: 65px;
+}
+
+.profile-settings__button--save {
+    padding: 15px 10px;
+}
+
+.profile-settings__social-buttons {
+    margin-top: 20px;
+}
+
+.profile-settings__social-button {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 5px 10px;
+    border: 1px solid;
+    border-radius: 3px;
+}
+
+.profile-settings__social-button--twitter {
+    color: var(--twitterColor);
+    border-color: color(var(--twitterColor) alpha(-80%));
+}
+
+.profile-settings__social-button--vk {
+    color: var(--vkColor);
+    border-color: color(var(--vkColor) alpha(-80%));
+}
+
+.profile-settings__social-button--facebook {
+    color: var(--facebookColor);
+    border-color: color(var(--facebookColor) alpha(-80%));
+}
+
+
+

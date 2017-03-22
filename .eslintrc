@@ -25,7 +25,6 @@
         "comma-spacing": [2, { "before": false, "after": true }],
         "comma-style": [2, "last"],
         "eol-last": 0,
-        "no-nested-ternary": 1,
         "no-trailing-spaces": 2,
         "no-mixed-spaces-and-tabs": 2,
         "padded-blocks": [2, "always"],
