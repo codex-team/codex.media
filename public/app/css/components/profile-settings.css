@@ -138,17 +138,17 @@
 .profile-settings__about {
     width: 65%;
 }
-.profile-settings__label--user-info {
+.profile-settings__about--label {
     margin-top: 30px; 
     margin-right: 69%;
     height: 100px;
 }
 
-.profile-settings__label--name {
+.profile-settings__name--label {
 
 }
 
-.profile-settings__input--name {
+.profile-settings__name {
     margin-top: 10px;
     margin-bottom: 15px;   
 }

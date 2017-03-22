@@ -29,11 +29,11 @@
             <img class="profile-settings__img" src="<?= $user->photo_medium ?>">    
         </div>  
         <div class="profile-settings__about">
-            <label class="profile-settings__label--name ">
+            <label class="profile-settings__name--label ">
                 Фамилия и Имя
             </label>
-            <input class="profile-settings__input--name" type="text" name="text" ></input>
-            <label class="profile-settings__label--user-info">
+            <input class="profile-settings__name" type="text" name="text" ></input>
+            <label class="profile-settings__about--label">
                 О себе
             </label>
             <textarea class="profile-settings__textarea--user-info"></textarea>

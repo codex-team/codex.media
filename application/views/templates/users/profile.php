@@ -39,7 +39,7 @@
             <? if ($viewUser->twitter): ?>
                 <a class="profile__social-button profile__social-button--twitter" href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
                     <i class="icon-twitter"></i>
-                    ?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?>
+                    <?= $viewUser->twitter_name ? $viewUser->twitter_name : $viewUser->name ?>
                 </a>
             <? endif ?>
         </div>
