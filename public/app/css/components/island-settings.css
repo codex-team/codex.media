@@ -26,11 +26,11 @@
     opacity: 0;
     will-change: opacity, transform;
     transition: all 100ms ease-in;
-    transform: translateY(15px);
+    transform: translateY(-10px);
     visibility: hidden;
 }
 
-.island-settings__menu--showed {
+.island-settings:hover .island-settings__menu--showed {
     opacity: 1;
     transform: none;
     visibility: visible;

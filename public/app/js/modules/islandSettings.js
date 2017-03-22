@@ -29,12 +29,6 @@ module.exports = (function () {
     };
 
     /**
-     * Wait to hide menu after mouseout
-     * @type {TimeoutID}
-     */
-    var blurTimeout = null;
-
-    /**
      * Initialization
      * @param  {Object} settings  - initial settings
      */
@@ -58,10 +52,7 @@ module.exports = (function () {
 
             /** Save initial selector to specify menu type */
             menuTogglers[i].dataset.selector = settings.selector;
-
-            /** Add event listener */
             menuTogglers[i].addEventListener('mouseover', menuTogglerHovered, false);
-            menuTogglers[i].addEventListener('mouseout',  menuTogglerBlurred, false);
 
         }
 
@@ -104,13 +95,6 @@ module.exports = (function () {
         var menuToggler = this,
             menuParams;
 
-        /** Clear blur waiting */
-        if ( blurTimeout ) {
-
-            window.clearTimeout(blurTimeout);
-
-        }
-
         if (!menuHolder) {
 
             menuHolder = createMenu();
@@ -126,6 +110,13 @@ module.exports = (function () {
 
         menuHolder.dataset.opened = true;
 
+        /** if user fast moving cursor to the next toggler, let him */
+        window.setTimeout(function () {
+
+            menuHolder.dataset.opened = false;
+
+        }, 300);
+
         /**
          * Get current menu params
          * @type {Object}
@@ -135,27 +126,7 @@ module.exports = (function () {
 
         fillMenu(menuParams.items, menuToggler);
 
-        show(this);
-
-    };
-
-    /**
-     * Cursor moved out from toggler
-     * Need to hide menu
-     */
-    var menuTogglerBlurred = function () {
-
-        if ( blurTimeout ) {
-
-            window.clearTimeout(blurTimeout);
-
-        }
-
-        blurTimeout = window.setTimeout(function () {
-
-            hide();
-
-        }, 200);
+        move(this);
 
     };
 
@@ -229,35 +200,13 @@ module.exports = (function () {
     };
 
     /**
-    * Hides the menu
-    */
-    var hide = function () {
-
-        if (!menuHolder) {
-
-            return;
-
-        }
-
-        menuHolder.remove();
-        menuHolder = null;
-
-    };
-
-    /**
     * Appends a menu to the container
     * @param {Element} container - where to append menu
     */
-    var show = function (container) {
+    var move = function (container) {
 
         container.appendChild(menuHolder);
-
-        /** Timeout need to fire CSS fadein-animation after appending */
-        window.setTimeout(function () {
-
-            menuHolder.classList.add(CSS.showed);
-
-        }, 50);
+        menuHolder.classList.add(CSS.showed);
 
     };
 
