@@ -130,7 +130,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
                 case 'attach':
                     unset($user_to_db['email']);
-                    $status = $this->social_attach($user_to_db);
+                    $status = $this->social_attach('vk', $userdata->uid, $user_to_db);
                     break;
             }
             return $status;
@@ -187,7 +187,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
                 case 'attach':
                     unset($user_to_db['email']);
-                    $status = $this->social_attach($user_to_db);
+                    $status = $this->social_attach('facebook', $userdata->id, $user_to_db);
                     break;
             }
 
@@ -243,7 +243,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
                 case 'attach':
                     unset($user_to_db['email']);
-                    $status = $this->social_attach($user_to_db);
+                    $status = $this->social_attach('twitter', $userdata->id_str, $user_to_db);
                     break;
             }
 
@@ -359,12 +359,23 @@ class Controller_Auth_Auth extends Controller_Auth_Base
      *  @param  array     $userdata
      *  @author Demyashev Alexander
      */
-    private function social_attach($userdata)
+    private function social_attach($social, $social_id, $userdata)
     {
         if ($userId = parent::checkAuth()) {
 
-            Model::factory('User')->updateUser($userId, $userdata);
-            return TRUE;
+            $userFound = Dao_Users::select('id')
+                ->where($social,  '=', $social_id)
+                ->limit(1)
+                ->execute();
+
+            if (!$userFound) {
+                Model::factory('User')->updateUser($userId, $userdata);
+                return TRUE;
+            }
+            else {
+                $this->view['login_error_text'] = 'Профиль, который вы хотите прикрепить, уже прикреплен';
+                return FALSE;
+            }
 
         } else {
 
