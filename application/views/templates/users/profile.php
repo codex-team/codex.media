@@ -8,9 +8,9 @@
 </div>
 
 <div class="island island--padded">
-    
+
     <div class="profile clearfix">
-    	
+
         <img class="profile__ava" src="<?= $viewUser->photo_medium ?>" />
         <div class="profile__name">
     		<?= $viewUser->name ?>
@@ -57,21 +57,6 @@
 
 <? endif; ?>
 <? /**/ ?>
-    <? /*
-    <div class="action-line  clear">
-        <? if($viewUser->isMe): ?>
-            <a class="textbutton fl_r" href="/user/settings"><i class="icon-cog"></i> Настройки</a>
-            <a class="button iconic green" href="/p/writing"><i class="icon-plus"></i> Создать страницу</a>
-        <? else: ?>
-            <span class="info">
-                Зарегистрирован <?= $methods->ltime(strtotime($viewUser->dt_reg)) ?>
-            </span>
-        <? endif?>
-        <? if ($user->isAdmin): ?>
-            <span class="textbutton pointer fl_r" onclick="document.getElementById('pageAction').classList.toggle('hide')"><i class="icon-vcard"></i> Действия</span>
-        <? endif ?>
-    </div>
-    */ ?>
 
     <? /* */ ?>
     <? if ($user->isAdmin): ?>
@@ -90,6 +75,11 @@
     <? endif ?>
 <? /* */ ?>
 
+<? if ($user->id == $viewUser->id): ?>
+    <?= View::factory('templates/pages/form_wrapper', array(
+            'hideEditorToolbar' => true
+        )); ?>
+<? endif ?>
 
 <ul class="island tabs island--margined">
     <li>
