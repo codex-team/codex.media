@@ -1,6 +1,8 @@
-<div class="profile__island-navigation">
-    <span class="profile__profile-nav ">Профиль</span>
-    <a href="\user\settings" class="nav_chain profile__logout">
+<div class="profile__navigation">
+    <span class="profile__profile-bage">
+        Профиль
+    </span>
+    <a href="\user\settings" class="profile__link-settings">
         Настройки
     </a>
 </div>

@@ -7,7 +7,7 @@
         Выйти
     </a>
 </div>
-<div class="island island--padded">
+<div class="island profile-settings">
     <? if ($success): ?>
         <div class="info_block align_c">
             Обновления сохранены
@@ -24,7 +24,7 @@
         <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
 
         <div class="profile-settings__ava">
-            <div  class="profile-settings__camera" onclick="codex.transport.selectFile( event, type );">
+            <div  class="profile-settings__icon" onclick="codex.transport.selectFile( event, type );">
                 <? include(DOCROOT . "public/app/svg/camera.svg") ?>
             </div>
             <img class="profile-settings__img" src="<?= $user->photo_medium ?>">    
@@ -35,10 +35,10 @@
                 Фамилия и Имя
             </label>
             <input class="profile-settings__name" type="text" name="text" ></input>
-            <label class="profile-settings__about--label">
+            <label class="profile-settings__bio--label">
                 О себе
             </label>
-            <textarea class="profile-settings__textarea--user-info"></textarea>
+            <textarea class="profile-settings__bio"></textarea>
         </div>
         <div class="profile-settings__button--save">
             <button class="button master">Сохранить изменения</button>

@@ -57,6 +57,10 @@
 * New class-settings
 */
 
+.profile-settings {
+    padding: 20px 30px;
+}
+
 .profile-settings__navigation {
     background: #fff;
     border-radius: 3px;
@@ -78,8 +82,7 @@
     margin-left: 35px; 
 }
 
-.profile-settings__ava:hover .profile-settings__camera {
- 
+.profile-settings__ava:hover .profile-settings__icon {
     display: block;
 }
 
@@ -106,7 +109,7 @@
     display: block;
 }
 
-.profile-settings__camera {
+.profile-settings__icon {
     width: 100px;
     height: 100px;
     border-radius: 50%;
@@ -122,7 +125,7 @@
     background-color: transparent; 
 }
 
-.profile-settings__camera svg {
+.profile-settings__icon svg {
     width: 30px;
     height: 30px;   
 }
@@ -137,7 +140,7 @@
 .profile-settings__about {
     width: 65%;
 }
-.profile-settings__about--label {
+.profile-settings__bio--label {
     margin-top: 30px; 
     margin-right: 69%;
     height: 100px;
@@ -147,15 +150,15 @@
 
 }
 
-.profile-settings__name {
-    margin-top: 10px;
-    margin-bottom: 15px;   
-}
-
-.profile-settings__textarea--user-info {
+.profile-settings__bio {
     margin-top: 10px;
     margin-bottom: 20px; 
     height: 65px;
+}
+
+.profile-settings__name {
+    margin-top: 10px;
+    margin-bottom: 15px;   
 }
 
 .profile-settings__button--save {

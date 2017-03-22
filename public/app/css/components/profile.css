@@ -59,20 +59,20 @@
     border-color: color(var(--facebookColor) alpha(-80%));
 }
 
-.profile__island-navigation {
+.profile__navigation {
     background: #fff;
     border-radius: 3px;
     box-shadow: 0 0 0 1px #ebeef6;
     padding: 20px 30px;
 }
 
-.profile__profile-nav {
+.profile__profile-bage {
     padding: 20px 15px; 
     margin-right: 69%;
     color: var(--grayText);
 }
 
-.profile__logout {
+.profile__link-settings {
     padding: 20px 15px;
     color: var(--grayText);
 }
