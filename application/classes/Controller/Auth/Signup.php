@@ -28,10 +28,6 @@ class Controller_Auth_Signup extends Controller_Auth_Base
             'password_repeat' => Arr::get($_POST, 'signup_password_repeat'),
         );
 
-        if (!Arr::get($_POST, 'csrf', '')) {
-            return;
-        }
-
         /** Check for correct-filling form  */
         if (self::checkSignupFields($signupForm)) {
 
@@ -68,8 +64,6 @@ class Controller_Auth_Signup extends Controller_Auth_Base
     {
         /** Check for CSRF token*/
         if (!Security::check(Arr::get($_POST, 'csrf', ''))) {
-
-            $this->view['signup_error_fields']['name'] = 'Некорректный CSRF токен';
             return FALSE;
         }
 
