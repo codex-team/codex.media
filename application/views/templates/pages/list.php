@@ -10,7 +10,7 @@
 
             <div class="post-list-item__header">
                 <? if ($user->isAdmin || $user->id == $page->author->id): ?>
-                    <span class="js-dropdown-menu-page--holder island-settings" onclick="codex.dropdownMenu.toggle(event, 'article')">
+                    <span class="island-settings js-page-settings" data-id="<?= $page->id ?>">
                         <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
                     </span>
                 <? endif ?>
@@ -44,6 +44,26 @@
         </article>
 
     <? endforeach; ?>
+
+    <? if ($user->isAdmin || $user->id == $page->author->id): ?>
+
+        <script>
+            codex.docReady(function() {
+                codex.islandSettings.init({
+                    selector : '.js-page-settings',
+                    items : [{
+                            title : 'Редактировать',
+                            handler : codex.pages.openWriting
+                        },
+                        {
+                            title : 'Удалить',
+                            handler : codex.pages.remove
+                        }]
+                });
+            });
+        </script>
+
+    <? endif ?>
 
 <? else: ?>
 

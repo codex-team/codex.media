@@ -38,6 +38,15 @@ Route::set('CONTACTS', 'contacts')->defaults(array(
 /**
  * Pages section
  */
+Route::set('ACTION_FOR_PAGE', 'p/<id>/<action>',
+    array(
+        'id' => $DIGIT,
+        'action' => 'delete|promote'
+    )
+)->defaults(array(
+    'controller' => 'pages',
+));
+
 Route::set('NEW_PAGE', 'p/writing')->defaults(array(
     'controller' => 'pages',
     'action' => 'save'
@@ -48,15 +57,7 @@ Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->d
     'action' => 'show'
 ));
 
-Route::set('ACTION_FOR_PAGE', 'p/<id>/<uri>/<action>',
-    array(
-        'id' => $DIGIT,
-        'uri' => $STRING,
-        'action' => 'delete|promote'
-    )
-)->defaults(array(
-    'controller' => 'pages',
-));
+
 
 
 
