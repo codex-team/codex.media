@@ -19,6 +19,22 @@
             )); ?>
         <? endforeach ?>
 
+        <? if ($user->isAdmin || $user->id): ?>
+            <script>
+                codex.docReady(function() {
+
+                    /** Island settings menu */
+                    codex.islandSettings.init({
+                        selector : '.js-comment-settings',
+                        items : [{
+                                title : 'Удалить',
+                                handler : codex.comments.remove
+                            }]
+                    });
+                });
+            </script>
+        <? endif ?>
+
     <? else: ?>
 
         <div class="empty-motivator island island--padded js-empty-comments">

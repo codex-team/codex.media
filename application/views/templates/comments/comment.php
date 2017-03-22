@@ -2,8 +2,9 @@
 
     <div class="comment__header clearfix">
 
+
         <? if ($user->isAdmin || $user->id == $comment->author->id): ?>
-            <span class="island-settings js-dropdown-menu-comment--holder" onclick="codex.dropdownMenu.toggle(event, 'comment')">
+            <span class="island-settings js-comment-settings" data-id="<?= $comment->id ?>">
                 <? include(DOCROOT . 'public/app/svg/ellipsis.svg') ?>
             </span>
         <? endif ?>
@@ -11,13 +12,6 @@
         <a class="comment__author-photo" href="/user/<?= $comment->author->id ?>">
             <img src="<?= $comment->author->photo ?>">
         </a>
-
-        <? /* if ($user->id == $comment->author->id || $user->isAdmin): ?>
-            <a class="comment__actions--button button--delete js-approval-button"
-               href="/delete-comment/<?= $comment->id ?>">
-               <i class="icon-trash"></i>
-            </a>
-        <? endif */ ?>
 
         <div class="constrain">
             <a class="comment__author-name" href="/user/<?= $comment->author->id ?>">

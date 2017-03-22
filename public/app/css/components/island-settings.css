@@ -7,13 +7,13 @@
 }
 
 .island-settings:hover {
-    color: color(var(--grayText) blackness(+50%));
+    color: color(var(--grayText) blackness(+80%));
 }
 
 .island-settings__menu {
     position: absolute;
     right: -9px;
-    top: calc(100% + 10px);
+    top: calc(100% + 15px);
     min-width: 170px;
     z-index: 999;
     padding: 5px 0;
@@ -21,15 +21,19 @@
     border-radius: 3px;
     box-shadow: 0 2px 8px 0 rgba(20, 33, 51, 0.05);
     background: white;
+
+    /** Fade in effect */
     opacity: 0;
     will-change: opacity, transform;
     transition: all 100ms ease-in;
-    transform: translateY(10px);
+    transform: translateY(15px);
+    visibility: hidden;
 }
 
 .island-settings__menu--showed {
     opacity: 1;
-    transform: 0;
+    transform: none;
+    visibility: visible;
 }
 
 .island-settings__menu::before,
@@ -55,7 +59,9 @@
 .island-settings__item {
     padding: 10px 15px;
     white-space: nowrap;
-    font-size: 15px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 14px;
     color: var(--grayText);
 }
 

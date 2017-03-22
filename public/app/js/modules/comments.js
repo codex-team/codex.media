@@ -301,9 +301,30 @@ module.exports = (function () {
 
     }
 
+    /**
+     * Comment removing action
+     * @return {Event} click Event
+     */
+    function remove() {
+
+        var itemClicked = this,
+            targetId    = itemClicked.dataset.id;
+
+        if (!window.confirm('Подтвердите удаление комментария')) {
+
+            return;
+
+        }
+
+
+        document.location = '/delete-comment/' + targetId;
+
+    }
+
     return {
         init : init,
-        reply : reply
+        reply : reply,
+        remove : remove
     };
 
 }());

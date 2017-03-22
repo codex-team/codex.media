@@ -17,13 +17,6 @@ module.exports = (function () {
      */
     var activated = [];
 
-
-    /**
-     * Is menu opened
-     * @type {Boolean}
-     */
-    var opened = false;
-
     /**
      * CSS class names
      * @type {Object}
@@ -34,6 +27,12 @@ module.exports = (function () {
         showed : 'island-settings__menu--showed'
 
     };
+
+    /**
+     * Wait to hide menu after mouseout
+     * @type {TimeoutID}
+     */
+    var blurTimeout = null;
 
     /**
      * Initialization
@@ -61,7 +60,8 @@ module.exports = (function () {
             menuTogglers[i].dataset.selector = settings.selector;
 
             /** Add event listener */
-            menuTogglers[i].addEventListener('click', menuTogglerClicked, false);
+            menuTogglers[i].addEventListener('mouseover', menuTogglerHovered, false);
+            menuTogglers[i].addEventListener('mouseout',  menuTogglerBlurred, false);
 
         }
 
@@ -95,29 +95,19 @@ module.exports = (function () {
     /**
      * @private
      *
-     * Island circled-icon click handler
+     * Island circled-icon mouseover handler
      *
-     * @param {Event} event     click-event
+     * @param {Event} event     mouseover-event
      */
-    var menuTogglerClicked = function () {
+    var menuTogglerHovered = function () {
 
         var menuToggler = this,
-            menuParams = getMenuParams(menuToggler.dataset.selector);
+            menuParams;
 
-        console.log('menuToggler.dataset.opened: %o', menuToggler.dataset.opened);
-        console.log('opened: %o', opened);
+        /** Clear blur waiting */
+        if ( blurTimeout ) {
 
-        /** Click on the same icon where it was previously opened */
-        if ( menuToggler.dataset.opened == "true" ) {
-
-            hide();
-            delete menuToggler.dataset.opened;
-            return;
-
-        /** opened on other menu item */
-        } else if ( opened ){
-
-            console.log('opened on other!');
+            window.clearTimeout(blurTimeout);
 
         }
 
@@ -127,14 +117,45 @@ module.exports = (function () {
 
         }
 
+        /** Preven mouseover handling multiple times */
+        if ( menuHolder.dataset.opened == 'true' ) {
 
+            return;
 
+        }
+
+        menuHolder.dataset.opened = true;
+
+        /**
+         * Get current menu params
+         * @type {Object}
+         */
+        menuParams = getMenuParams(menuToggler.dataset.selector);
         console.assert(menuParams.items, 'Menu items missed');
 
         fillMenu(menuParams.items, menuToggler);
 
         show(this);
-        menuToggler.dataset.opened = true;
+
+    };
+
+    /**
+     * Cursor moved out from toggler
+     * Need to hide menu
+     */
+    var menuTogglerBlurred = function () {
+
+        if ( blurTimeout ) {
+
+            window.clearTimeout(blurTimeout);
+
+        }
+
+        blurTimeout = window.setTimeout(function () {
+
+            hide();
+
+        }, 200);
 
     };
 
@@ -220,7 +241,6 @@ module.exports = (function () {
 
         menuHolder.remove();
         menuHolder = null;
-        opened = false;
 
     };
 
@@ -232,32 +252,14 @@ module.exports = (function () {
 
         container.appendChild(menuHolder);
 
+        /** Timeout need to fire CSS fadein-animation after appending */
         window.setTimeout(function () {
 
             menuHolder.classList.add(CSS.showed);
-            opened = true;
 
         }, 50);
 
     };
-
-    /**
-     * Hides menu if clicked on document
-     * @param  {Event}  click event
-     */
-    var documentClicked = function ( event ) {
-
-        if (!opened || event.target.classList.contains(CSS.item)) {
-
-            return;
-
-        }
-
-        hide();
-
-    };
-
-    document.addEventListener('click', documentClicked, false);
 
     return {
         init: init

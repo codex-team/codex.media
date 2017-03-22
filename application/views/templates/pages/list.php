@@ -46,9 +46,10 @@
     <? endforeach; ?>
 
     <? if ($user->isAdmin || $user->id == $page->author->id): ?>
-
         <script>
             codex.docReady(function() {
+
+                /** Island settings menu */
                 codex.islandSettings.init({
                     selector : '.js-page-settings',
                     items : [{
@@ -62,7 +63,6 @@
                 });
             });
         </script>
-
     <? endif ?>
 
 <? else: ?>
