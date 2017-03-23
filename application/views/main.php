@@ -33,14 +33,24 @@
         }
 
     ?>
-    <div class="branding" id="brandingSection" style="background-image: url(<?= $branding ?>)"">
+    <div class="branding" id="brandingSection"
+
+        <? if ($branding) :?>
+            style="background-image: url(<?= $branding ?>)"
+
+        <? else: ?>
+            style="background: #233fcc"
+
+        <? endif; ?>>
 
         <div class="branding-content center-col">
 
-            <a id="changeBrandingButton" class="fl_r branding-content__change-button">
-                <i class="icon-camera"></i>
-                Изменить обложку
-            </a>
+            <? if ($user->isAdmin) : ?>
+                <a id="changeBrandingButton" class="fl_r branding-content__change-button">
+                    <i class="icon-camera"></i>
+                    Изменить обложку
+                </a>
+            <? endif; ?>
 
         </div>
 
