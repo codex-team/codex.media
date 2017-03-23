@@ -39,7 +39,6 @@ class Controller_Auth_Signup extends Controller_Auth_Base
                 'isConfirmed'  => 0
             ));
 
-
             if ($userId) {
 
                 parent::initAuthSession($userId);
@@ -64,7 +63,9 @@ class Controller_Auth_Signup extends Controller_Auth_Base
     protected function checkSignupFields($fields)
     {
         /** Check for CSRF token*/
-        if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
+        if (!Security::check(Arr::get($_POST, 'csrf', ''))) {
+            return FALSE;
+        }
 
         /** Check for correct name */
         if (!$fields['name']) {
