@@ -50,11 +50,70 @@ module.exports = (function () {
 
         for (var i = menuTogglers.length - 1; i >= 0; i--) {
 
-            /** Save initial selector to specify menu type */
-            menuTogglers[i].dataset.selector = settings.selector;
-            menuTogglers[i].addEventListener('mouseover', menuTogglerHovered, false);
+            prepareToggler(menuTogglers[i], settings.selector);
 
         }
+
+    };
+
+    /**
+     * @public
+     * Add event listener to the toggler
+     * @param  {Element} toggler
+     * @param  {String}  selector  - selector to find settings object
+     */
+    var prepareToggler = function (toggler, selector) {
+
+        /** Save initial selector to specify menu type */
+        toggler.dataset.selector = selector;
+        toggler.addEventListener('mouseover', menuTogglerHovered, false);
+
+    };
+
+    /**
+     * @private
+     *
+     * Island circled-icon mouseover handler
+     *
+     * @param {Event} event     mouseover-event
+     */
+    var menuTogglerHovered = function () {
+
+        var menuToggler = this,
+            menuParams;
+
+        if (!menuHolder) {
+
+            menuHolder = createMenu();
+
+        }
+
+        /** Prevent mouseover handling multiple times */
+        if ( menuHolder.dataset.opened == 'true' ) {
+
+            return;
+
+        }
+
+        menuHolder.dataset.opened = true;
+
+        /** if user fast moving cursor to the next toggler, let him */
+        window.setTimeout(function () {
+
+            menuHolder.dataset.opened = false;
+
+        }, 300);
+
+        /**
+         * Get current menu params
+         * @type {Object}
+         */
+        menuParams = getMenuParams(menuToggler.dataset.selector);
+
+        console.assert(menuParams.items, 'Menu items missed');
+
+        fill(menuParams.items, menuToggler);
+        move(menuToggler);
 
     };
 
@@ -84,58 +143,12 @@ module.exports = (function () {
     };
 
     /**
-     * @private
-     *
-     * Island circled-icon mouseover handler
-     *
-     * @param {Event} event     mouseover-event
-     */
-    var menuTogglerHovered = function () {
-
-        var menuToggler = this,
-            menuParams;
-
-        if (!menuHolder) {
-
-            menuHolder = createMenu();
-
-        }
-
-        /** Preven mouseover handling multiple times */
-        if ( menuHolder.dataset.opened == 'true' ) {
-
-            return;
-
-        }
-
-        menuHolder.dataset.opened = true;
-
-        /** if user fast moving cursor to the next toggler, let him */
-        window.setTimeout(function () {
-
-            menuHolder.dataset.opened = false;
-
-        }, 300);
-
-        /**
-         * Get current menu params
-         * @type {Object}
-         */
-        menuParams = getMenuParams(menuToggler.dataset.selector);
-        console.assert(menuParams.items, 'Menu items missed');
-
-        fillMenu(menuParams.items, menuToggler);
-
-        move(this);
-
-    };
-
-    /**
      * Fills menu with items
      * @param  {Array}   items     list of menu items
      * @param  {Element} toggler   islan menu icon with data-attributes
      */
-    var fillMenu = function (items, toggler) {
+
+    var fill = function (items, toggler) {
 
         var i,
             itemData,
@@ -211,7 +224,8 @@ module.exports = (function () {
     };
 
     return {
-        init: init
+        init: init,
+        prepareToggler: prepareToggler
     };
 
 })();

@@ -18,6 +18,12 @@ module.exports = (function () {
     };
 
     /**
+     * Settings-menu toggler selector
+     * @type {String}
+     */
+    var menuTogglerSelector = '.js-comment-settings';
+
+    /**
      * Initialize comments
      * @param {object} data        params
      * @param {sring} data.listId  comments list wrapper id
@@ -227,45 +233,75 @@ module.exports = (function () {
             },
             success : function (response) {
 
-                var comment,
-                    emptyCommentsBlock;
+                var comment;
 
                 submitBtn.classList.remove('loading');
 
                 response = JSON.parse(response);
 
-                if (response.success) {
-
-                    /** Remove form and return placeholder */
-                    removeForm(form, parentId);
-
-                    emptyCommentsBlock = document.querySelector('.js-empty-comments');
-
-                    if (emptyCommentsBlock) {
-
-                        emptyCommentsBlock.remove();
-
-                    }
-
-                    comment = codex.core.parseHTML(response.comment)[0];
-                    commentsList.appendChild(comment);
-
-                    // Scroll down to new comment
-                    window.scrollTo(0, document.body.scrollHeight);
-
-                    // Highligth new comment
-                    highligthComment(response.commentId);
-
-
-                } else {
+                if (!response.success) {
 
                     codex.alerts.show(response.error);
+                    return;
 
                 }
+
+                /** Remove form and return placeholder */
+                removeForm(form, parentId);
+
+                /** Remove empty-feed block */
+                removeEmptyCommentsBlock();
+
+                comment = codex.core.parseHTML(response.comment)[0];
+                commentsList.appendChild(comment);
+
+                /** Scroll down to the new comment */
+                window.scrollTo(0, document.body.scrollHeight);
+
+                /** Highligth new comment */
+                highligthComment(response.commentId);
+
+                /** If menu found, activate it */
+                activateMenu(comment);
 
             }
 
         });
+
+    }
+
+    /**
+     * Removes empty-feed motivation
+     */
+    function removeEmptyCommentsBlock() {
+
+        var emptyCommentsBlock = document.querySelector('.js-empty-comments');
+
+        if (!emptyCommentsBlock) {
+
+            return;
+
+        }
+
+        emptyCommentsBlock.remove();
+
+    }
+
+    /**
+     * If menu-toggler found in comment
+     * @return {Element} comment - comment's island
+     */
+    function activateMenu( comment ) {
+
+        var  menuToggler = comment.querySelector(menuTogglerSelector);
+
+        if (!menuToggler) {
+
+            return;
+
+        }
+
+        codex.islandSettings.prepareToggler(menuToggler, menuTogglerSelector);
 
     }
 
@@ -315,7 +351,6 @@ module.exports = (function () {
             return;
 
         }
-
 
         document.location = '/delete-comment/' + targetId;
 
