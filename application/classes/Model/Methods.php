@@ -402,6 +402,7 @@ class Model_Methods extends Model
 
         $menu = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MENU);
         return $menu->get();
+
     }
 
 }

@@ -32,6 +32,15 @@
             <? endif ?>
         </a>
 
+        <? /* Manage page buttons */ ?>
+        <? if ($can_modify_this_page): ?>
+
+            <span class="island-settings js-page-settings" data-id="<?= $page->id ?>">
+                    <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
+            </span>
+
+        <? endif ?>
+
     </header>
 
     <? /* Page title */ ?>
@@ -65,20 +74,7 @@
         </ul>
     <? endif ?>
 
-    <? /* Manage page buttons */ ?>
-    <? if ($can_modify_this_page): ?>
-        <div class="action-line action-line__onpage clear">
-            <? if ($page->author->id == $user->id ): ?>
-                <a class="button iconic green" href="/p/writing?id=<?= $page->id ?>"><i class="icon-pencil"></i>Редактировать</a>
-                <a class="button iconic green" href="/p/writing?parent=<?= $page->id ?>"><i class="icon-plus"></i>Вложенная страница</a>
-            <? endif ?>
-            <? if ($user->status == Model_User::USER_STATUS_ADMIN): ?>
-                <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=menu"><?= $page->isMenuItem() ? 'убрать из меню' : 'добавить в меню' ?></i></a>
-                <a class="button iconic" href="/p/<?= $page->id ?>/<?= $page->uri ?>/promote?list=news"><?= $page->isNewsPage() ? 'убрать из новостей' : 'добавить в новости' ?></a>
-            <? endif ?>
-            <a class="button js-approval-button" href="/p/<?= $page->id ?>/<?= $page->uri ?>/delete"><i class="icon-cancel"></i> Удалить</a>
-        </div>
-    <? endif ?>
+
 
     <?= View::factory('templates/components/share', array(
         'offer' => 'Если вам понравилась статья, поделитесь ссылкой на нее',
@@ -96,6 +92,36 @@
         <?= View::factory('templates/comments/form', array('page_id' => $page->id, 'user' => $user)); ?>
     </div>
 
+    <script>
+        codex.docReady(function() {
+            codex.islandSettings.init({
+                    selector: '.js-page-settings',
+                    items : [{
+                            title : 'Редактировать',
+                            handler : codex.pages.openWriting
+                        },
+                        {
+                            title : 'Вложенная страница',
+                            handler : codex.pages.newChild
+                        },
+                        <? if ($user->isAdmin()): ?>
+                        {
+                            title : '<?= $page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню'; ?>',
+                            handler : codex.pages.addToMenu
+                        },
+                        {
+                            title : '<?= $page->isMenuItem() ? 'Убрать из новостей' : 'Добавить в новости'; ?>',
+                            handler : codex.pages.addToNews
+                        },
+                        <? endif; ?>
+                        {
+                            title : 'Удалить',
+                            handler : codex.pages.remove
+                    }]
+                })
+        })
+    </script>
+
 <? endif ?>
 
 <?= View::factory('templates/comments/list', array(
@@ -103,3 +129,4 @@
     'user' => $user,
     'emptyListMessage' => '<p>Станьте первым, кто оставит <br/> комментарий к данному материалу.</p>'
 )); ?>
+

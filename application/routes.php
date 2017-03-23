@@ -48,7 +48,7 @@ Route::set('ACTION_FOR_PAGE', 'p/<id>/<action>',
         'action' => 'delete|promote'
     )
 )->defaults(array(
-    'controller' => 'pages',
+    'controller' => 'Page_Modify',
 ));
 
 Route::set('NEW_PAGE', 'p/writing')->defaults(array(

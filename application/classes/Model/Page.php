@@ -388,7 +388,7 @@ class Model_Page extends Model
 
             return '/p/' . $this->parent->id . '/' . $this->parent->uri;
 
-        } elseif (!$this->is_news_page) {
+        } elseif (!$this->isMenuItem()) {
 
             return '/user/' . $this->author->id;
 

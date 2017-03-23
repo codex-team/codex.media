@@ -243,6 +243,17 @@ module.exports = (function () {
 
         var form = getForm();
 
+        if (form.elements['title'].value.trim() === '') {
+
+            codex.editor.notifications.notification({
+                type: 'warn',
+                message: 'Заполните заголовок'
+            });
+
+            return;
+
+        }
+
         window.setTimeout(function () {
 
             form.elements['content'].innerHTML = JSON.stringify({items: codex.editor.state.jsonOutput});

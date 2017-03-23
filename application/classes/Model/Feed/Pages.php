@@ -2,7 +2,11 @@
 
 class Model_Feed_Pages extends Model_Feed_Abstract {
 
+    /**
+     * Key prefix for redis to identify Codex.Org keys
+     */
     const KEY_PREFIX     = 'codex.org:';
+
     const TYPE_ALL       = 'all';
     const TYPE_TEACHERS  = 'teachers';
     const TYPE_NEWS      = 'news';
@@ -48,7 +52,7 @@ class Model_Feed_Pages extends Model_Feed_Abstract {
 
             foreach ($items as $id) {
 
-                $page = new Model_Page($id, true);
+                $page = new Model_Page($id, true); //sets $escapeHTML param true to escape HTML entities
 
                 $models_list[] = $page;
             }

@@ -104,9 +104,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
     /**
      * Sets page status as removed
      */
-    public function action_delete()
-    {
-
+    public function action_delete() {
 
         $response = array(
             'success' => 0,
@@ -124,7 +122,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         } else {
 
-            $response['message'] = 'К сожалению, вы не можете удалить эту страницу';
+            $response['message'] = 'Вы не можете удалить эту страницу';
 
         }
 
