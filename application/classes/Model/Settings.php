@@ -117,7 +117,7 @@ class Model_Settings extends Model_preDispatch
 
     public function newBranding($filename)
     {
-        $branding = $this->get(self::BRANDING_KEY);
+        $branding = new Model_Settings(self::BRANDING_KEY);
         $branding->value = $filename;
 
         if ($branding->name) {
