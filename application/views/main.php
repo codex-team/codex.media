@@ -27,34 +27,7 @@
 </head>
 <body>
 
-    <?
-        if (Arr::get($site_info, 'branding')) {
-            $branding = 'upload/branding/o_' . Arr::get($site_info, 'branding');
-        }
-
-    ?>
-    <div class="branding" id="brandingSection"
-
-        <? if ($branding) :?>
-            style="background-image: url(<?= $branding ?>)"
-
-        <? else: ?>
-            style="background: #233fcc"
-
-        <? endif; ?>>
-
-        <div class="branding-content center-col">
-
-            <? if ($user->isAdmin) : ?>
-                <a id="changeBrandingButton" class="fl_r branding-content__change-button">
-                    <i class="icon-camera"></i>
-                    Изменить обложку
-                </a>
-            <? endif; ?>
-
-        </div>
-
-    </div>
+    <?= View::factory('templates/components/branding')->render(); ?>
 
     <div class="center-col" id="js-layout-holder">
 

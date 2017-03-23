@@ -33,8 +33,7 @@ module.exports = (function () {
                     file = response.data;
                     url = file.url;
 
-                    brandingSection.style.backgroundImage = "url('" + url + "')"; // instead of babel polyfill
-                    brandingSection.style.backgroundSize = '100% 100%';
+                    brandingSection.style.backgroundImage = "url('" + url + "')";
 
                 }
 
@@ -47,6 +46,7 @@ module.exports = (function () {
     var clickedToChangeBranding_ = function () {
 
         var changeBrandingButton = document.getElementById('changeBrandingButton');
+
         changeBrandingButton.addEventListener('click', changeBranding_, false);
 
     };
