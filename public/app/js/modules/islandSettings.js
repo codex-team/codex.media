@@ -36,13 +36,6 @@ module.exports = (function () {
 
         var menuTogglers = document.querySelectorAll(settings.selector);
 
-        if (!menuTogglers.length) {
-
-            codex.core.log('Elements %o was not found', 'islandSettings', 'log', settings.selector);
-            return;
-
-        }
-
         /**
          * Save initial object
          */

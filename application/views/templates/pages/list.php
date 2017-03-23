@@ -45,7 +45,7 @@
 
     <? endforeach; ?>
 
-    <? if ($user->isAdmin || $user->id == $page->author->id): ?>
+    <? if ($user->id): ?>
         <script>
             codex.docReady(function() {
 
