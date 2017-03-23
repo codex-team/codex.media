@@ -50,6 +50,11 @@ codex = (function (codex) {
          */
         codex.core.log('Initialized', 'CodeX', 'info');
 
+        /**
+         * initializes button that can change the branding
+         */
+        codex.admin.init();
+
     };
 
     return codex;
@@ -83,6 +88,7 @@ codex.sharer             = require('./modules/sharer');
 codex.writing            = require('./modules/writing');
 codex.loader             = require('./modules/loader');
 codex.scrollUp           = require('./modules/scrollUp');
+codex.admin              = require('./modules/admin');
 
 module.exports = codex;
 

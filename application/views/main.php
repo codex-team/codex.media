@@ -74,39 +74,6 @@
 
         window.csrf = '<?= Security::token(); ?>';
 
-        codex.docReady(function() {
-
-            var changeBrandingButton = document.getElementById('changeBrandingButton'),
-                brandingSection = document.getElementById('brandingSection');
-
-            changeBrandingButton.addEventListener('click', function() {
-
-                codex.transport.init({
-                    url : '/upload/4',
-                    accept : 'image/*',
-                    success : function(result) {
-
-                        var response = JSON.parse(result),
-                            file,
-                            url;
-
-                        if ( response.success ) {
-
-                            file = response.data;
-                            url = file.url;
-
-                            brandingSection.style.backgroundImage = `url('${url}')`;
-                            brandingSection.style.backgroundSize = "100% 100%";
-
-                        }
-
-                    }
-                })
-
-            });
-
-        });
-
     </script>
 
     <? /* end Scripts */ ?>
