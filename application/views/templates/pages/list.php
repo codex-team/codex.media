@@ -9,6 +9,11 @@
         <article class="island <?= $index != 0 ? 'island--margined' : '' ?> post-list-item <?= $page->rich_view ? 'post-list-item--big' : '' ?> <?= $page->dt_pin ? 'post-list-item_pinned' : '' ?>">
 
             <div class="post-list-item__header">
+                <? if ($user->isAdmin || $user->id == $page->author->id): ?>
+                    <span class="island-settings js-page-settings" data-id="<?= $page->id ?>">
+                        <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
+                    </span>
+                <? endif ?>
                 <time class="post-list-item__date">
                     <a href="<?= $page->url ?>">
                         <?= date_format(date_create($page->date), 'd F Y, G:i') ?>
@@ -39,6 +44,26 @@
         </article>
 
     <? endforeach; ?>
+
+    <? if ($user->id): ?>
+        <script>
+            codex.docReady(function() {
+
+                /** Island settings menu */
+                codex.islandSettings.init({
+                    selector : '.js-page-settings',
+                    items : [{
+                            title : 'Редактировать',
+                            handler : codex.pages.openWriting
+                        },
+                        {
+                            title : 'Удалить',
+                            handler : codex.pages.remove
+                        }]
+                });
+            });
+        </script>
+    <? endif ?>
 
 <? else: ?>
 
