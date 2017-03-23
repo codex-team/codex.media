@@ -28,10 +28,9 @@ return array
          * third argument  — max height
          */
         'sizes' => array(
-            'o'  => array(false, 1500, 300),
-            'b'  => array(true , 200),
-            'm'  => array(true , 100),
-            's'  => array(true , 50),
+            'o'  => array(false, 2000, 1500),
+            'b'  => array(true , 1000, 700),
+            'm'  => array(true , 400, 250)
         )
 
     ),

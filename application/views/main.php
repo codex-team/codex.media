@@ -29,11 +29,11 @@
 
     <?
         if (Arr::get($site_info, 'branding')) {
-            $branding = 'upload/branding/' . Arr::get($site_info, 'branding');
+            $branding = 'upload/branding/o_' . Arr::get($site_info, 'branding');
         }
 
     ?>
-    <div class="branding" id="brandingSection" style="background: #202840">
+    <div class="branding" id="brandingSection" style="background-image: url(<?= $branding ?>)"">
 
         <div class="branding-content center-col">
 
@@ -46,7 +46,7 @@
 
     </div>
 
-    <div class="center-col">
+    <div class="center-col" id="js-layout-holder">
 
         <div class="grid-cols-wrapper">
 
@@ -74,8 +74,6 @@
 
         window.csrf = '<?= Security::token(); ?>';
 
-
-
         codex.docReady(function() {
 
             var changeBrandingButton = document.getElementById('changeBrandingButton'),
@@ -86,10 +84,6 @@
                 codex.transport.init({
                     url : '/upload/4',
                     accept : 'image/*',
-                    beforeSend : function() {
-
-
-                    },
                     success : function(result) {
 
                         var response = JSON.parse(result),

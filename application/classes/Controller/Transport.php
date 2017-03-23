@@ -59,11 +59,11 @@ class Controller_Transport extends Controller_Base_preDispatch
      */
     private function check()
     {
-        if (!$this->user->id) {
-
-            $this->transportResponse['message'] = 'Access denied';
-            return false;
-        }
+//        if (!$this->user->id) {
+//
+//            $this->transportResponse['message'] = 'Access denied';
+//            return false;
+//        }
 
         if (!$this->type) {
 
