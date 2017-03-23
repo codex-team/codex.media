@@ -1,18 +1,21 @@
-<div class="profile-settings__navigation">
-    <a class="profile-settings__link-profile"  href="/user/<?= $user->id ?>">
-        <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
-        Профиль
-    </a>
-    <a class="profile-settings__link-logout" href = "/logout" >
-        Выйти
-    </a>
-</div>
-<div class="island profile-settings">
+<div class="island island--padded">
+
+     <div class="island__navigation">
+        <a href="/user/<?= $user->id ?>" class="island__navigation-item">
+            <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
+            Профиль
+        </a>
+        <a href="/logout" class="island__navigation-item island__navigation-item--right">
+            Выйти
+        </a>
+    </div>
+
     <? if ($success): ?>
         <div class="info_block align_c">
             Обновления сохранены
         </div>
     <? endif; ?>
+
     <? if ($error): ?>
         <div class="info_block align_c" style="background-color:#EBA4B5; color:#F7053E;">
             <? foreach ($error as $info): ?>
@@ -20,26 +23,25 @@
             <? endforeach; ?>
         </div>
     <? endif; ?>
-    <form method="POST" action="user/settings" enctype="multipart/form-data">
+
+    <form class="profile-settings" method="POST" action="user/settings" enctype="multipart/form-data">
+
         <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
 
-        <div class="profile-settings__ava">
-            <div  class="profile-settings__icon" onclick="codex.transport.selectFile( event, type );">
+        <div class="profile-settings__photo">
+            <div class="profile-settings__photo-hover" onclick="codex.transport.selectFile( event, type );">
                 <? include(DOCROOT . "public/app/svg/camera.svg") ?>
             </div>
-            <img class="profile-settings__img" src="<?= $user->photo_medium ?>">
+            <img src="<?= $user->photo_medium ?>">
         </div>
 
-        <div class="profile-settings__about">
-            <label class="profile-settings__name--label ">
-                Фамилия и Имя
-            </label>
-            <input class="profile-settings__name" type="text" name="text" ></input>
-            <label class="profile-settings__bio--label">
-                О себе
-            </label>
-            <textarea class="profile-settings__bio"></textarea>
-        </div>
+
+        <label class="profile-settings__label">Фамилия и Имя</label>
+        <input class="profile-settings__input" type="text" name="text" />
+
+        <label class="profile-settings__label">О себе</label>
+        <textarea class="profile-settings__input"></textarea>
+
         <div class="profile-settings__button--save">
             <button class="button master">Сохранить изменения</button>
         </div>
@@ -64,7 +66,7 @@
                 Привязать
             </a>
         <? else: ?>
-            <a class="profile-settings__social-button profile-settings__social-button--facebook" href="//fb.com/<?= $user->facebook_username ?>" target="_blank">
+            <a class="profile-settings__social-button profile-settings__social-button--facebook" href="//fb.com/<?= $user->facebook_name ?>" target="_blank">
                 <i class="icon-facebook"></i>
                 <?= $user->facebook_name ? $user->facebook_name : $user->name ?>
             </a>

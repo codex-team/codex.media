@@ -1,4 +1,9 @@
-.profile {}
+/**
+ * Profile page
+ */
+.profile {
+    padding: 10px 0;
+}
 
 .profile__ava {
     float: right;
@@ -39,7 +44,7 @@
 .profile__social-button {
     display: inline-block;
     margin-right: 15px;
-    padding: 5px 10px;
+    padding: 7px 10px;
     border: 1px solid;
     border-radius: 3px;
 }
@@ -57,22 +62,4 @@
 .profile__social-button--facebook {
     color: var(--facebookColor);
     border-color: color(var(--facebookColor) alpha(-80%));
-}
-
-.profile__navigation {
-    background: #fff;
-    border-radius: 3px;
-    box-shadow: 0 0 0 1px #ebeef6;
-    padding: 20px 30px;
-}
-
-.profile__profile-bage {
-    padding: 20px 15px;
-    margin-right: 69%;
-    color: var(--grayText);
-}
-
-.profile__link-settings {
-    padding: 20px 15px;
-    color: var(--grayText);
 }

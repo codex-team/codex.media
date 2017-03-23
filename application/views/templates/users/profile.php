@@ -1,13 +1,14 @@
-<div class="profile__navigation">
-    <span class="profile__profile-bage">
-        Профиль
-    </span>
-    <a href="\user\settings" class="profile__link-settings">
-        Настройки
-    </a>
-</div>
-
 <div class="island island--padded">
+
+    <? if ($viewUser->isMe): ?>
+        <div class="island__navigation">
+            Профиль
+            <a href="\user\settings" class="island__navigation-item island__navigation-item--right">
+                Настройки
+            </a>
+        </div>
+
+    <? endif; ?>
 
     <div class="profile clearfix">
 
@@ -75,7 +76,7 @@
     <? endif ?>
 <? /* */ ?>
 
-<? if ($user->id == $viewUser->id): ?>
+<? if ($viewUser->isMe): ?>
     <?= View::factory('templates/pages/form_wrapper', array(
             'hideEditorToolbar' => true
         )); ?>
