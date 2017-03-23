@@ -29,7 +29,7 @@
 <? /** pages list */ ?>
 <div id="list_of_news" class="post-list">
     <? $emptyListMessage = $user->id ? 'Добавьте новую запись с помощью формы вверху страницы' : 'Здесь появятся новости и интересные публикации' ?>
-    <?= View::factory('templates/posts_list', array(
+    <?= View::factory('templates/pages/list', array(
         'pages' => $pages,
         'emptyListMessage' => $emptyListMessage
     )); ?>

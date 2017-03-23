@@ -30,7 +30,7 @@ class Controller_Index extends Controller_Base_preDispatch
             $response = array();
             $response['success']    = 1;
             $response['next_page']  = $next_page;
-            $response['pages']      = View::factory('templates/posts_list', array('pages' => $pages))->render();
+            $response['pages']      = View::factory('templates/pages/list', array('pages' => $pages))->render();
 
             $this->auto_render = false;
             $this->response->headers('Content-Type', 'application/json; charset=utf-8');
