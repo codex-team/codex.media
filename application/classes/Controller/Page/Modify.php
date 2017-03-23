@@ -3,6 +3,9 @@
 class Controller_Page_Modify extends Controller_Base_preDispatch
 {
 
+    /**
+     * @var Model_Page - current page to modify
+     */
     public $page = null;
 
     public function before() {
@@ -15,10 +18,13 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             throw new HTTP_Exception_403();
         }
 
-        $this->init();
+        $this->page = $this->getPage();
 
     }
 
+    /**
+     * Saves new page or existing page changes
+     */
     public function action_save() {
 
         $response = array(
@@ -29,7 +35,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         if (!$this->page->canModify($this->user) || !Security::check($csrf)) {
 
-            $response['message'] = 'Недостаточно прав для создания или редактирования страницы сайта';
+            $response['message'] = 'Похоже, у вас нет доступа';
 
             $this->response->body(json_encode($this->page));
             return;
@@ -39,11 +45,14 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $this->page->title = Arr::get($_POST, 'title', $this->page->title);
         $this->page->content = Arr::get($_POST, 'content', $this->page->content);
 
-        if(!$this->page->title) {
+        $error = $this->getErrors(array(
+            'title' => Arr::get($_POST, 'title', '')
+        ));
 
-            $response['message'] = 'Не заполнен заголовок';
+        if ($error) {
 
-            $this->auto_render = false;
+            $response['message'] = $error['message'];
+
             $this->response->body(json_encode($response));
 
             return;
@@ -67,15 +76,17 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
     }
 
+    /**
+     * Adds or removes page from News or Menu feeds
+     */
     public function action_promote() {
-
 
         $response = array(
             'success' => 0,
         );
 
         if (!$this->user->isAdmin) {
-            $response['message'] = 'Недостаточно прав для добавления страницы в список';
+            $response['message'] = 'Вы не можете изменить статус статьи';
             $this->response->body(json_encode($response));
             return;
         }
@@ -90,6 +101,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
     }
 
+    /**
+     * Sets page status as removed
+     */
     public function action_delete()
     {
 
@@ -110,7 +124,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         } else {
 
-            $response['message'] = 'Недостаточно прав для удаления страницы';
+            $response['message'] = 'К сожалению, вы не можете удалить эту страницу';
 
         }
 
@@ -119,23 +133,52 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
     }
 
-    private function init() {
+    /**
+     * Gets current page model.
+     * Data can be contained in request param or in $_POST array;
+     *
+     */
+    private function getPage() {
 
         $id = $this->request->param('id');
 
+        /**
+         * If page id found at request param this is existing page
+         */
         if ($id) {
-            $this->page = new Model_Page($id);
-            return;
+            return new Model_Page($id);
         }
 
+        /**
+         * If page id not found at request param, we should fill empty page model with data from $_POST
+         */
         $id = (int) Arr::get($_POST, 'id', 0);
         $parent_id = (int) Arr::get($_POST, 'id_parent', 0);
 
-        $this->page             = new Model_Page($id);
-        $this->page->author     = $this->user;
-        $this->page->id_parent  = $parent_id;
-        $this->page->parent     = new Model_Page($parent_id);
+        $page             = new Model_Page($id);
+        $page->author     = $this->user;
+        $page->id_parent  = $parent_id;
+        $page->parent     = new Model_Page($parent_id);
 
+        return $page;
+
+    }
+
+    /**
+     * Validate form fields and returns array with error or false if all right
+     *
+     * @param $fields
+     * @return array|bool
+     */
+    private function getErrors($fields) {
+
+        if (!Valid::not_empty($fields['title'])) {
+            return array(
+                'message' => 'Не заполнен заголовок'
+            );
+        }
+
+        return false;
 
     }
 

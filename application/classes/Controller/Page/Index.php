@@ -1,8 +1,18 @@
 <?php
 
+/**
+ * Class Controller_Page_Index
+ *
+ * Controller for page performance actions like Article page (/p/<id>/<uri>) or Editing page (/p/writing)
+ */
 class Controller_Page_Index extends Controller_Base_preDispatch
 {
 
+    /**
+     * Gets page data and sends it into View template /page/pages
+     *
+     * @throws HTTP_Exception_404 if page not found
+     */
     public function action_show() {
 
         $id  = $this->request->param('id');
@@ -19,8 +29,8 @@ class Controller_Page_Index extends Controller_Base_preDispatch
             $this->redirect('/p/' . $page->id . '/' . $page->uri);
         }
 
-        $page->getChildrenPages();
-        $page->getComments();
+        $page->children = $page->getChildrenPages();
+        $page->comments = $page->getComments();
 
         $this->view['can_modify_this_page'] = $page->canModify($this->user);
         $this->view['page']                 = $page;
@@ -30,11 +40,12 @@ class Controller_Page_Index extends Controller_Base_preDispatch
 
     }
 
+    /**
+     * Gets article data for Editing page template
+     *
+     * @throws HTTP_Exception_403 if user has no access for editing
+     */
     public function action_writing() {
-
-        if (!$this->user->id) {
-            throw new HTTP_Exception_403();
-        }
 
         $page_id = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
         $parent_id = (int) Arr::get($_POST, 'parent', Arr::get($_GET, 'parent', 0));

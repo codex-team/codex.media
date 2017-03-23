@@ -20,8 +20,19 @@ class Model_Page extends Model
     public $feed_key       = '';
 
     public $title           = '';
+    /**
+     * JSON with page data
+     *
+     * @var string
+     */
     public $content         = '';
     public $description     = '';
+
+    /**
+     * Array of blocks classes
+     *
+     * @var array
+     */
     public $blocks          = array();
 
     public $parent          = null;
@@ -44,9 +55,9 @@ class Model_Page extends Model
 
         self::get($id);
 
-        $this->validateContent();
-        $this->getBlocks($escapeHTML);
-        $this->getDescription();
+        $this->content     = $this->validateContent();
+        $this->blocks      = $this->getBlocks($escapeHTML);
+        $this->description = $this->getDescription();
 
     }
 
@@ -180,7 +191,7 @@ class Model_Page extends Model
             ->order_by('id','ASC')
             ->execute();
 
-        $this->children = self::rowsToModels($query);
+        return self::rowsToModels($query);
     }
 
     private function getPageUri()
@@ -194,7 +205,7 @@ class Model_Page extends Model
 
 
     /**
-     * Fill $this->blocks from JSON object stored in $this->content
+     * Return array of blocks classes from JSON object stored in $this->content
      *
      * @param Boolean $escapeHTML  pass TRUE to escape HTML entities
      *
@@ -209,7 +220,7 @@ class Model_Page extends Model
 
             $CodexEditor = new CodexEditor($this->content, $config);
 
-            $this->blocks = $CodexEditor->getBlocks($escapeHTML);
+            return $CodexEditor->getBlocks($escapeHTML);
 
         } catch (Exception $e) {
             throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
@@ -217,6 +228,13 @@ class Model_Page extends Model
 
     }
 
+    /**
+     * Pass JSON with page data through CodexEditor class for validate blocks data
+     *
+     * @param bool $escapeHTML  - if TRUE, escapes HTML entities
+     * @return string           - JSON with validated data
+     * @throws Kohana_Exception   if data is not valid
+     */
     public function validateContent($escapeHTML = false) {
 
         $config = Kohana::$config->load('editor');
@@ -224,13 +242,18 @@ class Model_Page extends Model
         try {
 
             $CodexEditor = new CodexEditor($this->content, $config);
-            $this->content = $CodexEditor->getData($escapeHTML);
+            return $CodexEditor->getData($escapeHTML);
 
         } catch (Exception $e) {
             throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
         }
     }
 
+    /**
+     * Adds page to feed
+     *
+     * @param string $type - feed type
+     */
     public function addToFeed($type = Model_Feed_Pages::TYPE_ALL) {
 
         $feed = new Model_Feed_Pages($type);
@@ -238,6 +261,11 @@ class Model_Page extends Model
 
     }
 
+    /**
+     * Removes page from feed
+     *
+     * @param string $type - feed type
+     */
     public function removeFromFeed($type = Model_Feed_Pages::TYPE_ALL) {
 
         $feed = new Model_Feed_Pages($type);
@@ -257,12 +285,12 @@ class Model_Page extends Model
 
     }
 
-    public static function getSiteMenu() {
 
-        $menu = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MENU);
-        return $menu->get();
-    }
-
+    /**
+     * Checks if page in site menu
+     *
+     * @return bool
+     */
     public function isMenuItem() {
 
         $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MENU);
@@ -271,6 +299,11 @@ class Model_Page extends Model
 
     }
 
+    /**
+     * Checks if page in news feed
+     *
+     * @return bool
+     */
     public function isNewsPage() {
 
         $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_NEWS);
@@ -281,6 +314,8 @@ class Model_Page extends Model
 
     /**
      * Remove page from all feeds
+     *
+     * TODO: реализовать изящнее. Может, сделать статичный метод в Model_Feed_Pages
      */
     public function removePageFromFeeds()
     {
@@ -289,7 +324,7 @@ class Model_Page extends Model
         $this->removeFromFeed(Model_Feed_Pages::TYPE_TEACHERS);
         $this->removeFromFeed(Model_Feed_Pages::TYPE_MENU);
     }
-/***/
+
 
     /**
      * Функция находит первый блок paragraph и возвращает его в качестве превью
@@ -306,14 +341,14 @@ class Model_Page extends Model
 
                 if ($block['type'] == 'paragraph') {
 
-                    $this->description = $block['data']['text'];
+                    return $block['data']['text'];
 
-                    break;
                 }
             }
         }
 
-        return $this->description;
+        return '';
+
     }
 
     /**
@@ -344,7 +379,7 @@ class Model_Page extends Model
     }
 
     public function getComments() {
-        $this->comments = Model_Comment::getCommentsByPageId($this->id);
+        return Model_Comment::getCommentsByPageId($this->id);
     }
 
     public function getUrlToParentPage()
@@ -363,10 +398,20 @@ class Model_Page extends Model
         }
     }
 
+    /**
+     * Checks if $user can modify page
+     *
+     * @param Model_User $user
+     * @return bool
+     */
     public function canModify($user) {
 
         if ($user->isAdmin()) {
             return true;
+        }
+
+        if (!$user->id) {
+            return false;
         }
 
         if ($this->parent->id && $this->parent->author->id != $user->id) {
