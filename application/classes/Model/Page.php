@@ -177,15 +177,6 @@ class Model_Page extends Model
         /** remove from feeds */
         $this->removePageFromFeeds();
 
-        /* remove files */
-        // $files = Model_File::getPageFiles($this->id);
-
-        foreach ($files as $file) {
-
-            $file->is_removed = 1;
-            $file->update();
-        }
-
         /* remove comments */
         $comments = Model_Comment::getCommentsByPageId($this->id);
 
