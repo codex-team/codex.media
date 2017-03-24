@@ -10,6 +10,12 @@ module.exports = function () {
     var photo = function () {
 
         /**
+         * Mark elements with this name="" to dynamically update their sources
+         * @type {String}
+         */
+        var updatableElementsName = 'js-img-updatable';
+
+        /**
          * Changes user's photo
          * @param  {Event}  event   click event
          */
@@ -46,7 +52,27 @@ module.exports = function () {
 
             }
 
-            console.log("response: %o", response);
+            console.assert( response.data && response.data.url , 'Wrong response data');
+
+            updateAll( response.data.url );
+
+        };
+
+        /**
+         * Updates all user photo sources
+         * @uses   updatableElementsName  to find img tags
+         * @param  {String} newSource
+         */
+        var updateAll = function ( newSource) {
+
+            var updatebleImages = document.getElementsByName(updatableElementsName);
+
+            for (var i = updatebleImages.length - 1; i >= 0; i--) {
+
+                updatebleImages[i].src = newSource;
+
+            }
+
         };
 
         return {

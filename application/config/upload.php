@@ -15,7 +15,8 @@ return array
             'b'  => array(true , 200),
             'm'  => array(true , 100),
             's'  => array(true , 50),
-        )
+        ),
+        'prefered' => 'o'
     ),
 
     Model_File::EDITOR_FILE => array(
@@ -36,7 +37,8 @@ return array
             'b'  => array(true , 200),
             'm'  => array(true , 100),
             's'  => array(true , 50),
-        )
+        ),
+        'prefered' => 'b'
     ),
 
 );

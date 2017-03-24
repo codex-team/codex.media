@@ -33,7 +33,7 @@
                 <div class="profile-settings__photo-hover" onclick="codex.user.photo.change( event , <?= Model_File::USER_PHOTO ?>);">
                     <? include(DOCROOT . "public/app/svg/camera.svg") ?>
                 </div>
-                <img src="<?= $user->photo_medium ?>">
+                <img src="<?= $user->photo_medium ?>" name="js-img-updatable">
             </div>
 
             <label class="form__label">Фамилия и Имя</label>

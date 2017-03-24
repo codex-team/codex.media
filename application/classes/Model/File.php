@@ -73,7 +73,8 @@ class Model_File extends Model
             case self::USER_PHOTO:
                 $saved = $this->saveImage($file, $path, $config['sizes']);
                 if ($saved) {
-                    $this->filename = 'o_' . $saved;
+                    $prefix = Arr::get($config, 'prefered');
+                    $this->filename = ($prefix ? $prefix . '_' : '') . $saved;
                 }
                 break;
         }
