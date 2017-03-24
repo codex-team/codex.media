@@ -29,8 +29,17 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
     {
         if (!$uid) return;
 
-        $sessionCookie = hash( 'sha256', openssl_random_pseudo_bytes(30) ); // генерим случайный отпечаток для распознавания сессии
-        $authSession   = Dao_AuthSessions::insert();
+        if ($sid = Cookie::get(self::COOKIE_SESSION, false)) {
+
+            $sessionCookie = $sid;
+            $authSession   = Dao_AuthSessions::update()->where('uid', '=', $uid)->where('cookie', '=', $sid);
+
+        } else {
+
+            $sessionCookie = hash('sha256', openssl_random_pseudo_bytes(30)); // генерим случайный отпечаток для распознавания сессии
+            $authSession = Dao_AuthSessions::insert();
+
+        }
 
         $authSession->set('uid', $uid)
                     ->set('cookie', $sessionCookie)
