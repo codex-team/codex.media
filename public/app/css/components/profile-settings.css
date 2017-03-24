@@ -6,6 +6,10 @@
     margin-bottom: 30px;
 }
 
+.logout-button {
+    color: #ca3b3b;
+}
+
 /**
  * Photo
  */
@@ -18,7 +22,6 @@
     border: 2px dashed #c5c7d4;
     padding: 5px;
     margin: -7px;
-    overflow: hidden;
 }
 
 .profile-settings__photo img {
@@ -69,4 +72,15 @@
 
 .profile-settings__photo:hover img {
     filter: blur(5px);
+}
+
+@media (--mobile) {
+    .profile-settings__photo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .profile-settings .form__input {
+        max-width: 70%;
+    }
 }

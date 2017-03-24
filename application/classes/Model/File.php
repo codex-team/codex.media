@@ -30,6 +30,15 @@ class Model_File extends Model
     const EDITOR_FILE  = 2;
     const USER_PHOTO   = 3;
 
+    /**
+     * This types are images
+     * @var array
+     */
+    public $imageTypes = array(
+        self::EDITOR_IMAGE,
+        self::USER_PHOTO
+    );
+
     public function __construct($id = null, $file_hash_hex = null, $row = array())
     {
         if (!$id && !$file_hash_hex && !$row) return;
@@ -65,24 +74,33 @@ class Model_File extends Model
         $path   = $config['path'];
         $saved  = false;
 
-        switch ($type) {
-            case self::EDITOR_FILE:
-                $this->filename  = $this->saveFile($file, $path);
-                break;
-            case self::EDITOR_IMAGE:
-            case self::USER_PHOTO:
-                $saved = $this->saveImage($file, $path, $config['sizes']);
-                if ($saved) {
-                    $prefix = Arr::get($config, 'prefered');
-                    $this->filename = ($prefix ? $prefix . '_' : '') . $saved;
-                }
-                break;
+        $isImage = in_array($type, $this->imageTypes);
+
+        if (!$isImage) {
+            $savedFilename = $this->saveFile($file, $path);
+        } else {
+            $savedFilename = $this->saveImage($file, $path, $config['sizes']);
         }
 
-
-        if (!$this->filename) {
+        /** Check for uploading error */
+        if (!$savedFilename) {
             return false;
         }
+
+        switch ($type) {
+            case self::EDITOR_FILE:
+                $this->filename = $savedFilename;
+                break;
+            case self::EDITOR_IMAGE:
+                $this->filename = 'o_' . $savedFilename;
+                break;
+            case self::USER_PHOTO:
+                $this->filename = 'b_' . $savedFilename;
+                $user = new Model_User($user_id);
+                $user->updatePhoto($savedFilename, $path);
+                break;
+        }
+
 
         $this->title     = $this->getOriginalName($file['name']);
         $this->filepath  = $path . $this->filename;

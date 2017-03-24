@@ -5,7 +5,7 @@
             <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
             Профиль
         </a>
-        <a href="/logout" class="island__navigation-item island__navigation-item--right">
+        <a href="/logout" class="island__navigation-item island__navigation-item--right logout-button">
             Выйти
         </a>
     </div>
@@ -42,6 +42,7 @@
             <label class="form__label">О себе</label>
             <textarea class="form__input js-autoresizable" name="bio"><?= $user->bio ?></textarea>
 
+            <br>
             <button class="button master">Сохранить изменения</button>
 
         </form>
