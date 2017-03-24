@@ -83,6 +83,17 @@ module.exports = function () {
 
     }();
 
+    /**
+     * Changes user status
+     * @param  {} argument [description]
+     * @return {[type]}          [description]
+     */
+    var changeStatus = function () {
+
+        console.log('user status changing');
+
+    };
+
     var init = function () {
 
         // bindEvents();
@@ -119,6 +130,7 @@ module.exports = function () {
 
     return {
         init: init,
+        changeStatus: changeStatus,
         photo: photo
     };
 

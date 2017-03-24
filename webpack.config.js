@@ -56,7 +56,7 @@ module.exports = {
         }),
 
         /** Block biuld if errors found */
-        // new webpack.NoErrorsPlugin(),
+        new webpack.NoErrorsPlugin(),
 
         /** Вырезает CSS из JS сборки в отдельный файл */
         new ExtractTextPlugin("public/build/bundle.css"),

@@ -22,6 +22,7 @@
     border: 2px dashed #c5c7d4;
     padding: 5px;
     margin: -7px;
+    overflow: hidden;
 }
 
 .profile-settings__photo img {

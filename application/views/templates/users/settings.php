@@ -59,7 +59,7 @@
 
          <a class="border-button <?= !$user->twitter ? 'border-button--twitter' : '' ?>" href="/auth/tw?state=<?= !$user->twitter ? 'attach' : 'remove' ?>">
             <? include(DOCROOT . "public/app/svg/twitter.svg") ?>
-            <?= !$user->twitter ? 'Привязать' : $user->twitter ?>
+            <?= !$user->twitter ? 'Привязать' : $user->twitter_name ?>
         </a>
 
     </section>

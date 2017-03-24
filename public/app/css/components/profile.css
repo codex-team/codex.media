@@ -2,6 +2,10 @@
  * Profile page
  */
 .profile {
+    margin-bottom: var(--islandMargin);
+}
+
+.profile__content {
     padding: 10px 0;
 }
 
@@ -19,6 +23,7 @@
 }
 
 .profile__name {
+    margin-bottom: 0.6em;
     font-size: 2.4em;
     font-weight: 800;
     letter-spacing: 0.3px;
@@ -31,8 +36,12 @@
 }
 
 .profile__about {
-    margin: 15px auto;
+    margin: 0 0 15px;
     color: var(--grayText);
     font-size: 1.2em;
     letter-spacing: 0.3px;
+}
+
+.profile .island-settings {
+    margin: -10px -10px 0 0;
 }
