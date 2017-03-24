@@ -77,12 +77,14 @@ codex.appender           = require('./modules/appender');
 codex.parser             = require('./modules/parser');
 codex.comments           = require('./modules/comments');
 codex.alerts             = require('./modules/alerts');
+codex.islandSettings     = require('./modules/islandSettings');
 codex.autoresizeTextarea = require('./modules/autoresizeTextarea');
 codex.user               = require('./modules/user');
 codex.sharer             = require('./modules/sharer');
 codex.writing            = require('./modules/writing');
 codex.loader             = require('./modules/loader');
 codex.scrollUp           = require('./modules/scrollUp');
+codex.pages              = require('./modules/pages');
 
 
 module.exports = codex;

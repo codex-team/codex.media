@@ -19,7 +19,7 @@ module.exports = function () {
          * Changes user's photo
          * @param  {Event}  event   click event
          */
-        var change = function ( event , transportType ) {
+        var change = function ( event, transportType ) {
 
             codex.transport.init({
                 url : '/upload/' + transportType,
@@ -33,8 +33,10 @@ module.exports = function () {
          * Uploading error
          * @param  {Object} error
          */
-        var error = function (error) {
-            console.log(error);
+        var error = function (uploadError) {
+
+            console.log(uploadError);
+
         };
 
         /**
@@ -52,7 +54,7 @@ module.exports = function () {
 
             }
 
-            console.assert( response.data && response.data.url , 'Wrong response data');
+            console.assert( response.data && response.data.url, 'Wrong response data');
 
             updateAll( response.data.url );
 
@@ -87,33 +89,33 @@ module.exports = function () {
 
     };
 
-    var bindEvents = function () {
+    // var bindEvents = function () {
+    //
+    //     var repeatConfirmEmailBtn = document.getElementById('repeat-email-confirmation');
+    //
+    //     repeatConfirmEmailBtn.addEventListener('click', sendEmeailConfirmation);
+    //
+    // };
 
-        var repeatConfirmEmailBtn = document.getElementById('repeat-email-confirmation');
-
-        repeatConfirmEmailBtn.addEventListener('click', sendEmeailConfirmation);
-
-    };
-
-    var sendEmeailConfirmation = function (e) {
-
-        var success = function (response) {
-
-            response = JSON.parse(response);
-
-            codex.alerts.show(response.message);
-            e.target.classList.remove('loading');
-
-        };
-
-        e.target.classList.add('loading');
-
-        codex.ajax.call({
-            url: '/ajax/confirmation-email',
-            success: success
-        });
-
-    };
+    // var sendEmeailConfirmation = function (e) {
+    //
+    //     var success = function (response) {
+    //
+    //         response = JSON.parse(response);
+    //
+    //         codex.alerts.show(response.message);
+    //         e.target.classList.remove('loading');
+    //
+    //     };
+    //
+    //     e.target.classList.add('loading');
+    //
+    //     codex.ajax.call({
+    //         url: '/ajax/confirmation-email',
+    //         success: success
+    //     });
+    //
+    // };
 
     return {
         init: init,

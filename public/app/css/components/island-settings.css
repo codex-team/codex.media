@@ -1,0 +1,70 @@
+.island-settings {
+    position: relative;
+    float: right;
+    cursor: pointer;
+    color: var(--grayText);
+    user-select: none;
+}
+
+.island-settings:hover {
+    color: color(var(--grayText) blackness(+80%));
+}
+
+.island-settings__menu {
+    position: absolute;
+    right: -9px;
+    top: calc(100% + 15px);
+    min-width: 170px;
+    z-index: 999;
+    padding: 5px 0;
+    border: 1px solid var(--lightGrayLine);
+    border-radius: 3px;
+    box-shadow: 0 2px 8px 0 rgba(20, 33, 51, 0.05);
+    background: white;
+
+    /** Fade in effect */
+    opacity: 0;
+    will-change: opacity, transform;
+    transition: all 100ms ease-in;
+    transform: translateY(-10px);
+    visibility: hidden;
+}
+
+.island-settings:hover .island-settings__menu--showed {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+}
+
+.island-settings__menu::before,
+.island-settings__menu::after {
+    content: "";
+    position: absolute;
+    top: -14px;
+    right: 10px;
+    border-style: solid;
+}
+
+.island-settings__menu::before {
+    margin: -2px -1px 0;
+    border-width: 8px;
+    border-color: transparent transparent var(--lightGrayLine);
+}
+
+.island-settings__menu::after {
+    border-width: 7px;
+    border-color: transparent transparent #fff;
+}
+
+.island-settings__item {
+    padding: 10px 15px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 14px;
+    color: var(--grayText);
+}
+
+.island-settings__item:hover {
+    background: var(--lightGrayBackground);
+}
