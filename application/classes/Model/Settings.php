@@ -14,8 +14,6 @@ class Model_Settings extends Model_preDispatch
     public $label;
 
     const BRANDING_KEY = 'branding';
-    const SITE_INFO_LABEL = 'site_info';
-
 
     public function __construct($name = null)
     {
@@ -45,7 +43,7 @@ class Model_Settings extends Model_preDispatch
 
     }
 
-    public static function get($name = null)
+    private function get($name = null)
     {
         $parameterRow = Dao_Settings::select()
             ->where('name', '=', $name)
@@ -148,7 +146,6 @@ class Model_Settings extends Model_preDispatch
         } else {
 
             $branding->name = self::BRANDING_KEY;
-            $branding->label = self::SITE_INFO_LABEL;
             $branding->insert();
 
         }
