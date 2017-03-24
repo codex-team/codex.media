@@ -1,55 +1,87 @@
-.profile-settings__island {
-    font-size: 15px;
+.profile-settings {
+    padding: 10px 0;
 }
 
-.profile-settings__label {
-    display: block;
-    margin: 10px 0;
+.profile-settings form {
+    margin-bottom: 30px;
 }
 
-.profile-settings__input {
-    width: 60% !important;
-    margin: 10px 0;
+.logout-button {
+    color: #ca3b3b;
 }
 
-.profile-settings__input--invalid {
-    background: #fff3f3 !important;
+/**
+ * Photo
+ */
+.profile-settings__photo {
+    float: right;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px dashed #c5c7d4;
+    padding: 5px;
+    margin: -7px;
+    overflow: hidden;
 }
 
-.profile-settings__hint {
-    margin-left: 5px;
+.profile-settings__photo img {
+    width: 100%;
+    transition: filter 100ms ease-in;
+    will-change: filter;
 }
 
-.profile-settings__hint-icon {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 5px;
-    margin-top: -4px;
-}
-.profile-settings__hint-icon svg {
-    width: 18px;
+.profile-settings__photo,
+.profile-settings__photo-hover {
+    box-shadow: inset 0 0 0 5px #fff;
 }
 
-.profile-settings__caption {
-    margin: 15px 0;
+.profile-settings__photo,
+.profile-settings__photo img,
+.profile-settings__photo-hover {
+    border-radius: 50%;
 }
 
-.profile-settings__button {
-    display: inline-block;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 3px;
-    background: #73A8EE;
-    color: #fff;
+.profile-settings__photo-hover {
+    display: flex;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background: rgba(176, 202, 231, 0.2);
+    opacity: 0;
     cursor: pointer;
+    text-align: center;
+    transition: opacity 80ms ease-in;
+    will-change: opacity;
 }
 
-.profile-settings__button:hover {
-    background: color(#73A8EE blackness(+10%));
+.profile-settings__photo-hover svg {
+    line-height: 100px;
+    height: 28px;
+    width: 28px;
+    fill: #fff;
+    margin: auto;
 }
 
-.profile-settings__button.loading {
-    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgb(187, 205, 228) 4px, #ecf3f9 8px) !important;
-    background-size: 56px 56px;
-    animation: loading-bar 1000ms infinite linear;
+/** Photo hover effect  */
+.profile-settings__photo:hover .profile-settings__photo-hover {
+    opacity: 1;
+}
+
+.profile-settings__photo:hover img {
+    filter: blur(5px);
+}
+
+@media (--mobile) {
+    .profile-settings__photo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .profile-settings .form__input {
+        max-width: 70%;
+    }
 }
