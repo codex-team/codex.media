@@ -37,7 +37,7 @@ class Model_User extends Model
     const USER_STATUS_GUEST      = 0;
     const USER_STATUS_BANNED     = -1;
 
-    const USER_POSTS_LIMIT_PER_PAGE = 2; # Must be > 1
+    const USER_POSTS_LIMIT_PER_PAGE = 7; # Must be > 1
 
     /**
      * Model_User constructor.
