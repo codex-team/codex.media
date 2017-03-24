@@ -59,7 +59,7 @@
 
         <? if (!empty($viewUser->bio)): ?>
             <div class="profile__about">
-                <?= $user->bio ?>
+                <?= $viewUser->bio ?>
             </div>
         <? endif ?>
 
