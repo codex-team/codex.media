@@ -62,7 +62,14 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         if ($this->page->id) {
             $this->page->update();
         } else {
+
             $this->page = $this->page->insert();
+            $this->page->addToFeed(Model_Feed_Pages::TYPE_ALL);
+
+            if ($this->page->author->isTeacher()) {
+                $this->page->addToFeed(Model_Feed_Pages::TYPE_TEACHERS);
+            }
+
         }
 
         $response = array(
