@@ -102,25 +102,16 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
      */
     public static function rightToUnbindSocial($uid)
     {
-        $security = Dao_Users::select(['email', 'password'])->where('id', '=', $uid)->execute();
-        $socials  = Dao_Users::select(['twitter', 'facebook', 'vk'])->where('id', '=', $uid)->execute();
+        $security = Dao_Users::select(['email', 'password'])->where('id', '=', $uid)->limit(1)->execute();
+        $socials  = Dao_Users::select(['twitter', 'facebook', 'vk'])->where('id', '=', $uid)->limit(1)->execute();
 
-        if (!empty($security[0]['email']) && !empty($security[0]['password'])) {
+        if (!empty($security['email']) && !empty($security['password'])) {
 
             return true;
 
-        } elseif ($socials && isset($socials[0]) && count($socials[0])) {
+        }
 
-            $nonEmptySocials = 0;
-            foreach ( $socials[0] as $social ) {
-                if (!empty($social)) {
-                    $nonEmptySocials += 1;
-                }
-            }
-
-            return $nonEmptySocials > 1;
-
-        } else return false;
+        return count(array_filter($socials)) > 1;
     }
 
     /**
