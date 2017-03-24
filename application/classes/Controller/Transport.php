@@ -82,9 +82,21 @@ class Controller_Transport extends Controller_Base_preDispatch
             return false;
         }
 
-        if (!$this->files || !Upload::not_empty($this->files) || !Upload::valid($this->files)){
+        if (!$this->files){
 
-            $this->transportResponse['message'] = 'File is missing or damaged';
+            $this->transportResponse['message'] = 'File was not transferred';
+            return false;
+        }
+
+        if (!Upload::not_empty($this->files)){
+
+            $this->transportResponse['message'] = 'File is empty';
+            return false;
+        }
+
+        if (!Upload::valid($this->files)){
+
+            $this->transportResponse['message'] = 'Uploaded file is damaged';
             return false;
         }
 

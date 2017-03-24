@@ -23,6 +23,31 @@
     text-align: center;
 }
 
+/**
+ * Island navigation
+ */
+.island__navigation {
+    display: flex;
+    margin: -20px -var(--islandPadding) 20px;
+    padding: 0 var(--islandPadding);
+    border-bottom: 1px solid var(--lightGrayLine);
+    line-height: 54px;
+    font-size: 15px;
+}
+
+.island__navigation-item {
+    color: var(--grayText);
+}
+
+.island__navigation-item--right {
+    margin-left: auto;
+}
+
+.island__navigation-item svg {
+    margin-right: 0.6em;
+    vertical-align: text-bottom;
+}
+
 @media (--mobile) {
     .island--stretched {
         margin: 0;

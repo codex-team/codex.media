@@ -31,6 +31,16 @@ class Model_File extends Model
     const USER_PHOTO   = 3;
     const BRANDING     = 4;
 
+    /**
+     * This types are images
+     * @var array
+     */
+    public $imageTypes = array(
+        self::EDITOR_IMAGE,
+        self::USER_PHOTO,
+        self::BRANDING
+    );
+
     public function __construct($id = null, $file_hash_hex = null, $row = array())
     {
         if (!$id && !$file_hash_hex && !$row) return;
@@ -66,32 +76,39 @@ class Model_File extends Model
         $path   = $config['path'];
         $saved  = false;
 
+        $isImage = in_array($type, $this->imageTypes);
+
+        if (!$isImage) {
+            $savedFilename = $this->saveFile($file, $path);
+        } else {
+            $savedFilename = $this->saveImage($file, $path, $config['sizes']);
+        }
+
+        /** Check for uploading error */
+        if (!$savedFilename) {
+            return false;
+        }
+
         switch ($type) {
             case self::EDITOR_FILE:
-                $this->filename  = $this->saveFile($file, $path);
+                $this->filename = $savedFilename;
                 break;
             case self::EDITOR_IMAGE:
+                $this->filename = 'o_' . $savedFilename;
+                break;
             case self::USER_PHOTO:
-                $saved = $this->saveImage($file, $path, $config['sizes']);
-                if ($saved) {
-                    $this->filename = 'o_' . $saved;
-                }
+                $this->filename = 'b_' . $savedFilename;
+                $user = new Model_User($user_id);
+                $user->updatePhoto($savedFilename, $path);
                 break;
             case self::BRANDING:
                 $user = new Model_User($user_id);
                 if (!$user->isAdmin) return false;
-                $saved = $this->saveImage($file, $path, $config['sizes']);
-                if ($saved) {
 
-                    // save branding as site_info
-                    $settings = new Model_Settings();
-                    $branding = $settings->newBranding($saved);
-                    $this->filename = 'o_' . $branding;
-                }
-        }
-
-        if (!$this->filename) {
-            return false;
+                // save branding as site_info
+                $settings = new Model_Settings();
+                $branding = $settings->newBranding($savedFilename);
+                $this->filename = 'o_' . $branding;
         }
 
         $this->title     = $this->getOriginalName($file['name']);

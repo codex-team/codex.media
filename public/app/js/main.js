@@ -84,13 +84,14 @@ codex.comments           = require('./modules/comments');
 codex.alerts             = require('./modules/alerts');
 codex.islandSettings     = require('./modules/islandSettings');
 codex.autoresizeTextarea = require('./modules/autoresizeTextarea');
-codex.profileSettings    = require('./modules/profileSettings');
+codex.user               = require('./modules/user');
 codex.sharer             = require('./modules/sharer');
 codex.writing            = require('./modules/writing');
 codex.loader             = require('./modules/loader');
 codex.scrollUp           = require('./modules/scrollUp');
 codex.branding           = require('./modules/branding');
 codex.pages              = require('./modules/pages');
+
 
 module.exports = codex;
 

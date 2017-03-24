@@ -19,14 +19,13 @@
     position: absolute;
     bottom: 20px;
     right: 15px;
-    background: rgba(0, 0, 0, .3);
+    background: rgba(0, 0, 0, 1);
     border-radius: 2px;
     padding: 10px;
     color: #fff;
 }
 
 .branding-content__change-button:hover {
-    color: #0c84cf;
     cursor: pointer;
 }
 
