@@ -36,30 +36,3 @@
     font-size: 1.2em;
     letter-spacing: 0.3px;
 }
-
-.profile__social-buttons {
-    margin-top: 20px;
-}
-
-.profile__social-button {
-    display: inline-block;
-    margin-right: 15px;
-    padding: 7px 10px;
-    border: 1px solid;
-    border-radius: 3px;
-}
-
-.profile__social-button--twitter {
-    color: var(--twitterColor);
-    border-color: color(var(--twitterColor) alpha(-80%));
-}
-
-.profile__social-button--vk {
-    color: var(--vkColor);
-    border-color: color(var(--vkColor) alpha(-80%));
-}
-
-.profile__social-button--facebook {
-    color: var(--facebookColor);
-    border-color: color(var(--facebookColor) alpha(-80%));
-}

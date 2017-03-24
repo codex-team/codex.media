@@ -63,6 +63,9 @@ class Controller_User extends Controller_Base_preDispatch
         return $status;
     }
 
+    /**
+     * @todo Fully rewrite
+     */
     public function action_settings()
     {
 
@@ -81,7 +84,9 @@ class Controller_User extends Controller_Base_preDispatch
             $newPassword     = trim(Arr::get($_POST, 'new_password'));
             $repeatPassword  = trim(Arr::get($_POST, 'repeat_password'));
             $newPhone        = trim(Arr::get($_POST, 'phone'));
-            $newAva          = Arr::get($_FILES, 'new_ava');
+
+            $bio              = trim(Arr::get($_POST, 'bio'));
+            $name             = trim(Arr::get($_POST, 'name'));
 
             if ($currentPassword) {
 
@@ -104,29 +109,32 @@ class Controller_User extends Controller_Base_preDispatch
                 $error['passError'] = 'Пароли не совпадают.';
             }
 
-            if (Upload::valid($newAva) && Upload::not_empty($newAva) && Upload::size($newAva, '8M')) {
-
-                $this->user->saveAvatar($newAva, 'upload/profile/');
-            }
-
             $fields = array(
                 'email'    => $newEmail,
-                'phone'    => $newPhone);
+                'phone'    => $newPhone,
+                'name'     => $name,
+                'bio'      => $bio
+            );
 
             if (!$error) {
 
                 $fields['password'] = Controller_Auth_Base::createPasswordHash($newPassword);
             }
 
-            //если пустое поле, то не заносим его в базу и модель, за исключением телефона
+            //если поле пустое, то не заносим его в базу и модель, за исключением некоторых
+
+            $allowEmpty = array('bio', 'phone');
+
             foreach ($fields as $key => $value) {
 
-                if (!$value && $key != 'phone') unset($fields[$key]);
+                if (!$value && !in_array($key, $allowEmpty)) unset($fields[$key]);
+
             }
 
             if ($this->user->updateUser($this->user->id, $fields)) {
 
                 $succesResult = (!$error) ? true : false;
+
             }
         }
 

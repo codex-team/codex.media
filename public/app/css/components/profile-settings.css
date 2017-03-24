@@ -1,15 +1,23 @@
 .profile-settings {
-    font-size: 15px;
+    padding: 10px 0;
 }
 
+.profile-settings form {
+    margin-bottom: 30px;
+}
+
+/**
+ * Photo
+ */
 .profile-settings__photo {
     float: right;
     position: relative;
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 1px dashed #c5c7d4;
+    border: 2px dashed #c5c7d4;
     padding: 5px;
+    margin: -7px;
     overflow: hidden;
 }
 
@@ -61,16 +69,4 @@
 
 .profile-settings__photo:hover img {
     filter: blur(5px);
-}
-
-/**
- * Form
- */
-.profile-settings__input {
-    max-width: 60%;
-}
-
-.profile-settings__label {
-    display: block;
-    margin-bottom: 0.6em;
 }
