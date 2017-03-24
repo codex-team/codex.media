@@ -29,3 +29,14 @@
     color: #0c84cf;
     cursor: pointer;
 }
+
+@media (--mobile) {
+
+    .branding {
+        height: 100px;
+    }
+    
+    .branding-content__change-button {
+        display: none;
+    }
+}

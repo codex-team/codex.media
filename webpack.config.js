@@ -65,7 +65,7 @@ module.exports = {
         new StyleLintPlugin({
             context : './public/app/css/',
             files : 'main.css'
-        }),
+        })
 
     ],
 

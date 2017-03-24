@@ -131,6 +131,10 @@
         font-size: 13px;
     }
 
+    .main-aside--offset-top {
+        margin-top: 0px;
+    }
+
     /**
     * Mobile site menu
     */
