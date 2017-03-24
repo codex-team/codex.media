@@ -15,6 +15,8 @@ class Controller_User extends Controller_Base_preDispatch
             throw HTTP_Exception::factory(404);
         }
 
+        $this->view["user_id"] = $user_id;
+
         if ($this->user->isAdmin && $new_status) {
 
             $this->view['isUpdateSaved'] = $viewUser->setUserStatus(self::translate_user_status($new_status));
@@ -29,7 +31,10 @@ class Controller_User extends Controller_Base_preDispatch
                 break;
 
             default:
-                $this->view['userPages'] = $viewUser->getUserPages();
+                $user_feed = $viewUser->getUserPages(0, 1);
+                $this->view['user_pages'] = $user_feed["models"];
+                $this->view['next_page'] = $user_feed["next_page"];
+                $this->view['page_number'] = 1;
                 break;
         }
 
@@ -129,5 +134,21 @@ class Controller_User extends Controller_Base_preDispatch
         $this->view['success']   = $succesResult;
 
         $this->template->content = View::factory('/templates/users/settings', $this->view);
+    }
+
+    public function action_ajax_get_posts()
+    {
+        $page_number = $this->request->param('page_number') ?: 1;
+
+        $user_feed = $this->user->getUserPages(0, $page_number);
+
+        $response = array();
+        $response['success']    = 1;
+        $response['next_page']  = $user_feed["next_page"];
+        $response['pages']      = View::factory('templates/users/pages', array('user_pages' => $user_feed["models"]))->render();
+
+        $this->auto_render = false;
+        $this->response->headers('Content-Type', 'application/json; charset=utf-8');
+        $this->response->body( json_encode($response) );
     }
 }
