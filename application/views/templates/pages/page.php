@@ -110,7 +110,7 @@
                             handler : codex.pages.addToMenu
                         },
                         {
-                            title : '<?= $page->isMenuItem() ? 'Убрать из новостей' : 'Добавить в новости'; ?>',
+                            title : '<?= $page->isNewsPage() ? 'Убрать из новостей' : 'Добавить в новости'; ?>',
                             handler : codex.pages.addToNews
                         },
                         <? endif; ?>

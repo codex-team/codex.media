@@ -18,6 +18,7 @@
 module.exports = (function () {
 
     var editorIsReady = false,
+        submitButton = null,
         settings = {
             hideEditorToolbar   : false,
             titleId             : 'editorWritingTitle',
@@ -239,11 +240,11 @@ module.exports = (function () {
 
     };
 
-    var submit = function () {
+    var submit = function (button) {
 
-        var form = getForm();
+        var title = document.forms.atlas.elements['title'];
 
-        if (form.elements['title'].value.trim() === '') {
+        if (title.value.trim() === '') {
 
             codex.editor.notifications.notification({
                 type: 'warn',
@@ -253,6 +254,12 @@ module.exports = (function () {
             return;
 
         }
+
+        var form = getForm();
+
+        submitButton = button;
+
+        submitButton.classList.add('loading');
 
         window.setTimeout(function () {
 
@@ -270,6 +277,8 @@ module.exports = (function () {
     };
 
     var submitResponse = function (response) {
+
+        submitButton.classList.remove('loading');
 
         response = JSON.parse(response);
 

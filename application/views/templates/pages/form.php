@@ -23,7 +23,7 @@
     <div class="writing__actions clear">
         <div class="writing__actions-content">
 
-            <span class="button master fl_r" onclick="codex.writing.submit()">Отправить</span>
+            <span class="button master fl_r" onclick="codex.writing.submit(this)">Отправить</span>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
                 <span class="button fl_r" onclick="codex.writing.openEditorFullscreen()">На весь экран</span>
