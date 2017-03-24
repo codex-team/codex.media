@@ -49,7 +49,7 @@ module.exports = function () {
 
             if ( !response.success ) {
 
-                codex.alert.show(response.message || 'File uploading error :(');
+                codex.alerts.show(response.message || 'File uploading error :(');
                 return;
 
             }
