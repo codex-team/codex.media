@@ -50,11 +50,6 @@ codex = (function (codex) {
          */
         codex.core.log('Initialized', 'CodeX', 'info');
 
-        /**
-         * initializes button that can change the branding
-         */
-        codex.branding.init();
-
     };
 
     return codex;

@@ -4,17 +4,11 @@
 
 module.exports = (function () {
 
-    var init = function () {
-
-        clickedToChangeBranding_();
-
-    };
-
     /**
      * changes site branding
      * @private
      */
-    var changeBranding_ = function () {
+    var change = function () {
 
         var brandingSection = document.getElementById('brandingSection');
 
@@ -43,16 +37,8 @@ module.exports = (function () {
 
     };
 
-    var clickedToChangeBranding_ = function () {
-
-        var changeBrandingButton = document.getElementById('changeBrandingButton');
-
-        changeBrandingButton.addEventListener('click', changeBranding_, false);
-
-    };
-
     return {
-        init : init
+        change : change
     };
 
 })({});

@@ -10,32 +10,39 @@
     background-position: center;
 }
 
-.branding-content {
+.branding__content {
     position: relative;
     height: 200px;
 }
 
-.branding-content__change-button {
+.branding__button {
     position: absolute;
     bottom: 20px;
     right: 15px;
-    background: rgba(0, 0, 0, 1);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 2px;
     padding: 10px;
     color: #fff;
-}
-
-.branding-content__change-button:hover {
     cursor: pointer;
 }
 
-@media (--mobile) {
+.branding__button:hover {
+    background: rgba(0, 0, 0, 1);
+}
 
+.branding__button svg {
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 0.3em;
+    vertical-align: text-bottom;
+}
+
+@media (--mobile) {
     .branding {
         height: 100px;
     }
-    
-    .branding-content__change-button {
+
+    .branding__button {
         display: none;
     }
 }
