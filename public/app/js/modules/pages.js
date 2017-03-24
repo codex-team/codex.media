@@ -11,6 +11,7 @@ module.exports = (function () {
     var openWriting = function () {
 
         currentItemClicked = this;
+
         var targetId =currentItemClicked.dataset.id;
 
         document.location = '/p/writing?id=' + targetId;
@@ -23,6 +24,7 @@ module.exports = (function () {
     var remove = function () {
 
         currentItemClicked = this;
+
         var targetId    =currentItemClicked.dataset.id;
 
         if (!window.confirm('Подтвердите удаление страницы')) {
@@ -41,6 +43,7 @@ module.exports = (function () {
     var newChild = function () {
 
         currentItemClicked = this;
+
         var targetId =currentItemClicked.dataset.id;
 
         document.location = '/p/writing?parent=' + targetId;
@@ -50,6 +53,8 @@ module.exports = (function () {
     var addToMenu = function () {
 
         currentItemClicked = this;
+        currentItemClicked.classList.add('loading');
+
         var targetId =currentItemClicked.dataset.id;
 
         codex.ajax.call({
@@ -62,6 +67,8 @@ module.exports = (function () {
     var addToNews = function () {
 
         currentItemClicked = this;
+        currentItemClicked.classList.add('loading');
+
         var targetId =currentItemClicked.dataset.id;
 
         codex.ajax.call({
@@ -111,11 +118,12 @@ module.exports = (function () {
 
             response = ajaxResponses.getResponse(response);
 
+            currentItemClicked.classList.remove('loading');
+
             if (response.success) {
 
                 if (response.menu) {
 
-                    console.log(response.menu);
                     ajaxResponses.replaceMenu(response.menu);
 
                 }

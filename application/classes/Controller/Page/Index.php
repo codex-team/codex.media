@@ -32,8 +32,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $page->children = $page->getChildrenPages();
         $page->comments = $page->getComments();
 
-        $this->view['can_modify_this_page'] = $page->canModify($this->user);
-        $this->view['page']                 = $page;
+        $this->view['page'] = $page;
 
         $this->template->content = View::factory('templates/pages/page', $this->view);
 

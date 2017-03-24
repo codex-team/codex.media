@@ -33,7 +33,7 @@
         </a>
 
         <? /* Manage page buttons */ ?>
-        <? if ($can_modify_this_page): ?>
+        <? if ($page->canModify($user)): ?>
 
             <span class="island-settings js-page-settings" data-id="<?= $page->id ?>">
                     <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
