@@ -1,4 +1,4 @@
-<div id="list_of_comments">
+<div id="list_of_comments" class="post-list">
 
     <?= View::factory('templates/comments/list', array(
         'user' => $user,
@@ -17,7 +17,7 @@
             codex.appender.init({
                 buttonId      : 'buttonLoadComments',
                 currentPage   : '<?= $page_number ?>',
-                url           : 'user/load/comments/',
+                url           : '<?= '/user/' . $user_id . '/comments/' ?>',
                 targetBlockId : 'list_of_comments',
                 autoLoading   : true,
             });

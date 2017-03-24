@@ -6,6 +6,7 @@ class Controller_User extends Controller_Base_preDispatch
     {
         $user_id = $this->request->param('id');
         $list = $this->request->param('list') ?: 'pages';
+        $page_number = $this->request->param('page_number') ?: 1;
 
         $new_status = Arr::get($_GET, 'newStatus');
 
@@ -25,27 +26,33 @@ class Controller_User extends Controller_Base_preDispatch
         $viewUser->isMe = $viewUser->id == $this->user->id;
         $this->view['viewUser']  = $viewUser;
 
+        $user_feed = ["models" => array(), "next_page" => false];
         switch ($list) {
             case 'comments':
-                $user_feed = Model_Comment::getCommentsByUserId($user_id, 1);
+                $user_feed = Model_Comment::getCommentsByUserId($user_id, $page_number);
                 $this->view['user_comments'] = $user_feed["models"];
-                $this->view['next_page'] = $user_feed["next_page"];
-                $this->view['page_number'] = 1;
                 break;
 
             default:
-                $user_feed = $viewUser->getUserPages(0, 1);
+                $user_feed = $viewUser->getUserPages(0, $page_number);
                 $this->view['user_pages'] = $user_feed["models"];
-                $this->view['next_page'] = $user_feed["next_page"];
-                $this->view['page_number'] = 1;
                 break;
         }
 
-        $this->view['list']      = $list;
-        $this->view['listFactory'] = View::factory('/templates/users/' . $list, $this->view);
+        if (Model_Methods::isAjax()) {
+            $this->ajax_pagination($list, $user_feed["models"], $user_feed["next_page"]);
+        }
+        else {
+            $this->view['next_page'] = $user_feed["next_page"];
+            $this->view['page_number'] = $page_number;
 
-        $this->template->title   = $viewUser->name;
-        $this->template->content = View::factory('/templates/users/profile', $this->view);
+            $this->view['list']      = $list;
+            $this->view['listFactory'] = View::factory('/templates/users/' . $list, $this->view);
+
+            $this->template->title   = $viewUser->name;
+            $this->template->content = View::factory('/templates/users/profile', $this->view);
+        }
+
     }
 
     public function translate_user_status($act)
@@ -139,28 +146,22 @@ class Controller_User extends Controller_Base_preDispatch
         $this->template->content = View::factory('/templates/users/settings', $this->view);
     }
 
-    public function action_ajax_get_posts()
+    private function ajax_pagination($type, $models, $next_page = false)
     {
-        $type = $this->request->param('type') ?: "pages";
-        $page_number = $this->request->param('page_number') ?: 1;
-
         $response = array();
-        $response['success']    = 1;
+        $response['success'] = 1;
 
         switch ($type) {
             case 'comments':
-                $user_feed = Model_Comment::getCommentsByUserId($this->user->id, $page_number);
-                $response['pages']      = View::factory('templates/users/comments', array('user_comments' => $user_feed["models"]))->render();
+                $response['pages'] = View::factory('templates/users/comments', array('user_comments' => $models))->render();
                 break;
 
             default:
-                $user_feed = $this->user->getUserPages(0, $page_number);
-                $response['pages']      = View::factory('templates/users/pages', array('user_pages' => $user_feed["models"]))->render();
+                $response['pages'] = View::factory('templates/users/pages', array('user_pages' => $models))->render();
                 break;
         }
 
-        $response['next_page']  = $user_feed["next_page"];
-
+        $response['next_page']  = $next_page;
 
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');

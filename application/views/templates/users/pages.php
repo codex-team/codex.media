@@ -16,9 +16,9 @@
             codex.appender.init({
                 buttonId      : 'buttonLoadNews',
                 currentPage   : '<?= $page_number ?>',
-                url           : 'user/load/pages/',
+                url           : '<?= '/user/' . $user_id . '/pages/' ?>',
                 targetBlockId : 'list_of_news',
-                autoLoading   : true,
+                autoLoading   : true
             });
         });
     </script>

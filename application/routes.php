@@ -58,13 +58,10 @@ Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->d
 ));
 
 
-
-
-
 /**
  * User section
  */
-Route::set('PROFILE', 'user/<id>(/<list>)', array('id' => $DIGIT, 'list' => 'pages|comments'))->defaults(array(
+Route::set('PROFILE', 'user/<id>(/<list>)(/<page_number>)', array('id' => $DIGIT, 'list' => 'pages|comments', 'page_number' => $DIGIT))->defaults(array(
     'controller' => 'user',
     'action' => 'profile'
 ));
@@ -72,11 +69,6 @@ Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
     'controller' => 'user',
     'action' => 'settings'
 ));
-Route::set('USER_SETTINGS', 'user/load/<type>/<page_number>', array('type' => 'pages|comments', 'page_number' => $DIGIT))->defaults(array(
-    'controller' => 'user',
-    'action' => 'ajax_get_posts'
-));
-
 
 
 /**
