@@ -24,7 +24,28 @@ class Model_Settings extends Model_preDispatch
         self::get($name);
     }
 
-    private function get($name = null)
+    public static function getAll()
+    {
+        $parameterRow = Dao_Settings::select()
+            ->cached(Date::MINUTE * 30, 'settings')
+            ->execute();
+
+        $siteSettings = [];
+
+        foreach ($parameterRow as $item => $info) {
+            $key    = Arr::get($info, 'name');
+            $value  = Arr::get($info, 'value');
+
+            if (!$key && !$value) continue;
+
+            $siteSettings[$key] = $value;
+        }
+
+        return $siteSettings;
+
+    }
+
+    public static function get($name = null)
     {
         $parameterRow = Dao_Settings::select()
             ->where('name', '=', $name)
