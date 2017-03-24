@@ -27,7 +27,10 @@ class Controller_User extends Controller_Base_preDispatch
 
         switch ($list) {
             case 'comments':
-                $this->view['userComments'] = Model_Comment::getCommentsByUserId($user_id);
+                $user_feed = Model_Comment::getCommentsByUserId($user_id, 1);
+                $this->view['user_comments'] = $user_feed["models"];
+                $this->view['next_page'] = $user_feed["next_page"];
+                $this->view['page_number'] = 1;
                 break;
 
             default:
@@ -138,14 +141,26 @@ class Controller_User extends Controller_Base_preDispatch
 
     public function action_ajax_get_posts()
     {
+        $type = $this->request->param('type') ?: "pages";
         $page_number = $this->request->param('page_number') ?: 1;
-
-        $user_feed = $this->user->getUserPages(0, $page_number);
 
         $response = array();
         $response['success']    = 1;
+
+        switch ($type) {
+            case 'comments':
+                $user_feed = Model_Comment::getCommentsByUserId($this->user->id, $page_number);
+                $response['pages']      = View::factory('templates/users/comments', array('user_comments' => $user_feed["models"]))->render();
+                break;
+
+            default:
+                $user_feed = $this->user->getUserPages(0, $page_number);
+                $response['pages']      = View::factory('templates/users/pages', array('user_pages' => $user_feed["models"]))->render();
+                break;
+        }
+
         $response['next_page']  = $user_feed["next_page"];
-        $response['pages']      = View::factory('templates/users/pages', array('user_pages' => $user_feed["models"]))->render();
+
 
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');

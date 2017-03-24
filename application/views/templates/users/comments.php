@@ -2,8 +2,25 @@
 
     <?= View::factory('templates/comments/list', array(
         'user' => $user,
-        'comments' => $userComments,
+        'comments' => $user_comments,
         'emptyListMessage' => '<p>Пользователь не оставил ни одного комментария.</p>'
     )); ?>
 
 </div>
+
+<? if (isset($next_page) && $next_page): ?>
+    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadComments" href="/<?= $page_number + 1 ?>">
+        Показать больше комментариев
+    </a>
+    <script>
+        codex.docReady(function() {
+            codex.appender.init({
+                buttonId      : 'buttonLoadComments',
+                currentPage   : '<?= $page_number ?>',
+                url           : 'user/load/comments/',
+                targetBlockId : 'list_of_comments',
+                autoLoading   : true,
+            });
+        });
+    </script>
+<? endif ?>

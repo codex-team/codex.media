@@ -72,7 +72,7 @@ Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
     'controller' => 'user',
     'action' => 'settings'
 ));
-Route::set('USER_SETTINGS', 'user/load/<page_number>', array('page_number' => $DIGIT))->defaults(array(
+Route::set('USER_SETTINGS', 'user/load/<type>/<page_number>', array('type' => 'pages|comments', 'page_number' => $DIGIT))->defaults(array(
     'controller' => 'user',
     'action' => 'ajax_get_posts'
 ));
