@@ -273,23 +273,17 @@ module.exports = (function () {
 
         response = JSON.parse(response);
 
-        var host        = window.location.host,
-            protocol    = window.location.protocol,
-            id          = response.id;
-
-
         if (response.success) {
 
-            window.location.replace(protocol+'//'+host+'/p/'+id);
-
-        } else {
-
-            codex.editor.notifications.notification({
-                type: 'warn',
-                message: response.message
-            });
+            window.location = response.redirect;
+            return;
 
         }
+
+        codex.editor.notifications.notification({
+            type: 'warn',
+            message: response.message
+        });
 
     };
 

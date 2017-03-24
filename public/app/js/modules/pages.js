@@ -3,13 +3,15 @@
  */
 module.exports = (function () {
 
+    var currentItemClicked = null;
+
     /**
      * Opens page-writing form
      */
     var openWriting = function () {
 
-        var itemClicked = this,
-            targetId = itemClicked.dataset.id;
+        currentItemClicked = this;
+        var targetId =currentItemClicked.dataset.id;
 
         document.location = '/p/writing?id=' + targetId;
 
@@ -20,8 +22,8 @@ module.exports = (function () {
      */
     var remove = function () {
 
-        var itemClicked = this,
-            targetId    = itemClicked.dataset.id;
+        currentItemClicked = this;
+        var targetId    =currentItemClicked.dataset.id;
 
         if (!window.confirm('Подтвердите удаление страницы')) {
 
@@ -38,8 +40,8 @@ module.exports = (function () {
 
     var newChild = function () {
 
-        var itemClicked = this,
-            targetId = itemClicked.dataset.id;
+        currentItemClicked = this;
+        var targetId =currentItemClicked.dataset.id;
 
         document.location = '/p/writing?parent=' + targetId;
 
@@ -47,8 +49,8 @@ module.exports = (function () {
 
     var addToMenu = function () {
 
-        var itemClicked = this,
-            targetId = itemClicked.dataset.id;
+        currentItemClicked = this;
+        var targetId =currentItemClicked.dataset.id;
 
         codex.ajax.call({
             url : '/p/' + targetId + '/promote?list=menu',
@@ -59,8 +61,8 @@ module.exports = (function () {
 
     var addToNews = function () {
 
-        var itemClicked = this,
-            targetId = itemClicked.dataset.id;
+        currentItemClicked = this;
+        var targetId =currentItemClicked.dataset.id;
 
         codex.ajax.call({
             url : '/p/' + targetId + '/promote?list=news',
@@ -111,13 +113,18 @@ module.exports = (function () {
 
             if (response.success) {
 
+                if (response.menu) {
+
+                    console.log(response.menu);
+                    ajaxResponses.replaceMenu(response.menu);
+
+                }
+
+                /**
+                 * TODO: сделать замену текста кнопки
+                 **/
+
                 codex.alerts.show(response.message);
-
-                window.setTimeout(function () {
-
-                    window.location.href = window.location.href;
-
-                }, 1000);
 
                 return;
 
@@ -125,9 +132,20 @@ module.exports = (function () {
 
             codex.alerts.show(response.message);
 
+        },
+
+        replaceMenu: function (menu) {
+
+            var oldMenu = document.getElementById('menu'),
+                newMenu = codex.core.parseHTML(menu)[0];
+
+            codex.core.replace(oldMenu, newMenu);
+
         }
 
     };
+
+
 
     return {
         openWriting: openWriting,

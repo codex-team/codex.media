@@ -66,9 +66,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         }
 
         $response = array(
-            'success' => 1,
-            'message' => 'Страница успешно сохранена',
-            'id'      => $this->page->id
+            'success'  => 1,
+            'message'  => 'Страница успешно сохранена',
+            'redirect' => '/p/' . $this->page->id . '/' . $this->page->uri
         );
 
         $this->auto_render = false;
@@ -96,7 +96,22 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $this->page->toggleFeed($feed_key);
 
         $response['success'] = 1;
-        $response['message'] = 'Статус страницы изменен';
+
+        switch ($feed_key) {
+            case 'menu':
+                $response['menu'] = View::factory('/templates/components/menu', array('site_menu' => Model_Methods::getSiteMenu()))->render();
+                $response['message'] = $this->page->isMenuItem() ? 'Страница добавлена в меню' : 'Страница удалена из меню';
+                $response['buttonText'] = $this->page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню';
+                break;
+
+            case 'news':
+                $response['message'] = $this->page->isNewsPage() ? 'Страница добавлена в новости' : 'Страница удалена из новостей';
+                $response['buttonText'] = $this->page->isNewsPage() ? 'Убрать из новостей' : 'Добавить в новости';
+                break;
+
+        }
+
+
         $this->response->body(json_encode($response));
 
     }

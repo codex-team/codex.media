@@ -40,14 +40,7 @@
 
         <? endif; ?>
 
-        <? /* Menu */ ?>
-        <ul class="menu">
-
-            <? foreach ($site_menu as $item): ?>
-                <li><a href="/p/<?= $item->id ?>/<?= $item->uri ?>"><?= $item->title ?></a></li>
-            <? endforeach ?>
-
-        </ul>
+        <?= View::factory('templates/components/menu')->render(); ?>
 
         <? if (!$user->id): ?>
             <section class="aside-section">
