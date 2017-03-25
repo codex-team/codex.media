@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Dao_Settings extends Dao_MySQL_Andrey {
+class Dao_Settings extends Dao_MySQL_Project {
 
     protected $cache_key = 'Dao_Settings';
 

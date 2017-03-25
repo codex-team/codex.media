@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Dao_MySQL_Andrey extends Dao_MySQL_Base {
+class Dao_MySQL_Project extends Dao_MySQL_Base {
 
     public function __construct()
     {
