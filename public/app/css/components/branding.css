@@ -1,0 +1,89 @@
+/**
+ * Cover
+ */
+.branding {
+    position: relative;
+    height: 200px;
+    background: var(--lightGrayBackground);
+    overflow: hidden;
+    transition: height 250ms ease-out;
+}
+
+.branding--empty {
+    background-color: #292e50;
+    height: 62px;
+}
+
+.branding,
+.branding__preloader {
+    background-size: cover;
+    background-position: center;
+}
+
+.branding__preloader {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    will-change: opacity, filter;
+    filter: none;
+}
+
+.branding__preloader--shown {
+    opacity: 1;
+    filter: blur(2px);
+}
+
+.branding--loading::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(255, 255, 255, 0.03) 4px, rgba(107, 118, 128, 0.19) 8px);
+    background-size: 56px 56px;
+    animation: loading-bar 1s infinite linear;
+}
+
+.branding__content {
+    position: relative;
+    height: 100%;
+}
+
+.branding__button {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 3px;
+    padding: 8px 11px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.branding__button:hover {
+    background: rgba(0, 0, 0, 1);
+}
+
+.branding__button svg {
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 0.3em;
+    vertical-align: text-bottom;
+}
+
+@media (--mobile) {
+    .branding {
+        height: 100px;
+    }
+
+    .branding--empty {
+        display: none;
+    }
+
+    .branding__button {
+        display: none;
+    }
+}
