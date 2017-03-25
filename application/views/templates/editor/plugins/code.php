@@ -1,5 +1,5 @@
 <div class="article__code-wrapper">
     <code class="article__code">
-        <?=$block->text; ?>
+        <?=$block['text']; ?>
     </code>
 </div>

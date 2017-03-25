@@ -8,7 +8,11 @@
 $DIGIT  = '\d+';
 $STRING = '[-a-zA-Z\d]+';
 
-$FEED_KEYS = Model_Page::FEED_KEY_NEWS.'|'.Model_Page::FEED_KEY_TEACHERS_BLOGS.'|'.Model_Page::FEED_KEY_BLOGS;
+$FEED_KEYS = implode('|', array(
+    Model_Feed_Pages::TYPE_ALL,
+    Model_Feed_Pages::TYPE_TEACHERS,
+    Model_Feed_Pages::TYPE_NEWS
+));
 
 
 /**
@@ -44,22 +48,23 @@ Route::set('ACTION_FOR_PAGE', 'p/<id>/<action>',
         'action' => 'delete|promote'
     )
 )->defaults(array(
-    'controller' => 'pages',
+    'controller' => 'Page_Modify',
 ));
 
 Route::set('NEW_PAGE', 'p/writing')->defaults(array(
-    'controller' => 'pages',
+    'controller' => 'Page_Index',
+    'action' => 'writing'
+));
+
+Route::set('SAVE_PAGE', 'p/save')->defaults(array(
+    'controller' => 'Page_Modify',
     'action' => 'save'
 ));
 
 Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
-    'controller' => 'pages',
+    'controller' => 'Page_Index',
     'action' => 'show'
 ));
-
-
-
-
 
 /**
  * User section

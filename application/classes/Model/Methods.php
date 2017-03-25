@@ -397,4 +397,12 @@ class Model_Methods extends Model
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
     }
+
+    public static function getSiteMenu() {
+
+        $menu = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MENU);
+        return $menu->get();
+
+    }
+
 }

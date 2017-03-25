@@ -2,6 +2,6 @@
 	"require": {
 		"phpunit/phpunit": "3.7.*",
 		"vlucas/phpdotenv": "^2.4",
-		"codex-team/codex.editor": "dev-master"
+		"codex-team/codex.editor": "dev-codex-org"
 	}
 }

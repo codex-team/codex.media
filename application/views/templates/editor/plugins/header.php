@@ -2,9 +2,9 @@
 
     $tag = 'h2';
 
-    if ( !empty($block->type) ) {
+    if ( !empty($block['type']) ) {
 
-        switch ($block->type) {
+        switch ($block['type']) {
             case 'H1':
                 $tag = 'h1';
                 break;
@@ -29,5 +29,5 @@
 
 <!-- Create block tag -->
 <<?=$tag; ?>>
-    <?=$block->text; ?>
+    <?=$block['text']; ?>
 </<?=$tag; ?>>
