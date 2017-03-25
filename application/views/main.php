@@ -27,6 +27,8 @@
 </head>
 <body>
 
+    <?= View::factory('templates/components/branding')->render(); ?>
+
     <div class="center-col" id="js-layout-holder">
 
         <div class="grid-cols-wrapper">
