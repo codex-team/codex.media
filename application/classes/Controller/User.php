@@ -39,10 +39,12 @@ class Controller_User extends Controller_Base_preDispatch
                 break;
         }
 
-        if (Model_Methods::isAjax()) {
+        if (Model_Methods::isAjax())
+        {
             $this->ajax_pagination($list, $user_feed["models"], $user_feed["next_page"]);
         }
-        else {
+        else
+        {
             $this->view['next_page'] = $user_feed["next_page"];
             $this->view['page_number'] = $page_number;
 
