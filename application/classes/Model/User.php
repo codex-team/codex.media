@@ -4,6 +4,7 @@ class Model_User extends Model
 {
     public $id                  = 0;
     public $name                = '';
+    public $bio                 = '';
     public $password            = '';
     public $photo               = '';
     public $photo_medium        = '';
@@ -162,19 +163,21 @@ class Model_User extends Model
         return true;
     }
 
-    public function saveAvatar($file, $path)
+    /**
+     * Updates user's photos
+     * @param  string  $filename    new photo filename
+     * @param  string  $path        file path
+     * @return Boolean              update result
+     */
+    public function updatePhoto($filename, $path)
     {
-        $model    = new Model_File();
-        $model->type = Model_File::USER_PHOTO;
-        $filename = $model->saveImage($file, $path);
-
         $fields = array(
             'photo'        => $path . 's_' . $filename,
             'photo_medium' => $path . 'm_' . $filename,
             'photo_big'    => $path . 'b_' . $filename
         );
 
-        $this->updateUser($this->id, $fields);
+        return $this->updateUser($this->id, $fields);
     }
 
     public function isAdmin()

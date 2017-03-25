@@ -1,85 +1,75 @@
 <div class="island island--padded">
-    <div class="breadcrumb">
 
-        <a class="nav_chain" href="/user/<?= $user->id ?>"><?= $user->name ?></a> »
-        <span class="nav_chain">Настройки аккаунта</span>
-
+     <div class="island__navigation">
+        <a href="/user/<?= $user->id ?>" class="island__navigation-item">
+            <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
+            Профиль
+        </a>
+        <a href="/logout" class="island__navigation-item island__navigation-item--right logout-button">
+            Выйти
+        </a>
     </div>
 
     <? if ($success): ?>
-        <div class="info_block align_c">
+        <div class="info_block">
             Обновления сохранены
         </div>
     <? endif; ?>
+
     <? if ($error): ?>
-        <div class="info_block align_c" style="background-color:#EBA4B5; color:#F7053E;">
+        <div class="info_block">
             <? foreach ($error as $info): ?>
                 <?= $info; ?>
             <? endforeach; ?>
         </div>
     <? endif; ?>
-    <div class="profile_panel clear">
 
-        <form class="base_form" method="POST" action="user/settings" enctype="multipart/form-data">
+    <section class="profile-settings form">
 
+        <form method="POST" action="user/settings" enctype="multipart/form-data">
             <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
 
-            <div class="prifile_settings--ava-holder">
-
-                <img class="profile_settings--ava" src="<?= $user->photo_medium ?>" />
-
-                <span class="button fileinput iconic">
-                    <i class="icon-picture"></i> Изменить фотографию
-                    <input type="file" name="new_ava">
-                </span>
-
+            <div class="profile-settings__photo">
+                <div class="profile-settings__photo-hover" onclick="codex.user.photo.change( event , <?= Model_File::USER_PHOTO ?>);">
+                    <? include(DOCROOT . "public/app/svg/camera.svg") ?>
+                </div>
+                <img src="<?= $user->photo_medium ?>" name="js-img-updatable">
             </div>
 
+            <label class="form__label">Фамилия и Имя</label>
+            <input class="form__input" type="text" name="name" value="<?= $user->name ?>" />
 
-            <? if ($user->password):?>
+            <label class="form__label">О себе</label>
+            <textarea class="form__input js-autoresizable" name="bio"><?= $user->bio ?></textarea>
 
-                <label for="current_password">Текущий пароль</label>
-                <input type="password" name="current_password" id="current_password">
-            <? endif; ?>
-
-                <label for="login_password">Новый пароль</label>
-                <input type="password" name="new_password" id="login_password">
-
-                <label for="repeat_password">Повторите пароль</label>
-                <input type="password" name="repeat_password" id="repeat_password">
-
-
-            <input type="submit" name="submit" value="Сохранить"/>
-
+            <br>
+            <button class="button master">Сохранить изменения</button>
 
         </form>
 
-        <div class="social_linking">
+        <a class="border-button <?= !$user->vk ? 'border-button--vk' : '' ?>" href="/auth/vk?state=<?= !$user->vk ? 'attach' : 'remove' ?>">
+            <? include(DOCROOT . "public/app/svg/vk.svg") ?>
+            <?= !$user->vk ? 'Привязать' : ($user->vk_name ?: $user->vk_uri) ?>
+        </a>
 
-            <? if ( $user->vk == ( NULL || '' ) ): ?>
-                <a class="button iconic" href="/auth/vk?state=attach"><i class="icon-vkontakte"></i> Прикрепить профиль ВКонтакте</a>
-            <? else: ?>
-                <a class="button iconic" href="/auth/vk?state=remove"><i class="icon-vkontakte"></i> Открепить профиль ВКонтакте</a>
-            <? endif; ?>
-            <? if ( $user->facebook == ( NULL || '' ) ): ?>
-                <a class="button iconic" href="/auth/fb?state=attach"><i class="icon-facebook"></i> Прикрепить профиль Facebook</a>
-            <? else: ?>
-                <a class="button iconic" href="/auth/fb?state=remove"><i class="icon-facebook"></i> Открепить профиль Facebook</a>
-            <? endif; ?>
-            <? if ( $user->twitter == ( NULL || '' ) ): ?>
-                <a class="button iconic" href="/auth/tw?state=attach"><i class="icon-twitter"></i> Прикрепить профиль Twitter</a>
-            <? else: ?>
-                <a class="button iconic" href="/auth/tw?state=remove"><i class="icon-twitter"></i> Открепить профиль Twitter</a>
-            <? endif; ?>
+        <a class="border-button <?= !$user->facebook ? 'border-button--facebook' : '' ?>" href="/auth/fb?state=<?= !$user->facebook ? 'attach' : 'remove' ?>">
+            <? include(DOCROOT . "public/app/svg/facebook-circle.svg") ?>
+            <?= !$user->facebook ? 'Привязать' : $user->facebook_name ?>
+        </a>
 
-        </div>
+         <a class="border-button <?= !$user->twitter ? 'border-button--twitter' : '' ?>" href="/auth/tw?state=<?= !$user->twitter ? 'attach' : 'remove' ?>">
+            <? include(DOCROOT . "public/app/svg/twitter.svg") ?>
+            <?= !$user->twitter ? 'Привязать' : $user->twitter_name ?>
+        </a>
 
-    </div>
+    </section>
 
 </div>
 
 <?= View::factory('templates/components/email_confirm_island'); ?>
 
 <script>
-    codex.profileSettings.init();
+
+    codex.user.init();
+
 </script>

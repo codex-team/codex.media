@@ -13,7 +13,6 @@ class Model_Settings extends Model_preDispatch
     public $value;
     public $label;
 
-
     public function __construct($name = null)
     {
         if (!$name) return;

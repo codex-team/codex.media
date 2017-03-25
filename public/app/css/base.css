@@ -108,6 +108,36 @@ input[type="submit"]:hover {
     text-decoration: none;
 }
 
+.form {
+    font-size: 14px;
+}
+
+.form__input {
+    max-width: 400px;
+    margin-bottom: 1em;
+}
+
+.form__label {
+    display: block;
+    margin-bottom: 0.6em;
+}
+
+.form__input--invalid {
+    background: #fff3f3;
+}
+
+.form__hint {
+    display: inline-block;
+    margin-left: 1em;
+}
+
+.form__hint svg {
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: text-bottom;
+    margin-right: 0.3em;
+}
+
 /**
 * Loading bar class
 */
@@ -202,11 +232,49 @@ input[disabled]:hover {
     background: color(#1da1f2 lightness(-10%));
 }
 
+.border-button {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 7px 10px;
+    color: var(--grayText);
+    border: 1px solid color(var(--grayText) alpha(-80%));
+    border-radius: 3px;
+}
+
+.border-button svg {
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: text-bottom;
+    margin-right: 0.3em;
+}
+
+.border-button--twitter {
+    color: var(--twitterColor);
+    border-color: color(var(--twitterColor) alpha(-80%));
+}
+
+.border-button--vk {
+    color: var(--vkColor);
+    border-color: color(var(--vkColor) alpha(-80%));
+}
+
+.border-button--facebook {
+    color: var(--facebookColor);
+    border-color: color(var(--facebookColor) alpha(-80%));
+}
+
+.border-button:hover {
+    color: var(--hoverColor);
+    border-color: color(var(--hoverColor) alpha(-80%));
+}
+
+
 /**
 * Information message block
 */
 .info_block {
-    padding: 30px;
+    padding: 20px;
+    margin-bottom: 30px;
     font-size: 15px;
     background: #f5f8fb;
     color: #406eab;

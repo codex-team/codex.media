@@ -27,7 +27,7 @@
 
             <a class="user_panel cf" href="/user/<?= $user->id ?>">
 
-                <img src="<?= $user->photo ?>" />
+                <img src="<?= $user->photo ?>" name="js-img-updatable" />
                 <span class="user_panel__name overflow_long"><?= $user->name ?></span>
 
             </a>
