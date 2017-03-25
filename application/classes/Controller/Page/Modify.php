@@ -8,6 +8,13 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
      */
     public $page = null;
 
+    /**
+     * @var array - response for AJAX-request
+     */
+    public $ajax_response = array(
+        'success' => 0,
+    );
+
     public function before() {
 
         parent::before();
@@ -27,17 +34,13 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
      */
     public function action_save() {
 
-        $response = array(
-            'success' => 0,
-        );
-
         $csrf = Arr::get($_POST, 'csrf', '');
 
         if (!$this->page->canModify($this->user) || !Security::check($csrf)) {
 
-            $response['message'] = 'Похоже, у вас нет доступа';
+            $this->ajax_response['message'] = 'Похоже, у вас нет доступа';
 
-            $this->response->body(json_encode($this->page));
+            $this->response->body(json_encode($this->ajax_response));
             return;
 
         }
@@ -51,9 +54,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         if ($error) {
 
-            $response['message'] = $error['message'];
+            $this->ajax_response['message'] = $error['message'];
 
-            $this->response->body(json_encode($response));
+            $this->response->body(json_encode($this->ajax_response));
 
             return;
 
@@ -72,14 +75,14 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         }
 
-        $response = array(
+        $this->ajax_response = array(
             'success'  => 1,
             'message'  => 'Страница успешно сохранена',
             'redirect' => '/p/' . $this->page->id . '/' . $this->page->uri
         );
 
         $this->auto_render = false;
-        $this->response->body(json_encode($response));
+        $this->response->body(json_encode($this->ajax_response));
 
     }
 
@@ -88,13 +91,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
      */
     public function action_promote() {
 
-        $response = array(
-            'success' => 0,
-        );
-
         if (!$this->user->isAdmin) {
-            $response['message'] = 'Вы не можете изменить статус статьи';
-            $this->response->body(json_encode($response));
+            $this->ajax_response['message'] = 'Вы не можете изменить статус статьи';
+            $this->response->body(json_encode($this->ajax_response));
             return;
         }
 
@@ -102,24 +101,24 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         $this->page->toggleFeed($feed_key);
 
-        $response['success'] = 1;
+        $this->ajax_response['success'] = 1;
 
         switch ($feed_key) {
             case 'menu':
-                $response['menu'] = View::factory('/templates/components/menu', array('site_menu' => Model_Methods::getSiteMenu()))->render();
-                $response['message'] = $this->page->isMenuItem() ? 'Страница добавлена в меню' : 'Страница удалена из меню';
-                $response['buttonText'] = $this->page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню';
+                $this->ajax_response['menu'] = View::factory('/templates/components/menu', array('site_menu' => Model_Methods::getSiteMenu()))->render();
+                $this->ajax_response['message'] = $this->page->isMenuItem() ? 'Страница добавлена в меню' : 'Страница удалена из меню';
+                $this->ajax_response['buttonText'] = $this->page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню';
                 break;
 
             case 'news':
-                $response['message'] = $this->page->isNewsPage() ? 'Страница добавлена в новости' : 'Страница удалена из новостей';
-                $response['buttonText'] = $this->page->isNewsPage() ? 'Убрать из новостей' : 'Добавить в новости';
+                $this->ajax_response['message'] = $this->page->isNewsPage() ? 'Страница добавлена в новости' : 'Страница удалена из новостей';
+                $this->ajax_response['buttonText'] = $this->page->isNewsPage() ? 'Убрать из новостей' : 'Добавить в новости';
                 break;
 
         }
 
 
-        $this->response->body(json_encode($response));
+        $this->response->body(json_encode($this->ajax_response));
 
     }
 
@@ -128,15 +127,11 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
      */
     public function action_delete() {
 
-        $response = array(
-            'success' => 0,
-        );
-
         if ($this->page->canModify($this->user)) {
 
             $this->page->setAsRemoved();
 
-            $response = array(
+            $this->ajax_response = array(
                 'success' => 1,
                 'message' => 'Страница удалена',
                 'redirect' => $this->page->getUrlToParentPage()
@@ -144,12 +139,12 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         } else {
 
-            $response['message'] = 'Вы не можете удалить эту страницу';
+            $this->ajax_response['message'] = 'Вы не можете удалить эту страницу';
 
         }
 
         $this->auto_render = false;
-        $this->response->body(json_encode($response));
+        $this->response->body(json_encode($this->ajax_response));
 
     }
 

@@ -3,6 +3,10 @@
  */
 module.exports = (function () {
 
+    /**
+     * Saves current clicked item in page drop-down menu
+     * @type {Element}
+     */
     var currentItemClicked = null;
 
     /**
@@ -12,7 +16,7 @@ module.exports = (function () {
 
         currentItemClicked = this;
 
-        var targetId =currentItemClicked.dataset.id;
+        var targetId = currentItemClicked.dataset.id;
 
         document.location = '/p/writing?id=' + targetId;
 
@@ -25,7 +29,7 @@ module.exports = (function () {
 
         currentItemClicked = this;
 
-        var targetId    =currentItemClicked.dataset.id;
+        var targetId    = currentItemClicked.dataset.id;
 
         if (!window.confirm('Подтвердите удаление страницы')) {
 
@@ -40,16 +44,22 @@ module.exports = (function () {
 
     };
 
+    /**
+     * Opens writing form for child page
+     */
     var newChild = function () {
 
         currentItemClicked = this;
 
-        var targetId =currentItemClicked.dataset.id;
+        var targetId = currentItemClicked.dataset.id;
 
         document.location = '/p/writing?parent=' + targetId;
 
     };
 
+    /**
+     * Send ajax request to add page to menu
+     */
     var addToMenu = function () {
 
         currentItemClicked = this;
@@ -64,6 +74,9 @@ module.exports = (function () {
 
     };
 
+    /**
+     * Send ajax request to add page to news
+     */
     var addToNews = function () {
 
         currentItemClicked = this;
@@ -80,6 +93,11 @@ module.exports = (function () {
 
     var ajaxResponses = {
 
+        /**
+         * Parse JSON response
+         * @param {JSON} response
+         * @returns {Object} response
+         */
         getResponse: function (response) {
 
             try {
@@ -99,6 +117,10 @@ module.exports = (function () {
 
         },
 
+        /**
+         * Response handler for page remove
+         * @param response
+         */
         delete: function (response) {
 
             response = ajaxResponses.getResponse(response);
@@ -114,6 +136,10 @@ module.exports = (function () {
 
         },
 
+        /**
+         * Response handler for page promotion
+         * @param response
+         */
         promote: function (response) {
 
             response = ajaxResponses.getResponse(response);
@@ -142,6 +168,10 @@ module.exports = (function () {
 
         },
 
+        /**
+         * Replace site menu with code from server response
+         * @param menu
+         */
         replaceMenu: function (menu) {
 
             var oldMenu = document.getElementById('menu'),

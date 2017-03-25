@@ -214,8 +214,7 @@ module.exports = (function () {
     }
 
     /**
-    * Prepares and submit form
-    * Send attaches by json-encoded stirng with hidden input
+    * Prepares form to submit
     */
     var getForm = function () {
 
@@ -240,9 +239,14 @@ module.exports = (function () {
 
     };
 
+    /**
+     * Send ajax request with writing form data
+     * @param button - submit button (needed to add loading animation)
+     */
     var submit = function (button) {
 
-        var title = document.forms.atlas.elements['title'];
+        var title = document.forms.atlas.elements['title'],
+            form;
 
         if (title.value.trim() === '') {
 
@@ -255,7 +259,7 @@ module.exports = (function () {
 
         }
 
-        var form = getForm();
+        form = getForm();
 
         submitButton = button;
 
@@ -276,6 +280,10 @@ module.exports = (function () {
 
     };
 
+    /**
+     * Response handler for page saving
+     * @param response
+     */
     var submitResponse = function (response) {
 
         submitButton.classList.remove('loading');
@@ -297,7 +305,7 @@ module.exports = (function () {
     };
 
     /**
-    * Submits editor form for opening in full-screan page without saving
+    * Submits writing form for opening in full-screan page without saving
     */
     var openEditorFullscreen = function () {
 

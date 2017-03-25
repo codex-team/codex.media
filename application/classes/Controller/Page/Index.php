@@ -63,7 +63,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         if (Security::check(Arr::get($_POST, 'csrf'))) {
 
             $page->title   = Arr::get($_POST, 'title');
-            $page->content = Arr::get($_POST, 'content', '{data:[]}');
+            $page->content = Arr::get($_POST, 'content', '{items:[]}');
             $page->author  = $this->user;
 
         }

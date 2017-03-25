@@ -15,8 +15,6 @@ class Model_Page extends Model
 
     public $rich_view       = 0;
     public $dt_pin;
-    public $is_menu_item    = 0;
-    public $is_news_page    = 0;
     public $feed_key       = '';
 
     public $title           = '';
@@ -104,12 +102,8 @@ class Model_Page extends Model
             ->set('id_parent',      $this->id_parent)
             ->set('title',          $this->title)
             ->set('content',        $this->content)
-            ->set('is_menu_item',   $this->is_menu_item)
-            ->set('is_news_page',   $this->is_news_page)
             ->set('rich_view',      $this->rich_view)
             ->set('dt_pin',         $this->dt_pin);
-
-        if ($this->is_menu_item) $page->clearcache('site_menu');
 
         $page = $page->execute();
 
@@ -126,8 +120,6 @@ class Model_Page extends Model
             ->set('id_parent',      $this->id_parent)
             ->set('title',          $this->title)
             ->set('content',        $this->content)
-            ->set('is_menu_item',   $this->is_menu_item)
-            ->set('is_news_page',   $this->is_news_page)
             ->set('rich_view',      $this->rich_view)
             ->set('dt_pin',         $this->dt_pin);
 
