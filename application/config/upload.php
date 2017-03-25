@@ -30,7 +30,8 @@ return array
         'sizes' => array(
             'o'  => array(false, 2000, 1500),
             'b'  => array(true , 1000, 700),
-            'm'  => array(true , 400, 250)
+            'm'  => array(true , 400, 250),
+            'preload' => array(false, 40, 25)
         )
 
     ),

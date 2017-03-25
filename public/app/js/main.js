@@ -50,6 +50,11 @@ codex = (function (codex) {
          */
         codex.core.log('Initialized', 'CodeX', 'info');
 
+        /**
+         * Initiate branding preload
+         */
+        codex.branding.init();
+
     };
 
     return codex;

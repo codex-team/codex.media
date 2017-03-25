@@ -90,17 +90,21 @@ class Model_File extends Model
         }
 
         switch ($type) {
+
             case self::EDITOR_FILE:
                 $this->filename = $savedFilename;
                 break;
+
             case self::EDITOR_IMAGE:
                 $this->filename = 'o_' . $savedFilename;
                 break;
+
             case self::USER_PHOTO:
                 $this->filename = 'b_' . $savedFilename;
                 $user = new Model_User($user_id);
                 $user->updatePhoto($savedFilename, $path);
                 break;
+
             case self::BRANDING:
                 $user = new Model_User($user_id);
                 if (!$user->isAdmin) return false;
@@ -291,49 +295,57 @@ class Model_File extends Model
 
         if (!is_dir($path)) mkdir($path);
 
-        if ($file = Upload::save($file, NULL, $path)) {
+        $file = Upload::save($file, NULL, $path);
 
-            $this->file_hash_hex = bin2hex(openssl_random_pseudo_bytes(16));
-            $filename = $this->file_hash_hex . '.jpg';
-
-            $image  = Image::factory($file);
-
-            foreach ($sizesConfig as $prefix => $sizes) {
-
-                $isSquare = !!$sizes[0];
-                $width    = $sizes[1];
-                $height   = !$isSquare ? $sizes[2] : $width;
-
-                $image->background('#fff');
-
-                // Вырезание квадрата
-                if ($isSquare) {
-
-                    if ($image->width >= $image->height) {
-                        $image->resize( NULL , $height, true );
-                    } else {
-                        $image->resize( $width , NULL, true );
-                    }
-
-                    $image->crop( $width, $height );
-
-                } else {
-
-                    if ($image->width > $width || $image->height > $height) {
-                        $image->resize( $width , $height , true );
-                    }
-                }
-
-                $image->save($path . $prefix . '_' . $filename);
-            }
-
-            // Delete the temporary file
-            unlink($file);
-
-            return $filename;
+        if (!$file) {
+            return false;
         }
 
-        return FALSE;
+        $this->file_hash_hex = bin2hex(openssl_random_pseudo_bytes(16));
+        $filename = $this->file_hash_hex . '.jpg';
+
+
+        foreach ($sizesConfig as $prefix => $sizes) {
+
+            /**
+            * Все операции делаем с исходным файлом.
+            * Для этого заново его загружаем в переменную
+            */
+            $image = Image::factory($file);
+
+            $isSquare = !!$sizes[0];
+            $width    = Arr::get($sizes, 1, null);
+            $height   = !$isSquare ? Arr::get($sizes, 2, null) : $width;
+
+            $image->background('#fff');
+
+            // Вырезание квадрата
+            if ($isSquare) {
+
+                if ($image->width >= $image->height) {
+                    $image->resize( NULL , $height, Image::AUTO );
+                } else {
+                    $image->resize( $width , NULL, Image::AUTO );
+                }
+
+                $image->crop( $width, $height );
+
+            } else {
+
+                if ( $image->width > $width || $image->height > $height  ) {
+                    $image->resize( $width , $height , Image::AUTO );
+                }
+
+            }
+
+            $image->save($path . $prefix . '_' . $filename);
+        }
+
+        // Delete the temporary file
+        unlink($file);
+
+        return $filename;
+
     }
 
     /**

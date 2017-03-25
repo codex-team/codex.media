@@ -15,11 +15,8 @@ class Model_Settings extends Model_preDispatch
 
     const BRANDING_KEY = 'branding';
 
-    public function __construct($name = null)
+    public function __construct()
     {
-        if (!$name) return;
-
-        self::get($name);
     }
 
     public static function getAll()
@@ -43,6 +40,9 @@ class Model_Settings extends Model_preDispatch
 
     }
 
+    /**
+     * @deprecated
+     */
     private function get($name = null)
     {
         $parameterRow = Dao_Settings::select()
@@ -76,6 +76,7 @@ class Model_Settings extends Model_preDispatch
             ->set('name',  $this->name)
             ->set('value', $this->value)
             ->set('label', $this->label)
+            ->clearcache('settings')
             ->execute();
 
         if ($parameterRow) return $this;
@@ -89,7 +90,7 @@ class Model_Settings extends Model_preDispatch
             ->where('name', '=', $this->name)
             ->set('value', $this->value)
             ->set('label', $this->label)
-            ->clearcache('settings:' . $this->name)
+            ->clearcache('settings')
             ->execute();
 
         if ($parameterRow) return $this;
@@ -102,54 +103,31 @@ class Model_Settings extends Model_preDispatch
         return Dao_Settings::delete()->where('name', '=', $this->name)->execute();
     }
 
-
     /**
-     * Returns vars array by label
-     *
-     * @return array[key] = value
+     * Saves new branding image
+     * @param  string $filename   file name
+     * @return string    new brangind image name
      */
-    public static function getListByLabel($label = null)
-    {
-        $parameterRows = Dao_Settings::select('name');
-
-        if ($label) {
-
-            $parameterRows->where('label', '=', $label);
-        }
-
-        $parameterRows = $parameterRows->execute();
-
-        $paramList = array();
-
-        if ($parameterRows) {
-
-            foreach ($parameterRows as $row) {
-
-                $param = new Model_Settings($row['name']);
-
-                $paramList[$param->name] = $param->value;
-            }
-        }
-
-        return $paramList;
-    }
-
     public function newBranding($filename)
     {
-        $branding = new Model_Settings(self::BRANDING_KEY);
-        $branding->value = $filename;
+        $brandingExists = Dao_Settings::select()
+                            ->where('name', '=', self::BRANDING_KEY)
+                            ->limit(1)
+                            ->execute();
 
-        if ($branding->name) {
+        $this->name = self::BRANDING_KEY;
+        $this->value = $filename;
 
-            $branding->update();
+        if ($brandingExists) {
+
+            $this->update();
 
         } else {
 
-            $branding->name = self::BRANDING_KEY;
-            $branding->insert();
+            $this->insert();
 
         }
 
-        return $branding->value;
+        return $this->value;
     }
 }
