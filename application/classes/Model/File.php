@@ -113,6 +113,7 @@ class Model_File extends Model
                 $settings = new Model_Settings();
                 $branding = $settings->newBranding($savedFilename);
                 $this->filename = 'o_' . $branding;
+                break;
         }
 
         $this->title     = $this->getOriginalName($file['name']);

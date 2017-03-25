@@ -28,8 +28,8 @@ class Model_Settings extends Model_preDispatch
         $siteSettings = [];
 
         foreach ($parameterRow as $item => $info) {
-            $key    = Arr::get($info, 'name');
-            $value  = Arr::get($info, 'value');
+            $key   = Arr::get($info, 'name');
+            $value = Arr::get($info, 'value');
 
             if (!$key && !$value) continue;
 
