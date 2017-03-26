@@ -1,10 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+// class Dao_MySQL_Base extends Dao_MySQL_Config {
 class Dao_MySQL_Base {
-
-    /**
-    * @todo Workaround memcache keys confilct with multiple sites on single server. Ex: key 'Dao_Users:1' may be sets on different sites.
-    */
 
     protected $table = 'null';
 
@@ -14,7 +11,7 @@ class Dao_MySQL_Base {
     const DELETE  = 4;
 
     protected $cache_key = 'Dao_MySQL_Base';
-    protected $db_name   = 'database';
+    protected $db_cache_key = '';
 
     private $action;
 
@@ -32,6 +29,11 @@ class Dao_MySQL_Base {
     protected $join      = array();
     protected $last_join = null;
     protected $select_fields = array();
+
+    public function __construct()
+    {
+        $this->db_cache_key = Arr::get($_SERVER, 'DB_CACHE_KEY', 'database');
+    }
 
     public static function insert()
     {
@@ -128,7 +130,7 @@ class Dao_MySQL_Base {
     public function cached($seconds, $key = null, array $tags = null)
     {
         $this->lifetime = $seconds;
-        if ($key) $this->keycached = $this->db_name . ':' . $this->cache_key . ':' . $key;
+        if ($key) $this->keycached = $this->db_cache_key . ':' . $this->cache_key . ':' . $key;
         if ($tags) $this->tagcached = $tags;
         return $this;
     }
@@ -139,7 +141,7 @@ class Dao_MySQL_Base {
         $memcache = $this->getMemcacheInstance();
 
         if ($key) {
-            $full_key =  $this->db_name . ':' . $this->cache_key . ':' . $key;
+            $full_key =  $this->db_cache_key . ':' . $this->cache_key . ':' . $key;
             $memcache->delete(mb_strtolower($full_key));
         }
 
