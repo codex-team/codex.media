@@ -2,16 +2,16 @@
 
     <div class="comment__header clearfix">
 
+
+        <? if ($user->isAdmin || $user->id == $comment->author->id): ?>
+            <span class="island-settings js-comment-settings" data-id="<?= $comment->id ?>">
+                <? include(DOCROOT . 'public/app/svg/ellipsis.svg') ?>
+            </span>
+        <? endif ?>
+
         <a class="comment__author-photo" href="/user/<?= $comment->author->id ?>">
             <img src="<?= $comment->author->photo ?>">
         </a>
-
-        <? /* if ($user->id == $comment->author->id || $user->isAdmin): ?>
-            <a class="comment__actions--button button--delete js-approval-button"
-               href="/delete-comment/<?= $comment->id ?>">
-               <i class="icon-trash"></i>
-            </a>
-        <? endif */ ?>
 
         <div class="constrain">
             <a class="comment__author-name" href="/user/<?= $comment->author->id ?>">
@@ -31,12 +31,24 @@
                 'date'   => isset($comment->parent_comment->dt_create) ? $comment->parent_comment->dt_create : $comment->page->date,
                 'url'    => '/p/' . $comment->page->id . ( !empty($comment->parent_comment->id) ? '#comment' . $comment->parent_comment->id : ''),
             );
+
+            $targetTextShort = $methods->specc_short($target['text'], 200);
         ?>
 
-        <div class="comment-target <?= !empty($comment->parent_comment->id) ? 'comment-target--reply' : 'comment-target--page' ?>">
+        <div class="comment-target <?= !empty($comment->parent_comment->id) ? 'comment-target--reply' : 'comment-target--page' ?>" id="js-comment-target-<?= $comment->id ?>">
 
             <a class="comment-target__text" href="<?= $target['url'] ?>" rel="nofollow">
-                <?= $target['text'] ?>
+                <span class="comment-target__short-text">
+                    <?= $targetTextShort['text'] ?>
+                </span>
+                <? if ($targetTextShort['changed']): ?>
+                    <span class="comment-target__text-hided">
+                        <?= $target['text'] ?>
+                    </span>
+                    <span class="comment-target__show-more" data-text-show="Показать целиком" data-text-hide="Свернуть" onclick="codex.content.toggle('#js-comment-target-<?= $comment->id ?>', 'show-more'); event.preventDefault(); ">
+                        <? include(DOCROOT . "public/app/svg/arrow-down.svg") ?>
+                    </span>
+                <? endif ?>
             </a>
 
             <? if (!empty($target['author']->id)): ?>

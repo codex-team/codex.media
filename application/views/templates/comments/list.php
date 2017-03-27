@@ -37,17 +37,30 @@
 </div>
 
 
-<script>
+<? if ($user->id): ?>
 
-    codex.docReady(function(){
+    <script>
 
-        /**
-        * Comments module
-        */
-        codex.comments.init({
-            listId : "commentsList",
+        codex.docReady(function(){
+
+            /**
+            * Comments module
+            */
+            codex.comments.init({
+                listId : "commentsList",
+            });
+
+            /** Island settings menu */
+            codex.islandSettings.init({
+                selector : '.js-comment-settings',
+                items : [{
+                        title : 'Удалить',
+                        handler : codex.comments.remove
+                    }]
+            });
+
         });
 
-    });
+    </script>
 
-</script>
+<? endif ?>

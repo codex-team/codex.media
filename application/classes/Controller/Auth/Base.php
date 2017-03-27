@@ -29,7 +29,6 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
     {
         if (!$uid) return;
 
-        // Если пользователь уже логинился, продливаем сессию, иначе создаем новую
         if ($sid = Cookie::get(self::COOKIE_SESSION, false)) {
 
             $sessionCookie = $sid;
@@ -37,8 +36,9 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
 
         } else {
 
-            $sessionCookie = hash( 'sha256', openssl_random_pseudo_bytes(30) ); // генерим случайный отпечаток для распознавания сессии
-            $authSession   = Dao_AuthSessions::insert();
+            $sessionCookie = hash('sha256', openssl_random_pseudo_bytes(30)); // генерим случайный отпечаток для распознавания сессии
+            $authSession = Dao_AuthSessions::insert();
+
         }
 
         $authSession->set('uid', $uid)
@@ -111,18 +111,16 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
      */
     public static function rightToUnbindSocial($uid)
     {
-        $security = Dao_Users::select('email', 'password')->where('id', '=', $uid)->execute();
-        $socials  = Dao_Users::select('twitter', 'facebook', 'vk')->where('id', '=', $uid)->execute();
+        $security = Dao_Users::select(['email', 'password'])->where('id', '=', $uid)->limit(1)->execute();
+        $socials  = Dao_Users::select(['twitter', 'facebook', 'vk'])->where('id', '=', $uid)->limit(1)->execute();
 
-        if (!empty($security['email']) && !empty($security['passwords'])) {
-
-            return true;
-
-        } elseif (count($socials) > 1) {
+        if (!empty($security['email']) && !empty($security['password'])) {
 
             return true;
 
-        } else return false;
+        }
+
+        return count(array_filter($socials)) > 1;
     }
 
     /**

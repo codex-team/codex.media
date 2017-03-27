@@ -1,132 +1,76 @@
-<div class="island tabs">
-        <span class="nav_chain" style="padding: 20px 15px; margin-right: 430px;">
-        <!--
-        <img src="C:\OpenServer\domains\codex.edu\public\app\svg\arrow-left.svg">
-        -->
-       <i class="icon-vkontakte"></i>
-        <a class="nav_chain" href="/user/<?= $user->id ?>">Профиль</a></span>
-        <span style="padding: 20px 15px;margin-left: -15px; "><a href = "/logout" data-title="Выйти" class="nav_chain">Выйти</a></span>
-</div>
-
 <div class="island island--padded">
-    
+
+    <div class="island__navigation">
+        <a href="/user/<?= $user->id ?>" class="island__navigation-item">
+            <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
+            Профиль
+        </a>
+        <a href="/logout" class="island__navigation-item island__navigation-item--right logout-button">
+            Выйти
+        </a>
+    </div>
+
     <? if ($success): ?>
-        <div class="info_block align_c">
+        <div class="info_block">
             Обновления сохранены
         </div>
     <? endif; ?>
 
     <? if ($error): ?>
-        <div class="info_block align_c" style="background-color:#EBA4B5; color:#F7053E;">
+        <div class="info_block">
             <? foreach ($error as $info): ?>
                 <?= $info; ?>
             <? endforeach; ?>
         </div>
     <? endif; ?>
 
-    <div class="profile_panel clear">
+    <section class="profile-settings form">
 
-        <form class="base_form" method="POST" action="user/settings" enctype="multipart/form-data">
+        <form method="POST" action="user/settings" enctype="multipart/form-data">
             <input type="hidden" name="csrf" value="<?= Security::token(); ?>" />
-            
-                
-                <img style="float: right;height: 100px;border-radius: 50%;margin-left: 30px;" src="<?= $user->photo_medium ?>" />
 
-               <!-- <span class="button fileinput iconic">
-                    <i class="icon-picture"></i> Изменить фотографию
-                    <input type="file" name="new_ava">
-                </span>-->
-                <div style="width: 400px;">
-                    <label >Фамилия и Имя</label>
-                    <input type="text" name="text" style="margin-top: 10px; margin-bottom: 15px;"></input>
-
-                    <label style="margin-top: 30px; margin-right: 69%;height: 100px;">О себе</label>
-                    <textarea style="margin-top: 10px; margin-bottom: 20px; height: 65px;"></textarea>
+            <div class="profile-settings__photo">
+                <div class="profile-settings__photo-hover" onclick="codex.user.photo.change( event , <?= Model_File::USER_PHOTO ?>);">
+                    <? include(DOCROOT . "public/app/svg/camera.svg") ?>
                 </div>
+                <img src="<?= $user->photo_medium ?>" name="js-img-updatable">
+            </div>
 
-            
+            <label class="form__label">Фамилия и Имя</label>
+            <input class="form__input" type="text" name="name" value="<?= $user->name ?>" />
+
+            <label class="form__label">О себе</label>
+            <textarea class="form__input js-autoresizable" name="bio"><?= $user->bio ?></textarea>
+
+            <br>
+            <button class="button master">Сохранить изменения</button>
+
         </form>
 
-        <div class="profile__social-buttons">
-       
+        <a class="border-button <?= !$user->vk ? 'border-button--vk' : '' ?>" href="/auth/vk?state=<?= !$user->vk ? 'attach' : 'remove' ?>">
+            <? include(DOCROOT . "public/app/svg/vk.svg") ?>
+            <?= !$user->vk ? 'Привязать' : ($user->vk_name ?: $user->vk_uri) ?>
+        </a>
 
-            <? if ( !$user->vk ): ?>
-                
-               
-                    <a href="//vk.com/vengerov1" target="_blank">
-                    <span class="profile__social-button profile__social-button--vk">
-                        <i class="icon-vkontakte"></i>
-                        Привязать                     
-                    </span>
-                    </a>
-                
-            <? else: ?>
-               
-                    <a href="//vk.com/vengerov1" target="_blank">
-                    <span class="profile__social-button profile__social-button--vk">
-                        <i class="icon-vkontakte"></i>
-                        vengerov1                   
-                    </span>
-                    </a>
-                
-            <? endif; ?>
+        <a class="border-button <?= !$user->facebook ? 'border-button--facebook' : '' ?>" href="/auth/fb?state=<?= !$user->facebook ? 'attach' : 'remove' ?>">
+            <? include(DOCROOT . "public/app/svg/facebook-circle.svg") ?>
+            <?= !$user->facebook ? 'Привязать' : $user->facebook_name ?>
+        </a>
 
-            <? if ( !$user->facebook ): ?>
-                
-                  
-                    <a href="/auth/fb?state=attach" target="_blank">
-                    <span class="profile__social-button profile__social-button--facebook">
-                        <i class="icon-facebook"></i>
-                        Привязать                     
-                    </span>
-                    </a>
-                
+        <a class="border-button <?= !$user->twitter ? 'border-button--twitter' : '' ?>" href="/auth/tw?state=<?= !$user->twitter ? 'attach' : 'remove' ?>">
+            <? include(DOCROOT . "public/app/svg/twitter.svg") ?>
+            <?= !$user->twitter ? 'Привязать' : $user->twitter_name ?>
+        </a>
 
-            <? else: ?>
+    </section>
 
-                
-                    <a href="/auth/fb?state=remove" target="_blank">
-                    <span class="profile__social-button profile__social-button--facebook">
-                        <i class="icon-facebook"></i>
-                        Привязать                  
-                    </span>
-                    </a>
-                
-
-            <? endif; ?>
-
-            <? if ( !$user->twitter ): ?>
-
-               
-                    <a href="/auth/fb?state=remove" target="_blank">
-                    <span class="profile__social-button profile__social-button--facebook">
-                        <i class="icon-twitter"></i>
-                        Привязать                    
-                    </span>
-                    </a>
-                
-
-            <? else: ?>
-
-                
-                    <a href="/auth/fb?state=remove" target="_blank">
-                    <span class="profile__social-button profile__social-button--facebook">
-                        <i class="icon-instagram"></i>
-                        Привязать                   
-                    </span>
-                    </a>
-                
-            <? endif; ?>
-
-        
-            </div>
-        </div>
 </div>
 
 <?= View::factory('templates/components/email_confirm_island'); ?>
-
 <?= View::factory('templates/components/password_change_island'); ?>
 
 <script>
-    codex.profileSettings.init();
+
+    codex.user.init();
+
 </script>

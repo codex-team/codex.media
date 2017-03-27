@@ -3,6 +3,10 @@
     top: var(--islandMargin);
 }
 
+.main-aside--offset-top {
+    margin-top: -112px;
+}
+
 .site-head {
     display: flex;
     border-bottom: 1px solid var(--lightGrayLine);
@@ -26,9 +30,9 @@
 
 .main-aside .menu a {
     display: block;
-    font-size: 14px;
-    font-weight: bold;
     padding: 10px var(--islandPadding);
+    font-size: 14px;
+    line-height: 1.5em;
 }
 
 .main-aside .menu a:hover {
@@ -125,6 +129,10 @@
         padding: 10px 15px;
         line-height: 1.3em;
         font-size: 13px;
+    }
+
+    .main-aside--offset-top {
+        margin-top: 0px;
     }
 
     /**

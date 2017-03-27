@@ -1,18 +1,25 @@
+/**
+ * Article page styles
+ */
 .article {
     margin-bottom: var(--islandMargin);
+    padding: 30px 45px;
 }
 
-.article-information {
+.article__information {
     color: var(--grayText);
-    margin-bottom: 10px;
+    font-size: 14px;
 }
 
-.article-information__time {
+.article__time,
+.article__author,
+.article__comments-counter {
     display: inline-block;
-    margin-right: 1em;
+    margin: 0 1em 15px 0;
+    white-space: nowrap;
 }
 
-.article-information__author img {
+.article__author img {
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -20,21 +27,146 @@
     margin-right: 1em;
 }
 
-.article-title {
-    margin: 0 0 0px;
-    font-size: 30px;
+.article__comments-counter svg {
+    display: inline-block;
+    margin-right: .8em;
+}
+
+.article__title {
+    margin: 0;
+    font-weight: 800;
+    font-size: 33px;
     line-height: 1.3em;
 }
 
-.article-content {
-    font-size: 15px;
+.article__content {
+    font-size: 17px;
     line-height: 1.6em;
+}
 
-    /*font-family: '/*Lora';
+.article__content--typed {
+    font-family: 'Lora';
     font-size: 19.2px;
     line-height: 1.64em;
-    color: rgba(0,0,0,.8);*/
+    color: rgba(0, 0, 0, 0.8);
 }
-.article-content a {
-    text-decoration: underline;
+
+.article__content a {
+    padding-bottom: 1px;
+    color: var(--linkColor);
+    border-bottom: 1px solid color(var(--linkColor) lightness(+35%));
+}
+
+.article__content a:hover {
+    color: var(--hoverColor);
+    border-bottom: 1px solid color(var(--hoverColor) lightness(+35%));
+}
+
+/**
+ * Article parent
+ */
+
+.article__parent {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--lightGrayLine);
+    font-size: 14px;
+    line-height: 1.45em;
+    color: var(--grayText);
+}
+
+.article__parent a {
+    position: relative;
+    display: block;
+    padding-left: 2em;
+}
+
+.article__parent svg {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -0.35em;
+    height: 0.9em;
+}
+
+/**
+ * Children pages list
+ */
+.children-pages {
+    margin: 30px 0;
+}
+
+.children-pages__item {
+    position: relative;
+    padding-right: 20px;
+}
+
+.children-pages__item:not(:last-of-type) {
+    border-bottom: 1px solid var(--lightGrayLine);
+}
+
+.children-pages__item::after {
+    content: '';
+    background: url('/public/app/svg/arrow-right.svg') no-repeat;
+    background-size: 9px 15px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 9px;
+    height: 15px;
+    margin-top: -7px;
+}
+
+.children-pages__link {
+    display: block;
+    padding: 15px 0;
+    font-size: 18px;
+    line-height: 1.4em;
+    font-weight: 600;
+}
+
+/**
+ * Article image block
+ */
+
+.article__image {
+    margin: 1em 0;
+}
+
+.article__image img {
+    max-width: 100%;
+}
+
+.article__image-caption {
+    color: var(--grayText);
+    margin: 0.3em 0 1em;
+    font-size: 0.9em;
+    line-height: 1.5em;
+}
+
+@media (--mobile) {
+    .article {
+        padding: 20px;
+    }
+
+    .article__parent,
+    .article__information {
+        font-size: 12px;
+    }
+
+    .article__parent {
+        padding-bottom: 15px;
+    }
+
+    .article__title {
+        font-size: 28px;
+    }
+
+    .article__content {
+        font-size: 15px;
+    }
+
+    .children-pages__link {
+        font-size: 16px;
+    }
 }

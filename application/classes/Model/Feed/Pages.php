@@ -2,11 +2,23 @@
 
 class Model_Feed_Pages extends Model_Feed_Abstract {
 
-    public function __construct($key = '')
-    {
-        $this->redis = Controller_Base_preDispatch::_redis();
+    /**
+     * Key prefix for redis to identify Codex.Org keys
+     */
+    const KEY_PREFIX     = 'codex.org:';
 
-        $this->timeline_key = $key;
+    const TYPE_ALL       = 'all';
+    const TYPE_TEACHERS  = 'teachers';
+    const TYPE_NEWS      = 'news';
+    const TYPE_MENU      = 'menu';
+
+    public function __construct($type = self::TYPE_ALL,$prefix = '')
+    {
+
+        $this->timeline_key = self::KEY_PREFIX . $type;
+
+        parent::__construct($prefix);
+
     }
 
     /**
@@ -40,7 +52,9 @@ class Model_Feed_Pages extends Model_Feed_Abstract {
 
             foreach ($items as $id) {
 
-                $models_list[] = new Model_Page($id);
+                $page = new Model_Page($id, true); //sets $escapeHTML param true to escape HTML entities
+
+                $models_list[] = $page;
             }
 
             return $models_list;

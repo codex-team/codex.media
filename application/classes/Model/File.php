@@ -8,25 +8,166 @@ class Model_File extends Model
     public $is_removed  = 0;
 
     public $extension   = '';
+    public $mime        = '';
     public $filename    = '';
     public $author      = 0;
     public $size        = 0;
     public $date        = null;
     public $status      = 0;
     public $type        = 0;
+
+
+    /**
+     * File destination
+     * @var string
+     */
     public $filepath    = '';
 
     public $file_hash     = '';
     public $file_hash_hex = '';
 
-    const PAGE_FILE  = 1;
-    const PAGE_IMAGE = 2;
+    const EDITOR_IMAGE = 1;
+    const EDITOR_FILE  = 2;
+    const USER_PHOTO   = 3;
+    const BRANDING     = 4;
+
+    /**
+     * This types are images
+     * @var array
+     */
+    public $imageTypes = array(
+        self::EDITOR_IMAGE,
+        self::USER_PHOTO,
+        self::BRANDING
+    );
 
     public function __construct($id = null, $file_hash_hex = null, $row = array())
     {
         if (!$id && !$file_hash_hex && !$row) return;
 
         return self::get($id, $file_hash_hex, $row);
+    }
+
+
+    /**
+     * Returns uploaded file path by type and filename
+     * @uses  config/upload.php
+     * @return stirng filepath from base dir
+     */
+    private function getFilePath()
+    {
+        $config = Kohana::$config->load('upload');
+
+        return $config[$this->type]['path'] . $this->filename;
+    }
+
+    /**
+     * Uploads file to the server
+     * @param  int  $type file type constant
+     * @param  array $file file object
+     * @param  int $user_id  author
+     * @return string   uploaded file name
+     */
+    public function upload($type, $file, $user_id)
+    {
+        $this->type = $type;
+
+        $config = Kohana::$config->load('upload')[$this->type];
+        $path   = $config['path'];
+        $saved  = false;
+
+        $isImage = in_array($type, $this->imageTypes);
+
+        if (!$isImage) {
+            $savedFilename = $this->saveFile($file, $path);
+        } else {
+            $savedFilename = $this->saveImage($file, $path, $config['sizes']);
+        }
+
+        /** Check for uploading error */
+        if (!$savedFilename) {
+            return false;
+        }
+
+        switch ($type) {
+
+            case self::EDITOR_FILE:
+                $this->filename = $savedFilename;
+                break;
+
+            case self::EDITOR_IMAGE:
+                $this->filename = 'o_' . $savedFilename;
+                break;
+
+            case self::USER_PHOTO:
+                $this->filename = 'b_' . $savedFilename;
+                $user = new Model_User($user_id);
+                $user->updatePhoto($savedFilename, $path);
+                break;
+
+            case self::BRANDING:
+                $user = new Model_User($user_id);
+                if (!$user->isAdmin) return false;
+
+                // save branding as site_info
+                $settings = new Model_Settings();
+                $branding = $settings->newBranding($savedFilename);
+                $this->filename = 'o_' . $branding;
+                break;
+        }
+
+        $this->title     = $this->getOriginalName($file['name']);
+        $this->filepath  = $path . $this->filename;
+        $this->size      = $this->getSize();
+        $this->mime      = $this->getMime();
+        $this->extension = $this->getExtension();
+        $this->author    = $user_id;
+
+        return $this->insert();
+
+    }
+
+
+    /**
+     * Returns size of file
+     * @return int
+     */
+    public function getSize(){
+
+        return @filesize($this->filepath);
+
+    }
+
+    /**
+     * Returns file mime type by filepath
+     * @return string mime-type
+     */
+    public function getMime(){
+
+        return File::mime($this->filepath);
+
+    }
+
+    /**
+     * Returns file extension by mime-type
+     * @return string  extension
+     */
+    public function getExtension(){
+
+        return File::ext_by_mime($this->mime);
+
+    }
+
+    /**
+     * Returns file extension by mime-type
+     * @return string  extension
+     */
+    public function getOriginalName($filepath){
+
+        $info = pathinfo($filepath);
+
+        return $info['filename'];
+
     }
 
     public function get($id = null, $file_hash_hex = null, $file_row = array())
@@ -78,10 +219,10 @@ class Model_File extends Model
                  ->set('author',    $this->author)
                  ->set('size',      $this->size)
                  ->set('extension', $this->extension)
-                 ->set('type',      $this->type);
+                 ->set('mime',      $this->mime)
+                 ->set('type',      $this->type)
+                 ->set('file_hash', hex2bin($this->file_hash_hex));
         }
-
-        $file->set('file_hash', hex2bin(substr($this->filename, 0, strrpos($this->filename, '.'))));
 
         $file_id = $file->execute();
 
@@ -115,70 +256,6 @@ class Model_File extends Model
         return self::get($file_id);
     }
 
-    static public function getUploadPathByType($type)
-    {
-        switch ($type) {
-
-            case self::PAGE_FILE:
-                return 'upload/page_files/';
-                break;
-
-            case self::PAGE_IMAGE:
-                return 'upload/page_images/';
-                break;
-
-            default:
-                return 'upload/default/';
-                break;
-        }
-    }
-
-    private function getFilePath()
-    {
-        $path = self::getUploadPathByType($this->type);
-
-        $path .= $this->filename;
-
-        return $path;
-    }
-
-    static public function getPageFiles($page_id, $type = false, $json = false)
-    {
-        $page_files = Dao_Files::select()
-            ->where('page','=', $page_id)
-            ->where('is_removed','=', 0)
-            ->where('status', '=', 0);
-
-        if ($type) $page_files->where('type', '=', $type);
-
-        $page_files_rows = $page_files->order_by('id','ASC')->execute();
-
-        $page_files_array = array();
-
-
-        if (!empty($page_files_rows)) {
-
-            foreach ($page_files_rows as $file_row) {
-
-                if (!$json) {
-
-                    $page_files_array[] = new Model_File(null, null, $file_row);
-
-                } else {
-
-                    $file_id = (int) $file_row['id'];
-                    $json_file_info['id'] = $file_id;
-                    $json_file_info['title'] = $file_row['title'];
-                    $json_file_info['type'] = $file_row['type'];
-
-                    $page_files_array[$file_id] = $json_file_info;
-                }
-            }
-        }
-
-        return $page_files_array;
-    }
-
     /**
     *   Функция для скачивания файла
     *   Источник: https://habrahabr.ru/post/151795/
@@ -206,4 +283,99 @@ class Model_File extends Model
             exit;
         }
     }
+
+    /**
+    * Files uploading section
+    */
+    public function saveImage($file , $path, $sizesConfig)
+    {
+        /**
+         *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
+         */
+        if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
+
+        if (!is_dir($path)) mkdir($path);
+
+        $file = Upload::save($file, NULL, $path);
+
+        if (!$file) {
+            return false;
+        }
+
+        $this->file_hash_hex = bin2hex(openssl_random_pseudo_bytes(16));
+        $filename = $this->file_hash_hex . '.jpg';
+
+
+        foreach ($sizesConfig as $prefix => $sizes) {
+
+            /**
+            * Все операции делаем с исходным файлом.
+            * Для этого заново его загружаем в переменную
+            */
+            $image = Image::factory($file);
+
+            $isSquare = !!$sizes[0];
+            $width    = Arr::get($sizes, 1, null);
+            $height   = !$isSquare ? Arr::get($sizes, 2, null) : $width;
+
+            $image->background('#fff');
+
+            // Вырезание квадрата
+            if ($isSquare) {
+
+                if ($image->width >= $image->height) {
+                    $image->resize( NULL , $height, Image::AUTO );
+                } else {
+                    $image->resize( $width , NULL, Image::AUTO );
+                }
+
+                $image->crop( $width, $height );
+
+            } else {
+
+                if ( $image->width > $width || $image->height > $height  ) {
+                    $image->resize( $width , $height , Image::AUTO );
+                }
+
+            }
+
+            $image->save($path . $prefix . '_' . $filename);
+        }
+
+        // Delete the temporary file
+        unlink($file);
+
+        return $filename;
+
+    }
+
+    /**
+     * Saves file to the server
+     *
+     * @param  array    $file   file array from input
+     * @param  string   $path   path to store file
+     * @return string   saved file name
+     *
+     * @todo  Add translited file title to file name
+     * @todo  Check extension by mime type — see https://kohanaframework.org/3.3/guide-api/File#mime
+     */
+    public function saveFile($file , $path)
+    {
+        /**
+         *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
+         */
+        if (!is_dir($path)) mkdir($path);
+
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+
+        $this->file_hash_hex = bin2hex(openssl_random_pseudo_bytes(16));
+        $filename = $this->file_hash_hex . '.' . $ext;
+
+        $file = Upload::save($file, $filename, $path);
+
+        if ($file) return $filename;
+
+        return FALSE;
+    }
+
 }

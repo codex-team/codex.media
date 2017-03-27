@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/codex-team/codex.editor.backend.git",
-                "reference": "36f21c897df4bbcc4835c0b4688a5d1c8037757f"
+                "reference": "b1abeda56950eb56924f5db68b1f4c47546dca55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codex-team/codex.editor.backend/zipball/36f21c897df4bbcc4835c0b4688a5d1c8037757f",
-                "reference": "36f21c897df4bbcc4835c0b4688a5d1c8037757f",
+                "url": "https://api.github.com/repos/codex-team/codex.editor.backend/zipball/b1abeda56950eb56924f5db68b1f4c47546dca55",
+                "reference": "b1abeda56950eb56924f5db68b1f4c47546dca55",
                 "shasum": ""
             },
             "require": {
@@ -41,7 +41,7 @@
                 }
             ],
             "description": "Codex Editor server side example",
-            "time": "2017-03-11 09:24:43"
+            "time": "2017-03-21 21:49:21"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -88,7 +88,11 @@
             "keywords": [
                 "html"
             ],
+<<<<<<< HEAD
+            "time": "2017-03-08T08:22:36+00:00"
+=======
             "time": "2017-03-13T06:30:53+00:00"
+>>>>>>> master
         },
         {
             "name": "phpunit/php-code-coverage",

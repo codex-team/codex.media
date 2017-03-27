@@ -1,3 +1,3 @@
 <p>
-    <?=$block->text; ?>
+    <?=$block['text']; ?>
 </p>

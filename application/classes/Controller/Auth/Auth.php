@@ -130,7 +130,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
                 case 'attach':
                     unset($user_to_db['email']);
-                    $status = $this->social_attach($user_to_db);
+                    $status = $this->social_attach('vk', $userdata->uid, $user_to_db);
                     break;
             }
             return $status;
@@ -187,7 +187,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
                 case 'attach':
                     unset($user_to_db['email']);
-                    $status = $this->social_attach($user_to_db);
+                    $status = $this->social_attach('facebook', $userdata->id, $user_to_db);
                     break;
             }
 
@@ -235,6 +235,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
              *  What to do with response data?
              *  @var string $state
              */
+            $state = $session->get('state', 'login');
             if ($state) switch ($state) {
 
                 case 'login':
@@ -243,7 +244,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
                 case 'attach':
                     unset($user_to_db['email']);
-                    $status = $this->social_attach($user_to_db);
+                    $status = $this->social_attach('twitter', $userdata->id_str, $user_to_db);
                     break;
             }
 
@@ -251,7 +252,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         } else {
             // if we do not have data from Twitter
-            return $this->login_tw_get_request_token($session);
+            return $this->login_tw_get_request_token($session, $state);
         }
     }
 
@@ -292,7 +293,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
      * @param  object   $session
      * @return bool     FALSE or REDIRECT (30x http code)
      */
-    private function login_tw_get_request_token($session)
+    private function login_tw_get_request_token($session, $state)
     {
         $settings = Kohana::$config->load('social.twitter');
 
@@ -305,6 +306,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         $session->set('oauth_token', $request_token['oauth_token']);
         $session->set('oauth_token_secret', $request_token['oauth_token_secret']);
+        $session->set('state', $state);
 
         if ($twitter_oauth->http_code == 200) {
 
@@ -359,12 +361,23 @@ class Controller_Auth_Auth extends Controller_Auth_Base
      *  @param  array     $userdata
      *  @author Demyashev Alexander
      */
-    private function social_attach($userdata)
+    private function social_attach($social, $social_id, $userdata)
     {
         if ($userId = parent::checkAuth()) {
 
-            Model::factory('User')->updateUser($userId, $userdata);
-            return TRUE;
+            $userFound = Dao_Users::select('id')
+                ->where($social,  '=', $social_id)
+                ->limit(1)
+                ->execute();
+
+            if (!$userFound) {
+                Model::factory('User')->updateUser($userId, $userdata);
+                return TRUE;
+            }
+            else {
+                $this->view['login_error_text'] = 'Профиль, который вы хотите прикрепить, уже прикреплен';
+                return FALSE;
+            }
 
         } else {
 

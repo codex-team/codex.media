@@ -40,7 +40,20 @@ codex = (function (codex) {
             blockId : 'js-contrast-version-holder',
         });
 
-        codex.core.log('Initialized', 'App init', 'info');
+        /**
+         * Activate scroll-up button
+         */
+        codex.scrollUp.init('js-layout-holder');
+
+        /**
+         * Client is ready
+         */
+        codex.core.log('Initialized', 'CodeX', 'info');
+
+        /**
+         * Initiate branding preload
+         */
+        codex.branding.init();
 
     };
 
@@ -69,9 +82,16 @@ codex.appender           = require('./modules/appender');
 codex.parser             = require('./modules/parser');
 codex.comments           = require('./modules/comments');
 codex.alerts             = require('./modules/alerts');
+codex.islandSettings     = require('./modules/islandSettings');
 codex.autoresizeTextarea = require('./modules/autoresizeTextarea');
-codex.profileSettings    = require('./modules/profileSettings');
+codex.user               = require('./modules/user');
 codex.sharer             = require('./modules/sharer');
+codex.writing            = require('./modules/writing');
+codex.loader             = require('./modules/loader');
+codex.scrollUp           = require('./modules/scrollUp');
+codex.branding           = require('./modules/branding');
+codex.pages              = require('./modules/pages');
+
 
 module.exports = codex;
 

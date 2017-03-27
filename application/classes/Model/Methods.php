@@ -6,104 +6,6 @@ class Model_Methods extends Model
     const SOCIAL_FB = 2;
     const SOCIAL_TW = 3;
 
-
-    /**
-     * @var конфиг с размерами вырезаемых изображений
-     * первый параметр - вырезать квадрат (true) или просто ресайзить с сохранением пропрорций (false)
-     */
-    public $IMAGE_SIZES_CONFIG = array(
-
-        'o'  => array(false, 1500, 1500),
-        'b'  => array(true , 200),
-        'm'  => array(true , 100),
-        's'  => array(true , 50),
-    );
-
-
-    /**
-    * Files uploading section
-    */
-
-    public function saveImage($file , $path)
-    {
-        /**
-         *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
-         */
-        if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
-
-        if (!is_dir($path)) mkdir($path);
-
-        if ($file = Upload::save($file, NULL, $path)) {
-
-            $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.jpg';
-
-            $image = Image::factory($file);
-
-            foreach ($this->IMAGE_SIZES_CONFIG as $prefix => $sizes) {
-
-                $isSquare = !!$sizes[0];
-                $width    = $sizes[1];
-                $height   = !$isSquare ? $sizes[2] : $width;
-
-                $image->background('#fff');
-
-                // Вырезание квадрата
-                if ($isSquare) {
-
-                    if ($image->width >= $image->height) {
-
-                        $image->resize( NULL , $height, true );
-
-                    } else {
-
-                        $image->resize( $width , NULL, true );
-                    }
-
-                    $image->crop( $width, $height );
-
-                    /**
-                     *   Для работы с этим методом нужно перекомпилировать php c bundled GD
-                     *   http://www.maxiwebs.co.uk/gd-bundled/compilation.php
-                     *   http://www.howtoforge.com/recompiling-php5-with-bundled-support-for-gd-on-ubuntu
-                     */
-
-                    // $image->sharpen(1.5);
-                } else {
-
-                    if ($image->width > $width || $image->height > $height) {
-
-                        $image->resize( $width , $height , true );
-                    }
-                }
-
-                $image->save($path . $prefix . '_' . $filename);
-            }
-
-            // Delete the temporary file
-            unlink($file);
-
-            return $filename;
-        }
-
-        return FALSE;
-    }
-
-    public function saveFile($file , $path)
-    {
-        /**
-         *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
-         */
-        if (!is_dir($path)) mkdir($path);
-
-        $ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $filename = bin2hex(openssl_random_pseudo_bytes(16)) . '.' . $ext;
-
-        if ($file = Upload::save($file, $filename, $path)) return $filename;
-
-        return FALSE;
-    }
-
-
     /* Надо будет выпилить - устаревает функция */
 
     public function ftime($timestamp, $long = false , $need_time = true , $short_month = false)
@@ -495,4 +397,13 @@ class Model_Methods extends Model
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
     }
+
+    public static function getSiteMenu() {
+
+        $menu = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MENU);
+
+        return array_reverse($menu->get());
+
+    }
+
 }

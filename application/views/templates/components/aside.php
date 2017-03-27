@@ -1,4 +1,4 @@
-<aside class="island main-aside">
+<aside class="island main-aside <?= !empty($site_info['branding']) ?  'main-aside--offset-top' : '' ?>">
 
     <a class="site-head clear" href="/">
 
@@ -27,7 +27,7 @@
 
             <a class="user_panel cf" href="/user/<?= $user->id ?>">
 
-                <img src="<?= $user->photo ?>" />
+                <img src="<?= $user->photo ?>" name="js-img-updatable" />
                 <span class="user_panel__name overflow_long"><?= $user->name ?></span>
 
             </a>
@@ -40,14 +40,7 @@
 
         <? endif; ?>
 
-        <? /* Menu */ ?>
-        <ul class="menu">
-
-            <? foreach ($site_menu as $item): ?>
-                <li><a href="/p/<?= $item->id ?>/<?= $item->uri ?>"><?= $item->title ?></a></li>
-            <? endforeach ?>
-
-        </ul>
+        <?= View::factory('templates/components/menu')->render(); ?>
 
         <? if (!$user->id): ?>
             <section class="aside-section">

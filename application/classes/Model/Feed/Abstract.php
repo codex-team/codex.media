@@ -156,6 +156,6 @@ class Model_Feed_Abstract extends Model {
      */
     public function isExist($item_id)
     {
-        return in_array($this->timeline_key, $this->redis->scan($item_id));
+        return $this->redis->zRank($this->timeline_key, $item_id) !== false;
     }
 }

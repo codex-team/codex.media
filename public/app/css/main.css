@@ -25,6 +25,7 @@
 /**
 * Components
 */
+@import url('components/branding.css');
 @import url('components/footer.css');
 @import url('components/aside.css');
 @import url('components/islands.css');
@@ -38,4 +39,6 @@
 @import url('components/comments.css');
 @import url('components/profile-settings.css');
 @import url('components/sharing.css');
-
+@import url('components/scroll-up.css');
+@import url('components/files.css');
+@import url('components/island-settings.css');

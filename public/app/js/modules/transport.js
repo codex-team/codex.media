@@ -1,294 +1,113 @@
 /**
-* File transport module
-*/
+ * File transport module
+ *
+ * @module Transport module. Uploads file and returns some response from server
+ * @copyright Codex-Team 2017
+ *
+ * @example
+ *
+ * Basic usage :
+ *  codex.transport.init( {
+ *      url : fetchURL,
+ *      multiple : bool,
+ *      accept : string  // http://htmlbook.ru/html/input/accept
+ *      beforeSend : Function,
+ *      success : Function,
+ *      error : Function
+ * });
+ *
+ * You can handle all of this event like:
+ *  - what should happen before data sending with XMLHTTP
+ *  - what should after success request
+ *  - error handler
+ */
 
-var transport = {
+module.exports = ( function (transport) {
 
-    transportURL : '/file/transport',
+    /** Empty configuration */
+    var config_ = null;
 
-    /**
-    * Field for file
-    */
-    input : null,
+    /** File holder */
+    transport.input = null;
 
-    /**
-    * Current transport type
-    */
-    type : null,
+    /** initialize module */
+    transport.init = function (configuration) {
 
-    /**
-    * @uses for store inputed filename to this.files
-    */
-    keydownFinishedTimeout : null,
+        if (!configuration.url) {
 
-    /**
-    * Current attaches will be stored in this object
-    * @see this.storeFile
-    */
-    files : {},
+            codex.core.log('can\'t send request because `url` is missed', 'Transport module', 'error');
+            return;
 
-    /**
-    * Create element and add listener
-    */
-    prepare : function () {
+        }
 
-        var input = document.createElement('INPUT');
+        config_ = configuration;
 
-        input.type = 'file';
-        input.addEventListener('change', this.fileSelected);
+        var inputElement = document.createElement('INPUT');
 
-        this.input = input;
+        inputElement.type = 'file';
 
-    },
+        if (config_ && config_.multiple) {
 
-    /**
-    * Clear input and type. Ready for getting new file
-    */
-    clearInput : function () {
+            inputElement.setAttribute('multiple', 'multiple');
 
-        /** Remove old input */
-        this.input = null;
+        }
 
-        this.type = null;
+        if (config_ && config_.accept) {
 
-    },
+            inputElement.setAttribute('accept', config_.accept);
 
-    /**
-    * Choose-file button click handler
-    */
-    selectFile : function (event, type) {
+        }
 
-        this.prepare();
+        inputElement.addEventListener('change', send_, false);
 
-        this.type = type;
+        /** Save input */
+        transport.input = inputElement;
 
-        this.input.click();
+        /** click input to show upload window */
+        clickInput_();
 
-    },
+    };
 
-    /**
-    * Send file to server when select
-    */
-    fileSelected : function () {
+    var clickInput_ = function () {
 
-        var type        = transport.type,
-            input       = this,
-            files       = input.files,
-            formData    = new FormData();
+        transport.input.click();
 
-        formData.append('type', type);
+    };
 
-        formData.append('files', files[0], files[0].name);
+    var send_ = function () {
 
-        codex.ajax.call({
-            type : 'POST',
-            url : transport.transportURL,
-            data : formData,
-            success : transport.responseForPageForm,
-            beforeSend : transport.beforeSendPageForm,
-        });
+        var url        = config_.url,
+            beforeSend = config_.beforeSend,
+            success    = config_.success,
+            error      = config_.error,
+            formData   = new FormData(),
+            files      = transport.input.files;
 
-        transport.clearInput();
+        if (files.length > 1) {
 
-    },
+            for (var i = 0; i < files.length; i++) {
 
-    beforeSendPageForm : function () {
+                formData.append('files[]', files[i], files[i].name);
 
-        // add loader
-
-    },
-
-    /**
-    * Save file info into page form or show exception
-    */
-    responseForPageForm : function (response) {
-
-        // stop loader
-
-        response = JSON.parse(response);
-
-        if (response.success && response.title) {
-
-            transport.storeFile(response);
+            }
 
         } else {
 
-            codex.alerts.show(response.message);
+            formData.append('files', files[0], files[0].name);
 
         }
 
-    },
+        codex.ajax.call({
+            type : 'POST',
+            data : formData,
+            url : url,
+            beforeSend : beforeSend,
+            success : success,
+            error : error
+        });
 
-    /**
-    * Store file in memory
-    * Attaches list will be sent form submitting
-    */
-    storeFile : function (file) {
+    };
 
-        if (!file || !file.id) return;
+    return transport;
 
-        this.files[file.id] = {
-            'title' : file.title,
-            'id'    : file.id
-        };
-
-        this.appendFileRow(file);
-
-    },
-
-    /**
-    * Appends saved file to form
-    * Allow edit name by contenteditable element
-    */
-    appendFileRow : function (file) {
-
-        var attachesZone = document.getElementById('formAttaches'),
-            row          = document.createElement('div'),
-            filename     = document.createElement('span'),
-            deleteButton = document.createElement('span');
-
-        row.classList.add('item');
-
-        switch (file.type) {
-            case '1': filename.classList.add('item_file'); break;
-            case '2': filename.classList.add('item_image'); break;
-            default: break;
-        }
-
-        filename.textContent = file.title;
-        filename.setAttribute('contentEditable', true);
-
-        deleteButton.classList.add('fl_r', 'button-delete', 'icon-trash');
-        deleteButton.addEventListener('click', function () {
-
-            if (this.parentNode.dataset.readyForDelete) {
-
-                delete codex.transport.files[file.id];
-                this.parentNode.remove();
-
-            }
-
-            this.parentNode.dataset.readyForDelete = true;
-            this.classList.add('button-delete__ready-to-delete');
-            this.innerHTML = 'Удалить документ';
-
-        }, false);
-
-        row.appendChild(filename);
-        row.appendChild(deleteButton);
-
-        attachesZone.appendChild(row);
-
-        /** Save ID to determine which filename edited */
-        row.dataset.id = file.id;
-        row.addEventListener('input', this.storeFileName, false);
-
-    },
-
-    /**
-    * Saves filename from input to this.files object
-    */
-    storeFileName : function () {
-
-        /**
-        * Clear previous keydown-timeout
-        */
-        if (codex.transport.keydownFinishedTimeout) {
-
-            window.clearTimeout(codex.transport.keydownFinishedTimeout);
-
-        }
-
-        var input = this;
-
-        /**
-        * Start waiting to input finished, then save value to this.files
-        */
-        codex.transport.keydownFinishedTimeout = window.setTimeout(function () {
-
-            var id    = input.dataset.id,
-                title = input.textContent.trim();
-
-            if (title) {
-
-                codex.transport.files[id].title = title;
-
-            }
-
-        }, 200);
-
-
-    },
-
-    /**
-    * Prepares and submit form
-    * Send attaches by json-encoded stirng with hidden input
-    */
-    submitAtlasForm : function () {
-
-        var atlasForm = document.forms.atlas;
-
-        if (!atlasForm) return;
-
-
-
-        var attachesInput = document.createElement('input');
-
-        attachesInput.type = 'hidden';
-        attachesInput.name = 'attaches';
-        attachesInput.value = JSON.stringify(this.files);
-
-        atlasForm.appendChild(attachesInput);
-
-        /** CodeX.Editor */
-        var JSONinput = document.getElementById('json_result');
-
-        /**
-         * Save blocks
-         */
-        codex.editor.saver.saveBlocks();
-
-        window.setTimeout(function () {
-
-            var blocksCount = codex.editor.state.jsonOutput.length;
-
-            if (!blocksCount) {
-
-                JSONinput.innerHTML = '';
-
-            } else {
-
-                JSONinput.innerHTML = JSON.stringify({ data: codex.editor.state.jsonOutput} );
-
-            }
-
-            /**
-             * Send form
-             */
-            atlasForm.submit();
-
-        }, 100);
-
-    },
-
-    /**
-    * Submits editor form for opening in full-screan page without saving
-    */
-    openEditorFullscrean : function () {
-
-        var atlasForm = document.forms.atlas,
-            openEditorFlagInput = document.createElement('input');
-
-        openEditorFlagInput.type = 'hidden';
-        openEditorFlagInput.name = 'openFullScreen';
-        openEditorFlagInput.value = 1;
-
-        atlasForm.append(openEditorFlagInput);
-
-        this.submitAtlasForm();
-
-    }
-
-};
-
-module.exports = transport;
+})({});

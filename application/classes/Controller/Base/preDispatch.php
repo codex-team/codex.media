@@ -83,16 +83,16 @@ class Controller_Base_preDispatch extends Controller_Template
         View::set_global('methods', $this->methods);
 
         /** Site info from Settings */
-        View::set_global('site_info', Model_Settings::getListByLabel('site_info'));
+        View::set_global('site_info', Model_Settings::getAll());
 
         /** Site menu pages */
-        View::set_global('site_menu', Model_Page::getSiteMenu());
+        View::set_global('site_menu', Model_Methods::getSiteMenu());
 
         /** Modules */
         $this->redis = $this->_redis();
         View::set_global('redis', $this->redis);
 
-        $this->memcache = $memcache = Cache::instance('memcache');
+        $this->memcache = $memcache = Cache::instance('memcacheimp');
         View::set_global('memcache', $memcache);
 
         /** Session */
