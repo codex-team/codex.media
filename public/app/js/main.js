@@ -50,6 +50,11 @@ codex = (function (codex) {
          */
         codex.core.log('Initialized', 'CodeX', 'info');
 
+        /**
+         * Initiate branding preload
+         */
+        codex.branding.init();
+
     };
 
     return codex;
@@ -84,6 +89,7 @@ codex.sharer             = require('./modules/sharer');
 codex.writing            = require('./modules/writing');
 codex.loader             = require('./modules/loader');
 codex.scrollUp           = require('./modules/scrollUp');
+codex.branding           = require('./modules/branding');
 codex.pages              = require('./modules/pages');
 
 

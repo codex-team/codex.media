@@ -68,3 +68,9 @@
 .island-settings__item:hover {
     background: var(--lightGrayBackground);
 }
+
+.island-settings__item.loading {
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgb(202, 225, 246) 4px, #ecf3f9 8px) !important;
+    background-size: 56px 56px;
+    animation: loading-bar 1000ms infinite linear;
+}

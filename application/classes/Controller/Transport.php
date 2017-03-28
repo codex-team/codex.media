@@ -13,6 +13,7 @@ class Controller_Transport extends Controller_Base_preDispatch
         Model_File::EDITOR_FILE,
         Model_File::EDITOR_IMAGE,
         Model_File::USER_PHOTO,
+        Model_File::BRANDING
     );
 
     /**

@@ -211,23 +211,7 @@ class Model_User extends Model
 
         $models = Model_Page::rowsToModels($pages);
 
-        $next_page = false;
-
-        if (count($models) > self::USER_POSTS_LIMIT_PER_PAGE) {
-
-            $next_page = true;
-            unset($models[self::USER_POSTS_LIMIT_PER_PAGE]);
-        }
-
-        foreach ($models as $page) {
-            $page->blocks = $page->getBlocks(true); // escapeHTML = true
-            $page->description = $page->getDescription();
-        }
-
-        return [
-            "models" => $models,
-            "next_page" => $next_page
-        ];
+        return $models;
     }
 
     public static function getUsersList($status)

@@ -18,11 +18,12 @@
 module.exports = (function () {
 
     var editorIsReady = false,
+        submitButton = null,
         settings = {
             hideEditorToolbar   : false,
             titleId             : 'editorWritingTitle',
             initialBlockPlugin  : 'paragraph',
-            items               : [],
+            data                : {items: []},
             resources           : [],
             holderId            : null,
             pageId              : 0,
@@ -140,9 +141,7 @@ module.exports = (function () {
                 }
             },
 
-            data : {
-                items : settings.items,
-            }
+            data : settings.data
         });
 
         document.getElementById(settings.titleId).focus();
@@ -215,10 +214,9 @@ module.exports = (function () {
     }
 
     /**
-    * Prepares and submit form
-    * Send attaches by json-encoded stirng with hidden input
+    * Prepares form to submit
     */
-    var submit = function () {
+    var getForm = function () {
 
         var atlasForm = document.forms.atlas;
 
@@ -237,44 +235,90 @@ module.exports = (function () {
          */
         codex.editor.saver.saveBlocks();
 
-        window.setTimeout(function () {
-
-            var blocksCount = codex.editor.state.jsonOutput.length;
-
-            if (!blocksCount) {
-
-                JSONinput.innerHTML = JSON.stringify({ data : [] });
-
-            } else {
-
-                JSONinput.innerHTML = JSON.stringify({ data: codex.editor.state.jsonOutput });
-
-            }
-
-            /**
-             * Send form
-             */
-            atlasForm.submit();
-
-        }, 100);
+        return atlasForm;
 
     };
 
     /**
-    * Submits editor form for opening in full-screan page without saving
+     * Send ajax request with writing form data
+     * @param button - submit button (needed to add loading animation)
+     */
+    var submit = function (button) {
+
+        var title = document.forms.atlas.elements['title'],
+            form;
+
+        if (title.value.trim() === '') {
+
+            codex.editor.notifications.notification({
+                type: 'warn',
+                message: 'Заполните заголовок'
+            });
+
+            return;
+
+        }
+
+        form = getForm();
+
+        submitButton = button;
+
+        submitButton.classList.add('loading');
+
+        window.setTimeout(function () {
+
+            form.elements['content'].innerHTML = JSON.stringify({items: codex.editor.state.jsonOutput});
+
+            codex.ajax.call({
+                url: '/p/save',
+                data: new FormData(form),
+                success: submitResponse,
+                type: 'POST'
+            });
+
+        }, 500);
+
+    };
+
+    /**
+     * Response handler for page saving
+     * @param response
+     */
+    var submitResponse = function (response) {
+
+        submitButton.classList.remove('loading');
+
+        response = JSON.parse(response);
+
+        if (response.success) {
+
+            window.location = response.redirect;
+            return;
+
+        }
+
+        codex.editor.notifications.notification({
+            type: 'warn',
+            message: response.message
+        });
+
+    };
+
+    /**
+    * Submits writing form for opening in full-screan page without saving
     */
     var openEditorFullscreen = function () {
 
-        var atlasForm = document.forms.atlas,
-            openEditorFlagInput = document.createElement('input');
 
-        openEditorFlagInput.type = 'hidden';
-        openEditorFlagInput.name = 'openFullScreen';
-        openEditorFlagInput.value = 1;
+        var form = getForm();
 
-        atlasForm.append(openEditorFlagInput);
+        window.setTimeout(function () {
 
-        submit();
+            form.elements['content'].innerHTML = JSON.stringify({ items: codex.editor.state.jsonOutput });
+
+            form.submit();
+
+        }, 500);
 
     };
 
