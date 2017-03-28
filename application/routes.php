@@ -69,7 +69,7 @@ Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->d
 /**
  * User section
  */
-Route::set('PROFILE', 'user/<id>(/<list>)(/<page_number>)', array('id' => $DIGIT, 'list' => 'pages|comments', 'page_number' => $DIGIT))->defaults(array(
+Route::set('PROFILE', 'user/<id>(/<list>(/<page_number>))', array('id' => $DIGIT, 'list' => 'pages|comments', 'page_number' => $DIGIT))->defaults(array(
     'controller' => 'user',
     'action' => 'profile'
 ));

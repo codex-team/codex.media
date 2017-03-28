@@ -9,7 +9,7 @@
 </div>
 
 <? if (isset($next_page) && $next_page): ?>
-    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadComments" href="/<?= $page_number + 1 ?>">
+    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadComments" href="/user/<?= $user_id ?>/comments/<?= $page_number + 1 ?>">
         Показать больше комментариев
     </a>
     <script>

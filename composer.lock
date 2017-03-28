@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "85873eec7ec898624628e19f6f49a4af",
+    "content-hash": "dee3a053431501c62ee2583a2af1e972",
     "packages": [
         {
             "name": "codex-team/codex.editor",
-            "version": "dev-master",
+            "version": "dev-codex-org",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codex-team/codex.editor.backend.git",
-                "reference": "b1abeda56950eb56924f5db68b1f4c47546dca55"
+                "reference": "4142d44fe3e1990edfc824c8f4b20292b18ba2e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codex-team/codex.editor.backend/zipball/b1abeda56950eb56924f5db68b1f4c47546dca55",
-                "reference": "b1abeda56950eb56924f5db68b1f4c47546dca55",
+                "url": "https://api.github.com/repos/codex-team/codex.editor.backend/zipball/4142d44fe3e1990edfc824c8f4b20292b18ba2e4",
+                "reference": "4142d44fe3e1990edfc824c8f4b20292b18ba2e4",
                 "shasum": ""
             },
             "require": {
@@ -41,7 +41,7 @@
                 }
             ],
             "description": "Codex Editor server side example",
-            "time": "2017-03-21 21:49:21"
+            "time": "2017-03-25 21:53:25"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -88,11 +88,7 @@
             "keywords": [
                 "html"
             ],
-<<<<<<< HEAD
-            "time": "2017-03-08T08:22:36+00:00"
-=======
             "time": "2017-03-13T06:30:53+00:00"
->>>>>>> master
         },
         {
             "name": "phpunit/php-code-coverage",

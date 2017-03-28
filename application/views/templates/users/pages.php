@@ -8,7 +8,7 @@
 </div>
 
 <? if (isset($next_page) && $next_page): ?>
-    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/<?= $page_number + 1 ?>">
+    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/user/<?= $user_id ?>/pages/<?= $page_number + 1 ?>">
         Показать больше новостей
     </a>
     <script>
