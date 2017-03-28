@@ -14,6 +14,10 @@ $FEED_KEYS = implode('|', array(
     Model_Feed_Pages::TYPE_NEWS
 ));
 
+$USER_FEED_LISTS = implode('|', array(
+    Controller_User::LIST_PAGES,
+    Controller_User::LIST_COMMENTS
+));
 
 /**
  * Static pages
@@ -69,7 +73,7 @@ Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->d
 /**
  * User section
  */
-Route::set('PROFILE', 'user/<id>(/<list>(/<page_number>))', array('id' => $DIGIT, 'list' => 'pages|comments', 'page_number' => $DIGIT))->defaults(array(
+Route::set('PROFILE', 'user/<id>(/<list>(/<page_number>))', array('id' => $DIGIT, 'list' => $USER_FEED_LISTS, 'page_number' => $DIGIT))->defaults(array(
     'controller' => 'user',
     'action' => 'profile'
 ));
