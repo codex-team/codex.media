@@ -67,9 +67,12 @@ module.exports = (function () {
 
         var targetId =currentItemClicked.dataset.id;
 
+        /** currying the function */
+        var promote = ajaxResponses.promote.bind(currentItemClicked);
+
         codex.ajax.call({
             url : '/p/' + targetId + '/promote?list=menu',
-            success: ajaxResponses.promote
+            success: promote
         });
 
     };
@@ -82,11 +85,14 @@ module.exports = (function () {
         currentItemClicked = this;
         currentItemClicked.classList.add('loading');
 
-        var targetId =currentItemClicked.dataset.id;
+        var targetId = currentItemClicked.dataset.id;
+
+        /** currying the function */
+        var promote = ajaxResponses.promote.bind(currentItemClicked);
 
         codex.ajax.call({
             url : '/p/' + targetId + '/promote?list=news',
-            success: ajaxResponses.promote
+            success: promote
         });
 
     };
@@ -143,20 +149,16 @@ module.exports = (function () {
         promote: function (response) {
 
             response = ajaxResponses.getResponse(response);
-
+            currentItemClicked = this;
             currentItemClicked.classList.remove('loading');
 
             if (response.success) {
 
-                if (response.menu) {
+                if (response.menu || response.buttonText) {
 
-                    ajaxResponses.replaceMenu(response.menu);
+                    ajaxResponses.replaceMenu(currentItemClicked, response.buttonText);
 
                 }
-
-                /**
-                 * TODO: сделать замену текста кнопки
-                 **/
 
                 codex.alerts.show(response.message);
 
@@ -169,15 +171,12 @@ module.exports = (function () {
         },
 
         /**
-         * Replace site menu with code from server response
+         * Replace site menu with new button text from server response
          * @param menu
          */
-        replaceMenu: function (menu) {
+        replaceMenu: function (currentItemMenu, newResponseMenuText) {
 
-            var oldMenu = document.getElementById('menu'),
-                newMenu = codex.core.parseHTML(menu)[0];
-
-            codex.core.replace(oldMenu, newMenu);
+            currentItemMenu.textContent = newResponseMenuText;
 
         }
 
