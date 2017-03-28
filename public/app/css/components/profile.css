@@ -40,6 +40,7 @@
     color: var(--grayText);
     font-size: 1.2em;
     letter-spacing: 0.3px;
+    line-height: 1.5em;
 }
 
 .profile__about svg {
