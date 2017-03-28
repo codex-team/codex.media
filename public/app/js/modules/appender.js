@@ -77,11 +77,11 @@ var appender = {
 
                 if (response.success) {
 
-                    if (!response.pages) return;
+                    if (!response.list) return;
 
                     /* Append items */
                     // codex.appender.blockForItems.innerHTML += separator;
-                    codex.appender.blockForItems.innerHTML += response.pages;
+                    codex.appender.blockForItems.innerHTML += response.list;
 
                     /* Next page */
                     codex.appender.page++;
