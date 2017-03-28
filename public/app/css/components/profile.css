@@ -60,6 +60,7 @@
 
 .profile__about textarea {
     max-width: 400px;
+    line-height: 1.5em;
 }
 
 .profile__about .loading {

@@ -146,19 +146,22 @@ module.exports = function () {
          */
         var edit = function ( button ) {
 
-            textarea = document.createElement('TEXTAREA');
+            var opened = button.querySelector('textarea');
 
+            if (opened) {
+
+                return;
+
+            }
+
+            textarea = document.createElement('TEXTAREA');
             textarea.innerHTML = button.textContent.trim();
+            textarea.addEventListener('keydown', keydown);
 
             button.innerHTML = '';
             button.appendChild(textarea);
 
-
-            button.removeEventListener('click', codex.user.editBio);
-            textarea.addEventListener('keydown', keydown);
-
             textarea.focus();
-
 
             /** Fire autoresize */
             codex.autoresizeTextarea.addListener(textarea);
@@ -251,7 +254,7 @@ module.exports = function () {
         init: init,
         changeStatus: changeStatus,
         photo: photo,
-        bio : bio
+        bio : bio,
     };
 
 }();
