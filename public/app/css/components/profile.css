@@ -36,10 +36,37 @@
 }
 
 .profile__about {
-    margin: 0 0 15px;
+    margin: 0 0 20px;
+    overflow: hidden;
     color: var(--grayText);
     font-size: 1.2em;
     letter-spacing: 0.3px;
+    line-height: 1.5em;
+}
+
+.profile__about svg {
+    margin-left: 0.3em;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+
+.profile__about--editable {
+    cursor: pointer;
+}
+
+.profile__about--editable:hover {
+    color: var(--hoverColor);
+}
+
+.profile__about textarea {
+    max-width: 400px;
+    line-height: 1.5em;
+}
+
+.profile__about .loading {
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(255, 255, 255, 0.03) 4px, rgba(107, 118, 128, 0.19) 8px);
+    background-size: 56px 56px;
+    animation: loading-bar 1s infinite linear;
 }
 
 .profile .island-settings {
