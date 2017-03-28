@@ -226,6 +226,7 @@ module.exports = function () {
 
             if (!response.success || !response.bio) {
 
+                textarea.classList.remove('loading');
                 codex.alerts.show('Saving error, sorry');
                 return;
 
