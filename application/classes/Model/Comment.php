@@ -94,32 +94,21 @@ Class Model_Comment extends Model_preDispatch
         return self::rowsToModels($comment_rows, true);
     }
 
-    public static function getCommentsByUserId($user_id, $pagination_number = 1)
+    public static function getCommentsByUserId($user_id, $offset = 0, $count = 0)
     {
-        $offset = ($pagination_number - 1) * self::USER_COMMENTS_LIMIT_PER_PAGE;
-
         $comment_rows = Dao_Comments::select()
             ->where('user_id', '=', $user_id)
             ->where('is_removed', '=', 0)
             ->order_by('id', 'DESC')
-            ->offset($offset)
-            ->limit(self::USER_COMMENTS_LIMIT_PER_PAGE + 1)
-            ->execute();
+            ->offset($offset);
+
+        if ($count) $comment_rows->limit($count);
+
+        $comment_rows = $comment_rows->execute();
 
         $models = self::rowsToModels($comment_rows, true);
 
-        $next_page = false;
-
-        if (count($models) > self::USER_COMMENTS_LIMIT_PER_PAGE) {
-
-            $next_page = true;
-            unset($models[self::USER_COMMENTS_LIMIT_PER_PAGE]);
-        }
-
-        return [
-            "models" => $models,
-            "next_page" => $next_page
-        ];
+        return $models;
     }
 
     /**

@@ -2,11 +2,15 @@
 
 class Controller_User extends Controller_Base_preDispatch
 {
+    const LIST_PAGES    = 'pages';
+    const LIST_COMMENTS = 'comments';
+    const ELEMS_IN_LIST = 7;
+
     public function action_profile()
     {
         $user_id = $this->request->param('id');
-        $list = $this->request->param('list') ?: 'pages';
-        $page_number = $this->request->param('page_number') ?: 1;
+        $list = $this->request->param('list') ?: self::LIST_PAGES;
+        $pageNumber = $this->request->param('page_number') ?: 1;
 
         $new_status = Arr::get($_GET, 'newStatus');
 
@@ -16,8 +20,6 @@ class Controller_User extends Controller_Base_preDispatch
             throw HTTP_Exception::factory(404);
         }
 
-        $this->view["user_id"] = $user_id;
-
         if ($this->user->isAdmin && $new_status) {
 
             $this->view['isUpdateSaved'] = $viewUser->setUserStatus(self::translate_user_status($new_status));
@@ -26,34 +28,45 @@ class Controller_User extends Controller_Base_preDispatch
         $viewUser->isMe = $viewUser->id == $this->user->id;
         $this->view['viewUser']  = $viewUser;
 
-        $user_feed = ["models" => array(), "next_page" => false];
+        $offset = ($pageNumber - 1) * self::ELEMS_IN_LIST;
         switch ($list) {
-            case 'comments':
-                $user_feed = Model_Comment::getCommentsByUserId($user_id, $page_number);
-                $this->view['user_comments'] = $user_feed["models"];
+
+            case self::LIST_COMMENTS:
+                $userFeed = Model_Comment::getCommentsByUserId($viewUser->id, $offset, self::ELEMS_IN_LIST + 1);
+                break;
+
+            case self::LIST_PAGES:
+                $userFeed = $viewUser->getUserPages($offset, self::ELEMS_IN_LIST + 1);
                 break;
 
             default:
-                $user_feed = $viewUser->getUserPages(0, $page_number);
-                $this->view['user_pages'] = $user_feed["models"];
+                $userFeed = array();
                 break;
         }
 
-        if (Model_Methods::isAjax())
-        {
-            $this->ajax_pagination($list, $user_feed["models"], $user_feed["next_page"]);
-        }
-        else
-        {
-            $this->view['next_page'] = $user_feed["next_page"];
-            $this->view['page_number'] = $page_number;
+        /** If next page exist we need to unset last elem */
+        $nextPage = Model_Methods::isNextPageExist($userFeed, self::ELEMS_IN_LIST);
 
-            $this->view['list']      = $list;
-            $this->view['listFactory'] = View::factory('/templates/users/' . $list, $this->view);
+        if ($nextPage) unset($userFeed[self::ELEMS_IN_LIST]);
+        /***/
 
-            $this->template->title   = $viewUser->name;
-            $this->template->content = View::factory('/templates/users/profile', $this->view);
+        /** If ajax request */
+        if (Model_Methods::isAjax()) {
+
+            $this->ajax_pagination($list, $userFeed, $nextPage);
+            return;
         }
+        /***/
+
+        $this->view['user_feed']   = $userFeed;
+        $this->view['next_page']   = $nextPage;
+        $this->view['page_number'] = $pageNumber;
+
+        $this->view['list']        = $list;
+        $this->view['listFactory'] = View::factory('/templates/users/' . $list, $this->view);
+
+        $this->template->title   = $viewUser->name;
+        $this->template->content = View::factory('/templates/users/profile', $this->view);
 
     }
 
@@ -161,22 +174,26 @@ class Controller_User extends Controller_Base_preDispatch
         $this->template->content = View::factory('/templates/users/settings', $this->view);
     }
 
-    private function ajax_pagination($type, $models, $next_page = false)
+    private function ajax_pagination($type, $models, $nextPage = false)
     {
         $response = array();
         $response['success'] = 1;
 
         switch ($type) {
-            case 'comments':
-                $response['pages'] = View::factory('templates/users/comments', array('user_comments' => $models))->render();
+            case self::LIST_COMMENTS:
+                $response['list'] = View::factory('templates/users/comments', array('user_feed' => $models))->render();
+                break;
+
+            case self::LIST_PAGES:
+                $response['list'] = View::factory('templates/users/pages', array('user_feed' => $models))->render();
                 break;
 
             default:
-                $response['pages'] = View::factory('templates/users/pages', array('user_pages' => $models))->render();
+                $response['list'] = '';
                 break;
         }
 
-        $response['next_page']  = $next_page;
+        $response['next_page']  = $nextPage;
 
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');

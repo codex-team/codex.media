@@ -169,7 +169,7 @@ class Model_Page extends Model
                 $page->fillByRow($page_row);
 
                 $page->content = $page->validateContent();
-                $page->blocks = $page->getBlocks();
+                $page->blocks = $page->getBlocks(true);
                 $page->description = $page->getDescription();
 
                 array_push($pages, $page);

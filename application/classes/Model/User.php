@@ -195,40 +195,21 @@ class Model_User extends Model
     }
 
 
-    public function getUserPages($id_parent = 0, $page_number = 1)
+    public function getUserPages($offset = 0, $count = 0)
     {
-        $offset = ($page_number - 1) * self::USER_POSTS_LIMIT_PER_PAGE;
-
         $pages = Dao_Pages::select()
             ->where('author', '=', $this->id)
             ->where('status', '=', Model_Page::STATUS_SHOWING_PAGE)
-            // ->where('type', '=', Model_Page::TYPE_USER_PAGE)
-            ->where('id_parent', '=', $id_parent)
             ->order_by('id','DESC')
-            ->offset($offset)
-            ->limit(self::USER_POSTS_LIMIT_PER_PAGE + 1)
-            ->execute();
+            ->offset($offset);
+
+        if ($count) $pages->limit($count);
+
+        $pages = $pages->execute();
 
         $models = Model_Page::rowsToModels($pages);
 
-        $next_page = false;
-
-        if (count($models) > self::USER_POSTS_LIMIT_PER_PAGE) {
-
-            $next_page = true;
-            unset($models[self::USER_POSTS_LIMIT_PER_PAGE]);
-        }
-
-        foreach ($models as $page) {
-
-            $page->blocks = $page->getBlocks(true); // escapeHTML = true
-            $page->description = $page->getDescription();
-        }
-
-        return [
-            "models" => $models,
-            "next_page" => $next_page
-        ];
+        return $models;
     }
 
     public static function getUsersList($status)
