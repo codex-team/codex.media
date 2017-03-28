@@ -1,6 +1,6 @@
 <div class="island island--padded">
 
-     <div class="island__navigation">
+    <div class="island__navigation">
         <a href="/user/<?= $user->id ?>" class="island__navigation-item">
             <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
             Профиль
@@ -57,7 +57,7 @@
             <?= !$user->facebook ? 'Привязать' : $user->facebook_name ?>
         </a>
 
-         <a class="border-button <?= !$user->twitter ? 'border-button--twitter' : '' ?>" href="/auth/tw?state=<?= !$user->twitter ? 'attach' : 'remove' ?>">
+        <a class="border-button <?= !$user->twitter ? 'border-button--twitter' : '' ?>" href="/auth/tw?state=<?= !$user->twitter ? 'attach' : 'remove' ?>">
             <? include(DOCROOT . "public/app/svg/twitter.svg") ?>
             <?= !$user->twitter ? 'Привязать' : $user->twitter_name ?>
         </a>
@@ -67,6 +67,7 @@
 </div>
 
 <?= View::factory('templates/components/email_confirm_island'); ?>
+<?= View::factory('templates/components/password_change_island'); ?>
 
 <script>
 

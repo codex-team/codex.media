@@ -118,6 +118,18 @@ class Controller_User extends Controller_Base_preDispatch
             $bio              = trim(Arr::get($_POST, 'bio'));
             $name             = trim(Arr::get($_POST, 'name'));
 
+            # Проверяем заполнены ли все три нужных для смены пароля поля.
+            # Исключаем данную проверку только в случае, если ни одно из них не заполнено, либо пароль пуст (side-auth).
+            if ($currentPassword || $newPassword || $repeatPassword) {
+
+                if ($this->user->password != "" && (!$currentPassword || !$newPassword || !$repeatPassword)) {
+
+                    $error['passwordChange'] = 'Для смены пароля введите текущий пароль, новый пароль и подтверждение нового пароля.';
+
+                }
+
+            }
+
             if ($currentPassword) {
 
                 $hashedCurrentPassword = Controller_Auth_Base::createPasswordHash($currentPassword);
@@ -133,7 +145,7 @@ class Controller_User extends Controller_Base_preDispatch
                 $newPassword = '';
             }
 
-            if ($newPassword != $repeatPassword) {
+            if ($newPassword != "" && $newPassword != $repeatPassword) {
 
                 $newPassword = '';
                 $error['passError'] = 'Пароли не совпадают.';
