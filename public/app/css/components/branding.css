@@ -4,7 +4,7 @@
 .branding {
     position: relative;
     height: 200px;
-    background: var(--lightGrayBackground);
+    background: #e5e7ef;
     overflow: hidden;
     transition: height 250ms ease-out;
 }

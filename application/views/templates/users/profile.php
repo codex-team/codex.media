@@ -9,7 +9,7 @@
         </div>
     <? endif; ?>
 
-    <div class="profile__content">
+    <div class="profile__content clearfix">
 
         <? if ($user->isAdmin): ?>
             <span class="island-settings js-user-settings" data-id="<?= $viewUser->id ?>">

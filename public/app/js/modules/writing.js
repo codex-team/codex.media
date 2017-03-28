@@ -144,9 +144,57 @@ module.exports = (function () {
             data : settings.data
         });
 
-        document.getElementById(settings.titleId).focus();
+        var titleInput = document.getElementById(settings.titleId);
+
+        /**
+         * Focus at the title
+         */
+        titleInput.focus();
+        titleInput.addEventListener('keydown', titleKeydownHandler );
 
     }
+
+    /**
+     * Title input keydowns
+     * @description  By ENTER, sets focus on editor
+     * @param  {Event} event  - keydown event
+     */
+    var titleKeydownHandler = function (event) {
+
+        /* Set focus on Editor by Enter     */
+        if ( event.keyCode == codex.core.keys.ENTER ) {
+
+            event.preventDefault();
+
+            focusRedactor();
+
+        }
+
+    };
+
+    /**
+     * Temporary scheme to focus Codex Editor first-block
+     */
+    var focusRedactor = function () {
+
+        var firstBlock       = codex.editor.nodes.redactor.firstChild,
+            contentHolder    = firstBlock.firstChild,
+            firstToolWrapper = contentHolder.firstChild,
+            aloneTextNode;
+
+        /**
+         * Caret will not be placed in empty textNode, so we need textNode with zero-width char
+         */
+        aloneTextNode = document.createTextNode('\u200B');
+
+        /**
+         * We need to append manually created textnode before returning
+         */
+        firstToolWrapper.appendChild(aloneTextNode);
+
+        codex.editor.caret.set(firstToolWrapper, 0, 0);
+
+    };
 
     /**
      * Public function for run editor
