@@ -221,11 +221,9 @@ class Controller_User extends Controller_Base_preDispatch
                 'bio' => $bio
             ));
 
-            if ($saving) {
-                $response['success'] = 1;
-                $response['bio']     = $bio;
-                $response['csrf']    = Security::token(true);
-            }
+            $response['success'] = 1;
+            $response['bio']     = $bio;
+            $response['csrf']    = Security::token(true);
 
         }
 
