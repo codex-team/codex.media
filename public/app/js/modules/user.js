@@ -128,10 +128,129 @@ module.exports = function () {
     //
     // };
 
+
+    /**
+     * Working with bio
+     */
+    var bio = function () {
+
+        /**
+         * Edited textarea cache
+         * @type {Element|null}
+         */
+        var textarea = null;
+
+        /**
+         * Edit bio click handler;
+         * @param {Element} button  - button clicked
+         */
+        var edit = function ( button ) {
+
+            textarea = document.createElement('TEXTAREA');
+
+            textarea.innerHTML = button.textContent.trim();
+
+            button.innerHTML = '';
+            button.appendChild(textarea);
+
+
+            button.removeEventListener('click', codex.user.editBio);
+            textarea.addEventListener('keydown', keydown);
+
+            textarea.focus();
+
+
+            /** Fire autoresize */
+            codex.autoresizeTextarea.addListener(textarea);
+
+        };
+
+        /**
+         * Bio textarea keydowns
+         * Sends via AJAX by ENTER
+         */
+        var keydown = function ( event ) {
+
+            if ( event.keyCode == codex.core.keys.ENTER ) {
+
+                send(this.value);
+                event.preventDefault();
+
+            }
+
+        };
+
+        /**
+         * Sends bio field
+         * @param  {String} val textarea value
+         */
+        var send = function (val) {
+
+            if (!val.trim()) {
+
+                codex.alerts.show('Write something about yourself');
+                return;
+
+            }
+
+            var formData = new FormData();
+
+            formData.append('bio', val);
+            formData.append('csrf', window.csrf);
+
+            codex.ajax.call({
+                type : 'POST',
+                url : '/user/updateBio',
+                data : formData,
+                beforeSend: beforeSend,
+                success : saved
+            });
+
+        };
+
+        /**
+         * Simple beforeSend method
+         */
+        var beforeSend = function () {
+
+            textarea.classList.add('loading');
+
+        };
+
+        /**
+         * Success saving callback
+         */
+        var saved = function (response) {
+
+            response = JSON.parse(response);
+
+            if (!response.success || !response.bio) {
+
+                codex.alerts.show('Saving error, sorry');
+                return;
+
+            }
+
+            var newBio = document.createTextNode(response.bio || '');
+
+            /** Update user's CSRF token */
+            window.csrf = response.csrf;
+
+            codex.core.replace(textarea, newBio);
+
+        };
+
+        return {
+            edit: edit
+        };
+
+    }();
+
     return {
         init: init,
         changeStatus: changeStatus,
-        photo: photo
+        photo: photo,
+        bio : bio
     };
 
 }();
