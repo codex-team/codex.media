@@ -5,6 +5,8 @@ vendor/*
 
 .env
 
+composer.lock
+
 phpmyadmin/*
 pma/*
 .DS_Store
@@ -22,4 +24,3 @@ node_modules/
 *~
 
 .ftpconfig
-composer.lock
