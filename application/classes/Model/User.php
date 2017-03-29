@@ -38,6 +38,8 @@ class Model_User extends Model
     const USER_STATUS_GUEST      = 0;
     const USER_STATUS_BANNED     = -1;
 
+    const USER_POSTS_LIMIT_PER_PAGE = 7; # Must be > 1
+
     /**
      * Model_User constructor.
      *
@@ -193,15 +195,17 @@ class Model_User extends Model
     }
 
 
-    public function getUserPages($id_parent = 0)
+    public function getUserPages($offset = 0, $count = 0)
     {
         $pages = Dao_Pages::select()
             ->where('author', '=', $this->id)
             ->where('status', '=', Model_Page::STATUS_SHOWING_PAGE)
-            // ->where('type', '=', Model_Page::TYPE_USER_PAGE)
-            ->where('id_parent', '=', $id_parent)
             ->order_by('id','DESC')
-            ->execute();
+            ->offset($offset);
+
+        if ($count) $pages->limit($count);
+
+        $pages = $pages->execute();
 
         $models = Model_Page::rowsToModels($pages);
 

@@ -19,7 +19,8 @@
     margin-top: var(--islandMargin);
 }
 
-.island--last {
+.island--bottomed {
+>>>>>>> refs/remotes/origin/master
     margin-bottom: var(--islandMargin);
 }
 

@@ -15,7 +15,7 @@
     <?= Form::hidden('id_parent', $page->id_parent); ?>
 
     <div class="writing__title-wrapper">
-        <input class="writing__title" type="text" name="title" placeholder="Заголовок" value="<?= $page->title ?>" id="editorWritingTitle">
+        <textarea class="writing__title js-autoresizable" rows="1" name="title" placeholder="Заголовок" id="editorWritingTitle"><?= $page->title ?></textarea>
     </div>
 
     <div class="editor-wrapper" id="placeForEditor"></div>

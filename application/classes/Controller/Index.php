@@ -16,11 +16,9 @@ class Controller_Index extends Controller_Base_preDispatch
         $pages = $feed->get(self::NEWS_LIMIT_PER_PAGE + 1, $offset);
 
         /** Check if next page exist */
-        $next_page = false;
+        $next_page = Model_Methods::isNextPageExist($pages, self::NEWS_LIMIT_PER_PAGE);
 
-        if (count($pages) > self::NEWS_LIMIT_PER_PAGE) {
-
-            $next_page = true;
+        if ($next_page) {
             unset($pages[self::NEWS_LIMIT_PER_PAGE]);
         }
         /***/

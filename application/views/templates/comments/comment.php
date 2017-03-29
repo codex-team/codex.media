@@ -1,4 +1,4 @@
-<div class="comment island island--padded clear <?= isset($index) && $index == 0 ? '' : 'island--margined' ?>" id="comment<?= $comment->id ?>">
+<div class="comment island island--padded clear island--bottomed ?>" id="comment<?= $comment->id ?>">
 
     <div class="comment__header clearfix">
 

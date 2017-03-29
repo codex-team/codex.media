@@ -14,6 +14,10 @@ $FEED_KEYS = implode('|', array(
     Model_Feed_Pages::TYPE_NEWS
 ));
 
+$USER_FEED_LISTS = implode('|', array(
+    Controller_User::LIST_PAGES,
+    Controller_User::LIST_COMMENTS
+));
 
 /**
  * Static pages
@@ -69,10 +73,11 @@ Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->d
 /**
  * User section
  */
-Route::set('PROFILE', 'user/<id>(/<list>)', array('id' => $DIGIT, 'list' => 'pages|comments'))->defaults(array(
-    'controller' => 'User_Index',
+Route::set('PROFILE', 'user/<id>(/<list>(/<page_number>))', array('id' => $DIGIT, 'list' => $USER_FEED_LISTS, 'page_number' => $DIGIT))->defaults(array(
+    'controller' => 'user',
     'action' => 'profile'
 ));
+
 Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
     'controller' => 'User_Index',
     'action' => 'settings'
@@ -80,6 +85,10 @@ Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
 Route::set('PASSWORD_CHANGE', 'user/passchange')->defaults(array(
     'controller' => 'User_Modify',
     'action'     => 'request_password_change'
+));
+Route::set('fast saving bio', 'user/updateBio')->defaults(array(
+    'controller' => 'user',
+    'action' => 'updateBio'
 ));
 
 /**

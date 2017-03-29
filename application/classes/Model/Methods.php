@@ -406,4 +406,9 @@ class Model_Methods extends Model
 
     }
 
+    public static function isNextPageExist($list = array(), $limit = 0)
+    {
+        return count($list) > $limit;
+    }
+
 }
