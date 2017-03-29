@@ -104,7 +104,7 @@ module.exports = function () {
 
         var showForm = function (_csrf) {
 
-            var label       = document.createElement('LABEL');
+            var label = document.createElement('LABEL');
 
             wrapper = this;
             input   = document.createElement('INPUT');
@@ -128,8 +128,8 @@ module.exports = function () {
 
             wrapper.classList.remove('island--centered');
             wrapper.classList.remove('profile-settings__change-password-btn');
-            wrapper.innerHTML   = '';
-            wrapper.onclick     = '';
+            wrapper.innerHTML = '';
+            wrapper.onclick   = '';
 
             wrapper.appendChild(label);
             wrapper.appendChild(input);
@@ -192,7 +192,7 @@ module.exports = function () {
 
             }
 
-            var textDiv     = document.createElement('DIV');
+            var textDiv = document.createElement('DIV');
 
             button = document.createElement('BUTTON');
 

@@ -37,7 +37,7 @@
             </div>
 
             <label class="form__label">Фамилия и Имя</label>
-            <input class="form__input" type="text" name="name" value="<?= $user->name ?>" />
+            <input class="form__input" type="text" name="name" value="<?= $user->name ?>" required/>
 
             <label class="form__label">О себе</label>
             <textarea class="form__input js-autoresizable" name="bio"><?= $user->bio ?></textarea>

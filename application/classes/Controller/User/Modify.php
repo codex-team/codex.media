@@ -20,12 +20,12 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
     public function update () {
 
-        $name  = Arr::get($_POST, 'name', $this->user->name);
-        $bio   = Arr::get($_POST, 'bio', $this->user->bio);
+        $name = Arr::get($_POST, 'name', $this->user->name);
+        $bio  = Arr::get($_POST, 'bio', $this->user->bio);
 
         $fields = array(
-            'name'  => $name,
-            'bio'   => $bio,
+            'name' => $name,
+            'bio'  => $bio,
         );
 
         if ($this->validateForm($fields)) {
@@ -42,7 +42,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
     private function validateForm($fields) {
 
-        $success  = true;
+        $success = true;
 
         if (!trim($fields['name'])) {
             $this->view['errors']['name'] = 'Введите имя';
@@ -61,9 +61,9 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             'success' => 0
         );
 
-        $request    = json_decode(file_get_contents('php://input'));
-        $password   = $request->currentPassword;
-        $csrf       = $request->csrf;
+        $request  = json_decode(file_get_contents('php://input'));
+        $password = $request->currentPassword;
+        $csrf     = $request->csrf;
 
         if (!Security::check($csrf) || !$this->request->is_ajax()) {
             throw new HTTP_Exception_403();
