@@ -88,9 +88,16 @@ module.exports = function () {
      * @param  {} argument [description]
      * @return {[type]}          [description]
      */
-    var changeStatus = function () {
+    var changeStatus = function (type) {
 
-        console.log('user status changing');
+        codex.ajax.call({
+            url : '/user/changeStatus?status=' + type,
+            success: function (response) {
+
+                console.log(response);
+
+            },
+        });
 
     };
 
