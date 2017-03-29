@@ -238,4 +238,9 @@ class Model_User extends Model
         return $users;
     }
 
+    public function checkPassword($pass)
+    {
+        return $this->password == Controller_Auth_Base::createPasswordHash($pass);
+    }
+
 }

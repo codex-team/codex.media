@@ -10,13 +10,13 @@
         </a>
     </div>
 
-    <? if ($success): ?>
+    <? if (isset($success) && $success): ?>
         <div class="info_block">
             Обновления сохранены
         </div>
     <? endif; ?>
 
-    <? if ($error): ?>
+    <? if (isset($error) && $error): ?>
         <div class="info_block">
             <? foreach ($error as $info): ?>
                 <?= $info; ?>
@@ -71,6 +71,6 @@
 
 <script>
 
-    codex.user.init();
+    //codex.user.init();
 
 </script>

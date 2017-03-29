@@ -2,7 +2,13 @@
 
     <form class="auth-form" action="" method="post">
 
-        <h3>Восстановление пароля</h3>
+        <? switch ($method): ?><? case Model_Auth::TYPE_EMAIL_RESET:?>
+                <h3>Восстановление пароля</h3>
+            <? break; ?>
+            <? case Model_Auth::TYPE_EMAIL_CHANGE:?>
+                <h3>Смена пароля</h3>
+            <? break; ?>
+        <? endswitch; ?>
 
         <? $regFields = array(
             'password'  => array(

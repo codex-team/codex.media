@@ -5,6 +5,7 @@ class Model_Auth extends Model_preDispatch
 
     const TYPE_EMAIL_CONFIRM = 'confirmation';
     const TYPE_EMAIL_RESET   = 'reset';
+    const TYPE_EMAIL_CHANGE  = 'change';
 
     /**
      * Salt should be in .env file, but if it doesn't, we use this fallback salt
@@ -12,8 +13,9 @@ class Model_Auth extends Model_preDispatch
     const DEFAULT_EMAIL_HASH_SALT = 'OKexL2iOXbhoJFw1Flb8';
 
     private $HASHES_KEYS = array(
-        self::TYPE_EMAIL_CONFIRM => 'codex.org.confirmation.hashes',
-        self::TYPE_EMAIL_RESET  => 'codex.org.reset.hashes'
+        self::TYPE_EMAIL_CONFIRM => 'confirmation',
+        self::TYPE_EMAIL_RESET   => 'reset',
+        self::TYPE_EMAIL_CHANGE  => 'change'
     );
 
     public $user;
@@ -74,6 +76,23 @@ class Model_Auth extends Model_preDispatch
 
     }
 
+    public function sendChangePasswordEmail() {
+
+        $hash = $this->generateHash(self::TYPE_EMAIL_CHANGE);
+
+        $message = View::factory('templates/emails/auth/change', array('user' => $this->user, 'hash' => $hash));
+
+        $email = new Email();
+        return $email->send(
+            [$this->user->email],
+            [$GLOBALS['SITE_MAIL'], $_SERVER['HTTP_HOST']],
+            "Сброс пароля на ".$_SERVER['HTTP_HOST'],
+            $message,
+            false
+        );
+
+    }
+
     /**
      * Generates confirmation hash and adds it to redis
      *
@@ -82,11 +101,14 @@ class Model_Auth extends Model_preDispatch
      */
     private function generateHash($type) {
 
+        $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:') . 'hashes:';
+        $key        = $key_prefix . $this->HASHES_KEYS[$type];
+
         $salt = Arr::get($_SERVER, 'SALT', self::DEFAULT_EMAIL_HASH_SALT);
 
         $hash = hash('sha256', $this->user->id . $salt . $this->user->email);
 
-        $this->redis->hSet($this->HASHES_KEYS[$type], $hash, $this->user->id);
+        $this->redis->hSet($key, $hash, $this->user->id);
 
         return $hash;
 
@@ -100,14 +122,21 @@ class Model_Auth extends Model_preDispatch
      */
     public function getUserIdByHash($hash, $type) {
 
-        $id = $this->redis->hGet($this->HASHES_KEYS[$type], $hash);
+        $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:') . 'hashes:';
+        $key        = $key_prefix . $this->HASHES_KEYS[$type];
+
+        $id = $this->redis->hGet($key, $hash);
 
         return $id;
 
     }
 
     public function deleteHash($hash, $type) {
-        $this->redis->hDel($this->HASHES_KEYS[$type], $hash);
+
+        $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:') . 'hashes:';
+        $key        = $key_prefix . $this->HASHES_KEYS[$type];
+
+        $this->redis->hDel($key, $hash);
     }
 
 }

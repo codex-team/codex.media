@@ -19,6 +19,10 @@
     margin-top: var(--islandMargin);
 }
 
+.island--last {
+    margin-bottom: var(--islandMargin);
+}
+
 .island--centered {
     text-align: center;
 }

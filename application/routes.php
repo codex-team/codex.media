@@ -70,14 +70,17 @@ Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->d
  * User section
  */
 Route::set('PROFILE', 'user/<id>(/<list>)', array('id' => $DIGIT, 'list' => 'pages|comments'))->defaults(array(
-    'controller' => 'user',
+    'controller' => 'User_Index',
     'action' => 'profile'
 ));
 Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
-    'controller' => 'user',
+    'controller' => 'User_Index',
     'action' => 'settings'
 ));
-
+Route::set('PASSWORD_CHANGE', 'user/passchange')->defaults(array(
+    'controller' => 'User_Modify',
+    'action'     => 'request_password_change'
+));
 
 /**
 * Admin section
@@ -136,9 +139,10 @@ Route::set('SEND_RESET_PASSWORD_EMAIL', 'reset')->defaults(array(
     'controller' => 'auth_auth',
     'action' => 'reset'
 ));
-Route::set('SET_NEW_PASSWORD', 'reset/<hash>')->defaults(array(
-    'controller' => 'auth_auth',
-    'action' => 'reset_password'
+Route::set('SET_NEW_PASSWORD', '<method>/<hash>', array('method' => 'reset|change', 'hash' => $STRING))
+    ->defaults(array(
+        'controller' => 'auth_auth',
+        'action' => 'reset_password'
 ));
 
 

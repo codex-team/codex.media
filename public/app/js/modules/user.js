@@ -94,6 +94,96 @@ module.exports = function () {
 
     };
 
+    var changePassword = function () {
+
+        var currentPassword = null,
+            message         = null,
+            csrf            = null;
+
+        var showForm = function (_csrf) {
+
+            var wrapper     = this,
+                label       = document.createElement('LABEL'),
+                input       = document.createElement('INPUT'),
+                button      = document.createElement('SPAN');
+
+            message     = document.createElement('DIV');
+
+            csrf = _csrf;
+
+            label.classList.add('form__label');
+            label.textContent = 'Текущий пароль';
+
+            input.classList.add('form__input');
+            input.type = 'password';
+            currentPassword = input;
+
+            button.classList.add('button');
+            button.classList.add('form__hint');
+            button.classList.add('master');
+            button.textContent = 'Подтвердить';
+
+            button.addEventListener('click', requestChange);
+
+            wrapper.classList.remove('island--centered');
+            wrapper.classList.remove('profile-settings__change-password-btn');
+            wrapper.innerHTML   = '';
+            wrapper.onclick     = '';
+
+            wrapper.appendChild(label);
+            wrapper.appendChild(input);
+            wrapper.appendChild(button);
+            wrapper.appendChild(message);
+
+        };
+
+        var requestChange = function () {
+
+            codex.ajax.call({
+                url: '/user/passchange',
+                type: 'POST',
+                data: JSON.stringify({
+                    csrf: csrf,
+                    currentPassword: currentPassword.value
+                }),
+                success: ajaxResponse,
+                error: ajaxResponse
+            });
+
+        };
+
+        var ajaxResponse = function (response) {
+
+            try {
+
+                response = JSON.parse(response);
+
+            } catch (e) {
+
+                response = {success: 0, message: 'Произошла ошибка'};
+
+            }
+
+            if (!response.success) {
+
+                currentPassword.classList.add('form__input--invalid');
+
+            } else {
+
+                currentPassword.classList.remove('form__input--invalid');
+
+            }
+
+            message.textContent = response.message;
+
+        };
+
+        return {
+            showForm: showForm
+        };
+
+    }();
+
     var init = function () {
 
         // bindEvents();
@@ -129,7 +219,7 @@ module.exports = function () {
     // };
 
     return {
-        init: init,
+        changePassword: changePassword,
         changeStatus: changeStatus,
         photo: photo
     };
