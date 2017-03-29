@@ -104,7 +104,7 @@ class Model_Auth extends Model_preDispatch
         $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:') . 'hashes:';
         $key        = $key_prefix . $this->HASHES_KEYS[$type];
 
-        $salt = Arr::get($_SERVER, 'SALT', self::DEFAULT_EMAIL_HASH_SALT);
+        $salt = Arr::get($_SERVER, 'EMAIL_HASH_SALT', self::DEFAULT_EMAIL_HASH_SALT);
 
         $hash = hash('sha256', $this->user->id . $salt . $this->user->email);
 

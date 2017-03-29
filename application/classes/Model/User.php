@@ -241,6 +241,12 @@ class Model_User extends Model
         return $users;
     }
 
+    /**
+     * Returns TRUE if param $pass equal to user password
+     *
+     * @param $pass
+     * @return bool
+     */
     public function checkPassword($pass)
     {
         return $this->password == Controller_Auth_Base::createPasswordHash($pass);
