@@ -9,7 +9,7 @@
         </div>
     <? endif; ?>
 
-    <div class="profile__content">
+    <div class="profile__content clearfix">
 
         <? if ($user->isAdmin): ?>
             <span class="island-settings js-user-settings" data-id="<?= $viewUser->id ?>">
@@ -57,11 +57,16 @@
     		<?= $viewUser->name ?>
         </div>
 
-        <? if (!empty($viewUser->bio)): ?>
-            <div class="profile__about">
+        <div class="profile__about <?= $viewUser->isMe ? 'profile__about--editable' : '' ?>" <?= $viewUser->isMe ? 'onclick="codex.user.bio.edit(this)"' : ''?>>
+            <? if (!empty($viewUser->bio)): ?>
                 <?= $viewUser->bio ?>
-            </div>
-        <? endif ?>
+            <? else: ?>
+                Ничем полезным не занимаюсь
+            <? endif ?>
+            <? if ($viewUser->isMe): ?>
+                <? include(DOCROOT . "public/app/svg/pencil-circle.svg") ?>
+            <? endif ?>
+        </div>
 
         <? if ($viewUser->vk): ?>
             <a class="border-button border-button--vk" href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">

@@ -107,7 +107,6 @@
 
 .aside-section {
     padding: var(--islandPadding);
-    border-top: 1px solid var(--lightGrayLine);
     border-bottom: 1px solid var(--lightGrayLine);
 }
 

@@ -77,9 +77,15 @@ Route::set('PROFILE', 'user/<id>(/<list>(/<page_number>))', array('id' => $DIGIT
     'controller' => 'user',
     'action' => 'profile'
 ));
+
 Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
     'controller' => 'user',
     'action' => 'settings'
+));
+
+Route::set('fast saving bio', 'user/updateBio')->defaults(array(
+    'controller' => 'user',
+    'action' => 'updateBio'
 ));
 
 

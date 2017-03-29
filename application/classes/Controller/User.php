@@ -199,4 +199,36 @@ class Controller_User extends Controller_Base_preDispatch
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
         $this->response->body( json_encode($response) );
     }
+
+    /**
+     * Fast saving bio from profile
+     * AJAX action
+     */
+    public function action_updateBio()
+    {
+        $response = array(
+            'success' => 0
+        );
+
+        $bio  = Arr::get($_POST, 'bio');
+        $csrf = Arr::get($_POST, 'csrf');
+
+        $bio = trim($bio);
+
+        if (Security::check($csrf) && $bio) {
+
+            $saving = $this->user->updateUser($this->user->id, array(
+                'bio' => $bio
+            ));
+
+            $response['success'] = 1;
+            $response['bio']     = $bio;
+            $response['csrf']    = Security::token(true);
+
+        }
+
+        $this->auto_render = false;
+        $this->response->headers('Content-Type', 'application/json; charset=utf-8');
+        $this->response->body( json_encode($response) );
+    }
 }
