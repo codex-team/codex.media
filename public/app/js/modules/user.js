@@ -96,18 +96,20 @@ module.exports = function () {
 
     var changePassword = function () {
 
-        var currentPassword = null,
-            message         = null,
-            csrf            = null;
+        var wrapper = null,
+            input   = null,
+            message = null,
+            button  = null,
+            csrf    = null;
 
         var showForm = function (_csrf) {
 
-            var wrapper     = this,
-                label       = document.createElement('LABEL'),
-                input       = document.createElement('INPUT'),
-                button      = document.createElement('SPAN');
+            var label       = document.createElement('LABEL');
 
-            message     = document.createElement('DIV');
+            wrapper = this;
+            input   = document.createElement('INPUT');
+            button  = document.createElement('SPAN');
+            message = document.createElement('DIV');
 
             csrf = _csrf;
 
@@ -116,7 +118,6 @@ module.exports = function () {
 
             input.classList.add('form__input');
             input.type = 'password';
-            currentPassword = input;
 
             button.classList.add('button');
             button.classList.add('form__hint');
@@ -139,12 +140,14 @@ module.exports = function () {
 
         var requestChange = function () {
 
+            button.classList.add('loading');
+
             codex.ajax.call({
                 url: '/user/passchange',
                 type: 'POST',
                 data: JSON.stringify({
                     csrf: csrf,
-                    currentPassword: currentPassword.value
+                    currentPassword: input.value
                 }),
                 success: ajaxResponse,
                 error: ajaxResponse
@@ -153,6 +156,8 @@ module.exports = function () {
         };
 
         var ajaxResponse = function (response) {
+
+            button.classList.remove('loading');
 
             try {
 
@@ -166,15 +171,44 @@ module.exports = function () {
 
             if (!response.success) {
 
-                currentPassword.classList.add('form__input--invalid');
+                input.classList.add('form__input--invalid');
 
             } else {
 
-                currentPassword.classList.remove('form__input--invalid');
+                showSuccessMessage(response.message);
+                return;
 
             }
 
             message.textContent = response.message;
+
+        };
+
+        var showSuccessMessage = function (text) {
+
+            if (wrapper.dataset.success) {
+
+                return;
+
+            }
+
+            var textDiv     = document.createElement('DIV');
+
+            button = document.createElement('BUTTON');
+
+            textDiv.textContent = text;
+            textDiv.classList.add('profile-settings__change-password-result-text');
+
+            button.classList.add('button', 'master');
+            button.addEventListener('click', requestChange);
+            button.textContent = 'Отправить еще раз';
+
+            wrapper.innerHTML = '';
+            wrapper.classList.add('island--centered');
+
+            wrapper.appendChild(textDiv);
+            wrapper.appendChild(button);
+            wrapper.dataset.success = 1;
 
         };
 
@@ -184,11 +218,11 @@ module.exports = function () {
 
     }();
 
-    var init = function () {
-
-        // bindEvents();
-
-    };
+    // var init = function () {
+    //
+    //     // bindEvents();
+    //
+    // };
 
     // var bindEvents = function () {
     //

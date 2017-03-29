@@ -76,9 +76,13 @@
 }
 
 .profile-settings__change-password-btn {
-    margin-bottom: 15px;
     color: var(--grayText);
     cursor: pointer;
+}
+
+.profile-settings__change-password-result-text {
+    margin-bottom: 15px;
+    padding: 0 10%;
 }
 
 .profile-settings__change-password-button:hover {

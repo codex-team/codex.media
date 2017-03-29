@@ -559,7 +559,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
             switch ($method) {
                 case Model_Auth::TYPE_EMAIL_RESET: $this->redirect('/auth'); break;
-                case Model_Auth::TYPE_EMAIL_CHANGE: $this->redirect('/user/settings'); break;
+                case Model_Auth::TYPE_EMAIL_CHANGE: $this->redirect('/user/settings?success=1'); break;
             }
         }
 

@@ -40,7 +40,6 @@
     border-left: 1px solid rgba(79, 109, 162, 0.1);
     padding: var(--islandMargin) 0 0 var(--islandMargin);
     flex: 2 0%;
-    word-break: break-all;
 }
 
 @media (--mobile) {

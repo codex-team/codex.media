@@ -16,9 +16,9 @@
         </div>
     <? endif; ?>
 
-    <? if (isset($error) && $error): ?>
+    <? if (isset($errors) && $errors): ?>
         <div class="info_block">
-            <? foreach ($error as $info): ?>
+            <? foreach ($errors as $info): ?>
                 <?= $info; ?>
             <? endforeach; ?>
         </div>
@@ -67,7 +67,10 @@
 </div>
 
 <?= View::factory('templates/components/email_confirm_island'); ?>
-<?= View::factory('templates/components/password_change_island'); ?>
+
+<? if ($user->password): ?>
+    <?= View::factory('templates/components/password_change_island'); ?>
+<? endif; ?>
 
 <script>
 
