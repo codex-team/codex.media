@@ -195,9 +195,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
                 break;
         }
 
-
         finish:
-
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
         $this->response->body( json_encode($response) );
