@@ -2,7 +2,7 @@
 
     $tag = 'ul';
 
-    if ( !empty($block['type']) && $block['type'] == 'ol' ) {
+    if ( !empty($block['type']) && $block['type'] == 'OL' ) {
         $tag = 'ol';
     }
 

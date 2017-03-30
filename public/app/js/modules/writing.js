@@ -138,6 +138,21 @@ module.exports = (function () {
                         fetchUrl: '/upload/' + EDITOR_FILE,
                         maxSize: 25000,
                     }
+                },
+                list: {
+                    type: 'list',
+                    iconClassname: 'ce-icon-list-bullet',
+                    make: window.list.make,
+                    appendCallback: null,
+                    makeSettings: window.list.makeSettings,
+                    render: window.list.render,
+                    validate: window.list.validate,
+                    save: window.list.save,
+                    destroy: window.list.destroy,
+                    displayInToolbox: true,
+                    showInlineToolbar: true,
+                    enableLineBreaks: true,
+                    allowedToPaste: true
                 }
             },
 
