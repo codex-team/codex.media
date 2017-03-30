@@ -44,7 +44,7 @@
     /** Document is ready */
     codex.docReady(function(){
 
-        var plugins = ['paragraph', 'header', 'image', 'attaches'],
+        var plugins = ['paragraph', 'header', 'image', 'attaches', 'list'],
             scriptPath = 'https://cdn.ifmo.su/editor/v1.6/',
             settings = {
                 holderId          : 'placeForEditor',

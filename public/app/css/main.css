@@ -40,5 +40,6 @@
 @import url('components/profile-settings.css');
 @import url('components/sharing.css');
 @import url('components/scroll-up.css');
-@import url('components/files.css');
+@import url('editor/files.css');
+@import url('editor/list.css');
 @import url('components/island-settings.css');

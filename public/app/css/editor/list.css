@@ -1,0 +1,19 @@
+.article__content ol,
+.article__content ul {
+
+    margin: 1em 2em;
+
+}
+
+.article__content ol li {
+    list-style-type: decimal;
+}
+
+.article__content ul li {
+    list-style-type: disc;
+}
+
+.article__content li {
+    margin: 0.6em 0;
+    padding-left: 0.8em;
+}
