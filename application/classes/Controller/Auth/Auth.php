@@ -129,7 +129,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                     break;
 
                 case 'attach':
-                    unset($user_to_db['email']);
                     $status = $this->social_attach('vk', $userdata->uid, $user_to_db);
                     break;
             }
@@ -186,7 +185,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                     break;
 
                 case 'attach':
-                    unset($user_to_db['email']);
                     $status = $this->social_attach('facebook', $userdata->id, $user_to_db);
                     break;
             }
@@ -243,7 +241,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                     break;
 
                 case 'attach':
-                    unset($user_to_db['email']);
                     $status = $this->social_attach('twitter', $userdata->id_str, $user_to_db);
                     break;
             }
@@ -341,6 +338,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         if ($userFound) {
 
+            unset($userdata['email'], $userdata['name'],
+                  $userdata['photo'], $userdata['photo_medium'], $userdata['photo_big']);
+
             Model::factory('User')->updateUser($userFound['id'], $userdata);
 
             parent::initAuthSession($userFound['id'], $social_cfg['type']);
@@ -371,6 +371,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                 ->execute();
 
             if (!$userFound) {
+
+                unset($userdata['email'], $userdata['name'],
+                      $userdata['photo'], $userdata['photo_medium'], $userdata['photo_big']);
+
                 Model::factory('User')->updateUser($userId, $userdata);
                 return TRUE;
             }
