@@ -2,20 +2,17 @@
 
 class Model_Feed_Pages extends Model_Feed_Abstract {
 
-    /**
-     * Key prefix for redis to identify Codex.Org keys
-     */
-    const KEY_PREFIX     = 'codex.org:';
-
     const TYPE_ALL       = 'all';
     const TYPE_TEACHERS  = 'teachers';
     const TYPE_NEWS      = 'news';
     const TYPE_MENU      = 'menu';
 
-    public function __construct($type = self::TYPE_ALL,$prefix = '')
+    public function __construct($type = self::TYPE_ALL, $prefix = '')
     {
 
-        $this->timeline_key = self::KEY_PREFIX . $type;
+        $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:');
+
+        $this->timeline_key = $key_prefix . $type;
 
         parent::__construct($prefix);
 

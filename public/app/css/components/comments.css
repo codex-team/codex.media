@@ -3,6 +3,7 @@
  */
 .comment {
     transition: background-color 500ms ease-out;
+    word-wrap: break-word;
 }
 
 .comment--highligthed {

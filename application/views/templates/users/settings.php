@@ -1,6 +1,6 @@
 <div class="island island--padded">
 
-     <div class="island__navigation">
+    <div class="island__navigation">
         <a href="/user/<?= $user->id ?>" class="island__navigation-item">
             <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
             Профиль
@@ -10,15 +10,15 @@
         </a>
     </div>
 
-    <? if ($success): ?>
+    <? if (isset($success) && $success): ?>
         <div class="info_block">
             Обновления сохранены
         </div>
     <? endif; ?>
 
-    <? if ($error): ?>
+    <? if (isset($errors) && $errors): ?>
         <div class="info_block">
-            <? foreach ($error as $info): ?>
+            <? foreach ($errors as $info): ?>
                 <?= $info; ?>
             <? endforeach; ?>
         </div>
@@ -37,7 +37,7 @@
             </div>
 
             <label class="form__label">Фамилия и Имя</label>
-            <input class="form__input" type="text" name="name" value="<?= $user->name ?>" />
+            <input class="form__input" type="text" name="name" value="<?= $user->name ?>" required/>
 
             <label class="form__label">О себе</label>
             <textarea class="form__input js-autoresizable" name="bio"><?= $user->bio ?></textarea>
@@ -57,7 +57,7 @@
             <?= !$user->facebook ? 'Привязать' : $user->facebook_name ?>
         </a>
 
-         <a class="border-button <?= !$user->twitter ? 'border-button--twitter' : '' ?>" href="/auth/tw?state=<?= !$user->twitter ? 'attach' : 'remove' ?>">
+        <a class="border-button <?= !$user->twitter ? 'border-button--twitter' : '' ?>" href="/auth/tw?state=<?= !$user->twitter ? 'attach' : 'remove' ?>">
             <? include(DOCROOT . "public/app/svg/twitter.svg") ?>
             <?= !$user->twitter ? 'Привязать' : $user->twitter_name ?>
         </a>
@@ -68,8 +68,12 @@
 
 <?= View::factory('templates/components/email_confirm_island'); ?>
 
+<? if ($user->password): ?>
+    <?= View::factory('templates/components/password_change_island'); ?>
+<? endif; ?>
+
 <script>
 
-    codex.user.init();
+    //codex.user.init();
 
 </script>

@@ -123,7 +123,7 @@ input[type="submit"]:hover {
 }
 
 .form__input--invalid {
-    background: #fff3f3;
+    background: #fff3f3 !important;
 }
 
 .form__hint {

@@ -94,18 +94,144 @@ module.exports = function () {
             url : '/user/changeStatus?userId=' + userId + '&status=' + type,
             success: function (response) {
 
-                codex.alerts.show(response);
+                response = JSON.parse(response);
+
+                codex.alerts.show(response.message);
 
             },
         });
 
     };
 
-    var init = function () {
+    var changePassword = function () {
 
-        // bindEvents();
+        var wrapper = null,
+            input   = null,
+            message = null,
+            button  = null,
+            csrf    = null;
 
-    };
+        var showForm = function (_csrf) {
+
+            var label = document.createElement('LABEL');
+
+            wrapper = this;
+            input   = document.createElement('INPUT');
+            button  = document.createElement('SPAN');
+            message = document.createElement('DIV');
+
+            csrf = _csrf;
+
+            label.classList.add('form__label');
+            label.textContent = 'Текущий пароль';
+
+            input.classList.add('form__input');
+            input.type = 'password';
+
+            button.classList.add('button');
+            button.classList.add('form__hint');
+            button.classList.add('master');
+            button.textContent = 'Подтвердить';
+
+            button.addEventListener('click', requestChange);
+
+            wrapper.classList.remove('island--centered');
+            wrapper.classList.remove('profile-settings__change-password-btn');
+            wrapper.innerHTML = '';
+            wrapper.onclick   = '';
+
+            wrapper.appendChild(label);
+            wrapper.appendChild(input);
+            wrapper.appendChild(button);
+            wrapper.appendChild(message);
+
+        };
+
+        var requestChange = function () {
+
+            button.classList.add('loading');
+
+            codex.ajax.call({
+                url: '/user/passchange',
+                type: 'POST',
+                data: JSON.stringify({
+                    csrf: csrf,
+                    currentPassword: input.value
+                }),
+                success: ajaxResponse,
+                error: ajaxResponse
+            });
+
+        };
+
+        var ajaxResponse = function (response) {
+
+            button.classList.remove('loading');
+
+            try {
+
+                response = JSON.parse(response);
+
+            } catch (e) {
+
+                response = {success: 0, message: 'Произошла ошибка'};
+
+            }
+
+            if (!response.success) {
+
+                input.classList.add('form__input--invalid');
+
+            } else {
+
+                showSuccessMessage(response.message);
+                return;
+
+            }
+
+            message.textContent = response.message;
+
+        };
+
+        var showSuccessMessage = function (text) {
+
+            if (wrapper.dataset.success) {
+
+                return;
+
+            }
+
+            var textDiv = document.createElement('DIV');
+
+            button = document.createElement('BUTTON');
+
+            textDiv.textContent = text;
+            textDiv.classList.add('profile-settings__change-password-result-text');
+
+            button.classList.add('button', 'master');
+            button.addEventListener('click', requestChange);
+            button.textContent = 'Отправить еще раз';
+
+            wrapper.innerHTML = '';
+            wrapper.classList.add('island--centered');
+
+            wrapper.appendChild(textDiv);
+            wrapper.appendChild(button);
+            wrapper.dataset.success = 1;
+
+        };
+
+        return {
+            showForm: showForm
+        };
+
+    }();
+
+    // var init = function () {
+    //
+    //     // bindEvents();
+    //
+    // };
 
     // var bindEvents = function () {
     //
@@ -258,7 +384,7 @@ module.exports = function () {
     }();
 
     return {
-        init: init,
+        changePassword: changePassword,
         changeStatus: changeStatus,
         photo: photo,
         bio : bio,
