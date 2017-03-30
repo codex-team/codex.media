@@ -16,6 +16,8 @@ module.exports = (function () {
 
                 addListener(textareas[i]);
 
+                checkScrollHeight(textareas[i]);
+
             }
 
         }
