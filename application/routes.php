@@ -113,10 +113,11 @@ Route::set('REPEAT_CONFIRMATION_EMAIL_SENDING', 'ajax/confirmation-email')->defa
     'action'          => 'send_confirmation_email'
 ));
 
-// Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
-//     'controller'      => 'parser',
-//     'action'          => 'get_page'
-// ));
+
+Route::set('CHANGE_USER_STATUS', 'user/changeStatus')->defaults(array(
+    'controller'      => 'user_modify',
+    'action'          => 'changeStatus'
+));
 
 
 /**

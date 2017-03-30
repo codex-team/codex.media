@@ -1,7 +1,10 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access.');
 
 class Controller_User_Modify extends Controller_Base_preDispatch
 {
+    const TOGGLE_BAN = -1;
+    const TOGGLE_PROMOTE = 2;
+
     public function action_settings() {
 
         if (!$this->user->id) {
@@ -126,6 +129,73 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         }
 
+        $this->auto_render = false;
+        $this->response->headers('Content-Type', 'application/json; charset=utf-8');
+        $this->response->body( json_encode($response) );
+    }
+
+
+    public function action_changeStatus()
+    {
+        $response = array();
+
+        if (!$this->user->isAdmin) {
+
+            $response['success'] = 0;
+            $response['message'] = 'Access denied';
+            goto finish;
+
+        }
+
+        $response['success'] = 1;
+        $userId = Arr::get($_GET, 'userId', 0);
+        $status = Arr::get($_GET, 'status', '');
+
+        $viewUser = new Model_User($userId);
+
+        switch ($status) {
+            case self::TOGGLE_BAN:
+
+                $newStatus =
+                    $viewUser->status != Model_User::USER_STATUS_BANNED ?
+                    Model_User::USER_STATUS_BANNED :
+                    Model_User::USER_STATUS_REGISTERED;
+
+                break;
+
+            case self::TOGGLE_PROMOTE:
+
+                $newStatus =
+                    $viewUser->status != Model_User::USER_STATUS_TEACHER ?
+                    Model_User::USER_STATUS_TEACHER :
+                    Model_User::USER_STATUS_REGISTERED;
+
+                break;
+
+            default:
+                break;
+        }
+
+        $viewUser->updateUser(
+            $viewUser->id,
+            array('status' => $newStatus)
+        );
+
+        switch ($newStatus) {
+            case Model_User::USER_STATUS_BANNED:
+                $response['message'] = 'Пользователь заблокирован';
+                break;
+
+            case Model_User::USER_STATUS_REGISTERED:
+                $response['message'] = 'Установлен обычный статус пользователя';
+                break;
+
+            case Model_User::USER_STATUS_TEACHER:
+                $response['message'] = 'Пользователь добавлен в группы "Учителя"';
+                break;
+        }
+
+        finish:
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
         $this->response->body( json_encode($response) );
