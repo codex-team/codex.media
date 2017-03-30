@@ -88,13 +88,13 @@ module.exports = function () {
      * @param  {} argument [description]
      * @return {[type]}          [description]
      */
-    var changeStatus = function (type) {
+    var changeStatus = function (userId, type) {
 
         codex.ajax.call({
-            url : '/user/changeStatus?status=' + type,
+            url : '/user/changeStatus?userId=' + userId + '&status=' + type,
             success: function (response) {
 
-                console.log(response);
+                codex.alerts.show(response);
 
             },
         });

@@ -8,23 +8,37 @@ class Controller_User_Modify extends Controller_Base_preDispatch
     public function action_changeStatus()
     {
         $response = array();
-        $response['success'] = 1;
 
+        if (!$this->user->isAdmin) {
+
+            $response['success'] = 0;
+            $response['error'] = 'Access denied';
+            goto finish;
+
+        }
+
+
+        $response['success'] = 1;
+        $userId = Arr::get($_GET, 'userId', 0);
         $status = Arr::get($_GET, 'status', '');
 
-        switch ($type) {
-            case self::LIST_COMMENTS:
-                $response['list'] = View::factory('templates/users/comments', array('user_feed' => $models))->render();
+        $response['userId'] = $userId;
+        $viewUser = Model_User($userId);
+
+        switch ($status) {
+            case self::TOGGLE_BAN:
+                $response['status'] = 'ban';
                 break;
 
-            case self::LIST_PAGES:
-                $response['list'] = View::factory('templates/users/pages', array('user_feed' => $models))->render();
+            case self::TOGGLE_PROMOTE:
+                $response['status'] = 'promote';
                 break;
 
             default:
-                $response['list'] = '';
                 break;
         }
+
+        finish:
 
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
