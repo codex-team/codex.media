@@ -15,8 +15,8 @@ $FEED_KEYS = implode('|', array(
 ));
 
 $USER_FEED_LISTS = implode('|', array(
-    Controller_User::LIST_PAGES,
-    Controller_User::LIST_COMMENTS
+    Controller_User_Index::LIST_PAGES,
+    Controller_User_Index::LIST_COMMENTS
 ));
 
 /**
@@ -74,14 +74,22 @@ Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->d
  * User section
  */
 Route::set('PROFILE', 'user/<id>(/<list>(/<page_number>))', array('id' => $DIGIT, 'list' => $USER_FEED_LISTS, 'page_number' => $DIGIT))->defaults(array(
-    'controller' => 'user',
+    'controller' => 'User_Index',
     'action' => 'profile'
 ));
+
 Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
-    'controller' => 'user',
+    'controller' => 'User_Modify',
     'action' => 'settings'
 ));
-
+Route::set('PASSWORD_CHANGE', 'user/passchange')->defaults(array(
+    'controller' => 'User_Modify',
+    'action'     => 'request_password_change'
+));
+Route::set('fast saving bio', 'user/updateBio')->defaults(array(
+    'controller' => 'User_Modify',
+    'action' => 'updateBio'
+));
 
 /**
 * Admin section
@@ -105,10 +113,11 @@ Route::set('REPEAT_CONFIRMATION_EMAIL_SENDING', 'ajax/confirmation-email')->defa
     'action'          => 'send_confirmation_email'
 ));
 
-// Route::set('GETTING_PAGE_FROM_URL', 'ajax/get_page')->defaults(array(
-//     'controller'      => 'parser',
-//     'action'          => 'get_page'
-// ));
+
+Route::set('CHANGE_USER_STATUS', 'user/changeStatus')->defaults(array(
+    'controller'      => 'user_modify',
+    'action'          => 'changeStatus'
+));
 
 
 /**
@@ -140,9 +149,10 @@ Route::set('SEND_RESET_PASSWORD_EMAIL', 'reset')->defaults(array(
     'controller' => 'auth_auth',
     'action' => 'reset'
 ));
-Route::set('SET_NEW_PASSWORD', 'reset/<hash>')->defaults(array(
-    'controller' => 'auth_auth',
-    'action' => 'reset_password'
+Route::set('SET_NEW_PASSWORD', '<method>/<hash>', array('method' => 'reset|change', 'hash' => $STRING))
+    ->defaults(array(
+        'controller' => 'auth_auth',
+        'action' => 'reset_password'
 ));
 
 

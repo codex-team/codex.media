@@ -129,7 +129,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                     break;
 
                 case 'attach':
-                    unset($user_to_db['email']);
                     $status = $this->social_attach('vk', $userdata->uid, $user_to_db);
                     break;
             }
@@ -186,7 +185,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                     break;
 
                 case 'attach':
-                    unset($user_to_db['email']);
                     $status = $this->social_attach('facebook', $userdata->id, $user_to_db);
                     break;
             }
@@ -243,7 +241,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                     break;
 
                 case 'attach':
-                    unset($user_to_db['email']);
                     $status = $this->social_attach('twitter', $userdata->id_str, $user_to_db);
                     break;
             }
@@ -341,6 +338,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         if ($userFound) {
 
+            unset($userdata['email'], $userdata['name'],
+                  $userdata['photo'], $userdata['photo_medium'], $userdata['photo_big']);
+
             Model::factory('User')->updateUser($userFound['id'], $userdata);
 
             parent::initAuthSession($userFound['id'], $social_cfg['type']);
@@ -371,6 +371,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                 ->execute();
 
             if (!$userFound) {
+
+                unset($userdata['email'], $userdata['name'],
+                      $userdata['photo'], $userdata['photo_medium'], $userdata['photo_big']);
+
                 Model::factory('User')->updateUser($userId, $userdata);
                 return TRUE;
             }
@@ -520,11 +524,12 @@ class Controller_Auth_Auth extends Controller_Auth_Base
      */
     public function action_reset_password() {
 
-        $hash = $this->request->param('hash');
+        $hash   = $this->request->param('hash');
+        $method = $this->request->param('method');
 
         $model_auth = new Model_Auth();
 
-        $id = $model_auth->getUserIdByHash($hash, Model_Auth::TYPE_EMAIL_RESET);
+        $id = $model_auth->getUserIdByHash($hash, $method);
 
         if (!$id) {
 
@@ -554,11 +559,15 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         if ($this->checkNewPassword($fields)) {
 
             $user->updateUser($id, array('password' => parent::createPasswordHash($fields['password'])));
-            $model_auth->deleteHash($hash, Model_Auth::TYPE_EMAIL_RESET);
+            $model_auth->deleteHash($hash, $method);
 
-            $this->redirect('/auth');
-
+            switch ($method) {
+                case Model_Auth::TYPE_EMAIL_RESET: $this->redirect('/auth'); break;
+                case Model_Auth::TYPE_EMAIL_CHANGE: $this->redirect('/user/settings?success=1'); break;
+            }
         }
+
+        $this->view['method'] = $method;
 
         $this->template->content = View::factory('templates/auth/new_password', $this->view);
 

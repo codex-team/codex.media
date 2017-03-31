@@ -21,8 +21,8 @@
                 Мы отправили вам на эту почту письмо. Перейдите по ссылке внутри него, чтобы подтвердить владение данным аккаунтом
             </div>
 
-            <div class="profile-settings__button" id="repeat-email-confirmation">
-                Выслать повторно
+            <div class="profile-settings__buttons">
+                <button class="button master">Выслать повторно</button>
             </div>
 
         <? endif; ?>

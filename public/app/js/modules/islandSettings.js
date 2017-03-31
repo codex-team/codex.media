@@ -34,16 +34,21 @@ module.exports = (function () {
      */
     var init = function (settings) {
 
-        var menuTogglers = document.querySelectorAll(settings.selector);
+        var menuTogglers = document.querySelectorAll(settings.selector),
+            startIndex   = activated.length,
+            endIndex     = menuTogglers.length + activated.length;
 
-        /**
-         * Save initial object
-         */
-        activated.push(settings);
+        for (var index = startIndex; index < endIndex; index++) {
 
-        for (var i = menuTogglers.length - 1; i >= 0; i--) {
+            /**
+             * Save initial object
+             */
+            activated.push({
+                el : menuTogglers[index],
+                settings: settings
+            });
 
-            prepareToggler(menuTogglers[i], settings.selector);
+            prepareToggler(index, menuTogglers[index - startIndex]);
 
         }
 
@@ -52,14 +57,15 @@ module.exports = (function () {
     /**
      * @public
      * Add event listener to the toggler
+     * @param  {Number} index   - toggler initial index
      * @param  {Element} toggler
-     * @param  {String}  selector  - selector to find settings object
      */
-    var prepareToggler = function (toggler, selector) {
+    var prepareToggler = function (index, toggler) {
 
         /** Save initial selector to specify menu type */
-        toggler.dataset.selector = selector;
+        toggler.dataset.index = index;
         toggler.addEventListener('mouseover', menuTogglerHovered, false);
+        toggler.addEventListener('mouseleave', menuTogglerBlurred, false);
 
     };
 
@@ -75,33 +81,26 @@ module.exports = (function () {
         var menuToggler = this,
             menuParams;
 
+        /** Prevent mouseover handling multiple times */
+        if ( menuToggler.dataset.opened == 'true' ) {
+
+            return;
+
+        }
+
+        menuToggler.dataset.opened = true;
+
         if (!menuHolder) {
 
             menuHolder = createMenu();
 
         }
 
-        /** Prevent mouseover handling multiple times */
-        if ( menuHolder.dataset.opened == 'true' ) {
-
-            return;
-
-        }
-
-        menuHolder.dataset.opened = true;
-
-        /** if user fast moving cursor to the next toggler, let him */
-        window.setTimeout(function () {
-
-            menuHolder.dataset.opened = false;
-
-        }, 300);
-
         /**
          * Get current menu params
          * @type {Object}
          */
-        menuParams = getMenuParams(menuToggler.dataset.selector);
+        menuParams = getMenuParams(menuToggler.dataset.index);
 
         console.assert(menuParams.items, 'Menu items missed');
 
@@ -111,27 +110,22 @@ module.exports = (function () {
     };
 
     /**
-     * Return menu parametres by initial selector
-     * @param {string}  initialSelector  - selector passed in init() method
-     * @return {Object}
+     * Toggler blur handler
      */
-    var getMenuParams = function (initialSelector) {
+    var menuTogglerBlurred = function () {
 
-        return activated.filter(compareSelector, initialSelector).pop();
+        this.dataset.opened = false;
 
     };
 
     /**
-     * Find settings object by selector
-     *
-     * @param  {Object}  obj    passed object with 'selector' key
-     * @this   {String}         selector to compare with
-     *
-     * @return {Boolean}        true if passed selector same as looking for
+     * Return menu parametres by toggler index
+     * @param {Number}  index  - index got in init() method
+     * @return {Object}
      */
-    var compareSelector = function (obj) {
+    var getMenuParams = function (index) {
 
-        return obj.selector == this;
+        return activated[index].settings;
 
     };
 
@@ -152,6 +146,9 @@ module.exports = (function () {
         for (i = 0; !!(itemData = items[i]); i++) {
 
             itemElement = createItem(itemData);
+
+            /** Save index in dataset for edit-ability */
+            itemElement.dataset.itemIndex = i;
 
             /** Pass all parametres stored in icon's dataset to the item's dataset */
             for (var attr in toggler.dataset) {
@@ -216,8 +213,72 @@ module.exports = (function () {
 
     };
 
+    /**
+     * @public
+     * @description Updates menu item
+     * @param  {Number} togglerIndex   - Menu toggler initial index stored in toggler's dataset.index
+     * @param  {Number} itemIndex      - Item index stored in item's dataset.itemIndex
+     * @param  {String} title          - new title
+     * @param  {Function} handler      - new handler
+     */
+    var updateItem = function (togglerIndex, itemIndex, title, handler) {
+
+        console.assert(activated[togglerIndex], 'Toggler was not found by index');
+
+        var currentMenu = activated[togglerIndex],
+            currentItem,
+            currentItemEl;
+
+        if (!currentMenu) {
+
+            return;
+
+        }
+
+        currentItem = activated[togglerIndex].settings.items[itemIndex];
+
+        if ( title ) {
+
+            currentItem.title = title;
+
+        }
+
+        if (typeof handler == 'function') {
+
+            currentItem.handler = handler;
+
+        }
+
+        /** Update opened menu item text  */
+        if (menuHolder) {
+
+            currentItemEl = menuHolder.childNodes[itemIndex];
+
+            if ( title ) {
+
+                currentItemEl.textContent = title;
+
+            }
+
+            if ( handler ) {
+
+                currentItemEl.addEventListener('click', handler);
+                /**
+                 * @todo  remove event listener
+                 */
+                // currentItemEl.removeEventListener('click', oldHanlder);
+
+            }
+
+        }
+
+        codex.core.log('item updated %o', 'islandSettings', 'info', currentItem);
+
+    };
+
     return {
         init: init,
+        updateItem: updateItem,
         prepareToggler: prepareToggler
     };
 

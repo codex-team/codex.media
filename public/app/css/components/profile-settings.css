@@ -75,6 +75,25 @@
     filter: blur(5px);
 }
 
+.profile-settings__change-password-btn {
+    color: var(--grayText);
+    cursor: pointer;
+}
+
+.profile-settings__change-password-result-text {
+    margin-bottom: 15px;
+    padding: 0 10%;
+}
+
+.profile-settings__change-password-button:hover {
+    color: color(var(--grayText) blackness(+80%));
+}
+
+.profile-settings__change-password-button svg {
+    margin-right: 5px;
+    margin-top: -3px;
+}
+
 @media (--mobile) {
     .profile-settings__photo {
         width: 60px;
