@@ -6,8 +6,8 @@ module.exports = (function () {
     require('../../css/modules/alerts.css');
 
     var CSS_ = {
-        wrapper : 'cdx-org-notification-wrapper',
-        notification : 'cdx-org-notification'
+        wrapper : 'cdx-notifies-wrapper',
+        notification : 'cdx-notifies'
     };
 
     var wrapper_ = null;
