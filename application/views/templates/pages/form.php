@@ -77,7 +77,7 @@
 
         var editorReady = codex.writing.prepare(settings);
 
-        <? if (!$hideEditorToolbar): ?>;
+        <? if (!$hideEditorToolbar): ?>
             editorReady.then(codex.writing.init);
         <? endif ?>
     });

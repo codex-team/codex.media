@@ -34,14 +34,16 @@
         <div class="grid-cols-wrapper">
 
             <? /* Left */ ?>
-            <div class="grid-col grid-col--left">
+            <? if (!isset($dontShowLeft) || !$dontShowLeft): ?>
+                <div class="grid-col grid-col--left">
 
-                <?= View::factory('templates/components/aside')->render(); ?>
+                    <?= View::factory('templates/components/aside')->render(); ?>
 
-            </div>
+                </div>
+            <? endif; ?>
 
             <? /* Main block for page */ ?>
-            <div class="grid-content">
+            <div class="grid-content <?= (isset($dontShowLeft) && $dontShowLeft) ? 'grid-content--no-border' : '' ; ?> ">
                 <?= $content ?>
             </div>
 

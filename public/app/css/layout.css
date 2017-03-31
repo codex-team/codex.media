@@ -42,6 +42,10 @@
     flex: 2 0%;
 }
 
+.grid-content--no-border {
+    border: none;
+}
+
 @media (--mobile) {
     .center-col {
         padding: 0;

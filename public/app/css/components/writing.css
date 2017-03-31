@@ -19,6 +19,12 @@
     letter-spacing: 0.01em;
 }
 
+.writing-fullscreen {
+    position: relative;
+    top: -130px;
+    height: 0;
+}
+
 .writing--fullscreen .island {
     box-shadow: none;
 }
