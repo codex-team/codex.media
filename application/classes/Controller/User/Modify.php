@@ -193,6 +193,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
                 break;
 
             case Model_User::USER_STATUS_TEACHER:
+                $response['buttonText'] = 'Не преподаватель';
                 $response['message'] = 'Пользователь добавлен в группы "Учителя"';
                 break;
         }

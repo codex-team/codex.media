@@ -85,10 +85,10 @@ module.exports = function () {
 
     /**
      * Changes user status
-     * @param  {} argument [description]
+     * @param  {} additionalData [description]
      * @return {[type]}          [description]
      */
-    var changeStatus = function () {
+    var changeStatus = function (additionalData) {
 
         /**
          * getting necessary datasets from clicked item
@@ -100,15 +100,18 @@ module.exports = function () {
 
         itemClicked.classList.add('loading');
 
+        /** get settings from cached menu to change the title */
         var itemParams = codex.islandSettings.getItemParams(clickedItemFromMenu, clickedItemIndex);
 
         codex.ajax.call({
-            url : '/user/changeStatus?userId=' + itemParams.arguments.userId + '&status=' + itemParams.arguments.status,
+            url : '/user/changeStatus?userId=' + additionalData.userId + '&status=' + additionalData.status,
             success: function (response) {
 
                 response = JSON.parse(response);
 
                 itemClicked.classList.remove('loading');
+                itemParams.title = response.buttonText;
+
                 replaceMenuTitle(itemClicked, response.buttonText);
 
                 codex.alerts.show(response.message);

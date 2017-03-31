@@ -188,7 +188,7 @@ module.exports = (function () {
         console.assert(typeof item.handler == 'function', 'islandSettings: item handler is not a function');
 
         itemEl.textContent = item.title;
-        itemEl.addEventListener('click', item.handler);
+        itemEl.addEventListener('click', item.handler.bind(itemEl, item.arguments || {}));
 
         return itemEl;
 

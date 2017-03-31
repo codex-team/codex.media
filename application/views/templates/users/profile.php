@@ -31,7 +31,11 @@
                             },
                             {
                                 title : '<?= !$viewUser->isTeacher ? 'Сделать преподавателем' : 'Не преподаватель' ?>',
-                                handler : function () { codex.user.changeStatus(<?= $viewUser->id ?>, <?= Controller_User_Modify::TOGGLE_PROMOTE ?>); }
+                                handler : codex.user.changeStatus,
+                                arguments : {
+                                    userId : <?= $viewUser->id ?>,
+                                    status : <?= Controller_User_Modify::TOGGLE_PROMOTE ?>
+                                }
                             }]
                     });
 
