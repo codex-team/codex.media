@@ -102,7 +102,10 @@ module.exports = (function () {
 
                 } else {
 
-                    codex.alerts.show('Uploading failed');
+                    codex.alerts.show({
+                        type: 'error',
+                        message: 'Uploading failed'
+                    });
 
                 }
 
@@ -111,7 +114,10 @@ module.exports = (function () {
 
                 wrapper.classList.remove(loadingClass);
 
-                codex.alerts.show('Error while uploading branding image;');
+                codex.alerts.show({
+                    type: 'error',
+                    message: 'Error while uploading branding image;'
+                });
 
             }
 

@@ -1,17 +1,30 @@
 /**
 * Exception
 */
-.exceptionWrapper {
+.cdx-org-notification-wrapper {
     position: fixed;
     z-index: 2;
     top: 20px; right: 20px;
 }
-.exceptionWrapper .clientException {
+.cdx-org-notification {
     padding: 7px 15px;
     margin-bottom: 20px;
     border-radius: 3px;
-    background: #FFDEDE;
-    color: #B51D1D;
     font-size: 11px;
     font-family: 'monaco', 'consolas', 'courier';
+}
+
+.cdx-org-notification--notify {
+    background: #c4d9ff;
+    color: #47474f;
+}
+
+.cdx-org-notification--warn {
+    background: #fffe95;
+    color: #47474f;
+}
+
+.cdx-org-notification--error {
+    background: #FFDEDE;
+    color: #B51D1D;
 }

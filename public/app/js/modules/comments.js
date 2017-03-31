@@ -241,7 +241,10 @@ module.exports = (function () {
 
                 if (!response.success) {
 
-                    codex.alerts.show(response.error);
+                    codex.alerts.show({
+                        type: 'error',
+                        message: response.error
+                    });
                     return;
 
                 }

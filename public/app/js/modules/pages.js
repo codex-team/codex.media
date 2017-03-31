@@ -132,7 +132,10 @@ module.exports = (function () {
 
             }
 
-            codex.alerts.show(response.message);
+            codex.alerts.show({
+                type: 'error',
+                message: response.message
+            });
 
         },
 
@@ -158,13 +161,13 @@ module.exports = (function () {
                  * TODO: сделать замену текста кнопки
                  **/
 
-                codex.alerts.show(response.message);
+                codex.alerts.show({message: response.message});
 
                 return;
 
             }
 
-            codex.alerts.show(response.message);
+            codex.alerts.show({message: response.message});
 
         },
 

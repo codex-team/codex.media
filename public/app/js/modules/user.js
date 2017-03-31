@@ -49,7 +49,11 @@ module.exports = function () {
 
             if ( !response.success ) {
 
-                codex.alerts.show(response.message || 'File uploading error :(');
+                codex.alerts.show({
+                    type: 'error',
+                    message: response.message || 'File uploading error :('
+                });
+
                 return;
 
             }
@@ -96,7 +100,12 @@ module.exports = function () {
 
                 response = JSON.parse(response);
 
-                codex.alerts.show(response.message);
+                var notifyType = response.success?'':'error';
+
+                codex.alerts.show({
+                    type: notifyType,
+                    message: response.message
+                });
 
             },
         });
@@ -324,7 +333,10 @@ module.exports = function () {
 
             if (!val.trim()) {
 
-                codex.alerts.show('Write something about yourself');
+                codex.alerts.show({
+                    type: 'warn',
+                    message: 'Write something about yourself'
+                });
                 return;
 
             }
@@ -363,7 +375,10 @@ module.exports = function () {
             if (!response.success || !response.bio) {
 
                 textarea.classList.remove('loading');
-                codex.alerts.show('Saving error, sorry');
+                codex.alerts.show({
+                    type: 'error',
+                    message: 'Saving error, sorry'
+                });
                 return;
 
             }
