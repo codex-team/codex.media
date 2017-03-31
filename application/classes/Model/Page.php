@@ -53,9 +53,11 @@ class Model_Page extends Model
 
         self::get($id);
 
-        $this->content     = $this->validateContent();
-        $this->blocks      = $this->getBlocks($escapeHTML);
-        $this->description = $this->getDescription();
+        if ($this->id) {
+            $this->content = $this->validateContent();
+            $this->blocks = $this->getBlocks($escapeHTML);
+            $this->description = $this->getDescription();
+        }
 
     }
 
