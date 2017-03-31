@@ -129,6 +129,12 @@ module.exports = (function () {
 
     };
 
+    var getItemParams = function(menuIndex, itemIndex) {
+
+        return activated[menuIndex].settings.items[itemIndex];
+
+    };
+
     /**
      * Fills menu with items
      * @param  {Array}   items     list of menu items
@@ -278,6 +284,7 @@ module.exports = (function () {
 
     return {
         init: init,
+        getItemParams : getItemParams,
         updateItem: updateItem,
         prepareToggler: prepareToggler
     };

@@ -65,7 +65,7 @@ module.exports = (function () {
         currentItemClicked = this;
         currentItemClicked.classList.add('loading');
 
-        var targetId =currentItemClicked.dataset.id;
+        var targetId  = currentItemClicked.dataset.id;
 
         /** currying the function */
         var promote = ajaxResponses.promote.bind(currentItemClicked);
@@ -172,10 +172,18 @@ module.exports = (function () {
 
         /**
          * Replace site menu with new button text from server response
-         * @param menu
+         * @param currentItemMenu
+         * @param newResponseMenuText
          */
         replaceMenu: function (currentItemMenu, newResponseMenuText) {
 
+            var itemIndex = currentItemMenu.dataset.itemIndex,
+                menuIndex = currentItemMenu.dataset.index;
+
+            /** update item on menu */
+            codex.islandSettings.updateItem(menuIndex, itemIndex, newResponseMenuText);
+
+            /** update item text immediatelly */
             currentItemMenu.textContent = newResponseMenuText;
 
         }

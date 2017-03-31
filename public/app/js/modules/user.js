@@ -88,18 +88,39 @@ module.exports = function () {
      * @param  {} argument [description]
      * @return {[type]}          [description]
      */
-    var changeStatus = function (userId, type) {
+    var changeStatus = function () {
+
+        /**
+         * getting necessary datasets from clicked item
+         * @type {changeStatus}
+         */
+        var itemClicked = this,
+            clickedItemFromMenu  = itemClicked.dataset.index, // menu index
+            clickedItemIndex     = itemClicked.dataset.itemIndex;
+
+        itemClicked.classList.add('loading');
+
+        var itemParams = codex.islandSettings.getItemParams(clickedItemFromMenu, clickedItemIndex);
 
         codex.ajax.call({
-            url : '/user/changeStatus?userId=' + userId + '&status=' + type,
+            url : '/user/changeStatus?userId=' + itemParams.arguments.userId + '&status=' + itemParams.arguments.status,
             success: function (response) {
 
                 response = JSON.parse(response);
 
+                itemClicked.classList.remove('loading');
+                replaceMenuTitle(itemClicked, response.buttonText);
+
                 codex.alerts.show(response.message);
 
-            },
+            }
         });
+
+    };
+
+    var replaceMenuTitle = function (currentMenu, newContent) {
+
+        currentMenu.textContent = newContent;
 
     };
 

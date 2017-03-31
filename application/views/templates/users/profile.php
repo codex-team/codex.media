@@ -23,7 +23,11 @@
                         selector : '.js-user-settings',
                         items : [{
                                 title : '<?= $viewUser->status != Model_User::USER_STATUS_BANNED ? 'Заблокировать' : 'Разблокировать' ?>',
-                                handler : function () { codex.user.changeStatus(<?= $viewUser->id ?>, <?= Controller_User_Modify::TOGGLE_BAN ?>); }
+                                handler : codex.user.changeStatus,
+                                arguments : {
+                                    userId : <?= $viewUser->id ?>,
+                                    status : <?= Controller_User_Modify::TOGGLE_BAN ?>
+                                }
                             },
                             {
                                 title : '<?= !$viewUser->isTeacher ? 'Сделать преподавателем' : 'Не преподаватель' ?>',

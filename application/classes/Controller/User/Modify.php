@@ -183,10 +183,12 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         switch ($newStatus) {
             case Model_User::USER_STATUS_BANNED:
+                $response['buttonText'] = 'Разблокировать';
                 $response['message'] = 'Пользователь заблокирован';
                 break;
 
             case Model_User::USER_STATUS_REGISTERED:
+                $response['buttonText'] = 'Заблокировать';
                 $response['message'] = 'Установлен обычный статус пользователя';
                 break;
 
