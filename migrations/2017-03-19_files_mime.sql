@@ -1,1 +1,0 @@
-ALTER TABLE `files` ADD `mime` VARCHAR(100) NULL;
