@@ -85,7 +85,7 @@ module.exports = function () {
 
     /**
      * Changes user status
-     * @param  {} additionalData [description]
+     * @param  {} additionalData handler arguments
      * @return {[type]}          [description]
      */
     var changeStatus = function (additionalData) {
@@ -112,11 +112,13 @@ module.exports = function () {
                 itemClicked.classList.remove('loading');
                 itemParams.title  = response.buttonText;
 
-
+                /**
+                 * Change arguments on activated menu
+                 */
                 switch (response.newStatus) {
-                    /*
-                     * Если пользователь забанен или имеет статус "Учитель"
-                     * то меняем запрос на разблокирование
+                    /**
+                     * If user is banned or has "Teacher"-s role
+                     * then we change request argument to make simple user
                      */
                     case -1:
                     case 2:

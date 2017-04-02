@@ -65,7 +65,7 @@ module.exports = (function () {
         currentItemClicked = this;
         currentItemClicked.classList.add('loading');
 
-        var targetId  = currentItemClicked.dataset.id;
+        var targetId = currentItemClicked.dataset.id;
 
         codex.ajax.call({
             url : '/p/' + targetId + '/promote?list=menu',

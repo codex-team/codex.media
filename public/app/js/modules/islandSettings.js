@@ -291,10 +291,10 @@ module.exports = (function () {
     };
 
     return {
-        init: init,
+        init : init,
         getItemParams : getItemParams,
-        updateItem: updateItem,
-        prepareToggler: prepareToggler
+        updateItem : updateItem,
+        prepareToggler : prepareToggler
     };
 
 })();

@@ -2,12 +2,6 @@
 
 class Controller_User_Modify extends Controller_Base_preDispatch
 {
-    const BAN = -1;
-    const USER = 1;
-    const TEACHER = 2;
-
-    const TOGGLE_PROMOTE = 2;
-
     public function action_settings() {
 
         if (!$this->user->id) {
@@ -157,14 +151,14 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         $viewUser = new Model_User($userId);
 
         switch ($status) {
-            case self::BAN:
+            case Model_User::USER_STATUS_BANNED:
                 $response['newStatus']  = Model_User::USER_STATUS_BANNED;
                 $response['buttonText'] = 'Разблокировать';
                 $response['message']    = 'Пользователь заблокирован';
 
                 break;
 
-            case self::USER:
+            case Model_User::USER_STATUS_REGISTERED:
 
                 // Если текущий статус пользователя "забанен", то меняем на простого пользователя
                 if ($viewUser->status == Model_User::USER_STATUS_BANNED) {
@@ -184,7 +178,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
                 break;
 
-            case self::TEACHER:
+            case Model_User::USER_STATUS_TEACHER:
                 $response['newStatus']  = Model_User::USER_STATUS_TEACHER;
                 $response['buttonText'] = 'Не преподаватель';
                 $response['message']    = 'Пользователь добавлен в группы "Учителя"';
