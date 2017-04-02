@@ -27,21 +27,25 @@
 </head>
 <body>
 
-    <?= View::factory('templates/components/branding')->render(); ?>
+    <? if (empty($contentOnly)): ?>
+        <?= View::factory('templates/components/branding')->render(); ?>
+    <? endif; ?>
 
     <div class="center-col" id="js-layout-holder">
 
         <div class="grid-cols-wrapper">
 
-            <? /* Left */ ?>
-            <div class="grid-col grid-col--left">
+            <? if(empty($contentOnly)): ?>
+                <? /* Left */ ?>
+                <div class="grid-col grid-col--left">
 
-                <?= View::factory('templates/components/aside')->render(); ?>
+                    <?= View::factory('templates/components/aside')->render(); ?>
 
-            </div>
+                </div>
+            <? endif; ?>
 
             <? /* Main block for page */ ?>
-            <div class="grid-content">
+            <div class="grid-content <?= !empty($contentOnly) ? 'grid-content--no-border' : '' ?>">
                 <?= $content ?>
             </div>
 
@@ -50,21 +54,22 @@
     </div>
 
     <? /* Scripts */ ?>
+    <? if(!empty($contentOnly)): ?>
+        <script src="/public/extensions/codex.special/codex-special.v.1.0.2.min.js?v=2"></script>
+        <script>
+            /**
+             * Init CodeX Special module for contrast version
+             * @see https://github.com/codex-team/codex.special
+             */
+            window.codexSpecial.init({
+                blockId : 'js-contrast-version-holder',
+            });
+        </script>
+    <? endif; ?>
 
-    <script src="/public/extensions/codex.special/codex-special.v.1.0.2.min.js?v=2"></script>
 
     <script>
-
         window.csrf = '<?= Security::token(); ?>';
-
-        /**
-         * Init CodeX Special module for contrast version
-         * @see https://github.com/codex-team/codex.special
-         */
-        window.codexSpecial.init({
-            blockId : 'js-contrast-version-holder',
-        });
-
     </script>
 
     <? /* end Scripts */ ?>
