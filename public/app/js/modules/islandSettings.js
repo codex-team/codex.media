@@ -129,7 +129,7 @@ module.exports = (function () {
 
     };
 
-    var getItemParams = function(menuIndex, itemIndex) {
+    var getItemParams = function (menuIndex, itemIndex) {
 
         return activated[menuIndex].settings.items[itemIndex];
 

@@ -67,12 +67,9 @@ module.exports = (function () {
 
         var targetId  = currentItemClicked.dataset.id;
 
-        /** currying the function */
-        var promote = ajaxResponses.promote.bind(currentItemClicked);
-
         codex.ajax.call({
             url : '/p/' + targetId + '/promote?list=menu',
-            success: promote
+            success: ajaxResponses.promote
         });
 
     };
@@ -87,12 +84,9 @@ module.exports = (function () {
 
         var targetId = currentItemClicked.dataset.id;
 
-        /** currying the function */
-        var promote = ajaxResponses.promote.bind(currentItemClicked);
-
         codex.ajax.call({
             url : '/p/' + targetId + '/promote?list=news',
-            success: promote
+            success: ajaxResponses.promote
         });
 
     };
@@ -149,7 +143,6 @@ module.exports = (function () {
         promote: function (response) {
 
             response = ajaxResponses.getResponse(response);
-            currentItemClicked = this;
             currentItemClicked.classList.remove('loading');
 
             if (response.success) {
