@@ -153,50 +153,26 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         $viewUser = new Model_User($userId);
 
+        $respond = array();
+
         switch ($status) {
             case self::TOGGLE_BAN:
-
-                $newStatus =
-                    $viewUser->status != Model_User::USER_STATUS_BANNED ?
-                    Model_User::USER_STATUS_BANNED :
-                    Model_User::USER_STATUS_REGISTERED;
-
+                $respond = self::getBanResponse($viewUser->status);
                 break;
 
             case self::TOGGLE_PROMOTE:
-
-                $newStatus =
-                    $viewUser->status != Model_User::USER_STATUS_TEACHER ?
-                    Model_User::USER_STATUS_TEACHER :
-                    Model_User::USER_STATUS_REGISTERED;
-
-                break;
-
-            default:
+                $respond = self::getPromotionResponse($viewUser->status);
                 break;
         }
+
+        $newStatus = $respond['newStatus'];
+        $response['buttonText'] = $respond['buttonText'];
+        $response['message']    = $respond['message'];
 
         $viewUser->updateUser(
             $viewUser->id,
             array('status' => $newStatus)
         );
-
-        switch ($newStatus) {
-            case Model_User::USER_STATUS_BANNED:
-                $response['buttonText'] = 'Разблокировать';
-                $response['message'] = 'Пользователь заблокирован';
-                break;
-
-            case Model_User::USER_STATUS_REGISTERED:
-                $response['buttonText'] = 'Заблокировать';
-                $response['message'] = 'Установлен обычный статус пользователя';
-                break;
-
-            case Model_User::USER_STATUS_TEACHER:
-                $response['buttonText'] = 'Не преподаватель';
-                $response['message'] = 'Пользователь добавлен в группы "Учителя"';
-                break;
-        }
 
         finish:
         $this->auto_render = false;
@@ -204,4 +180,58 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         $this->response->body( json_encode($response) );
     }
 
+    private function getBanResponse($userStatus) {
+
+        $response = array();
+
+        switch ($userStatus) {
+
+            case Model_User::USER_STATUS_BANNED:
+
+                $response['newStatus']  = Model_User::USER_STATUS_REGISTERED;
+                $response['buttonText'] = 'Заблокировать';
+                $response['message']    = 'Установлен обычный статус пользователя';
+
+                break;
+
+            case Model_User::USER_STATUS_REGISTERED:
+            case Model_User::USER_STATUS_TEACHER:
+
+                $response['newStatus']  = Model_User::USER_STATUS_BANNED;
+                $response['buttonText'] = 'Разблокировать';
+                $response['message']    = 'Пользователь заблокирован';
+
+                break;
+
+        }
+
+        return $response;
+    }
+
+    private function getPromotionResponse($userStatus) {
+
+        $response = array();
+
+        switch ($userStatus) {
+
+            case Model_User::USER_STATUS_TEACHER:
+
+                $response['newStatus']  = Model_User::USER_STATUS_REGISTERED;
+                $response['buttonText'] = 'Сделать преподавателем';
+                $response['message']    = 'Установлен обычный статус пользователя';
+
+                break;
+
+            case Model_User::USER_STATUS_REGISTERED:
+            case Model_User::USER_STATUS_BANNED:
+
+                $response['newStatus']  = Model_User::USER_STATUS_TEACHER;
+                $response['buttonText'] = 'Не преподаватель';
+                $response['message']    = 'Пользователь добавлен в группы "Учителя"';
+
+                break;
+        }
+
+        return $response;
+    }
 }
