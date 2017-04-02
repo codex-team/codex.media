@@ -201,7 +201,7 @@ module.exports = (function () {
         return itemEl;
 
     };
-    
+
     /**
     * @private
     * Creates the dropdown menu
