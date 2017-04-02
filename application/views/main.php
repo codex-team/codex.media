@@ -45,7 +45,7 @@
             <? endif; ?>
 
             <? /* Main block for page */ ?>
-            <div class="grid-content <?= !empty($contentOnly) ? 'grid-content--no-border' : '' ?>">
+            <div class="grid-content <?= !empty($contentOnly) ? 'grid-content--stretched' : '' ?>">
                 <?= $content ?>
             </div>
 
