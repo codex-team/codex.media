@@ -54,24 +54,13 @@
     </div>
 
     <? /* Scripts */ ?>
-    <? if(!empty($contentOnly)): ?>
-        <script src="/public/extensions/codex.special/codex-special.v.1.0.2.min.js?v=2"></script>
-        <script>
-            /**
-             * Init CodeX Special module for contrast version
-             * @see https://github.com/codex-team/codex.special
-             */
-            window.codexSpecial.init({
-                blockId : 'js-contrast-version-holder',
-            });
-        </script>
-    <? endif; ?>
-
-
     <script>
         window.csrf = '<?= Security::token(); ?>';
     </script>
 
+    <? if(empty($contentOnly)): ?>
+        <script src="https://cdn.ifmo.su/special/v1.1/codex-special.min.js" onload="codexSpecial.init({blockId : 'js-contrast-version-holder',})"></script>
+    <? endif; ?>
     <? /* end Scripts */ ?>
 
 
