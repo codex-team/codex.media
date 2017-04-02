@@ -1,5 +1,5 @@
 <div class="writing-fullscreen">
-    <div class="island writing-navigation__holder">
+    <div class="island island--top-rounded writing-navigation__holder">
 
         <div class="writing-navigation">
 
@@ -27,5 +27,3 @@
         )); ?>
     </div>
 </div>
-
-<div id="js-contrast-version-holder" style="display: none;"></div>

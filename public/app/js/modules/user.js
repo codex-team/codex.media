@@ -108,10 +108,9 @@ module.exports = function () {
         var wrapper = null,
             input   = null,
             message = null,
-            button  = null,
-            csrf    = null;
+            button  = null;
 
-        var showForm = function (_csrf) {
+        var showForm = function () {
 
             var label = document.createElement('LABEL');
 
@@ -119,8 +118,6 @@ module.exports = function () {
             input   = document.createElement('INPUT');
             button  = document.createElement('SPAN');
             message = document.createElement('DIV');
-
-            csrf = _csrf;
 
             label.classList.add('form__label');
             label.textContent = 'Текущий пароль';
@@ -155,7 +152,7 @@ module.exports = function () {
                 url: '/user/passchange',
                 type: 'POST',
                 data: JSON.stringify({
-                    csrf: csrf,
+                    csrf: window.csrf,
                     currentPassword: input.value
                 }),
                 success: ajaxResponse,

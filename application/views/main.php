@@ -34,16 +34,14 @@
         <div class="grid-cols-wrapper">
 
             <? /* Left */ ?>
-            <? if (!isset($dontShowLeft) || !$dontShowLeft): ?>
-                <div class="grid-col grid-col--left">
+            <div class="grid-col grid-col--left">
 
-                    <?= View::factory('templates/components/aside')->render(); ?>
+                <?= View::factory('templates/components/aside')->render(); ?>
 
-                </div>
-            <? endif; ?>
+            </div>
 
             <? /* Main block for page */ ?>
-            <div class="grid-content <?= (isset($dontShowLeft) && $dontShowLeft) ? 'grid-content--no-border' : '' ; ?> ">
+            <div class="grid-content">
                 <?= $content ?>
             </div>
 
@@ -58,6 +56,14 @@
     <script>
 
         window.csrf = '<?= Security::token(); ?>';
+
+        /**
+         * Init CodeX Special module for contrast version
+         * @see https://github.com/codex-team/codex.special
+         */
+        window.codexSpecial.init({
+            blockId : 'js-contrast-version-holder',
+        });
 
     </script>
 

@@ -19,12 +19,6 @@
     letter-spacing: 0.01em;
 }
 
-.writing-fullscreen {
-    position: relative;
-    top: -130px;
-    height: 0;
-}
-
 .writing--fullscreen .island {
     box-shadow: none;
 }
@@ -201,6 +195,12 @@
     margin: 0;
 }
 
+.fullscreen-writing .grid-content{
+    position: relative;
+    top: -130px;
+}
+
+
 @media (--mobile) {
     .writing {
         padding: 15px;
@@ -213,4 +213,13 @@
     .writing--fullscreen .writing__title {
         font-size: 24px !important;
     }
+
+    .fullscreen-writing .grid-content{
+        position: static;
+    }
+
+    .fullscreen-writing .branding {
+        display: none;
+    }
+
 }

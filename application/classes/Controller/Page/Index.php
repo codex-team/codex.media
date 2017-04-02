@@ -70,8 +70,10 @@ class Controller_Page_Index extends Controller_Base_preDispatch
 
         if (!$page->id_parent) $page->id_parent = $parent_id;
 
-        $this->template->dontShowLeft = true;
-        $this->template->content = View::factory('templates/pages/writing', array('page' => $page));
+        $this->template = View::factory('writing', array(
+            'title' => 'Создание страницы',
+            'page'  => $page
+        ));
 
     }
 
