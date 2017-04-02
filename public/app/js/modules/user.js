@@ -110,7 +110,22 @@ module.exports = function () {
                 response = JSON.parse(response);
 
                 itemClicked.classList.remove('loading');
-                itemParams.title = response.buttonText;
+                itemParams.title  = response.buttonText;
+
+
+                switch (response.newStatus) {
+                    /*
+                     * Если пользователь забанен или имеет статус "Учитель"
+                     * то меняем запрос на разблокирование
+                     */
+                    case -1:
+                    case 2:
+                        itemParams.arguments.status = 1;
+                        break;
+                    case 1:
+                        itemParams.arguments.status = -1;
+                        break;
+                }
 
                 replaceMenuTitle(itemClicked, response.buttonText);
 

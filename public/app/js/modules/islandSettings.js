@@ -129,6 +129,14 @@ module.exports = (function () {
 
     };
 
+    /**
+     * Returns item parameters from menu
+     * @param menuIndex
+     * @param itemIndex
+     *
+     * @description returns from activated menus via menuIndex
+     * item via itemIndex all settings
+     */
     var getItemParams = function (menuIndex, itemIndex) {
 
         return activated[menuIndex].settings.items[itemIndex];
@@ -193,7 +201,7 @@ module.exports = (function () {
         return itemEl;
 
     };
-
+    
     /**
     * @private
     * Creates the dropdown menu

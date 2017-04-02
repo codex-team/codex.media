@@ -26,7 +26,7 @@
                                 handler : codex.user.changeStatus,
                                 arguments : {
                                     userId : <?= $viewUser->id ?>,
-                                    status : <?= Controller_User_Modify::TOGGLE_BAN ?>
+                                    status : <?= $viewUser->status != Model_User::USER_STATUS_BANNED ? Model_User::USER_STATUS_BANNED : Model_User::USER_STATUS_REGISTERED; ?>
                                 }
                             },
                             {
@@ -34,7 +34,7 @@
                                 handler : codex.user.changeStatus,
                                 arguments : {
                                     userId : <?= $viewUser->id ?>,
-                                    status : <?= Controller_User_Modify::TOGGLE_PROMOTE ?>
+                                    status : <?= !$viewUser->isTeacher ? Model_User::USER_STATUS_TEACHER : Model_User::USER_STATUS_REGISTERED; ?>
                                 }
                             }]
                     });

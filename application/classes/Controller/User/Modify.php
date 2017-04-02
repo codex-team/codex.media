@@ -2,7 +2,10 @@
 
 class Controller_User_Modify extends Controller_Base_preDispatch
 {
-    const TOGGLE_BAN = -1;
+    const BAN = -1;
+    const USER = 1;
+    const TEACHER = 2;
+
     const TOGGLE_PROMOTE = 2;
 
     public function action_settings() {
@@ -153,85 +156,51 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         $viewUser = new Model_User($userId);
 
-        $respond = array();
-
         switch ($status) {
-            case self::TOGGLE_BAN:
-                $respond = self::getBanResponse($viewUser->status);
-                break;
-
-            case self::TOGGLE_PROMOTE:
-                $respond = self::getPromotionResponse($viewUser->status);
-                break;
-        }
-
-        $newStatus = $respond['newStatus'];
-        $response['buttonText'] = $respond['buttonText'];
-        $response['message']    = $respond['message'];
-
-        $viewUser->updateUser(
-            $viewUser->id,
-            array('status' => $newStatus)
-        );
-
-        finish:
-        $this->auto_render = false;
-        $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-        $this->response->body( json_encode($response) );
-    }
-
-    private function getBanResponse($userStatus) {
-
-        $response = array();
-
-        switch ($userStatus) {
-
-            case Model_User::USER_STATUS_BANNED:
-
-                $response['newStatus']  = Model_User::USER_STATUS_REGISTERED;
-                $response['buttonText'] = 'Заблокировать';
-                $response['message']    = 'Установлен обычный статус пользователя';
-
-                break;
-
-            case Model_User::USER_STATUS_REGISTERED:
-            case Model_User::USER_STATUS_TEACHER:
-
+            case self::BAN:
                 $response['newStatus']  = Model_User::USER_STATUS_BANNED;
                 $response['buttonText'] = 'Разблокировать';
                 $response['message']    = 'Пользователь заблокирован';
 
                 break;
 
-        }
+            case self::USER:
 
-        return $response;
-    }
+                // Если текущий статус пользователя "забанен", то меняем на простого пользователя
+                if ($viewUser->status == Model_User::USER_STATUS_BANNED) {
 
-    private function getPromotionResponse($userStatus) {
+                    $response['newStatus']  = Model_User::USER_STATUS_REGISTERED;
+                    $response['buttonText'] = 'Заблокировать';
+                    $response['message']    = 'Пользователь разблокирован';
+                }
+                // Если текущий статус "Учитель", то меняем на простого пользователя
+                elseif ($viewUser->status == Model_User::USER_STATUS_TEACHER) {
 
-        $response = array();
+                    $response['newStatus']  = Model_User::USER_STATUS_REGISTERED;
+                    $response['buttonText'] = 'Сделать преподавателем';
+                    $response['message']    = 'Установлен обычный статус пользователя';
 
-        switch ($userStatus) {
-
-            case Model_User::USER_STATUS_TEACHER:
-
-                $response['newStatus']  = Model_User::USER_STATUS_REGISTERED;
-                $response['buttonText'] = 'Сделать преподавателем';
-                $response['message']    = 'Установлен обычный статус пользователя';
+                }
 
                 break;
 
-            case Model_User::USER_STATUS_REGISTERED:
-            case Model_User::USER_STATUS_BANNED:
-
+            case self::TEACHER:
                 $response['newStatus']  = Model_User::USER_STATUS_TEACHER;
                 $response['buttonText'] = 'Не преподаватель';
                 $response['message']    = 'Пользователь добавлен в группы "Учителя"';
 
                 break;
+
         }
 
-        return $response;
+        $viewUser->updateUser(
+            $viewUser->id,
+            array('status' => $response['newStatus'])
+        );
+
+        finish:
+        $this->auto_render = false;
+        $this->response->headers('Content-Type', 'application/json; charset=utf-8');
+        $this->response->body( json_encode($response) );
     }
 }
