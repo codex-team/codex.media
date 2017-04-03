@@ -7,7 +7,8 @@ module.exports = (function () {
 
     var CSS_ = {
         wrapper : 'cdx-notifies-wrapper',
-        notification : 'cdx-notifies'
+        notification : 'cdx-notifies',
+        crossBtn: 'cdx-notifies-cross'
     };
 
     var wrapper_ = null;
@@ -39,6 +40,7 @@ module.exports = (function () {
         prepare_();
 
         var notify  = document.createElement('DIV'),
+            cross   = document.createElement('DIV'),
             message = options.message,
             type    = options.type || 'notify',
             time    = options.time || 8000;
@@ -53,6 +55,14 @@ module.exports = (function () {
         notify.classList.add(CSS_.notification + '--' + type);
         notify.innerHTML = message;
 
+        cross.classList.add(CSS_.crossBtn);
+        cross.addEventListener('click', function () {
+
+            notify.remove();
+
+        });
+
+        notify.appendChild(cross);
         wrapper_.appendChild(notify);
 
         notify.classList.add('bounceIn');
