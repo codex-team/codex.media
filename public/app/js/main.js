@@ -33,14 +33,6 @@ codex = (function (codex) {
         codex.autoresizeTextarea.init();
 
         /**
-        * Init CodeX Special module for contrast version
-        * @see https://github.com/codex-team/codex.special
-        */
-        window.codexSpecial.init({
-            blockId : 'js-contrast-version-holder',
-        });
-
-        /**
          * Activate scroll-up button
          */
         codex.scrollUp.init('js-layout-holder');

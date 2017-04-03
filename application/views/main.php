@@ -27,21 +27,25 @@
 </head>
 <body>
 
-    <?= View::factory('templates/components/branding')->render(); ?>
+    <? if (empty($contentOnly)): ?>
+        <?= View::factory('templates/components/branding')->render(); ?>
+    <? endif; ?>
 
     <div class="center-col" id="js-layout-holder">
 
         <div class="grid-cols-wrapper">
 
-            <? /* Left */ ?>
-            <div class="grid-col grid-col--left">
+            <? if(empty($contentOnly)): ?>
+                <? /* Left */ ?>
+                <div class="grid-col grid-col--left">
 
-                <?= View::factory('templates/components/aside')->render(); ?>
+                    <?= View::factory('templates/components/aside')->render(); ?>
 
-            </div>
+                </div>
+            <? endif; ?>
 
             <? /* Main block for page */ ?>
-            <div class="grid-content">
+            <div class="grid-content <?= !empty($contentOnly) ? 'grid-content--stretched' : '' ?>">
                 <?= $content ?>
             </div>
 
@@ -50,15 +54,13 @@
     </div>
 
     <? /* Scripts */ ?>
-
-    <script src="/public/extensions/codex.special/codex-special.v.1.0.2.min.js?v=2"></script>
-
     <script>
-
         window.csrf = '<?= Security::token(); ?>';
-
     </script>
 
+    <? if(empty($contentOnly)): ?>
+        <script src="https://cdn.ifmo.su/special/v1.1/codex-special.min.js" onload="codexSpecial.init({blockId : 'js-contrast-version-holder',})"></script>
+    <? endif; ?>
     <? /* end Scripts */ ?>
 
 
