@@ -100,7 +100,7 @@ module.exports = function () {
 
                 response = JSON.parse(response);
 
-                var notifyType = response.success?'':'error';
+                var notifyType = response.success ? '' : 'error';
 
                 codex.alerts.show({
                     type: notifyType,
