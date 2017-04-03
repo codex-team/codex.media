@@ -19,13 +19,13 @@ return array
 			 * Ports and sockets may be appended to the hostname.
 			 */
 			'hostname'   => '127.0.0.1',
-			'database'   => 'codexedu',
+			'database'   => 'codex-org',
 			'username'   => 'root',
 			'password'   => '',
 			'persistent' => FALSE,
 		),
 		'table_prefix' => '',
-		'charset'      => 'utf8',
+		'charset'      => 'utf8mb4',
 		'caching'      => FALSE,
 	),
 	'alternate' => array(

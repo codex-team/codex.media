@@ -1,11 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.4.15.7
--- http://www.phpmyadmin.net
---
--- Хост: 127.0.0.1:3306
--- Время создания: Мар 10 2017 г., 20:01
--- Версия сервера: 5.5.50
--- Версия PHP: 5.6.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,8 +9,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `edu`
+-- База данных: `codex-org`
 --
+CREATE DATABASE IF NOT EXISTS `codex-org` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `codex-org`;
 
 -- --------------------------------------------------------
 
@@ -36,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `parent_id` int(10) unsigned NOT NULL,
   `dt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_removed` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -57,8 +51,9 @@ CREATE TABLE IF NOT EXISTS `files` (
   `is_removed` tinyint(1) NOT NULL DEFAULT '0',
   `status` tinyint(3) DEFAULT '0',
   `type` tinyint(13) NOT NULL COMMENT 'Тип файла из контроллера Transport',
-  `file_hash` binary(16) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `file_hash` binary(16) DEFAULT NULL,
+  `mime` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -69,21 +64,15 @@ CREATE TABLE IF NOT EXISTS `files` (
 DROP TABLE IF EXISTS `pages`;
 CREATE TABLE IF NOT EXISTS `pages` (
   `id` int(11) unsigned NOT NULL,
-  `type` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0 - show, 1 - hide , 2 - removed',
   `id_parent` int(10) unsigned NOT NULL DEFAULT '0',
-  `uri` varchar(255) DEFAULT NULL,
   `title` varchar(255) NOT NULL,
   `content` text,
-  `html_content` text,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `author` int(10) unsigned NOT NULL,
-  `is_menu_item` tinyint(1) NOT NULL DEFAULT '0',
-  `is_news_page` tinyint(1) NOT NULL DEFAULT '0',
   `rich_view` tinyint(1) DEFAULT '0',
-  `dt_pin` timestamp NULL DEFAULT NULL,
-  `source_link` varchar(140) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `dt_pin` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -96,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `name` varchar(50) NOT NULL,
   `value` varchar(150) DEFAULT NULL,
   `label` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Дамп данных таблицы `settings`
@@ -124,7 +113,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `phone` varchar(50) DEFAULT NULL,
   `password` varchar(64) DEFAULT NULL,
   `bio` text,
   `photo` varchar(255) DEFAULT NULL,
@@ -142,9 +130,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 - register, 2 - teacher , 3 - admin',
   `dt_reg` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_removed` tinyint(1) NOT NULL DEFAULT '0',
-  `telegram_chat_id` int(11) DEFAULT NULL,
   `isConfirmed` tinyint(4) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -164,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `users_sessions` (
   `social_provider` tinyint(3) unsigned DEFAULT NULL COMMENT '1 - vk, 2 - fb , 3- tw',
   `ip` bigint(11) NOT NULL DEFAULT '0',
   `autologin` smallint(4) DEFAULT NULL COMMENT 'autologin type'
-) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Индексы сохранённых таблиц
@@ -187,9 +174,8 @@ ALTER TABLE `files`
 --
 ALTER TABLE `pages`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `type` (`type`,`id_parent`),
-  ADD KEY `id_parent` (`id_parent`),
-  ADD KEY `type_2` (`type`);
+  ADD KEY `type` (`id_parent`),
+  ADD KEY `id_parent` (`id_parent`);
 
 --
 -- Индексы таблицы `settings`
@@ -218,7 +204,7 @@ ALTER TABLE `users_sessions`
 -- AUTO_INCREMENT для таблицы `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `files`
 --
@@ -233,12 +219,9 @@ ALTER TABLE `pages`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `users_sessions`
 --
 ALTER TABLE `users_sessions`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=164;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;

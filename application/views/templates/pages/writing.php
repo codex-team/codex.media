@@ -1,4 +1,4 @@
-<div class="island writing-navigation__holder">
+<div class="island island--top-rounded writing-navigation__holder">
 
     <div class="writing-navigation">
 
@@ -10,11 +10,12 @@
         </a>
         <? include(DOCROOT . "public/app/svg/arrow-right.svg") ?>
         <?
-    		$action = isset($page->id) && $page->id ? 'Редактирование' : 'Создание';
-    		$object = $page->isNewsPage() ? 'новости' : 'материала';
+            $action = isset($page->id) && $page->id ? 'Редактирование' : 'Создание';
+            $object = $page->isNewsPage() ? 'новости' : 'материала';
 
-        	echo $action . ' ' . $object;
+            echo $action . ' ' . $object;
         ?>
+
     </div>
 
 </div>
@@ -24,9 +25,3 @@
         'page' => $page
     )); ?>
 </div>
-
-<style>
-    .grid-col--left  {
-        display: none
-    }
-</style>
