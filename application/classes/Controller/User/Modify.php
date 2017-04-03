@@ -2,6 +2,9 @@
 
 class Controller_User_Modify extends Controller_Base_preDispatch
 {
+    const BAN   = 1;
+    const UNBAN = 0;
+
     public function action_settings() {
 
         if (!$this->user->id) {
@@ -131,8 +134,48 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         $this->response->body( json_encode($response) );
     }
 
-
     public function action_changeStatus()
+    {
+        $response = array();
+
+        if (!$this->user->isAdmin) {
+
+            $response['success'] = 0;
+            $response['message'] = 'Access denied';
+            goto finish;
+        }
+
+        $response['success'] = 1;
+        $userId = Arr::get($_GET, 'userId', 0);
+        $status = Arr::get($_GET, 'status', '0');
+
+        $viewUser = new Model_User($userId);
+
+        switch ($status) {
+            case self::BAN:
+                $response['message'] = 'Пользователь заблокирован';
+                $response['buttonText'] = 'Разблокировать';
+                break;
+
+            case self::UNBAN:
+                $response['message'] = 'Пользователь разблокирован';
+                $response['buttonText'] = 'Заблокировать';
+                break;
+
+        }
+
+        $viewUser->updateUser(
+            $viewUser->id,
+            array('status' => $status)
+        );
+
+        finish:
+        $this->auto_render = false;
+        $this->response->headers('Content-Type', 'application/json; charset=utf-8');
+        $this->response->body( json_encode($response) );
+    }
+
+    public function action_changeRole()
     {
         $response = array();
 
@@ -146,50 +189,37 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         $response['success'] = 1;
         $userId = Arr::get($_GET, 'userId', 0);
-        $status = Arr::get($_GET, 'status', '');
+        $role   = Arr::get($_GET, 'role', '1');
 
         $viewUser = new Model_User($userId);
 
-        switch ($status) {
-            case Model_User::USER_STATUS_BANNED:
-                $response['newStatus']  = Model_User::USER_STATUS_BANNED;
-                $response['buttonText'] = 'Разблокировать';
-                $response['message']    = 'Пользователь заблокирован';
+        switch ($role) {
+
+            case Model_User::USER_ROLE_ADMIN:
+                $newRole = Model_User::USER_ROLE_ADMIN;
+                $response['message']    = 'Пользователь имеет права администратора';
+                $response['buttonText'] = 'Убрать права администратора';
 
                 break;
 
-            case Model_User::USER_STATUS_REGISTERED:
-
-                // Если текущий статус пользователя "забанен", то меняем на простого пользователя
-                if ($viewUser->status == Model_User::USER_STATUS_BANNED) {
-
-                    $response['newStatus']  = Model_User::USER_STATUS_REGISTERED;
-                    $response['buttonText'] = 'Заблокировать';
-                    $response['message']    = 'Пользователь разблокирован';
-                }
-                // Если текущий статус "Учитель", то меняем на простого пользователя
-                elseif ($viewUser->status == Model_User::USER_STATUS_TEACHER) {
-
-                    $response['newStatus']  = Model_User::USER_STATUS_REGISTERED;
-                    $response['buttonText'] = 'Сделать преподавателем';
-                    $response['message']    = 'Установлен обычный статус пользователя';
-
-                }
+            case Model_User::USER_ROLE_REGISTERED:
+                $newRole = Model_User::USER_ROLE_REGISTERED;
+                $response['message']    = 'Пользователь простой';
+                $response['buttonText'] = 'Сделать учителем';
 
                 break;
 
-            case Model_User::USER_STATUS_TEACHER:
-                $response['newStatus']  = Model_User::USER_STATUS_TEACHER;
+            case Model_User::USER_ROLE_TEACHER:
+                $newRole = Model_User::USER_ROLE_TEACHER;
+                $response['message']    = 'Пользователь - учитель';
                 $response['buttonText'] = 'Не преподаватель';
-                $response['message']    = 'Пользователь добавлен в группы "Учителя"';
 
                 break;
-
         }
 
         $viewUser->updateUser(
             $viewUser->id,
-            array('status' => $response['newStatus'])
+            array('role' => $newRole)
         );
 
         finish:

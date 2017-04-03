@@ -22,19 +22,19 @@
                     codex.islandSettings.init({
                         selector : '.js-user-settings',
                         items : [{
-                                title : '<?= $viewUser->status != Model_User::USER_STATUS_BANNED ? 'Заблокировать' : 'Разблокировать' ?>',
+                                title : '<?= $viewUser->banned ? 'Разблокировать' : 'Заблокировать' ?>',
                                 handler : codex.user.changeStatus,
                                 arguments : {
                                     userId : <?= $viewUser->id ?>,
-                                    status : <?= $viewUser->status != Model_User::USER_STATUS_BANNED ? Model_User::USER_STATUS_BANNED : Model_User::USER_STATUS_REGISTERED; ?>
+                                    status : <?= !$viewUser->banned; ?>
                                 }
                             },
                             {
                                 title : '<?= !$viewUser->isTeacher ? 'Сделать преподавателем' : 'Не преподаватель' ?>',
-                                handler : codex.user.changeStatus,
+                                handler : codex.user.changeRole,
                                 arguments : {
                                     userId : <?= $viewUser->id ?>,
-                                    status : <?= !$viewUser->isTeacher ? Model_User::USER_STATUS_TEACHER : Model_User::USER_STATUS_REGISTERED; ?>
+                                    role : <?= !$viewUser->isTeacher ? Model_User::USER_ROLE_TEACHER : Model_User::USER_ROLE_REGISTERED; ?>
                                 }
                             }]
                     });

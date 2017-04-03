@@ -1,7 +1,7 @@
 <div class="list_users_heading">
     <ul class="page_menu">
-        <li><?= $status == Model_User::USER_STATUS_TEACHER ? '<a href="/users/">Пользователи</a></li>' : 'Пользователи' ?></li>
-        <li><?= $status != Model_User::USER_STATUS_TEACHER ? '<a href="/users/teachers">Учителя</a>' : 'Учителя' ?></li>
+        <li><?= $role == Model_User::USER_ROLE_TEACHER ? '<a href="/users/">Пользователи</a></li>' : 'Пользователи' ?></li>
+        <li><?= $role != Model_User::USER_ROLE_TEACHER ? '<a href="/users/teachers">Учителя</a>' : 'Учителя' ?></li>
     </ul>
 </div>
 

@@ -21,7 +21,7 @@ class Model_User extends Model
     public $facebook            = '';
     public $facebook_name       = '';
 
-    public $status              = 0;
+    public $role                = 0;
 
     public $dt_reg              = null;
 
@@ -31,11 +31,14 @@ class Model_User extends Model
     public $isOnline            = 0;
     public $lastOnline          = 0;
 
-    const USER_STATUS_ADMIN      = 3;
-    const USER_STATUS_TEACHER    = 2;
-    const USER_STATUS_REGISTERED = 1;
-    const USER_STATUS_GUEST      = 0;
-    const USER_STATUS_BANNED     = -1;
+    private $status             = 0;
+    public $banned              = 0;
+
+    const USER_ROLE_ADMIN      = 3;
+    const USER_ROLE_TEACHER    = 2;
+    const USER_ROLE_REGISTERED = 1;
+    const USER_ROLE_GUEST      = 0;
+
 
     const USER_POSTS_LIMIT_PER_PAGE = 7; # Must be > 1
 
@@ -80,6 +83,7 @@ class Model_User extends Model
 
             $this->isTeacher        = $this->isTeacher();
             $this->isAdmin          = $this->isAdmin();
+            $this->banned           = $this->status;
 
             // $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
             // $this->lastOnline       = self::getLastOnlineTimestamp();
@@ -147,15 +151,15 @@ class Model_User extends Model
         Cookie::set('hr', sha1('dfhgga23'.$id.'dfhshgf23'), Date::MONTH);
     }
 
-    public function setUserStatus($status)
+    public function setUserRole($role)
     {
         Dao_Users::update()
             ->where('id', '=', $this->id)
-            ->set('status', $status)
+            ->set('role', $role)
             ->clearcache('user:' . $this->id, array('users'))
             ->execute();
 
-        $this->status       = $status;
+        $this->role       = $role;
         $this->isTeacher    = $this->isTeacher();
         $this->isAdmin      = $this->isAdmin();
 
@@ -183,14 +187,14 @@ class Model_User extends Model
     {
         if (!$this->id) return false;
 
-        return $this->status == self::USER_STATUS_ADMIN;
+        return $this->role == self::USER_ROLE_ADMIN;
     }
 
     public function isTeacher()
     {
         if (!$this->id) return false;
 
-        return $this->status >= self::USER_STATUS_TEACHER;
+        return $this->role >= self::USER_ROLE_TEACHER;
     }
 
 
@@ -211,12 +215,12 @@ class Model_User extends Model
         return $models;
     }
 
-    public static function getUsersList($status)
+    public static function getUsersList($role)
     {
         $teachers = Dao_Users::select()
-            ->where('status', '>=', $status)
+            ->where('role', '>=', $role)
             ->order_by('id','ASC')
-            ->cached(Date::HOUR, 'users_list:' . $status, array('users'))
+            ->cached(Date::HOUR, 'users_list:' . $role, array('users'))
             ->execute();
 
         return Model_User::rowsToModels($teachers);

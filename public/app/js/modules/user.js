@@ -115,17 +115,64 @@ module.exports = function () {
                 /**
                  * Change arguments on activated menu
                  */
-                switch (response.newStatus) {
-                    /**
-                     * If user is banned or has "Teacher"-s role
-                     * then we change request argument to make simple user
-                     */
-                    case -1:
-                    case 2:
+                switch (additionalData.status) {
+
+                    case 1:
+                        itemParams.arguments.status = 0;
+                        break;
+                    default:
                         itemParams.arguments.status = 1;
                         break;
-                    case 1:
-                        itemParams.arguments.status = -1;
+                }
+
+                replaceMenuTitle(itemClicked, response.buttonText);
+
+                codex.alerts.show(response.message);
+
+            }
+        });
+
+    };
+
+    /**
+     * Changes user status
+     * @param  {} additionalData handler arguments
+     * @return {[type]}          [description]
+     */
+    var changeRole = function (additionalData) {
+
+        /**
+         * getting necessary datasets from clicked item
+         * @type {changeStatus}
+         */
+        var itemClicked = this,
+            clickedItemFromMenu  = itemClicked.dataset.index, // menu index
+            clickedItemIndex     = itemClicked.dataset.itemIndex;
+
+        itemClicked.classList.add('loading');
+
+        /** get settings from cached menu to change the title */
+        var itemParams = codex.islandSettings.getItemParams(clickedItemFromMenu, clickedItemIndex);
+
+        codex.ajax.call({
+            url : '/user/changeRole?userId=' + additionalData.userId + '&role=' + additionalData.role,
+            success: function (response) {
+
+                response = JSON.parse(response);
+
+                itemClicked.classList.remove('loading');
+                itemParams.title  = response.buttonText;
+
+                /**
+                 * Change arguments on activated menu
+                 */
+                switch (additionalData.role) {
+
+                    case 2:
+                        itemParams.arguments.role = 1;
+                        break;
+                    default:
+                        itemParams.arguments.role = 2;
                         break;
                 }
 
@@ -427,6 +474,7 @@ module.exports = function () {
     return {
         changePassword: changePassword,
         changeStatus: changeStatus,
+        changeRole: changeRole,
         photo: photo,
         bio : bio,
     };
