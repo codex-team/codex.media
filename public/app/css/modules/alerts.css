@@ -1,17 +1,69 @@
 /**
 * Exception
 */
-.exceptionWrapper {
+.cdx-notifies-wrapper {
     position: fixed;
     z-index: 2;
-    top: 20px; right: 20px;
+    bottom: 20px; left: 20px;
 }
-.exceptionWrapper .clientException {
-    padding: 7px 15px;
-    margin-bottom: 20px;
-    border-radius: 3px;
-    background: #FFDEDE;
-    color: #B51D1D;
-    font-size: 11px;
-    font-family: 'monaco', 'consolas', 'courier';
+
+.cdx-notifies-cross {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    padding: 5px;
+    background: url(/public/app/svg/cross.svg) no-repeat center center;
+    opacity: 0.54;
+    cursor: pointer;
+}
+
+.cdx-notifies-cross:hover {
+    opacity: 1;
+}
+
+.cdx-notifies {
+    position: relative;
+    width: 220px;
+    min-height: 40px;
+    margin-top: 15px;
+    padding: 15px 28px;
+    background: #fff;
+    box-shadow: 0 11px 17px 0 rgba(23,32,61,0.13);
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 1.5em;
+    word-wrap: break-word;
+}
+
+.cdx-notifies::before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+
+    width: 3px;
+    height: calc(100% - 6px);
+    margin: 3px;
+    border-radius: 5px;
+}
+
+.cdx-notifies--notify::before {
+    background: transparent;
+}
+
+.cdx-notifies--success {
+    background: #fafffe;
+}
+.cdx-notifies--success::before {
+    background: #41ffb1;
+}
+
+.cdx-notifies--error {
+    background: #fffbfb;
+}
+.cdx-notifies--error::before {
+    background: #fb5d5d;
 }
