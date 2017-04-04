@@ -22,7 +22,7 @@
             </div>
 
             <div class="profile-settings__buttons">
-                <button class="button master">Выслать повторно</button>
+                <button class="button master" onclick="codex.user.sendEmailConfirmation(this)">Выслать повторно</button>
             </div>
 
         <? endif; ?>

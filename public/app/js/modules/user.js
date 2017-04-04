@@ -233,39 +233,28 @@ module.exports = function () {
 
     }();
 
-    // var init = function () {
-    //
-    //     // bindEvents();
-    //
-    // };
+    var sendEmailConfirmation = function (button) {
 
-    // var bindEvents = function () {
-    //
-    //     var repeatConfirmEmailBtn = document.getElementById('repeat-email-confirmation');
-    //
-    //     repeatConfirmEmailBtn.addEventListener('click', sendEmeailConfirmation);
-    //
-    // };
+        var success = function (response) {
 
-    // var sendEmeailConfirmation = function (e) {
-    //
-    //     var success = function (response) {
-    //
-    //         response = JSON.parse(response);
-    //
-    //         codex.alerts.show(response.message);
-    //         e.target.classList.remove('loading');
-    //
-    //     };
-    //
-    //     e.target.classList.add('loading');
-    //
-    //     codex.ajax.call({
-    //         url: '/ajax/confirmation-email',
-    //         success: success
-    //     });
-    //
-    // };
+            response = JSON.parse(response);
+
+            codex.alerts.show({
+                type: 'success',
+                message: response.message
+            });
+            button.classList.remove('loading');
+
+        };
+
+        button.classList.add('loading');
+
+        codex.ajax.call({
+            url: '/ajax/confirmation-email',
+            success: success
+        });
+
+    };
 
 
     /**
@@ -331,7 +320,7 @@ module.exports = function () {
             if (!val.trim()) {
 
                 codex.alerts.show({
-                    type: 'warn',
+                    type: 'error',
                     message: 'Write something about yourself'
                 });
                 return;
@@ -400,6 +389,7 @@ module.exports = function () {
         changeStatus: changeStatus,
         photo: photo,
         bio : bio,
+        sendEmailConfirmation: sendEmailConfirmation,
     };
 
 }();
