@@ -66,10 +66,15 @@
 
 </div>
 
-<?= View::factory('templates/components/email_confirm_island'); ?>
+<? if ($user->email): ?>
 
-<? if ($user->password): ?>
+    <?= View::factory('templates/components/email_confirm_island'); ?>
     <?= View::factory('templates/components/password_change_island'); ?>
+
+<? else: ?>
+
+    <?= View::factory('templates/components/set_email_island'); ?>
+
 <? endif; ?>
 
 <script>

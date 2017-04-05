@@ -119,6 +119,11 @@ Route::set('CHANGE_USER_STATUS', 'user/changeStatus')->defaults(array(
     'action'          => 'changeStatus'
 ));
 
+Route::set('CHANGE_USER_EMAIL', 'user/changeEmail')->defaults(array(
+    'controller'      => 'user_modify',
+    'action'          => 'changeEmail'
+));
+
 
 /**
 * Downloading files

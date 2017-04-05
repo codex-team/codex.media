@@ -80,13 +80,13 @@
     cursor: pointer;
 }
 
+.profile-settings__change-password-btn:hover {
+    color: color(var(--grayText) blackness(+80%));
+}
+
 .profile-settings__change-password-result-text {
     margin-bottom: 15px;
     padding: 0 10%;
-}
-
-.profile-settings__change-password-button:hover {
-    color: color(var(--grayText) blackness(+80%));
 }
 
 .profile-settings__change-password-button svg {

@@ -125,11 +125,15 @@ class Model_User extends Model
 
     public function updateUser($user_id, $fields)
     {
+
         $user = Dao_Users::update()
             ->where('id', '=', $user_id)
             ->clearcache('user:' . $user_id);
 
-        foreach ($fields as $name => $value) $user->set($name, trim(htmlspecialchars($value)));
+        foreach ($fields as $name => $value) {
+            $user->set($name, trim(htmlspecialchars($value)));
+            $this->{$name} = $value;
+        }
 
         return $user->execute();
     }
