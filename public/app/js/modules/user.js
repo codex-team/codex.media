@@ -474,7 +474,7 @@ module.exports = function () {
             var saveButton = document.createElement('BUTTON'),
                 sendButton = input.parentNode.querySelector('button');
 
-            sendButton.classList.remove('master');
+            if (sendButton) sendButton.classList.remove('master');
 
             saveButton.classList.add('button', 'master');
             saveButton.textContent = 'Сохранить';
