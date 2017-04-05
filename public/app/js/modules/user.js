@@ -49,7 +49,11 @@ module.exports = function () {
 
             if ( !response.success ) {
 
-                codex.alerts.show(response.message || 'File uploading error :(');
+                codex.alerts.show({
+                    type: 'error',
+                    message: response.message || 'File uploading error :('
+                });
+
                 return;
 
             }
@@ -139,15 +143,16 @@ module.exports = function () {
 
                     response = JSON.parse(response);
 
-                    console.log(response);
-
                     itemClicked.classList.remove('loading');
 
                     codex.islandSettings.updateItem(menuIndex, itemIndex, response.buttonText, null, {
                         value: response.buttonValue
                     });
 
-                    codex.alerts.show(response.message);
+                    codex.alerts.show({
+                        type: response.success ? 'success' : 'error',
+                        message: response.message
+                    });
 
                 }
             });
@@ -162,16 +167,14 @@ module.exports = function () {
     }();
 
 
-
     var changePassword = function () {
 
         var wrapper = null,
             input   = null,
             message = null,
-            button  = null,
-            csrf    = null;
+            button  = null;
 
-        var showForm = function (_csrf) {
+        var showForm = function () {
 
             var label = document.createElement('LABEL');
 
@@ -179,8 +182,6 @@ module.exports = function () {
             input   = document.createElement('INPUT');
             button  = document.createElement('SPAN');
             message = document.createElement('DIV');
-
-            csrf = _csrf;
 
             label.classList.add('form__label');
             label.textContent = 'Текущий пароль';
@@ -215,7 +216,7 @@ module.exports = function () {
                 url: '/user/passchange',
                 type: 'POST',
                 data: JSON.stringify({
-                    csrf: csrf,
+                    csrf: window.csrf,
                     currentPassword: input.value
                 }),
                 success: ajaxResponse,
@@ -384,7 +385,10 @@ module.exports = function () {
 
             if (!val.trim()) {
 
-                codex.alerts.show('Write something about yourself');
+                codex.alerts.show({
+                    type: 'warn',
+                    message: 'Write something about yourself'
+                });
                 return;
 
             }
@@ -423,7 +427,10 @@ module.exports = function () {
             if (!response.success || !response.bio) {
 
                 textarea.classList.remove('loading');
-                codex.alerts.show('Saving error, sorry');
+                codex.alerts.show({
+                    type: 'error',
+                    message: 'Saving error, sorry'
+                });
                 return;
 
             }

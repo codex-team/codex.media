@@ -6,8 +6,9 @@ module.exports = (function () {
     require('../../css/modules/alerts.css');
 
     var CSS_ = {
-        wrapper : 'exceptionWrapper',
-        exception : 'clientException'
+        wrapper : 'cdx-notifies-wrapper',
+        notification : 'cdx-notifies',
+        crossBtn: 'cdx-notifies-cross'
     };
 
     var wrapper_ = null;
@@ -28,17 +29,40 @@ module.exports = (function () {
     }
 
     /**
-    * @param {String} message - may content HTML
+    * @param {Object} options:
+    *
+    * @property {String} type    - type of notification. Just adds {CSS_.notification + '--' + type} class. 'notify' by default
+    * @property {String} message - text to notify, can contains HTML
+    * @property {String} time    - expiring time
     */
-    function show(message) {
+    function show(options) {
 
         prepare_();
 
-        var notify = document.createElement('DIV');
+        var notify  = document.createElement('DIV'),
+            cross   = document.createElement('DIV'),
+            message = options.message,
+            type    = options.type || 'notify',
+            time    = options.time || 8000;
 
-        notify.classList.add(CSS_.exception);
+        if (!message) {
+
+            return;
+
+        }
+
+        notify.classList.add(CSS_.notification);
+        notify.classList.add(CSS_.notification + '--' + type);
         notify.innerHTML = message;
 
+        cross.classList.add(CSS_.crossBtn);
+        cross.addEventListener('click', function () {
+
+            notify.remove();
+
+        });
+
+        notify.appendChild(cross);
         wrapper_.appendChild(notify);
 
         notify.classList.add('bounceIn');
@@ -47,7 +71,7 @@ module.exports = (function () {
 
             notify.remove();
 
-        }, 8000);
+        }, time);
 
     }
 

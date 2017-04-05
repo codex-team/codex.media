@@ -182,9 +182,27 @@ module.exports = (function () {
         console.assert(typeof item.handler == 'function', 'islandSettings: item handler is not a function');
 
         itemEl.textContent = item.title;
-        itemEl.addEventListener('click', item.handler.bind(itemEl, item.arguments || {}));
+        itemEl.addEventListener('click', itemClicked);
 
         return itemEl;
+
+    };
+
+    var itemClicked = function () {
+
+        var itemEl = this,
+            togglerIndex = itemEl.dataset.index,
+            itemIndex = itemEl.dataset.itemIndex,
+            menuParams,
+            handler,
+            args;
+
+        menuParams = getMenuParams(togglerIndex);
+
+        handler = menuParams.items[itemIndex].handler;
+        args    = menuParams.items[itemIndex].arguments;
+
+        handler.call(itemEl, args || {});
 
     };
 
@@ -244,16 +262,15 @@ module.exports = (function () {
 
         }
 
-        if (handler && typeof handler == 'function') {
+        if ( args  ) {
 
-            currentItemEl.removeEventListener('click', currentItem.handler);
-            currentItem.handler = handler;
+            currentItem.arguments = args;
 
         }
 
-        if (typeof args == 'object') {
+        if (handler && typeof handler == 'function') {
 
-            currentItem.arguments = args;
+            currentItem.handler = handler;
 
         }
 
@@ -263,12 +280,6 @@ module.exports = (function () {
             if ( title ) {
 
                 currentItemEl.textContent = title;
-
-            }
-
-            if ( handler ) {
-
-                currentItemEl.addEventListener('click', currentItem.handler.bind(currentItemEl, currentItem.arguments));
 
             }
 

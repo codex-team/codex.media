@@ -1,4 +1,4 @@
-<form class="writing island" action="/p/writing" id="atlasForm" method="post" name="atlas">
+<form class="writing island island--bottom-rounded" action="/p/writing" id="atlasForm" method="post" name="atlas">
 
     <?
         /** if there is no information about page */
@@ -77,7 +77,7 @@
 
         var editorReady = codex.writing.prepare(settings);
 
-        <? if (!$hideEditorToolbar): ?>;
+        <? if (!$hideEditorToolbar): ?>
             editorReady.then(codex.writing.init);
         <? endif ?>
     });
