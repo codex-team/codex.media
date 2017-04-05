@@ -227,7 +227,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             goto finish;
         }
 
-        if (Model_User::exists($email)) {
+        if (Model_User::exists('email', $email)) {
             $response['message'] = 'Похоже, такой email уже занят';
             goto finish;
         }

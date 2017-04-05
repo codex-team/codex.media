@@ -257,15 +257,18 @@ class Model_User extends Model
     }
 
     /**
-     * Returns TRUE if user whit $email doesn't exists
+     * Returns TRUE if user with $field = $value exists
      *
-     * @param $email
+     * @param $field
+     * @param $value
+     *
      * @return bool
      */
-    public static function exists($email) {
+    public static function exists($field, $value) {
 
-        $selection = Dao_Users::select('email')
-            ->where('email', '=', $email)
+        $selection = Dao_Users::select($field)
+            ->where('email', '=', $value)
+            ->limit(1)
             ->execute();
 
         return  (bool) $selection;

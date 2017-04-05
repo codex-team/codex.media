@@ -25,7 +25,7 @@
         ); ?>
 
         <? foreach ($regFields as $fieldName => $field): ?>
-            <? if (isset($signup_error_fields[$fieldName])): ?>
+            <? if (isset($reset_password_error_fields[$fieldName])): ?>
                 <p class="auth-field__error">
             <? else: ?>
                 <p>
@@ -45,11 +45,11 @@
 
 <script>
     <? if (!empty($reset_password_error_fields)): ?>
-    <? foreach($reset_password_error_fields as $fieldName => $errorText ): ?>
-    codex.alerts.show({
-        type: 'error',
-        message: '<?= $errorText ?>'
-    });
-    <? endforeach; ?>
+        <? foreach($reset_password_error_fields as $fieldName => $errorText ): ?>
+            codex.alerts.show({
+                type: 'error',
+                message: '<?= $errorText ?>'
+            });
+        <? endforeach; ?>
     <? endif; ?>
 </script>
