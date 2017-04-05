@@ -3,7 +3,7 @@
  */
 module.exports = function () {
 
-    var GUESS   = 0;
+    var GUEST   = 0;
     var USER    = 1;
     var TEACHER = 2;
     var ADMIN   = 3;

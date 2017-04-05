@@ -23,11 +23,11 @@
                         selector : '.js-user-settings',
                         items : [
                             {
-                                title : '<?= $viewUser->banned ? 'Разблокировать' : 'Заблокировать' ?>',
+                                title : '<?= $viewUser->isBanned ? 'Разблокировать' : 'Заблокировать' ?>',
                                 handler : codex.user.changeStatus,
                                 arguments : {
                                     userId : <?= $viewUser->id ?>,
-                                    status : <?= $viewUser->banned ? 0 : 1; ?>
+                                    status : <?= $viewUser->isBanned ? 0 : 1; ?>
                                 }
                             },
                             {
@@ -35,7 +35,7 @@
                                 handler : codex.user.changeRole,
                                 arguments : {
                                     userId : <?= $viewUser->id ?>,
-                                    role : <?= !$viewUser->isTeacher ? Model_User::USER_ROLE_TEACHER : Model_User::USER_ROLE_REGISTERED; ?>
+                                    role : <?= !$viewUser->isTeacher ? Model_User::TEACHER : Model_User::REGISTERED; ?>
                                 }
                             }]
                     });

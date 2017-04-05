@@ -53,11 +53,11 @@ class Controller_Index extends Controller_Base_preDispatch
 
     public function action_users_list()
     {
-        $role = Model_User::USER_ROLE_REGISTERED;
+        $role = Model_User::REGISTERED;
 
         if ($this->request->param('type') == 'teachers') {
 
-            $role = Model_User::USER_ROLE_TEACHER;
+            $role = Model_User::TEACHER;
         }
 
         $this->view['users']  = Model_User::getUsersList($role);

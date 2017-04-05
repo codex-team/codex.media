@@ -25,22 +25,27 @@ class Model_User extends Model
 
     public $dt_reg              = null;
 
+    /** user's role */
     public $isTeacher           = false;
     public $isAdmin             = false;
+
+    /** user's status */
+    public $isBanned            = false;
 
     public $isOnline            = 0;
     public $lastOnline          = 0;
 
     private $status             = 0;
-    public $banned              = 0;
 
-    const USER_ROLE_ADMIN      = 3;
-    const USER_ROLE_TEACHER    = 2;
-    const USER_ROLE_REGISTERED = 1;
-    const USER_ROLE_GUEST      = 0;
+    /** User role constants */
+    const ADMIN      = 3;
+    const TEACHER    = 2;
+    const REGISTERED = 1;
+    const GUEST      = 0;
 
-    const USER_BANNED   = 1;
-    const USER_UNBANNED = 0;
+    /** User status constants */
+    const BANNED   = 1;
+    const STANDART = 0;
 
 
     const USER_POSTS_LIMIT_PER_PAGE = 7; # Must be > 1
@@ -86,7 +91,7 @@ class Model_User extends Model
 
             $this->isTeacher        = $this->isTeacher();
             $this->isAdmin          = $this->isAdmin();
-            $this->banned           = $this->status;
+            $this->isBanned         = $this->isBanned();
 
             // $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
             // $this->lastOnline       = self::getLastOnlineTimestamp();
@@ -190,14 +195,14 @@ class Model_User extends Model
     {
         if (!$this->id) return false;
 
-        return $this->role == self::USER_ROLE_ADMIN;
+        return $this->role == self::ADMIN;
     }
 
     public function isTeacher()
     {
         if (!$this->id) return false;
 
-        return $this->role >= self::USER_ROLE_TEACHER;
+        return $this->role >= self::TEACHER;
     }
 
 
@@ -257,6 +262,11 @@ class Model_User extends Model
     public function checkPassword($pass)
     {
         return $this->password == Controller_Auth_Base::createPasswordHash($pass);
+    }
+
+    public function isBanned()
+    {
+        return $this->status == self::BANNED;
     }
 
 }

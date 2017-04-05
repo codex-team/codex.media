@@ -19,7 +19,7 @@ class Controller_Comments extends Controller_Base_preDispatch
         /**
          * Checking for authorized user
          */
-        if ($this->user->role < Model_User::USER_ROLE_REGISTERED) {
+        if ($this->user->role < Model_User::REGISTERED) {
             $error = 'Ошибка доступа';
             goto finish;
         }
