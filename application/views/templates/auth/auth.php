@@ -11,10 +11,6 @@
 
     	<h3>Вход через пароль</h3>
 
-        <? if (!empty($login_error_text)): ?>
-            <p class="form_error mb20 mt20"><?= $login_error_text ?></p>
-        <? endif; ?>
-
         <? $loginFields = array(
                 'email' => array(
                     'label' => 'Email',
@@ -48,3 +44,19 @@
     </div>
 
 </div>
+
+<script>
+    <? if ($passwordReseted): ?>
+        codex.alerts.show({
+            type: 'success',
+            message: 'Новый пароль установлен'
+        });
+    <? endif; ?>
+
+    <? if (!empty($login_error_text)): ?>
+        codex.alerts.show({
+            type: 'error',
+            message: '<?= $login_error_text ?>'
+        });
+    <? endif; ?>
+</script>

@@ -256,4 +256,19 @@ class Model_User extends Model
         return $this->password == Controller_Auth_Base::createPasswordHash($pass);
     }
 
+    /**
+     * Returns TRUE if user whit $email doesn't exists
+     *
+     * @param $email
+     * @return bool
+     */
+    public static function exists($email) {
+
+        $selection = Dao_Users::select('email')
+            ->where('email', '=', $email)
+            ->execute();
+
+        return  (bool) $selection;
+    }
+
 }

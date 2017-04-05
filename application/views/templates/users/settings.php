@@ -10,20 +10,6 @@
         </a>
     </div>
 
-    <? if (isset($success) && $success): ?>
-        <div class="info_block">
-            Обновления сохранены
-        </div>
-    <? endif; ?>
-
-    <? if (isset($errors) && $errors): ?>
-        <div class="info_block">
-            <? foreach ($errors as $info): ?>
-                <?= $info; ?>
-            <? endforeach; ?>
-        </div>
-    <? endif; ?>
-
     <section class="profile-settings form">
 
         <form method="POST" action="user/settings" enctype="multipart/form-data">
@@ -78,7 +64,23 @@
 <? endif; ?>
 
 <script>
+    <? if (isset($success) && $success): ?>
 
-    //codex.user.init();
+        codex.alerts.show({
+            type: 'success',
+            message: 'Обновления сохранены'
+        });
 
+    <? endif; ?>
+
+    <? if (isset($errors) && $errors): ?>
+
+        <? foreach ($errors as $info): ?>
+            codex.alerts.show({
+                type: 'error',
+                message: '<?= $info ?>'
+            });
+        <? endforeach; ?>
+
+    <? endif; ?>
 </script>

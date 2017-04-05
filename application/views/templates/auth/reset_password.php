@@ -24,15 +24,21 @@
 
         <?= Form::hidden('csrf', Security::token()); ?>
 
-        <? if (!empty($reset_password_error_fields)): ?>
-            <? foreach($reset_password_error_fields as $fieldName => $errorText ): ?>
-                <div class="auth-form__error"><?= $errorText ?></div>
-            <? endforeach; ?>
-        <? endif; ?>
-
-        <button class="button master"><?= $email?'Отправить еще раз':'Отправить';?></button>
+        <button class="button master"><?= $email ? 'Отправить еще раз' : 'Отправить';?></button>
 
     </form>
 
 
 </div>
+
+
+<script>
+    <? if (!empty($reset_password_error_fields)): ?>
+        <? foreach($reset_password_error_fields as $fieldName => $errorText ): ?>
+            codex.alerts.show({
+                type: 'error',
+                message: '<?= $errorText ?>'
+            });
+        <? endforeach; ?>
+    <? endif; ?>
+</script>

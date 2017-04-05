@@ -123,3 +123,12 @@
 
 
 <?= $listFactory ?>
+
+<? if ($emailConfirmed): ?>
+    <script>
+        codex.alerts.show({
+            type: 'success',
+            message: 'Email успешно подтвержден!'
+        })
+    </script>
+<? endif; ?>

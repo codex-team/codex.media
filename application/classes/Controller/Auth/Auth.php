@@ -46,6 +46,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base
             $this->redirect( $urlToRedirect );
         }
 
+        $this->view['passwordReseted'] = Arr::get($_GET, 'reseted', 0);
+
         $this->title = 'Авторизация';
         $this->description = 'Страница для авторизации и регистрации пользователей';
         $this->template->content = View::factory('/templates/auth/auth', $this->view);
@@ -562,7 +564,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
             $model_auth->deleteHash($hash, $method);
 
             switch ($method) {
-                case Model_Auth::TYPE_EMAIL_RESET: $this->redirect('/auth'); break;
+                case Model_Auth::TYPE_EMAIL_RESET: $this->redirect('/auth?reseted=1'); break;
                 case Model_Auth::TYPE_EMAIL_CHANGE: $this->redirect('/user/settings?success=1'); break;
             }
         }

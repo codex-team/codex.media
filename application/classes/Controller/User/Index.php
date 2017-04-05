@@ -65,6 +65,8 @@ class Controller_User_Index extends Controller_Base_preDispatch
         $this->view['list']        = $list;
         $this->view['listFactory'] = View::factory('/templates/users/' . $list, $this->view);
 
+        $this->view['emailConfirmed'] = Arr::get($_GET, 'confirmed', 0);
+
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/users/profile', $this->view);
 

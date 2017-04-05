@@ -227,13 +227,23 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             goto finish;
         }
 
+        if (Model_User::exists($email)) {
+            $response['message'] = 'Похоже, такой email уже занят';
+            goto finish;
+        }
+
 
         if (Security::check($csrf)) {
 
-            $this->user->updateUser($this->user->id, array(
+            $update = $this->user->updateUser($this->user->id, array(
                 'email'       => $email,
                 'isConfirmed' => 0
             ));
+
+            if (!$update) {
+                $response['message'] = 'Произошла ошибка при сохранении email';
+                goto finish;
+            }
 
             $model_auth = new Model_Auth($this->user);
             $model_auth->sendConfirmationEmail();

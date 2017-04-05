@@ -143,7 +143,7 @@ class Controller_Auth_Signup extends Controller_Auth_Base
 
         $user->updateUser($user->id, array('isConfirmed' => 1));
 
-        $this->redirect('/user/'.$id);
+        $this->redirect('/user/' . $id . '?confirmed=1');
 
     }
 
