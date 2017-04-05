@@ -83,7 +83,10 @@ module.exports = (function () {
             sanitizer: {
                 tags : {
                     p : {},
-                    a : {}
+                    a : {
+                        href: true,
+                        target: '_blank'
+                    }
                 }
             },
             tools : {
