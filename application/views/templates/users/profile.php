@@ -21,12 +21,13 @@
                     /** Island settings menu */
                     codex.islandSettings.init({
                         selector : '.js-user-settings',
-                        items : [{
+                        items : [
+                            {
                                 title : '<?= $viewUser->banned ? 'Разблокировать' : 'Заблокировать' ?>',
                                 handler : codex.user.changeStatus,
                                 arguments : {
                                     userId : <?= $viewUser->id ?>,
-                                    status : <?= !$viewUser->banned; ?>
+                                    status : <?= $viewUser->banned ? 0 : 1; ?>
                                 }
                             },
                             {

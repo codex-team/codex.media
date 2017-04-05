@@ -2,9 +2,6 @@
 
 class Controller_User_Modify extends Controller_Base_preDispatch
 {
-    const BAN   = 1;
-    const UNBAN = 0;
-
     public function action_settings() {
 
         if (!$this->user->id) {
@@ -147,17 +144,17 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         $response['success'] = 1;
         $userId = Arr::get($_GET, 'userId', 0);
-        $status = Arr::get($_GET, 'status', '0');
+        $status = Arr::get($_GET, 'status', Model_User::USER_UNBANNED);
 
         $viewUser = new Model_User($userId);
 
         switch ($status) {
-            case self::BAN:
+            case Model_User::USER_BANNED:
                 $response['message'] = 'Пользователь заблокирован';
                 $response['buttonText'] = 'Разблокировать';
                 break;
 
-            case self::UNBAN:
+            case Model_User::USER_UNBANNED:
                 $response['message'] = 'Пользователь разблокирован';
                 $response['buttonText'] = 'Заблокировать';
                 break;
@@ -189,7 +186,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         $response['success'] = 1;
         $userId = Arr::get($_GET, 'userId', 0);
-        $role   = Arr::get($_GET, 'role', '1');
+        $role   = Arr::get($_GET, 'role', Model_User::USER_ROLE_REGISTERED);
 
         $viewUser = new Model_User($userId);
 
@@ -199,21 +196,18 @@ class Controller_User_Modify extends Controller_Base_preDispatch
                 $newRole = Model_User::USER_ROLE_ADMIN;
                 $response['message']    = 'Пользователь имеет права администратора';
                 $response['buttonText'] = 'Убрать права администратора';
-
                 break;
 
             case Model_User::USER_ROLE_REGISTERED:
                 $newRole = Model_User::USER_ROLE_REGISTERED;
-                $response['message']    = 'Пользователь простой';
-                $response['buttonText'] = 'Сделать учителем';
-
+                $response['message']    = 'Установлен статус простого пользователя';
+                $response['buttonText'] = 'Сделать преподавателем';
                 break;
 
             case Model_User::USER_ROLE_TEACHER:
                 $newRole = Model_User::USER_ROLE_TEACHER;
-                $response['message']    = 'Пользователь - учитель';
+                $response['message']    = 'Установлен статус учителя';
                 $response['buttonText'] = 'Не преподаватель';
-
                 break;
         }
 

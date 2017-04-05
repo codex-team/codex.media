@@ -3,6 +3,11 @@
  */
 module.exports = function () {
 
+    var GUESS   = 0;
+    var USER    = 1;
+    var TEACHER = 2;
+    var ADMIN   = 3;
+
     /**
      * Manupulations with user photo
      * @return {Object} - Module
@@ -117,11 +122,11 @@ module.exports = function () {
                  */
                 switch (additionalData.status) {
 
-                    case 1:
-                        itemParams.arguments.status = 0;
+                    case USER:
+                        itemParams.arguments.status = GUESS;
                         break;
                     default:
-                        itemParams.arguments.status = 1;
+                        itemParams.arguments.status = USER;
                         break;
                 }
 
@@ -168,11 +173,11 @@ module.exports = function () {
                  */
                 switch (additionalData.role) {
 
-                    case 2:
-                        itemParams.arguments.role = 1;
+                    case TEACHER:
+                        itemParams.arguments.role = USER;
                         break;
                     default:
-                        itemParams.arguments.role = 2;
+                        itemParams.arguments.role = TEACHER;
                         break;
                 }
 

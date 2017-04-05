@@ -39,6 +39,9 @@ class Model_User extends Model
     const USER_ROLE_REGISTERED = 1;
     const USER_ROLE_GUEST      = 0;
 
+    const USER_BANNED   = 1;
+    const USER_UNBANNED = 0;
+
 
     const USER_POSTS_LIMIT_PER_PAGE = 7; # Must be > 1
 
