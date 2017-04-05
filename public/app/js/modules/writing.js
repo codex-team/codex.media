@@ -78,11 +78,17 @@ module.exports = (function () {
         codex.editor.start({
 
             holderId:  settings.holderId,
-
             initialBlockPlugin : settings.initialBlockPlugin,
-
             hideToolbar: settings.hideEditorToolbar,
-
+            sanitizer: {
+                tags : {
+                    p : {},
+                    a : {
+                        href: true,
+                        target: '_blank'
+                    }
+                }
+            },
             tools : {
                 paragraph: {
                     type               : 'paragraph',
