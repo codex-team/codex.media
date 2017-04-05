@@ -3,11 +3,6 @@
  */
 module.exports = function () {
 
-    var GUEST   = 0;
-    var USER    = 1;
-    var TEACHER = 2;
-    var ADMIN   = 3;
-
     /**
      * Manupulations with user photo
      * @return {Object} - Module
@@ -89,112 +84,84 @@ module.exports = function () {
     }();
 
     /**
-     * Changes user status
-     * @param  {} additionalData handler arguments
-     * @return {[type]}          [description]
+     * Updatin user ROLE or STATUS
+     * @type {{status, role}}
      */
-    var changeStatus = function (additionalData) {
+    var promote = function () {
+
+        var status = function (args) {
+
+            var itemClicked = this,
+                userId = itemClicked.dataset.id,
+                value = args.value;
+
+            sendRequest(itemClicked, 'status', userId, value);
+
+        };
+
+        var role = function (args) {
+
+            var itemClicked = this,
+                userId = itemClicked.dataset.id,
+                value = args.value;
+
+            sendRequest(itemClicked, 'role', userId, value);
+
+        };
 
         /**
-         * getting necessary datasets from clicked item
-         * @type {changeStatus}
+         * Change user role or status request
+         * @param {Element} itemClicked     - menu item element
+         * @param {string}  field           - field to save (role|status)
+         * @param {Number}  userId          - target user id
+         * @param {Number}  value           - new value
          */
-        var itemClicked = this,
-            clickedItemFromMenu  = itemClicked.dataset.index, // menu index
-            clickedItemIndex     = itemClicked.dataset.itemIndex;
+        var sendRequest = function (itemClicked, field, userId, value) {
 
-        itemClicked.classList.add('loading');
+            var url = '/user/' + userId + '/change/' + field,
+                requestData = new FormData();
 
-        /** get settings from cached menu to change the title */
-        var itemParams = codex.islandSettings.getItemParams(clickedItemFromMenu, clickedItemIndex);
+            requestData.append('value', value);
 
-        codex.ajax.call({
-            url : '/user/changeStatus?userId=' + additionalData.userId + '&status=' + additionalData.status,
-            success: function (response) {
+            codex.ajax.call({
+                url : url,
+                type : 'POST',
+                data: requestData,
+                beforeSend : function () {
 
-                response = JSON.parse(response);
+                    itemClicked.classList.add('loading');
 
-                itemClicked.classList.remove('loading');
-                itemParams.title  = response.buttonText;
+                },
+                success: function (response) {
 
-                /**
-                 * Change arguments on activated menu
-                 */
-                switch (additionalData.status) {
+                    var menuIndex = itemClicked.dataset.index,
+                        itemIndex = itemClicked.dataset.itemIndex;
 
-                    case USER:
-                        itemParams.arguments.status = GUESS;
-                        break;
-                    default:
-                        itemParams.arguments.status = USER;
-                        break;
+                    response = JSON.parse(response);
+
+                    console.log(response);
+
+                    itemClicked.classList.remove('loading');
+
+                    codex.islandSettings.updateItem(menuIndex, itemIndex, response.buttonText, null, {
+                        value: response.buttonValue
+                    });
+
+                    codex.alerts.show(response.message);
+
                 }
+            });
 
-                replaceMenuTitle(itemClicked, response.buttonText);
+        };
 
-                codex.alerts.show(response.message);
+        return {
+            status : status,
+            role   : role
+        };
 
-            }
-        });
+    }();
 
-    };
 
-    /**
-     * Changes user status
-     * @param  {} additionalData handler arguments
-     * @return {[type]}          [description]
-     */
-    var changeRole = function (additionalData) {
-
-        /**
-         * getting necessary datasets from clicked item
-         * @type {changeStatus}
-         */
-        var itemClicked = this,
-            clickedItemFromMenu  = itemClicked.dataset.index, // menu index
-            clickedItemIndex     = itemClicked.dataset.itemIndex;
-
-        itemClicked.classList.add('loading');
-
-        /** get settings from cached menu to change the title */
-        var itemParams = codex.islandSettings.getItemParams(clickedItemFromMenu, clickedItemIndex);
-
-        codex.ajax.call({
-            url : '/user/changeRole?userId=' + additionalData.userId + '&role=' + additionalData.role,
-            success: function (response) {
-
-                response = JSON.parse(response);
-
-                itemClicked.classList.remove('loading');
-                itemParams.title  = response.buttonText;
-
-                /**
-                 * Change arguments on activated menu
-                 */
-                switch (additionalData.role) {
-
-                    case TEACHER:
-                        itemParams.arguments.role = USER;
-                        break;
-                    default:
-                        itemParams.arguments.role = TEACHER;
-                        break;
-                }
-
-                replaceMenuTitle(itemClicked, response.buttonText);
-
-                codex.alerts.show(response.message);
-
-            }
-        });
-
-    };
-
-    var replaceMenuTitle = function (currentMenu, newContent) {
-
-        currentMenu.textContent = newContent;
-
-    };
 
     var changePassword = function () {
 
@@ -478,8 +445,7 @@ module.exports = function () {
 
     return {
         changePassword: changePassword,
-        changeStatus: changeStatus,
-        changeRole: changeRole,
+        promote: promote,
         photo: photo,
         bio : bio,
     };

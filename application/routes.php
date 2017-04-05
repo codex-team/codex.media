@@ -73,6 +73,14 @@ Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->d
 /**
  * User section
  */
+Route::set('CHANGE_USER_STATUS', 'user/<id>/change/<field>', array(
+    'id' => $DIGIT,
+    'field' => 'role|status'
+))->defaults(array(
+    'controller'      => 'user_modify',
+    'action'          => 'promote'
+));
+
 Route::set('PROFILE', 'user/<id>(/<list>(/<page_number>))', array('id' => $DIGIT, 'list' => $USER_FEED_LISTS, 'page_number' => $DIGIT))->defaults(array(
     'controller' => 'User_Index',
     'action' => 'profile'
@@ -111,17 +119,6 @@ Route::set('AJAX_FILE_TRANSPORT', 'upload/<type>')->defaults(array(
 Route::set('REPEAT_CONFIRMATION_EMAIL_SENDING', 'ajax/confirmation-email')->defaults(array(
     'controller'      => 'ajax',
     'action'          => 'send_confirmation_email'
-));
-
-
-Route::set('CHANGE_USER_STATUS', 'user/changeStatus')->defaults(array(
-    'controller'      => 'user_modify',
-    'action'          => 'changeStatus'
-));
-
-Route::set('CHANGE_USER_ROLE', 'user/changeRole')->defaults(array(
-    'controller'      => 'user_modify',
-    'action'          => 'changeRole'
 ));
 
 

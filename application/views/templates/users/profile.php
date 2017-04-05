@@ -24,18 +24,16 @@
                         items : [
                             {
                                 title : '<?= $viewUser->isBanned ? 'Разблокировать' : 'Заблокировать' ?>',
-                                handler : codex.user.changeStatus,
+                                handler : codex.user.promote.status,
                                 arguments : {
-                                    userId : <?= $viewUser->id ?>,
-                                    status : <?= $viewUser->isBanned ? 0 : 1; ?>
+                                    value : <?= $viewUser->isBanned ? 0 : 1; ?>
                                 }
                             },
                             {
                                 title : '<?= !$viewUser->isTeacher ? 'Сделать преподавателем' : 'Не преподаватель' ?>',
-                                handler : codex.user.changeRole,
+                                handler : codex.user.promote.role,
                                 arguments : {
-                                    userId : <?= $viewUser->id ?>,
-                                    role : <?= !$viewUser->isTeacher ? Model_User::TEACHER : Model_User::REGISTERED; ?>
+                                    value : <?= !$viewUser->isTeacher ? Model_User::TEACHER : Model_User::REGISTERED; ?>
                                 }
                             }]
                     });

@@ -130,20 +130,6 @@ module.exports = (function () {
     };
 
     /**
-     * Returns item parameters from menu
-     * @param menuIndex
-     * @param itemIndex
-     *
-     * @description returns from activated menus via menuIndex
-     * item via itemIndex all settings
-     */
-    var getItemParams = function (menuIndex, itemIndex) {
-
-        return activated[menuIndex].settings.items[itemIndex];
-
-    };
-
-    /**
      * Fills menu with items
      * @param  {Array}   items     list of menu items
      * @param  {Element} toggler   islan menu icon with data-attributes
@@ -234,14 +220,15 @@ module.exports = (function () {
      * @param  {Number} itemIndex      - Item index stored in item's dataset.itemIndex
      * @param  {String} title          - new title
      * @param  {Function} handler      - new handler
+     * @param  {Object} args           - handler arguments
      */
-    var updateItem = function (togglerIndex, itemIndex, title, handler) {
+    var updateItem = function (togglerIndex, itemIndex, title, handler, args) {
 
         console.assert(activated[togglerIndex], 'Toggler was not found by index');
 
         var currentMenu = activated[togglerIndex],
-            currentItem,
-            currentItemEl;
+            currentItemEl = menuHolder.childNodes[itemIndex],
+            currentItem;
 
         if (!currentMenu) {
 
@@ -257,16 +244,21 @@ module.exports = (function () {
 
         }
 
-        if (typeof handler == 'function') {
+        if (handler && typeof handler == 'function') {
 
+            currentItemEl.removeEventListener('click', currentItem.handler);
             currentItem.handler = handler;
+
+        }
+
+        if (typeof args == 'object') {
+
+            currentItem.arguments = args;
 
         }
 
         /** Update opened menu item text  */
         if (menuHolder) {
-
-            currentItemEl = menuHolder.childNodes[itemIndex];
 
             if ( title ) {
 
@@ -276,11 +268,7 @@ module.exports = (function () {
 
             if ( handler ) {
 
-                currentItemEl.addEventListener('click', handler);
-                /**
-                 * @todo  remove event listener
-                 */
-                // currentItemEl.removeEventListener('click', oldHanlder);
+                currentItemEl.addEventListener('click', currentItem.handler.bind(currentItemEl, currentItem.arguments));
 
             }
 
@@ -292,7 +280,6 @@ module.exports = (function () {
 
     return {
         init : init,
-        getItemParams : getItemParams,
         updateItem : updateItem,
         prepareToggler : prepareToggler
     };

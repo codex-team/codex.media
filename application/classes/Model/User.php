@@ -45,7 +45,7 @@ class Model_User extends Model
 
     /** User status constants */
     const BANNED   = 1;
-    const STANDART = 0;
+    const STANDARD = 0;
 
 
     const USER_POSTS_LIMIT_PER_PAGE = 7; # Must be > 1
@@ -135,6 +135,11 @@ class Model_User extends Model
 
     }
 
+    /**
+     * @param $user_id
+     * @param $fields
+     * @return boolean
+     */
     public function updateUser($user_id, $fields)
     {
         $user = Dao_Users::update()
