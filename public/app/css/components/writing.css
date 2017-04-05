@@ -195,6 +195,12 @@
     margin: 0;
 }
 
+.editor-wrapper a {
+    color: var(--linkColor);
+    padding-bottom: 1px;
+    border-bottom: 1px solid color(var(--linkColor) alpha(-70%));
+}
+
 @media (--mobile) {
     .writing {
         padding: 15px;
