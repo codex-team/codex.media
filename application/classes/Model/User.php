@@ -267,7 +267,7 @@ class Model_User extends Model
     public static function exists($field, $value) {
 
         $selection = Dao_Users::select($field)
-            ->where('email', '=', $value)
+            ->where($field, '=', $value)
             ->limit(1)
             ->execute();
 
