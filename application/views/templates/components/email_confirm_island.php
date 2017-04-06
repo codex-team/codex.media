@@ -1,4 +1,4 @@
-<div class="form island island--padded island--margined" id="email-confirmation">
+<div class="form island island--padded island--margined island-bottomed" id="email-confirmation">
 
     <label class="form__label" for="email">Email</label>
     <input class="form__input <?= !$user->isConfirmed ? 'form__input--invalid' : '' ?>" type="email" name="email" id="email" value="<?= $user->email; ?>" oninput="codex.user.email.changed(this)">
@@ -8,7 +8,7 @@
         <span class="form__hint">
 
             <span class="form__hint-icon" style="color:<?= $user->isConfirmed?'#1EDA8A':'#D86565'; ?>;">
-                 <? include(DOCROOT . "public/app/svg/".($user->isConfirmed?'check-circle':'cross-circle').".svg") ?>
+                 <? include(DOCROOT . "public/app/svg/". ( $user->isConfirmed ? 'check-circle' : 'cross-circle' ) . ".svg") ?>
             </span>
 
             <?= $user->isConfirmed ? 'Подтвержден' : 'Не подтвержден' ?>

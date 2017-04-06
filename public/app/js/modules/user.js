@@ -114,48 +114,34 @@ module.exports = function () {
 
     var changePassword = function () {
 
-        var wrapper = null,
+        var form    = null,
             input   = null,
-            message = null,
             button  = null;
 
-        var showForm = function (wrapper_) {
+        var showForm = function (lockButton) {
 
-            var label = document.createElement('LABEL');
+            lockButton.classList.add('hide');
 
-            wrapper = wrapper_;
-            input   = document.createElement('INPUT');
-            button  = document.createElement('SPAN');
-            message = document.createElement('DIV');
+            form = document.getElementById('change-password-form');
+            input = document.getElementById('change-password-input');
 
-            label.classList.add('form__label');
-            label.textContent = 'Текущий пароль';
+            form.classList.remove('hide');
 
-            input.classList.add('form__input');
-            input.type = 'password';
-
-            button.classList.add('button');
-            button.classList.add('form__hint');
-            button.classList.add('master');
-            button.textContent = 'Подтвердить';
-
-            button.addEventListener('click', requestChange);
-
-            wrapper.classList.remove('island--centered');
-            wrapper.classList.remove('profile-settings__change-password-btn');
-            wrapper.innerHTML = '';
-            wrapper.onclick   = '';
-
-            wrapper.appendChild(label);
-            wrapper.appendChild(input);
-            wrapper.appendChild(button);
-            wrapper.appendChild(message);
 
         };
 
-        var requestChange = function () {
+        var set = function (form_) {
 
-            if (button) button.classList.add('loading');
+            form = form_;
+            requestChange(form);
+
+        };
+
+        var requestChange = function (button_) {
+
+            button = button_;
+
+            button.classList.add('loading');
 
             codex.ajax.call({
                 url: '/user/passchange',
@@ -172,7 +158,7 @@ module.exports = function () {
 
         var ajaxResponse = function (response) {
 
-            if (button) button.classList.remove('loading');
+            button.classList.remove('loading');
 
             try {
 
@@ -186,7 +172,7 @@ module.exports = function () {
 
             if (!response.success) {
 
-                input.classList.add('form__input--invalid');
+                if (input) input.classList.add('form__input--invalid');
 
                 codex.alerts.show({
                     type: 'error',
@@ -196,7 +182,7 @@ module.exports = function () {
 
             } else {
 
-                showSuccessMessage(response.message);
+                showSuccessMessage();
                 return;
 
             }
@@ -204,42 +190,24 @@ module.exports = function () {
 
         };
 
-        var showSuccessMessage = function (text) {
+        var showSuccessMessage = function () {
 
             codex.alerts.show({
                 type: 'success',
                 message: 'Мы выслали инструкцию на вашу почту'
             });
 
-            if (!wrapper || wrapper.dataset.success) {
+            form.classList.add('hide');
 
-                return;
-
-            }
-
-            var textDiv = document.createElement('DIV');
-
-            button = document.createElement('BUTTON');
-
-            textDiv.textContent = text;
-            textDiv.classList.add('profile-settings__change-password-result-text');
-
-            button.classList.add('button', 'master');
-            button.addEventListener('click', requestChange);
-            button.textContent = 'Отправить еще раз';
-
-            wrapper.innerHTML = '';
-            wrapper.classList.add('island--centered');
-
-            wrapper.appendChild(textDiv);
-            wrapper.appendChild(button);
-            wrapper.dataset.success = 1;
+            form = document.getElementById('change-password-success');
+            form.classList.remove('hide');
 
         };
 
         return {
             showForm: showForm,
-            requestChange: requestChange
+            requestChange: requestChange,
+            set: set,
         };
 
     }();
@@ -486,43 +454,22 @@ module.exports = function () {
 
         };
 
-        var set = function (wrapper) {
+        var set = function (button) {
 
-            var label = document.createElement('LABEL'),
-                input   = document.createElement('INPUT'),
-                button  = document.createElement('SPAN'),
-                message = document.createElement('DIV');
+            button.classList.add('hide');
 
-            label.classList.add('form__label');
-            label.textContent = 'Email';
+            var form = document.getElementById('set-email-form');
 
-            input.classList.add('form__input');
-            input.type = 'email';
+            form.classList.remove('hide');
 
-            button.classList.add('button');
-            button.classList.add('form__hint');
-            button.classList.add('master');
-            button.textContent = 'Привязать';
-
-            button.addEventListener('click', send);
-
-            wrapper.classList.remove('island--centered');
-            wrapper.classList.remove('profile-settings__change-password-btn');
-            wrapper.innerHTML = '';
-            wrapper.onclick   = '';
-
-            wrapper.appendChild(label);
-            wrapper.appendChild(input);
-            wrapper.appendChild(button);
-            wrapper.appendChild(message);
-
-            currentEmail = input;
+            currentEmail = document.getElementById('set-email-input');
 
         };
 
         return {
             sendConfirmation: sendConfirmation,
             changed: changed,
+            send: send,
             set: set,
         };
 
