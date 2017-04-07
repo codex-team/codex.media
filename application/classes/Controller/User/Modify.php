@@ -21,6 +21,9 @@ class Controller_User_Modify extends Controller_Base_preDispatch
            $this->view['success'] = $this->update();
         };
 
+        $model_auth = new Model_Auth($this->user);
+        $this->view['newPasswordRequested'] = $model_auth->getUserIdByHash(Model_Auth::getHashByUser($this->user), Model_Auth::TYPE_EMAIL_CHANGE);
+
         $this->template->content = View::factory('/templates/users/settings', $this->view);
 
     }
@@ -69,12 +72,21 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         );
 
         $request  = json_decode(file_get_contents('php://input'));
-        $password = $request->currentPassword;
+        $model_auth = new Model_Auth($this->user);
         $csrf     = $request->csrf;
 
         if (!Security::check($csrf) || !$this->request->is_ajax()) {
             throw new HTTP_Exception_403();
         }
+
+        if (!empty($request->repeatEmail) && $request->repeatEmail && $model_auth->getUserIdByHash(Model_Auth::getHashByUser($this->user), Model_Auth::TYPE_EMAIL_CHANGE)) {
+            $model_auth->sendChangePasswordEmail();
+            $response['success'] = 1;
+            $this->response->body(json_encode($response));
+            return;
+        }
+
+        $password = $request->currentPassword;
 
         if (empty($password) && $this->user->password) {
 
@@ -91,9 +103,6 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             return;
 
         }
-
-
-        $model_auth = new Model_Auth($this->user);
 
         $model_auth->sendChangePasswordEmail();
 

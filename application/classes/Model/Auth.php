@@ -86,7 +86,7 @@ class Model_Auth extends Model_preDispatch
         return $email->send(
             [$this->user->email],
             [$GLOBALS['SITE_MAIL'], $_SERVER['HTTP_HOST']],
-            "Сброс пароля на ".$_SERVER['HTTP_HOST'],
+            "Смена пароля на ".$_SERVER['HTTP_HOST'],
             $message,
             false
         );
@@ -104,9 +104,7 @@ class Model_Auth extends Model_preDispatch
         $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:') . 'hashes:';
         $key        = $key_prefix . $this->HASHES_KEYS[$type];
 
-        $salt = Arr::get($_SERVER, 'EMAIL_HASH_SALT', self::DEFAULT_EMAIL_HASH_SALT);
-
-        $hash = hash('sha256', $this->user->id . $salt . $this->user->email);
+        $hash = self::getHashByUser($this->user);
 
         $this->redis->hSet($key, $hash, $this->user->id);
 
@@ -137,6 +135,14 @@ class Model_Auth extends Model_preDispatch
         $key        = $key_prefix . $this->HASHES_KEYS[$type];
 
         $this->redis->hDel($key, $hash);
+    }
+
+    public static function getHashByUser($user) {
+
+        $salt = Arr::get($_SERVER, 'EMAIL_HASH_SALT', self::DEFAULT_EMAIL_HASH_SALT);
+
+        return hash('sha256', $user->id . $salt . $user->email);
+
     }
 
 }

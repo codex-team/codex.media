@@ -212,6 +212,41 @@ module.exports = function () {
 
         };
 
+        var repeatEmail = function (button_) {
+
+            button_.classList.add('loading');
+
+            codex.ajax.call({
+                url: '/user/passchange',
+                type: 'POST',
+                data: JSON.stringify({
+                    repeatEmail: true,
+                    csrf: window.csrf
+                }),
+                success: function () {
+
+                    button_.classList.remove('loading');
+
+                    codex.alerts.show({
+                        type: 'success',
+                        message: 'Мы отправили на вашу почту письмо'
+                    });
+
+                },
+                error: function () {
+
+                    button_.classList.remove('loading');
+
+                    codex.alerts.show({
+                        type: 'error',
+                        message: 'Произошла ошибка'
+                    });
+
+                }
+            });
+
+        };
+
         var ajaxResponse = function (response) {
 
             button.classList.remove('loading');
@@ -264,6 +299,7 @@ module.exports = function () {
             showForm: showForm,
             requestChange: requestChange,
             set: set,
+            repeatEmail: repeatEmail,
         };
 
     }();
