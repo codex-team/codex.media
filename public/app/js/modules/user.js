@@ -172,7 +172,11 @@ module.exports = function () {
         var form    = null,
             input   = null,
             button  = null;
-
+        /**
+         * Shows form with input for current password
+         *
+         * @param lockButton
+         */
         var showForm = function (lockButton) {
 
             lockButton.classList.add('hide');
@@ -185,6 +189,11 @@ module.exports = function () {
 
         };
 
+        /**
+         * Handler for set password button
+         *
+         * @param form_
+         */
         var set = function (form_) {
 
             form = form_;
@@ -193,36 +202,50 @@ module.exports = function () {
 
         };
 
+        /**
+         * Requests email with change password link
+         *
+         * @param button_
+         * @param dontShowResponse - if TRUE, response will be ignored
+         */
         var requestChange = function (button_, dontShowResponse) {
 
             button = button_;
-
             button.classList.add('loading');
+
+            var data = new FormData();
+
+            data.append('csrf', window.csrf);
+            data.append('currentPassword', input ? input.value : '');
 
             codex.ajax.call({
                 url: '/user/passchange',
                 type: 'POST',
-                data: JSON.stringify({
-                    csrf: window.csrf,
-                    currentPassword: input ? input.value : ''
-                }),
+                data: data,
                 success: dontShowResponse ? null : ajaxResponse,
                 error: ajaxResponse
             });
 
         };
 
+        /**
+         * Repeat password change email sending
+         *
+         * @param button_
+         */
         var repeatEmail = function (button_) {
 
             button_.classList.add('loading');
 
+            var data = new FormData();
+
+            data.append('csrf', window.csrf);
+            data.append('repeatEmail', true);
+
             codex.ajax.call({
                 url: '/user/passchange',
                 type: 'POST',
-                data: JSON.stringify({
-                    repeatEmail: true,
-                    csrf: window.csrf
-                }),
+                data: data,
                 success: function () {
 
                     button_.classList.remove('loading');
@@ -281,6 +304,10 @@ module.exports = function () {
 
         };
 
+        /**
+         * Shows success email sending message
+         *
+         */
         var showSuccessMessage = function () {
 
             codex.alerts.show({
