@@ -22,7 +22,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         };
 
         $model_auth = new Model_Auth($this->user);
-        $this->view['newPasswordRequested'] = $model_auth->getUserIdByHash(Model_Auth::getHashByUser($this->user), Model_Auth::TYPE_EMAIL_CHANGE);
+        $this->view['newPasswordRequested'] = $model_auth->checkIfEmailWasSent(Model_Auth::TYPE_EMAIL_CHANGE);
 
         $this->template->content = View::factory('/templates/users/settings', $this->view);
 
@@ -79,8 +79,8 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             throw new HTTP_Exception_403();
         }
 
-        if (!empty($request->repeatEmail) && $request->repeatEmail && $model_auth->getUserIdByHash(Model_Auth::getHashByUser($this->user), Model_Auth::TYPE_EMAIL_CHANGE)) {
-            $model_auth->sendChangePasswordEmail();
+        if (!empty($request->repeatEmail) && $request->repeatEmail && $model_auth->checkIfEmailWasSent(Model_Auth::TYPE_EMAIL_CHANGE)) {
+            $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CHANGE);
             $response['success'] = 1;
             $this->response->body(json_encode($response));
             return;
@@ -104,7 +104,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         }
 
-        $model_auth->sendChangePasswordEmail();
+        $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CHANGE);
 
         $response = array(
             'success' => 1,
@@ -291,7 +291,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             }
 
             $model_auth = new Model_Auth($this->user);
-            $model_auth->sendConfirmationEmail();
+            $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CONFIRM);
 
             $response['success'] = 1;
 

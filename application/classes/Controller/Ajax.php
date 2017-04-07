@@ -6,7 +6,7 @@ class Controller_Ajax extends Controller_Base_preDispatch
 
         $model_auth = new Model_Auth($this->user);
 
-        $isSucces = $model_auth->sendConfirmationEmail();
+        $isSucces = $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CONFIRM);
 
         $message = $isSucces?'Письмо отправлено':'Во время отправки письма произошла ошибка';
         $result  = $isSucces?'ok':'error';

@@ -515,7 +515,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         }
 
         $model_auth = new Model_Auth($user);
-        $model_auth->sendResetPasswordEmail();
+        $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_RESET);
 
         return TRUE;
 
