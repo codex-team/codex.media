@@ -164,21 +164,6 @@ class Model_User extends Model
         Cookie::set('hr', sha1('dfhgga23'.$id.'dfhshgf23'), Date::MONTH);
     }
 
-    public function setUserRole($role)
-    {
-        Dao_Users::update()
-            ->where('id', '=', $this->id)
-            ->set('role', $role)
-            ->clearcache('user:' . $this->id, array('users'))
-            ->execute();
-
-        $this->role       = $role;
-        $this->isTeacher    = $this->isTeacher();
-        $this->isAdmin      = $this->isAdmin();
-
-        return true;
-    }
-
     /**
      * Updates user's photos
      * @param  string  $filename    new photo filename

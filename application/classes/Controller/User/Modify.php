@@ -149,7 +149,6 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         if (!$this->user->isAdmin) {
 
-            $this->ajaxResponse['success'] = 0;
             $this->ajaxResponse['message'] = 'Access denied';
             goto finish;
         }
@@ -160,6 +159,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
                 break;
             case 'role':
                 $this->ajaxResponse['success'] = (boolean) $this->changeRole($userId, $value);
+                break;
         }
 
         finish:

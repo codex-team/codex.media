@@ -151,7 +151,7 @@ module.exports = function () {
 
                     codex.alerts.show({
                         type: response.success ? 'success' : 'error',
-                        message: response.message
+                        message: response.message || 'Не удалось сохранить изменения'
                     });
 
                 }

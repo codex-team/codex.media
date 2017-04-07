@@ -20,11 +20,6 @@ class Controller_User_Index extends Controller_Base_preDispatch
             throw HTTP_Exception::factory(404);
         }
 
-        if ($this->user->isAdmin && $newRole) {
-
-            $this->view['isUpdateSaved'] = $viewUser->setUserRole(self::translate_user_status($newRole));
-        }
-
         $viewUser->isMe = $viewUser->id == $this->user->id;
         $this->view['viewUser']  = $viewUser;
 

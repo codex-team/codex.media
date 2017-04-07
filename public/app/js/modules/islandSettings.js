@@ -188,6 +188,10 @@ module.exports = (function () {
 
     };
 
+    /**
+     * Single callback for all items handler
+     * Calls defined handler on itemClicked (Menu li Element) context and trasmits arguments
+     */
     var itemClicked = function () {
 
         var itemEl = this,
