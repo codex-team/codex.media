@@ -2,8 +2,12 @@
 
 class Controller_User_Modify extends Controller_Base_preDispatch
 {
-    const TOGGLE_BAN = -1;
-    const TOGGLE_PROMOTE = 2;
+    /**
+     * @var array - AJAX response
+     */
+    private $ajaxResponse = array(
+        'success' => 0
+    );
 
     public function action_settings() {
 
@@ -134,71 +138,102 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         $this->response->body( json_encode($response) );
     }
 
-
-    public function action_changeStatus()
+    /**
+     *
+     */
+    public function action_promote()
     {
-        $response = array();
+        $field  = $this->request->param('field');
+        $userId = $this->request->param('id');
+        $value  = Arr::get($_POST, 'value');
 
         if (!$this->user->isAdmin) {
 
-            $response['success'] = 0;
-            $response['message'] = 'Access denied';
+            $this->ajaxResponse['message'] = 'Access denied';
             goto finish;
-
         }
 
-        $response['success'] = 1;
-        $userId = Arr::get($_GET, 'userId', 0);
-        $status = Arr::get($_GET, 'status', '');
-
-        $viewUser = new Model_User($userId);
-
-        switch ($status) {
-            case self::TOGGLE_BAN:
-
-                $newStatus =
-                    $viewUser->status != Model_User::USER_STATUS_BANNED ?
-                    Model_User::USER_STATUS_BANNED :
-                    Model_User::USER_STATUS_REGISTERED;
-
+        switch ($field) {
+            case 'status':
+                $this->ajaxResponse['success'] = (boolean) $this->changeStatus($userId, $value);
                 break;
-
-            case self::TOGGLE_PROMOTE:
-
-                $newStatus =
-                    $viewUser->status != Model_User::USER_STATUS_TEACHER ?
-                    Model_User::USER_STATUS_TEACHER :
-                    Model_User::USER_STATUS_REGISTERED;
-
-                break;
-
-            default:
-                break;
-        }
-
-        $viewUser->updateUser(
-            $viewUser->id,
-            array('status' => $newStatus)
-        );
-
-        switch ($newStatus) {
-            case Model_User::USER_STATUS_BANNED:
-                $response['message'] = 'Пользователь заблокирован';
-                break;
-
-            case Model_User::USER_STATUS_REGISTERED:
-                $response['message'] = 'Установлен обычный статус пользователя';
-                break;
-
-            case Model_User::USER_STATUS_TEACHER:
-                $response['message'] = 'Пользователь добавлен в группы "Учителя"';
+            case 'role':
+                $this->ajaxResponse['success'] = (boolean) $this->changeRole($userId, $value);
                 break;
         }
 
         finish:
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-        $this->response->body( json_encode($response) );
+        $this->response->body( json_encode($this->ajaxResponse) );
     }
 
+    /**
+     * @param $userId
+     * @param $status
+     * @return boolean
+     */
+    private function changeStatus($userId, $status)
+    {
+        $viewUser = new Model_User($userId);
+
+        switch ($status) {
+            case Model_User::BANNED:
+                $this->ajaxResponse['message']     = 'Пользователь заблокирован';
+                $this->ajaxResponse['buttonText']  = 'Разблокировать';
+                $this->ajaxResponse['buttonValue'] = Model_User::STANDARD;
+                break;
+
+            case Model_User::STANDARD:
+                $this->ajaxResponse['message']     = 'Пользователь разблокирован';
+                $this->ajaxResponse['buttonText']  = 'Заблокировать';
+                $this->ajaxResponse['buttonValue'] = Model_User::BANNED;
+                break;
+        }
+
+        return $viewUser->updateUser($viewUser->id, array(
+            'status' => $status
+        ));
+
+    }
+
+    /**
+     * @param $userId
+     * @param $role
+     * @return boolean
+     */
+    private function changeRole($userId, $role)
+    {
+        $viewUser = new Model_User($userId);
+
+        switch ($role) {
+            case Model_User::ADMIN:
+                $newRole = Model_User::ADMIN;
+                $this->ajaxResponse['message']    = 'Пользователь имеет права администратора';
+                $this->ajaxResponse['buttonText'] = 'Убрать права администратора';
+                $this->ajaxResponse['buttonValue'] = Model_User::REGISTERED;
+                break;
+
+            case Model_User::TEACHER:
+                $newRole = Model_User::TEACHER;
+                $this->ajaxResponse['message']    = 'Установлен статус учителя';
+                $this->ajaxResponse['buttonText'] = 'Не преподаватель';
+                $this->ajaxResponse['buttonValue'] = Model_User::REGISTERED;
+                break;
+
+            case Model_User::REGISTERED:
+            default:
+                $newRole = Model_User::REGISTERED;
+                $this->ajaxResponse['message']    = 'Установлен статус простого пользователя';
+                $this->ajaxResponse['buttonText'] = 'Сделать преподавателем';
+                $this->ajaxResponse['buttonValue'] = Model_User::TEACHER;
+                break;
+
+        }
+
+        return $viewUser->updateUser($viewUser->id, array(
+            'role' => $newRole
+        ));
+
+    }
 }

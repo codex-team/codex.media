@@ -182,9 +182,31 @@ module.exports = (function () {
         console.assert(typeof item.handler == 'function', 'islandSettings: item handler is not a function');
 
         itemEl.textContent = item.title;
-        itemEl.addEventListener('click', item.handler);
+        itemEl.addEventListener('click', itemClicked);
 
         return itemEl;
+
+    };
+
+    /**
+     * Single callback for all items handler
+     * Calls defined handler on itemClicked (Menu li Element) context and trasmits arguments
+     */
+    var itemClicked = function () {
+
+        var itemEl = this,
+            togglerIndex = itemEl.dataset.index,
+            itemIndex = itemEl.dataset.itemIndex,
+            menuParams,
+            handler,
+            args;
+
+        menuParams = getMenuParams(togglerIndex);
+
+        handler = menuParams.items[itemIndex].handler;
+        args    = menuParams.items[itemIndex].arguments;
+
+        handler.call(itemEl, args || {});
 
     };
 
@@ -220,14 +242,15 @@ module.exports = (function () {
      * @param  {Number} itemIndex      - Item index stored in item's dataset.itemIndex
      * @param  {String} title          - new title
      * @param  {Function} handler      - new handler
+     * @param  {Object} args           - handler arguments
      */
-    var updateItem = function (togglerIndex, itemIndex, title, handler) {
+    var updateItem = function (togglerIndex, itemIndex, title, handler, args) {
 
         console.assert(activated[togglerIndex], 'Toggler was not found by index');
 
         var currentMenu = activated[togglerIndex],
-            currentItem,
-            currentItemEl;
+            currentItemEl = menuHolder.childNodes[itemIndex],
+            currentItem;
 
         if (!currentMenu) {
 
@@ -243,7 +266,13 @@ module.exports = (function () {
 
         }
 
-        if (typeof handler == 'function') {
+        if ( args  ) {
+
+            currentItem.arguments = args;
+
+        }
+
+        if (handler && typeof handler == 'function') {
 
             currentItem.handler = handler;
 
@@ -252,21 +281,9 @@ module.exports = (function () {
         /** Update opened menu item text  */
         if (menuHolder) {
 
-            currentItemEl = menuHolder.childNodes[itemIndex];
-
             if ( title ) {
 
                 currentItemEl.textContent = title;
-
-            }
-
-            if ( handler ) {
-
-                currentItemEl.addEventListener('click', handler);
-                /**
-                 * @todo  remove event listener
-                 */
-                // currentItemEl.removeEventListener('click', oldHanlder);
 
             }
 
@@ -277,9 +294,9 @@ module.exports = (function () {
     };
 
     return {
-        init: init,
-        updateItem: updateItem,
-        prepareToggler: prepareToggler
+        init : init,
+        updateItem : updateItem,
+        prepareToggler : prepareToggler
     };
 
 })();
