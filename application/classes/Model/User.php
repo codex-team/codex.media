@@ -116,7 +116,7 @@ class Model_User extends Model
         $user = Dao_Users::select()
             ->where('id', '=', $id)
             ->limit(1)
-            ->cached(Date::HOUR, 'user:' . $id)
+            ->cached(5 * Date::MINUTE, 'user:' . $id)
             ->execute();
 
        return $this->fillByRow($user);
@@ -128,7 +128,7 @@ class Model_User extends Model
         $user = Dao_Users::select()
             ->where('email', '=', $email)
             ->limit(1)
-            ->cached(Date::HOUR, 'user:email:' . $email)
+            ->cached(5 * Date::MINUTE, 'user:email:' . $email)
             ->execute();
 
         return $this->fillByRow($user);
@@ -222,7 +222,7 @@ class Model_User extends Model
         $teachers = Dao_Users::select()
             ->where('role', '>=', $role)
             ->order_by('id','ASC')
-            ->cached(Date::HOUR, 'users_list:' . $role, array('users'))
+            ->cached(5 * Date::MINUTE, 'users_list:' . $role, array('users'))
             ->execute();
 
         return Model_User::rowsToModels($teachers);
