@@ -1,7 +1,5 @@
 <?php
 
-use SendGrid\Email;
-
 class Model_Auth extends Model_preDispatch
 {
 

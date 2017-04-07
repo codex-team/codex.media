@@ -16,12 +16,20 @@ class Model_Email {
     private $apiKey  = null;
     private $sender  = null;
 
-    private function __construct() {}
+    private function __construct() {
+
+        $this->sender = array(
+            'title' => Arr::get($_SERVER, 'SENDGRID_SENDER_NAME'),
+            'email' => Arr::get($_SERVER, 'SENDGRID_SENDER_EMAIL')
+        );
+
+        $this->apiKey = Arr::get($_SERVER, 'SENDGRID_API_KEY');
+
+    }
 
     private function __clone() {}
 
     protected static $_instance = null;
-
 
     public static function instance() {
 
@@ -30,13 +38,6 @@ class Model_Email {
         }
 
         return self::$_instance;
-    }
-
-    public function configure($sender, $apiKey) {
-
-        $this->apiKey  = $apiKey;
-        $this->sender = new Email($sender['title'], $sender['email']);
-
     }
 
     /**
