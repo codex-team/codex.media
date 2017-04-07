@@ -23,6 +23,10 @@
     margin-right: var(--islandPadding);
 }
 
+.main-aside .menu:empty {
+    margin: 0;
+}
+
 .main-aside .menu {
     font-size: 15px;
     margin: 20px 0;
