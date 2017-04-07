@@ -73,3 +73,17 @@
 .profile .island-settings {
     margin: -10px -10px 0 0;
 }
+
+/**
+ * Verified icon
+ */
+.verified {
+    color: #3d94ec;
+}
+
+.verified svg {
+    width: 22px;
+    height: 22px;
+    margin-top: -0.03em;
+    margin-left: 0.1em;
+}
