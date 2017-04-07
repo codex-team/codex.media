@@ -45,7 +45,7 @@ class Controller_Auth_Signup extends Controller_Auth_Base
 
                 $model_auth = new Model_Auth(new Model_User($userId));
 
-                $model_auth->sendConfirmationEmail();
+                $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CONFIRM);
 
                 /** Redirect user after succeeded auth */
                 $this->redirect( self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH );

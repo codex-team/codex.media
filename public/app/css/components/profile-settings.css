@@ -86,6 +86,7 @@
 
 .profile-settings__change-password-result-text {
     margin-bottom: 15px;
+    font-size: 14px;
     padding: 0 10%;
     line-height: 1.6em;
 }
