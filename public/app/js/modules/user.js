@@ -133,11 +133,12 @@ module.exports = function () {
         var set = function (form_) {
 
             form = form_;
-            requestChange(form);
+            requestChange(form, true);
+            showSuccessMessage();
 
         };
 
-        var requestChange = function (button_) {
+        var requestChange = function (button_, dontShowResponse) {
 
             button = button_;
 
@@ -150,7 +151,7 @@ module.exports = function () {
                     csrf: window.csrf,
                     currentPassword: input ? input.value : ''
                 }),
-                success: ajaxResponse,
+                success: dontShowResponse ? null : ajaxResponse,
                 error: ajaxResponse
             });
 
