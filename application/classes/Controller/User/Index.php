@@ -12,8 +12,6 @@ class Controller_User_Index extends Controller_Base_preDispatch
         $list = $this->request->param('list') ?: self::LIST_PAGES;
         $pageNumber = $this->request->param('page_number') ?: 1;
 
-        $newRole = Arr::get($_GET, 'newRole');
-
         $viewUser = new Model_User($user_id);
 
         if (!$viewUser->id) {

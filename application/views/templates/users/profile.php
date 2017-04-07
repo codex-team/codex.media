@@ -42,22 +42,6 @@
             </script>
         <? endif ?>
 
-        <? /*
-
-            <? if (!$viewUser->isTeacher): ?>
-                <li><a href="/user/<?= $viewUser->id ?>?newStatus=teacher">Активировать аккаунт преподавателя</a></li>
-            <? else: ?>
-                <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Отключить аккаунт преподавателя</a></li>
-            <? endif ?>
-
-            <? if ($viewUser->status != Model_User::USER_STATUS_BANNED ): ?>
-                <li><a href="/user/<?= $viewUser->id ?>?newStatus=banned">Заблокировать</a></li>
-            <? else: ?>
-                <li><a href="/user/<?= $viewUser->id ?>?newStatus=registered">Разблокировать</a></li>
-            <? endif ?>
-
-        */ ?>
-
         <img class="profile__ava" src="<?= $viewUser->photo_medium ?>" />
 
         <div class="profile__name">
