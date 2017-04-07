@@ -3,50 +3,54 @@
 class Model_Auth extends Model_preDispatch
 {
 
-    const TYPE_EMAIL_CONFIRM = 'confirmation';
+    const TYPE_EMAIL_CONFIRM = 'confirm';
     const TYPE_EMAIL_RESET   = 'reset';
     const TYPE_EMAIL_CHANGE  = 'change';
+
+    const EMAIL_SUBJECTS = array(
+        self::TYPE_EMAIL_CONFIRM => 'Добро пожаловать на ',
+        self::TYPE_EMAIL_RESET => 'Сброс пароля на ',
+        self::TYPE_EMAIL_CHANGE => 'Смена пароля на ',
+    );
 
     /**
      * Salt should be in .env file, but if it doesn't, we use this fallback salt
      */
     const DEFAULT_EMAIL_HASH_SALT = 'OKexL2iOXbhoJFw1Flb8';
 
-    private $HASHES_KEYS = array(
-        self::TYPE_EMAIL_CONFIRM => 'confirmation',
-        self::TYPE_EMAIL_RESET   => 'reset',
-        self::TYPE_EMAIL_CHANGE  => 'change'
+    public $user = array(
+        'id'    => null,
+        'email' => null
     );
 
-    public $user;
-
-    public function __construct($user = null)
+    public function __construct($id = null, $email = null)
     {
 
-        if ($user && $user->id) {
-            $this->user = $user;
-        }
+        $this->user['id']    = $id;
+        $this->user['email'] = $email;
 
         parent::__construct();
 
     }
 
+
     /**
-     * Adds pair hash => id to redis and sends email with confirmation link
+     * Adds pair hash => id to redis and sends email with link
      *
-     * @param $user
+     * @param string $type - email type
+     * @return integer - number of emails sent
      */
-    public function sendConfirmationEmail() {
+    public function sendEmail($type) {
 
-        $hash = $this->generateHash(self::TYPE_EMAIL_CONFIRM);
+        $hash = $this->addHash($type);
 
-        $message = View::factory('templates/emails/auth/confirm', array('user' => $this->user, 'hash' => $hash));
+        $message = View::factory('templates/emails/auth/' . $type, array('user' => new Model_User($this->user['id']), 'hash' => $hash));
 
         $email = new Email();
         return $email->send(
-            [$this->user->email],
+            [$this->user['email']],
             [$GLOBALS['SITE_MAIL'], $_SERVER['HTTP_HOST']],
-            "Добро пожаловать на ".$_SERVER['HTTP_HOST'],
+            self::EMAIL_SUBJECTS[$type] . $_SERVER['HTTP_HOST'],
             $message,
             false
         );
@@ -54,89 +58,84 @@ class Model_Auth extends Model_preDispatch
     }
 
     /**
-     * Adds pair hash => id to redis and sends email with reset link
+     * Generates hash and adds it to redis
      *
-     * @param $user
+     * @param $type - hash type
+     * @return string $hash
      */
-    public function sendResetPasswordEmail() {
-
-        $hash = $this->generateHash(self::TYPE_EMAIL_RESET);
-
-        $message = View::factory('templates/emails/auth/reset', array('user' => $this->user, 'hash' => $hash));
-
-        $email = new Email();
-        return $email->send(
-            [$this->user->email],
-            [$GLOBALS['SITE_MAIL'], $_SERVER['HTTP_HOST']],
-            "Сброс пароля на ".$_SERVER['HTTP_HOST'],
-            $message,
-            false
-        );
-
-
-    }
-
-    public function sendChangePasswordEmail() {
-
-        $hash = $this->generateHash(self::TYPE_EMAIL_CHANGE);
-
-        $message = View::factory('templates/emails/auth/change', array('user' => $this->user, 'hash' => $hash));
-
-        $email = new Email();
-        return $email->send(
-            [$this->user->email],
-            [$GLOBALS['SITE_MAIL'], $_SERVER['HTTP_HOST']],
-            "Сброс пароля на ".$_SERVER['HTTP_HOST'],
-            $message,
-            false
-        );
-
-    }
-
-    /**
-     * Generates confirmation hash and adds it to redis
-     *
-     * @param $user
-     * @return string
-     */
-    private function generateHash($type) {
+    private function addHash($type) {
 
         $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:') . 'hashes:';
-        $key        = $key_prefix . $this->HASHES_KEYS[$type];
+        $hash = $this->makeHashByUserData($this->user['id'], $this->user['email']);
 
-        $salt = Arr::get($_SERVER, 'EMAIL_HASH_SALT', self::DEFAULT_EMAIL_HASH_SALT);
+        $key = $key_prefix . $type . $hash;
 
-        $hash = hash('sha256', $this->user->id . $salt . $this->user->email);
-
-        $this->redis->hSet($key, $hash, $this->user->id);
+        $this->redis->setex($key, Date::DAY,  $this->user['id']);
 
         return $hash;
 
     }
 
     /**
-     * Gets user id from redis by confirmation hash
+     * Gets user id from redis by hash
      *
      * @param $hash
-     * @return string
+     * @param $type - hash type
+     * @return integer - user id
      */
     public function getUserIdByHash($hash, $type) {
 
         $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:') . 'hashes:';
-        $key        = $key_prefix . $this->HASHES_KEYS[$type];
+        $key        = $key_prefix . $type . $hash;
 
-        $id = $this->redis->hGet($key, $hash);
+        $id = $this->redis->get($key);
 
         return $id;
 
     }
 
+    /**
+     * Removes pair hash => id from redis
+     *
+     * @param $hash
+     * @param $type - hash type
+     */
     public function deleteHash($hash, $type) {
 
         $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:') . 'hashes:';
-        $key        = $key_prefix . $this->HASHES_KEYS[$type];
+        $key        = $key_prefix . $type . $hash;
 
-        $this->redis->hDel($key, $hash);
+        $this->redis->del($key);
+
+    }
+
+    /**
+     * Makes hash using user id and email
+     *
+     * @param $id
+     * @param $email
+     * @return string $hash
+     */
+    public function makeHashByUserData($id, $email) {
+
+        $salt = Arr::get($_SERVER, 'EMAIL_HASH_SALT', self::DEFAULT_EMAIL_HASH_SALT);
+
+        return hash('sha256', $id . $salt . $email);
+
+    }
+
+    /**
+     * Checks if pair hash => id in redis. Uses data in $this->user
+     *
+     * @param $type - hash type
+     * @return bool
+     */
+    public function checkIfEmailWasSent($type) {
+
+        $hash = $this->makeHashByUserData($this->user['id'], $this->user['email']);
+
+        return (bool) $this->getUserIdByHash($hash, $type);
+
     }
 
 }

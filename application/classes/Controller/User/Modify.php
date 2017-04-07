@@ -21,6 +21,9 @@ class Controller_User_Modify extends Controller_Base_preDispatch
            $this->view['success'] = $this->update();
         };
 
+        $model_auth = new Model_Auth($this->user->id, $this->user->email);
+        $this->view['newPasswordRequested'] = $model_auth->checkIfEmailWasSent(Model_Auth::TYPE_EMAIL_CHANGE);
+
         $this->template->content = View::factory('/templates/users/settings', $this->view);
 
     }
@@ -68,12 +71,20 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             'success' => 0
         );
 
-        $request  = json_decode(file_get_contents('php://input'));
-        $password = $request->currentPassword;
-        $csrf     = $request->csrf;
+        $model_auth  = new Model_Auth($this->user->id, $this->user->email);
+        $csrf        = Arr::get($_POST, 'csrf');
+        $repeatEmail = Arr::get($_POST, 'repeatEmail', false);
+        $password    = Arr::get($_POST, 'currentPassword', '');
 
         if (!Security::check($csrf) || !$this->request->is_ajax()) {
             throw new HTTP_Exception_403();
+        }
+
+        if ($repeatEmail && $model_auth->checkIfEmailWasSent(Model_Auth::TYPE_EMAIL_CHANGE)) {
+            $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CHANGE);
+            $response['success'] = 1;
+            $this->response->body(json_encode($response));
+            return;
         }
 
         if (empty($password) && $this->user->password) {
@@ -92,10 +103,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         }
 
-
-        $model_auth = new Model_Auth($this->user);
-
-        $model_auth->sendChangePasswordEmail();
+        $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CHANGE);
 
         $response = array(
             'success' => 1,
@@ -281,8 +289,8 @@ class Controller_User_Modify extends Controller_Base_preDispatch
                 goto finish;
             }
 
-            $model_auth = new Model_Auth($this->user);
-            $model_auth->sendConfirmationEmail();
+            $model_auth = new Model_Auth($this->user->id, $this->user->email);
+            $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CONFIRM);
 
             $response['success'] = 1;
 

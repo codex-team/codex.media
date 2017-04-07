@@ -59,7 +59,7 @@
 <? endif; ?>
 
 <? if ($user->email && $user->isConfirmed): ?>
-    <?= View::factory('templates/components/password_change_island'); ?>
+    <?= View::factory('templates/components/password_change_island', array('newPasswordRequested' => $newPasswordRequested)); ?>
 <? endif; ?>
 
 <script>
