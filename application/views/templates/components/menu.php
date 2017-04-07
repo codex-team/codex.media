@@ -4,4 +4,6 @@
             <li><a href="/p/<?= $item->id ?>/<?= $item->uri ?>"><?= $item->title ?></a></li>
         <? endforeach ?>
     </ul>
-<? endif ?>
+<? else: ?>
+    <ul class="menu" id="menu"></ul>
+<? endif; ?>
