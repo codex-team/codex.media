@@ -65,7 +65,7 @@ module.exports = (function () {
         currentItemClicked = this;
         currentItemClicked.classList.add('loading');
 
-        var targetId =currentItemClicked.dataset.id;
+        var targetId = currentItemClicked.dataset.id;
 
         codex.ajax.call({
             url : '/p/' + targetId + '/promote?list=menu',
@@ -82,7 +82,7 @@ module.exports = (function () {
         currentItemClicked = this;
         currentItemClicked.classList.add('loading');
 
-        var targetId =currentItemClicked.dataset.id;
+        var targetId = currentItemClicked.dataset.id;
 
         codex.ajax.call({
             url : '/p/' + targetId + '/promote?list=news',
@@ -146,14 +146,13 @@ module.exports = (function () {
         promote: function (response) {
 
             response = ajaxResponses.getResponse(response);
-
             currentItemClicked.classList.remove('loading');
 
             if (response.success) {
 
-                if (response.menu) {
+                if (response.menu || response.buttonText) {
 
-                    ajaxResponses.replaceMenu(response.menu);
+                    ajaxResponses.replaceMenu(currentItemClicked, response.buttonText);
 
                 }
 
@@ -172,15 +171,20 @@ module.exports = (function () {
         },
 
         /**
-         * Replace site menu with code from server response
-         * @param menu
+         * Replace site menu with new button text from server response
+         * @param currentItemMenu
+         * @param newResponseMenuText
          */
-        replaceMenu: function (menu) {
+        replaceMenu: function (currentItemMenu, newResponseMenuText) {
 
-            var oldMenu = document.getElementById('menu'),
-                newMenu = codex.core.parseHTML(menu)[0];
+            var itemIndex = currentItemMenu.dataset.itemIndex,
+                menuIndex = currentItemMenu.dataset.index;
 
-            codex.core.replace(oldMenu, newMenu);
+            /** update item on menu */
+            codex.islandSettings.updateItem(menuIndex, itemIndex, newResponseMenuText);
+
+            /** update item text immediatelly */
+            currentItemMenu.textContent = newResponseMenuText;
 
         }
 
