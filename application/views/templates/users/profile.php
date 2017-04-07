@@ -46,6 +46,11 @@
 
         <div class="profile__name">
     		<?= $viewUser->name ?>
+            <? if ($viewUser->isTeacher): ?>
+                <span class="verified" title="Преподаватель">
+                    <? include(DOCROOT . "public/app/svg/verified.svg") ?>
+                </span>
+            <? endif ?>
         </div>
 
         <div class="profile__about <?= $viewUser->isMe ? 'profile__about--editable' : '' ?>" <?= $viewUser->isMe ? 'onclick="codex.user.bio.edit(this)"' : ''?>>
