@@ -18,11 +18,7 @@ class Model_Email {
 
     private function __construct() {
 
-        $this->sender = array(
-            'title' => Arr::get($_SERVER, 'SENDGRID_SENDER_NAME'),
-            'email' => Arr::get($_SERVER, 'SENDGRID_SENDER_EMAIL')
-        );
-
+        $this->sender = new Email( Arr::get($_SERVER, 'SENDGRID_SENDER_NAME'), Arr::get($_SERVER, 'SENDGRID_SENDER_EMAIL') );
         $this->apiKey = Arr::get($_SERVER, 'SENDGRID_API_KEY');
 
     }
