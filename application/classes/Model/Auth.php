@@ -41,10 +41,8 @@ class Model_Auth extends Model_preDispatch
         $hash = $this->generateHash(self::TYPE_EMAIL_CONFIRM);
 
         $message = View::factory('templates/emails/auth/confirm', array('user' => $this->user, 'hash' => $hash));
-
-        $email = Model_Email::instance();
-
-        return $email->send(
+        
+        return Model_Email::instance()->send(
             [
                 'name' => $this->user->name,
                 'email' => $this->user->email
@@ -69,9 +67,7 @@ class Model_Auth extends Model_preDispatch
 
         $message = View::factory('templates/emails/auth/reset', array('user' => $this->user, 'hash' => $hash));
 
-        $email = Model_Email::instance();
-
-        return $email->send(
+        return Model_Email::instance()->send(
             [
                 'name' => $this->user->name,
                 'email' => $this->user->email
@@ -92,9 +88,7 @@ class Model_Auth extends Model_preDispatch
 
         $message = View::factory('templates/emails/auth/change', array('user' => $this->user, 'hash' => $hash));
 
-        $email = Model_Email::instance();
-
-        return $email->send(
+        return Model_Email::instance()->send(
             [
                 'name' => $this->user->name,
                 'email'    => $this->user->email
