@@ -88,29 +88,84 @@ module.exports = function () {
     }();
 
     /**
-     * Changes user status
-     * @param  {} argument [description]
-     * @return {[type]}          [description]
+     * Updatin user ROLE or STATUS
+     * @type {{status, role}}
      */
-    var changeStatus = function (userId, type) {
+    var promote = function () {
 
-        codex.ajax.call({
-            url : '/user/changeStatus?userId=' + userId + '&status=' + type,
-            success: function (response) {
+        var status = function (args) {
 
-                response = JSON.parse(response);
+            var itemClicked = this,
+                userId = itemClicked.dataset.id,
+                value = args.value;
 
-                var notifyType = response.success ? '' : 'error';
+            sendRequest(itemClicked, 'status', userId, value);
 
-                codex.alerts.show({
-                    type: notifyType,
-                    message: response.message
-                });
+        };
 
-            },
-        });
+        var role = function (args) {
 
-    };
+            var itemClicked = this,
+                userId = itemClicked.dataset.id,
+                value = args.value;
+
+            sendRequest(itemClicked, 'role', userId, value);
+
+        };
+
+        /**
+         * Change user role or status request
+         * @param {Element} itemClicked     - menu item element
+         * @param {string}  field           - field to save (role|status)
+         * @param {Number}  userId          - target user id
+         * @param {Number}  value           - new value
+         */
+        var sendRequest = function (itemClicked, field, userId, value) {
+
+            var url = '/user/' + userId + '/change/' + field,
+                requestData = new FormData();
+
+            requestData.append('value', value);
+
+            codex.ajax.call({
+                url : url,
+                type : 'POST',
+                data: requestData,
+                beforeSend : function () {
+
+                    itemClicked.classList.add('loading');
+
+                },
+                success: function (response) {
+
+                    var menuIndex = itemClicked.dataset.index,
+                        itemIndex = itemClicked.dataset.itemIndex;
+
+                    response = JSON.parse(response);
+
+                    itemClicked.classList.remove('loading');
+
+                    codex.islandSettings.updateItem(menuIndex, itemIndex, response.buttonText, null, {
+                        value: response.buttonValue
+                    });
+
+                    codex.alerts.show({
+                        type: response.success ? 'success' : 'error',
+                        message: response.message || 'Не удалось сохранить изменения'
+                    });
+
+                }
+            });
+
+        };
+
+        return {
+            status : status,
+            role   : role
+        };
+
+    }();
+
 
     var changePassword = function () {
 
@@ -479,7 +534,7 @@ module.exports = function () {
 
     return {
         changePassword: changePassword,
-        changeStatus: changeStatus,
+        promote: promote,
         photo: photo,
         bio : bio,
         email: email,
