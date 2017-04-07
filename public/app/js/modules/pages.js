@@ -150,9 +150,15 @@ module.exports = (function () {
 
             if (response.success) {
 
-                if (response.menu || response.buttonText) {
+                if (response.buttonText) {
 
                     ajaxResponses.replaceMenu(currentItemClicked, response.buttonText);
+
+                }
+
+                if (response.menu) {
+
+                    ajaxResponses.updateSiteMenu(response.menu);
 
                 }
 
@@ -191,6 +197,15 @@ module.exports = (function () {
 
             /** update item text immediatelly */
             currentItemMenu.textContent = newResponseMenuText;
+
+        },
+
+        updateSiteMenu: function (menu) {
+
+            var oldMenu = document.getElementById('menu'),
+                newMenu = codex.core.parseHTML(menu)[0];
+
+            codex.core.replace(oldMenu, newMenu);
 
         }
 
