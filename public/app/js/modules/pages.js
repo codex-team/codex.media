@@ -39,7 +39,7 @@ module.exports = (function () {
 
         codex.ajax.call({
             url : '/p/' + targetId + '/delete',
-            success: ajaxResponses.delete
+            success: removeHandler
         });
 
     };
@@ -69,7 +69,7 @@ module.exports = (function () {
 
         codex.ajax.call({
             url : '/p/' + targetId + '/promote?list=menu',
-            success: ajaxResponses.promote
+            success: promote
         });
 
     };
@@ -86,116 +86,131 @@ module.exports = (function () {
 
         codex.ajax.call({
             url : '/p/' + targetId + '/promote?list=news',
-            success: ajaxResponses.promote
+            success: promote
         });
 
     };
 
-    var ajaxResponses = {
+    /**
+     * Parse JSON response
+     * @param {JSON} response
+     * @returns {Object} response
+     */
+    var getResponse = function (response) {
 
-        /**
-         * Parse JSON response
-         * @param {JSON} response
-         * @returns {Object} response
-         */
-        getResponse: function (response) {
+        try {
 
-            try {
+            response = JSON.parse(response);
 
-                response = JSON.parse(response);
+        } catch(e) {
 
-            } catch(e) {
-
-                return {
-                    success: 0,
-                    message: 'Произошла ошибка, попробуйте позже'
-                };
-
-            }
-
-            return response;
-
-        },
-
-        /**
-         * Response handler for page remove
-         * @param response
-         */
-        delete: function (response) {
-
-            response = ajaxResponses.getResponse(response);
-
-            if (response.success) {
-
-                window.location.replace(response.redirect);
-                return;
-
-            }
-
-            codex.alerts.show({
-                type: 'error',
-                message: response.message
-            });
-
-        },
-
-        /**
-         * Response handler for page promotion
-         * @param response
-         */
-        promote: function (response) {
-
-            response = ajaxResponses.getResponse(response);
-            currentItemClicked.classList.remove('loading');
-
-            if (response.success) {
-
-                if (response.menu || response.buttonText) {
-
-                    ajaxResponses.replaceMenu(currentItemClicked, response.buttonText);
-
-                }
-
-                /**
-                 * TODO: сделать замену текста кнопки
-                 **/
-
-                codex.alerts.show({
-                    type: 'success',
-                    message: response.message
-                });
-
-                return;
-
-            }
-
-            codex.alerts.show({
-                type: 'error',
-                message: response.message
-            });
-
-        },
-
-        /**
-         * Replace site menu with new button text from server response
-         * @param currentItemMenu
-         * @param newResponseMenuText
-         */
-        replaceMenu: function (currentItemMenu, newResponseMenuText) {
-
-            var itemIndex = currentItemMenu.dataset.itemIndex,
-                menuIndex = currentItemMenu.dataset.index;
-
-            /** update item on menu */
-            codex.islandSettings.updateItem(menuIndex, itemIndex, newResponseMenuText);
-
-            /** update item text immediatelly */
-            currentItemMenu.textContent = newResponseMenuText;
+            return {
+                success: 0,
+                message: 'Произошла ошибка, попробуйте позже'
+            };
 
         }
 
+        return response;
+
     };
 
+    /**
+     * Response handler for page remove
+     * @param response
+     */
+    var removeHandler = function (response) {
+
+        response = getResponse(response);
+
+        if (response.success) {
+
+            window.location.replace(response.redirect);
+            return;
+
+        }
+
+        codex.alerts.show({
+            type: 'error',
+            message: response.message
+        });
+
+    };
+
+    /**
+     * Response handler for page promotion
+     * @param response
+     */
+    var promote = function (response) {
+
+        response = getResponse(response);
+        currentItemClicked.classList.remove('loading');
+
+        if (response.success) {
+
+            if (response.buttonText) {
+
+                replaceMenu(currentItemClicked, response.buttonText);
+
+            }
+
+            if (response.menu) {
+
+                updateSiteMenu(response.menu);
+
+            }
+
+            /**
+             * TODO: сделать замену текста кнопки
+             **/
+
+            codex.alerts.show({
+                type: 'success',
+                message: response.message
+            });
+
+            return;
+
+        }
+
+        codex.alerts.show({
+            type: 'error',
+            message: response.message
+        });
+
+    };
+
+    /**
+     * Replace site menu with new button text from server response
+     * @param currentItemMenu
+     * @param newResponseMenuText
+     */
+    var replaceMenu = function (currentItemMenu, newResponseMenuText) {
+
+        var itemIndex = currentItemMenu.dataset.itemIndex,
+            menuIndex = currentItemMenu.dataset.index;
+
+        /** update item on menu */
+        codex.islandSettings.updateItem(menuIndex, itemIndex, newResponseMenuText);
+
+        /** update item text immediatelly */
+        currentItemMenu.textContent = newResponseMenuText;
+
+    };
+
+    /**
+     * Replace site menu with menu form server response
+     *
+     * @param menu
+     */
+    var updateSiteMenu = function (menu) {
+
+        var oldMenu = document.getElementById('js-site-menu'),
+            newMenu = codex.core.parseHTML(menu)[0];
+
+        codex.core.replace(oldMenu, newMenu);
+
+    };
 
 
     return {
