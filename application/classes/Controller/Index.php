@@ -1,5 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+use SendGrid\Email;
+use SendGrid\Content;
+use SendGrid\Mail;
+
 class Controller_Index extends Controller_Base_preDispatch
 {
     const NEWS_LIMIT_PER_PAGE = 7;

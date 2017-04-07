@@ -1,5 +1,7 @@
 <?php
 
+use SendGrid\Email;
+
 class Model_Auth extends Model_preDispatch
 {
 
@@ -42,13 +44,18 @@ class Model_Auth extends Model_preDispatch
 
         $message = View::factory('templates/emails/auth/confirm', array('user' => $this->user, 'hash' => $hash));
 
-        $email = new Email();
+        $email = Model_Email::instance();
+
         return $email->send(
-            [$this->user->email],
-            [$GLOBALS['SITE_MAIL'], $_SERVER['HTTP_HOST']],
+            [
+                'name' => $this->user->name,
+                'email' => $this->user->email
+            ],
             "Добро пожаловать на ".$_SERVER['HTTP_HOST'],
-            $message,
-            false
+            [
+                'format' => 'text/plain',
+                'message' => $message
+            ]
         );
 
     }
@@ -64,13 +71,18 @@ class Model_Auth extends Model_preDispatch
 
         $message = View::factory('templates/emails/auth/reset', array('user' => $this->user, 'hash' => $hash));
 
-        $email = new Email();
+        $email = Model_Email::instance();
+
         return $email->send(
-            [$this->user->email],
-            [$GLOBALS['SITE_MAIL'], $_SERVER['HTTP_HOST']],
+            [
+                'name' => $this->user->name,
+                'email' => $this->user->email
+            ],
             "Сброс пароля на ".$_SERVER['HTTP_HOST'],
-            $message,
-            false
+            [
+                'format' => 'text/plain',
+                'message' => $message
+            ]
         );
 
 
@@ -82,13 +94,18 @@ class Model_Auth extends Model_preDispatch
 
         $message = View::factory('templates/emails/auth/change', array('user' => $this->user, 'hash' => $hash));
 
-        $email = new Email();
+        $email = Model_Email::instance();
+
         return $email->send(
-            [$this->user->email],
-            [$GLOBALS['SITE_MAIL'], $_SERVER['HTTP_HOST']],
+            [
+                'name' => $this->user->name,
+                'email'    => $this->user->email
+            ],
             "Сброс пароля на ".$_SERVER['HTTP_HOST'],
-            $message,
-            false
+            [
+                'format'    => 'text/plain',
+                'message'   => $message
+            ]
         );
 
     }

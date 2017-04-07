@@ -8,6 +8,9 @@ class Controller_Base_preDispatch extends Controller_Template
     /** Data to pass into view */
     public $view = array();
 
+    /** SendGrid */
+    public $email = null;
+
     /**
      * The before() method is called before your controller action.
      * In our template controller we override this method so that we can
@@ -102,6 +105,8 @@ class Controller_Base_preDispatch extends Controller_Template
         $this->user = new Model_User($uid ?: 0);
         View::set_global('user', $this->user);
 
+        /** Connect to SendGrid API */
+        $this->email = self::email();
     }
 
     public function userOnline()
@@ -166,5 +171,20 @@ class Controller_Base_preDispatch extends Controller_Template
         $redis->select($redis_db);
 
         return $redis;
+    }
+
+    public static function email()
+    {
+        $email = Model_Email::instance();
+
+        $support = array(
+            'title' => $GLOBALS['SITE_NAME'],
+            'email' => $GLOBALS['SITE_MAIL']
+        );
+
+        $apiKey = Arr::get($_SERVER, 'SENDGRID_API_KEY');
+        $email->configure($support, $apiKey);
+
+        return $email;
     }
 }
