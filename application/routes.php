@@ -121,6 +121,10 @@ Route::set('REPEAT_CONFIRMATION_EMAIL_SENDING', 'ajax/confirmation-email')->defa
     'action'          => 'send_confirmation_email'
 ));
 
+Route::set('CHANGE_USER_EMAIL', 'user/changeEmail')->defaults(array(
+    'controller'      => 'user_modify',
+    'action'          => 'changeEmail'
+));
 
 /**
 * Downloading files

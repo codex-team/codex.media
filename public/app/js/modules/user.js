@@ -169,46 +169,33 @@ module.exports = function () {
 
     var changePassword = function () {
 
-        var wrapper = null,
+        var form    = null,
             input   = null,
-            message = null,
             button  = null;
 
-        var showForm = function () {
+        var showForm = function (lockButton) {
 
-            var label = document.createElement('LABEL');
+            lockButton.classList.add('hide');
 
-            wrapper = this;
-            input   = document.createElement('INPUT');
-            button  = document.createElement('SPAN');
-            message = document.createElement('DIV');
+            form = document.getElementById('change-password-form');
+            input = document.getElementById('change-password-input');
 
-            label.classList.add('form__label');
-            label.textContent = 'Текущий пароль';
+            form.classList.remove('hide');
 
-            input.classList.add('form__input');
-            input.type = 'password';
-
-            button.classList.add('button');
-            button.classList.add('form__hint');
-            button.classList.add('master');
-            button.textContent = 'Подтвердить';
-
-            button.addEventListener('click', requestChange);
-
-            wrapper.classList.remove('island--centered');
-            wrapper.classList.remove('profile-settings__change-password-btn');
-            wrapper.innerHTML = '';
-            wrapper.onclick   = '';
-
-            wrapper.appendChild(label);
-            wrapper.appendChild(input);
-            wrapper.appendChild(button);
-            wrapper.appendChild(message);
 
         };
 
-        var requestChange = function () {
+        var set = function (form_) {
+
+            form = form_;
+            requestChange(form, true);
+            showSuccessMessage();
+
+        };
+
+        var requestChange = function (button_, dontShowResponse) {
+
+            button = button_;
 
             button.classList.add('loading');
 
@@ -217,9 +204,9 @@ module.exports = function () {
                 type: 'POST',
                 data: JSON.stringify({
                     csrf: window.csrf,
-                    currentPassword: input.value
+                    currentPassword: input ? input.value : ''
                 }),
-                success: ajaxResponse,
+                success: dontShowResponse ? null : ajaxResponse,
                 error: ajaxResponse
             });
 
@@ -241,87 +228,45 @@ module.exports = function () {
 
             if (!response.success) {
 
-                input.classList.add('form__input--invalid');
+                if (input) input.classList.add('form__input--invalid');
+
+                codex.alerts.show({
+                    type: 'error',
+                    message:response.message
+                });
+
 
             } else {
 
-                showSuccessMessage(response.message);
+                showSuccessMessage();
                 return;
 
             }
 
-            message.textContent = response.message;
 
         };
 
-        var showSuccessMessage = function (text) {
+        var showSuccessMessage = function () {
 
-            if (wrapper.dataset.success) {
+            codex.alerts.show({
+                type: 'success',
+                message: 'Мы выслали инструкцию на вашу почту'
+            });
 
-                return;
+            form.classList.add('hide');
 
-            }
-
-            var textDiv = document.createElement('DIV');
-
-            button = document.createElement('BUTTON');
-
-            textDiv.textContent = text;
-            textDiv.classList.add('profile-settings__change-password-result-text');
-
-            button.classList.add('button', 'master');
-            button.addEventListener('click', requestChange);
-            button.textContent = 'Отправить еще раз';
-
-            wrapper.innerHTML = '';
-            wrapper.classList.add('island--centered');
-
-            wrapper.appendChild(textDiv);
-            wrapper.appendChild(button);
-            wrapper.dataset.success = 1;
+            form = document.getElementById('change-password-success');
+            form.classList.remove('hide');
 
         };
 
         return {
-            showForm: showForm
+            showForm: showForm,
+            requestChange: requestChange,
+            set: set,
         };
 
     }();
-
-    // var init = function () {
-    //
-    //     // bindEvents();
-    //
-    // };
-
-    // var bindEvents = function () {
-    //
-    //     var repeatConfirmEmailBtn = document.getElementById('repeat-email-confirmation');
-    //
-    //     repeatConfirmEmailBtn.addEventListener('click', sendEmeailConfirmation);
-    //
-    // };
-
-    // var sendEmeailConfirmation = function (e) {
-    //
-    //     var success = function (response) {
-    //
-    //         response = JSON.parse(response);
-    //
-    //         codex.alerts.show(response.message);
-    //         e.target.classList.remove('loading');
-    //
-    //     };
-    //
-    //     e.target.classList.add('loading');
-    //
-    //     codex.ajax.call({
-    //         url: '/ajax/confirmation-email',
-    //         success: success
-    //     });
-    //
-    // };
-
 
     /**
      * Working with bio
@@ -386,7 +331,7 @@ module.exports = function () {
             if (!val.trim()) {
 
                 codex.alerts.show({
-                    type: 'warn',
+                    type: 'error',
                     message: 'Write something about yourself'
                 });
                 return;
@@ -450,11 +395,149 @@ module.exports = function () {
 
     }();
 
+    var email = function () {
+
+        var currentEmail    = null,
+            loadingButton   = null;
+
+        var saved = function (response) {
+
+            try {
+
+                response = JSON.parse(response);
+
+                if (response.success) {
+
+                    codex.core.replace(currentEmail.parentNode, codex.core.parseHTML(response.island)[0]);
+
+                    codex.alerts.show({
+                        type: 'success',
+                        message: 'Адрес почты обновлен. Теперь вам нужно подтвердить его, перейдя по ссылке в письме.'
+                    });
+
+                    currentEmail = null;
+                    return;
+
+                }
+
+            } catch (e) {}
+
+            loadingButton.classList.remove('loading');
+
+            codex.alerts.show({
+                type: 'error',
+                message: response.message || 'Произошла ошибка, попробуйте позже'
+            });
+
+        };
+
+        var send = function () {
+
+            if (currentEmail.value.trim() == '') {
+
+                codex.alerts.show({
+                    type: 'error',
+                    message: 'Введите email'
+                });
+
+                return;
+
+            }
+
+            loadingButton = this;
+            loadingButton.classList.add('loading');
+
+            var data = new FormData();
+
+            data.append('email', currentEmail.value);
+            data.append('csrf', window.csrf);
+
+            codex.ajax.call({
+                url: 'user/changeEmail',
+                type: 'POST',
+                data: data,
+                success: saved,
+                error: saved
+            });
+
+        };
+
+        var sendConfirmation = function (button) {
+
+            var success = function (response) {
+
+                response = JSON.parse(response);
+
+                codex.alerts.show({
+                    type: 'success',
+                    message: response.message
+                });
+                button.classList.remove('loading');
+
+            };
+
+            button.classList.add('loading');
+
+            codex.ajax.call({
+                url: '/ajax/confirmation-email',
+                success: success
+            });
+
+        };
+
+        var changed = function (input) {
+
+            if (currentEmail) {
+
+                return;
+
+            }
+
+            currentEmail = input;
+
+            var saveButton = document.createElement('BUTTON'),
+                sendButton = input.parentNode.querySelector('button');
+
+            if (sendButton) sendButton.classList.remove('master');
+
+            saveButton.classList.add('button', 'master');
+            saveButton.textContent = 'Сохранить';
+
+            saveButton.addEventListener('click', send);
+
+            input.oninput = null;
+            input.parentNode.appendChild(saveButton);
+
+        };
+
+        var set = function (button) {
+
+            button.classList.add('hide');
+
+            var form = document.getElementById('set-email-form');
+
+            form.classList.remove('hide');
+
+            currentEmail = document.getElementById('set-email-input');
+
+        };
+
+        return {
+            sendConfirmation: sendConfirmation,
+            changed: changed,
+            send: send,
+            set: set,
+        };
+
+    }();
+
+
     return {
         changePassword: changePassword,
         promote: promote,
         photo: photo,
         bio : bio,
+        email: email,
     };
 
 }();

@@ -142,11 +142,15 @@ class Model_User extends Model
      */
     public function updateUser($user_id, $fields)
     {
+
         $user = Dao_Users::update()
             ->where('id', '=', $user_id)
             ->clearcache('user:' . $user_id);
 
-        foreach ($fields as $name => $value) $user->set($name, trim(htmlspecialchars($value)));
+        foreach ($fields as $name => $value) {
+            $user->set($name, trim(htmlspecialchars($value)));
+            $this->{$name} = $value;
+        }
 
         return $user->execute();
     }
@@ -252,6 +256,24 @@ class Model_User extends Model
     public function checkPassword($pass)
     {
         return $this->password == Controller_Auth_Base::createPasswordHash($pass);
+    }
+
+    /**
+     * Returns TRUE if user with $field = $value exists
+     *
+     * @param $field
+     * @param $value
+     *
+     * @return bool
+     */
+    public static function exists($field, $value) {
+
+        $selection = Dao_Users::select($field)
+            ->where($field, '=', $value)
+            ->limit(1)
+            ->execute();
+
+        return  (bool) $selection;
     }
 
     public function isBanned()

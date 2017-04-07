@@ -10,20 +10,6 @@
         </a>
     </div>
 
-    <? if (isset($success) && $success): ?>
-        <div class="info_block">
-            Обновления сохранены
-        </div>
-    <? endif; ?>
-
-    <? if (isset($errors) && $errors): ?>
-        <div class="info_block">
-            <? foreach ($errors as $info): ?>
-                <?= $info; ?>
-            <? endforeach; ?>
-        </div>
-    <? endif; ?>
-
     <section class="profile-settings form">
 
         <form method="POST" action="user/settings" enctype="multipart/form-data">
@@ -66,14 +52,34 @@
 
 </div>
 
-<?= View::factory('templates/components/email_confirm_island'); ?>
+<? if ($user->email): ?>
+    <?= View::factory('templates/components/email_confirm_island'); ?>
+<? else: ?>
+    <?= View::factory('templates/components/email_set_island'); ?>
+<? endif; ?>
 
-<? if ($user->password): ?>
+<? if ($user->email && $user->isConfirmed): ?>
     <?= View::factory('templates/components/password_change_island'); ?>
 <? endif; ?>
 
 <script>
+    <? if (isset($success) && $success): ?>
 
-    //codex.user.init();
+        codex.alerts.show({
+            type: 'success',
+            message: 'Обновления сохранены'
+        });
 
+    <? endif; ?>
+
+    <? if (isset($errors) && $errors): ?>
+
+        <? foreach ($errors as $info): ?>
+            codex.alerts.show({
+                type: 'error',
+                message: '<?= $info ?>'
+            });
+        <? endforeach; ?>
+
+    <? endif; ?>
 </script>

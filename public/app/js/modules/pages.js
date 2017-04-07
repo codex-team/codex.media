@@ -160,13 +160,19 @@ module.exports = (function () {
                  * TODO: сделать замену текста кнопки
                  **/
 
-                codex.alerts.show({message: response.message});
+                codex.alerts.show({
+                    type: 'success',
+                    message: response.message
+                });
 
                 return;
 
             }
 
-            codex.alerts.show({message: response.message});
+            codex.alerts.show({
+                type: 'error',
+                message: response.message
+            });
 
         },
 

@@ -76,7 +76,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             throw new HTTP_Exception_403();
         }
 
-        if (empty($password)) {
+        if (empty($password) && $this->user->password) {
 
             $response['message'] = 'Введите пароль';
             $this->response->body(json_encode($response));
@@ -84,7 +84,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         }
 
-        if (!$this->user->checkPassword($password)) {
+        if ($this->user->password && !$this->user->checkPassword($password)) {
 
             $response['message'] = 'Неверный пароль';
             $this->response->body(json_encode($response));
@@ -209,14 +209,14 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         switch ($role) {
             case Model_User::ADMIN:
                 $newRole = Model_User::ADMIN;
-                $this->ajaxResponse['message']    = 'Пользователь имеет права администратора';
+                $this->ajaxResponse['message'] = 'Пользователь имеет права администратора';
                 $this->ajaxResponse['buttonText'] = 'Убрать права администратора';
                 $this->ajaxResponse['buttonValue'] = Model_User::REGISTERED;
                 break;
 
             case Model_User::TEACHER:
                 $newRole = Model_User::TEACHER;
-                $this->ajaxResponse['message']    = 'Установлен статус учителя';
+                $this->ajaxResponse['message'] = 'Установлен статус учителя';
                 $this->ajaxResponse['buttonText'] = 'Не преподаватель';
                 $this->ajaxResponse['buttonValue'] = Model_User::REGISTERED;
                 break;
@@ -224,7 +224,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             case Model_User::REGISTERED:
             default:
                 $newRole = Model_User::REGISTERED;
-                $this->ajaxResponse['message']    = 'Установлен статус простого пользователя';
+                $this->ajaxResponse['message'] = 'Установлен статус простого пользователя';
                 $this->ajaxResponse['buttonText'] = 'Сделать преподавателем';
                 $this->ajaxResponse['buttonValue'] = Model_User::TEACHER;
                 break;
@@ -234,6 +234,66 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         return $viewUser->updateUser($viewUser->id, array(
             'role' => $newRole
         ));
+
+    }
+
+    public function action_changeEmail () {
+
+        if (!$this->request->is_ajax() || !$this->user) {
+            throw new HTTP_Exception_403();
+        }
+
+
+        $response = array(
+            'success' => 0
+        );
+
+        $email = Arr::get($_POST, 'email');
+        $csrf  = Arr::get($_POST, 'csrf');
+
+        $email = trim($email);
+
+        if (!Valid::email($email)) {
+            $response['message'] = 'Введите корректный email';
+            goto finish;
+        }
+
+        if ($email == $this->user->email) {
+            $response['message'] = 'Этот email уже привязан к странице';
+            goto finish;
+        }
+
+        if (Model_User::exists('email', $email)) {
+            $response['message'] = 'Похоже, такой email уже занят';
+            goto finish;
+        }
+
+
+        if (Security::check($csrf)) {
+
+            $update = $this->user->updateUser($this->user->id, array(
+                'email'       => $email,
+                'isConfirmed' => 0
+            ));
+
+            if (!$update) {
+                $response['message'] = 'Произошла ошибка при сохранении email';
+                goto finish;
+            }
+
+            $model_auth = new Model_Auth($this->user);
+            $model_auth->sendConfirmationEmail();
+
+            $response['success'] = 1;
+
+            $response['island'] = View::factory('templates/components/email_confirm_island')->render();
+
+        }
+
+        finish:
+        $this->auto_render = false;
+        $this->response->headers('Content-Type', 'application/json; charset=utf-8');
+        $this->response->body( json_encode($response) );
 
     }
 }

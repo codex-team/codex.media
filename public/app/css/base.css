@@ -138,6 +138,11 @@ input[type="submit"]:hover {
     margin-right: 0.3em;
 }
 
+.form__caption {
+    margin: 15px 0;
+    line-height: 1.6em;
+}
+
 /**
 * Loading bar class
 */
