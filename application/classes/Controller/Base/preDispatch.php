@@ -101,6 +101,7 @@ class Controller_Base_preDispatch extends Controller_Template
         $uid  = Controller_Auth_Base::checkAuth();
         $this->user = new Model_User($uid ?: 0);
         View::set_global('user', $this->user);
+        
     }
 
     public function userOnline()

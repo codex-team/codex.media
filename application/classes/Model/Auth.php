@@ -46,15 +46,15 @@ class Model_Auth extends Model_preDispatch
         $message = View::factory('templates/emails/auth/confirm', array('user' => $this->user, 'hash' => $hash));
         
         return Model_Email::instance()->send(
-            [
+            array(
                 'name' => (new Model_User($this->user['id']))->name,
                 'email' => $this->user['email']
-            ],
+            ),
             self::EMAIL_SUBJECTS[$type] . $_SERVER['HTTP_HOST'],
-            [
+            array(
                 'format' => 'text/plain',
                 'message' => $message
-            ]
+            )
         );
     }
 
