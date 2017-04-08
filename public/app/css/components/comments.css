@@ -3,7 +3,6 @@
  */
 .comment {
     transition: background-color 500ms ease-out;
-    word-wrap: break-word;
 }
 
 .comment--highligthed {
@@ -35,8 +34,7 @@
 .comment__text {
     margin: 20px auto;
     font-size: 15px;
-    line-height: 1.5em;
-    word-break: break-all;
+    line-height: 1.6em;
 }
 
 .comment__actions--button {
