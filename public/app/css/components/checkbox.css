@@ -1,0 +1,42 @@
+:root {
+    --checkboxColor: #95a3ae;
+    --checkedCheckboxColor: #4098f9;
+}
+
+.checkbox {
+    position: relative;
+    display: inline-block;
+    width: 26px;
+    height: 18px;
+    vertical-align: middle;
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--checkboxColor);
+}
+
+.checkbox:before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 3px;
+    top: 2px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.checkbox--checked {
+    background: var(--checkedCheckboxColor);
+}
+
+.checkbox--checked:before {
+    left: inherit;
+    right: 3px;
+}
+
+.checkbox-wrapper {
+    color: var(--checkboxColor);
+}
+.checkbox-wrapper--checked {
+    color: var(--checkedCheckboxColor);
+}

@@ -23,7 +23,7 @@ codex = (function (codex) {
         /**
         * Stylize custom checkboxes
         */
-        codex.content.customCheckboxes.init();
+        codex.checkboxes.init();
 
         /**
         * Init approval buttons
@@ -83,6 +83,7 @@ codex.loader             = require('./modules/loader');
 codex.scrollUp           = require('./modules/scrollUp');
 codex.branding           = require('./modules/branding');
 codex.pages              = require('./modules/pages');
+codex.checkboxes         = require('./modules/checkbox');
 
 
 module.exports = codex;

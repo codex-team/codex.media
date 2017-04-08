@@ -21,7 +21,11 @@
     <div class="editor-wrapper" id="placeForEditor"></div>
 
     <div class="writing__actions clear">
+
         <div class="writing__actions-content">
+
+            <span class="cdx-custom-checkbox" id="js-checkbox"></span>
+            Новость
 
             <span class="button master fl_r" onclick="codex.writing.submit(this)">Отправить</span>
 
@@ -81,5 +85,7 @@
             editorReady.then(codex.writing.init);
         <? endif ?>
     });
+
+    document.getElementById('js-checkbox').addEventListener('checked', function(e){console.log(e.checked)});
 
 </script>
