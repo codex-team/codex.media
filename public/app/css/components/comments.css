@@ -37,6 +37,17 @@
     line-height: 1.6em;
 }
 
+.comment__text a {
+    padding-bottom: 1px;
+    color: var(--linkColor);
+    border-bottom: 1px solid color(var(--linkColor) lightness(+35%));
+}
+
+.comment__text a:hover {
+    color: var(--hoverColor);
+    border-bottom: 1px solid color(var(--hoverColor) lightness(+35%));
+}
+
 .comment__actions--button {
     float: right;
     padding: 5px;
