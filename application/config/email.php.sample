@@ -2,13 +2,7 @@
 
 return array
 (
-    'driver'	=> 'smtp',
-    'options'	=> array
-    (
-        'hostname'  => 'ssl://smtp.gmail.com',
-        'username'  => '',
-        'password'  => '',
-        'port'      => '465',
-        'auth'      => true
-    ),
+    'apiKey'      => '',
+    'senderName'  => '',
+    'senderEmail' => ''
 );

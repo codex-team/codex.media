@@ -18,8 +18,10 @@ class Model_Email {
 
     private function __construct() {
 
-        $this->sender = new Email( Arr::get($_SERVER, 'SENDGRID_SENDER_NAME'), Arr::get($_SERVER, 'SENDGRID_SENDER_EMAIL') );
-        $this->apiKey = Arr::get($_SERVER, 'SENDGRID_API_KEY');
+        $config = Kohana::$config->load('email');
+
+        $this->sender = new Email( Arr::get($config, 'senderName'), Arr::get($config, 'senderEmail') );
+        $this->apiKey = Arr::get($config, 'apiKey');
 
     }
 
