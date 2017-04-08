@@ -17,6 +17,8 @@ class Model_Page extends Model
     public $dt_pin;
     public $feed_key       = '';
 
+    public $isNewsPage;
+
     public $title           = '';
     /**
      * JSON with page data
@@ -86,6 +88,7 @@ class Model_Page extends Model
 
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
+            $this->isNewsPage = $this->isNewsPage();
 
             $this->parent = new Model_Page($this->id_parent);
 

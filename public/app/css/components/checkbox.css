@@ -3,40 +3,56 @@
     --checkedCheckboxColor: #4098f9;
 }
 
-.checkbox {
-    position: relative;
+.cdx-checkbox {
+    position:relative;
     display: inline-block;
+    padding-left: 30px;
+    color: var(--checkboxColor);
+    cursor: pointer;
+}
+
+/**
+ * Styles for checkbox backgorund
+ */
+.cdx-checkbox:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+
     width: 26px;
     height: 18px;
-    vertical-align: middle;
+    margin-top: 3px;
+
     border-radius: 10px;
-    cursor: pointer;
     background: var(--checkboxColor);
 }
 
-.checkbox:before {
+/**
+ * Styles for checkbox slider
+ */
+.cdx-checkbox:after {
     content: '';
     position: absolute;
     width: 14px;
     height: 14px;
-    left: 3px;
-    top: 2px;
+    left: 0;
+    top: 0;
+    margin: 5px 3px;
     background: #fff;
     border-radius: 50%;
+    transition: transform .2s ease;
 }
 
-.checkbox--checked {
+
+.cdx-checkbox--checked {
+    color: var(--checkedCheckboxColor);
+}
+
+.cdx-checkbox--checked:before {
     background: var(--checkedCheckboxColor);
 }
 
-.checkbox--checked:before {
-    left: inherit;
-    right: 3px;
-}
-
-.checkbox-wrapper {
-    color: var(--checkboxColor);
-}
-.checkbox-wrapper--checked {
-    color: var(--checkedCheckboxColor);
+.cdx-checkbox--checked:after {
+    transform: translateX(6px);
 }

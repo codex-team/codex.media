@@ -24,9 +24,9 @@
 
         <div class="writing__actions-content">
 
-            <span class="cdx-custom-checkbox" id="js-checkbox"></span>
-            Новость
-
+            <? if ($user->isAdmin()): ?>
+                <span name="cdx-custom-checkbox" data-name="isNews" data-checked="<?= $page->isNewsPage ?>">Новость</span>
+            <? endif; ?>
             <span class="button master fl_r" onclick="codex.writing.submit(this)">Отправить</span>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
@@ -85,7 +85,4 @@
             editorReady.then(codex.writing.init);
         <? endif ?>
     });
-
-    document.getElementById('js-checkbox').addEventListener('checked', function(e){console.log(e.checked)});
-
 </script>

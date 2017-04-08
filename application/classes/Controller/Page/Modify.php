@@ -75,6 +75,10 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         }
 
+        if (Arr::get($_POST, 'isNews') && $this->user->isAdmin()) {
+            $this->page->addToFeed(Model_Feed_Pages::TYPE_NEWS);
+        }
+
         $this->ajax_response = array(
             'success'  => 1,
             'message'  => 'Страница успешно сохранена',
