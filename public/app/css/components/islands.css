@@ -5,12 +5,12 @@
     background: #fff;
     border-radius: 3px;
     box-shadow: 0 0 0 1px #ebeef6;
+    word-break: break-word;
 }
 
 .island--bottom-rounded {
     border-radius: 0 0 3px 3px;
 }
-
 
 .island--top-rounded {
     border-radius: 3px 3px 0 0;
