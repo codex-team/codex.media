@@ -2,6 +2,7 @@ module.exports = function () {
 
     var CheckEvent = new window.CustomEvent('check'),
         CLASSES    = {
+            wrapper: 'cdx-checkbox-wrapper',
             checkbox: 'cdx-checkbox',
             checked: 'cdx-checkbox--checked'
         },
@@ -16,7 +17,7 @@ module.exports = function () {
         var checkbox = this,
             input = checkbox.querySelector('input');
 
-        checkbox.classList.toggle(CLASSES.checked);
+        checkbox.parentNode.classList.toggle(CLASSES.checked);
         input.checked = !input.checked;
 
         CheckEvent.checked = input.checked;
@@ -25,22 +26,37 @@ module.exports = function () {
 
     };
 
-    var prepareCheckbox = function (checkbox) {
+    var prepareCheckbox = function (wrapper) {
 
-        var input = document.createElement('INPUT');
+        var input      = document.createElement('INPUT'),
+            checkbox   = document.createElement('SPAN'),
+            firstChild = wrapper.firstChild;
 
-        input.type = 'checkbox';
-        input.name = checkbox.dataset.name || NAMES.defaultInput;
+        input.type  = 'checkbox';
+        input.name  = checkbox.dataset.name || NAMES.defaultInput;
+        input.value = 1;
         input.classList.add('hide');
 
-        checkbox.addEventListener('click', clicked, false);
+        checkbox.addEventListener('click', clicked);
         checkbox.classList.add(CLASSES.checkbox);
         checkbox.appendChild(input);
 
-        if (checkbox.dataset.checked) {
+        if (wrapper.dataset.checked) {
 
             input.checked = true;
-            checkbox.classList.add(CLASSES.checked);
+            wrapper.classList.add(CLASSES.checked);
+
+        }
+
+        wrapper.classList.add(CLASSES.wrapper);
+
+        if (firstChild) {
+
+            wrapper.insertBefore(checkbox, firstChild);
+
+        } else {
+
+            wrapper.appendChild(checkbox);
 
         }
 

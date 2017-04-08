@@ -3,42 +3,33 @@
     --checkedCheckboxColor: #4098f9;
 }
 
-.cdx-checkbox {
-    position:relative;
-    display: inline-block;
-    padding-left: 30px;
+.cdx-checkbox-wrapper {
     color: var(--checkboxColor);
-    cursor: pointer;
 }
 
 /**
  * Styles for checkbox backgorund
  */
-.cdx-checkbox:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 26px;
-    height: 18px;
-    margin-top: 3px;
-
+.cdx-checkbox{
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 14px;
+    padding: 2px 3px;
+    margin: 0 5px;
+    vertical-align: middle;
     border-radius: 10px;
-    background: var(--checkboxColor);
-}
+    cursor: pointer;
+    background: var(--checkboxColor);}
 
 /**
  * Styles for checkbox slider
  */
-.cdx-checkbox:after {
+.cdx-checkbox:before {
     content: '';
     position: absolute;
     width: 14px;
     height: 14px;
-    left: 0;
-    top: 0;
-    margin: 5px 3px;
     background: #fff;
     border-radius: 50%;
     transition: transform .2s ease;
@@ -49,10 +40,10 @@
     color: var(--checkedCheckboxColor);
 }
 
-.cdx-checkbox--checked:before {
+.cdx-checkbox--checked .cdx-checkbox {
     background: var(--checkedCheckboxColor);
 }
 
-.cdx-checkbox--checked:after {
+.cdx-checkbox--checked .cdx-checkbox:before {
     transform: translateX(6px);
 }
