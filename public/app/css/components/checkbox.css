@@ -5,6 +5,7 @@
 
 .cdx-checkbox-wrapper {
     color: var(--checkboxColor);
+    cursor: pointer;
 }
 
 /**
@@ -16,7 +17,7 @@
     width: 20px;
     height: 14px;
     padding: 2px 3px;
-    margin: 0 5px;
+    margin: 0 10px;
     vertical-align: middle;
     border-radius: 10px;
     cursor: pointer;
@@ -46,4 +47,8 @@
 
 .cdx-checkbox--checked .cdx-checkbox:before {
     transform: translateX(6px);
+}
+
+.cdx-default-checkbox--hidden {
+    display: none;
 }

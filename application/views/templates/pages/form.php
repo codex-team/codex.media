@@ -30,7 +30,10 @@
             <span class="button master fl_r" onclick="codex.writing.submit(this)">Отправить</span>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
-                <span class="button fl_r" onclick="codex.writing.openEditorFullscreen()">На весь экран</span>
+                <span class="writing-fullscreen__button fl_r" onclick="codex.writing.openEditorFullscreen()">
+                    <? include(DOCROOT . 'public/app/svg/zoom.svg') ?>
+                    <span class="writing-fullscreen__text">На весь экран</span>
+                </span>
             <? endif ?>
 
         </div>
