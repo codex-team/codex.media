@@ -74,7 +74,7 @@
     <? endif ?>
 
     <div class="comment__text">
-        <?= $comment->text ?>
+        <?= $methods->auto_link_urls($comment->text); ?>
     </div>
 
     <div class="comment__footer">

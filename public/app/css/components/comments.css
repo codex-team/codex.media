@@ -3,7 +3,6 @@
  */
 .comment {
     transition: background-color 500ms ease-out;
-    word-wrap: break-word;
 }
 
 .comment--highligthed {
@@ -35,8 +34,18 @@
 .comment__text {
     margin: 20px auto;
     font-size: 15px;
-    line-height: 1.5em;
-    word-break: break-all;
+    line-height: 1.6em;
+}
+
+.comment__text a {
+    padding-bottom: 1px;
+    color: var(--linkColor);
+    border-bottom: 1px solid color(var(--linkColor) lightness(+35%));
+}
+
+.comment__text a:hover {
+    color: var(--hoverColor);
+    border-bottom: 1px solid color(var(--hoverColor) lightness(+35%));
 }
 
 .comment__actions--button {
