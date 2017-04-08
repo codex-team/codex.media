@@ -43,7 +43,7 @@ class Controller_Auth_Signup extends Controller_Auth_Base
 
                 parent::initAuthSession($userId);
 
-                $model_auth = new Model_Auth(new Model_User($userId));
+                $model_auth = new Model_Auth($userId, $signupForm['email']);
 
                 $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CONFIRM);
 
