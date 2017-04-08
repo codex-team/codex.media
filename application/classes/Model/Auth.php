@@ -22,7 +22,7 @@ class Model_Auth extends Model_preDispatch
 
     /**
      * Model_Auth constructor.
-     * @param $user [Array] - necessary user fields
+     * @param $user [Array] - necessary user fields: id, name, email
      */
     public function __construct($user)
     {
