@@ -18,19 +18,16 @@ class Model_Auth extends Model_preDispatch
      */
     const DEFAULT_EMAIL_HASH_SALT = 'OKexL2iOXbhoJFw1Flb8';
 
-    public $user = array(
-        'id'    => null,
-        'email' => null
-    );
+    public $user = array();
 
-    public function __construct($id = null, $email = null)
+    /**
+     * Model_Auth constructor.
+     * @param $user [Array] - necessary user fields
+     */
+    public function __construct($user)
     {
-
-        $this->user['id']    = $id;
-        $this->user['email'] = $email;
-
+        $this->user = $user;
         parent::__construct();
-
     }
 
     /**
@@ -47,7 +44,7 @@ class Model_Auth extends Model_preDispatch
         
         return Model_Email::instance()->send(
             array(
-                'name' => (new Model_User($this->user['id']))->name,
+                'name' => $this->user['name'],
                 'email' => $this->user['email']
             ),
             self::EMAIL_SUBJECTS[$type] . $_SERVER['HTTP_HOST'],
