@@ -18,21 +18,17 @@ class Model_Auth extends Model_preDispatch
      */
     const DEFAULT_EMAIL_HASH_SALT = 'OKexL2iOXbhoJFw1Flb8';
 
-    public $user = array(
-        'id'    => null,
-        'email' => null
-    );
+    public $user = array();
 
-    public function __construct($id = null, $email = null)
+    /**
+     * Model_Auth constructor.
+     * @param $user [Array] - necessary user fields: id, name, email
+     */
+    public function __construct($user)
     {
-
-        $this->user['id']    = $id;
-        $this->user['email'] = $email;
-
+        $this->user = $user;
         parent::__construct();
-
     }
-
 
     /**
      * Adds pair hash => id to redis and sends email with link
@@ -44,17 +40,19 @@ class Model_Auth extends Model_preDispatch
 
         $hash = $this->addHash($type);
 
-        $message = View::factory('templates/emails/auth/' . $type, array('user' => new Model_User($this->user['id']), 'hash' => $hash));
-
-        $email = new Email();
-        return $email->send(
-            [$this->user['email']],
-            [$GLOBALS['SITE_MAIL'], $_SERVER['HTTP_HOST']],
+        $message = View::factory('templates/emails/auth/confirm', array('user' => $this->user, 'hash' => $hash));
+        
+        return Model_Email::instance()->send(
+            array(
+                'name' => $this->user['name'],
+                'email' => $this->user['email']
+            ),
             self::EMAIL_SUBJECTS[$type] . $_SERVER['HTTP_HOST'],
-            $message,
-            false
+            array(
+                'format' => 'text/plain',
+                'message' => $message
+            )
         );
-
     }
 
     /**
@@ -91,7 +89,6 @@ class Model_Auth extends Model_preDispatch
         $id = $this->redis->get($key);
 
         return $id;
-
     }
 
     /**

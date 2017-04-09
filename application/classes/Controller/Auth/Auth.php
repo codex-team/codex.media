@@ -514,7 +514,12 @@ class Controller_Auth_Auth extends Controller_Auth_Base
             return FALSE;
         }
 
-        $model_auth = new Model_Auth($user->id, $user->email);
+        $model_auth = new Model_Auth(array(
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email
+        ));
+
         $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_RESET);
 
         return TRUE;
