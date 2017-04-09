@@ -83,7 +83,7 @@ codex.loader             = require('./modules/loader');
 codex.scrollUp           = require('./modules/scrollUp');
 codex.branding           = require('./modules/branding');
 codex.pages              = require('./modules/pages');
-codex.checkboxes         = require('./modules/checkbox');
+codex.checkboxes         = require('./modules/checkboxes');
 
 
 module.exports = codex;

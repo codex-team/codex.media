@@ -22,7 +22,7 @@
  *
  *     checkbox.addEventListener('toggle', handler)
  *
- *  @requires checkbox.css
+ *  @requires checkboxes.css
  *
  *  @author gohabereg
  *  @version 1.0
@@ -34,7 +34,7 @@ module.exports = function () {
      * Custom event for checkboxes. Dispatches when checkbox clicked
      * @type {CustomEvent}
      */
-    var CheckEvent = new window.CustomEvent('toggle'),
+    var ToggleEvent = new window.CustomEvent('toggle'),
 
     /**
      * Elements classes dictionary
@@ -43,6 +43,7 @@ module.exports = function () {
             wrapper: 'cdx-checkbox-wrapper',
             checkbox: 'cdx-checkbox',
             checked: 'cdx-checkbox--checked',
+            unchecked: 'cdx-checkbox--unchecked',
             defaultCheckbox: 'cdx-default-checkbox--hidden'
         },
     /**
@@ -82,6 +83,10 @@ module.exports = function () {
 
             wrapper.classList.add(CLASSES.checked);
 
+        } else {
+
+            wrapper.classList.add(CLASSES.unchecked);
+
         }
 
         if (firstChild) {
@@ -107,14 +112,15 @@ module.exports = function () {
             input    = checkbox.querySelector('input');
 
         checkbox.parentNode.classList.toggle(CLASSES.checked);
+        checkbox.parentNode.classList.toggle(CLASSES.unchecked);
         input.checked = !input.checked;
 
         /**
          * Add `checked` property to CheckEvent
          */
-        CheckEvent.checked = input.checked;
+        ToggleEvent.checked = input.checked;
 
-        checkbox.dispatchEvent(CheckEvent);
+        checkbox.dispatchEvent(ToggleEvent);
 
     };
 

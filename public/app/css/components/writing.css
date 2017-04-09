@@ -203,6 +203,7 @@
 
 .writing-fullscreen__button {
     margin: 0 24px;
+    color: var(--grayText);
     cursor: pointer;
 }
 .writing-fullscreen__button:hover {

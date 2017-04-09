@@ -3,7 +3,7 @@
     --checkedCheckboxColor: #4098f9;
 }
 
-.cdx-checkbox-wrapper {
+.cdx-checkbox--unchecked {
     color: var(--checkboxColor);
     cursor: pointer;
 }
@@ -16,9 +16,9 @@
     display: inline-block;
     width: 20px;
     height: 14px;
-    padding: 2px 3px;
+    padding: 2px;
     margin: 0 10px;
-    vertical-align: middle;
+    vertical-align: text-bottom;
     border-radius: 10px;
     cursor: pointer;
     background: var(--checkboxColor);}
@@ -36,9 +36,16 @@
     transition: transform .2s ease;
 }
 
+.cdx-checkbox--unchecked:hover .cdx-checkbox:before {
+    transform: translateX(2px);
+}
 
+/**
+ * Styles for checked state
+ */
 .cdx-checkbox--checked {
     color: var(--checkedCheckboxColor);
+    cursor: pointer;
 }
 
 .cdx-checkbox--checked .cdx-checkbox {
