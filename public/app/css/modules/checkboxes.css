@@ -3,15 +3,15 @@
     --checkedCheckboxColor: #4098f9;
 }
 
-.cdx-checkbox--unchecked {
+.cdx-checkbox {
     color: var(--checkboxColor);
     cursor: pointer;
 }
 
 /**
- * Styles for checkbox backgorund
+ * Styles for checkbox background
  */
-.cdx-checkbox{
+.cdx-checkbox__slider{
     position: relative;
     display: inline-block;
     width: 20px;
@@ -21,12 +21,13 @@
     vertical-align: text-bottom;
     border-radius: 10px;
     cursor: pointer;
-    background: var(--checkboxColor);}
+    background: var(--checkboxColor);
+}
 
 /**
  * Styles for checkbox slider
  */
-.cdx-checkbox:before {
+.cdx-checkbox__slider:before {
     content: '';
     position: absolute;
     width: 14px;
@@ -34,10 +35,6 @@
     background: #fff;
     border-radius: 50%;
     transition: transform .2s ease;
-}
-
-.cdx-checkbox--unchecked:hover .cdx-checkbox:before {
-    transform: translateX(2px);
 }
 
 /**
@@ -48,11 +45,16 @@
     cursor: pointer;
 }
 
-.cdx-checkbox--checked .cdx-checkbox {
-    background: var(--checkedCheckboxColor);
+.cdx-checkbox:hover .cdx-checkbox__slider {
+    background-color: #556072;
 }
 
-.cdx-checkbox--checked .cdx-checkbox:before {
+.cdx-checkbox--checked .cdx-checkbox__slider,
+.cdx-checkbox--checked:hover .cdx-checkbox__slider{
+    background: var(--checkedCheckboxColor) !important;
+}
+
+.cdx-checkbox--checked .cdx-checkbox__slider:before {
     transform: translateX(6px);
 }
 

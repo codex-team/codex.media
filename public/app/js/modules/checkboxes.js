@@ -40,10 +40,9 @@ module.exports = function () {
      * Elements classes dictionary
      */
         CLASSES    = {
-            wrapper: 'cdx-checkbox-wrapper',
-            checkbox: 'cdx-checkbox',
+            wrapper: 'cdx-checkbox',
+            checkbox: 'cdx-checkbox__slider',
             checked: 'cdx-checkbox--checked',
-            unchecked: 'cdx-checkbox--unchecked',
             defaultCheckbox: 'cdx-default-checkbox--hidden'
         },
     /**
@@ -83,10 +82,6 @@ module.exports = function () {
 
             wrapper.classList.add(CLASSES.checked);
 
-        } else {
-
-            wrapper.classList.add(CLASSES.unchecked);
-
         }
 
         if (firstChild) {
@@ -112,7 +107,6 @@ module.exports = function () {
             input    = checkbox.querySelector('input');
 
         checkbox.parentNode.classList.toggle(CLASSES.checked);
-        checkbox.parentNode.classList.toggle(CLASSES.unchecked);
         input.checked = !input.checked;
 
         /**
