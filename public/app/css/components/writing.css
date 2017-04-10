@@ -201,6 +201,20 @@
     border-bottom: 1px solid color(var(--linkColor) alpha(-70%));
 }
 
+.writing-fullscreen__button {
+    margin: 0 24px;
+    color: var(--grayText);
+    cursor: pointer;
+}
+.writing-fullscreen__button:hover {
+    color: var(--hoverColor);
+}
+
+.writing-fullscreen__button svg{
+    margin-right: 4px;
+    margin-top: -3px;
+}
+
 @media (--mobile) {
     .writing {
         padding: 15px;
@@ -212,6 +226,14 @@
 
     .writing--fullscreen .writing__title {
         font-size: 24px !important;
+    }
+
+    .writing-fullscreen__button {
+        margin: 0;
+    }
+
+    .writing-fullscreen__text {
+        display: none;
     }
 
 }
