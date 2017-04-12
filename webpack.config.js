@@ -24,7 +24,7 @@ module.exports = {
             },
             {
                 test : /\.js$/,
-                loader: "eslint-loader"
+                loader: "eslint-loader?fix=true"
 
             }
         ]
