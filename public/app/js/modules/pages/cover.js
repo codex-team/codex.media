@@ -163,7 +163,7 @@ module.exports = function (cover) {
 
         var img = document.createElement('IMG');
 
-        /** Wait for browser download and cached image */
+        /** Wait for browser download and cache image */
         img.onload = function () {
 
             updateCoverImage(imageData);
@@ -198,7 +198,7 @@ module.exports = function (cover) {
 
         if ( !coverHolder ) {
 
-            codex.core.log('Nothing to update. Cover wan not found', '[page.cover]', 'warn');
+            codex.core.log('Nothing to update. Cover was not found', '[page.cover]', 'warn');
             return;
 
         }
