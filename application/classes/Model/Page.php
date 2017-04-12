@@ -11,6 +11,12 @@ class Model_Page extends Model
     public $author;
     public $id_parent       = 0;
 
+    /**
+     * Page cover URL
+     * @var null
+     */
+    public $cover = null;
+
     public $url             = 0;
 
     public $rich_view       = 0;
@@ -107,6 +113,7 @@ class Model_Page extends Model
             ->set('id_parent',      $this->id_parent)
             ->set('title',          $this->title)
             ->set('content',        $this->content)
+            ->set('cover',          $this->cover)
             ->set('rich_view',      $this->rich_view)
             ->set('dt_pin',         $this->dt_pin);
 
@@ -124,6 +131,7 @@ class Model_Page extends Model
             ->set('author',         $this->author->id)
             ->set('id_parent',      $this->id_parent)
             ->set('title',          $this->title)
+            ->set('cover',          $this->cover)
             ->set('content',        $this->content)
             ->set('rich_view',      $this->rich_view)
             ->set('dt_pin',         $this->dt_pin);

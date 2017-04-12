@@ -6,7 +6,7 @@
             * if the elem is the first
             * $page === reset($pages)
             */ ?>
-        <article class="island <?= $index != 0 ? 'island--margined' : '' ?> post-list-item <?= $page->rich_view ? 'post-list-item--big' : '' ?> <?= $page->dt_pin ? 'post-list-item_pinned' : '' ?>">
+        <article id="js-page-<?= $page->id ?>" class="island <?= $index != 0 ? 'island--margined' : '' ?> post-list-item <?= $page->rich_view ? 'post-list-item--big' : '' ?> <?= $page->dt_pin ? 'post-list-item_pinned' : '' ?>">
 
             <div class="post-list-item__header">
                 <? if ($user->isAdmin || $user->id == $page->author->id): ?>
@@ -31,6 +31,11 @@
                     <?= $page->description ?>
                 </div>
             <? endif ?>
+
+            <div class="posts-list-item__set-cover">
+                <? include(DOCROOT . "public/app/svg/camera.svg") ?>
+            </div>
+
             <div class="post-list-item__footer">
                 <a class="post-list-item__comments" href="/p/<?= $page->id ?>/<?= $page->uri ?>" rel="nofollow">
                     <? include(DOCROOT . "public/app/svg/comment.svg") ?>
@@ -59,6 +64,10 @@
                         {
                             title : 'Удалить',
                             handler : codex.pages.remove
+                        },
+                        {
+                            title: 'Установить обложку',
+                            handler : codex.pages.cover.toggleButton
                         }]
                 });
             });

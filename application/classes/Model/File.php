@@ -3,7 +3,6 @@
 class Model_File extends Model
 {
     public $id          = 0;
-    public $page        = 0;
     public $title       = '';
     public $is_removed  = 0;
 
@@ -15,6 +14,7 @@ class Model_File extends Model
     public $date        = null;
     public $status      = 0;
     public $type        = 0;
+    public $target      = 0;
 
 
     /**
@@ -30,6 +30,7 @@ class Model_File extends Model
     const EDITOR_FILE  = 2;
     const USER_PHOTO   = 3;
     const BRANDING     = 4;
+    const PAGE_COVER   = 5;
 
     /**
      * This types are images
@@ -38,7 +39,8 @@ class Model_File extends Model
     public $imageTypes = array(
         self::EDITOR_IMAGE,
         self::USER_PHOTO,
-        self::BRANDING
+        self::BRANDING,
+        self::PAGE_COVER
     );
 
     public function __construct($id = null, $file_hash_hex = null, $row = array())
@@ -66,11 +68,13 @@ class Model_File extends Model
      * @param  int  $type file type constant
      * @param  array $file file object
      * @param  int $user_id  author
+     * @param  null|int $target  target
      * @return string   uploaded file name
      */
-    public function upload($type, $file, $user_id)
+    public function upload($type, $file, $user_id, $target = null)
     {
         $this->type = $type;
+        $this->target = $target;
 
         $config = Kohana::$config->load('upload')[$this->type];
         $path   = $config['path'];
@@ -113,6 +117,13 @@ class Model_File extends Model
                 $settings = new Model_Settings();
                 $branding = $settings->newBranding($savedFilename);
                 $this->filename = 'o_' . $branding;
+                break;
+
+            case self::PAGE_COVER:
+                $page = new Model_Page($target);
+                $page->cover = $savedFilename;
+                $page->update();
+                $this->filename = 'o_' . $savedFilename;
                 break;
         }
 
@@ -222,33 +233,6 @@ class Model_File extends Model
                  ->set('mime',      $this->mime)
                  ->set('type',      $this->type)
                  ->set('file_hash', hex2bin($this->file_hash_hex));
-        }
-
-        $file_id = $file->execute();
-
-        return self::get($file_id);
-    }
-
-    public function update($fields = array())
-    {
-        $file = Dao_Files::update();
-
-        if ($fields && isset($fields['id'])) {
-
-            /** если на вход идет массив */
-            $file->where('id', '=', $fields['id']);
-
-            foreach ($fields as $name => $value)
-                $file->set($name, trim(htmlspecialchars($value)));
-
-        } else {
-
-            /** если на вход идет модель */
-            $file->where('id', '=',  $this->id)
-                 ->set('page',       $this->page)
-                 ->set('title',      $this->title)
-                 ->set('is_removed', $this->is_removed)
-                 ->set('status',     $this->status);
         }
 
         $file_id = $file->execute();

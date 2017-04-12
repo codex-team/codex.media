@@ -87,6 +87,34 @@
     font-size: 15px;
 }
 
+/**
+ * Set cover button
+ */
+.posts-list-item__set-cover {
+    height: 0;
+    margin: 20px -30px -21px;
+    background: var(--lightGrayBackground);
+    color: var(--grayText);
+    text-align: center;
+    cursor: pointer;
+    transition: height 150ms ease-in;
+    will-change: height;
+}
+
+.posts-list-item__set-cover--showed {
+    height: 300px;
+}
+
+.posts-list-item__set-cover:hover {
+    color: color(var(--grayText) blackness(+50%));
+}
+
+.posts-list-item__set-cover svg {
+    margin-top: 110px;
+    width: 100px;
+}
+
+
 @media (--mobile) {
     /**
     * Articles list - mobile

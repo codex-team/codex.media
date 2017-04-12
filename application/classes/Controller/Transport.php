@@ -6,23 +6,32 @@ class Controller_Transport extends Controller_Base_preDispatch
         'success' => 0
     );
 
-    private $type  = null;
-    private $files = null;
+    private $type   = null;
+
+    /**
+     * Transport target id (user, page, etc)
+     * @var null|Number
+     */
+    private $target = null;
+
+    private $files  = null;
 
     private $typesAvailable = array(
         Model_File::EDITOR_FILE,
         Model_File::EDITOR_IMAGE,
         Model_File::USER_PHOTO,
-        Model_File::BRANDING
+        Model_File::BRANDING,
+        Model_File::PAGE_COVER
     );
 
     /**
-     * Codex Editor Attaches tool server-side
+     * Transport gateway
      */
     public function action_upload()
     {
-        $this->files = Arr::get($_FILES, 'files');
-        $this->type  = $this->request->param('type');
+        $this->files  = Arr::get($_FILES, 'files');
+        $this->type   = $this->request->param('type');
+        $this->target = Arr::get($_POST, 'target');
 
         $file = new Model_File();
 
@@ -30,7 +39,7 @@ class Controller_Transport extends Controller_Base_preDispatch
             goto finish;
         }
 
-        $uploadedFile = $file->upload($this->type, $this->files, $this->user->id);
+        $uploadedFile = $file->upload($this->type, $this->files, $this->user->id, $this->target);
 
         if ( $uploadedFile ) {
             $this->transportResponse['success'] = 1;
@@ -39,7 +48,8 @@ class Controller_Transport extends Controller_Base_preDispatch
                 'title'     => $uploadedFile->title,
                 'name'      => $uploadedFile->file_hash_hex,
                 'extension' => $uploadedFile->extension,
-                'size'      => $uploadedFile->size
+                'size'      => $uploadedFile->size,
+                'target'    => $uploadedFile->target
             );
         } else {
             $this->transportResponse['message'] = 'Error while uploading';
