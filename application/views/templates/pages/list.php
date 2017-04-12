@@ -32,9 +32,17 @@
                 </div>
             <? endif ?>
 
-            <div class="posts-list-item__set-cover">
-                <? include(DOCROOT . "public/app/svg/camera.svg") ?>
-            </div>
+            <? if (!empty($page->cover)): ?>
+                <a class="posts-list-item__cover" style="background-image:  url('/upload/pages/covers/o_<?= $page->cover ?>');" href="/p/<?= $page->id ?>/<?= $page->uri ?>">
+                    <? include(DOCROOT . "public/app/svg/camera.svg") ?>
+                </a>
+            <? else: ?>
+                <div class="posts-list-item__cover posts-list-item__cover--empty" onclick="codex.pages.cover.set(<?= $page->id ?>)">
+                    <? include(DOCROOT . "public/app/svg/camera.svg") ?>
+                </div>
+            <? endif ?>
+
+
 
             <div class="post-list-item__footer">
                 <a class="post-list-item__comments" href="/p/<?= $page->id ?>/<?= $page->uri ?>" rel="nofollow">

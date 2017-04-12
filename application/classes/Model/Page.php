@@ -74,7 +74,7 @@ class Model_Page extends Model
         $pageRow = Dao_Pages::select()
             ->where('id', '=', $id)
             ->limit(1)
-            ->cached(Date::MINUTE * 30, 'page:' . $id)
+            ->cached(Date::MINUTE * 5, 'page:' . $id)
             ->execute();
 
         return self::fillByRow($pageRow);

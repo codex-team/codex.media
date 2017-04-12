@@ -232,6 +232,7 @@ class Model_File extends Model
                  ->set('extension', $this->extension)
                  ->set('mime',      $this->mime)
                  ->set('type',      $this->type)
+                 ->set('target',    $this->target)
                  ->set('file_hash', hex2bin($this->file_hash_hex));
         }
 

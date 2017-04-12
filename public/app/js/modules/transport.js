@@ -14,6 +14,7 @@
  *      beforeSend : Function,
  *      success : Function,
  *      error : Function
+ *      data : Object — additional data
  * });
  *
  * You can handle all of this event like:
@@ -74,6 +75,9 @@ module.exports = ( function (transport) {
 
     };
 
+    /**
+     * Sends transport AJAX request
+     */
     var send_ = function () {
 
         var url        = config_.url,
@@ -94,6 +98,19 @@ module.exports = ( function (transport) {
         } else {
 
             formData.append('files', files[0], files[0].name);
+
+        }
+
+        /**
+         * Append additional data
+         */
+        if ( config_.data !== null && typeof config_.data === 'object' ) {
+
+            for (var key in config_.data) {
+
+                formData.append(key, config_.data[key]);
+
+            }
 
         }
 
