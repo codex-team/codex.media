@@ -28,16 +28,14 @@
 }
 
 .writing__actions {
-    margin: 0  -30px;
-    padding: 20px 25px;
+    margin: 0 -30px;
+    padding: 20px 30px;
     border-top: 1px solid #f5f6fb;
     background: #fdfdfe;
 }
 
 .writing__actions-content {
     display: flex;
-    margin: 0 auto;
-    max-width: 578px;
     flex-flow: row nowrap;
     align-items: center;
     justify-content: flex-end;
@@ -188,9 +186,10 @@
 
 .editor-wrapper .ce-block__content,
 .writing-navigation,
-.writing__title-wrapper {
+.writing__title-wrapper,
+.writing__actions-content {
     margin: 0 auto;
-    max-width: 578px;
+    max-width: 600px;
 }
 
 .editor-wrapper .ce-block {
