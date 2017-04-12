@@ -63,8 +63,6 @@ class Controller_User_Index extends Controller_Base_preDispatch
         $this->template->title   = $viewUser->name;
         $this->template->content = View::factory('/templates/users/profile', $this->view);
 
-        echo View::factory('templates/emails/auth/confirm', array('user' => $this->user, 'hash' => 'sdfsdf'));
-
     }
 
     private function ajax_pagination($type, $models, $nextPage = false)
