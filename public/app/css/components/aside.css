@@ -1,6 +1,7 @@
 .main-aside {
     position: sticky;
     top: var(--islandMargin);
+    will-change: top;
 }
 
 .main-aside--offset-top {
