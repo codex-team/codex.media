@@ -65,7 +65,8 @@
                 /** Island settings menu */
                 codex.islandSettings.init({
                     selector : '.js-page-settings',
-                    items : [{
+                    items : [
+                        {
                             title : 'Редактировать',
                             handler : codex.pages.openWriting
                         },
@@ -78,9 +79,9 @@
                             {
                                 title: 'Установить обложку',
                                 handler : codex.pages.cover.toggleButton
-                            }]
+                            }
                         <? endif; ?>
-                });
+                    ]});
             });
         </script>
     <? endif ?>
