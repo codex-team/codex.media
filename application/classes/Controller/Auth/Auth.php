@@ -515,8 +515,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         }
 
         $model_auth = new Model_Auth(array(
-            'id' => $user->id,
-            'name' => $user->name,
+            'id'    => $user->id,
+            'name'  => $user->name,
             'email' => $user->email
         ));
 

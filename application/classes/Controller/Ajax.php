@@ -4,7 +4,11 @@ class Controller_Ajax extends Controller_Base_preDispatch
 {
     public function action_send_confirmation_email() {
 
-        $model_auth = new Model_Auth($this->user->id, $this->user->email);
+        $model_auth = new Model_Auth(array(
+            "id"    => $this->user->id,
+            "name"  => $this->user->name,
+            "email" => $this->user->email
+        ));
 
         $isSucces = $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CONFIRM);
 

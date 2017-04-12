@@ -9,8 +9,8 @@ class Model_Auth extends Model_preDispatch
 
     const EMAIL_SUBJECTS = array(
         self::TYPE_EMAIL_CONFIRM => 'Добро пожаловать на ',
-        self::TYPE_EMAIL_RESET => 'Сброс пароля на ',
-        self::TYPE_EMAIL_CHANGE => 'Смена пароля на ',
+        self::TYPE_EMAIL_RESET   => 'Сброс пароля на ',
+        self::TYPE_EMAIL_CHANGE  => 'Смена пароля на ',
     );
 
     /**
@@ -18,13 +18,13 @@ class Model_Auth extends Model_preDispatch
      */
     const DEFAULT_EMAIL_HASH_SALT = 'OKexL2iOXbhoJFw1Flb8';
 
-    public $user = array();
+    public $user;
 
     /**
      * Model_Auth constructor.
      * @param $user [Array] - necessary user fields: id, name, email
      */
-    public function __construct($user)
+    public function __construct($user = array())
     {
         $this->user = $user;
         parent::__construct();
@@ -40,16 +40,16 @@ class Model_Auth extends Model_preDispatch
 
         $hash = $this->addHash($type);
 
-        $message = View::factory('templates/emails/auth/confirm', array('user' => $this->user, 'hash' => $hash));
-        
+        $message = View::factory('templates/emails/auth/' . $type , array('user' => $this->user, 'hash' => $hash));
+
         return Model_Email::instance()->send(
             array(
-                'name' => $this->user['name'],
+                'name'  => $this->user['name'],
                 'email' => $this->user['email']
             ),
             self::EMAIL_SUBJECTS[$type] . $_SERVER['HTTP_HOST'],
             array(
-                'format' => 'text/plain',
+                'format'  => 'text/plain',
                 'message' => $message
             )
         );

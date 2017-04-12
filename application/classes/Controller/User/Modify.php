@@ -21,7 +21,11 @@ class Controller_User_Modify extends Controller_Base_preDispatch
            $this->view['success'] = $this->update();
         };
 
-        $model_auth = new Model_Auth($this->user->id, $this->user->email);
+        $model_auth = new Model_Auth(array(
+            "id"    => $this->user->id,
+            "name"  => $this->user->name,
+            "email" => $this->user->email
+        ));
         $this->view['newPasswordRequested'] = $model_auth->checkIfEmailWasSent(Model_Auth::TYPE_EMAIL_CHANGE);
 
         $this->template->content = View::factory('/templates/users/settings', $this->view);
@@ -71,7 +75,11 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             'success' => 0
         );
 
-        $model_auth  = new Model_Auth($this->user->id, $this->user->email);
+        $model_auth  = new Model_Auth(array(
+            "id"    => $this->user->id,
+            "name"  => $this->user->name,
+            "email" => $this->user->email
+        ));
         $csrf        = Arr::get($_POST, 'csrf');
         $repeatEmail = Arr::get($_POST, 'repeatEmail', false);
         $password    = Arr::get($_POST, 'currentPassword', '');
@@ -289,7 +297,11 @@ class Controller_User_Modify extends Controller_Base_preDispatch
                 goto finish;
             }
 
-            $model_auth = new Model_Auth($this->user->id, $this->user->email);
+            $model_auth = new Model_Auth(array(
+                "id"    => $this->user->id,
+                "name"  => $this->user->name,
+                "email" => $this->user->email
+            ));
             $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CONFIRM);
 
             $response['success'] = 1;
