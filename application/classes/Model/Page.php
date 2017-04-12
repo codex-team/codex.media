@@ -121,7 +121,6 @@ class Model_Page extends Model
             ->where('id', '=', $this->id)
             ->set('id',             $this->id)
             ->set('status',         $this->status)
-            ->set('author',         $this->author->id)
             ->set('id_parent',      $this->id_parent)
             ->set('title',          $this->title)
             ->set('content',        $this->content)
