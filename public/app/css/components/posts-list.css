@@ -96,7 +96,7 @@
     margin: 20px -30px -21px;
     background-color: var(--lightGrayBackground);
     background-size: cover;
-    background-position-y: center;
+    background-position: center center;
     color: var(--grayText);
     text-align: center;
     cursor: pointer;
