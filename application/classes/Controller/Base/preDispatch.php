@@ -24,10 +24,10 @@ class Controller_Base_preDispatch extends Controller_Template
         /** Disallow requests from other domains */
         if (Kohana::$environment === Kohana::PRODUCTION) {
 
-            if ((Arr::get($_SERVER, 'SERVER_NAME') != 'alpha.difual.com') &&
-                (Arr::get($_SERVER, 'SERVER_NAME') != 'ifmo.su')) {
+            if ( Arr::get($_SERVER, 'SERVER_NAME') != Arr::get($_SERVER, 'DOMAIN') ) {
 
                 exit();
+
             }
         }
 
