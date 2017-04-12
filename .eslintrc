@@ -26,7 +26,7 @@
             "objectsInArrays": true,
             "arraysInArrays": true
         }],
-        "quotes": [2, "single", "avoid-escape"],
+        "quotes": [1, "single", "avoid-escape"],
         "eqeqeq": 0,
         "brace-style": [2, "1tbs"],
 
@@ -71,7 +71,8 @@
         "MutationObserver": true,
         "FormData": true,
         "XMLHttpRequest": true,
-        "ActiveXObject": true
+        "ActiveXObject": true,
+        "FileReader": true
 
     }
 }

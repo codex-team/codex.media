@@ -1,3 +1,11 @@
+-- phpMyAdmin SQL Dump
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Generation Time: Apr 12, 2017 at 10:24 PM
+-- Server version: 5.7.16
+-- PHP Version: 5.6.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -9,25 +17,22 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `codex-org`
+-- Database: `codex-org`
 --
-CREATE DATABASE IF NOT EXISTS `codex-org` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `codex-org`;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `comments`
+-- Table structure for table `comments`
 --
 
-DROP TABLE IF EXISTS `comments`;
-CREATE TABLE IF NOT EXISTS `comments` (
-  `id` int(10) unsigned NOT NULL,
+CREATE TABLE `comments` (
+  `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) NOT NULL,
   `text` text NOT NULL,
-  `page_id` int(10) unsigned NOT NULL,
-  `root_id` int(10) unsigned NOT NULL,
-  `parent_id` int(10) unsigned NOT NULL,
+  `page_id` int(10) UNSIGNED NOT NULL,
+  `root_id` int(10) UNSIGNED NOT NULL,
+  `parent_id` int(10) UNSIGNED NOT NULL,
   `dt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_removed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -35,17 +40,16 @@ CREATE TABLE IF NOT EXISTS `comments` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `files`
+-- Table structure for table `files`
 --
 
-DROP TABLE IF EXISTS `files`;
-CREATE TABLE IF NOT EXISTS `files` (
-  `id` int(10) unsigned NOT NULL,
-  `page` int(10) unsigned DEFAULT NULL,
+CREATE TABLE `files` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `target` int(10) UNSIGNED DEFAULT NULL,
   `filename` varchar(100) NOT NULL,
   `title` varchar(255) DEFAULT NULL,
-  `author` int(10) unsigned NOT NULL,
-  `size` float unsigned NOT NULL,
+  `author` int(10) UNSIGNED NOT NULL,
+  `size` float UNSIGNED NOT NULL,
   `extension` varchar(5) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_removed` tinyint(1) NOT NULL DEFAULT '0',
@@ -58,18 +62,18 @@ CREATE TABLE IF NOT EXISTS `files` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `pages`
+-- Table structure for table `pages`
 --
 
-DROP TABLE IF EXISTS `pages`;
-CREATE TABLE IF NOT EXISTS `pages` (
-  `id` int(11) unsigned NOT NULL,
+CREATE TABLE `pages` (
+  `id` int(11) UNSIGNED NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0 - show, 1 - hide , 2 - removed',
-  `id_parent` int(10) unsigned NOT NULL DEFAULT '0',
+  `id_parent` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL,
   `content` text,
+  `cover` varchar(255) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `author` int(10) unsigned NOT NULL,
+  `author` int(10) UNSIGNED NOT NULL,
   `rich_view` tinyint(1) DEFAULT '0',
   `dt_pin` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -77,18 +81,17 @@ CREATE TABLE IF NOT EXISTS `pages` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `settings`
+-- Table structure for table `settings`
 --
 
-DROP TABLE IF EXISTS `settings`;
-CREATE TABLE IF NOT EXISTS `settings` (
+CREATE TABLE `settings` (
   `name` varchar(50) NOT NULL,
   `value` varchar(150) DEFAULT NULL,
   `label` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Дамп данных таблицы `settings`
+-- Dumping data for table `settings`
 --
 
 INSERT INTO `settings` (`name`, `value`, `label`) VALUES
@@ -105,11 +108,10 @@ INSERT INTO `settings` (`name`, `value`, `label`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `users`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
@@ -127,7 +129,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `facebook` varchar(255) DEFAULT NULL,
   `facebook_name` varchar(255) DEFAULT NULL,
   `facebook_username` varchar(255) DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 - register, 2 - teacher , 3 - admin',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 — normal, 1 — banned',
+  `role` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 — registred, 2 — teacher, 3 — admin',
   `dt_reg` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_removed` tinyint(1) NOT NULL DEFAULT '0',
   `isConfirmed` tinyint(4) NOT NULL DEFAULT '1'
@@ -136,41 +139,40 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `users_sessions`
+-- Table structure for table `users_sessions`
 --
 
-DROP TABLE IF EXISTS `users_sessions`;
-CREATE TABLE IF NOT EXISTS `users_sessions` (
-  `id` int(10) unsigned NOT NULL,
-  `uid` int(10) unsigned NOT NULL,
+CREATE TABLE `users_sessions` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `uid` int(10) UNSIGNED NOT NULL,
   `cookie` varchar(100) NOT NULL,
   `dt_start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `dt_access` timestamp NULL DEFAULT NULL,
   `dt_close` timestamp NULL DEFAULT NULL,
   `useragent` text NOT NULL,
-  `social_provider` tinyint(3) unsigned DEFAULT NULL COMMENT '1 - vk, 2 - fb , 3- tw',
+  `social_provider` tinyint(3) UNSIGNED DEFAULT NULL COMMENT '1 — vk, 2 — fb , 3 — tw',
   `ip` bigint(11) NOT NULL DEFAULT '0',
   `autologin` smallint(4) DEFAULT NULL COMMENT 'autologin type'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Индексы сохранённых таблиц
+-- Indexes for dumped tables
 --
 
 --
--- Индексы таблицы `comments`
+-- Indexes for table `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `files`
+-- Indexes for table `files`
 --
 ALTER TABLE `files`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `pages`
+-- Indexes for table `pages`
 --
 ALTER TABLE `pages`
   ADD PRIMARY KEY (`id`),
@@ -178,50 +180,53 @@ ALTER TABLE `pages`
   ADD KEY `id_parent` (`id_parent`);
 
 --
--- Индексы таблицы `settings`
+-- Indexes for table `settings`
 --
 ALTER TABLE `settings`
   ADD PRIMARY KEY (`name`);
 
 --
--- Индексы таблицы `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `users_sessions`
+-- Indexes for table `users_sessions`
 --
 ALTER TABLE `users_sessions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `uid` (`uid`);
 
 --
--- AUTO_INCREMENT для сохранённых таблиц
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT для таблицы `comments`
+-- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT для таблицы `files`
+-- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT для таблицы `pages`
+-- AUTO_INCREMENT for table `pages`
 --
 ALTER TABLE `pages`
-  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT для таблицы `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT для таблицы `users_sessions`
+-- AUTO_INCREMENT for table `users_sessions`
 --
 ALTER TABLE `users_sessions`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
