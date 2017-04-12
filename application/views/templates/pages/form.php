@@ -24,12 +24,11 @@
 
         <div class="writing__actions-content clearfix">
 
+            <? $isNews = $page->isNewsPage ||
+                        (Request::current()->controller() == 'Index' &&
+                         Request::current()->param('feed_key', Model_Feed_Pages::TYPE_NEWS) == Model_Feed_Pages::TYPE_NEWS) ?>
             <? if ($user->isAdmin() && Request::current()->controller() != 'User_Index'): ?>
-                <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews"
-                      data-checked="<?= $page->isNewsPage ||
-                      (Request::current()->controller() == 'Index' &&
-                      Request::current()->param('feed_key', Model_Feed_Pages::TYPE_NEWS) == Model_Feed_Pages::TYPE_NEWS) ?>">
-
+                <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
                     Новость
                 </span>
             <? endif; ?>
