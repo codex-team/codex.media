@@ -20,14 +20,19 @@
 
     <div class="editor-wrapper" id="placeForEditor"></div>
 
-    <div class="writing__actions clear">
+    <div class="writing__actions">
 
-        <div class="writing__actions-content">
+        <div class="writing__actions-content clearfix">
 
-            <? if ($user->isAdmin()): ?>
-                <span name="cdx-custom-checkbox" data-name="isNews" data-checked="<?= $page->isNewsPage ?>">Новость</span>
+            <? if ($user->isAdmin() && Request::current()->controller() != 'User_Index'): ?>
+                <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews"
+                      data-checked="<?= $page->isNewsPage ||
+                      (Request::current()->controller() == 'Index' &&
+                      Request::current()->param('feed_key', Model_Feed_Pages::TYPE_NEWS) == Model_Feed_Pages::TYPE_NEWS) ?>">
+
+                    Новость
+                </span>
             <? endif; ?>
-            <span class="button master fl_r" onclick="codex.writing.submit(this)">Отправить</span>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
                 <span class="writing-fullscreen__button fl_r" onclick="codex.writing.openEditorFullscreen()">
@@ -35,6 +40,8 @@
                     <span class="writing-fullscreen__text">На весь экран</span>
                 </span>
             <? endif ?>
+
+            <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
 
         </div>
 

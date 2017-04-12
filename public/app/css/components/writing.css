@@ -34,9 +34,13 @@
     background: #fdfdfe;
 }
 
-.writing__actions::after {
-    display: inline-block;
-    content: '';
+.writing__actions-content {
+    display: flex;
+    margin: 0 auto;
+    max-width: 578px;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .writing .toggler {
@@ -59,7 +63,6 @@
 }
 
 .writing .button {
-    margin-top: -0.5em;
     margin-left: 12px;
     font-size: 0.9em;
 }
@@ -185,8 +188,7 @@
 
 .editor-wrapper .ce-block__content,
 .writing-navigation,
-.writing__title-wrapper,
-.writing__actions-content {
+.writing__title-wrapper {
     margin: 0 auto;
     max-width: 578px;
 }
@@ -202,10 +204,11 @@
 }
 
 .writing-fullscreen__button {
-    margin: 0 24px;
+    margin: auto 24px;
     color: var(--grayText);
     cursor: pointer;
 }
+
 .writing-fullscreen__button:hover {
     color: var(--hoverColor);
 }
@@ -213,6 +216,10 @@
 .writing-fullscreen__button svg{
     margin-right: 4px;
     margin-top: -3px;
+}
+
+.writing__is-news {
+    margin-right: auto;
 }
 
 @media (--mobile) {
