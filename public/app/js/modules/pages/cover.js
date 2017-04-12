@@ -155,13 +155,15 @@ module.exports = function (cover) {
     }
 
     /**
-     * Update
-     * @param  {String} imageSource  - new cover src
+     * Update cover after succes uploading
+     * Do it after new image loading
+     * @param  {Object} imageData  - new cover data
      */
     function update( imageData ) {
 
         var img = document.createElement('IMG');
 
+        /** Wait for browser download and cached image */
         img.onload = function () {
 
             updateCoverImage(imageData);
