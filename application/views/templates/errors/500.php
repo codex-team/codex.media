@@ -16,8 +16,7 @@
             transform: translate(-50%, -50%);
         }
         h1 {
-            font-size: 50px;
-            margin: 0;
+            font-size: 22px;
         }
     </style>
 </head>
@@ -27,7 +26,7 @@
         <? include(DOCROOT . "public/app/svg/codex-logo.svg") ?>
     </a>
 
-    <b>Произошла ошибка. Разработчики занимаются исправлением этой ошибки</b>
+    <h1>Сервис временно недоступен</h1>
 </div>
 </body>
 </html>
