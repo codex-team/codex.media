@@ -36,7 +36,7 @@
                 <a class="posts-list-item__cover" style="background-image:  url('/upload/pages/covers/o_<?= $page->cover ?>');" href="/p/<?= $page->id ?>/<?= $page->uri ?>">
                     <? include(DOCROOT . "public/app/svg/camera.svg") ?>
                 </a>
-            <? else: ?>
+            <? elseif( $user->isAdmin) : ?>
                 <div class="posts-list-item__cover posts-list-item__cover--empty" onclick="codex.pages.cover.set(<?= $page->id ?>)">
                     <? include(DOCROOT . "public/app/svg/camera.svg") ?>
                 </div>
@@ -72,11 +72,14 @@
                         {
                             title : 'Удалить',
                             handler : codex.pages.remove
-                        },
-                        {
-                            title: 'Установить обложку',
-                            handler : codex.pages.cover.toggleButton
-                        }]
+                        }
+                        <? if ($user->isAdmin): ?>
+                            ,
+                            {
+                                title: 'Установить обложку',
+                                handler : codex.pages.cover.toggleButton
+                            }]
+                        <? endif; ?>
                 });
             });
         </script>
