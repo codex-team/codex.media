@@ -411,4 +411,29 @@ class Model_Methods extends Model
         return count($list) > $limit;
     }
 
+    public static function sendBotNotification($text)
+    {
+        $telegramConfigFilename = 'telegram-notification';
+        $telegramConfig = Kohana::$config->load($telegramConfigFilename);
+        if (!property_exists($telegramConfig, 'url')) {
+            throw new Kohana_Exception("No $telegramConfigFilename config file was found!");
+            return;
+        }
+        $url = $telegramConfig->url;
+        if (!$url) {
+            throw new Kohana_Exception("URL for telegram notifications was not found.");
+            return;
+        }
+        $params = array(
+            'message' => $text
+        );
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($ch);
+        curl_close($ch);
+        return true;
+    }
+
 }
