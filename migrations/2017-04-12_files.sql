@@ -1,1 +1,0 @@
-ALTER TABLE `files` CHANGE `page` `target` INT(10) UNSIGNED NULL DEFAULT NULL;

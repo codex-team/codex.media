@@ -1,1 +1,0 @@
-ALTER TABLE `pages` ADD `cover` VARCHAR(255) NULL DEFAULT NULL AFTER `content`;
