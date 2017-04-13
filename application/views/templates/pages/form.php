@@ -25,8 +25,10 @@
         <div class="writing__actions-content clearfix">
 
             <?
+                $defaultFeedKey  = Model_Feed_Pages::TYPE_NEWS;
+
                 $fromIndexPage   = !empty(Request::$current) && Request::$current->controller() == 'Index';
-                $fromNewsTab     = Request::$current->param('feed_key', null) == Model_Feed_Pages::TYPE_NEWS;
+                $fromNewsTab     = Request::$current->param('feed_key', $defaultFeedKey) == Model_Feed_Pages::TYPE_NEWS;
                 $fromUserProfile = Request::$current->controller() == 'User_Index';
 
                 $isNews = $page->isNewsPage || ($fromIndexPage && $fromNewsTab);
