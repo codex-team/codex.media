@@ -4,11 +4,16 @@ class Kohana_Exception extends Kohana_Kohana_Exception {
 
     public static function _handler($e)
     {
-        if (Kohana::$environment === Kohana::PRODUCTION) {
+        switch (Kohana::$environment) {
+            case Kohana::PRODUCTION:
+                self::$error_view = 'templates/errors/500';
+                self::formatErrorForTelegrams($e);
+            break;
 
-            self::$error_view = 'templates/errors/500';
-            self::formatErrorForTelegrams($e);
-
+            case Kohana::TESTING:
+            case Kohana::STAGING:
+                self::$error_view = 'templates/errors/500';
+            break;
         }
 
         return parent::_handler($e);
