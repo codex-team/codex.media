@@ -102,6 +102,7 @@
     margin-right: 5px;
     margin-top: -1px;
 }
+
 .confirm-reminder__attention svg {
     width: 18px;
 }
@@ -120,7 +121,6 @@
     text-align: center;
 }
 
-
 /**
 * Mobile menu holder and toggler
 */
@@ -136,7 +136,7 @@
     }
 
     .main-aside--offset-top {
-        margin-top: 0px;
+        margin-top: 0;
     }
 
     /**
@@ -144,7 +144,7 @@
     */
     .mobile-menu-holder {
         display: none;
-        margin-bottom: 15px;
+        /*margin-bottom: 15px;*/
     }
 
     .mobile-menu-holder--opened {
@@ -153,7 +153,8 @@
 
     .mobile-menu-toggler {
         display: inline-flex;
-        margin: auto 0 auto auto;
+        padding: 20px;
+        margin: -10px -15px -10px auto;
         cursor: pointer;
         z-index: 2;
     }
