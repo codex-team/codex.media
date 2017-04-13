@@ -53,7 +53,7 @@
             <? endif ?>
         </div>
 
-        <div class="profile__about <?= $viewUser->isMe ? 'profile__about--editable' : '' ?>" <?= $viewUser->isMe ? 'onclick="codex.user.bio.edit(this)"' : ''?>>
+        <div class="profile__about <?= $viewUser->isMe ? 'profile__about--editable' : '' ?> js-emoji-included" <?= $viewUser->isMe ? 'onclick="codex.user.bio.edit(this)"' : ''?>>
             <? if (!empty($viewUser->bio)): ?>
                 <?= $viewUser->bio ?>
             <? else: ?>

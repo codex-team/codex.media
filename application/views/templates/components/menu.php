@@ -1,5 +1,5 @@
 <? if (!empty($site_menu)): ?>
-    <ul class="menu" id="js-site-menu">
+    <ul class="menu" id="js-site-menu js-emoji-included">
         <? foreach ($site_menu as $item): ?>
             <li><a href="/p/<?= $item->id ?>/<?= $item->uri ?>"><?= $item->title ?></a></li>
         <? endforeach ?>
