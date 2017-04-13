@@ -168,5 +168,8 @@
         height: 170px;
     }
 
+    .posts-list-item__cover--empty {
+        height: 0;
+    }
 
 }
