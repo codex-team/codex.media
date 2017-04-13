@@ -24,10 +24,10 @@
                 </a>
             </div>
 
-            <a class="post-list-item__title" href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a>
+            <a class="post-list-item__title js-emoji-included" href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a>
 
             <? if (!$page->rich_view): ?>
-                <div class="post-list-item__body">
+                <div class="post-list-item__body js-emoji-included">
                     <?= $page->description ?>
                 </div>
             <? endif ?>
