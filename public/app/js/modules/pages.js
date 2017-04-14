@@ -212,13 +212,34 @@ module.exports = (function () {
 
     };
 
+    var pin = function () {
+
+        currentItemClicked = this;
+        currentItemClicked.classList.add('loading');
+
+        var targetId = currentItemClicked.dataset.id;
+
+        codex.ajax.call({
+            url : '/p/' + targetId + '/pin',
+            success: function (response) {
+
+                codex.alerts.show({
+                    message: response
+                });
+
+            }
+        });
+
+    };
+
 
     return {
         openWriting: openWriting,
         newChild: newChild,
         addToMenu: addToMenu,
         addToNews: addToNews,
-        remove : remove
+        remove : remove,
+        pin: pin
     };
 
 }());

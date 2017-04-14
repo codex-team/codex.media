@@ -82,7 +82,7 @@ class Model_Feed_Abstract extends Model {
      * @param int $item_score
      * @return bool|int
      */
-    public function add($item_id, $item_score)
+    public function add($item_id, $item_score = null)
     {
         $item_score = $item_score ?: strtotime("now");
 
@@ -105,6 +105,12 @@ class Model_Feed_Abstract extends Model {
         $value = $this->composeValueIdentity($item_id);
 
         $this->redis->zRem($this->timeline_key, $value);
+
+        if ($this->isPinned($item_id)) {
+            $pinned = $this->getPinnedFeed();
+            $pinned->remove($item_id);
+        }
+
     }
 
 
@@ -156,6 +162,74 @@ class Model_Feed_Abstract extends Model {
      */
     public function isExist($item_id)
     {
+        $item_id = $this->composeValueIdentity($item_id);
         return $this->redis->zRank($this->timeline_key, $item_id) !== false;
     }
+
+    public function pin($item_id)
+    {
+        if (!$this->isExist($item_id)) {
+            return;
+        }
+
+        $firstItem = $this->redis->zRevRange($this->timeline_key, 0, 1, true);
+        $score = array_pop($firstItem);
+
+        $this->redis->zIncrBy($this->timeline_key, $score, $this->composeValueIdentity($item_id));
+
+        $pinned = $this->getPinnedFeed();
+        $pinned->add($item_id, $score);
+
+    }
+
+    public function unpin($item_id) {
+
+        if (!$this->isExist($item_id)) {
+            return;
+        }
+
+        $pinned = $this->getPinnedFeed();
+
+        if (!$pinned->isExist($item_id)) {
+            return;
+        }
+
+        $this->redis->zIncrBy($this->timeline_key, -$pinned->getScore($item_id), $this->composeValueIdentity($item_id));
+
+        $pinned->remove($item_id);
+
+    }
+
+    public function togglePin($item_id) {
+
+        if ($this->isPinned($item_id)) {
+            $this->unpin($item_id);
+            return;
+        }
+
+        $this->pin($item_id);
+
+    }
+
+    public function isPinned($item_id) {
+
+        $pinned = $this->getPinnedFeed();
+
+        return $pinned->isExist($item_id);
+
+    }
+
+    private function getPinnedFeed() {
+        $pinned = new self($this->prefix);
+        $pinned->timeline_key = $this->timeline_key . '-pinned';
+
+        return $pinned;
+    }
+
+    private function getScore($item_id) {
+        $item_id = $this->composeValueIdentity($item_id);
+        return $this->redis->zScore($this->timeline_key, $item_id);
+    }
+
+
 }

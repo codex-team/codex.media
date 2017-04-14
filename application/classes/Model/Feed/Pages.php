@@ -6,6 +6,7 @@ class Model_Feed_Pages extends Model_Feed_Abstract {
     const TYPE_TEACHERS  = 'teachers';
     const TYPE_NEWS      = 'news';
     const TYPE_MENU      = 'menu';
+    const PIN_SEPARATOR  = '00000';
 
     public function __construct($type = self::TYPE_ALL, $prefix = '')
     {
@@ -59,4 +60,5 @@ class Model_Feed_Pages extends Model_Feed_Abstract {
 
         return false;
     }
+
 }

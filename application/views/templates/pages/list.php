@@ -59,7 +59,14 @@
                         {
                             title : 'Удалить',
                             handler : codex.pages.remove
-                        }]
+                        },
+                        <? if ($active_tab == Model_Feed_Pages::TYPE_NEWS && $user->isAdmin()): ?>
+                        {
+                            title : 'Закрепить',
+                            handler: codex.pages.pin
+                        }
+                        <? endif; ?>
+                    ]
                 });
             });
         </script>
