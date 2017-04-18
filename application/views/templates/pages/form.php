@@ -36,18 +36,18 @@
 
             <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
 
+            <? if ($user->isAdmin() && !$fromUserProfile): ?>
+                <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
+                    Новость
+                </span>
+            <? endif; ?>
+
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
                 <span class="writing-fullscreen__button" onclick="codex.writing.openEditorFullscreen()">
                     <? include(DOCROOT . 'public/app/svg/zoom.svg') ?>
                     <span class="writing-fullscreen__text">На весь экран</span>
                 </span>
             <? endif ?>
-
-            <? if ($user->isAdmin() && !$fromUserProfile): ?>
-                <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
-                    Новость
-                </span>
-            <? endif; ?>
 
         </div>
 
