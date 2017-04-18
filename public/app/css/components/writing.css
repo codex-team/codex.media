@@ -61,7 +61,7 @@
 }
 
 .writing .button {
-    margin-left: 12px;
+    margin-right: 12px;
     font-size: 0.9em;
 }
 
@@ -175,7 +175,7 @@
 }
 
 .writing__is-news {
-    margin-right: auto;
+    margin-left: auto;
 }
 
 @media (--mobile) {

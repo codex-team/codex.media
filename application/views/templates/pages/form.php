@@ -34,20 +34,20 @@
                 $isNews = $page->isNewsPage || ($fromIndexPage && $fromNewsTab);
             ?>
 
-            <? if ($user->isAdmin() && !$fromUserProfile): ?>
-                <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
-                    Новость
-                </span>
-            <? endif; ?>
+            <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
-                <span class="writing-fullscreen__button fl_r" onclick="codex.writing.openEditorFullscreen()">
+                <span class="writing-fullscreen__button fl_l" onclick="codex.writing.openEditorFullscreen()">
                     <? include(DOCROOT . 'public/app/svg/zoom.svg') ?>
                     <span class="writing-fullscreen__text">На весь экран</span>
                 </span>
             <? endif ?>
 
-            <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
+            <? if ($user->isAdmin() && !$fromUserProfile): ?>
+                <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
+                    Новость
+                </span>
+            <? endif; ?>
 
         </div>
 
