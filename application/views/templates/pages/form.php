@@ -25,8 +25,6 @@
         <div class="writing__actions-content">
 
             <?
-                echo Debug::vars(get_cfg_var('upload_max_filesize'));
-
                 $newsFeedKey = Model_Feed_Pages::TYPE_NEWS;
 
                 $fromIndexPage   = !empty(Request::$current) && Request::$current->controller() == 'Index';

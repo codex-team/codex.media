@@ -1,5 +1,7 @@
 php_value short_open_tag 1
 php_value always_populate_raw_post_data -1
+php_value upload_max_filesize 15M
+php_value post_max_size 15M 
 
 RewriteEngine On
 

@@ -86,7 +86,7 @@ class Controller_Transport extends Controller_Base_preDispatch
             return false;
         }
 
-        if (!Upload::size($this->files, '2M')) {
+        if (!Upload::size($this->files, ini_get('upload_max_filesize'))) {
 
             $this->transportResponse['message'] = 'File size exceeded limit';
             return false;
