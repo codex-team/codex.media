@@ -22,7 +22,7 @@
 
     <div class="writing__actions">
 
-        <div class="writing__actions-content clearfix">
+        <div class="writing__actions-content">
 
             <?
                 $newsFeedKey = Model_Feed_Pages::TYPE_NEWS;
@@ -37,7 +37,7 @@
             <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
-                <span class="writing-fullscreen__button fl_l" onclick="codex.writing.openEditorFullscreen()">
+                <span class="writing-fullscreen__button" onclick="codex.writing.openEditorFullscreen()">
                     <? include(DOCROOT . 'public/app/svg/zoom.svg') ?>
                     <span class="writing-fullscreen__text">На весь экран</span>
                 </span>
