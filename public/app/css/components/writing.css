@@ -65,47 +65,6 @@
     font-size: 0.9em;
 }
 
-.writing .attach {
-    display: inline-block;
-    color: var(--grayText);
-    cursor: pointer;
-    font-size: 18px;
-    margin-right: 15px;
-}
-
-.writing .attach:hover,
-.writing .import:hover {
-    color: #3b496a;
-}
-
-.writing .title_input {
-    padding-right: 200px;
-}
-
-.writing .attaches .item {
-    padding: 20px 30px;
-}
-
-.writing .attaches .item_file::before {
-    display: inline-block;
-    margin-right: 12px;
-    content: '\e818';
-    font-family: 'codex-edu';
-    vertical-align: middle;
-}
-
-.writing .attaches .item_image::before {
-    display: inline-block;
-    margin-right: 12px;
-    content: '\e804';
-    font-family: 'codex-edu';
-    vertical-align: middle;
-}
-
-.writing .attaches .item:not(:first-of-type) {
-    border-top: 1px solid #f5f7f8;
-}
-
 .writing-navigation__back-icon {
     display: inline-block;
     width: 30px;
@@ -129,8 +88,6 @@
     height: 13px;
     margin: 0 3px 0 5px;
 }
-
-
 
 .writing-wrapper {
     margin-bottom: var(--islandMargin);
@@ -172,8 +129,8 @@
 }
 
 .writing-wrapper .writing {
-    padding-top: 0px;
-    box-shadow: none;/*0 0 0 1px #ebeef6;*/
+    padding-top: 0;
+    box-shadow: none; /* 0 0 0 1px #ebeef6; */
 }
 
 /**
@@ -222,7 +179,13 @@
 }
 
 @media (--mobile) {
-    .writing {
+    .writing,
+    .writing-wrapper__placeholder {
+        padding: 15px;
+    }
+
+    .writing__actions {
+        margin: 0 -15px -15px -15px;
         padding: 15px;
     }
 
