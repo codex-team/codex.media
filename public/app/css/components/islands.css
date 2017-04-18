@@ -70,4 +70,9 @@
     .island--padded {
         padding: 15px;
     }
+
+    .island__navigation {
+        margin: -20px -15px 20px;
+        padding: 0 15px;
+    }
 }

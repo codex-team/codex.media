@@ -22,7 +22,7 @@
 
     <div class="writing__actions">
 
-        <div class="writing__actions-content clearfix">
+        <div class="writing__actions-content">
 
             <?
                 $newsFeedKey = Model_Feed_Pages::TYPE_NEWS;
@@ -34,6 +34,8 @@
                 $isNews = $page->isNewsPage || ($fromIndexPage && $fromNewsTab);
             ?>
 
+            <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
+
             <? if ($user->isAdmin() && !$fromUserProfile): ?>
                 <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
                     Новость
@@ -41,13 +43,11 @@
             <? endif; ?>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
-                <span class="writing-fullscreen__button fl_r" onclick="codex.writing.openEditorFullscreen()">
+                <span class="writing-fullscreen__button" onclick="codex.writing.openEditorFullscreen()">
                     <? include(DOCROOT . 'public/app/svg/zoom.svg') ?>
                     <span class="writing-fullscreen__text">На весь экран</span>
                 </span>
             <? endif ?>
-
-            <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
 
         </div>
 

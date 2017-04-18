@@ -166,6 +166,7 @@
     .posts-list-item__cover,
     .posts-list-item__cover--empty-showed {
         height: 170px;
+        margin: 20px -16px -16px -16px;
     }
 
     .posts-list-item__cover--empty {
