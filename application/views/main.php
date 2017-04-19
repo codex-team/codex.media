@@ -55,7 +55,17 @@
 
     <? /* Scripts */ ?>
     <script>
+
         window.csrf = '<?= Security::token(); ?>';
+
+        codex.docReady(function () {
+
+            codex.init({
+                uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>
+            });
+
+        });
+
     </script>
 
     <? if(empty($contentOnly)): ?>
