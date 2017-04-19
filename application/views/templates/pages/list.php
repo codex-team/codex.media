@@ -17,7 +17,7 @@
                 <time class="post-list-item__date">
                     <a href="<?= $page->url ?>">
                         <? if ($page->isPinned): ?>
-                            Запись закрплена
+                            Запись закреплена
                         <? else: ?>
                             <?= date_format(date_create($page->date), 'd F Y, G:i') ?>
                         <? endif; ?>
