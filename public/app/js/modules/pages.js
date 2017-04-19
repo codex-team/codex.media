@@ -9,6 +9,11 @@ module.exports = (function () {
     var cover = require('./pages/cover');
 
     /**
+     * Page pin module
+     */
+    var pin = require('./pages/pin');
+
+    /**
      * Saves current clicked item in page drop-down menu
      * @type {Element}
      */
@@ -223,6 +228,7 @@ module.exports = (function () {
         addToMenu: addToMenu,
         addToNews: addToNews,
         remove : remove,
+        pin: pin,
         cover: cover
     };
 
