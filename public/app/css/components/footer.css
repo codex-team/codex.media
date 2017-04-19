@@ -17,3 +17,9 @@
     display: block;
     margin: 1em 0;
 }
+
+@media (--mobile) {
+    .site-footer {
+        padding: 15px;
+    }
+}

@@ -246,7 +246,8 @@ input[disabled]:hover {
     border-radius: 3px;
 }
 
-.border-button svg {
+.border-button svg,
+.button svg {
     width: 1.2em;
     height: 1.2em;
     vertical-align: text-bottom;

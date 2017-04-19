@@ -1,0 +1,14 @@
+@media (--mobile) {
+    .auth-social .button {
+        font-size: 0;
+        padding: 13px;
+        margin: 5px;
+    }
+
+    .auth-social .button svg {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+    }
+
+}
