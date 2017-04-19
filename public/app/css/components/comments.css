@@ -56,11 +56,18 @@
 
 .comment__footer {
     margin: 0 -30px -20px;
-    padding: 11px 30px 10px;
+    padding: 10px 30px;
     border-top: 1px solid var(--lightGrayLine);
     color: var(--grayText);
     font-size: 15px;
     line-height: 26px;
+}
+
+@media (--mobile) {
+    .comment__footer {
+        margin: 0 -15px -15px;
+        padding: 10px 15px;
+    }
 }
 
 /**
@@ -69,6 +76,12 @@
 .comment-form__island {
     padding: 15px var(--islandPadding);
     margin: var(--islandMargin) auto;
+}
+
+@media (--mobile) {
+    .comment-form__island {
+        padding: 15px;
+    }
 }
 
 /**
@@ -80,11 +93,18 @@
 }
 
 .comment-form__photo {
-    height: 28px;
-    width: 28px;
+    height: 26px;
+    width: 26px;
     border-radius: 50%;
     margin-right: 10px;
     vertical-align: middle;
+}
+
+@media (--mobile) {
+    .comment-form__photo {
+        width: 20px;
+        height: 20px;
+    }
 }
 
 .comment-form__placeholder {
