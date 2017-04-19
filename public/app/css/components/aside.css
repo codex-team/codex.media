@@ -134,7 +134,7 @@
 
 @media (--mobile) {
     .site-head {
-        padding: 10px 15px;
+        padding: 12px 15px;
         line-height: 1.3em;
         font-size: 13px;
     }
