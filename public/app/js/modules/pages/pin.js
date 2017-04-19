@@ -3,12 +3,28 @@
  */
 module.exports = function () {
 
-    var currentItemClicked = this;
+    var currentItemClicked = null,
+        targetId           = null;
 
-    currentItemClicked.classList.add('loading');
+    /**
+     * Requests page pin toggle via ajax
+     */
+    var toggle = function () {
 
-    var targetId = currentItemClicked.dataset.id;
+        currentItemClicked = this;
+        targetId = currentItemClicked.dataset.id;
 
+        currentItemClicked.classList.add('loading');
+
+        codex.ajax.call({
+            url : '/p/' + targetId + '/pin',
+            success: success,
+            error: error
+        });
+
+    };
+
+    /** Response for success ajax request **/
     var success =  function (response) {
 
         currentItemClicked.classList.remove('loading');
@@ -28,6 +44,7 @@ module.exports = function () {
 
     };
 
+    /** Response for ajax request errors **/
     var error = function () {
 
         currentItemClicked.classList.remove('loading');
@@ -39,10 +56,8 @@ module.exports = function () {
 
     };
 
-    codex.ajax.call({
-        url : '/p/' + targetId + '/pin',
-        success: success,
-        error: error
-    });
+    return {
+        toggle: toggle
+    };
 
-};
+}();

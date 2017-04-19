@@ -86,7 +86,7 @@
                         <? if ($active_tab == Model_Feed_Pages::TYPE_NEWS): ?>
                         {
                             title: 'Закрепить',
-                            handler: codex.pages.pin
+                            handler: codex.pages.pin.toggle
                         }
                         <? endif; ?>
                         <? endif; ?>
