@@ -18,7 +18,29 @@ codex = (function (codex) {
         content : null
     };
 
-    codex.init = function () {
+    /**
+     * @var Application settings
+     * @type {Object}
+     * @type {Number} appSettings.uploadMaxSize    - max size for Editor uploads in MB
+     */
+    codex.appSettings = {
+        uploadMaxSize : 25
+    };
+
+    /**
+     * Initiztes application
+     * @param {Object} appSettings - initial settings
+     */
+    codex.init = function ( appSettings ) {
+
+        /**
+         * Accept settings
+         */
+        for ( var key in appSettings ) {
+
+            codex.appSettings[key] = appSettings[key];
+
+        }
 
         /**
         * Stylize custom checkboxes
@@ -30,6 +52,9 @@ codex = (function (codex) {
         */
         codex.content.approvalButtons.init();
 
+        /**
+         * Enable textarea autoresizer
+         */
         codex.autoresizeTextarea.init();
 
         /**
@@ -87,9 +112,3 @@ codex.checkboxes         = require('./modules/checkboxes');
 
 
 module.exports = codex;
-
-codex.docReady(function () {
-
-    codex.init();
-
-});

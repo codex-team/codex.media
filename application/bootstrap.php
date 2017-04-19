@@ -75,6 +75,16 @@ if (is_file(DOCROOT.'.env')) {
 
 
 /**
+* Set upload max size in Number
+*/
+$uploadMaxSize = ini_get('upload_max_filesize');
+$uploadMaxSize = (int) substr($uploadMaxSize, 0, strlen($uploadMaxSize) - 1);
+
+define('UPLOAD_MAX_SIZE', $uploadMaxSize);
+unset($uploadMaxSize);
+
+
+/**
  * Set Kohana::$environment if a 'KOHANA_ENV' environment variable has been supplied.
  *
  * Note: If you supply an invalid environment name, a PHP warning will be thrown

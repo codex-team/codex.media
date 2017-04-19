@@ -142,7 +142,7 @@ module.exports = (function () {
                     appendCallback   : window.cdxAttaches.appendCallback,
                     config: {
                         fetchUrl: '/upload/' + EDITOR_FILE,
-                        maxSize: 25000,
+                        maxSize: codex.appSettings.uploadMaxSize * 1000,
                     }
                 },
                 list: {
