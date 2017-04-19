@@ -21,7 +21,8 @@ class Model_Page extends Model
 
     public $rich_view       = 0;
     public $dt_pin;
-    public $feed_key       = '';
+    public $isPinned        = false;
+    public $feed_key        = '';
 
     public $isNewsPage;
 

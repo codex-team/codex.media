@@ -38,7 +38,7 @@
 
 <? if ($next_page): ?>
     <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/<?= $page_number + 1 ?>">
-        Показать больше новостей
+        Показать больше записей
     </a>
     <script>
         codex.docReady(function() {
