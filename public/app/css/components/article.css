@@ -29,7 +29,7 @@
 
 .article__comments-counter svg {
     display: inline-block;
-    margin-right: .8em;
+    margin-right: 0.2em;
 }
 
 .article__title {
@@ -40,8 +40,8 @@
 }
 
 .article__content {
-    font-size: 17px;
-    line-height: 1.6em;
+    font-size: 16px;
+    line-height: 1.5em;
 }
 
 .article__content--typed {
@@ -60,6 +60,10 @@
 .article__content a:hover {
     color: var(--hoverColor);
     border-bottom: 1px solid color(var(--hoverColor) lightness(+35%));
+}
+
+.article .sharing {
+    margin-top: 20px;
 }
 
 /**

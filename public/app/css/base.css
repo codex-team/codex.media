@@ -334,10 +334,11 @@ input[disabled]:hover {
  * Appender button
  */
  .button--load-more {
-     display: block;
-     font-size: 17px;
-     color: #566379;
-     text-decoration: none;
+    display: block;
+    margin-bottom: var(--islandMargin);
+    font-size: 15px;
+    color: #566379;
+    text-decoration: none;
  }
 
  .button--load-more:hover {

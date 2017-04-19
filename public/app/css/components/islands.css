@@ -4,7 +4,7 @@
 .island {
     background: #fff;
     border-radius: 3px;
-    box-shadow: 0 0 0 1px #ebeef6;
+    box-shadow: 0 1px 0 0 #f0f3f9;
     word-break: break-word;
 }
 

@@ -36,7 +36,7 @@
         <? if ($page->canModify($user)): ?>
 
             <span class="island-settings js-page-settings" data-id="<?= $page->id ?>">
-                    <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
+                <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
             </span>
 
         <? endif ?>
@@ -73,8 +73,6 @@
             <? endforeach ?>
         </ul>
     <? endif ?>
-
-
 
     <?= View::factory('templates/components/share', array(
         'offer' => 'Если вам понравилась статья, поделитесь ссылкой на нее',

@@ -68,13 +68,17 @@
     display: inline-block;
     vertical-align: middle;
     border-radius: 30px;
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     margin-right: 10px;
 }
 
+.user_panel__name {
+    vertical-align: middle;
+}
+
 .main-aside .logout {
-    margin-top: 22px;
+    margin-top: 21px;
     margin-right: 20px;
     color: #c6cad4;
 }

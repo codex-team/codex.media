@@ -32,7 +32,7 @@
 }
 
 .comment__text {
-    margin: 20px auto;
+    margin: 10px auto 20px;
     font-size: 15px;
     line-height: 1.6em;
 }
@@ -135,22 +135,24 @@
  */
 .comment-target {
     border: 1px solid var(--lightGrayLine);
-    margin: 20px auto;
+    margin: 15px auto 20px;
     padding: 15px;
     width: auto;
     box-shadow: 0 1px 1px rgba(139, 151, 169, 0.05);
     border-radius: 3px;
+    font-size: 12px;
 }
 
 .comment-target__text {
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     font-size: 15px;
     line-height: 1.56em;
+    color: var(--grayText);
 }
 
 .comment-target__text:hover {
-    color: inherit;
+    color: var(--grayText);
 }
 
 /**
