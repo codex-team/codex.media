@@ -4,6 +4,7 @@ class Model_Feed_Abstract extends Model {
 
     protected $redis;
     protected $prefix;
+    protected $pin_limit = 1;
 
     protected $timeline_key = null;
 
@@ -82,7 +83,7 @@ class Model_Feed_Abstract extends Model {
      * @param int $item_score
      * @return bool|int
      */
-    public function add($item_id, $item_score)
+    public function add($item_id, $item_score = null)
     {
         $item_score = $item_score ?: strtotime("now");
 
@@ -105,6 +106,12 @@ class Model_Feed_Abstract extends Model {
         $value = $this->composeValueIdentity($item_id);
 
         $this->redis->zRem($this->timeline_key, $value);
+
+        if ($this->isPinned($item_id)) {
+            $pinned = $this->getPinnedFeed();
+            $pinned->remove($item_id);
+        }
+
     }
 
 
@@ -156,6 +163,123 @@ class Model_Feed_Abstract extends Model {
      */
     public function isExist($item_id)
     {
+        $item_id = $this->composeValueIdentity($item_id);
         return $this->redis->zRank($this->timeline_key, $item_id) !== false;
     }
+
+    /**
+     * Закрепляет запись с $item_id в фиде
+     *
+     * @param $item_id
+     */
+    public function pin($item_id)
+    {
+        if (!$this->isExist($item_id)) {
+            return;
+        }
+
+        $firstItem = $this->redis->zRevRange($this->timeline_key, 0, 0, true);
+        $score = array_pop($firstItem);
+
+        $this->redis->zIncrBy($this->timeline_key, $score, $this->composeValueIdentity($item_id));
+
+        $pinned = $this->getPinnedFeed();
+
+        if ($pinned->length() >= $this->pin_limit) {
+            $oldest = $this->redis->zRange($pinned->timeline_key, 0, 0)[0];
+            $this->unpin($oldest);
+        }
+
+        $pinned->add($item_id, $score);
+
+    }
+
+    /**
+     * Открепляет запись с $item_id
+     *
+     * @param $item_id
+     */
+    public function unpin($item_id) {
+
+        if (!$this->isExist($item_id)) {
+            return;
+        }
+
+        $pinned = $this->getPinnedFeed();
+
+        if (!$pinned->isExist($item_id)) {
+            return;
+        }
+
+        $this->redis->zIncrBy($this->timeline_key, -$pinned->getScore($item_id), $this->composeValueIdentity($item_id));
+
+        $pinned->remove($item_id);
+
+    }
+
+    /**
+     * Меняет состояние записи (откреплена/закреплена) в фиде
+     *
+     * @param $item_id
+     */
+    public function togglePin($item_id) {
+
+        if ($this->isPinned($item_id)) {
+            $this->unpin($item_id);
+            return;
+        }
+
+        $this->pin($item_id);
+
+    }
+
+    /**
+     * Возвращает true, если запись закреплена
+     *
+     * @param $item_id
+     * @return bool
+     */
+    public function isPinned($item_id) {
+
+        $pinned = $this->getPinnedFeed();
+
+        return $pinned->isExist($item_id);
+
+    }
+
+    /**
+     * Возвращает количество элементов в фиде
+     *
+     * @return int
+     */
+    public function length() {
+
+        return $this->redis->zCount($this->timeline_key, '-inf', '+inf');
+
+    }
+
+    /**
+     * Возвращает модель фида для закрпеленных записей
+     *
+     * @return Model_Feed_Abstract
+     */
+    private function getPinnedFeed() {
+        $pinned = new self($this->prefix);
+        $pinned->timeline_key = $this->timeline_key . '-pinned';
+
+        return $pinned;
+    }
+
+    /**
+     * Получает значение score для записи $item_id
+     *
+     * @param $item_id
+     * @return float
+     */
+    private function getScore($item_id) {
+        $item_id = $this->composeValueIdentity($item_id);
+        return $this->redis->zScore($this->timeline_key, $item_id);
+    }
+
+
 }
