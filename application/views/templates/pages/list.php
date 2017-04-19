@@ -16,7 +16,7 @@
                 <? endif ?>
                 <time class="post-list-item__date">
                     <a href="<?= $page->url ?>" class="js-article-time">
-                        <? if ($page->isPinned): ?>
+                        <? if ($active_tab == Model_Feed_Pages::TYPE_NEWS && $page->isPinned): ?>
                             Запись закреплена
                         <? else: ?>
                             <?= date_format(date_create($page->date), 'd F Y, G:i') ?>
