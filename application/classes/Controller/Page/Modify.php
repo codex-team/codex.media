@@ -136,6 +136,28 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
     }
 
+    public function action_pin() {
+
+        $id = $this->request->param('id');
+
+        if (!$this->user->isAdmin()) {
+            $this->ajax_response['message'] = 'Похоже, у вас нет доступа';
+            goto finish;
+        };
+
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_NEWS);
+        $feed->togglePin($id);
+
+        $this->ajax_response['success'] = 1;
+        $this->ajax_response['message'] = $feed->isPinned($id) ? 'Запись закреплена' : 'Запись откреплена';
+        $this->ajax_response['buttonText'] = $feed->isPinned($id) ? 'Открепить' :'Закрепить';
+
+
+        finish:
+            $this->response->body(json_encode($this->ajax_response));
+
+    }
+
     /**
      * Sets page status as removed
      */

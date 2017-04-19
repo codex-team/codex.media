@@ -31,7 +31,8 @@
     <? $emptyListMessage = $user->id ? 'Добавьте новую запись с помощью формы вверху страницы' : 'Здесь появятся новости и интересные публикации' ?>
     <?= View::factory('templates/pages/list', array(
         'pages' => $pages,
-        'emptyListMessage' => $emptyListMessage
+        'emptyListMessage' => $emptyListMessage,
+        'active_tab' => $active_tab
     )); ?>
 </div>
 

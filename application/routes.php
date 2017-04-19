@@ -49,7 +49,7 @@ Route::set('CONTACTS', 'contacts')->defaults(array(
 Route::set('ACTION_FOR_PAGE', 'p/<id>/<action>',
     array(
         'id' => $DIGIT,
-        'action' => 'delete|promote'
+        'action' => 'delete|promote|pin'
     )
 )->defaults(array(
     'controller' => 'Page_Modify',
