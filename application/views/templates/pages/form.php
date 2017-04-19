@@ -20,17 +20,30 @@
 
     <div class="editor-wrapper" id="placeForEditor"></div>
 
-    <div class="writing__actions clear">
+    <div class="writing__actions">
 
         <div class="writing__actions-content">
 
-            <? if ($user->isAdmin()): ?>
-                <span name="cdx-custom-checkbox" data-name="isNews" data-checked="<?= $page->isNewsPage ?>">Новость</span>
+            <?
+                $newsFeedKey = Model_Feed_Pages::TYPE_NEWS;
+
+                $fromIndexPage   = !empty(Request::$current) && Request::$current->controller() == 'Index';
+                $fromNewsTab     = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
+                $fromUserProfile = Request::$current->controller() == 'User_Index';
+
+                $isNews = $page->isNewsPage || ($fromIndexPage && $fromNewsTab);
+            ?>
+
+            <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
+
+            <? if ($user->isAdmin() && !$fromUserProfile): ?>
+                <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
+                    Новость
+                </span>
             <? endif; ?>
-            <span class="button master fl_r" onclick="codex.writing.submit(this)">Отправить</span>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
-                <span class="writing-fullscreen__button fl_r" onclick="codex.writing.openEditorFullscreen()">
+                <span class="writing-fullscreen__button" onclick="codex.writing.openEditorFullscreen()">
                     <? include(DOCROOT . 'public/app/svg/zoom.svg') ?>
                     <span class="writing-fullscreen__text">На весь экран</span>
                 </span>

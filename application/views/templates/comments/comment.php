@@ -38,11 +38,11 @@
         <div class="comment-target <?= !empty($comment->parent_comment->id) ? 'comment-target--reply' : 'comment-target--page' ?>" id="js-comment-target-<?= $comment->id ?>">
 
             <a class="comment-target__text" href="<?= $target['url'] ?>" rel="nofollow">
-                <span class="comment-target__short-text">
+                <span class="comment-target__short-text js-emoji-included">
                     <?= $targetTextShort['text'] ?>
                 </span>
                 <? if ($targetTextShort['changed']): ?>
-                    <span class="comment-target__text-hided">
+                    <span class="comment-target__text-hided js-emoji-included">
                         <?= $target['text'] ?>
                     </span>
                     <span class="comment-target__show-more" data-text-show="Показать целиком" data-text-hide="Свернуть" onclick="codex.content.toggle('#js-comment-target-<?= $comment->id ?>', 'show-more'); event.preventDefault(); ">
@@ -73,7 +73,7 @@
         </div>
     <? endif ?>
 
-    <div class="comment__text">
+    <div class="comment__text js-emoji-included">
         <?= $methods->auto_link_urls($comment->text); ?>
     </div>
 

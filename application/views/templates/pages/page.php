@@ -1,7 +1,7 @@
 <article class="article island island--padded">
 
     <? if (!empty($page->parent->id)): ?>
-        <div class="article__parent">
+        <div class="article__parent js-emoji-included">
             <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri?>">
                 <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
                 <?= $page->parent->title ?>
@@ -44,13 +44,13 @@
     </header>
 
     <? /* Page title */ ?>
-    <h1 class="article__title">
+    <h1 class="article__title js-emoji-included">
     	<?= $page->title ?>
     </h1>
 
     <? /* Page content */ ?>
     <? if (!empty($page->blocks)): ?>
-        <div class="article__content">
+        <div class="article__content js-emoji-included">
             <? foreach ($page->blocks as $block): ?>
                 <?=
                     View::factory('templates/editor/plugins/' . $block['type'], array(
@@ -129,4 +129,3 @@
     'user' => $user,
     'emptyListMessage' => '<p>Станьте первым, кто оставит <br/> комментарий к данному материалу.</p>'
 )); ?>
-

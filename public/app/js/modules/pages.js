@@ -4,6 +4,11 @@
 module.exports = (function () {
 
     /**
+     * Page cover module
+     */
+    var cover = require('./pages/cover');
+
+    /**
      * Saves current clicked item in page drop-down menu
      * @type {Element}
      */
@@ -232,14 +237,14 @@ module.exports = (function () {
 
     };
 
-
     return {
         openWriting: openWriting,
         newChild: newChild,
         addToMenu: addToMenu,
         addToNews: addToNews,
         remove : remove,
-        pin: pin
+        pin: pin,
+        cover: cover
     };
 
 }());
