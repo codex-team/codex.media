@@ -9,6 +9,11 @@ module.exports = (function () {
     var cover = require('./pages/cover');
 
     /**
+     * Page pin module
+     */
+    var pin = require('./pages/pin');
+
+    /**
      * Saves current clicked item in page drop-down menu
      * @type {Element}
      */
@@ -214,55 +219,6 @@ module.exports = (function () {
             newMenu = codex.core.parseHTML(menu)[0];
 
         codex.core.replace(oldMenu, newMenu);
-
-    };
-
-    /**
-     * Pins page in news feed
-     */
-    var pin = function () {
-
-        currentItemClicked = this;
-        currentItemClicked.classList.add('loading');
-
-        var targetId = currentItemClicked.dataset.id;
-
-        var success =  function (response) {
-
-            currentItemClicked.classList.remove('loading');
-            response = JSON.parse(response);
-
-            codex.alerts.show({
-                type: response.success ? 'success' : 'error',
-                message: response.message
-            });
-
-            var page = document.getElementById('js-page-' + targetId);
-
-            var time = page.querySelector('time');
-
-            time.querySelector('a').innerHTML = response.message;
-
-
-        };
-
-        var error = function () {
-
-            currentItemClicked.classList.remove('loading');
-
-            codex.alerts.show({
-                type: 'error',
-                message: 'Произошла ошибка'
-            });
-
-        };
-
-
-        codex.ajax.call({
-            url : '/p/' + targetId + '/pin',
-            success: success,
-            error: error
-        });
 
     };
 
