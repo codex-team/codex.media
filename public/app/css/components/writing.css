@@ -211,4 +211,9 @@
         display: none;
     }
 
+    .ce-block__content,
+    .ce-toolbar__content {
+        padding: 0 15px !important;
+    }
+
 }
