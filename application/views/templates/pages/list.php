@@ -15,7 +15,7 @@
                     </span>
                 <? endif ?>
                 <time class="post-list-item__date">
-                    <a href="<?= $page->url ?>">
+                    <a href="<?= $page->url ?>" class="js-article-time">
                         <? if ($page->isPinned): ?>
                             Запись закреплена
                         <? else: ?>

@@ -37,9 +37,9 @@ module.exports = function () {
 
         var page = document.getElementById('js-page-' + targetId);
 
-        var time = page.querySelector('time');
+        var time = page.querySelector('.js-article-time');
 
-        time.querySelector('a').innerHTML = response.message;
+        time.textContent = response.message;
 
 
     };
