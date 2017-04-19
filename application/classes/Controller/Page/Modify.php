@@ -148,7 +148,8 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_NEWS);
         $feed->togglePin($id);
 
-        $this->ajax_response['message'] = $feed->isPinned($id) ? 'Страница закреплена' :'Страница откреплена';
+        $this->ajax_response['success'] = 1;
+        $this->ajax_response['message'] = $feed->isPinned($id) ? 'Запись закреплена' : 'Запись откреплена';
         $this->ajax_response['buttonText'] = $feed->isPinned($id) ? 'Открепить' :'Закрепить';
 
 

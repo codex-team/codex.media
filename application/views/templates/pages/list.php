@@ -16,7 +16,11 @@
                 <? endif ?>
                 <time class="post-list-item__date">
                     <a href="<?= $page->url ?>">
-                        <?= date_format(date_create($page->date), 'd F Y, G:i') ?>
+                        <? if ($page->isPinned): ?>
+                            Запись закрплена
+                        <? else: ?>
+                            <?= date_format(date_create($page->date), 'd F Y, G:i') ?>
+                        <? endif; ?>
                     </a>
                 </time>
                 <a class="post-list-item__author" href="/user/<?= $page->author->id ?>">
@@ -64,36 +68,30 @@
 
                 /** Island settings menu */
                 codex.islandSettings.init({
-                    selector : '.js-page-settings',
-                    items : [
+                    selector: '.js-page-settings',
+                    items: [
                         {
-                            title : 'Редактировать',
-                            handler : codex.pages.openWriting
+                            title: 'Редактировать',
+                            handler: codex.pages.openWriting
                         },
                         {
-                            title : 'Удалить',
-                            handler : codex.pages.remove
-<<<<<<< HEAD
+                            title: 'Удалить',
+                            handler: codex.pages.remove
                         },
-                        <? if ($active_tab == Model_Feed_Pages::TYPE_NEWS && $user->isAdmin()): ?>
+                        <? if ($user->isAdmin): ?>
                         {
-                            title : 'Закрепить',
+                            title: 'Установить обложку',
+                            handler: codex.pages.cover.toggleButton
+                        },
+                        <? if ($active_tab == Model_Feed_Pages::TYPE_NEWS): ?>
+                        {
+                            title: 'Закрепить',
                             handler: codex.pages.pin
                         }
                         <? endif; ?>
-                    ]
-                });
-=======
-                        }
-                        <? if ($user->isAdmin): ?>
-                            ,
-                            {
-                                title: 'Установить обложку',
-                                handler : codex.pages.cover.toggleButton
-                            }
                         <? endif; ?>
-                    ]});
->>>>>>> origin/master
+                    ]
+                })
             });
         </script>
     <? endif ?>
