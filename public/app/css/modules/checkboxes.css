@@ -11,13 +11,13 @@
 /**
  * Styles for checkbox background
  */
-.cdx-checkbox__slider{
+.cdx-checkbox__slider {
     position: relative;
     display: inline-block;
     width: 20px;
     height: 14px;
     padding: 2px;
-    margin-right: 0.6em;
+    margin-right: 0.3em;
     vertical-align: text-bottom;
     border-radius: 10px;
     cursor: pointer;
@@ -27,14 +27,14 @@
 /**
  * Styles for checkbox slider
  */
-.cdx-checkbox__slider:before {
+.cdx-checkbox__slider::before {
     content: '';
     position: absolute;
     width: 14px;
     height: 14px;
     background: #fff;
     border-radius: 50%;
-    transition: transform .2s ease;
+    transition: transform 0.2s ease;
 }
 
 /**
@@ -50,11 +50,11 @@
 }
 
 .cdx-checkbox--checked .cdx-checkbox__slider,
-.cdx-checkbox--checked:hover .cdx-checkbox__slider{
+.cdx-checkbox--checked:hover .cdx-checkbox__slider {
     background: var(--checkedCheckboxColor) !important;
 }
 
-.cdx-checkbox--checked .cdx-checkbox__slider:before {
+.cdx-checkbox--checked .cdx-checkbox__slider::before {
     transform: translateX(6px);
 }
 

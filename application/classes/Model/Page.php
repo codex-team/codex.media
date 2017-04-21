@@ -232,7 +232,9 @@ class Model_Page extends Model
             return $CodexEditor->getBlocks($escapeHTML);
 
         } catch (Exception $e) {
+
             throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
+
         }
 
     }
@@ -254,7 +256,9 @@ class Model_Page extends Model
             return $CodexEditor->getData($escapeHTML);
 
         } catch (Exception $e) {
+
             throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
+
         }
     }
 

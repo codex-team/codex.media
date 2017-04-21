@@ -30,7 +30,7 @@
 
             <a class="post-list-item__title js-emoji-included" href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a>
 
-            <? if (!$page->rich_view): ?>
+            <? if (!$page->rich_view && $page->description): ?>
                 <div class="post-list-item__body js-emoji-included">
                     <?= $page->description ?>
                 </div>
