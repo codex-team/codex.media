@@ -1,0 +1,10 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.');
+
+return array(
+
+    'vk' => array(
+        'group_id'  => '',
+        'admin_key' => ''
+    ),
+
+);
