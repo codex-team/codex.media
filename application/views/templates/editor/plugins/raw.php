@@ -1,3 +1,3 @@
-<p>
+<div class="article__raw">
     <?= $block['raw']; ?>
-</p>
+</div>
