@@ -159,6 +159,17 @@ module.exports = (function () {
                     showInlineToolbar: true,
                     enableLineBreaks: true,
                     allowedToPaste: true
+                },
+                raw : {
+                    type: 'raw',
+                    displayInToolbox: true,
+                    iconClassname: 'raw-plugin-icon',
+                    render: window.rawPlugin.render,
+                    save: window.rawPlugin.save,
+                    validate: window.rawPlugin.validate,
+                    destroy: window.rawPlugin.destroy,
+                    enableLineBreaks: true,
+                    allowPasteHTML: true
                 }
             },
 
