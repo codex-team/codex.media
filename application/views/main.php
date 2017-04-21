@@ -71,7 +71,7 @@
     <? if ( empty($contentOnly) ): ?>
 
         <?
-            $specialPath = 'https://cdn.ifmo.su/special/v1.1';
+            $specialPath = 'https://cdn.ifmo.su/special/v1.2';
 
             if ( Kohana::$environment === Kohana::DEVELOPMENT ) {
                 $specialPath = '/public/extensions/codex.special';
