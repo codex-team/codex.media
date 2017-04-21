@@ -246,7 +246,8 @@ input[disabled]:hover {
     border-radius: 3px;
 }
 
-.border-button svg {
+.border-button svg,
+.button svg {
     width: 1.2em;
     height: 1.2em;
     vertical-align: text-bottom;
@@ -334,10 +335,11 @@ input[disabled]:hover {
  * Appender button
  */
  .button--load-more {
-     display: block;
-     font-size: 17px;
-     color: #566379;
-     text-decoration: none;
+    display: block;
+    margin-bottom: var(--islandMargin);
+    font-size: 15px;
+    color: #566379;
+    text-decoration: none;
  }
 
  .button--load-more:hover {

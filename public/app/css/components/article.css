@@ -29,7 +29,7 @@
 
 .article__comments-counter svg {
     display: inline-block;
-    margin-right: .8em;
+    margin-right: 0.2em;
 }
 
 .article__title {
@@ -40,8 +40,8 @@
 }
 
 .article__content {
-    font-size: 17px;
-    line-height: 1.6em;
+    font-size: 16px;
+    line-height: 1.5em;
 }
 
 .article__content--typed {
@@ -62,15 +62,19 @@
     border-bottom: 1px solid color(var(--hoverColor) lightness(+35%));
 }
 
+.article .sharing {
+    margin-top: 20px;
+}
+
 /**
  * Article parent
  */
 
 .article__parent {
-    margin-bottom: 25px;
-    padding-bottom: 25px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--lightGrayLine);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.45em;
     color: var(--grayText);
 }
@@ -78,15 +82,14 @@
 .article__parent a {
     position: relative;
     display: block;
-    padding-left: 2em;
+    padding-left: 1.6em;
 }
 
 .article__parent svg {
     position: absolute;
     left: 0;
     top: 50%;
-    margin-top: -0.35em;
-    height: 0.9em;
+    transform: translateY(-46%);
 }
 
 /**

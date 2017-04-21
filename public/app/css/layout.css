@@ -63,6 +63,7 @@
     .grid-content {
         padding: 0;
         flex: none;
+        border: 0;
     }
 
     .grid-cols-wrapper {
