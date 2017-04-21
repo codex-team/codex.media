@@ -147,6 +147,13 @@
     line-height: 1.5em;
 }
 
+/**
+ * Raw block
+ */
+.article__raw {
+    margin: 1em 0;
+}
+
 @media (--mobile) {
     .article {
         padding: 20px;
