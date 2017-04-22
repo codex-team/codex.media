@@ -68,8 +68,18 @@
 
     </script>
 
-    <? if(empty($contentOnly)): ?>
-        <script src="https://cdn.ifmo.su/special/v1.1/codex-special.min.js" onload="codexSpecial.init({blockId : 'js-contrast-version-holder',})"></script>
+    <? if ( empty($contentOnly) ): ?>
+
+        <?
+            $specialPath = 'https://cdn.ifmo.su/special/v1.2';
+
+            if ( Kohana::$environment === Kohana::DEVELOPMENT ) {
+                $specialPath = '/public/extensions/codex.special';
+            }
+        ?>
+
+        <script src="<?= $specialPath ?>/codex-special.min.js" onload="codexSpecial.init({blockId : 'js-contrast-version-holder',})"></script>
+
     <? endif; ?>
 
     <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>

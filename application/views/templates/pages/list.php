@@ -28,7 +28,11 @@
                 </a>
             </div>
 
-            <a class="post-list-item__title js-emoji-included" href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a>
+            <h3 class="post-list-item__title js-emoji-included">
+                <a href="/p/<?= $page->id ?>/<?= $page->uri ?>">
+                    <?= $page->title ?>
+                </a>
+            </h3>
 
             <? if (!$page->rich_view && $page->description): ?>
                 <div class="post-list-item__body js-emoji-included">

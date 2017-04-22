@@ -27,6 +27,7 @@
 }
 
 .post-list-item__title {
+    margin: 0;
     display: inline-block;
     font-size: 1.7em;
     line-height: 1.3em;
