@@ -4,27 +4,6 @@
     .special-blue;
 
 /**
-* Special verison styles
-*/
-
-html body aside .codex-special__toolbar {
-    padding: 15px var(--islandPadding) !important;
-    font-size: 14px !important;
-}
-
-html body .branding__content {
-    background-color: transparent !important;
-}
-
-/**
- * Remove stickyness from big version
- */
-.special-big .main-aside {
-    position: static;
-    margin-top: 0;
-}
-
-/**
  * Styles for all special colors
  */
 :--all-special-colors {
@@ -62,11 +41,29 @@ html body .branding__content {
     }
 }
 
+html body aside .codex-special__toolbar {
+    padding: 15px var(--islandPadding) !important;
+    font-size: 14px !important;
+}
+
+html body .branding__content {
+    background-color: transparent !important;
+}
+
 /**
- * Blue
+ * Big version
  */
-.special-blue .island {
-    background: rgba(255, 255, 255, 0.2) !important;
+.special-big {
+    & .main-aside {
+        position: static;
+        margin-top: 0;
+    }
+
+    & .site-footer,
+    & .site-head {
+        font-size: 13px !important;
+        line-height: 1.4em;
+    }
 }
 
 /**
@@ -76,5 +73,14 @@ html body .branding__content {
     & .island textarea,
     & .island input {
         background-color: #0c0c0c !important;
+    }
+}
+
+/**
+ * Blue
+ */
+.special-blue {
+    & .island {
+        background: rgba(255, 255, 255, 0.2) !important;
     }
 }
