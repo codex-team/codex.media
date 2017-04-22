@@ -7,10 +7,6 @@
  * Styles for all special colors
  */
 :--all-special-colors {
-    & .branding {
-        background-color: rgba(0, 0, 0, 0.2) !important;
-    }
-
     & aside div .codex-special__toolbar {
         background-color: #ffed14 !important;
     }
@@ -46,24 +42,31 @@ html body aside .codex-special__toolbar {
     font-size: 14px !important;
 }
 
-html body .branding__content {
-    background-color: transparent !important;
-}
-
 /**
  * Big version
  */
 .special-big {
-    & .main-aside {
-        position: static;
-        margin-top: 0;
-    }
-
     & .site-footer,
     & .site-head {
         font-size: 13px !important;
         line-height: 1.4em;
     }
+}
+
+/**
+ * Remove branding
+ */
+.special-big,
+:--all-special-colors {
+    & .main-aside {
+        position: static;
+        margin-top: 0;
+    }
+
+    & .branding {
+        display: none;
+    }
+
 }
 
 /**
