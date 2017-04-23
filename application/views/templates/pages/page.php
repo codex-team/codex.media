@@ -19,8 +19,7 @@
         </time>
 
         <a class="article__author" href="/user/<?= $page->author->id ?>">
-            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
-            <?= $page->author->name ?>
+            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>"><?= $page->author->name ?>
         </a>
 
         <div class="article__information-right">
