@@ -44,19 +44,4 @@ class Controller_Index extends Controller_Base_preDispatch
             $this->template->content = View::factory('templates/index', $this->view);
         }
     }
-
-    public function action_users_list()
-    {
-        $role = Model_User::REGISTERED;
-
-        if ($this->request->param('type') == 'teachers') {
-
-            $role = Model_User::TEACHER;
-        }
-
-        $this->view['users']  = Model_User::getUsersList($role);
-        $this->view['role'] = $role;
-
-        $this->template->content = View::factory('templates/users/list', $this->view);
-    }
 }

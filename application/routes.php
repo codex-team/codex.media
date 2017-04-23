@@ -32,11 +32,6 @@ Route::set('INDEX', '(<feed_key>(/))(<page_number>)', // #TODO rewrite expressio
     'action' => 'index'
 ));
 
-Route::set('USERS_LIST', 'users(/<type>)', array('type' => 'teachers'))->defaults(array(
-    'controller' => 'index',
-    'action' => 'users_list'
-));
-
 /**
  * Pages section
  */
