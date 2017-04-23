@@ -2488,6 +2488,12 @@ html body aside .codex-special__toolbar {
 .sharing__button--facebook:hover {
     background-color: rgb(34, 63, 103);
 }
+@media all and (max-width: 980px) {
+    .sharing__button {
+        margin-right: 5px;
+        font-size: 12px;
+    }
+}
 .scroll-up {
     position: fixed;
     top: 0;
