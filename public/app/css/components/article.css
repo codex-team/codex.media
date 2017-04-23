@@ -206,7 +206,6 @@
         background-image: url('/public/app/svg/photo-placeholder.svg');
         background-repeat: no-repeat;
         background-position: center center;
-        cursor: pointer;
         overflow: hidden;
         margin-left: 30px;
     }
