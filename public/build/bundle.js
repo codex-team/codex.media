@@ -1,3 +1,4775 @@
-var codex=function(e){function t(o){if(n[o])return n[o].exports;var a=n[o]={exports:{},id:o,loaded:!1};return e[o].call(a.exports,a,a.exports,t),a.loaded=!0,a.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){n(1),codex=function(e){"use strict";return e.nodes={content:null},e.appSettings={uploadMaxSize:25},e.init=function(t){for(var n in t)e.appSettings[n]=t[n];e.checkboxes.init(),e.content.approvalButtons.init(),e.autoresizeTextarea.init(),e.scrollUp.init("js-layout-holder"),e.core.log("Initialized","CodeX","info"),e.branding.init()},e}({}),codex.docReady=function(e){/in/.test(document.readyState)?window.setTimeout(codex.docReady,9,e):e()},codex.core=n(3),codex.ajax=n(4),codex.transport=n(5),codex.content=n(6),codex.appender=n(7),codex.parser=n(8),codex.comments=n(9),codex.alerts=n(10),codex.islandSettings=n(12),codex.autoresizeTextarea=n(13),codex.user=n(14),codex.sharer=n(15),codex.writing=n(16),codex.loader=n(17),codex.scrollUp=n(18),codex.branding=n(19),codex.pages=n(20),codex.checkboxes=n(23),e.exports=codex},function(e,t){},,function(e,t){e.exports={log:function(e,t,n,o){var a=32;if(t){for(t=t.length<a?t:t.substr(0,a-2);t.length<a-1;)t+=" ";t+=":",e=t+e}n=n||"log";try{"console"in window&&window.console[n]&&(o?console[n](e,o):console[n](e))}catch(e){}},getOffset:function(e){var t,n,o,a;if(e)return e.getClientRects().length?(o=e.getBoundingClientRect(),o.width||o.height?(a=e.ownerDocument,n=window,t=a.documentElement,{top:o.top+n.pageYOffset-t.clientTop,left:o.left+n.pageXOffset-t.clientLeft}):o):{top:0,left:0}},isElementOnScreen:function(e){var t=codex.core.getOffset(e).top,n=window.scrollY+window.innerHeight;return n>t},css:function(e){return window.getComputedStyle(e)},insertAfter:function(e,t){e.parentNode.insertBefore(t,e.nextSibling)},replace:function(e,t){return e.parentNode.replaceChild(t,e)},insertBefore:function(e,t){e.parentNode.insertBefore(t,e)},random:function(e,t){return Math.floor(Math.random()*(t-e+1))+e},delegateEvent:function(e,t,n,o){e.addEventListener(n,function(e){for(var n,a=e.target;a&&!n;)n=a.matches(t),n||(a=a.parentElement);n&&o.call(e.target,e,a)},!0)},nodeTypes:{TAG:1,TEXT:3,COMMENT:8,DOCUMENT_FRAGMENT:11},keys:{BACKSPACE:8,TAB:9,ENTER:13,SHIFT:16,CTRL:17,ALT:18,ESC:27,SPACE:32,LEFT:37,UP:38,DOWN:40,RIGHT:39,DELETE:46,META:91},isDomNode:function(e){return e&&"object"==typeof e&&e.nodeType&&e.nodeType==this.nodeTypes.TAG},parseHTML:function(e){var t,n,o=[];t=document.createElement("div"),t.innerHTML=e.trim(),n=t.childNodes;for(var a,r=0;a=n[r];r++)(a.nodeType!=codex.core.nodeTypes.TEXT||a.textContent.trim())&&o.push(a);return o},isEmpty:function(e){return 0===Object.keys(e).length},isVisible:function(e){return null!==e.offsetParent},setCookie:function(e,t,n,o,a){var r=e+"="+t;n&&(r+="; expires="+n.toGMTString()),o&&(r+="; path="+o),a&&(r+="; domain="+a),document.cookie=r},getCookie:function(e){var t=document.cookie,n=e+"=",o=t.indexOf("; "+n);if(o==-1){if(o=t.indexOf(n),0!==o)return null}else o+=2;var a=document.cookie.indexOf(";",o);return a==-1&&(a=t.length),unescape(t.substring(o+n.length,a))}}},function(e,t){var n=function(){function e(e){return"function"==typeof e.append}var t=function(t){if(t&&t.url){var n=window.XMLHttpRequest?new window.XMLHttpRequest:new window.ActiveXObject("Microsoft.XMLHTTP"),o=function(){};t.async=!0,t.type=t.type||"GET",t.data=t.data||"",t["content-type"]=t["content-type"]||"application/json; charset=utf-8",o=t.success||o,"GET"==t.type&&t.data&&(t.url=/\?/.test(t.url)?t.url+"&"+t.data:t.url+"?"+t.data),t.withCredentials&&(n.withCredentials=!0),t.beforeSend&&"function"==typeof t.beforeSend&&t.beforeSend.call(),n.open(t.type,t.url,t.async),e(t.data)||n.setRequestHeader("Content-type",t["content-type"]),n.setRequestHeader("X-Requested-With","XMLHttpRequest"),n.onreadystatechange=function(){4==n.readyState&&200==n.status&&o(n.responseText)},n.send(t.data)}};return{call:t}}();e.exports=n},function(e,t){e.exports=function(e){var t=null;e.input=null,e.init=function(a){if(!a.url)return void codex.core.log("can't send request because `url` is missed","Transport module","error");t=a;var r=document.createElement("INPUT");r.type="file",t&&t.multiple&&r.setAttribute("multiple","multiple"),t&&t.accept&&r.setAttribute("accept",t.accept),r.addEventListener("change",o,!1),e.input=r,n()};var n=function(){e.input.click()},o=function(){var n=t.url,o=t.beforeSend,a=t.success,r=t.error,s=new FormData,i=e.input.files;if(i.length>1)for(var d=0;d<i.length;d++)s.append("files[]",i[d],i[d].name);else s.append("files",i[0],i[0].name);if(null!==t.data&&"object"==typeof t.data)for(var c in t.data)s.append(c,t.data[c]);codex.ajax.call({type:"POST",data:s,url:n,beforeSend:o,success:a,error:r})};return e}({})},function(e,t){e.exports=function(){var e=function(e,t){for(var n=document.querySelectorAll(e),o=n.length-1;o>=0;o--)n[o].classList.toggle(t)},t=function(e){var t=document.getElementById("js-mobile-menu-holder"),n="mobile-menu-holder--opened";t.classList.toggle(n),e.stopPropagation(),e.stopImmediatePropagation(),e.preventDefault()},n={CHECKED_CLASS:"checked",init:function(){var e=document.getElementsByClassName("js-custom-checkbox");if(e.length)for(var t=e.length-1;t>=0;t--)e[t].addEventListener("click",codex.content.customCheckboxes.clicked,!1)},clicked:function(){var e=this,t=this.querySelector("input"),n=this.classList.contains(codex.content.customCheckboxes.CHECKED_CLASS);e.classList.toggle(codex.content.customCheckboxes.CHECKED_CLASS),n?t.removeAttribute("checked"):t.setAttribute("checked","checked")}},o={CLICKED_CLASS:"click-again-to-approve",init:function(){var e=document.getElementsByClassName("js-approval-button");if(e.length)for(var t=e.length-1;t>=0;t--)e[t].addEventListener("click",codex.content.approvalButtons.clicked,!1)},clicked:function(e){var t=this,n=this.classList.contains(codex.content.approvalButtons.CLICKED_CLASS);n||(t.classList.add(codex.content.approvalButtons.CLICKED_CLASS),e.preventDefault())}};return{toggleMobileMenu:t,customCheckboxes:n,approvalButtons:o,toggle:e}}()},function(e,t){var n={page:1,settings:null,blockForItems:null,loadMoreButton:null,buttonText:null,init:function(e){return this.settings=e,this.loadMoreButton=document.getElementById(this.settings.buttonId),!!this.loadMoreButton&&(this.blockForItems=document.getElementById(this.settings.targetBlockId),!!this.blockForItems&&(this.page=e.currentPage,this.buttonText=this.loadMoreButton.innerHTML,this.settings.autoLoading&&(this.autoLoading.isAllowed=!0),void this.loadMoreButton.addEventListener("click",function(e){codex.appender.load(),e.preventDefault(),codex.appender.autoLoading.init()},!1)))},load:function(){var e=this.settings.url+(parseInt(this.page)+1);codex.ajax.call({type:"post",url:e,data:{},beforeSend:function(){codex.appender.loadMoreButton.classList.add("loading")},success:function(e){if(e=JSON.parse(e),e.success){if(!e.list)return;codex.appender.blockForItems.innerHTML+=e.list,codex.appender.page++,codex.appender.settings.autoLoading&&(codex.appender.autoLoading.canLoad=!0),e.next_page||codex.appender.disable()}else codex.core.showException("Не удалось подгрузить новости");codex.appender.loadMoreButton.classList.remove("loading")}})},disable:function(){codex.appender.loadMoreButton.style.display="none",codex.appender.autoLoading.isLaunched&&codex.appender.autoLoading.disable()},autoLoading:{isAllowed:!1,isLaunched:!1,canLoad:!0,init:function(){this.isAllowed&&(window.addEventListener("scroll",codex.appender.autoLoading.scrollEvent),codex.appender.autoLoading.isLaunched=!0)},disable:function(){window.removeEventListener("scroll",codex.appender.autoLoading.scrollEvent),codex.appender.autoLoading.isLaunched=!1},scrollEvent:function(){var e=window.pageYOffset+window.innerHeight>=document.body.clientHeight;e&&codex.appender.autoLoading.canLoad&&(codex.appender.autoLoading.canLoad=!1,codex.appender.load())}}};e.exports=n},function(e,t){var n={input:null,init:function(){var e=this;this.input.addEventListener("paste",function(){e.inputPasteCallback()},!1)},inputPasteCallback:function(){var e=this.input,t=this;window.setTimeout(function(){t.sendRequest(e.value)},100)},sendRequest:function(e){codex.core.ajax({type:"get",url:"/ajax/get_page",data:{url:e},success:function(t){var n,o,a;1==t.success?(n=document.getElementById("page_form_title"),o=document.getElementById("page_form_content"),a=document.getElementById("source_link"),n.value=t.title,o.value=t.article,a.value=e,document.getElementsByClassName("redactor_redactor")[0].innerHTML=t.article):codex.core.showException("Не удалось импортировать страницу")}})}};e.exports=n},function(e,t){e.exports=function(){function e(e){h=document.getElementById(e.listId),v&&f()}function t(e){if(!e.classList.contains(x.replyOpened)){var t={parentId:e.dataset.parentId,rootId:e.dataset.rootId,action:e.dataset.action},o=n(t);codex.core.insertAfter(e,o),e.classList.add(x.replyOpened),s(o).focus()}}function n(e){var t=o(),n=a(),r=document.createElement("DIV");return r.classList.add(x.replyForm),t.dataset.parentId=e.parentId,t.dataset.rootId=e.rootId,t.dataset.action=e.action,r.appendChild(t),r.appendChild(n),r}function o(){var e=document.createElement("TEXTAREA");return e.classList.add(x.replyTextarea),e.placeholder="Ваш комментарий",e.addEventListener("keydown",c,!1),e.addEventListener("blur",i,!1),codex.autoresizeTextarea.addListener(e),e}function a(){var e=document.createElement("DIV");return e.classList.add(x.replySubmitButton,"button","master"),e.textContent="Отправить",e.addEventListener("click",r,!1),e}function r(){var e=this,t=e.parentNode,n=s(t);l(n)}function s(e){return e.getElementsByTagName("TEXTAREA")[0]}function i(e){var t=e.target,n=t.parentNode,o=t.dataset.parentId;t.value.trim()||d(n,o)}function d(e,t){var n=document.getElementById("reply"+t);e.remove(),n.classList.remove(x.replyOpened)}function c(e){var t=e.ctrlKey||e.metaKey,n=13==e.keyCode,o=e.target;t&&n&&(l(o),e.preventDefault())}function l(e){var t=new FormData,n=e.parentNode,o=n.querySelector("."+x.replySubmitButton),a=e.dataset.rootId,r=e.dataset.parentId,s=e.dataset.action;t.append("root_id",a),t.append("parent_id",r),t.append("comment_text",e.value),t.append("csrf",window.csrf),codex.ajax.call({type:"POST",url:s,data:t,beforeSend:function(){o.classList.add("loading")},success:function(e){var t;return o.classList.remove("loading"),e=JSON.parse(e),e.success?(d(n,r),u(),t=codex.core.parseHTML(e.comment)[0],h.appendChild(t),window.scrollTo(0,document.body.scrollHeight),m(e.commentId),void p(t)):void codex.alerts.show({type:"error",message:e.error})}})}function u(){var e=document.querySelector(".js-empty-comments");e&&e.remove()}function p(e){var t=e.querySelector(w);t&&codex.islandSettings.prepareToggler(t,w)}function m(e){var t=document.getElementById("comment"+e);t.classList.add(x.highlighted),window.setTimeout(function(){t.classList.remove(x.highlighted)},500)}function f(){var e,t=v.match(/\d+/);t&&(e=t[0],m(e))}function g(){var e=this,t=e.dataset.id;window.confirm("Подтвердите удаление комментария")&&(document.location="/delete-comment/"+t)}var h=null,v=document.location.hash,x={replyForm:"comments-form",replyTextarea:"comment-form__text",replyOpened:"comment-form__placeholder--opened",replySubmitButton:"comment-form__button",highlighted:"comment--highligthed"},w=".js-comment-settings";return{init:e,reply:t,remove:g}}()},function(e,t,n){e.exports=function(){function e(){return!!a||(a=document.createElement("DIV"),a.classList.add(o.wrapper),void document.body.appendChild(a))}function t(t){e();var n=document.createElement("DIV"),r=document.createElement("DIV"),s=t.message,i=t.type||"notify",d=t.time||8e3;s&&(n.classList.add(o.notification),n.classList.add(o.notification+"--"+i),n.innerHTML=s,r.classList.add(o.crossBtn),r.addEventListener("click",function(){n.remove()}),n.appendChild(r),a.appendChild(n),n.classList.add("bounceIn"),window.setTimeout(function(){n.remove()},d))}n(11);var o={wrapper:"cdx-notifies-wrapper",notification:"cdx-notifies",crossBtn:"cdx-notifies-cross"},a=null;return{show:t}}({})},function(e,t){},function(e,t){e.exports=function(){var e=null,t=[],n={menu:"island-settings__menu",item:"island-settings__item",showed:"island-settings__menu--showed"},o=function(e){for(var n=document.querySelectorAll(e.selector),o=t.length,r=n.length+t.length,s=o;s<r;s++)t.push({el:n[s],settings:e}),a(s,n[s-o])},a=function(e,t){t.dataset.index=e,t.addEventListener("mouseover",r,!1),t.addEventListener("mouseleave",s,!1)},r=function(){var t,n=this;"true"!=n.dataset.opened&&(n.dataset.opened=!0,e||(e=u()),t=i(n.dataset.index),console.assert(t.items,"Menu items missed"),d(t.items,n),p(n))},s=function(){this.dataset.opened=!1},i=function(e){return t[e].settings},d=function(t,n){var o,a,r;for(e.innerHTML="",o=0;a=t[o];o++){r=c(a),r.dataset.itemIndex=o;for(var s in n.dataset)r.dataset[s]=n.dataset[s];e.appendChild(r)}},c=function(e){var t=document.createElement("LI");return t.classList.add(n.item),console.assert(e.title,"islandSettings: item title is missed"),console.assert("function"==typeof e.handler,"islandSettings: item handler is not a function"),t.textContent=e.title,t.addEventListener("click",l),t},l=function(){var e,t,n,o=this,a=o.dataset.index,r=o.dataset.itemIndex;e=i(a),t=e.items[r].handler,n=e.items[r].arguments,t.call(o,n||{})},u=function(){var e=document.createElement("UL");return e.classList.add(n.menu),e},p=function(t){t.appendChild(e),e.classList.add(n.showed)},m=function(n,o,a,r,s){console.assert(t[n],"Toggler was not found by index");var i,d=t[n],c=e.childNodes[o];d&&(i=t[n].settings.items[o],a&&(i.title=a),s&&(i.arguments=s),r&&"function"==typeof r&&(i.handler=r),e&&a&&(c.textContent=a),codex.core.log("item updated %o","islandSettings","info",i))};return{init:o,updateItem:m,prepareToggler:a}}()},function(e,t){e.exports=function(){var e=function(){var e=document.getElementsByClassName("js-autoresizable");if(e.length)for(var n=0;n<e.length;n++)t(e[n]),o(e[n])},t=function(e){e.addEventListener("input",n,!1)},n=function(e){var t=e.target;o(t)},o=function(e){e.scrollHeight>e.clientHeight&&(e.style.height=e.scrollHeight+"px")};return{init:e,addListener:t}}()},function(e,t){e.exports=function(){var e=function(){var e="js-img-updatable",t=function(e,t){codex.transport.init({url:"/upload/"+t,success:o,error:n})},n=function(e){console.log(e)},o=function(e){return e=JSON.parse(e),e.success?(console.assert(e.data&&e.data.url,"Wrong response data"),void a(e.data.url)):void codex.alerts.show({type:"error",message:e.message||"File uploading error :("})},a=function(t){for(var n=document.getElementsByName(e),o=n.length-1;o>=0;o--)n[o].src=t};return{change:t}}(),t=function(){var e=function(e){var t=this,o=t.dataset.id,a=e.value;n(t,"status",o,a)},t=function(e){var t=this,o=t.dataset.id,a=e.value;n(t,"role",o,a)},n=function(e,t,n,o){var a="/user/"+n+"/change/"+t,r=new FormData;r.append("value",o),codex.ajax.call({url:a,type:"POST",data:r,beforeSend:function(){e.classList.add("loading")},success:function(t){var n=e.dataset.index,o=e.dataset.itemIndex;t=JSON.parse(t),e.classList.remove("loading"),codex.islandSettings.updateItem(n,o,t.buttonText,null,{value:t.buttonValue}),codex.alerts.show({type:t.success?"success":"error",message:t.message||"Не удалось сохранить изменения"})}})};return{status:e,role:t}}(),n=function(){var e=null,t=null,n=null,o=function(n){n.classList.add("hide"),e=document.getElementById("change-password-form"),t=document.getElementById("change-password-input"),e.classList.remove("hide")},a=function(t){e=t,r(e,!0),d()},r=function(e,o){n=e,n.classList.add("loading");var a=new FormData;a.append("csrf",window.csrf),a.append("currentPassword",t?t.value:""),codex.ajax.call({url:"/user/passchange",type:"POST",data:a,success:o?null:i,error:i})},s=function(e){e.classList.add("loading");var t=new FormData;t.append("csrf",window.csrf),t.append("repeatEmail",!0),codex.ajax.call({url:"/user/passchange",type:"POST",data:t,success:function(){e.classList.remove("loading"),codex.alerts.show({type:"success",message:"Мы отправили на вашу почту письмо"})},error:function(){e.classList.remove("loading"),codex.alerts.show({type:"error",message:"Произошла ошибка"})}})},i=function(e){n.classList.remove("loading");try{e=JSON.parse(e)}catch(t){e={success:0,message:"Произошла ошибка"}}return e.success?void d():(t&&t.classList.add("form__input--invalid"),void codex.alerts.show({type:"error",message:e.message}))},d=function(){codex.alerts.show({type:"success",message:"Мы выслали инструкцию на вашу почту"}),e.classList.add("hide"),e=document.getElementById("change-password-success"),e.classList.remove("hide")};return{showForm:o,requestChange:r,set:a,repeatEmail:s}}(),o=function(){var e=null,t=function(t){var o=t.querySelector("textarea");o||(e=document.createElement("TEXTAREA"),e.innerHTML=t.textContent.trim(),e.addEventListener("keydown",n),t.innerHTML="",t.appendChild(e),e.focus(),codex.autoresizeTextarea.addListener(e))},n=function(e){e.keyCode==codex.core.keys.ENTER&&(o(this.value),e.preventDefault())},o=function(e){if(!e.trim())return void codex.alerts.show({type:"error",message:"Write something about yourself"});var t=new FormData;t.append("bio",e),t.append("csrf",window.csrf),codex.ajax.call({type:"POST",url:"/user/updateBio",data:t,beforeSend:a,success:r})},a=function(){e.classList.add("loading")},r=function(t){if(t=JSON.parse(t),!t.success||!t.bio)return e.classList.remove("loading"),void codex.alerts.show({type:"error",message:"Saving error, sorry"});var n=document.createTextNode(t.bio||"");window.csrf=t.csrf,codex.core.replace(e,n)};return{edit:t}}(),a=function(){var e=null,t=null,n=function(n){try{if(n=JSON.parse(n),n.success)return codex.core.replace(e.parentNode,codex.core.parseHTML(n.island)[0]),codex.alerts.show({type:"success",message:"Адрес почты обновлен. Теперь вам нужно подтвердить его, перейдя по ссылке в письме."}),void(e=null)}catch(e){}t.classList.remove("loading"),codex.alerts.show({type:"error",message:n.message||"Произошла ошибка, попробуйте позже"})},o=function(){if(""==e.value.trim())return void codex.alerts.show({type:"error",message:"Введите email"});t=this,t.classList.add("loading");var o=new FormData;o.append("email",e.value),o.append("csrf",window.csrf),codex.ajax.call({url:"user/changeEmail",type:"POST",data:o,success:n,error:n})},a=function(e){var t=function(t){t=JSON.parse(t),codex.alerts.show({type:"success",message:t.message}),e.classList.remove("loading")};e.classList.add("loading"),codex.ajax.call({url:"/ajax/confirmation-email",success:t})},r=function(t){if(!e){e=t;var n=document.createElement("BUTTON"),a=t.parentNode.querySelector("button");a&&a.classList.remove("master"),n.classList.add("button","master"),n.textContent="Сохранить",n.addEventListener("click",o),t.oninput=null,t.parentNode.appendChild(n)}},s=function(t){t.classList.add("hide");var n=document.getElementById("set-email-form");n.classList.remove("hide"),e=document.getElementById("set-email-input")};return{sendConfirmation:a,changed:r,send:o,set:s}}();return{changePassword:n,promote:t,photo:e,bio:o,email:a}}()},function(e,t){var n={init:function(){for(var e=document.querySelectorAll(".js-share"),t=e.length-1;t>=0;t--)e[t].addEventListener("click",n.click,!0)},shareVk:function(e){var t="https://vk.com/share.php?";t+="url="+e.url,t+="&title="+e.title,t+="&description="+e.desc,t+="&image="+e.img,t+="&noparse=true",this.popup(t,"vkontakte")},shareFacebook:function(e){var t=0x62eef6f1917ee,n="https://www.facebook.com/dialog/share?display=popup";n+="&app_id="+t,n+="&href="+e.url,n+="&redirect_uri="+document.location.href,this.popup(n,"facebook")},shareTwitter:function(e){var t="https://twitter.com/share?";t+="text="+e.title,t+="&url="+e.url,t+="&counturl="+e.url,this.popup(t,"twitter")},shareTelegram:function(e){var t="https://telegram.me/share/url";t+="?text="+e.title,t+="&url="+e.url,this.popup(t,"telegram")},popup:function(e,t){window.open(e,"","toolbar=0,status=0,width=626,height=436"),window.yaCounter32652805&&window.yaCounter32652805.reachGoal("article-share",function(){},this,{type:t,url:e})},click:function(e){var t=e.target,o=t.dataset.shareType||t.parentNode.dataset.shareType;if(n[o]){var a={url:t.dataset.url||t.parentNode.dataset.url,title:t.dataset.title||t.parentNode.dataset.title,desc:t.dataset.desc||t.parentNode.dataset.desc,img:t.dataset.img||t.parentNode.dataset.title};n[o](a)}}};e.exports=n},function(e,t){e.exports=function(){function e(e){for(var t in e)r[t]=e[t]}function t(){var e=1,t=2,n=6;codex.editor.start({holderId:r.holderId,initialBlockPlugin:r.initialBlockPlugin,hideToolbar:r.hideEditorToolbar,sanitizer:{tags:{p:{},a:{href:!0,target:"_blank"}}},tools:{paragraph:{type:"paragraph",iconClassname:"ce-icon-paragraph",render:window.paragraph.render,validate:window.paragraph.validate,save:window.paragraph.save,allowedToPaste:!0,showInlineToolbar:!0,destroy:window.paragraph.destroy,allowRenderOnPaste:!0},header:{type:"header",iconClassname:"ce-icon-header",appendCallback:window.header.appendCallback,makeSettings:window.header.makeSettings,render:window.header.render,validate:window.header.validate,save:window.header.save,destroy:window.header.destroy,displayInToolbox:!0},image:{type:"image",iconClassname:"ce-icon-picture",appendCallback:window.image.appendCallback,prepare:window.image.prepare,makeSettings:window.image.makeSettings,render:window.image.render,save:window.image.save,destroy:window.image.destroy,isStretched:!0,showInlineToolbar:!0,displayInToolbox:!0,renderOnPastePatterns:window.image.pastePatterns,config:{uploadImage:"/upload/"+e,uploadFromUrl:""}},attaches:{type:"attaches",displayInToolbox:!0,iconClassname:"cdx-attaches__icon",prepare:window.cdxAttaches.prepare,render:window.cdxAttaches.render,save:window.cdxAttaches.save,validate:window.cdxAttaches.validate,destroy:window.cdxAttaches.destroy,appendCallback:window.cdxAttaches.appendCallback,config:{fetchUrl:"/upload/"+t,maxSize:1e3*codex.appSettings.uploadMaxSize}},list:{type:"list",iconClassname:"ce-icon-list-bullet",make:window.list.make,appendCallback:null,makeSettings:window.list.makeSettings,render:window.list.render,validate:window.list.validate,save:window.list.save,destroy:window.list.destroy,displayInToolbox:!0,showInlineToolbar:!0,enableLineBreaks:!0,allowedToPaste:!0},raw:{type:"raw",displayInToolbox:!0,iconClassname:"raw-plugin-icon",render:window.rawPlugin.render,save:window.rawPlugin.save,validate:window.rawPlugin.validate,destroy:window.rawPlugin.destroy,enableLineBreaks:!0,allowPasteHTML:!0},personality:{type:"personality",displayInToolbox:!0,iconClassname:"cdx-personality-icon",prepare:window.cdxEditorPersonality.prepare,render:window.cdxEditorPersonality.render,save:window.cdxEditorPersonality.save,validate:window.cdxEditorPersonality.validate,destroy:window.cdxEditorPersonality.destroy,enableLineBreaks:!0,showInlineToolbar:!0,config:{uploadURL:"/upload/"+n}}},data:r.data});var o=document.getElementById(r.titleId);o.focus(),o.addEventListener("keydown",i)}function n(e){var t=e.name,n=e.path.script,o=e.path.style;return Promise.all([codex.loader.importScript(n,t),codex.loader.importStyle(o,t)])}var o=!1,a=null,r={hideEditorToolbar:!1,titleId:"editorWritingTitle",initialBlockPlugin:"paragraph",data:{items:[]},resources:[],holderId:null,pageId:0,parentId:0},s=function(t){return e(t),u(r.resources).then(function(){o=!0})},i=function(e){e.keyCode==codex.core.keys.ENTER&&(e.preventDefault(),d())},d=function(){var e,t=codex.editor.nodes.redactor.firstChild,n=t.firstChild,o=n.firstChild;e=document.createTextNode("​"),o.appendChild(e),codex.editor.caret.set(o,0,0)},c=function(){o&&t()},l=function(e,t,n){if(o){var a=e;document.getElementById(t).classList.remove("hide"),a.classList.add(n),a.onclick=null,c()}},u=function(e){return Promise.all(e.map(n))},p=function(){var e=document.forms.atlas;if(e){var t=document.createElement("TEXTAREA");return t.name="content",t.id="json_result",t.hidden=!0,e.appendChild(t),codex.editor.saver.saveBlocks(),e}},m=function(e){var t,n=document.forms.atlas.elements.title;return""===n.value.trim()?void codex.editor.notifications.notification({type:"warn",message:"Заполните заголовок"}):(t=p(),a=e,a.classList.add("loading"),void window.setTimeout(function(){t.elements.content.innerHTML=JSON.stringify({items:codex.editor.state.jsonOutput}),codex.ajax.call({url:"/p/save",data:new FormData(t),success:f,type:"POST"})},500))},f=function(e){return a.classList.remove("loading"),e=JSON.parse(e),e.success?void(window.location=e.redirect):void codex.editor.notifications.notification({type:"warn",message:e.message})},g=function(){var e=p();window.setTimeout(function(){e.elements.content.innerHTML=JSON.stringify({items:codex.editor.state.jsonOutput}),e.submit()},500)};return{init:c,prepare:s,open:l,openEditorFullscreen:g,submit:m}}()},function(e,t){e.exports={prefixJS:"cdx-script-",prefixCSS:"cdx-style-",importScript:function(e,t){return new Promise(function(n,o){var a;t?document.getElementById(this.prefixJS+t)&&n(e):o("Instance name is missed"),a=document.createElement("SCRIPT"),a.async=!0,a.defer=!0,a.id=codex.loader.prefixJS+t,a.onload=function(){n(e)},a.onerror=function(){o(e)},a.src=e,document.head.appendChild(a)})},importStyle:function(e,t){return new Promise(function(n,o){var a;t?document.getElementById(this.prefixCSS+t)&&n(e):o("Instance name is missed"),a=document.createElement("LINK"),a.type="text/css",a.href=e,a.rel="stylesheet",a.id=codex.loader.prefixCSS+t,a.onload=function(){n(e)},a.onerror=function(){o(e)},a.src=e,document.head.appendChild(a)})}}},function(e,t){e.exports=function(){var e=300,t=0,n=null,o=null,a=function(e){var o=document.getElementById(e);return o?(t=o.offsetWidth,n=c(),n.addEventListener("click",r),window.addEventListener("scroll",s),window.addEventListener("resize",d,!1),i(),void s()):void codex.core.log("Layout center-col ID wissed","scrollUp","warn")},r=function(e){window.scrollTo(0,e)},s=function(){var t=window.pageYOffset>e;t?n.classList.add("show"):n.classList.remove("show")},i=function(){var e=document.body.clientWidth,o=(e-t)/2;n.style.width=o+"px"},d=function(){o&&window.clearTimeout(o),o=window.setTimeout(i,150)},c=function(){var e=document.createElement("DIV"),t=document.createElement("DIV");return e.classList.add("scroll-up"),t.classList.add("scroll-up__arrow"),e.appendChild(t),document.body.appendChild(e),e};return{init:a}}()},function(e,t){e.exports=function(){var e="branding--empty",t="branding--loading",n="branding__preloader",o="branding__preloader--shown",a=null,r=function(){if(a=document.getElementById("brandingSection")){var e=a.dataset.src;s(e)}},s=function(e,t){var r=a.querySelector("."+n),s=document.createElement("IMG");t&&(r.style.backgroundImage="url('"+t+"')",r.classList.add(o)),s.src=e,s.onload=function(){a.style.backgroundImage="url('"+e+"')",r.classList.remove(o)}},i=function(){codex.transport.init({url:"/upload/4",accept:"image/*",beforeSend:function(){a.classList.add(t)},success:function(n){var o,r,i=JSON.parse(n);a.classList.remove(t),i.success?(o=i.data.url,r="/upload/branding/preload_"+i.data.name+".jpg",a.classList.contains(e)&&a.classList.remove(e),s(o,r)):codex.alerts.show({type:"error",message:"Uploading failed"})},error:function(){a.classList.remove(t),codex.alerts.show({type:"error",message:"Error while uploading branding image;"})}})};return{init:r,change:i}}({})},function(e,t,n){e.exports=function(){var e=n(21),t=n(22),o=null,a=function(){o=this;var e=o.dataset.id;document.location="/p/writing?id="+e},r=function(){o=this;var e=o.dataset.id;window.confirm("Подтвердите удаление страницы")&&codex.ajax.call({url:"/p/"+e+"/delete",success:l})},s=function(){o=this;var e=o.dataset.id;document.location="/p/writing?parent="+e},i=function(){o=this,o.classList.add("loading");var e=o.dataset.id;codex.ajax.call({url:"/p/"+e+"/promote?list=menu",success:u})},d=function(){o=this,o.classList.add("loading");var e=o.dataset.id;codex.ajax.call({url:"/p/"+e+"/promote?list=news",success:u})},c=function(e){try{e=JSON.parse(e)}catch(e){return{success:0,message:"Произошла ошибка, попробуйте позже"}}return e},l=function(e){return e=c(e),e.success?void window.location.replace(e.redirect):void codex.alerts.show({type:"error",message:e.message})},u=function(e){return e=c(e),o.classList.remove("loading"),e.success?(e.buttonText&&p(o,e.buttonText),e.menu&&m(e.menu),void codex.alerts.show({type:"success",message:e.message})):void codex.alerts.show({type:"error",message:e.message})},p=function(e,t){var n=e.dataset.itemIndex,o=e.dataset.index;codex.islandSettings.updateItem(o,n,t),e.textContent=t},m=function(e){var t=document.getElementById("js-site-menu"),n=codex.core.parseHTML(e)[0];codex.core.replace(t,n)};return{openWriting:a,newChild:s,addToMenu:i,addToNews:d,remove:r,pin:t,cover:e}}()},function(e,t){e.exports=function(e){function t(){var e,t=this,o=document.getElementById("js-page-"+t);o&&(e=o.querySelector("."+s.cover),n(e,t))}function n(e,t){var n,o=codex.transport.input,a=o.files;console.assert(a,"There is no files in input"),n=new FileReader,n.readAsDataURL(a[0]),e.classList.add(s.preivew),n.onload=function(n){r({url:n.target.result,target:t},e,!0)}}function o(e){return e=JSON.parse(e),e.success?(console.assert(e.data&&e.data.url,"Wrong response data"),void a(e.data)):void codex.alerts.show({type:"error",message:e.message||"File uploading error :("})}function a(e){var t=document.createElement("IMG");t.onload=function(){r(e)},t.src=e.url}function r(e,t,n){console.assert(e.target,"Page id must be passed as target");var o=document.getElementById("js-page-"+e.target);if(o){if(t=t||o.querySelector("."+s.cover),!t)return void codex.core.log("Nothing to update. Cover was not found","[page.cover]","warn");n?t.classList.add(s.preview):t.classList.remove(s.preview),t.innerHTML="",t.style.backgroundImage="url("+e.url+")",t.classList.remove(s.setCover,s.setCoverShowed)}}var s={cover:"posts-list-item__cover",setCover:"posts-list-item__cover--empty",setCoverShowed:"posts-list-item__cover--empty-showed",preview:"posts-list-item__cover--preview"},i=5;e.toggleButton=function(){var t,n,o=this.dataset.id;t=document.getElementById("js-page-"+o),t&&(n=t.querySelector("."+s.cover),n.classList.add(s.setCover),n.classList.toggle(s.setCoverShowed),window.setTimeout(function(){e.set(o)},300))},e.set=function(e){return isNaN(e)?void codex.core.log("Wrong pageId passed %o","[page.cover]","warn",e):void codex.transport.init({url:"/upload/"+i,data:{target:e},success:o,beforeSend:t.bind(e),error:d})};var d=function(e){codex.core.log("Cover uploading error: %o","[pages.cover]","warn",e)};return e}({})},function(e,t){e.exports=function(){var e=null,t=null,n=function(){e=this,t=e.dataset.id,e.classList.add("loading"),codex.ajax.call({url:"/p/"+t+"/pin",success:o,error:a})},o=function(n){e.classList.remove("loading"),n=JSON.parse(n),codex.alerts.show({type:n.success?"success":"error",message:n.message});var o=document.getElementById("js-page-"+t),a=o.querySelector(".js-article-time");a.textContent=n.message},a=function(){e.classList.remove("loading"),codex.alerts.show({type:"error",message:"Произошла ошибка"})};return{toggle:n}}()},function(e,t){e.exports=function(){var e=new window.CustomEvent("toggle"),t={wrapper:"cdx-checkbox",checkbox:"cdx-checkbox__slider",checked:"cdx-checkbox--checked",defaultCheckbox:"cdx-default-checkbox--hidden"},n={checkbox:"cdx-custom-checkbox",defaultInput:"cdx-custom-checkbox"},o=function(e){var o=document.createElement("INPUT"),r=document.createElement("SPAN"),s=e.firstChild;o.type="checkbox",o.name=e.dataset.name||n.defaultInput,o.value=1,o.classList.add(t.defaultCheckbox),r.classList.add(t.checkbox),r.appendChild(o),e.classList.add(t.wrapper),e.addEventListener("click",a),e.dataset.checked&&(o.checked=!0,e.classList.add(t.checked)),s?e.insertBefore(r,s):e.appendChild(r)},a=function(){var n=this,o=n.querySelector("."+t.checkbox),a=o.querySelector("input");o.parentNode.classList.toggle(t.checked),a.checked=!a.checked,
-e.checked=a.checked,o.dispatchEvent(e)},r=function(){var e=document.getElementsByName(n.checkbox);Array.prototype.forEach.call(e,o)};return{init:r}}()}]);
+var codex =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	* Require CSS build
+	*/
+	__webpack_require__(1);
+	
+	/**
+	* Codex client
+	* @author Savchenko Peter <specc.dev@gmail.com>
+	*/
+	codex = (function (codex) {
+	
+	    'use strict';
+	
+	    /**
+	    * Static nodes cache
+	    */
+	    codex.nodes = {
+	        content : null
+	    };
+	
+	    /**
+	     * @var Application settings
+	     * @type {Object}
+	     * @type {Number} appSettings.uploadMaxSize    - max size for Editor uploads in MB
+	     */
+	    codex.appSettings = {
+	        uploadMaxSize : 25
+	    };
+	
+	    /**
+	     * Initiztes application
+	     * @param {Object} appSettings - initial settings
+	     */
+	    codex.init = function ( appSettings ) {
+	
+	        /**
+	         * Accept settings
+	         */
+	        for ( var key in appSettings ) {
+	
+	            codex.appSettings[key] = appSettings[key];
+	
+	        }
+	
+	        /**
+	        * Stylize custom checkboxes
+	        */
+	        codex.checkboxes.init();
+	
+	        /**
+	        * Init approval buttons
+	        */
+	        codex.content.approvalButtons.init();
+	
+	        /**
+	         * Enable textarea autoresizer
+	         */
+	        codex.autoresizeTextarea.init();
+	
+	        /**
+	         * Activate scroll-up button
+	         */
+	        codex.scrollUp.init('js-layout-holder');
+	
+	        /**
+	         * Client is ready
+	         */
+	        codex.core.log('Initialized', 'CodeX', 'info');
+	
+	        /**
+	         * Initiate branding preload
+	         */
+	        codex.branding.init();
+	
+	    };
+	
+	    return codex;
+	
+	})({});
+	
+	/**
+	* Document ready handler
+	*/
+	codex.docReady = function (f) {
+	
+	    /in/.test(document.readyState) ? window.setTimeout(codex.docReady, 9, f) : f();
+	
+	};
+	
+	
+	/**
+	* Load modules
+	*/
+	codex.core               = __webpack_require__(7);
+	codex.ajax               = __webpack_require__(8);
+	codex.transport          = __webpack_require__(9);
+	codex.content            = __webpack_require__(10);
+	codex.appender           = __webpack_require__(11);
+	codex.parser             = __webpack_require__(12);
+	codex.comments           = __webpack_require__(13);
+	codex.alerts             = __webpack_require__(14);
+	codex.islandSettings     = __webpack_require__(16);
+	codex.autoresizeTextarea = __webpack_require__(17);
+	codex.user               = __webpack_require__(18);
+	codex.sharer             = __webpack_require__(19);
+	codex.writing            = __webpack_require__(20);
+	codex.loader             = __webpack_require__(22);
+	codex.scrollUp           = __webpack_require__(23);
+	codex.branding           = __webpack_require__(24);
+	codex.pages              = __webpack_require__(25);
+	codex.checkboxes         = __webpack_require__(28);
+	
+	
+	module.exports = codex;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */
+/***/ (function(module, exports) {
+
+	/**
+	* Significant core methods
+	*/
+	
+	module.exports = {
+	
+	    /** Logging method */
+	    log : function (str, prefix, type, arg) {
+	
+	        var staticLength = 32;
+	
+	        if (prefix) {
+	
+	            prefix = prefix.length < staticLength ? prefix : prefix.substr( 0, staticLength - 2 );
+	
+	            while (prefix.length < staticLength - 1) {
+	
+	                prefix += ' ';
+	
+	            }
+	
+	            prefix += ':';
+	            str = prefix + str;
+	
+	        }
+	
+	        type = type || 'log';
+	
+	        try {
+	
+	            if ('console' in window && window.console[ type ]) {
+	
+	                if (arg) console[type](str, arg);
+	                else console[type](str);
+	
+	            }
+	
+	        } catch(e) {}
+	
+	    },
+	
+	    /**
+	    * @return {object} dom element real offset
+	    */
+	    getOffset : function (elem) {
+	
+	        var docElem, win, rect, doc;
+	
+	        if (!elem) {
+	
+	            return;
+	
+	        }
+	
+	        /**
+	        * Support: IE <=11 only
+	        * Running getBoundingClientRect on a
+	        * disconnected node in IE throws an error
+	        */
+	        if (!elem.getClientRects().length) {
+	
+	            return {
+	                top: 0,
+	                left: 0
+	            };
+	
+	        }
+	
+	        rect = elem.getBoundingClientRect();
+	
+	        /** Make sure element is not hidden (display: none) */
+	        if (rect.width || rect.height) {
+	
+	            doc = elem.ownerDocument;
+	            win = window;
+	            docElem = doc.documentElement;
+	
+	            return {
+	                top: rect.top + win.pageYOffset - docElem.clientTop,
+	                left: rect.left + win.pageXOffset - docElem.clientLeft
+	            };
+	
+	        }
+	
+	        /** Return zeros for disconnected and hidden elements (gh-2310) */
+	        return rect;
+	
+	    },
+	
+	    /**
+	    * Checks if element visible on screen at the moment
+	    * @param {Element} - HTML NodeElement
+	    */
+	    isElementOnScreen : function (el) {
+	
+	        var elPositon    = codex.core.getOffset(el).top,
+	            screenBottom = window.scrollY + window.innerHeight;
+	
+	        return screenBottom > elPositon;
+	
+	    },
+	
+	    /**
+	    * Returns computed css styles for element
+	    * @param {Element} el
+	    */
+	    css : function (el) {
+	
+	        return window.getComputedStyle(el);
+	
+	    },
+	
+	    /**
+	    * Helper for inserting one element after another
+	    */
+	    insertAfter : function (target, element) {
+	
+	        target.parentNode.insertBefore(element, target.nextSibling);
+	
+	    },
+	
+	    /**
+	    * Replaces node with
+	    * @param {Element} nodeToReplace
+	    * @param {Element} replaceWith
+	    */
+	    replace : function (nodeToReplace, replaceWith) {
+	
+	        return nodeToReplace.parentNode.replaceChild(replaceWith, nodeToReplace);
+	
+	    },
+	
+	    /**
+	    * Helper for insert one element before another
+	    */
+	    insertBefore : function (target, element) {
+	
+	        target.parentNode.insertBefore(element, target);
+	
+	    },
+	
+	    /**
+	    * Returns random {int} between numbers
+	    */
+	    random : function (min, max) {
+	
+	        return Math.floor(Math.random() * (max - min + 1)) + min;
+	
+	    },
+	
+	    /**
+	    * Attach event to Element in parent
+	    * @param {Element} parentNode    - Element that holds event
+	    * @param {string} targetSelector - selector to filter target
+	    * @param {string} eventName      - name of event
+	    * @param {function} callback     - callback function
+	    */
+	    delegateEvent : function (parentNode, targetSelector, eventName, callback) {
+	
+	        parentNode.addEventListener(eventName, function (event) {
+	
+	            var el = event.target, matched;
+	
+	            while (el && !matched) {
+	
+	                matched = el.matches(targetSelector);
+	
+	                if (!matched) el = el.parentElement;
+	
+	            }
+	
+	            if (matched) {
+	
+	                callback.call(event.target, event, el);
+	
+	            }
+	
+	        }, true);
+	
+	    },
+	
+	
+	    /**
+	    * Readable DOM-node types map
+	    */
+	    nodeTypes : {
+	        TAG     : 1,
+	        TEXT    : 3,
+	        COMMENT : 8,
+	        DOCUMENT_FRAGMENT : 11
+	    },
+	
+	    /**
+	    * Readable keys map
+	    */
+	    keys : { BACKSPACE: 8, TAB: 9, ENTER: 13, SHIFT: 16, CTRL: 17, ALT: 18, ESC: 27, SPACE: 32, LEFT: 37, UP: 38, DOWN: 40, RIGHT: 39, DELETE: 46, META: 91 },
+	
+	    /**
+	    * @protected
+	    * Check object for DOM node
+	    */
+	    isDomNode : function (el) {
+	
+	        return el && typeof el === 'object' && el.nodeType && el.nodeType == this.nodeTypes.TAG;
+	
+	    },
+	
+	    /**
+	    * Parses string to nodeList
+	    * Removes empty text nodes
+	    * @param {string} inputString
+	    * @return {array} of nodes
+	    *
+	    * Does not supports <tr> and <td> on firts level of inputString
+	    */
+	
+	    parseHTML : function (inputString) {
+	
+	        // var templatesSupported = spark.supports.templates();
+	
+	        var contentHolder,
+	            childs,
+	            parsedNodes = [];
+	
+	        // if ( false &&   templatesSupported ) {
+	
+	        //     contentHolder = document.createElement('template');
+	        //     contentHolder.innerHTML = inputString.trim();
+	
+	        //     console.log("contentHolder: %o", contentHolder);
+	
+	        //     childs = contentHolder.content.cloneNode(true).childNodes;
+	
+	        // } else {
+	
+	        contentHolder = document.createElement('div');
+	        contentHolder.innerHTML = inputString.trim();
+	
+	        childs = contentHolder.childNodes;
+	
+	        // }
+	
+	
+	        /**
+	        * Iterate childNodes and remove empty Text Nodes on first-level
+	        */
+	        for (var i = 0, node; !!(node = childs[i]); i++) {
+	
+	            if (node.nodeType == codex.core.nodeTypes.TEXT && !node.textContent.trim()) {
+	
+	                continue;
+	
+	            }
+	
+	            parsedNodes.push(node);
+	
+	        }
+	
+	        return parsedNodes;
+	
+	    },
+	
+	    /**
+	    * Checks passed object for emptiness
+	    * @require ES5 - Object.keys
+	    * @param {object}
+	    */
+	    isEmpty : function (obj) {
+	
+	        return Object.keys(obj).length === 0;
+	
+	    },
+	
+	    /**
+	    * Check for Element visibility
+	    * @param {Element} el
+	    */
+	    isVisible : function (el) {
+	
+	        return el.offsetParent !== null;
+	
+	    },
+	
+	    setCookie : function (name, value, expires, path, domain) {
+	
+	        var str = name + '=' + value;
+	
+	        if (expires) str += '; expires=' + expires.toGMTString();
+	        if (path)    str += '; path=' + path;
+	        if (domain)  str += '; domain=' + domain;
+	
+	        document.cookie = str;
+	
+	    },
+	
+	    getCookie : function (name) {
+	
+	        var dc = document.cookie;
+	
+	        var prefix = name + '=',
+	            begin = dc.indexOf('; ' + prefix);
+	
+	        if (begin == -1) {
+	
+	            begin = dc.indexOf(prefix);
+	            if (begin !== 0) return null;
+	
+	        } else
+	            begin += 2;
+	
+	        var end = document.cookie.indexOf(';', begin);
+	
+	        if (end == -1) end = dc.length;
+	
+	        return unescape(dc.substring(begin + prefix.length, end));
+	
+	    },
+	
+	};
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+	/**
+	* AJAX module
+	*/
+	var ajax = (function () {
+	
+	    /**
+	    * @usage codex.ajax.call();
+	    */
+	    var call = function (data) {
+	
+	        if (!data || !data.url) return;
+	
+	        var XMLHTTP          = window.XMLHttpRequest ? new window.XMLHttpRequest() : new window.ActiveXObject('Microsoft.XMLHTTP'),
+	            successFunction  = function () {};
+	
+	        data.async           = true;
+	        data.type            = data.type || 'GET';
+	        data.data            = data.data || '';
+	        data['content-type'] = data['content-type'] || 'application/json; charset=utf-8';
+	        successFunction      = data.success || successFunction;
+	
+	        if (data.type == 'GET' && data.data) {
+	
+	            data.url = /\?/.test(data.url) ? data.url + '&' + data.data : data.url + '?' + data.data;
+	
+	        }
+	
+	        if (data.withCredentials) {
+	
+	            XMLHTTP.withCredentials = true;
+	
+	        }
+	
+	        if (data.beforeSend && typeof data.beforeSend == 'function') {
+	
+	            data.beforeSend.call();
+	
+	        }
+	
+	        XMLHTTP.open(data.type, data.url, data.async);
+	
+	        /**
+	        * If we send FormData, we need no content-type header
+	        */
+	        if (!isFormData(data.data)) {
+	
+	            XMLHTTP.setRequestHeader('Content-type', data['content-type']);
+	
+	        }
+	
+	        XMLHTTP.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+	        XMLHTTP.onreadystatechange = function () {
+	
+	            if (XMLHTTP.readyState == 4 && XMLHTTP.status == 200) {
+	
+	                successFunction(XMLHTTP.responseText);
+	
+	            }
+	
+	        };
+	
+	        XMLHTTP.send(data.data);
+	
+	    };
+	
+	    /**
+	     * Function for checking is it FormData object to send.
+	     * @param {Object} object to check
+	     * @return boolean
+	     */
+	    function isFormData(object) {
+	
+	        return typeof object.append === 'function';
+	
+	    };
+	
+	    return {
+	
+	        call : call
+	
+	    };
+	
+	}());
+	
+	module.exports = ajax;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+	/**
+	 * File transport module
+	 *
+	 * @module Transport module. Uploads file and returns some response from server
+	 * @copyright Codex-Team 2017
+	 *
+	 * @example
+	 *
+	 * Basic usage :
+	 *  codex.transport.init( {
+	 *      url : fetchURL,
+	 *      multiple : bool,
+	 *      accept : string  // http://htmlbook.ru/html/input/accept
+	 *      beforeSend : Function,
+	 *      success : Function,
+	 *      error : Function
+	 *      data : Object — additional data
+	 * });
+	 *
+	 * You can handle all of this event like:
+	 *  - what should happen before data sending with XMLHTTP
+	 *  - what should after success request
+	 *  - error handler
+	 */
+	
+	module.exports = ( function (transport) {
+	
+	    /** Empty configuration */
+	    var config_ = null;
+	
+	    /** File holder */
+	    transport.input = null;
+	
+	    /** initialize module */
+	    transport.init = function (configuration) {
+	
+	        if (!configuration.url) {
+	
+	            codex.core.log('can\'t send request because `url` is missed', 'Transport module', 'error');
+	            return;
+	
+	        }
+	
+	        config_ = configuration;
+	
+	        var inputElement = document.createElement('INPUT');
+	
+	        inputElement.type = 'file';
+	
+	        if (config_ && config_.multiple) {
+	
+	            inputElement.setAttribute('multiple', 'multiple');
+	
+	        }
+	
+	        if (config_ && config_.accept) {
+	
+	            inputElement.setAttribute('accept', config_.accept);
+	
+	        }
+	
+	        inputElement.addEventListener('change', send_, false);
+	
+	        /** Save input */
+	        transport.input = inputElement;
+	
+	        /** click input to show upload window */
+	        clickInput_();
+	
+	    };
+	
+	    var clickInput_ = function () {
+	
+	        transport.input.click();
+	
+	    };
+	
+	    /**
+	     * Sends transport AJAX request
+	     */
+	    var send_ = function () {
+	
+	        var url        = config_.url,
+	            beforeSend = config_.beforeSend,
+	            success    = config_.success,
+	            error      = config_.error,
+	            formData   = new FormData(),
+	            files      = transport.input.files;
+	
+	        if (files.length > 1) {
+	
+	            for (var i = 0; i < files.length; i++) {
+	
+	                formData.append('files[]', files[i], files[i].name);
+	
+	            }
+	
+	        } else {
+	
+	            formData.append('files', files[0], files[0].name);
+	
+	        }
+	
+	        /**
+	         * Append additional data
+	         */
+	        if ( config_.data !== null && typeof config_.data === 'object' ) {
+	
+	            for (var key in config_.data) {
+	
+	                formData.append(key, config_.data[key]);
+	
+	            }
+	
+	        }
+	
+	        codex.ajax.call({
+	            type : 'POST',
+	            data : formData,
+	            url : url,
+	            beforeSend : beforeSend,
+	            success : success,
+	            error : error
+	        });
+	
+	    };
+	
+	    return transport;
+	
+	})({});
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+	/**
+	* Operations with pages
+	*/
+	module.exports = (function () {
+	
+	     /**
+	    * Toggles classname on passed blocks
+	    * @param {string} selector
+	    * @param {string} toggled classname
+	    */
+	    var toggle = function ( which, marker ) {
+	
+	        var elements = document.querySelectorAll( which );
+	
+	        for (var i = elements.length - 1; i >= 0; i--) {
+	
+	            elements[i].classList.toggle( marker );
+	
+	        }
+	
+	    };
+	
+	
+	    /**
+	    * Toggles mobile menu
+	    * Handles clicks on the hamburger icon in header
+	    */
+	    var toggleMobileMenu = function ( event ) {
+	
+	        var menu = document.getElementById('js-mobile-menu-holder'),
+	            openedClass = 'mobile-menu-holder--opened';
+	
+	        menu.classList.toggle(openedClass);
+	
+	        event.stopPropagation();
+	        event.stopImmediatePropagation();
+	        event.preventDefault();
+	
+	    };
+	
+	    /**
+	    * Module uses for toggle custom checkboxes
+	    * that has 'js-custom-checkbox' class and input[type="checkbox"] included
+	    * Example:
+	    * <span class="js-custom-checkbox">
+	    *    <input type="checkbox" name="" value="1"/>
+	    * </span>
+	    */
+	    var customCheckboxes = {
+	
+	        /**
+	        * This class specifies checked custom-checkbox
+	        * You may set it on serverisde
+	        */
+	        CHECKED_CLASS : 'checked',
+	
+	        init : function () {
+	
+	            var checkboxes = document.getElementsByClassName('js-custom-checkbox');
+	
+	            if (checkboxes.length) for (var i = checkboxes.length - 1; i >= 0; i--) {
+	
+	                checkboxes[i].addEventListener('click', codex.content.customCheckboxes.clicked, false);
+	
+	            }
+	
+	        },
+	
+	        clicked : function () {
+	
+	            var checkbox  = this,
+	                input     = this.querySelector('input'),
+	                isChecked = this.classList.contains(codex.content.customCheckboxes.CHECKED_CLASS);
+	
+	            checkbox.classList.toggle(codex.content.customCheckboxes.CHECKED_CLASS);
+	
+	            if (isChecked) {
+	
+	                input.removeAttribute('checked');
+	
+	            } else {
+	
+	                input.setAttribute('checked', 'checked');
+	
+	            }
+	
+	        }
+	    };
+	
+	    var approvalButtons = {
+	
+	        CLICKED_CLASS : 'click-again-to-approve',
+	
+	        init : function () {
+	
+	            var buttons = document.getElementsByClassName('js-approval-button');
+	
+	            if (buttons.length) for (var i = buttons.length - 1; i >= 0; i--) {
+	
+	                buttons[i].addEventListener('click', codex.content.approvalButtons.clicked, false);
+	
+	            }
+	
+	        },
+	
+	        clicked : function (event) {
+	
+	            var button    = this,
+	                isClicked = this.classList.contains(codex.content.approvalButtons.CLICKED_CLASS);
+	
+	            if (!isClicked) {
+	
+	                /* временное решение, пока нет всплывающего окна подверждения важных действий */
+	                button.classList.add(codex.content.approvalButtons.CLICKED_CLASS);
+	
+	                event.preventDefault();
+	
+	            }
+	
+	        }
+	    };
+	
+	    return {
+	
+	        toggleMobileMenu : toggleMobileMenu,
+	        customCheckboxes : customCheckboxes,
+	        approvalButtons : approvalButtons,
+	        toggle : toggle
+	
+	    };
+	
+	}());
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+	/**
+	 * Appender is being used for ajax-loading next pages of lists
+	 *
+	 *    codex.appender.init({
+	 *        buttonId      : 'buttonLoadNews',       // button for listening
+	 *        currentPage   : '<?= $page_number ?>',    // currentPage number
+	 *        url           : '/',                      // url for ajax-requests
+	 *        targetBlockId : 'list_of_news',           // target for appending
+	 *        autoLoading   : true,                     // allow loading when reach bottom while scrolling
+	 *    });
+	 */
+	
+	var appender = {
+	
+	    /* Pagination. Here is a number of current page */
+	    page : 1,
+	
+	    settings : null,
+	
+	    blockForItems : null,
+	
+	    loadMoreButton : null,
+	
+	    /**
+	     * Button's text for saving it.
+	     * On its place dots will be while news are loading
+	     */
+	    buttonText : null,
+	
+	    init : function (settings) {
+	
+	        this.settings = settings;
+	
+	        /* Checking for existing button and field for loaded info */
+	        this.loadMoreButton = document.getElementById(this.settings.buttonId);
+	
+	        if (!this.loadMoreButton) return false;
+	
+	        this.blockForItems = document.getElementById(this.settings.targetBlockId);
+	
+	        if (!this.blockForItems) return false;
+	
+	        this.page       = settings.currentPage;
+	        this.buttonText = this.loadMoreButton.innerHTML;
+	
+	        if (this.settings.autoLoading) this.autoLoading.isAllowed = true;
+	
+	        this.loadMoreButton.addEventListener('click', function (event) {
+	
+	            codex.appender.load();
+	
+	            event.preventDefault();
+	
+	            codex.appender.autoLoading.init();
+	
+	        }, false);
+	
+	    },
+	
+	    load : function () {
+	
+	        var requestUrl = this.settings.url + (parseInt(this.page) + 1);
+	            // separator   = '<a href="' + requestUrl + '"><div class="article post-list-item w_island separator">Page ' + (parseInt(this.page) + 1) + '</div></a>';
+	
+	        codex.ajax.call({
+	            type: 'post',
+	            url: requestUrl,
+	            data: {},
+	            beforeSend : function () {
+	
+	                codex.appender.loadMoreButton.classList.add('loading');
+	
+	            },
+	            success : function (response) {
+	
+	                response = JSON.parse(response);
+	
+	                if (response.success) {
+	
+	                    if (!response.list) return;
+	
+	                    /* Append items */
+	                    // codex.appender.blockForItems.innerHTML += separator;
+	                    codex.appender.blockForItems.innerHTML += response.list;
+	
+	                    /* Next page */
+	                    codex.appender.page++;
+	
+	                    if (codex.appender.settings.autoLoading) {
+	
+	                        /* Removing restriction for auto loading */
+	                        codex.appender.autoLoading.canLoad = true;
+	
+	                    }
+	
+	                    /* Checking for next page's existing. If no — hide the button for loading news and remove listener */
+	                    if (!response.next_page) codex.appender.disable();
+	
+	                } else {
+	
+	                    codex.core.showException('Не удалось подгрузить новости');
+	
+	                }
+	
+	                codex.appender.loadMoreButton.classList.remove('loading');
+	
+	            }
+	
+	        });
+	
+	    },
+	
+	    disable : function () {
+	
+	        codex.appender.loadMoreButton.style.display = 'none';
+	
+	        if (codex.appender.autoLoading.isLaunched) {
+	
+	            codex.appender.autoLoading.disable();
+	
+	        }
+	
+	    },
+	
+	    autoLoading : {
+	
+	        isAllowed : false,
+	
+	        isLaunched : false,
+	
+	        /**
+	         * Possibility to load news by scrolling.
+	         * Restriction for reduction requests which could be while scrolling
+	         */
+	        canLoad : true,
+	
+	        init : function () {
+	
+	            if (!this.isAllowed) return;
+	
+	            window.addEventListener('scroll', codex.appender.autoLoading.scrollEvent);
+	
+	            codex.appender.autoLoading.isLaunched = true;
+	
+	        },
+	
+	        disable : function () {
+	
+	            window.removeEventListener('scroll', codex.appender.autoLoading.scrollEvent);
+	
+	            codex.appender.autoLoading.isLaunched = false;
+	
+	        },
+	
+	        scrollEvent : function () {
+	
+	            var scrollReachedEnd = window.pageYOffset + window.innerHeight >= document.body.clientHeight;
+	
+	            if (scrollReachedEnd && codex.appender.autoLoading.canLoad) {
+	
+	                codex.appender.autoLoading.canLoad = false;
+	
+	                codex.appender.load();
+	
+	            }
+	
+	        },
+	
+	    }
+	
+	};
+	
+	module.exports = appender;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+	/**
+	 * Parser module
+	 * @author Taly Guryn
+	 */
+	var parser = {
+	
+	    input : null,
+	
+	    init : function () {
+	
+	        // this.input = document.getElementById(settings.input_id);
+	
+	        var _this = this;
+	
+	        this.input.addEventListener('paste', function () {
+	
+	            _this.inputPasteCallback();
+	
+	        }, false);
+	
+	    },
+	
+	    inputPasteCallback : function () {
+	
+	        var e = this.input;
+	
+	        var _this = this;
+	
+	        window.setTimeout(function () {
+	
+	            _this.sendRequest(e.value);
+	
+	        }, 100);
+	
+	    },
+	
+	
+	    sendRequest : function (url) {
+	
+	        codex.core.ajax({
+	            type: 'get',
+	            url: '/ajax/get_page',
+	            data: { 'url' : url },
+	            success: function (response) {
+	
+	                var title, content, sourceLink;
+	
+	                if ( response.success == 1) {
+	
+	                    title = document.getElementById('page_form_title');
+	                    content = document.getElementById('page_form_content');
+	                    sourceLink = document.getElementById('source_link');
+	
+	                    title.value = response.title;
+	                    content.value = response.article;
+	                    sourceLink.value = url;
+	
+	                    // while we have no own editor, we should use this getting element
+	                    // cause I can't edit code for external editor
+	                    document.getElementsByClassName('redactor_redactor')[0].innerHTML = response.article;
+	
+	                } else {
+	
+	                    codex.core.showException('Не удалось импортировать страницу');
+	
+	                }
+	
+	            }
+	
+	        });
+	
+	    }
+	};
+	
+	module.exports = parser;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+	/**
+	 * Comments module
+	 * @author  @guryn @neSpecc
+	 * @copyright CodeX Team https://github.com/codex-team
+	 * @version 1.1.0
+	 */
+	module.exports = (function () {
+	
+	    var commentsList = null,
+	        anchor       = document.location.hash;
+	
+	    var CSS_ = {
+	        replyForm :         'comments-form',
+	        replyTextarea :     'comment-form__text',
+	        replyOpened :       'comment-form__placeholder--opened',
+	        replySubmitButton : 'comment-form__button',
+	        highlighted :       'comment--highligthed'
+	    };
+	
+	    /**
+	     * Settings-menu toggler selector
+	     * @type {String}
+	     */
+	    var menuTogglerSelector = '.js-comment-settings';
+	
+	    /**
+	     * Initialize comments
+	     * @param {object} data        params
+	     * @param {sring} data.listId  comments list wrapper id
+	     */
+	    function init(data) {
+	
+	        commentsList = document.getElementById(data.listId);
+	
+	        if (anchor) {
+	
+	            highligthAnchor();
+	
+	        }
+	
+	    }
+	
+	    /**
+	     * Remove holder and append form for comment
+	     * @param {Element} placeholder 'Write reply...' button
+	     */
+	    function reply( replyButton ) {
+	
+	        /** If reply already opened, do noting */
+	        if ( replyButton.classList.contains( CSS_.replyOpened ) ) {
+	
+	            return;
+	
+	        }
+	
+	        /** Get reply params from dataset */
+	        var replyParams = {
+	            parentId : replyButton.dataset.parentId,
+	            rootId   : replyButton.dataset.rootId,
+	            action   : replyButton.dataset.action
+	        };
+	
+	        /** Create reply form */
+	        var form = createForm( replyParams );
+	
+	        /** Insert form after reply button */
+	        codex.core.insertAfter( replyButton, form );
+	
+	        replyButton.classList.add( CSS_.replyOpened );
+	        getFormTextarea(form).focus();
+	
+	    }
+	
+	    /**
+	     * Returns reply form
+	     *
+	     * @param {object} params
+	     * @param {Number} params.parentId     parent comment's id
+	     * @param {Number} params.rootId       root comment's id
+	     * @param {String} params.action       URL for saving
+	     *
+	     * @return {Element} element that holds textarea and submit-button
+	     */
+	    function createForm( params ) {
+	
+	        var textarea     = createTextarea(),
+	            button       = createButton(),
+	            form         = document.createElement('DIV');
+	
+	        form.classList.add(CSS_.replyForm);
+	
+	        /** Store data in Textarea */
+	        textarea.dataset.parentId = params.parentId;
+	        textarea.dataset.rootId   = params.rootId;
+	        textarea.dataset.action   = params.action;
+	
+	        form.appendChild(textarea);
+	        form.appendChild(button);
+	
+	        return form;
+	
+	    }
+	
+	    /** Return textarea for form for comment */
+	    function createTextarea() {
+	
+	        var textarea = document.createElement('TEXTAREA');
+	
+	        textarea.classList.add(CSS_.replyTextarea);
+	        textarea.placeholder = 'Ваш комментарий';
+	
+	        textarea.addEventListener('keydown', keydownSubmitHandler, false);
+	        textarea.addEventListener('blur', blurTextareaHandler, false);
+	
+	        codex.autoresizeTextarea.addListener(textarea);
+	
+	        return textarea;
+	
+	    }
+	
+	    /** Return submit button for form*/
+	    function createButton() {
+	
+	        var button = document.createElement('DIV');
+	
+	        button.classList.add( CSS_.replySubmitButton, 'button', 'master');
+	        button.textContent = 'Отправить';
+	
+	        button.addEventListener('click', submitClicked_, false);
+	
+	        return button;
+	
+	    }
+	
+	    /**
+	     * Reply submit button click handler
+	     */
+	    function submitClicked_() {
+	
+	        var submit = this,
+	            form   = submit.parentNode,
+	            textarea = getFormTextarea(form);
+	
+	        send_( textarea );
+	
+	    }
+	
+	    /* Return textarea for given form */
+	    function getFormTextarea(form) {
+	
+	        return form.getElementsByTagName('TEXTAREA')[0];
+	
+	    }
+	
+	    /**
+	     * Remove form on textarea blur
+	     * @param {Event} blur Event
+	     */
+	    function blurTextareaHandler( event ) {
+	
+	        var textarea  = event.target,
+	            form      = textarea.parentNode,
+	            commentId = textarea.dataset.parentId;
+	
+	        if (!textarea.value.trim()) {
+	
+	            removeForm(form, commentId);
+	
+	        }
+	
+	    }
+	
+	    /**
+	     * Removes reply form
+	     * @param {Element} form
+	     * @param {Number} commentId   reply target comment id
+	     */
+	    function removeForm( form, commentId ) {
+	
+	        var replyButton = document.getElementById('reply' + commentId );
+	
+	        form.remove();
+	        replyButton.classList.remove(CSS_.replyOpened);
+	
+	    }
+	
+	    /**
+	     * Catch Ctrl+Enter or Cmd+Enter for send form
+	     * @param {Event} event    Keydown Event
+	     */
+	    function keydownSubmitHandler(event) {
+	
+	        var ctrlPressed  = event.ctrlKey || event.metaKey,
+	            enterPressed = event.keyCode == 13,
+	            textarea = event.target;
+	
+	        if ( ctrlPressed && enterPressed ) {
+	
+	            send_( textarea );
+	
+	            event.preventDefault();
+	
+	        }
+	
+	    }
+	
+	    /**
+	     * Ajax function for submit comment
+	     * @param {Element} textarea    input with dataset and text
+	     */
+	    function send_( textarea ) {
+	
+	        var formData  = new FormData(),
+	            form      = textarea.parentNode,
+	            submitBtn = form.querySelector('.' + CSS_.replySubmitButton),
+	            rootId    = textarea.dataset.rootId,
+	            parentId  = textarea.dataset.parentId,
+	            actionURL = textarea.dataset.action;
+	
+	        formData.append('root_id', rootId);
+	        formData.append('parent_id', parentId);
+	        formData.append('comment_text', textarea.value);
+	        formData.append('csrf', window.csrf);
+	
+	        codex.ajax.call({
+	            type: 'POST',
+	            url: actionURL,
+	            data: formData,
+	            beforeSend : function () {
+	
+	                submitBtn.classList.add('loading');
+	
+	            },
+	            success : function (response) {
+	
+	                var comment;
+	
+	                submitBtn.classList.remove('loading');
+	
+	                response = JSON.parse(response);
+	
+	                if (!response.success) {
+	
+	                    codex.alerts.show({
+	                        type: 'error',
+	                        message: response.error
+	                    });
+	                    return;
+	
+	                }
+	
+	                /** Remove form and return placeholder */
+	                removeForm(form, parentId);
+	
+	                /** Remove empty-feed block */
+	                removeEmptyCommentsBlock();
+	
+	                comment = codex.core.parseHTML(response.comment)[0];
+	                commentsList.appendChild(comment);
+	
+	                /** Scroll down to the new comment */
+	                window.scrollTo(0, document.body.scrollHeight);
+	
+	                /** Highligth new comment */
+	                highligthComment(response.commentId);
+	
+	                /** If menu found, activate it */
+	                activateMenu(comment);
+	
+	            }
+	
+	        });
+	
+	    }
+	
+	    /**
+	     * Removes empty-feed motivation
+	     */
+	    function removeEmptyCommentsBlock() {
+	
+	        var emptyCommentsBlock = document.querySelector('.js-empty-comments');
+	
+	        if (!emptyCommentsBlock) {
+	
+	            return;
+	
+	        }
+	
+	        emptyCommentsBlock.remove();
+	
+	    }
+	
+	    /**
+	     * If menu-toggler found in comment
+	     * @return {Element} comment - comment's island
+	     */
+	    function activateMenu( comment ) {
+	
+	        var  menuToggler = comment.querySelector(menuTogglerSelector);
+	
+	        if (!menuToggler) {
+	
+	            return;
+	
+	        }
+	
+	        codex.islandSettings.prepareToggler(menuToggler, menuTogglerSelector);
+	
+	    }
+	
+	    /**
+	     * Highligth comment by id for a time
+	     * @param {Number} commentId   id comment to highlight
+	     */
+	    function highligthComment(commentId) {
+	
+	        var comment = document.getElementById('comment' + commentId);
+	
+	        comment.classList.add(CSS_.highlighted);
+	
+	        window.setTimeout(function () {
+	
+	            comment.classList.remove(CSS_.highlighted);
+	
+	        }, 500);
+	
+	    }
+	
+	    /** Highligth comment if anchor is in url */
+	    function highligthAnchor() {
+	
+	        var numbers = anchor.match(/\d+/),
+	            commentId;
+	
+	        if (!numbers) return;
+	
+	        commentId = numbers[0];
+	
+	        highligthComment(commentId);
+	
+	    }
+	
+	    /**
+	     * Comment removing action
+	     * @return {Event} click Event
+	     */
+	    function remove() {
+	
+	        var itemClicked = this,
+	            targetId    = itemClicked.dataset.id;
+	
+	        if (!window.confirm('Подтвердите удаление комментария')) {
+	
+	            return;
+	
+	        }
+	
+	        document.location = '/delete-comment/' + targetId;
+	
+	    }
+	
+	    return {
+	        init : init,
+	        reply : reply,
+	        remove : remove
+	    };
+	
+	}());
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	* Notifications tips module
+	*/
+	module.exports = (function () {
+	
+	    __webpack_require__(15);
+	
+	    var CSS_ = {
+	        wrapper : 'cdx-notifies-wrapper',
+	        notification : 'cdx-notifies',
+	        crossBtn: 'cdx-notifies-cross'
+	    };
+	
+	    var wrapper_ = null;
+	
+	    function prepare_() {
+	
+	        if ( wrapper_ ) {
+	
+	            return true;
+	
+	        }
+	
+	        wrapper_ = document.createElement('DIV');
+	        wrapper_.classList.add(CSS_.wrapper);
+	
+	        document.body.appendChild(wrapper_);
+	
+	    }
+	
+	    /**
+	    * @param {Object} options:
+	    *
+	    * @property {String} type    - type of notification. Just adds {CSS_.notification + '--' + type} class. 'notify' by default
+	    * @property {String} message - text to notify, can contains HTML
+	    * @property {String} time    - expiring time
+	    */
+	    function show(options) {
+	
+	        prepare_();
+	
+	        var notify  = document.createElement('DIV'),
+	            cross   = document.createElement('DIV'),
+	            message = options.message,
+	            type    = options.type || 'notify',
+	            time    = options.time || 8000;
+	
+	        if (!message) {
+	
+	            return;
+	
+	        }
+	
+	        notify.classList.add(CSS_.notification);
+	        notify.classList.add(CSS_.notification + '--' + type);
+	        notify.innerHTML = message;
+	
+	        cross.classList.add(CSS_.crossBtn);
+	        cross.addEventListener('click', function () {
+	
+	            notify.remove();
+	
+	        });
+	
+	        notify.appendChild(cross);
+	        wrapper_.appendChild(notify);
+	
+	        notify.classList.add('bounceIn');
+	
+	        window.setTimeout(function () {
+	
+	            notify.remove();
+	
+	        }, time);
+	
+	    }
+	
+	    return {
+	        show : show
+	    };
+	
+	})({});
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+	/**
+	* Dropdown menu module
+	* @author: @ndawn
+	*/
+	
+	module.exports = (function () {
+	
+	    /**
+	     * Menu block cache
+	     * @type {Element|null}
+	     */
+	    var menuHolder = null;
+	
+	    /**
+	     * Activated menus
+	     * @type {Array}
+	     */
+	    var activated = [];
+	
+	    /**
+	     * CSS class names
+	     * @type {Object}
+	     */
+	    var CSS = {
+	        menu   : 'island-settings__menu',
+	        item   : 'island-settings__item',
+	        showed : 'island-settings__menu--showed'
+	
+	    };
+	
+	    /**
+	     * Initialization
+	     * @param  {Object} settings  - initial settings
+	     */
+	    var init = function (settings) {
+	
+	        var menuTogglers = document.querySelectorAll(settings.selector),
+	            startIndex   = activated.length,
+	            endIndex     = menuTogglers.length + activated.length;
+	
+	        for (var index = startIndex; index < endIndex; index++) {
+	
+	            /**
+	             * Save initial object
+	             */
+	            activated.push({
+	                el : menuTogglers[index],
+	                settings: settings
+	            });
+	
+	            prepareToggler(index, menuTogglers[index - startIndex]);
+	
+	        }
+	
+	    };
+	
+	    /**
+	     * @public
+	     * Add event listener to the toggler
+	     * @param  {Number} index   - toggler initial index
+	     * @param  {Element} toggler
+	     */
+	    var prepareToggler = function (index, toggler) {
+	
+	        /** Save initial selector to specify menu type */
+	        toggler.dataset.index = index;
+	        toggler.addEventListener('mouseover', menuTogglerHovered, false);
+	        toggler.addEventListener('mouseleave', menuTogglerBlurred, false);
+	
+	    };
+	
+	    /**
+	     * @private
+	     *
+	     * Island circled-icon mouseover handler
+	     *
+	     * @param {Event} event     mouseover-event
+	     */
+	    var menuTogglerHovered = function () {
+	
+	        var menuToggler = this,
+	            menuParams;
+	
+	        /** Prevent mouseover handling multiple times */
+	        if ( menuToggler.dataset.opened == 'true' ) {
+	
+	            return;
+	
+	        }
+	
+	        menuToggler.dataset.opened = true;
+	
+	        if (!menuHolder) {
+	
+	            menuHolder = createMenu();
+	
+	        }
+	
+	        /**
+	         * Get current menu params
+	         * @type {Object}
+	         */
+	        menuParams = getMenuParams(menuToggler.dataset.index);
+	
+	        console.assert(menuParams.items, 'Menu items missed');
+	
+	        fill(menuParams.items, menuToggler);
+	        move(menuToggler);
+	
+	    };
+	
+	    /**
+	     * Toggler blur handler
+	     */
+	    var menuTogglerBlurred = function () {
+	
+	        this.dataset.opened = false;
+	
+	    };
+	
+	    /**
+	     * Return menu parametres by toggler index
+	     * @param {Number}  index  - index got in init() method
+	     * @return {Object}
+	     */
+	    var getMenuParams = function (index) {
+	
+	        return activated[index].settings;
+	
+	    };
+	
+	    /**
+	     * Fills menu with items
+	     * @param  {Array}   items     list of menu items
+	     * @param  {Element} toggler   islan menu icon with data-attributes
+	     */
+	
+	    var fill = function (items, toggler) {
+	
+	        var i,
+	            itemData,
+	            itemElement;
+	
+	        menuHolder.innerHTML = '';
+	
+	        for (i = 0; !!(itemData = items[i]); i++) {
+	
+	            itemElement = createItem(itemData);
+	
+	            /** Save index in dataset for edit-ability */
+	            itemElement.dataset.itemIndex = i;
+	
+	            /** Pass all parametres stored in icon's dataset to the item's dataset */
+	            for (var attr in toggler.dataset) {
+	
+	                itemElement.dataset[attr] = toggler.dataset[attr];
+	
+	            }
+	
+	            menuHolder.appendChild(itemElement);
+	
+	        }
+	
+	    };
+	
+	    /**
+	    * @private
+	    * Creates an option block
+	    * @param {Object}   item          - menu item data
+	    * @param {String}   item.title    - title
+	    * @param {Function} item.handler  - click handler
+	    *
+	    * @return {Element} menu item with click handler
+	    */
+	    var createItem = function ( item ) {
+	
+	        var itemEl = document.createElement('LI');
+	
+	        itemEl.classList.add(CSS.item);
+	
+	        console.assert(item.title, 'islandSettings: item title is missed');
+	        console.assert(typeof item.handler == 'function', 'islandSettings: item handler is not a function');
+	
+	        itemEl.textContent = item.title;
+	        itemEl.addEventListener('click', itemClicked);
+	
+	        return itemEl;
+	
+	    };
+	
+	    /**
+	     * Single callback for all items handler
+	     * Calls defined handler on itemClicked (Menu li Element) context and trasmits arguments
+	     */
+	    var itemClicked = function () {
+	
+	        var itemEl = this,
+	            togglerIndex = itemEl.dataset.index,
+	            itemIndex = itemEl.dataset.itemIndex,
+	            menuParams,
+	            handler,
+	            args;
+	
+	        menuParams = getMenuParams(togglerIndex);
+	
+	        handler = menuParams.items[itemIndex].handler;
+	        args    = menuParams.items[itemIndex].arguments;
+	
+	        handler.call(itemEl, args || {});
+	
+	    };
+	
+	    /**
+	    * @private
+	    * Creates the dropdown menu
+	    */
+	    var createMenu = function () {
+	
+	        var block = document.createElement('UL');
+	
+	        block.classList.add(CSS.menu);
+	
+	        return block;
+	
+	    };
+	
+	    /**
+	    * Appends a menu to the container
+	    * @param {Element} container - where to append menu
+	    */
+	    var move = function (container) {
+	
+	        container.appendChild(menuHolder);
+	        menuHolder.classList.add(CSS.showed);
+	
+	    };
+	
+	    /**
+	     * @public
+	     * @description Updates menu item
+	     * @param  {Number} togglerIndex   - Menu toggler initial index stored in toggler's dataset.index
+	     * @param  {Number} itemIndex      - Item index stored in item's dataset.itemIndex
+	     * @param  {String} title          - new title
+	     * @param  {Function} handler      - new handler
+	     * @param  {Object} args           - handler arguments
+	     */
+	    var updateItem = function (togglerIndex, itemIndex, title, handler, args) {
+	
+	        console.assert(activated[togglerIndex], 'Toggler was not found by index');
+	
+	        var currentMenu = activated[togglerIndex],
+	            currentItemEl = menuHolder.childNodes[itemIndex],
+	            currentItem;
+	
+	        if (!currentMenu) {
+	
+	            return;
+	
+	        }
+	
+	        currentItem = activated[togglerIndex].settings.items[itemIndex];
+	
+	        if ( title ) {
+	
+	            currentItem.title = title;
+	
+	        }
+	
+	        if ( args  ) {
+	
+	            currentItem.arguments = args;
+	
+	        }
+	
+	        if (handler && typeof handler == 'function') {
+	
+	            currentItem.handler = handler;
+	
+	        }
+	
+	        /** Update opened menu item text  */
+	        if (menuHolder) {
+	
+	            if ( title ) {
+	
+	                currentItemEl.textContent = title;
+	
+	            }
+	
+	        }
+	
+	        codex.core.log('item updated %o', 'islandSettings', 'info', currentItem);
+	
+	    };
+	
+	    return {
+	        init : init,
+	        updateItem : updateItem,
+	        prepareToggler : prepareToggler
+	    };
+	
+	})();
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+	/**
+	* Module for comments textarea autoresize
+	*/
+	module.exports = (function () {
+	
+	    /**
+	    * Textareas initialization
+	    */
+	    var init = function () {
+	
+	        var textareas = document.getElementsByClassName('js-autoresizable');
+	
+	        if (textareas.length) {
+	
+	            for (var i = 0; i < textareas.length; i++) {
+	
+	                addListener(textareas[i]);
+	
+	                checkScrollHeight(textareas[i]);
+	
+	            }
+	
+	        }
+	
+	    };
+	
+	    /**
+	    * Add input event listener to textarea
+	    *
+	    * @param {Element} textarea — node which need to be able to autoresize
+	    */
+	    var addListener = function (textarea) {
+	
+	        textarea.addEventListener('input', textareaChanged, false);
+	
+	    };
+	
+	    /**
+	    * Hanging events on textareas
+	    */
+	    var textareaChanged = function (event) {
+	
+	        var textarea = event.target;
+	
+	        checkScrollHeight(textarea);
+	
+	    };
+	
+	    /**
+	    * Increasing textarea height
+	    */
+	    var checkScrollHeight = function (textarea) {
+	
+	        if (textarea.scrollHeight > textarea.clientHeight) {
+	
+	            textarea.style.height = textarea.scrollHeight + 'px';
+	
+	        }
+	
+	    };
+	
+	    return {
+	        init: init,
+	        addListener : addListener
+	    };
+	
+	}());
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+	/**
+	 * User methods module
+	 */
+	module.exports = function () {
+	
+	    /**
+	     * Manupulations with user photo
+	     * @return {Object} - Module
+	     */
+	    var photo = function () {
+	
+	        /**
+	         * Mark elements with this name="" to dynamically update their sources
+	         * @type {String}
+	         */
+	        var updatableElementsName = 'js-img-updatable';
+	
+	        /**
+	         * Changes user's photo
+	         * @param  {Event}  event   click event
+	         */
+	        var change = function ( event, transportType ) {
+	
+	            codex.transport.init({
+	                url : '/upload/' + transportType,
+	                success : uploaded,
+	                error   : error
+	            });
+	
+	        };
+	
+	        /**
+	         * Uploading error
+	         * @param  {Object} error
+	         */
+	        var error = function (uploadError) {
+	
+	            console.log(uploadError);
+	
+	        };
+	
+	        /**
+	         * Photo uploading callback
+	         * @param  {String} response    server answer
+	         */
+	        var uploaded = function (response) {
+	
+	            response = JSON.parse(response);
+	
+	            if ( !response.success ) {
+	
+	                codex.alerts.show({
+	                    type: 'error',
+	                    message: response.message || 'File uploading error :('
+	                });
+	
+	                return;
+	
+	            }
+	
+	            console.assert( response.data && response.data.url, 'Wrong response data');
+	
+	            updateAll( response.data.url );
+	
+	        };
+	
+	        /**
+	         * Updates all user photo sources
+	         * @uses   updatableElementsName  to find img tags
+	         * @param  {String} newSource
+	         */
+	        var updateAll = function ( newSource) {
+	
+	            var updatebleImages = document.getElementsByName(updatableElementsName);
+	
+	            for (var i = updatebleImages.length - 1; i >= 0; i--) {
+	
+	                updatebleImages[i].src = newSource;
+	
+	            }
+	
+	        };
+	
+	        return {
+	            change : change
+	        };
+	
+	    }();
+	
+	    /**
+	     * Updatin user ROLE or STATUS
+	     * @type {{status, role}}
+	     */
+	    var promote = function () {
+	
+	        var status = function (args) {
+	
+	            var itemClicked = this,
+	                userId = itemClicked.dataset.id,
+	                value = args.value;
+	
+	            sendRequest(itemClicked, 'status', userId, value);
+	
+	        };
+	
+	        var role = function (args) {
+	
+	            var itemClicked = this,
+	                userId = itemClicked.dataset.id,
+	                value = args.value;
+	
+	            sendRequest(itemClicked, 'role', userId, value);
+	
+	        };
+	
+	        /**
+	         * Change user role or status request
+	         * @param {Element} itemClicked     - menu item element
+	         * @param {string}  field           - field to save (role|status)
+	         * @param {Number}  userId          - target user id
+	         * @param {Number}  value           - new value
+	         */
+	        var sendRequest = function (itemClicked, field, userId, value) {
+	
+	            var url = '/user/' + userId + '/change/' + field,
+	                requestData = new FormData();
+	
+	            requestData.append('value', value);
+	
+	            codex.ajax.call({
+	                url : url,
+	                type : 'POST',
+	                data: requestData,
+	                beforeSend : function () {
+	
+	                    itemClicked.classList.add('loading');
+	
+	                },
+	                success: function (response) {
+	
+	                    var menuIndex = itemClicked.dataset.index,
+	                        itemIndex = itemClicked.dataset.itemIndex;
+	
+	                    response = JSON.parse(response);
+	
+	                    itemClicked.classList.remove('loading');
+	
+	                    codex.islandSettings.updateItem(menuIndex, itemIndex, response.buttonText, null, {
+	                        value: response.buttonValue
+	                    });
+	
+	                    codex.alerts.show({
+	                        type: response.success ? 'success' : 'error',
+	                        message: response.message || 'Не удалось сохранить изменения'
+	                    });
+	
+	                }
+	            });
+	
+	        };
+	
+	        return {
+	            status : status,
+	            role   : role
+	        };
+	
+	    }();
+	
+	
+	    var changePassword = function () {
+	
+	        var form    = null,
+	            input   = null,
+	            button  = null;
+	        /**
+	         * Shows form with input for current password
+	         *
+	         * @param lockButton
+	         */
+	        var showForm = function (lockButton) {
+	
+	            lockButton.classList.add('hide');
+	
+	            form = document.getElementById('change-password-form');
+	            input = document.getElementById('change-password-input');
+	
+	            form.classList.remove('hide');
+	
+	
+	        };
+	
+	        /**
+	         * Handler for set password button
+	         *
+	         * @param form_
+	         */
+	        var set = function (form_) {
+	
+	            form = form_;
+	            requestChange(form, true);
+	            showSuccessMessage();
+	
+	        };
+	
+	        /**
+	         * Requests email with change password link
+	         *
+	         * @param button_
+	         * @param dontShowResponse - if TRUE, response will be ignored
+	         */
+	        var requestChange = function (button_, dontShowResponse) {
+	
+	            button = button_;
+	            button.classList.add('loading');
+	
+	            var data = new FormData();
+	
+	            data.append('csrf', window.csrf);
+	            data.append('currentPassword', input ? input.value : '');
+	
+	            codex.ajax.call({
+	                url: '/user/passchange',
+	                type: 'POST',
+	                data: data,
+	                success: dontShowResponse ? null : ajaxResponse,
+	                error: ajaxResponse
+	            });
+	
+	        };
+	
+	        /**
+	         * Repeat password change email sending
+	         *
+	         * @param button_
+	         */
+	        var repeatEmail = function (button_) {
+	
+	            button_.classList.add('loading');
+	
+	            var data = new FormData();
+	
+	            data.append('csrf', window.csrf);
+	            data.append('repeatEmail', true);
+	
+	            codex.ajax.call({
+	                url: '/user/passchange',
+	                type: 'POST',
+	                data: data,
+	                success: function () {
+	
+	                    button_.classList.remove('loading');
+	
+	                    codex.alerts.show({
+	                        type: 'success',
+	                        message: 'Мы отправили на вашу почту письмо'
+	                    });
+	
+	                },
+	                error: function () {
+	
+	                    button_.classList.remove('loading');
+	
+	                    codex.alerts.show({
+	                        type: 'error',
+	                        message: 'Произошла ошибка'
+	                    });
+	
+	                }
+	            });
+	
+	        };
+	
+	        var ajaxResponse = function (response) {
+	
+	            button.classList.remove('loading');
+	
+	            try {
+	
+	                response = JSON.parse(response);
+	
+	            } catch (e) {
+	
+	                response = {success: 0, message: 'Произошла ошибка'};
+	
+	            }
+	
+	            if (!response.success) {
+	
+	                if (input) input.classList.add('form__input--invalid');
+	
+	                codex.alerts.show({
+	                    type: 'error',
+	                    message:response.message
+	                });
+	
+	
+	            } else {
+	
+	                showSuccessMessage();
+	                return;
+	
+	            }
+	
+	
+	        };
+	
+	        /**
+	         * Shows success email sending message
+	         *
+	         */
+	        var showSuccessMessage = function () {
+	
+	            codex.alerts.show({
+	                type: 'success',
+	                message: 'Мы выслали инструкцию на вашу почту'
+	            });
+	
+	            form.classList.add('hide');
+	
+	            form = document.getElementById('change-password-success');
+	            form.classList.remove('hide');
+	
+	        };
+	
+	        return {
+	            showForm: showForm,
+	            requestChange: requestChange,
+	            set: set,
+	            repeatEmail: repeatEmail,
+	        };
+	
+	    }();
+	
+	    /**
+	     * Working with bio
+	     */
+	    var bio = function () {
+	
+	        /**
+	         * Edited textarea cache
+	         * @type {Element|null}
+	         */
+	        var textarea = null;
+	
+	        /**
+	         * Edit bio click handler;
+	         * @param {Element} button  - button clicked
+	         */
+	        var edit = function ( button ) {
+	
+	            var opened = button.querySelector('textarea');
+	
+	            if (opened) {
+	
+	                return;
+	
+	            }
+	
+	            textarea = document.createElement('TEXTAREA');
+	            textarea.innerHTML = button.textContent.trim();
+	            textarea.addEventListener('keydown', keydown);
+	
+	            button.innerHTML = '';
+	            button.appendChild(textarea);
+	
+	            textarea.focus();
+	
+	            /** Fire autoresize */
+	            codex.autoresizeTextarea.addListener(textarea);
+	
+	        };
+	
+	        /**
+	         * Bio textarea keydowns
+	         * Sends via AJAX by ENTER
+	         */
+	        var keydown = function ( event ) {
+	
+	            if ( event.keyCode == codex.core.keys.ENTER ) {
+	
+	                send(this.value);
+	                event.preventDefault();
+	
+	            }
+	
+	        };
+	
+	        /**
+	         * Sends bio field
+	         * @param  {String} val textarea value
+	         */
+	        var send = function (val) {
+	
+	            if (!val.trim()) {
+	
+	                codex.alerts.show({
+	                    type: 'error',
+	                    message: 'Write something about yourself'
+	                });
+	                return;
+	
+	            }
+	
+	            var formData = new FormData();
+	
+	            formData.append('bio', val);
+	            formData.append('csrf', window.csrf);
+	
+	            codex.ajax.call({
+	                type : 'POST',
+	                url : '/user/updateBio',
+	                data : formData,
+	                beforeSend: beforeSend,
+	                success : saved
+	            });
+	
+	        };
+	
+	        /**
+	         * Simple beforeSend method
+	         */
+	        var beforeSend = function () {
+	
+	            textarea.classList.add('loading');
+	
+	        };
+	
+	        /**
+	         * Success saving callback
+	         */
+	        var saved = function (response) {
+	
+	            response = JSON.parse(response);
+	
+	            if (!response.success || !response.bio) {
+	
+	                textarea.classList.remove('loading');
+	                codex.alerts.show({
+	                    type: 'error',
+	                    message: 'Saving error, sorry'
+	                });
+	                return;
+	
+	            }
+	
+	            var newBio = document.createTextNode(response.bio || '');
+	
+	            /** Update user's CSRF token */
+	            window.csrf = response.csrf;
+	
+	            codex.core.replace(textarea, newBio);
+	
+	        };
+	
+	        return {
+	            edit: edit
+	        };
+	
+	    }();
+	
+	    var email = function () {
+	
+	        var currentEmail    = null,
+	            loadingButton   = null;
+	
+	        var saved = function (response) {
+	
+	            try {
+	
+	                response = JSON.parse(response);
+	
+	                if (response.success) {
+	
+	                    codex.core.replace(currentEmail.parentNode, codex.core.parseHTML(response.island)[0]);
+	
+	                    codex.alerts.show({
+	                        type: 'success',
+	                        message: 'Адрес почты обновлен. Теперь вам нужно подтвердить его, перейдя по ссылке в письме.'
+	                    });
+	
+	                    currentEmail = null;
+	                    return;
+	
+	                }
+	
+	            } catch (e) {}
+	
+	            loadingButton.classList.remove('loading');
+	
+	            codex.alerts.show({
+	                type: 'error',
+	                message: response.message || 'Произошла ошибка, попробуйте позже'
+	            });
+	
+	        };
+	
+	        var send = function () {
+	
+	            if (currentEmail.value.trim() == '') {
+	
+	                codex.alerts.show({
+	                    type: 'error',
+	                    message: 'Введите email'
+	                });
+	
+	                return;
+	
+	            }
+	
+	            loadingButton = this;
+	            loadingButton.classList.add('loading');
+	
+	            var data = new FormData();
+	
+	            data.append('email', currentEmail.value);
+	            data.append('csrf', window.csrf);
+	
+	            codex.ajax.call({
+	                url: 'user/changeEmail',
+	                type: 'POST',
+	                data: data,
+	                success: saved,
+	                error: saved
+	            });
+	
+	        };
+	
+	        var sendConfirmation = function (button) {
+	
+	            var success = function (response) {
+	
+	                response = JSON.parse(response);
+	
+	                codex.alerts.show({
+	                    type: 'success',
+	                    message: response.message
+	                });
+	                button.classList.remove('loading');
+	
+	            };
+	
+	            button.classList.add('loading');
+	
+	            codex.ajax.call({
+	                url: '/ajax/confirmation-email',
+	                success: success
+	            });
+	
+	        };
+	
+	        var changed = function (input) {
+	
+	            if (currentEmail) {
+	
+	                return;
+	
+	            }
+	
+	            currentEmail = input;
+	
+	            var saveButton = document.createElement('BUTTON'),
+	                sendButton = input.parentNode.querySelector('button');
+	
+	            if (sendButton) sendButton.classList.remove('master');
+	
+	            saveButton.classList.add('button', 'master');
+	            saveButton.textContent = 'Сохранить';
+	
+	            saveButton.addEventListener('click', send);
+	
+	            input.oninput = null;
+	            input.parentNode.appendChild(saveButton);
+	
+	        };
+	
+	        var set = function (button) {
+	
+	            button.classList.add('hide');
+	
+	            var form = document.getElementById('set-email-form');
+	
+	            form.classList.remove('hide');
+	
+	            currentEmail = document.getElementById('set-email-input');
+	
+	        };
+	
+	        return {
+	            sendConfirmation: sendConfirmation,
+	            changed: changed,
+	            send: send,
+	            set: set,
+	        };
+	
+	    }();
+	
+	
+	    return {
+	        changePassword: changePassword,
+	        promote: promote,
+	        photo: photo,
+	        bio : bio,
+	        email: email,
+	    };
+	
+	}();
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+	var sharer = {
+	
+	    init : function () {
+	
+	        var shareButtons = document.querySelectorAll('.js-share');
+	
+	        for (var i = shareButtons.length - 1; i >= 0; i--) {
+	
+	            shareButtons[i].addEventListener('click', sharer.click, true);
+	
+	        }
+	
+	    },
+	
+	    shareVk : function (data) {
+	
+	        var link  = 'https://vk.com/share.php?';
+	
+	        link += 'url='          + data.url;
+	        link += '&title='       + data.title;
+	        link += '&description=' + data.desc;
+	        link += '&image='       + data.img;
+	        link += '&noparse=true';
+	
+	        this.popup( link, 'vkontakte'  );
+	
+	    },
+	
+	    shareFacebook : function (data) {
+	
+	        var FB_APP_ID = 1740455756240878,
+	            link      = 'https://www.facebook.com/dialog/share?display=popup';
+	
+	        link += '&app_id='       + FB_APP_ID;
+	        link += '&href='         + data.url;
+	        link += '&redirect_uri=' + document.location.href;
+	
+	        this.popup( link, 'facebook' );
+	
+	    },
+	
+	    shareTwitter : function (data) {
+	
+	        var link = 'https://twitter.com/share?';
+	
+	        link += 'text='      + data.title;
+	        link += '&url='      + data.url;
+	        link += '&counturl=' + data.url;
+	
+	        this.popup( link, 'twitter' );
+	
+	    },
+	
+	    shareTelegram : function (data) {
+	
+	        var link  = 'https://telegram.me/share/url';
+	
+	        link += '?text=' + data.title;
+	        link += '&url='  + data.url;
+	
+	        this.popup( link, 'telegram' );
+	
+	    },
+	
+	    popup : function ( url, socialType ) {
+	
+	        window.open( url, '', 'toolbar=0,status=0,width=626,height=436' );
+	
+	        /**
+	         * Write analytics goal
+	         */
+	        if ( window.yaCounter32652805 ) {
+	
+	            window.yaCounter32652805.reachGoal('article-share', function () {}, this, {type: socialType, url: url});
+	
+	        }
+	
+	    },
+	
+	    click : function (event) {
+	
+	        var target = event.target;
+	
+	        /**
+	         * Social provider stores in data 'shareType' attribute on share-button
+	         * But click may be fired on child-element in button, so we need to handle it.
+	         */
+	        var type = target.dataset.shareType || target.parentNode.dataset.shareType;
+	
+	        if (!sharer[type]) return;
+	
+	        /**
+	         * Sanitize share params
+	         * @todo test for taint strings
+	         */
+	            // for (key in window.shareData){
+	            //      window.shareData[key] = encodeURIComponent(window.shareData[key]);
+	            // }
+	
+	        var shareData = {
+	
+	            url:    target.dataset.url || target.parentNode.dataset.url,
+	            title:  target.dataset.title || target.parentNode.dataset.title,
+	            desc:   target.dataset.desc || target.parentNode.dataset.desc,
+	            img:    target.dataset.img || target.parentNode.dataset.title
+	
+	        };
+	
+	        /**
+	         * Fire click handler
+	         */
+	
+	        sharer[type](shareData);
+	
+	    }
+	
+	};
+	
+	module.exports = sharer;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Module for load and start codex-editor
+	 *
+	 * Using:
+	 *
+	 * codex.writing.prepare({
+	 *     holderId : 'placeForEditor',                                         // (required)
+	 *     hideEditorToolbar : <?= $hideEditorToolbar ? 'true' : 'false' ?>,
+	 *     items : <?= json_encode($page->blocks) ?: '[]' ?>,
+	 *     pageId   : <?= $page->id ?>,
+	 *     parentId : <?= $page->id_parent ?>,
+	 * }).then(
+	 *    codex.writing.init
+	 * );
+	 */
+	
+	
+	module.exports = (function () {
+	
+	    /**
+	     * CodeX Editor Personality-tool
+	     * @see  https://github.com/codex-editor/personality
+	     * @type {[type]}
+	     */
+	    var personalityTool = __webpack_require__(21);
+	
+	
+	    var editorIsReady = false,
+	        submitButton = null,
+	        settings = {
+	            hideEditorToolbar   : false,
+	            titleId             : 'editorWritingTitle',
+	            initialBlockPlugin  : 'paragraph',
+	            data                : {items: []},
+	            resources           : [],
+	            holderId            : null,
+	            pageId              : 0,
+	            parentId            : 0,
+	        };
+	
+	    /**
+	     * Prepare editor's resourses
+	     *
+	     * @param  {Object} initSettings    base settings for editor
+	     * @return {Promise}            all editor's resources are ready
+	     */
+	    var prepare = function (initSettings) {
+	
+	        mergeSettings(initSettings);
+	
+	        return loadEditorResources(settings.resources)
+	                .then(function () {
+	
+	                    editorIsReady = true;
+	
+	                });
+	
+	    };
+	
+	    /**
+	     * Fill module's settings by settings from params
+	     *
+	     * @param  {Object} initSettings  list of params from init
+	     */
+	    function mergeSettings(initSettings) {
+	
+	        for (var key in initSettings) {
+	
+	            settings[key] = initSettings[key];
+	
+	        }
+	
+	    }
+	
+	    /**
+	     * Run editor
+	     */
+	    function startEditor() {
+	
+	        /**
+	         * @todo get from server
+	         */
+	        var EDITOR_IMAGE = 1;
+	        var EDITOR_FILE  = 2;
+	        var EDITOR_PERSONALITY  = 6;
+	
+	        codex.editor.start({
+	
+	            holderId:  settings.holderId,
+	            initialBlockPlugin : settings.initialBlockPlugin,
+	            hideToolbar: settings.hideEditorToolbar,
+	            sanitizer: {
+	                tags : {
+	                    p : {},
+	                    a : {
+	                        href: true,
+	                        target: '_blank'
+	                    }
+	                }
+	            },
+	            tools : {
+	                paragraph: {
+	                    type               : 'paragraph',
+	                    iconClassname      : 'ce-icon-paragraph',
+	                    render             : window.paragraph.render,
+	                    validate           : window.paragraph.validate,
+	                    save               : window.paragraph.save,
+	                    allowedToPaste     : true,
+	                    showInlineToolbar  : true,
+	                    destroy            : window.paragraph.destroy,
+	                    allowRenderOnPaste : true
+	                },
+	                header: {
+	                    type             : 'header',
+	                    iconClassname    : 'ce-icon-header',
+	                    appendCallback   : window.header.appendCallback,
+	                    makeSettings     : window.header.makeSettings,
+	                    render           : window.header.render,
+	                    validate         : window.header.validate,
+	                    save             : window.header.save,
+	                    destroy          : window.header.destroy,
+	                    displayInToolbox : true
+	                },
+	                image: {
+	                    type                  : 'image',
+	                    iconClassname         : 'ce-icon-picture',
+	                    appendCallback        : window.image.appendCallback,
+	                    prepare               : window.image.prepare,
+	                    makeSettings          : window.image.makeSettings,
+	                    render                : window.image.render,
+	                    save                  : window.image.save,
+	                    destroy               : window.image.destroy,
+	                    isStretched           : true,
+	                    showInlineToolbar     : true,
+	                    displayInToolbox      : true,
+	                    renderOnPastePatterns : window.image.pastePatterns,
+	                    config: {
+	                        uploadImage : '/upload/' + EDITOR_IMAGE,
+	                        uploadFromUrl : ''
+	                    }
+	                },
+	                attaches: {
+	                    type             : 'attaches',
+	                    displayInToolbox : true,
+	                    iconClassname    : 'cdx-attaches__icon',
+	                    prepare          : window.cdxAttaches.prepare,
+	                    render           : window.cdxAttaches.render,
+	                    save             : window.cdxAttaches.save,
+	                    validate         : window.cdxAttaches.validate,
+	                    destroy          : window.cdxAttaches.destroy,
+	                    appendCallback   : window.cdxAttaches.appendCallback,
+	                    config: {
+	                        fetchUrl: '/upload/' + EDITOR_FILE,
+	                        maxSize: codex.appSettings.uploadMaxSize * 1000,
+	                    }
+	                },
+	                list: {
+	                    type: 'list',
+	                    iconClassname: 'ce-icon-list-bullet',
+	                    make: window.list.make,
+	                    appendCallback: null,
+	                    makeSettings: window.list.makeSettings,
+	                    render: window.list.render,
+	                    validate: window.list.validate,
+	                    save: window.list.save,
+	                    destroy: window.list.destroy,
+	                    displayInToolbox: true,
+	                    showInlineToolbar: true,
+	                    enableLineBreaks: true,
+	                    allowedToPaste: true
+	                },
+	                raw : {
+	                    type: 'raw',
+	                    displayInToolbox: true,
+	                    iconClassname: 'raw-plugin-icon',
+	                    render: window.rawPlugin.render,
+	                    save: window.rawPlugin.save,
+	                    validate: window.rawPlugin.validate,
+	                    destroy: window.rawPlugin.destroy,
+	                    enableLineBreaks: true,
+	                    allowPasteHTML: true
+	                },
+	                personality: {
+	                    type             : 'personality',
+	                    displayInToolbox : true,
+	                    iconClassname    : 'cdx-personality-icon',
+	                    prepare          : personalityTool.prepare,
+	                    render           : personalityTool.render,
+	                    save             : personalityTool.save,
+	                    validate         : personalityTool.validate,
+	                    destroy          : personalityTool.destroy,
+	                    enableLineBreaks : true,
+	                    showInlineToolbar: true,
+	                    config: {
+	                        uploadURL: '/upload/' + EDITOR_PERSONALITY,
+	                    }
+	                }
+	            },
+	
+	            data : settings.data
+	        });
+	
+	        var titleInput = document.getElementById(settings.titleId);
+	
+	        /**
+	         * Focus at the title
+	         */
+	        titleInput.focus();
+	        titleInput.addEventListener('keydown', titleKeydownHandler );
+	
+	    }
+	
+	    /**
+	     * Title input keydowns
+	     * @description  By ENTER, sets focus on editor
+	     * @param  {Event} event  - keydown event
+	     */
+	    var titleKeydownHandler = function (event) {
+	
+	        /* Set focus on Editor by Enter     */
+	        if ( event.keyCode == codex.core.keys.ENTER ) {
+	
+	            event.preventDefault();
+	
+	            focusRedactor();
+	
+	        }
+	
+	    };
+	
+	    /**
+	     * Temporary scheme to focus Codex Editor first-block
+	     */
+	    var focusRedactor = function () {
+	
+	        var firstBlock       = codex.editor.nodes.redactor.firstChild,
+	            contentHolder    = firstBlock.firstChild,
+	            firstToolWrapper = contentHolder.firstChild,
+	            aloneTextNode;
+	
+	        /**
+	         * Caret will not be placed in empty textNode, so we need textNode with zero-width char
+	         */
+	        aloneTextNode = document.createTextNode('\u200B');
+	
+	        /**
+	         * We need to append manually created textnode before returning
+	         */
+	        firstToolWrapper.appendChild(aloneTextNode);
+	
+	        codex.editor.caret.set(firstToolWrapper, 0, 0);
+	
+	    };
+	
+	    /**
+	     * Public function for run editor
+	     */
+	    var init = function () {
+	
+	        if (!editorIsReady) return;
+	
+	        startEditor();
+	
+	    };
+	
+	    /**
+	     * Show form and hide placeholder
+	     *
+	     * @param  {Element} targetClicked       placeholder with wrapper
+	     * @param  {String}  formId               remove 'hide' from this form by id
+	     * @param  {String}  hidePlaceholderClass add this class to placeholder
+	     */
+	    var open = function (targetClicked, formId, hidePlaceholderClass) {
+	
+	        if (!editorIsReady) return;
+	
+	        var holder = targetClicked;
+	
+	        document.getElementById(formId).classList.remove('hide');
+	        holder.classList.add(hidePlaceholderClass);
+	        holder.onclick = null;
+	
+	        init();
+	
+	    };
+	
+	    /**
+	     * Load editor resources and append block with them to body
+	     *
+	     * @param  {Array} resources list of resources which should be loaded
+	     * @return {Promise}
+	     */
+	    var loadEditorResources = function (resources) {
+	
+	        return Promise.all(
+	            resources.map(loadResource)
+	        );
+	
+	    };
+	
+	    /**
+	     * Loads resource
+	     *
+	     * @param  {Object} resource name and paths for js and css
+	     * @return {Promise}
+	     */
+	    function loadResource(resource) {
+	
+	        var name      = resource.name,
+	            scriptUrl = resource.path.script,
+	            styleUrl  = resource.path.style;
+	
+	        return Promise.all([
+	            codex.loader.importScript(scriptUrl, name),
+	            codex.loader.importStyle(styleUrl, name)
+	        ]);
+	
+	    }
+	
+	    /**
+	    * Prepares form to submit
+	    */
+	    var getForm = function () {
+	
+	        var atlasForm = document.forms.atlas;
+	
+	        if (!atlasForm) return;
+	
+	        /** CodeX.Editor */
+	        var JSONinput = document.createElement('TEXTAREA');
+	
+	        JSONinput.name   = 'content';
+	        JSONinput.id     = 'json_result';
+	        JSONinput.hidden = true;
+	        atlasForm.appendChild(JSONinput);
+	
+	        /**
+	         * Save blocks
+	         */
+	        codex.editor.saver.saveBlocks();
+	
+	        return atlasForm;
+	
+	    };
+	
+	    /**
+	     * Send ajax request with writing form data
+	     * @param button - submit button (needed to add loading animation)
+	     */
+	    var submit = function (button) {
+	
+	        var title = document.forms.atlas.elements['title'],
+	            form;
+	
+	        if (title.value.trim() === '') {
+	
+	            codex.editor.notifications.notification({
+	                type: 'warn',
+	                message: 'Заполните заголовок'
+	            });
+	
+	            return;
+	
+	        }
+	
+	        form = getForm();
+	
+	        submitButton = button;
+	
+	        submitButton.classList.add('loading');
+	
+	        window.setTimeout(function () {
+	
+	            form.elements['content'].innerHTML = JSON.stringify({items: codex.editor.state.jsonOutput});
+	
+	            codex.ajax.call({
+	                url: '/p/save',
+	                data: new FormData(form),
+	                success: submitResponse,
+	                type: 'POST'
+	            });
+	
+	        }, 500);
+	
+	    };
+	
+	    /**
+	     * Response handler for page saving
+	     * @param response
+	     */
+	    var submitResponse = function (response) {
+	
+	        submitButton.classList.remove('loading');
+	
+	        response = JSON.parse(response);
+	
+	        if (response.success) {
+	
+	            window.location = response.redirect;
+	            return;
+	
+	        }
+	
+	        codex.editor.notifications.notification({
+	            type: 'warn',
+	            message: response.message
+	        });
+	
+	    };
+	
+	    /**
+	    * Submits writing form for opening in full-screan page without saving
+	    */
+	    var openEditorFullscreen = function () {
+	
+	
+	        var form = getForm();
+	
+	        window.setTimeout(function () {
+	
+	            form.elements['content'].innerHTML = JSON.stringify({ items: codex.editor.state.jsonOutput });
+	
+	            form.submit();
+	
+	        }, 500);
+	
+	    };
+	
+	    return {
+	        init    : init,
+	        prepare : prepare,
+	        open    : open,
+	        openEditorFullscreen : openEditorFullscreen,
+	        submit               : submit,
+	    };
+	
+	})();
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+	var cdxEditorPersonality =
+	/******/ (function(modules) { // webpackBootstrap
+	/******/ 	// The module cache
+	/******/ 	var installedModules = {};
+	/******/
+	/******/ 	// The require function
+	/******/ 	function __webpack_require__(moduleId) {
+	/******/
+	/******/ 		// Check if module is in cache
+	/******/ 		if(installedModules[moduleId]) {
+	/******/ 			return installedModules[moduleId].exports;
+	/******/ 		}
+	/******/ 		// Create a new module (and put it into the cache)
+	/******/ 		var module = installedModules[moduleId] = {
+	/******/ 			i: moduleId,
+	/******/ 			l: false,
+	/******/ 			exports: {}
+	/******/ 		};
+	/******/
+	/******/ 		// Execute the module function
+	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+	/******/
+	/******/ 		// Flag the module as loaded
+	/******/ 		module.l = true;
+	/******/
+	/******/ 		// Return the exports of the module
+	/******/ 		return module.exports;
+	/******/ 	}
+	/******/
+	/******/
+	/******/ 	// expose the modules object (__webpack_modules__)
+	/******/ 	__webpack_require__.m = modules;
+	/******/
+	/******/ 	// expose the module cache
+	/******/ 	__webpack_require__.c = installedModules;
+	/******/
+	/******/ 	// identity function for calling harmony imports with the correct context
+	/******/ 	__webpack_require__.i = function(value) { return value; };
+	/******/
+	/******/ 	// define getter function for harmony exports
+	/******/ 	__webpack_require__.d = function(exports, name, getter) {
+	/******/ 		if(!__webpack_require__.o(exports, name)) {
+	/******/ 			Object.defineProperty(exports, name, {
+	/******/ 				configurable: false,
+	/******/ 				enumerable: true,
+	/******/ 				get: getter
+	/******/ 			});
+	/******/ 		}
+	/******/ 	};
+	/******/
+	/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+	/******/ 	__webpack_require__.n = function(module) {
+	/******/ 		var getter = module && module.__esModule ?
+	/******/ 			function getDefault() { return module['default']; } :
+	/******/ 			function getModuleExports() { return module; };
+	/******/ 		__webpack_require__.d(getter, 'a', getter);
+	/******/ 		return getter;
+	/******/ 	};
+	/******/
+	/******/ 	// Object.prototype.hasOwnProperty.call
+	/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+	/******/
+	/******/ 	// __webpack_public_path__
+	/******/ 	__webpack_require__.p = "";
+	/******/
+	/******/ 	// Load entry module and return exports
+	/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+	/******/ })
+	/************************************************************************/
+	/******/ ([
+	/* 0 */
+	/***/ (function(module, exports) {
+	
+	/**
+	 * Interface for Personality tool
+	 * @author CodeX Team
+	 */
+	module.exports = function (ui) {
+	
+	    'use strict';
+	
+	    /**
+	     * CSS class names
+	     * @type {Object}
+	     */
+	    ui.css = {
+	        holder       : 'cdx-personality',
+	        name         : 'cdx-personality__name',
+	        cite         : 'cdx-personality__cite',
+	        url          : 'cdx-personality__url',
+	        photo        : 'cdx-personality__photo',
+	        photoPreview : 'cdx-personality__photo--preview'
+	    };
+	
+	    /**
+	     * Creates Element
+	     * @param {string} tagName
+	     * @param {string} className
+	     * @param {object} properties - allow to assign properties
+	     */
+	    var create = function ( tagName, className, properties ) {
+	
+	        var el = document.createElement( tagName );
+	
+	        if ( className ) el.className = className;
+	
+	        if ( properties ) {
+	
+	            for (var name in properties) {
+	
+	                el[name] = properties[name];
+	
+	            }
+	
+	        }
+	
+	        return el;
+	
+	    };
+	
+	    /**
+	     * Creates plugin holder
+	     * @return {Element}
+	     */
+	    ui.holder = function () {
+	
+	        return create('DIV', ui.css.holder);
+	
+	    };
+	
+	    /**
+	     * Input for personality name
+	     * @param {String} savedName
+	     * @return {Element}
+	     */
+	    ui.nameInput = function (savedName) {
+	
+	        var name = create('INPUT', ui.css.name);
+	
+	        name.placeholder = 'Введите имя';
+	        name.value = savedName || '';
+	
+	        return name;
+	
+	    };
+	
+	    /**
+	     * Input for personality description
+	     * @param {String} savedCite
+	     * @return {Element}
+	     */
+	    ui.citeInput = function (savedCite) {
+	
+	        var div = create('DIV', ui.css.cite);
+	
+	        div.contentEditable = true;
+	        div.setAttribute('data-placeholder', 'Должность или другая информация');
+	        div.innerHTML = savedCite || '';
+	
+	        return div;
+	
+	    };
+	
+	    /**
+	     * Input for personality URL
+	     * @param {String} savedUrl
+	     * @return {Element}
+	     */
+	    ui.urlInput = function (savedUrl) {
+	
+	        var url = create('INPUT', ui.css.url);
+	
+	        url.placeholder = 'Ссылка на страницу человека';
+	        url.value = savedUrl || '';
+	
+	        return url;
+	
+	    };
+	
+	     /**
+	     * @return {Element}
+	     * @param {String} savedPhoto image URL
+	     */
+	    ui.photo = function (savedPhoto) {
+	
+	        var photo = create('DIV', ui.css.photo),
+	            img;
+	
+	        if (savedPhoto) {
+	
+	            img = document.createElement('IMG');
+	            img.src = savedPhoto;
+	            photo.appendChild(img);
+	
+	        }
+	
+	        return photo;
+	
+	    };
+	
+	    return ui;
+	
+	}({});
+	
+	/***/ }),
+	/* 1 */
+	/***/ (function(module, exports, __webpack_require__) {
+	
+	/**
+	 * Saver module for Personality tool
+	 * @author  CodeX Team
+	 */
+	module.exports = function (saver) {
+	
+	    'use strict';
+	
+	    var ui = __webpack_require__(0);
+	
+	    /**
+	     * Extracts data from block
+	     * @param  {Element} block
+	     * @return {Object}
+	     */
+	    saver.extractData = function (block) {
+	
+	        var nameEl = block.querySelector(`.${ui.css.name}`),
+	            citeEl = block.querySelector(`.${ui.css.cite}`),
+	            urlEl  = block.querySelector(`.${ui.css.url}`),
+	            photo  = block.querySelector(`.${ui.css.photo} img`),
+	            toolData = {};
+	
+	        toolData.name = nameEl.value;
+	        toolData.cite = codex.editor.content.wrapTextWithParagraphs(citeEl.innerHTML);
+	        toolData.url  = urlEl.value;
+	        toolData.photo = null;
+	
+	        if (photo) {
+	
+	            toolData.photo = photo.src;
+	
+	        }
+	
+	        return toolData;
+	
+	    };
+	
+	    /**
+	     * Validation method
+	     * @param  {Object} toolData - saving data that needs to check
+	     * @return {Boolean}         - TRUE if data is value
+	     */
+	    saver.validate = function (toolData) {
+	
+	        /** Dont allow empty name */
+	        if (!toolData.name.trim()) {
+	
+	            return false;
+	
+	        }
+	
+	        return true;
+	
+	    };
+	
+	    return saver;
+	
+	}({});
+	
+	/***/ }),
+	/* 2 */
+	/***/ (function(module, exports, __webpack_require__) {
+	
+	/**
+	 * Uploader module for Personality tool
+	 * @author  CodeX Team
+	 */
+	module.exports = function (uploader) {
+	
+	    'use strict';
+	
+	    var ui = __webpack_require__(0);
+	
+	    /**
+	     * External config
+	     * @type {Object}
+	     */
+	    uploader.config = {
+	        uploadURL : ''
+	    };
+	
+	    /**
+	     * Updates preview image
+	     * @return {Element} preview - preview IMG
+	     * @return {String} src      - preview image source
+	     */
+	    function updatePreview( preview, src ) {
+	
+	        preview.src = src;
+	
+	    }
+	
+	
+	    /**
+	     * Makes images preview
+	     * @param  {HTMLElement} holder
+	     */
+	    function makePreview(holder) {
+	
+	        var input = codex.editor.transport.input,
+	            files = input.files,
+	            reader,
+	            preview = document.createElement('IMG');
+	
+	        console.assert( files, 'There is no files in input');
+	
+	        reader = new window.FileReader();
+	        reader.readAsDataURL(files[0]);
+	
+	        preview.classList.add(ui.css.photoPreview);
+	        holder.innerHTML = '';
+	        holder.appendChild(preview);
+	
+	        reader.onload = function ( e ) {
+	
+	            updatePreview(preview, e.target.result);
+	
+	        };
+	
+	        return preview;
+	
+	    }
+	
+	    /**
+	     * Before send method
+	     * @this {Button clicked}
+	     */
+	    function beforeSend() {
+	
+	        var selectPhotoButton = this;
+	
+	        /**
+	         * Returned value will be passed as context of success and error
+	         */
+	        return makePreview(selectPhotoButton);
+	
+	    }
+	
+	    /**
+	     * Success uploading hanlder
+	     * @this - beforeSend result
+	     * @param {String} response - upload response
+	     *
+	     * Expected response format:
+	     * {
+	     *     success : 1,
+	     *     data: {
+	     *         url : 'site/filepath.jpg'
+	     *     }
+	     * }
+	     */
+	    function success( response ) {
+	
+	        let preview = this;
+	
+	        response = JSON.parse(response);
+	
+	        console.assert(response.data && response.data.url, 'Expected photo URL was not found in response data');
+	
+	        updatePreview(preview, response.data.url);
+	        preview.classList.remove(ui.css.photoPreview);
+	
+	    }
+	
+	    /**
+	     * Error during upload handler
+	     * @this {Element} preview
+	     */
+	    function failed() {
+	
+	        var preview = this;
+	
+	        codex.editor.notifications.notification({type: 'error', message: 'Ошибка во время загрузки. Попробуйте другой файл'});
+	
+	        preview.remove();
+	
+	    }
+	
+	    /**
+	     * Select file click listener
+	     */
+	    uploader.photoClicked = function () {
+	
+	        var button = this;
+	
+	        codex.editor.transport.selectAndUpload({
+	            url         : uploader.config.uploadURL,
+	            multiple    : false,
+	            accept      : 'image/*',
+	            beforeSend  : beforeSend.bind(button),
+	            success     : success,
+	            error       : failed
+	        });
+	
+	    };
+	
+	    return uploader;
+	
+	}({});
+	
+	/***/ }),
+	/* 3 */
+	/***/ (function(module, exports) {
+	
+	// removed by extract-text-webpack-plugin
+	
+	/***/ }),
+	/* 4 */
+	/***/ (function(module, exports, __webpack_require__) {
+	
+	/**
+	 * Personality
+	 * Tool for CodeX Editor
+	 *
+	 * @author CodeX Team
+	 * @version 1.0.0
+	 * @see https://github.com/codex-editor/personality
+	 *
+	 * @description Provides public interface methods
+	 */
+	module.exports = function () {
+	
+	    'use strict';
+	
+	    /**
+	     * Styleheets
+	     */
+	    __webpack_require__(3);
+	
+	    var ui       = __webpack_require__(0);
+	    var saver    = __webpack_require__(1);
+	    var uploader = __webpack_require__(2);
+	
+	    /**
+	     * @param {Object} toolData
+	     * @param {string} toolData.name    - Personality name
+	     * @param {string} toolData.cite    - Personality cite
+	     * @param {string} toolData.url     - Personality url
+	     * @param {string} toolData.photo   - Personality photo URL
+	     *
+	     * @return {Element} personality tool block
+	     */
+	    function render( toolData ) {
+	
+	        toolData = toolData || {};
+	
+	        var pluginHolder = ui.holder(),
+	            name         = ui.nameInput(toolData.name),
+	            cite         = ui.citeInput(toolData.cite),
+	            url          = ui.urlInput(toolData.url),
+	            photo        = ui.photo(toolData.photo);
+	
+	        pluginHolder.appendChild(photo);
+	        pluginHolder.appendChild(name);
+	        pluginHolder.appendChild(cite);
+	        pluginHolder.appendChild(url);
+	
+	        photo.addEventListener('click', uploader.photoClicked);
+	
+	        return pluginHolder;
+	
+	    }
+	
+	    /**
+	     * Prepares plugin
+	     * @param  {Object} config
+	     * @return {Promise}
+	     */
+	    function prepare(config) {
+	
+	        return Promise.resolve().then(function () {
+	
+	            uploader.config = config;
+	
+	        });
+	
+	    }
+	
+	    /**
+	     * Validation
+	     * @param  {Object} savingData - tool presaved data
+	     * @fires saver.validate
+	     * @return {Boolean}
+	     */
+	    function validate( savingData ) {
+	
+	        return saver.validate(savingData);
+	
+	    }
+	
+	    /**
+	     * Destroy method
+	     */
+	    function destroy() {
+	
+	        window.cdxEditorPersonality = null;
+	
+	    }
+	
+	    /**
+	     * Saving method
+	     * @param  {Element} block   - plugin content
+	     * @return {Object}          - personality data
+	     */
+	    function save( block ) {
+	
+	        var data = saver.extractData(block);
+	
+	        return data;
+	
+	    }
+	
+	    return {
+	        render, save, validate, destroy, prepare
+	    };
+	
+	}();
+	
+	/***/ })
+	/******/ ]);
+	
+	/*** EXPORTS FROM exports-loader ***/
+	module.exports = cdxEditorPersonality;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+	module.exports = {
+	
+	    prefixJS : 'cdx-script-',
+	
+	    prefixCSS : 'cdx-style-',
+	
+	    importScript : function (scriptPath, instanceName) {
+	
+	        return new Promise(function (resolve, reject) {
+	
+	            var script;
+	
+	            /** Script is already loaded */
+	            if ( !instanceName ) {
+	
+	                reject('Instance name is missed');
+	
+	            } else if ( document.getElementById(this.prefixJS + instanceName) ) {
+	
+	                resolve(scriptPath);
+	
+	            }
+	
+	            script = document.createElement('SCRIPT');
+	            script.async = true;
+	            script.defer = true;
+	            script.id    = codex.loader.prefixJS + instanceName;
+	
+	            script.onload = function () {
+	
+	                resolve(scriptPath);
+	
+	            };
+	
+	            script.onerror = function () {
+	
+	                reject(scriptPath);
+	
+	            };
+	
+	            script.src = scriptPath;
+	            document.head.appendChild(script);
+	
+	        });
+	
+	    },
+	
+	    importStyle : function (stylePath, instanceName) {
+	
+	        return new Promise(function (resolve, reject) {
+	
+	            var style;
+	
+	            /** Style is already loaded */
+	            if ( !instanceName ) {
+	
+	                reject('Instance name is missed');
+	
+	            } else if ( document.getElementById(this.prefixCSS + instanceName) ) {
+	
+	                resolve(stylePath);
+	
+	            }
+	
+	            style = document.createElement('LINK');
+	            style.type = 'text/css';
+	            style.href = stylePath;
+	            style.rel  = 'stylesheet';
+	            style.id   = codex.loader.prefixCSS + instanceName;
+	
+	            style.onload = function () {
+	
+	                resolve(stylePath);
+	
+	            };
+	
+	            style.onerror = function () {
+	
+	                reject(stylePath);
+	
+	            };
+	
+	            style.src = stylePath;
+	            document.head.appendChild(style);
+	
+	        });
+	
+	    },
+	
+	};
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports) {
+
+	/**
+	* Module for scroll-up button
+	* @author @scytem @guryn
+	*/
+	
+	
+	module.exports = (function () {
+	
+	
+	    /**
+	     * Scroll-up will be shown after sroll reaches this value
+	     * @type {Number}
+	     */
+	    var offsetToShow = 300;
+	
+	    /**
+	     * Size content width
+	     * @type {Number}
+	     */
+	    var layoutWidth = 0;
+	
+	    /**
+	     * Clickable Element that holds arrow
+	     * @type {Element}
+	     */
+	    var clickableZone = null;
+	
+	    /**
+	     * Window Resize stop watcher Timeout
+	     * @type {timeoutId}
+	     */
+	    var resizeStopWatcher = null;
+	
+	    /**
+	     * @public
+	     *
+	     * Init method
+	     * Fired after document is ready
+	     */
+	    var init = function ( layoutHolderId ) {
+	
+	        var layout = document.getElementById(layoutHolderId);
+	
+	        if (!layout) {
+	
+	            codex.core.log('Layout center-col ID wissed', 'scrollUp', 'warn');
+	            return;
+	
+	        }
+	
+	        layoutWidth = layout.offsetWidth;
+	
+	        clickableZone = makeUI();
+	
+	        /** Bind click event on scroll-up button */
+	        clickableZone.addEventListener('click', scrollPage);
+	
+	        /** Global window scroll handler */
+	        window.addEventListener('scroll', windowScrollHandler);
+	
+	        /** Autoresize */
+	        window.addEventListener('resize', sizeChanged, false);
+	
+	        /** Set size */
+	        resize();
+	
+	        /* Check heigth */
+	        windowScrollHandler();
+	
+	    };
+	
+	    /**
+	    * Scroll the document to the begin position
+	    * @param {number} yCoords Y-coordinate
+	    */
+	    var scrollPage = function (yCoords) {
+	
+	        window.scrollTo(0, yCoords);
+	
+	    };
+	
+	    /**
+	    * Hiding Scroll-up button if user on the top of page
+	    */
+	    var windowScrollHandler = function () {
+	
+	        var notTheTop = window.pageYOffset > offsetToShow;
+	
+	        if (notTheTop) {
+	
+	            clickableZone.classList.add('show');
+	
+	        } else {
+	
+	            clickableZone.classList.remove('show');
+	
+	        }
+	
+	    };
+	
+	    /**
+	    * Resize hover/click area touching user width of screen
+	    */
+	    var resize = function () {
+	
+	        var windowWidth     = document.body.clientWidth,
+	            leftColumtWidth = (windowWidth - layoutWidth) / 2;
+	
+	        clickableZone.style.width = leftColumtWidth + 'px';
+	
+	    };
+	
+	
+	    /**
+	    * Delay for resize
+	    */
+	    var sizeChanged = function () {
+	
+	        if ( resizeStopWatcher ) {
+	
+	            window.clearTimeout(resizeStopWatcher);
+	
+	        }
+	
+	        resizeStopWatcher = window.setTimeout(resize, 150);
+	
+	    };
+	
+	    /**
+	     * Makes scroll-up arrow and wrapper
+	     */
+	    var makeUI = function () {
+	
+	        var wrapper = document.createElement('DIV'),
+	            arrow   = document.createElement('DIV');
+	
+	        wrapper.classList.add('scroll-up');
+	        arrow.classList.add('scroll-up__arrow');
+	
+	        wrapper.appendChild(arrow);
+	        document.body.appendChild(wrapper);
+	
+	        return wrapper;
+	
+	    };
+	
+	    return {
+	        init: init
+	    };
+	
+	}());
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+	/**
+	 * Admin module
+	 */
+	
+	module.exports = (function () {
+	
+	    var emptyBrandingClass = 'branding--empty';
+	    var loadingClass       = 'branding--loading';
+	    var preloaderClass     = 'branding__preloader';
+	    var preloadShown       = 'branding__preloader--shown';
+	
+	    /**
+	     * Branding holder
+	     * @type {Element|null}
+	     */
+	    var wrapper = null;
+	
+	    /**
+	     * Initialization
+	     * @fires preload
+	     */
+	    var init = function () {
+	
+	        wrapper = document.getElementById('brandingSection');
+	
+	        if ( !wrapper ) {
+	
+	            return;
+	
+	        }
+	
+	        var url = wrapper.dataset.src;
+	
+	        preload( url );
+	
+	    };
+	
+	    /**
+	     * Shows blurred preview and change it to the full-view image
+	     * @param  {String} fullUrl          - URL of original image
+	     * @return {String|null} previewUrl  - pass to renew preloader
+	     */
+	    var preload = function ( fullUrl, previewUrl ) {
+	
+	        var preloader = wrapper.querySelector('.' + preloaderClass),
+	            img = document.createElement('IMG');
+	
+	        if ( previewUrl ) {
+	
+	            preloader.style.backgroundImage = "url('" + previewUrl + "')";
+	            preloader.classList.add(preloadShown);
+	
+	        }
+	
+	        img.src = fullUrl;
+	        img.onload = function () {
+	
+	            wrapper.style.backgroundImage = "url('" + fullUrl + "')";
+	            preloader.classList.remove(preloadShown);
+	
+	        };
+	
+	    };
+	
+	
+	
+	    /**
+	     * changes site branding
+	     * @private
+	     */
+	    var change = function () {
+	
+	        codex.transport.init({
+	
+	            url : '/upload/4',
+	            accept : 'image/*',
+	            beforeSend: function () {
+	
+	                wrapper.classList.add(loadingClass);
+	
+	            },
+	            success : function (result) {
+	
+	                var response = JSON.parse(result),
+	                    url,
+	                    preview;
+	
+	                wrapper.classList.remove(loadingClass);
+	
+	                if ( response.success ) {
+	
+	                    url = response.data.url;
+	                    preview = '/upload/branding/preload_' + response.data.name + '.jpg';
+	
+	                    if ( wrapper.classList.contains(emptyBrandingClass) ) {
+	
+	                        wrapper.classList.remove(emptyBrandingClass);
+	
+	                    }
+	
+	                    preload( url, preview );
+	
+	                } else {
+	
+	                    codex.alerts.show({
+	                        type: 'error',
+	                        message: 'Uploading failed'
+	                    });
+	
+	                }
+	
+	            },
+	            error: function () {
+	
+	                wrapper.classList.remove(loadingClass);
+	
+	                codex.alerts.show({
+	                    type: 'error',
+	                    message: 'Error while uploading branding image;'
+	                });
+	
+	            }
+	
+	        });
+	
+	    };
+	
+	    return {
+	        init: init,
+	        change : change
+	    };
+	
+	})({});
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Page significant methods
+	 */
+	module.exports = (function () {
+	
+	    /**
+	     * Page cover module
+	     */
+	    var cover = __webpack_require__(26);
+	
+	    /**
+	     * Page pin module
+	     */
+	    var pin = __webpack_require__(27);
+	
+	    /**
+	     * Saves current clicked item in page drop-down menu
+	     * @type {Element}
+	     */
+	    var currentItemClicked = null;
+	
+	    /**
+	     * Opens page-writing form
+	     */
+	    var openWriting = function () {
+	
+	        currentItemClicked = this;
+	
+	        var targetId = currentItemClicked.dataset.id;
+	
+	        document.location = '/p/writing?id=' + targetId;
+	
+	    };
+	
+	    /**
+	     * Opens page-writing form
+	     */
+	    var remove = function () {
+	
+	        currentItemClicked = this;
+	
+	        var targetId    = currentItemClicked.dataset.id;
+	
+	        if (!window.confirm('Подтвердите удаление страницы')) {
+	
+	            return;
+	
+	        }
+	
+	        codex.ajax.call({
+	            url : '/p/' + targetId + '/delete',
+	            success: removeHandler
+	        });
+	
+	    };
+	
+	    /**
+	     * Opens writing form for child page
+	     */
+	    var newChild = function () {
+	
+	        currentItemClicked = this;
+	
+	        var targetId = currentItemClicked.dataset.id;
+	
+	        document.location = '/p/writing?parent=' + targetId;
+	
+	    };
+	
+	    /**
+	     * Send ajax request to add page to menu
+	     */
+	    var addToMenu = function () {
+	
+	        currentItemClicked = this;
+	        currentItemClicked.classList.add('loading');
+	
+	        var targetId = currentItemClicked.dataset.id;
+	
+	        codex.ajax.call({
+	            url : '/p/' + targetId + '/promote?list=menu',
+	            success: promote
+	        });
+	
+	    };
+	
+	    /**
+	     * Send ajax request to add page to news
+	     */
+	    var addToNews = function () {
+	
+	        currentItemClicked = this;
+	        currentItemClicked.classList.add('loading');
+	
+	        var targetId = currentItemClicked.dataset.id;
+	
+	        codex.ajax.call({
+	            url : '/p/' + targetId + '/promote?list=news',
+	            success: promote
+	        });
+	
+	    };
+	
+	    /**
+	     * Parse JSON response
+	     * @param {JSON} response
+	     * @returns {Object} response
+	     */
+	    var getResponse = function (response) {
+	
+	        try {
+	
+	            response = JSON.parse(response);
+	
+	        } catch(e) {
+	
+	            return {
+	                success: 0,
+	                message: 'Произошла ошибка, попробуйте позже'
+	            };
+	
+	        }
+	
+	        return response;
+	
+	    };
+	
+	    /**
+	     * Response handler for page remove
+	     * @param response
+	     */
+	    var removeHandler = function (response) {
+	
+	        response = getResponse(response);
+	
+	        if (response.success) {
+	
+	            window.location.replace(response.redirect);
+	            return;
+	
+	        }
+	
+	        codex.alerts.show({
+	            type: 'error',
+	            message: response.message
+	        });
+	
+	    };
+	
+	    /**
+	     * Response handler for page promotion
+	     * @param response
+	     */
+	    var promote = function (response) {
+	
+	        response = getResponse(response);
+	        currentItemClicked.classList.remove('loading');
+	
+	        if (response.success) {
+	
+	            if (response.buttonText) {
+	
+	                replaceMenu(currentItemClicked, response.buttonText);
+	
+	            }
+	
+	            if (response.menu) {
+	
+	                updateSiteMenu(response.menu);
+	
+	            }
+	
+	            /**
+	             * TODO: сделать замену текста кнопки
+	             **/
+	
+	            codex.alerts.show({
+	                type: 'success',
+	                message: response.message
+	            });
+	
+	            return;
+	
+	        }
+	
+	        codex.alerts.show({
+	            type: 'error',
+	            message: response.message
+	        });
+	
+	    };
+	
+	    /**
+	     * Replace site menu with new button text from server response
+	     * @param currentItemMenu
+	     * @param newResponseMenuText
+	     */
+	    var replaceMenu = function (currentItemMenu, newResponseMenuText) {
+	
+	        var itemIndex = currentItemMenu.dataset.itemIndex,
+	            menuIndex = currentItemMenu.dataset.index;
+	
+	        /** update item on menu */
+	        codex.islandSettings.updateItem(menuIndex, itemIndex, newResponseMenuText);
+	
+	        /** update item text immediatelly */
+	        currentItemMenu.textContent = newResponseMenuText;
+	
+	    };
+	
+	    /**
+	     * Replace site menu with menu form server response
+	     *
+	     * @param menu
+	     */
+	    var updateSiteMenu = function (menu) {
+	
+	        var oldMenu = document.getElementById('js-site-menu'),
+	            newMenu = codex.core.parseHTML(menu)[0];
+	
+	        codex.core.replace(oldMenu, newMenu);
+	
+	    };
+	
+	    return {
+	        openWriting: openWriting,
+	        newChild: newChild,
+	        addToMenu: addToMenu,
+	        addToNews: addToNews,
+	        remove : remove,
+	        pin: pin,
+	        cover: cover
+	    };
+	
+	}());
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+	/**
+	 * Actions with page cover
+	 */
+	module.exports = function (cover) {
+	
+	    var css = {
+	        cover          : 'posts-list-item__cover',
+	        setCover       : 'posts-list-item__cover--empty',
+	        setCoverShowed : 'posts-list-item__cover--empty-showed',
+	        preview        : 'posts-list-item__cover--preview',
+	    };
+	
+	    /**
+	     * Transport type constant
+	     * @type {Number}
+	     */
+	    var TRANSPORT_PAGE_COVER = 5;
+	
+	    /**
+	     * Menu 'set-cover' button handler
+	     * @this menu Element
+	     */
+	    cover.toggleButton = function () {
+	
+	        var pageId = this.dataset.id,
+	            pageIsland,
+	            setCoverButton;
+	
+	        pageIsland = document.getElementById('js-page-' + pageId);
+	
+	        if (!pageIsland) {
+	
+	            return;
+	
+	        }
+	
+	        setCoverButton = pageIsland.querySelector('.' + css.cover);
+	
+	        setCoverButton.classList.add(css.setCover);
+	        setCoverButton.classList.toggle(css.setCoverShowed);
+	
+	        /** Let user see cover-button, than click on it */
+	        window.setTimeout(function () {
+	
+	            cover.set(pageId);
+	
+	        }, 300);
+	
+	    };
+	
+	    /**
+	     * Select file
+	     * @param {Number} pageId - cover's page id
+	     */
+	    cover.set = function ( pageId ) {
+	
+	        if ( isNaN(pageId) ) {
+	
+	            codex.core.log('Wrong pageId passed %o', '[page.cover]', 'warn', pageId);
+	            return;
+	
+	        }
+	
+	        codex.transport.init({
+	            url : '/upload/' + TRANSPORT_PAGE_COVER,
+	            data : {
+	                target : pageId
+	            },
+	            success : uploaded,
+	            beforeSend : beforeSend.bind(pageId),
+	            error   : error
+	        });
+	
+	    };
+	
+	    /**
+	     * Makes preview
+	     * @this {pageId}
+	     */
+	    function beforeSend() {
+	
+	        var pageId = this,
+	            article = document.getElementById('js-page-' + pageId),
+	            coverHolder;
+	
+	        if (!article) {
+	
+	            return;
+	
+	        }
+	
+	        coverHolder = article.querySelector('.' + css.cover);
+	
+	        /** Compose preview */
+	        makePreview(coverHolder, pageId);
+	
+	    }
+	
+	    /**
+	     * Makes uploading image preview
+	     * @param  {Element} holder cover holder image
+	     * @param  {string|Number} pageId
+	     */
+	    function makePreview( holder, pageId ) {
+	
+	        var input = codex.transport.input,
+	            files = input.files,
+	            reader;
+	
+	        console.assert( files, 'There is no files in input');
+	
+	        reader = new FileReader();
+	        reader.readAsDataURL(files[0]);
+	
+	        holder.classList.add(css.preivew);
+	
+	        reader.onload = function ( e ) {
+	
+	            updateCoverImage(
+	                {
+	                    url : e.target.result,
+	                    target : pageId
+	                },
+	                holder,
+	                true // is preview mode
+	            );
+	
+	        };
+	
+	    }
+	
+	    /**
+	     * Success uploading handler
+	     * @param  {String} response    server answer
+	     */
+	    function uploaded( response ) {
+	
+	        response = JSON.parse(response);
+	
+	        if ( !response.success ) {
+	
+	            codex.alerts.show({
+	                type: 'error',
+	                message: response.message || 'File uploading error :('
+	            });
+	
+	            return;
+	
+	        }
+	
+	        console.assert( response.data && response.data.url, 'Wrong response data');
+	
+	        update( response.data );
+	
+	    }
+	
+	    /**
+	     * Update cover after succes uploading
+	     * Do it after new image loading
+	     * @param  {Object} imageData  - new cover data
+	     */
+	    function update( imageData ) {
+	
+	        var img = document.createElement('IMG');
+	
+	        /** Wait for browser download and cache image */
+	        img.onload = function () {
+	
+	            updateCoverImage(imageData);
+	
+	        };
+	
+	        img.src = imageData.url;
+	
+	    }
+	
+	    /**
+	     * Updates visible cover image
+	     * @param  {Object} imageData
+	     * @param  {string} imageData.url       - full cover URL
+	     * @param  {string} imageData.target    - page id
+	     * @param  {Element|null} coverHolder   - page cover holder (if known)
+	     * @param  {Boolean} isPreview          - pass TRUE for preview-mode
+	     */
+	    function updateCoverImage( imageData, coverHolder, isPreview ) {
+	
+	        console.assert(imageData.target, 'Page id must be passed as target');
+	
+	        var article = document.getElementById('js-page-' + imageData.target);
+	
+	        if (!article) {
+	
+	            return;
+	
+	        }
+	
+	        coverHolder = coverHolder || article.querySelector('.' + css.cover);
+	
+	        if ( !coverHolder ) {
+	
+	            codex.core.log('Nothing to update. Cover was not found', '[page.cover]', 'warn');
+	            return;
+	
+	        }
+	
+	        if (isPreview) {
+	
+	            coverHolder.classList.add(css.preview);
+	
+	        } else {
+	
+	            coverHolder.classList.remove(css.preview);
+	
+	        }
+	
+	        /** Remove button svg icon */
+	        coverHolder.innerHTML = '';
+	
+	        coverHolder.style.backgroundImage = 'url(' + imageData.url + ')';
+	        coverHolder.classList.remove(css.setCover, css.setCoverShowed);
+	
+	    }
+	
+	    /**
+	     * Uploading error
+	     * @param  {Object} error
+	     */
+	    var error = function (uploadError) {
+	
+	        codex.core.log('Cover uploading error: %o', '[pages.cover]', 'warn', uploadError);
+	
+	    };
+	
+	    return cover;
+	
+	}({});
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports) {
+
+	/**
+	 * Pins page in news feed
+	 */
+	module.exports = function () {
+	
+	    var currentItemClicked = null,
+	        targetId           = null;
+	
+	    /**
+	     * Requests page pin toggle via ajax
+	     */
+	    var toggle = function () {
+	
+	        currentItemClicked = this;
+	        targetId = currentItemClicked.dataset.id;
+	
+	        currentItemClicked.classList.add('loading');
+	
+	        codex.ajax.call({
+	            url : '/p/' + targetId + '/pin',
+	            success: success,
+	            error: error
+	        });
+	
+	    };
+	
+	    /** Response for success ajax request **/
+	    var success =  function (response) {
+	
+	        currentItemClicked.classList.remove('loading');
+	        response = JSON.parse(response);
+	
+	        codex.alerts.show({
+	            type: response.success ? 'success' : 'error',
+	            message: response.message
+	        });
+	
+	        var page = document.getElementById('js-page-' + targetId);
+	
+	        var time = page.querySelector('.js-article-time');
+	
+	        time.textContent = response.message;
+	
+	
+	    };
+	
+	    /** Response for ajax request errors **/
+	    var error = function () {
+	
+	        currentItemClicked.classList.remove('loading');
+	
+	        codex.alerts.show({
+	            type: 'error',
+	            message: 'Произошла ошибка'
+	        });
+	
+	    };
+	
+	    return {
+	        toggle: toggle
+	    };
+	
+	}();
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports) {
+
+	/**
+	 *  Module for custom checkboxes
+	 *
+	 *  Adds stylized checkbox. You can use them in forms as default checkboxes.
+	 *  You can user your own styles, just change classes names in classes dictionary
+	 *
+	 *  To init module
+	 *  1. Add element with `cdx-custom-checkbox` name to page.
+	 *     You can have any other elements in it, checkbox will be added as first child.
+	 *
+	 *     `cdx-custom-checkbox` element can have data attributes:
+	 *      - data-name -- name of checkbox input, that will be in request array.
+	 *                    By default uses NAMES.defaultInput ('cdx-custom-checkbox')
+	 *
+	 *     - data-checked -- if TRUE checkbox will be checked by default
+	 *
+	 *      Example:
+	 *      <span name='cdx-custom-checkbox' data-name='checkbox1' data-checked='false'>I agree</span>
+	 *
+	 *  2. Call `init` method of this module
+	 *  3. If you want to handle changing of checkbox just register event listener on `cdx-custom-checkbox` element with 'toggle' event type:
+	 *
+	 *     checkbox.addEventListener('toggle', handler)
+	 *
+	 *  @requires checkboxes.css
+	 *
+	 *  @author gohabereg
+	 *  @version 1.0
+	 */
+	
+	module.exports = function () {
+	
+	    /**
+	     * Custom event for checkboxes. Dispatches when checkbox clicked
+	     * @type {CustomEvent}
+	     */
+	    var ToggleEvent = new window.CustomEvent('toggle'),
+	
+	    /**
+	     * Elements classes dictionary
+	     */
+	        CLASSES    = {
+	            wrapper: 'cdx-checkbox',
+	            checkbox: 'cdx-checkbox__slider',
+	            checked: 'cdx-checkbox--checked',
+	            defaultCheckbox: 'cdx-default-checkbox--hidden'
+	        },
+	    /**
+	     * Elements names dictionary
+	     */
+	        NAMES      = {
+	            checkbox: 'cdx-custom-checkbox',
+	            defaultInput: 'cdx-custom-checkbox'
+	        };
+	
+	
+	    /**
+	     * Creates checkbox element in wrapper with `cdx-custom-checkbox` name
+	     *
+	     * @param wrapper - element with `cdx-custom-checkbox` name
+	     */
+	    var prepareCheckbox = function (wrapper) {
+	
+	        var input      = document.createElement('INPUT'),
+	            checkbox   = document.createElement('SPAN'),
+	            firstChild = wrapper.firstChild;
+	
+	        input.type  = 'checkbox';
+	        input.name  = wrapper.dataset.name || NAMES.defaultInput;
+	        input.value = 1;
+	        input.classList.add(CLASSES.defaultCheckbox);
+	
+	        checkbox.classList.add(CLASSES.checkbox);
+	        checkbox.appendChild(input);
+	
+	        wrapper.classList.add(CLASSES.wrapper);
+	        wrapper.addEventListener('click', clicked);
+	
+	        if (wrapper.dataset.checked) {
+	
+	            input.checked = true;
+	
+	            wrapper.classList.add(CLASSES.checked);
+	
+	        }
+	
+	        if (firstChild) {
+	
+	            wrapper.insertBefore(checkbox, firstChild);
+	
+	        } else {
+	
+	            wrapper.appendChild(checkbox);
+	
+	        }
+	
+	
+	    };
+	
+	    /**
+	     * Handler for click event on checkbox. Toggle checkbox state and dispatch CheckEvent
+	     */
+	    var clicked = function () {
+	
+	        var wrapper  = this,
+	            checkbox = wrapper.querySelector('.' + CLASSES.checkbox),
+	            input    = checkbox.querySelector('input');
+	
+	        checkbox.parentNode.classList.toggle(CLASSES.checked);
+	        input.checked = !input.checked;
+	
+	        /**
+	         * Add `checked` property to CheckEvent
+	         */
+	        ToggleEvent.checked = input.checked;
+	
+	        checkbox.dispatchEvent(ToggleEvent);
+	
+	    };
+	
+	    /**
+	     * Takes all elements with `cdx-custom-checkbox` name and calls prepareCheckbox function for each one
+	     */
+	    var init = function () {
+	
+	        var checkboxes = document.getElementsByName(NAMES.checkbox);
+	
+	        Array.prototype.forEach.call(checkboxes, prepareCheckbox);
+	
+	    };
+	
+	    return {
+	        init: init
+	    };
+	
+	}();
+
+/***/ })
+/******/ ]);
 //# sourceMappingURL=bundle.js.map

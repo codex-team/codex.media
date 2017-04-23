@@ -25,8 +25,16 @@ module.exports = {
             {
                 test : /\.js$/,
                 loader: "eslint-loader?fix=true"
-
-            }
+            },
+            /**
+             * File loader for external assets
+             * Uses in codex.editor.personality
+             */
+            {
+              test : /\.(png|jpg|svg)$/,
+              include : /\/node_modules\//,
+              loader : "file-loader?name=[1].[ext]&publicPath=/public/build/assets/&regExp=node_modules/(.*)"
+            },
         ]
     },
 
@@ -48,12 +56,12 @@ module.exports = {
     plugins: [
 
         /** Минифицируем CSS и JS */
-        new webpack.optimize.UglifyJsPlugin({
+        // new webpack.optimize.UglifyJsPlugin({
             /** Disable warning messages. Cant disable uglify for 3rd party libs such as html-janitor */
-            compress: {
-                warnings: false
-            }
-        }),
+        //     compress: {
+        //         warnings: false
+        //    }
+        // }),
 
         /** Block biuld if errors found */
         new webpack.NoErrorsPlugin(),

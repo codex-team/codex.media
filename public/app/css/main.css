@@ -45,3 +45,8 @@
 @import url('components/island-settings.css');
 @import url('modules/checkboxes.css');
 @import url('components/auth.css');
+
+/**
+ * CodeX Editor Tools
+ */
+@import url("~codex.editor.personality/personality.css");

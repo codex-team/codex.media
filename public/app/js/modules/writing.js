@@ -17,6 +17,14 @@
 
 module.exports = (function () {
 
+    /**
+     * CodeX Editor Personality-tool
+     * @see  https://github.com/codex-editor/personality
+     * @type {[type]}
+     */
+    var personalityTool = require('exports-loader?cdxEditorPersonality!codex.editor.personality');
+
+
     var editorIsReady = false,
         submitButton = null,
         settings = {
@@ -176,11 +184,11 @@ module.exports = (function () {
                     type             : 'personality',
                     displayInToolbox : true,
                     iconClassname    : 'cdx-personality-icon',
-                    prepare          : window.cdxEditorPersonality.prepare,
-                    render           : window.cdxEditorPersonality.render,
-                    save             : window.cdxEditorPersonality.save,
-                    validate         : window.cdxEditorPersonality.validate,
-                    destroy          : window.cdxEditorPersonality.destroy,
+                    prepare          : personalityTool.prepare,
+                    render           : personalityTool.render,
+                    save             : personalityTool.save,
+                    validate         : personalityTool.validate,
+                    destroy          : personalityTool.destroy,
                     enableLineBreaks : true,
                     showInlineToolbar: true,
                     config: {
