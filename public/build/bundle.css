@@ -1249,7 +1249,7 @@ body {
  */
 .codex {
     display: block;
-    margin-bottom: -10px;
+    margin: -10px 0;
     color: #6e758a !important;
     font-size: 11px;
     line-height: 1.4em;
@@ -1257,7 +1257,7 @@ body {
 }
 @media all and (max-width: 980px) {
     .codex {
-        margin-bottom: 0;
+        margin: 0;
     }
 }
 .codex:hover {
@@ -1845,6 +1845,15 @@ body {
 
     .children-pages__link {
         font-size: 16px;
+    }
+
+    .article__person {
+        padding: 15px;
+    }
+
+    .article__person-photo {
+        width: 40px;
+        height: 40px;
     }
 }
 /**

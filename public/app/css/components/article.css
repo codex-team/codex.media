@@ -264,4 +264,13 @@
     .children-pages__link {
         font-size: 16px;
     }
+
+    .article__person {
+        padding: 15px;
+    }
+
+    .article__person-photo {
+        width: 40px;
+        height: 40px;
+    }
 }
