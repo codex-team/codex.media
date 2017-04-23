@@ -33,7 +33,7 @@ module.exports = {
             {
               test : /\.(png|jpg|svg)$/,
               include : /\/node_modules\//,
-              loader : "file-loader?name=[1].[ext]&publicPath=/public/build/assets/&regExp=node_modules/(.*)"
+              loader : "file-loader?name=[1].[ext]&outputPath=public/build/assets/&publicPath=/&regExp=node_modules/(.*)"
             },
         ]
     },
