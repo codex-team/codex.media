@@ -1301,6 +1301,7 @@ body {
 
     .mobile-menu-holder--opened {
         display: block;
+        margin-bottom: 15px;
     }
 
     .mobile-menu-toggler {

@@ -3,7 +3,7 @@
     <a class="codex clearfix" href="https://ifmo.su">
         <? include_once(DOCROOT . 'public/app/svg/codex.svg'); ?>
         <span class="codex__title">CodeX Media</span>
-        Медиа-платформа для развития сообщества
+        Медиа-платформа для<br> развития сообщества
     </a>
 
     <? /*
