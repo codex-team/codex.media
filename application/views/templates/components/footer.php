@@ -1,6 +1,12 @@
 <footer class="site-footer">
 
-    <? /* Contacts */ ?>
+    <a class="codex clearfix" href="https://ifmo.su">
+        <? include_once(DOCROOT . 'public/app/svg/codex.svg'); ?>
+        <span class="codex__title">CodeX Media</span>
+        Медиа-платформа для развития сообщества
+    </a>
+
+    <? /*
     <?= $site_info['full_name'] ?>
 
     <a class="site-footer__contacts" href="/contacts">
@@ -10,6 +16,7 @@
     Телефон:&nbsp;<?= $site_info['phone'] ?><br />
     Факс:&nbsp;<?= $site_info['fax'] ?><br />
     Почта:&nbsp;<?= $site_info['email'] ?>
+    */ ?>
 
 </footer>
 

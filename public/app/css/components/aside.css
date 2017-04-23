@@ -132,6 +132,50 @@
     display: none;
 }
 
+/**
+ * Codex logo
+ */
+.codex {
+    display: block;
+    margin-bottom: -10px;
+    color: var(--grayText) !important;
+    font-size: 11px;
+    line-height: 1.4em;
+    cursor: pointer;
+}
+
+@media (--mobile) {
+    .codex {
+        margin-bottom: 0;
+    }
+}
+
+.codex:hover {
+    color: #3e445d !important;
+}
+
+.codex__title {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 5px 0 3px;
+}
+
+.codex svg {
+    height: 56px;
+    float: left;
+    margin-right: 20px;
+    fill: #656e7d;
+}
+
+.codex:hover svg {
+    fill: #57606f;
+}
+
+.codex:hover svg .inner {
+    fill: #1d2033;
+}
+
 @media (--mobile) {
     .site-head {
         padding: 12px 15px;
