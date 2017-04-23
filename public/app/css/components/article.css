@@ -154,6 +154,64 @@
     margin: 1em 0;
 }
 
+/**
+ * Personality tool
+ * ==========
+ */
+.article__person {
+    & {
+        background: #fff;
+        border: 1px solid #e5e6ec;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+        border-radius: 3px;
+        padding: 30px;
+        margin: 0.7em 0;
+        line-height: 1.4em;
+    }
+
+    &-name {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    &-cite {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+
+    &-url {
+        display: block;
+        margin-top: 15px;
+        border-bottom: 0 !important;
+        font-size: 11px;
+        color: var(--grayText) !important;
+        letter-spacing: 0.1px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 80%;
+        line-height: 1em;
+    }
+
+    &-url:hover {
+        color: var(--hoverColor) !important;
+    }
+
+    &-photo {
+        float: right;
+        width: 70px;
+        height: 70px;
+        border-radius: 3px;
+        background-color: #f6f6f9;
+        background-image: url('/public/app/svg/photo-placeholder.svg');
+        background-repeat: no-repeat;
+        background-position: center center;
+        cursor: pointer;
+        overflow: hidden;
+        margin-left: 30px;
+    }
+}
+
 @media (--mobile) {
     .article {
         padding: 20px;

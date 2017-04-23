@@ -31,6 +31,7 @@ class Model_File extends Model
     const USER_PHOTO   = 3;
     const BRANDING     = 4;
     const PAGE_COVER   = 5;
+    const EDITOR_PERSONALITY = 6;
 
     /**
      * This types are images
@@ -40,7 +41,8 @@ class Model_File extends Model
         self::EDITOR_IMAGE,
         self::USER_PHOTO,
         self::BRANDING,
-        self::PAGE_COVER
+        self::PAGE_COVER,
+        self::EDITOR_PERSONALITY
     );
 
     public function __construct($id = null, $file_hash_hex = null, $row = array())
@@ -124,6 +126,10 @@ class Model_File extends Model
                 $page->cover = $savedFilename;
                 $page->update();
                 $this->filename = 'o_' . $savedFilename;
+                break;
+
+             case self::EDITOR_PERSONALITY:
+                $this->filename = 'b_' . $savedFilename;
                 break;
         }
 
