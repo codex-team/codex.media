@@ -113,6 +113,10 @@
     font-size: 14px;
 }
 
+.comment-form__placeholder svg {
+    height: 15px;
+}
+
 .comment-form__placeholder-name {
     display: none;
 }

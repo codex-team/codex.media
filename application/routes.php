@@ -37,12 +37,6 @@ Route::set('USERS_LIST', 'users(/<type>)', array('type' => 'teachers'))->default
     'action' => 'users_list'
 ));
 
-Route::set('CONTACTS', 'contacts')->defaults(array(
-    'controller' => 'index',
-    'action' => 'contacts'
-));
-
-
 /**
  * Pages section
  */

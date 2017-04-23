@@ -45,12 +45,6 @@ class Controller_Index extends Controller_Base_preDispatch
         }
     }
 
-    public function action_contacts()
-    {
-        $this->template->title = 'Контакты';
-        $this->template->content = View::factory('templates/contacts', $this->view);
-    }
-
     public function action_users_list()
     {
         $role = Model_User::REGISTERED;

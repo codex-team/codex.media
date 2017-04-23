@@ -66,7 +66,6 @@ html body aside .codex-special__toolbar {
     & .branding {
         display: none;
     }
-
 }
 
 /**
@@ -86,4 +85,8 @@ html body aside .codex-special__toolbar {
     & .island {
         background: rgba(255, 255, 255, 0.2) !important;
     }
+}
+
+.codex-special__toolbar-text {
+    vertical-align: baseline !important;
 }

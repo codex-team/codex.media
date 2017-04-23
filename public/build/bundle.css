@@ -1490,6 +1490,7 @@ body {
 }
 .post-list-item__comments svg {
     margin-right: 0.5em;
+    height: 15px;
 }
 /**
 * Pinned post list item
@@ -1623,12 +1624,13 @@ body {
     padding: 30px 45px;
 }
 .article__information {
+    display: -ms-flexbox;
+    display: flex;
     color: #6e758a;
     font-size: 14px;
 }
 .article__time,
-.article__author,
-.article__comments-counter {
+.article__author {
     display: inline-block;
     margin: 0 1em 15px 0;
     white-space: nowrap;
@@ -1643,6 +1645,16 @@ body {
 .article__comments-counter svg {
     display: inline-block;
     margin-right: 0.2em;
+    height: 15px;
+}
+.article__information {
+}
+.article__information-right{
+    margin-left: auto;
+}
+.article__information .island-settings{
+    float: none;
+    margin-left: 20px;
 }
 .article__title {
     margin: 0;
@@ -1927,7 +1939,6 @@ html body aside .codex-special__toolbar {
 .special-white,
 .special-green,
 .special-blue {
-
 }
 .special-big .main-aside,
 .special-white .main-aside,
@@ -1958,6 +1969,9 @@ html body aside .codex-special__toolbar {
 }
 .special-blue .island{
     background: rgba(255, 255, 255, .2) !important;
+}
+.codex-special__toolbar-text {
+    vertical-align: baseline !important;
 }
 /**
 * Стили для формы создания страницы
@@ -2319,6 +2333,9 @@ html body aside .codex-special__toolbar {
     cursor: pointer;
     color: #6e758a;
     font-size: 14px;
+}
+.comment-form__placeholder svg {
+    height: 15px;
 }
 .comment-form__placeholder-name {
     display: none;
