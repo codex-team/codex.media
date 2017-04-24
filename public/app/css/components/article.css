@@ -166,6 +166,12 @@
     margin: 1em 0;
 }
 
+.article h2,
+.article h3,
+.article h4 {
+    line-height: 1.35em;
+}
+
 /**
  * Personality tool
  * ==========
