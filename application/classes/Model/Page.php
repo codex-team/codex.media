@@ -143,9 +143,9 @@ class Model_Page extends Model
 
         $page->clearcache('page:' . $this->id, array('site_menu'));
 
-        $pageId = $page->execute();
+        $page->execute();
 
-        if ($pageId) return new Model_Page($pageId);
+        return $this;
     }
 
     public function setAsRemoved()
