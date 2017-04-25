@@ -77,12 +77,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         }
 
-        if (Arr::get($_POST, 'isNews')) {
-
-            if (!$this->page->isNewsPage && $this->user->isAdmin()) {
-                $this->page->addToFeed(Model_Feed_Pages::TYPE_NEWS);
-            }
-
+        if (Arr::get($_POST, 'vkPost')) {
             /** Create or edit post on public's wall */
             if ($this->page->isPostedInVK) {
                 $VkPost = $this->vkWall()->edit($this->textPostForWall());
@@ -90,18 +85,26 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                 $VkPost = $this->vkWall()->post($this->textPostForWall());
             }
             /***/
-
         } else {
-
-            if ($this->user->isAdmin()) {
-                $this->page->removeFromFeed(Model_Feed_Pages::TYPE_NEWS);
-            }
 
             /** Delete post from public's wall */
             if ($this->page->isPostedInVK) {
                 $VkPost = $this->vkWall()->delete();
             }
             /***/
+        }
+
+        if (Arr::get($_POST, 'isNews')) {
+
+            if (!$this->page->isNewsPage && $this->user->isAdmin()) {
+                $this->page->addToFeed(Model_Feed_Pages::TYPE_NEWS);
+            }
+
+        } else {
+
+            if ($this->user->isAdmin()) {
+                $this->page->removeFromFeed(Model_Feed_Pages::TYPE_NEWS);
+            }
 
         }
 
@@ -130,14 +133,6 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $feed_key = Arr::get($_GET, 'list', '');
 
         $this->page->toggleFeed($feed_key);
-
-        /** Create or delete post on public's wall on news toggle */
-        if ($this->page->isNewsPage()) {
-            $VkPost = $this->vkWall()->post($this->textPostForWall());
-        } else {
-            $VkPost = $this->vkWall()->delete();
-        }
-        /***/
 
         $this->ajax_response['success'] = 1;
 

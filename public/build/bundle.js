@@ -3382,27 +3382,10 @@ var codex =
 	            citeEl = block.querySelector(`.${ui.css.cite}`),
 	            urlEl  = block.querySelector(`.${ui.css.url}`),
 	            photo  = block.querySelector(`.${ui.css.photo} img`),
-	            toolData = {},
-	            sanitizerConfig = {
-	                tags : {
-	                    p : {},
-	                    a: {
-	                        href: true,
-	                        target: '_blank',
-	                        rel: 'nofollow'
-	                    },
-	                    i: {},
-	                    b: {},
-	                }
-	            },
-	            cite;
-	
-	        cite = citeEl.innerHTML;
-	        cite = codex.editor.content.wrapTextWithParagraphs(cite);
-	        cite = codex.editor.sanitizer.clean(cite, sanitizerConfig);
+	            toolData = {};
 	
 	        toolData.name = nameEl.value;
-	        toolData.cite = cite;
+	        toolData.cite = codex.editor.content.wrapTextWithParagraphs(citeEl.innerHTML);
 	        toolData.url  = urlEl.value;
 	        toolData.photo = null;
 	

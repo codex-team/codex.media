@@ -32,6 +32,8 @@
                 $fromUserProfile = Request::$current->controller() == 'User_Index';
 
                 $isNews = $page->isNewsPage || ($fromIndexPage && $fromNewsTab);
+
+                $vkPost = $page->isPostedInVK || ($fromIndexPage && $fromNewsTab);
             ?>
 
             <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
@@ -39,6 +41,10 @@
             <? if ($user->isAdmin() && !$fromUserProfile): ?>
                 <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
                     Новость
+                </span>
+
+                <span name="cdx-custom-checkbox" class="writing__vk-post" data-name="vkPost" data-checked="<?= $vkPost ?>">
+                    <i class="icon-vkontakte"></i>
                 </span>
             <? endif; ?>
 

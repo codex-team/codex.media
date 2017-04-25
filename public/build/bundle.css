@@ -1,4 +1,4 @@
-.cdx-personality-icon{display:inline-block;width:13px;height:32px;background-image:url(/public/build/assets/codex.editor.personality/assets/toolbar-icon.svg.svg);background-repeat:no-repeat;background-position:50%;background-size:contain}.ce-toolbar__tools .selected .cdx-personality-icon,.ce-toolbar__tools li:hover .cdx-personality-icon{background-image:url(/public/build/assets/codex.editor.personality/assets/toolbar-icon-hover.svg.svg)}.cdx-personality{background:#fff;border:1px solid #e5e6ec;box-shadow:0 1px 2px 0 rgba(0, 0, 0, .03);border-radius:3px;padding:30px;margin:.7em 0}.cdx-personality__cite,.cdx-personality input{outline:none;border:0;border-radius:3px;width:75%;box-sizing:border-box}.cdx-personality__name{font-size:16px;font-weight:600}.cdx-personality__cite{font-size:14px;margin:10px 0}.cdx-personality__cite p{margin:.5em 0}.cdx-personality__url{font-size:11px;color:#6e758a;letter-spacing:.1px;text-overflow:ellipsis}.cdx-personality__photo{float:right;width:70px;height:70px;border-radius:3px;background-color:#f6f6f9;background-image:url(/public/build/assets/codex.editor.personality/assets/photo-placeholder.svg.svg);background-repeat:no-repeat;background-position:50%;cursor:pointer;overflow:hidden}.cdx-personality__photo:hover{opacity:.7}.cdx-personality__photo img{width:100%;height:100%;vertical-align:top;transition:filter .3s ease-in}.cdx-personality__photo--preview{filter:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="2" /><feColorMatrix type="matrix" color-interpolation-filters="sRGB" values="0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0" /></filter></svg>#filter');filter:blur(2px) grayscale(1)}.cdx-personality__cite:empty:before{content:attr(data-placeholder);color:#6e758a}.cdx-personality__cite:focus:before{display:none}.cdx-personality input::-webkit-input-placeholder{color:#6e758a!important}.cdx-personality input:-ms-input-placeholder{color:#6e758a!important}.cdx-personality input::-moz-placeholder{color:#6e758a!important}.cdx-personality input::placeholder{color:#6e758a!important}
+.cdx-personality-icon{display:inline-block;width:13px;height:32px;background-image:url(/public/build/assets/codex.editor.personality/assets/toolbar-icon.svg.svg);background-repeat:no-repeat;background-position:50%;background-size:contain}.ce-toolbar__tools .selected .cdx-personality-icon,.ce-toolbar__tools li:hover .cdx-personality-icon{background-image:url(/public/build/assets/codex.editor.personality/assets/toolbar-icon-hover.svg.svg)}.cdx-personality{background:#fff;border:1px solid #e5e6ec;box-shadow:0 1px 2px 0 rgba(0, 0, 0, .03);border-radius:3px;padding:30px;margin:.7em 0}.cdx-personality__cite,.cdx-personality input{outline:none;border:0;border-radius:3px;width:75%;box-sizing:border-box}.cdx-personality__name{font-size:16px;font-weight:600}.cdx-personality__cite{font-size:14px;margin:10px 0}.cdx-personality__cite p{margin:.5em 0}.cdx-personality__url{font-size:11px;color:#6e758a;letter-spacing:.1px;text-overflow:ellipsis}.cdx-personality__photo{float:right;width:70px;height:70px;border-radius:3px;background-color:#f6f6f9;background-image:url(/public/build/assets/codex.editor.personality/assets/photo-placeholder.svg.svg);background-repeat:no-repeat;background-position:50%;cursor:pointer;overflow:hidden}.cdx-personality__photo:hover{opacity:.7}.cdx-personality__photo img{width:100%;height:100%;vertical-align:top;transition:filter .3s ease-in}.cdx-personality__photo--preview{filter:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="2" /><feColorMatrix type="matrix" color-interpolation-filters="sRGB" values="0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0" /></filter></svg>#filter');filter:blur(2px) grayscale(1)}.cdx-personality__cite:empty:before{content:attr(data-placeholder);color:#6e758a}.cdx-personality__cite:focus:before{display:none}.cdx-personality input::-webkit-input-placeholder{color:#6e758a!important}.cdx-personality input:-ms-input-placeholder{color:#6e758a!important}.cdx-personality input::placeholder{color:#6e758a!important}
 /** File with style-variables */
 :root {
     /** Texts */
@@ -555,9 +555,6 @@ input[disabled]:hover {
     color: #a9afc1;
 }
 ::-webkit-input-placeholder {
-    color: #6e758a;
-}
-::-moz-placeholder {
     color: #6e758a;
 }
 :-ms-input-placeholder {
@@ -2142,6 +2139,10 @@ html body aside .codex-special__toolbar {
     margin-top: -3px;
 }
 .writing__is-news {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.writing__vk-post {
     margin-right: auto;
     margin-left: 10px;
 }
