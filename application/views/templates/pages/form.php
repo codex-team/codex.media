@@ -43,7 +43,7 @@
                     Новость
                 </span>
 
-                <span name="cdx-custom-checkbox" class="writing__vk-post" data-name="vkPost" data-checked="<?= $vkPost ?>">
+                <span name="cdx-custom-checkbox" class="writing__vk-post" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">
                     <i class="icon-vkontakte"></i>
                 </span>
             <? endif; ?>

@@ -187,6 +187,12 @@
 .writing__vk-post {
     margin-right: auto;
     margin-left: 10px;
+    font-size: 1.5em;
+    margin-bottom: 2px;
+}
+
+.writing__vk-post .cdx-checkbox__slider {
+    display: none;
 }
 
 @media (--mobile) {
