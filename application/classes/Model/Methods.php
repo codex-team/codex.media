@@ -411,29 +411,17 @@ class Model_Methods extends Model
         return count($list) > $limit;
     }
 
-    public static function sendBotNotification($text)
+    public static function sendPostRequest($url = '', $params = array())
     {
-        $telegramConfigFilename = 'telegram-notification';
-        $telegramConfig = Kohana::$config->load($telegramConfigFilename);
-        if (!property_exists($telegramConfig, 'url')) {
-            throw new Kohana_Exception("No $telegramConfigFilename config file was found!");
-            return;
-        }
-        $url = $telegramConfig->url;
-        if (!$url) {
-            throw new Kohana_Exception("URL for telegram notifications was not found.");
-            return;
-        }
-        $params = array(
-            'message' => $text
-        );
+        if (!$url || !$params) return false;
 
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_exec($ch);
-        curl_close($ch);
-        return true;
+        $request = curl_init($url);
+        curl_setopt($request, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($request);
+        curl_close($request);
+
+        return $response;
     }
 
 }

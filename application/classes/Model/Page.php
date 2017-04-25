@@ -48,6 +48,9 @@ class Model_Page extends Model
 
     public $commentsCount   = 0;
 
+    /** post_id in the public's wall or 0  */
+    public $isPostedInVK    = 0;
+
     const STATUS_SHOWING_PAGE = 0;
     const STATUS_HIDDEN_PAGE  = 1;
     const STATUS_REMOVED_PAGE = 2;
@@ -102,6 +105,8 @@ class Model_Page extends Model
             $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
             $this->commentsCount = $this->getCommentsCount();
 
+            $this->isPostedInVK = Model_Services_Vk::getPostIdByArticleId($this->id);
+
         }
 
         return $this;
@@ -118,9 +123,9 @@ class Model_Page extends Model
             ->set('rich_view',      $this->rich_view)
             ->set('dt_pin',         $this->dt_pin);
 
-        $page = $page->execute();
+        $pageId = $page->execute();
 
-        if ($page) return new Model_Page($page);
+        if ($pageId) return new Model_Page($pageId);
     }
 
     public function update()
@@ -138,7 +143,9 @@ class Model_Page extends Model
 
         $page->clearcache('page:' . $this->id, array('site_menu'));
 
-        return $page->execute();
+        $page->execute();
+
+        return $this;
     }
 
     public function setAsRemoved()

@@ -1,7 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
 class Kohana_Exception extends Kohana_Kohana_Exception {
-
     public static function _handler($e)
     {
         switch (Kohana::$environment) {
@@ -9,16 +7,13 @@ class Kohana_Exception extends Kohana_Kohana_Exception {
                 self::$error_view = 'templates/errors/500';
                 self::formatErrorForTelegrams($e);
             break;
-
             case Kohana::TESTING:
             case Kohana::STAGING:
                 self::$error_view = 'templates/errors/500';
             break;
         }
-
         return parent::_handler($e);
     }
-
     /**
      * Compose error trace for Telegram
      * @param Exception $e - kohana exception object
@@ -35,6 +30,5 @@ class Kohana_Exception extends Kohana_Kohana_Exception {
         $telegramMsg .= PHP_EOL .  PHP_EOL . $e->getFile() . ': ' . $e->getLine() .  PHP_EOL . PHP_EOL;
         $telegramMsg .= $path;
         Model_Methods::sendBotNotification($telegramMsg);
-
     }
 }
