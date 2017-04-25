@@ -2807,6 +2807,8 @@ body {
 }
 .esir-showed #widgetEsirGovSpbRu {
     clip: auto;
+    -webkit-clip-path: none;
+            clip-path: none;
 }
 .esir {
 }

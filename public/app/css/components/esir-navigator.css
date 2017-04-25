@@ -12,6 +12,7 @@ body {
 
 .esir-showed #widgetEsirGovSpbRu {
     clip: auto;
+    clip-path: none;
 }
 
 .esir {
