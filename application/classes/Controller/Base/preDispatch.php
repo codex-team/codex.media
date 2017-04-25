@@ -30,7 +30,7 @@ class Controller_Base_preDispatch extends Controller_Template
 
                 if ( !in_array(Arr::get($_SERVER, 'SERVER_NAME'), $domainsAvailable) ) {
 
-                    exit('Wrong hostname. Please drop a line on team@ifmo.su');
+                    exit('Wrong hostname. Please drop a line on team@ifmo.su. You\'ve got ' . Arr::get($_SERVER, 'SERVER_NAME', 'UNRECOGNIZED domain sign ¯\_(⊙︿⊙)_/¯'));
 
                 }
             }
