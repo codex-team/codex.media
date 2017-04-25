@@ -14,7 +14,7 @@ class Model_Feed_VkPosts extends Model_Feed_Abstract {
     }
 
     /**
-     * Добавляем элемент в фид, передав в score дату создания
+     * Добавляем элемент в фид, передав в score page_id со стены из паблика
      *
      * @param int $article_id
      * @param int $post_id
