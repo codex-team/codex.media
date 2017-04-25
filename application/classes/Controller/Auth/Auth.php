@@ -111,7 +111,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
             $user_to_db = array(
                 'name'          => "{$userdata->last_name} {$userdata->first_name}",
-                'email'         => $response->email,
                 'vk'            => $userdata->uid,
                 'vk_name'       => "{$userdata->last_name} {$userdata->first_name}",
                 'vk_uri'        => $userdata->domain,
@@ -119,6 +118,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                 'photo_medium'  => $userdata->photo_100,
                 'photo_big'     => $userdata->photo_max
             );
+
+            if (property_exists($response, 'email')) {
+                $user_to_db['email'] = $response->email;
+            }
 
             /**
              *  What to do with response data?
@@ -167,7 +170,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
             $user_to_db = array(
                 'name'              => $userdata->name,
-                'email'             => $userdata->email,
                 'facebook'          => $userdata->id,
                 'facebook_name'     => $userdata->name,
                 'facebook_username' => NULL,
@@ -175,6 +177,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                 'photo_medium'      => $userdata->picture['200'],
                 'photo_big'         => $userdata->picture['500']
             );
+
+            if (property_exists($response, 'email')) {
+                $user_to_db['email'] = $response->email;
+            }
 
             /**
              *  What to do with response data?
