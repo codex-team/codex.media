@@ -268,16 +268,20 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
     private function textPostForWall()
     {
+        $this->page = new Model_Page($this->page->id);
+
         $server_name = 'http'. ((Arr::get($_SERVER, 'HTTPS')) ? 's' : '') .'://'.Arr::get($_SERVER, 'SERVER_NAME');
         $link = "{$server_name}" . "/p/{$this->page->id}/{$this->page->uri}";
 
+        $description = strip_tags($this->page->description);
+
         $text = "{$this->page->title}\n";
         $text .= "\n";
-        $text .= "{$this->page->description}\n";
-        $text .= "\n";
-        $text .= $link;
+        $text .= "{$description}\n";
+        // $text .= "\n";
+        // $text .= $link;
 
-        return $text;
+        return array('text' => $text, 'link' => $link);
     }
 
 }

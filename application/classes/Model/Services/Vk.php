@@ -63,17 +63,18 @@ class Model_Services_Vk extends Model_preDispatch
         return true;
     }
 
-    public function post($text)
+    public function post($values = array())
     {
         // if ($this->postId) {
         //     return $this->restore();
         // }
 
         $params = array(
-            "message"       => $text,
+            "message"       => $values['text'],
             "owner_id"      => $this->groupId,
             "from_group"    => 1,
-            "access_token"  => $this->adminKey
+            "access_token"  => $this->adminKey,
+            "attachments"   => $values['link']
         );
 
         $url = self::URLS["wall.post"];
@@ -95,15 +96,16 @@ class Model_Services_Vk extends Model_preDispatch
         return false;
     }
 
-    public function edit($text)
+    public function edit($values = array())
     {
         if (!$this->postId) return true;
 
         $params = array(
-            "message"       => $text,
+            "message"       => $values['text'],
             "owner_id"      => $this->groupId,
             "post_id"       => $this->postId,
-            "access_token"  => $this->adminKey
+            "access_token"  => $this->adminKey,
+            "attachments"   => $values['link']
         );
 
         $url = self::URLS["wall.edit"];
