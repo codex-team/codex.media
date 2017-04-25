@@ -77,21 +77,25 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         }
 
-        if (Arr::get($_POST, 'vkPost')) {
-            /** Create or edit post on public's wall */
-            if ($this->page->isPostedInVK) {
-                $VkPost = $this->vkWall()->edit($this->buildVKPost());
-            } else {
-                $VkPost = $this->vkWall()->post($this->buildVKPost());
-            }
-            /***/
-        } else {
+        if ($this->user->isAdmin()) {
 
-            /** Delete post from public's wall */
-            if ($this->page->isPostedInVK) {
-                $VkPost = $this->vkWall()->delete();
+            if (Arr::get($_POST, 'vkPost')) {
+                /** Create or edit post on public's wall */
+                if ($this->page->isPostedInVK) {
+                    $VkPost = $this->vkWall()->edit($this->buildVKPost());
+                } else {
+                    $VkPost = $this->vkWall()->post($this->buildVKPost());
+                }
+                /***/
+            } else {
+
+                /** Delete post from public's wall */
+                if ($this->page->isPostedInVK) {
+                    $VkPost = $this->vkWall()->delete();
+                }
+                /***/
             }
-            /***/
+
         }
 
         if (Arr::get($_POST, 'isNews')) {
