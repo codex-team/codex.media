@@ -85,9 +85,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
             /** Vk post */
             if ($this->page->isPostedInVK) {
-                $this->vkWall()->edit($this->textPostForWall());
+                $VkPost = $this->vkWall()->edit($this->textPostForWall());
             } else {
-                $this->vkWall()->post($this->textPostForWall());
+                $VkPost = $this->vkWall()->post($this->textPostForWall());
             }
             /***/
 
@@ -99,7 +99,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
             /** VkPost delete */
             if ($this->page->isPostedInVK) {
-                $this->vkWall()->delete();
+                $VkPost = $this->vkWall()->delete();
             }
             /***/
 
@@ -133,9 +133,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         /** VkPost */
         if ($this->page->isNewsPage()) {
-            $this->vkWall()->post($this->textPostForWall());
+            $VkPost = $this->vkWall()->post($this->textPostForWall());
         } else {
-            $this->vkWall()->delete();
+            $VkPost = $this->vkWall()->delete();
         }
         /***/
 
