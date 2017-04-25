@@ -27,6 +27,8 @@
 </head>
 <body>
 
+    <?= View::factory('templates/components/esir_navigator')->render(); ?>
+
     <? if (empty($contentOnly)): ?>
         <?= View::factory('templates/components/branding')->render(); ?>
     <? endif; ?>
@@ -53,7 +55,7 @@
 
     </div>
 
-    <? /* Scripts */ ?>
+
     <script>
 
         window.csrf = '<?= Security::token(); ?>';
@@ -83,8 +85,6 @@
     <? endif; ?>
 
     <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>
-    <? /* end Scripts */ ?>
-
 
     <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
 
