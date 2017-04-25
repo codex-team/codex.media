@@ -3,7 +3,7 @@
  */
 .branding {
     position: relative;
-    height: 200px;
+    height: 180px;
     background: #e5e7ef;
     overflow: hidden;
     transition: height 250ms ease-out;

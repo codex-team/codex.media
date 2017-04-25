@@ -25,3 +25,12 @@
         'page' => $page
     )); ?>
 </div>
+
+<?
+/**
+ * Hide ESIR-navigator
+ */
+?>
+<style>
+    .esir { display: none; }
+</style>
