@@ -44,6 +44,18 @@
     }
 }
 
+@media all and (max-width: 500px) {
+    .article__comments-counter {
+        font-size: 0;
+    }
+}
+
+@media all and (max-width: 330px) {
+    .article__comments-counter {
+        display: none;
+    }
+}
+
 .article__title {
     margin: 0;
     font-weight: 800;
