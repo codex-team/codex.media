@@ -12,6 +12,10 @@
     margin-right: 25px;
 }
 
+.tabs__tab:last-of-type {
+    margin-right: 0;
+}
+
 .tabs__tab:hover {
     color: var(--hoverColor);
     box-shadow: inset 0 -2px 0 0 color(var(--hoverColor) lightness(+20%));
