@@ -123,9 +123,9 @@ class Model_Page extends Model
             ->set('rich_view',      $this->rich_view)
             ->set('dt_pin',         $this->dt_pin);
 
-        $page = $page->execute();
+        $pageId = $page->execute();
 
-        if ($page) return new Model_Page($page);
+        if ($pageId) return new Model_Page($pageId);
     }
 
     public function update()
@@ -143,9 +143,9 @@ class Model_Page extends Model
 
         $page->clearcache('page:' . $this->id, array('site_menu'));
 
-        $page->execute();
+        $pageId = $page->execute();
 
-        return $this;
+        if ($pageId) return new Model_Page($pageId);
     }
 
     public function setAsRemoved()
