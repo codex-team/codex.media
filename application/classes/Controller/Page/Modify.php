@@ -80,9 +80,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         if (Arr::get($_POST, 'vkPost')) {
             /** Create or edit post on public's wall */
             if ($this->page->isPostedInVK) {
-                $VkPost = $this->vkWall()->edit($this->textPostForWall());
+                $VkPost = $this->vkWall()->edit($this->buildVKPost());
             } else {
-                $VkPost = $this->vkWall()->post($this->textPostForWall());
+                $VkPost = $this->vkWall()->post($this->buildVKPost());
             }
             /***/
         } else {
@@ -270,7 +270,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
      *
      * @return array — text and link for post
      */
-    private function textPostForWall()
+    private function buildVKPost()
     {
         /** Take an instance of class for getting right description */
         $this->page = new Model_Page($this->page->id);
