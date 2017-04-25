@@ -169,6 +169,17 @@ module.exports = (function () {
                     enableLineBreaks: true,
                     allowedToPaste: true
                 },
+                link: {
+                    type: 'link',
+                    iconClassname: 'ce-icon-link',
+                    displayInToolbox : true,
+                    render: cdxEditorLink.render,
+                    makeSettings: cdxEditorLink.settings,
+                    save: cdxEditorLink.save,
+                    destroy: cdxEditorLink.destroy,
+                    validate: cdxEditorLink.validate,
+                    allowPasteHTML: true
+                },
                 raw : {
                     type: 'raw',
                     displayInToolbox: true,
