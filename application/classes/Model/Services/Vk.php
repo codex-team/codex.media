@@ -2,7 +2,7 @@
 
 /**
  * Class for create posts on public page's wall
- * 
+ *
  * Read this before using:
  * https://github.com/codex-team/codex.edu/issues/119#issuecomment-296349880
  *
@@ -11,10 +11,10 @@
 class Model_Services_Vk extends Model_preDispatch
 {
     const URLS = array(
-        "wall.post"    => "https://api.vk.com/method/wall.post",
-        "wall.edit"    => "https://api.vk.com/method/wall.edit",
-        "wall.delete"  => "https://api.vk.com/method/wall.delete",
-        "wall.restore" => "https://api.vk.com/method/wall.restore",
+        'wall.post'    => 'https://api.vk.com/method/wall.post',
+        'wall.edit'    => 'https://api.vk.com/method/wall.edit',
+        'wall.delete'  => 'https://api.vk.com/method/wall.delete',
+        'wall.restore' => 'https://api.vk.com/method/wall.restore',
     );
 
     /** Config params for requests */
@@ -30,7 +30,7 @@ class Model_Services_Vk extends Model_preDispatch
     /**
      * This model combines artile's id and post's id on the public wall
      *
-     * @param {Integer} $articleId
+     * @param integer $articleId
      */
     public function __construct($articleId = 0)
     {
@@ -66,8 +66,8 @@ class Model_Services_Vk extends Model_preDispatch
         }
 
         /** Trying to get params */
-        $this->groupId  = Arr::get($config->vk, "group_id", "");
-        $this->adminKey = Arr::get($config->vk, "admin_key", "");
+        $this->groupId  = Arr::get($config->vk, 'group_id', '');
+        $this->adminKey = Arr::get($config->vk, 'admin_key', '');
 
         if (!$this->groupId || !$this->adminKey) {
 
@@ -83,23 +83,23 @@ class Model_Services_Vk extends Model_preDispatch
     /**
      * Create post on the wall
      *
-     * @param  {String} $values['text'] — Text for the post
-     * @param  {String} $values['link'] — Attache link
+     * $values['text'] — New text for the post
+     * $values['link'] — Attache link
      *
-     * @return {Integer} $post_id       — fresh post's id
-     * @return {Boolean} false          — false on error
+     * @param  array $values
+     * @return integer $post_id — new post's id or 0
      */
     public function post($values = array())
     {
         $params = array(
-            "message"       => $values['text'],
-            "owner_id"      => $this->groupId,
-            "from_group"    => 1,
-            "access_token"  => $this->adminKey,
-            "attachments"   => $values['link']
+            'message'       => $values['text'],
+            'owner_id'      => $this->groupId,
+            'from_group'    => 1,
+            'access_token'  => $this->adminKey,
+            'attachments'   => $values['link']
         );
 
-        $url = self::URLS["wall.post"];
+        $url = self::URLS['wall.post'];
 
         $response = $this->sendRequest($url, $params);
 
@@ -112,73 +112,71 @@ class Model_Services_Vk extends Model_preDispatch
             return $this->postId;
         }
 
-        return false;
+        return 0;
     }
 
     /**
      * Edit post on the wall
      *
-     * @param  {String} $values['text'] — New text for the post
-     * @param  {String} $values['link'] — Attache link
-     * @return 1 or false
+     * $values['text'] — New text for the post
+     * $values['link'] — Attache link
+     *
+     * @param  array $values
+     * @return boolean — result
      */
     public function edit($values = array())
     {
         if (!$this->postId) return true;
 
         $params = array(
-            "message"       => $values['text'],
-            "owner_id"      => $this->groupId,
-            "post_id"       => $this->postId,
-            "access_token"  => $this->adminKey,
-            "attachments"   => $values['link']
+            'message'       => $values['text'],
+            'owner_id'      => $this->groupId,
+            'post_id'       => $this->postId,
+            'access_token'  => $this->adminKey,
+            'attachments'   => $values['link']
         );
 
-        $url = self::URLS["wall.edit"];
-
+        $url = self::URLS['wall.edit'];
 
         $response = $this->sendRequest($url, $params);
 
-        return $response;
+        return (boolean) $response;
     }
 
     /**
      * Delete post from the public's wall
      *
-     * @return 1 or false
+     * @return boolean — result
      */
     public function delete()
     {
         if (!$this->postId) return true;
 
         $params = array(
-            "owner_id"      => $this->groupId,
-            "post_id"       => $this->postId,
-            "access_token"  => $this->adminKey
+            'owner_id'      => $this->groupId,
+            'post_id'      => $this->postId,
+            'access_token'  => $this->adminKey
         );
 
-        $url = self::URLS["wall.delete"];
+        $url = self::URLS['wall.delete'];
 
-        /**
-         * @return 1 or false
-         */
         $response = $this->sendRequest($url, $params);
 
         if ($response) {
             $this->removeFromFeed();
         }
 
-        return $response;
+        return (boolean) $response;
     }
 
     /**
      * sendRequest - send post request to $url with $params
      *
-     * @param  {String} $url    — Url for this request
-     * @param  {Array}  $params — POST params
-     * @return {Array}          — decoded json positive response or false on error
+     * @param  string $url    — Url for this request
+     * @param  array  $params — POST params
+     * @return array          — decoded json positive response or false on error
      */
-    private function sendRequest($url = "", $params = array())
+    private function sendRequest($url = '', $params = array())
     {
         if ( !$this->isConfigOk ) {
             return false;
@@ -189,7 +187,7 @@ class Model_Services_Vk extends Model_preDispatch
         $response = json_decode($response);
 
         /** Good, we've got a positive response */
-        if (property_exists($response, "response")) {
+        if (property_exists($response, 'response')) {
 
             return $response->response;
 
@@ -226,8 +224,8 @@ class Model_Services_Vk extends Model_preDispatch
     /**
      * Check is this post for this article exist on the public's wall
      *
-     * @param  {String}  $articleId — article->id
-     * @return {integer} $post_id   — post's id or 0 if no post for the article exists
+     * @param  string  $articleId — article->id
+     * @return integer $post_id   — post's id or 0 if no post for the article exists
      */
     public static function getPostIdByArticleId($articleId = 0)
     {

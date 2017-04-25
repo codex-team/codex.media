@@ -191,7 +191,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
             $this->page->setAsRemoved();
 
-            /** VkPost delete */
+            /** Delete post from public's wall */
             $this->vkWall()->delete();
             /***/
 
@@ -263,7 +263,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
     /**
      * Create an instance of the class Model_Services_Vk for using
      *
-     * @return {Object} Model_Services_Vk
+     * @return object Model_Services_Vk
      */
     private function vkWall()
     {
@@ -273,9 +273,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
     /**
      * Function for getting text for post
      *
-     * @return {Array}
-     * @return {String} ['text'] — text for new post
-     * @return {String} ['link'] — link for page with this article
+     * @return array — text and link for post
      */
     private function textPostForWall()
     {
