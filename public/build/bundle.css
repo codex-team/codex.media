@@ -2802,6 +2802,8 @@ body {
 }
 #widgetEsirGovSpbRu {
     clip: rect(0, 0, 0, 0);
+    -webkit-clip-path: url(#cdx-clip-rect);
+            clip-path: url(#cdx-clip-rect);
 }
 .esir-showed #widgetEsirGovSpbRu {
     clip: auto;

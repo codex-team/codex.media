@@ -7,6 +7,7 @@ body {
 
 #widgetEsirGovSpbRu {
     clip: rect(0, 0, 0, 0);
+    clip-path: url(#cdx-clip-rect);
 }
 
 .esir-showed #widgetEsirGovSpbRu {

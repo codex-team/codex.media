@@ -7,3 +7,4 @@
     </div>
     <div class="esir__search">Поиск по сайту</div>
 </div>
+<? include(DOCROOT . 'public/app/svg/clip.svg') ?>
