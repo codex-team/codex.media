@@ -57,6 +57,23 @@ return array
         ),
     ),
 
+    Model_File::EDITOR_PERSONALITY => array(
+        'path' => 'upload/pages/persons/',
+        /**
+         * Image sizes config
+         * key - filename prefix_
+         * first argument  — need crop square or should resize with saving ratio
+         * second argument — max width
+         * third argument  — max height
+         */
+        'sizes' => array(
+            'o'  => array(false, 1000, 1000),
+            'b'  => array(true , 200),
+            'm'  => array(true , 100),
+            's'  => array(true , 50),
+        ),
+    ),
+
     Model_File::PAGE_COVER => array(
         'path' => 'upload/pages/covers/',
         /**

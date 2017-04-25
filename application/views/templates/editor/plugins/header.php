@@ -2,9 +2,9 @@
 
     $tag = 'h2';
 
-    if ( !empty($block['type']) ) {
+    if ( !empty($block['heading-styles']) ) {
 
-        switch ($block['type']) {
+        switch (strtoupper($block['heading-styles'])) {
             case 'H1':
                 $tag = 'h1';
                 break;

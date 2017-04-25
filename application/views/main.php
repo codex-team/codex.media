@@ -68,8 +68,18 @@
 
     </script>
 
-    <? if(empty($contentOnly)): ?>
-        <script src="https://cdn.ifmo.su/special/v1.1/codex-special.min.js" onload="codexSpecial.init({blockId : 'js-contrast-version-holder',})"></script>
+    <? if ( empty($contentOnly) ): ?>
+
+        <?
+            $specialPath = 'https://cdn.ifmo.su/special/v1.2';
+
+            if ( Kohana::$environment === Kohana::DEVELOPMENT ) {
+                $specialPath = '/public/extensions/codex.special';
+            }
+        ?>
+
+        <script src="<?= $specialPath ?>/codex-special.min.js" onload="codexSpecial.init({blockId : 'js-contrast-version-holder',})"></script>
+
     <? endif; ?>
 
     <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>
@@ -78,9 +88,40 @@
 
     <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
 
-        <!-- Yandex.Metrika counter -->
+        <? if ( !empty($_SERVER['ENABLE_GOV_SITE_WIDGET']) && $_SERVER['ENABLE_GOV_SITE_WIDGET'] ): ?>
+            <script type="text/javascript" src="https://esir.gov.spb.ru/static/widget/js/widget.js" charset="utf-8"></script>
+        <? endif; ?>
 
-        <!-- /Yandex.Metrika counter -->
+        <? if ( !empty($_SERVER['YANDEX_METRIKA_ID'] )): ?>
+            <!-- Yandex.Metrika counter -->
+            <script type="text/javascript">
+                (function (d, w, c) {
+                    (w[c] = w[c] || []).push(function() {
+                        try {
+                            w.yaCounter<?= $_SERVER['YANDEX_METRIKA_ID'] ?> = new Ya.Metrika({
+                                id:<?= $_SERVER['YANDEX_METRIKA_ID'] ?>,
+                                clickmap:true,
+                                trackLinks:true,
+                                accurateTrackBounce:true
+                            });
+                        } catch(e) { }
+                    });
+
+                    var n = d.getElementsByTagName("script")[0],
+                        s = d.createElement("script"),
+                        f = function () { n.parentNode.insertBefore(s, n); };
+                    s.type = "text/javascript";
+                    s.async = true;
+                    s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+                    if (w.opera == "[object Opera]") {
+                        d.addEventListener("DOMContentLoaded", f, false);
+                    } else { f(); }
+                })(document, window, "yandex_metrika_callbacks");
+            </script>
+            <noscript><div><img src="https://mc.yandex.ru/watch/<?= $_SERVER['YANDEX_METRIKA_ID'] ?>" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+            <!-- /Yandex.Metrika counter -->
+        <? endif; ?>
 
     <? endif; ?>
 

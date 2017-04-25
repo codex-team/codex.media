@@ -19,27 +19,30 @@
         </time>
 
         <a class="article__author" href="/user/<?= $page->author->id ?>">
-            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
-            <?= $page->author->name ?>
+            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>"><?= $page->author->name ?>
         </a>
 
-        <a class="article__comments-counter" href="<?= $page->url ?>#comments">
-            <? include(DOCROOT . "public/app/svg/comment.svg") ?>
-            <? if ($page->commentsCount > 0): ?>
-                <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
-            <? else: ?>
-                Комментировать
+        <div class="article__information-right">
+
+            <a class="article__comments-counter" href="<?= $page->url ?>#comments">
+                <? include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>
+                <? if ($page->commentsCount > 0): ?>
+                    <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
+                <? else: ?>
+                    Комментировать
+                <? endif ?>
+            </a>
+
+            <? /* Manage page buttons */ ?>
+            <? if ($page->canModify($user)): ?>
+
+                <span class="island-settings js-page-settings" data-id="<?= $page->id ?>">
+                    <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
+                </span>
+
             <? endif ?>
-        </a>
 
-        <? /* Manage page buttons */ ?>
-        <? if ($page->canModify($user)): ?>
-
-            <span class="island-settings js-page-settings" data-id="<?= $page->id ?>">
-                <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
-            </span>
-
-        <? endif ?>
+        </div>
 
     </header>
 

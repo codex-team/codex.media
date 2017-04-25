@@ -36,3 +36,10 @@
 .sharing__button--facebook:hover {
     background-color: color(var(--facebookColor) lightness(-10%));
 }
+
+@media (--mobile) {
+    .sharing__button {
+        margin-right: 5px;
+        font-size: 12px;
+    }
+}

@@ -19,8 +19,8 @@
 
 <? else: ?>
 
-    <a href="/auth">
-        <? include(DOCROOT . "public/app/svg/comment.svg") ?>  Комментировать
+    <a class="comment-form__placeholder" href="/auth">
+        <? include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>  Комментировать
     </a>
 
 <? endif ?>

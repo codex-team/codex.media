@@ -28,7 +28,11 @@
                 </a>
             </div>
 
-            <a class="post-list-item__title js-emoji-included" href="/p/<?= $page->id ?>/<?= $page->uri ?>"><?= $page->title ?></a>
+            <h3 class="post-list-item__title js-emoji-included">
+                <a href="/p/<?= $page->id ?>/<?= $page->uri ?>">
+                    <?= $page->title ?>
+                </a>
+            </h3>
 
             <? if (!$page->rich_view && $page->description): ?>
                 <div class="post-list-item__body js-emoji-included">
@@ -50,7 +54,7 @@
 
             <div class="post-list-item__footer">
                 <a class="post-list-item__comments" href="/p/<?= $page->id ?>/<?= $page->uri ?>" rel="nofollow">
-                    <? include(DOCROOT . "public/app/svg/comment.svg") ?>
+                    <? include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>
                     <? if ($page->commentsCount > 0): ?>
                         <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
                     <? else: ?>

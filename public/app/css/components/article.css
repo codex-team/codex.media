@@ -7,13 +7,13 @@
 }
 
 .article__information {
+    display: flex;
     color: var(--grayText);
     font-size: 14px;
 }
 
 .article__time,
-.article__author,
-.article__comments-counter {
+.article__author {
     display: inline-block;
     margin: 0 1em 15px 0;
     white-space: nowrap;
@@ -30,6 +30,18 @@
 .article__comments-counter svg {
     display: inline-block;
     margin-right: 0.2em;
+    height: 15px;
+}
+
+.article__information {
+    &-right {
+        margin-left: auto;
+    }
+
+    & .island-settings {
+        float: none;
+        margin-left: 20px;
+    }
 }
 
 .article__title {
@@ -147,6 +159,104 @@
     line-height: 1.5em;
 }
 
+/**
+ * Raw block
+ */
+.article__raw {
+    margin: 1em 0;
+}
+
+.article h2,
+.article h3,
+.article h4 {
+    line-height: 1.35em;
+}
+
+/**
+ * Personality tool
+ * ==========
+ */
+.article__person {
+    & {
+        background: #fff;
+        border: 1px solid #e5e6ec;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+        border-radius: 3px;
+        padding: 30px;
+        margin: 0.7em 0;
+        line-height: 1.4em;
+    }
+
+    &-name {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    &-cite {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+
+    &-url {
+        display: block;
+        margin-top: 15px;
+        border-bottom: 0 !important;
+        font-size: 11px;
+        color: var(--grayText) !important;
+        letter-spacing: 0.1px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 80%;
+        line-height: 1em;
+    }
+
+    &-url:hover {
+        color: var(--hoverColor) !important;
+    }
+
+    &-photo {
+        float: right;
+        width: 70px;
+        height: 70px;
+        border-radius: 3px;
+        background-color: #f6f6f9;
+        background-image: url('/public/app/svg/photo-placeholder.svg');
+        background-repeat: no-repeat;
+        background-position: center center;
+        overflow: hidden;
+        margin-left: 30px;
+    }
+}
+
+/**
+ * Table
+ * =========
+ */
+.article__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85em;
+}
+
+.article__table td {
+    border: 1px solid var(--lightGrayLine);
+    padding: 10px 15px;
+}
+
+/**
+ * Termin word
+ */
+
+.article__termin {
+    display: inline-block;
+    padding: 4px 6px;
+    background: #f9f2f2;
+    color: #cc5c74;
+    line-height: 1em;
+    border-radius: 3px;
+}
+
 @media (--mobile) {
     .article {
         padding: 20px;
@@ -171,5 +281,14 @@
 
     .children-pages__link {
         font-size: 16px;
+    }
+
+    .article__person {
+        padding: 15px;
+    }
+
+    .article__person-photo {
+        width: 40px;
+        height: 40px;
     }
 }
