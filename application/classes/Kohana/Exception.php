@@ -31,8 +31,10 @@ class Kohana_Exception extends Kohana_Kohana_Exception {
         } else {
             $path = '';
         }
-        $telegramMsg = '⚠️ ' . $e->getMessage() . '';
-        $telegramMsg .= PHP_EOL .  PHP_EOL . $e->getFile() . ': ' . $e->getLine() .  PHP_EOL . PHP_EOL;
+        $telegramMsg = "⚠️ " . $e->getMessage() . "\n";
+        $telegramMsg .= "\n";
+        $telegramMsg .= $e->getFile() . ": " . $e->getLine() . "\n";
+        $telegramMsg .= "\n";
         $telegramMsg .= $path;
         Model_Services_Telegram::sendBotNotification($telegramMsg);
 

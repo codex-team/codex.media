@@ -276,7 +276,7 @@ class Model_Feed_Abstract extends Model {
      * @param $item_id
      * @return float
      */
-    private function getScore($item_id) {
+    public function getScore($item_id) {
         $item_id = $this->composeValueIdentity($item_id);
         return $this->redis->zScore($this->timeline_key, $item_id);
     }

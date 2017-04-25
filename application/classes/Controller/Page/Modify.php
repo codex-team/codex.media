@@ -63,7 +63,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         }
 
         if ($this->page->id) {
-            $this->page->update();
+
+            $this->page = $this->page->update();
+
         } else {
 
             $this->page = $this->page->insert();
@@ -81,11 +83,25 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                 $this->page->addToFeed(Model_Feed_Pages::TYPE_NEWS);
             }
 
+            /** Vk post */
+            if ($this->page->isPostedInVK) {
+                $this->vkWall()->edit($this->textPostForWall());
+            } else {
+                $this->vkWall()->post($this->textPostForWall());
+            }
+            /***/
+
         } else {
 
             if ($this->user->isAdmin()) {
                 $this->page->removeFromFeed(Model_Feed_Pages::TYPE_NEWS);
             }
+
+            /** VkPost delete */
+            if ($this->page->isPostedInVK) {
+                $this->vkWall()->delete();
+            }
+            /***/
 
         }
 
@@ -114,6 +130,14 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $feed_key = Arr::get($_GET, 'list', '');
 
         $this->page->toggleFeed($feed_key);
+
+        /** VkPost */
+        if ($this->page->isNewsPage()) {
+            $this->vkWall()->post($this->textPostForWall());
+        } else {
+            $this->vkWall()->delete();
+        }
+        /***/
 
         $this->ajax_response['success'] = 1;
 
@@ -166,6 +190,10 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         if ($this->page->canModify($this->user)) {
 
             $this->page->setAsRemoved();
+
+            /** VkPost delete */
+            $this->vkWall()->delete();
+            /***/
 
             $this->ajax_response = array(
                 'success' => 1,
@@ -233,6 +261,23 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
     }
 
+    private function vkWall()
+    {
+        return new Model_Services_Vk($this->page->id);
+    }
 
+    private function textPostForWall()
+    {
+        $server_name = 'http'. ((Arr::get($_SERVER, 'HTTPS')) ? 's' : '') .'://'.Arr::get($_SERVER, 'SERVER_NAME');
+        $link = "{$server_name}" . "/p/{$this->page->id}/{$this->page->uri}";
+
+        $text = "{$this->page->title}\n";
+        $text .= "\n";
+        $text .= "{$this->page->description}\n";
+        $text .= "\n";
+        $text .= $link;
+
+        return $text;
+    }
 
 }
