@@ -83,7 +83,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                 $this->page->addToFeed(Model_Feed_Pages::TYPE_NEWS);
             }
 
-            /** Vk post */
+            /** Create or edit post on public's wall */
             if ($this->page->isPostedInVK) {
                 $VkPost = $this->vkWall()->edit($this->textPostForWall());
             } else {
@@ -97,7 +97,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                 $this->page->removeFromFeed(Model_Feed_Pages::TYPE_NEWS);
             }
 
-            /** VkPost delete */
+            /** Delete post from public's wall */
             if ($this->page->isPostedInVK) {
                 $VkPost = $this->vkWall()->delete();
             }
@@ -131,7 +131,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         $this->page->toggleFeed($feed_key);
 
-        /** VkPost */
+        /** Create or delete post on public's wall on news toggle */
         if ($this->page->isNewsPage()) {
             $VkPost = $this->vkWall()->post($this->textPostForWall());
         } else {
@@ -215,7 +215,6 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
     /**
      * Gets current page model.
      * Data can be contained in request param or in $_POST array;
-     *
      */
     private function getPage() {
 
@@ -261,13 +260,26 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
     }
 
+    /**
+     * Create an instance of the class Model_Services_Vk for using
+     *
+     * @return {Object} Model_Services_Vk
+     */
     private function vkWall()
     {
         return new Model_Services_Vk($this->page->id);
     }
 
+    /**
+     * Function for getting text for post
+     *
+     * @return {Array}
+     * @return {String} ['text'] — text for new post
+     * @return {String} ['link'] — link for page with this article
+     */
     private function textPostForWall()
     {
+        /** Take an instance of class for getting right description */
         $this->page = new Model_Page($this->page->id);
 
         $server_name = 'http'. ((Arr::get($_SERVER, 'HTTPS')) ? 's' : '') .'://'.Arr::get($_SERVER, 'SERVER_NAME');

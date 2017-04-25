@@ -2,6 +2,9 @@
 
 /**
  * Class for create posts on public page's wall
+ * 
+ * Read this before using:
+ * https://github.com/codex-team/codex.edu/issues/119#issuecomment-296349880
  *
  * @author Taly Guryn https://github.com/talyguryn
  */
@@ -14,15 +17,21 @@ class Model_Services_Vk extends Model_preDispatch
         "wall.restore" => "https://api.vk.com/method/wall.restore",
     );
 
+    /** Config params for requests */
     private $groupId;
     private $adminKey;
 
+    private $isConfigOk = 0;
+
+    /** Pair */
     private $postId    = 0;
     private $articleId = 0;
 
-    private $isConfigOk = 0;
-
-
+    /**
+     * This model combines artile's id and post's id on the public wall
+     *
+     * @param {Integer} $articleId
+     */
     public function __construct($articleId = 0)
     {
         $this->isConfigOk = $this->loadConfig();
@@ -35,9 +44,12 @@ class Model_Services_Vk extends Model_preDispatch
         $this->postId = self::getPostIdByArticleId($articleId);
     }
 
+    /**
+     * Load params from config file
+     */
     private function loadConfig()
     {
-        $configFilename = 'social-public-pages-keys';
+        $configFilename = 'communities';
         $config = Kohana::$config->load($configFilename);
 
         /** Check is config exist. If it doesn't then do nothing */
@@ -45,30 +57,40 @@ class Model_Services_Vk extends Model_preDispatch
             return false;
         }
 
+        /** If config doesn't contain params for vk */
         if (!property_exists($config, 'vk')) {
-            throw new Kohana_Exception("No $configFilename config file was found!");
+
+            throw new Kohana_Exception("No configuration for VK was found in $configFilename config file!");
 
             return false;
         }
 
+        /** Trying to get params */
         $this->groupId  = Arr::get($config->vk, "group_id", "");
         $this->adminKey = Arr::get($config->vk, "admin_key", "");
 
         if (!$this->groupId || !$this->adminKey) {
+
             throw new Kohana_Exception("Invalid configuration of $configFilename config file ");
 
             return false;
         }
 
+        /** All right */
         return true;
     }
 
+    /**
+     * Create post on the wall
+     *
+     * @param  {String} $values['text'] — Text for the post
+     * @param  {String} $values['link'] — Attache link
+     *
+     * @return {Integer} $post_id       — fresh post's id
+     * @return {Boolean} false          — false on error
+     */
     public function post($values = array())
     {
-        // if ($this->postId) {
-        //     return $this->restore();
-        // }
-
         $params = array(
             "message"       => $values['text'],
             "owner_id"      => $this->groupId,
@@ -79,9 +101,6 @@ class Model_Services_Vk extends Model_preDispatch
 
         $url = self::URLS["wall.post"];
 
-        /**
-         * @return post_id of false
-         */
         $response = $this->sendRequest($url, $params);
 
         if ($response) {
@@ -96,6 +115,13 @@ class Model_Services_Vk extends Model_preDispatch
         return false;
     }
 
+    /**
+     * Edit post on the wall
+     *
+     * @param  {String} $values['text'] — New text for the post
+     * @param  {String} $values['link'] — Attache link
+     * @return 1 or false
+     */
     public function edit($values = array())
     {
         if (!$this->postId) return true;
@@ -110,14 +136,17 @@ class Model_Services_Vk extends Model_preDispatch
 
         $url = self::URLS["wall.edit"];
 
-        /**
-         * @return 1 or false
-         */
+
         $response = $this->sendRequest($url, $params);
 
         return $response;
     }
 
+    /**
+     * Delete post from the public's wall
+     *
+     * @return 1 or false
+     */
     public function delete()
     {
         if (!$this->postId) return true;
@@ -142,32 +171,12 @@ class Model_Services_Vk extends Model_preDispatch
         return $response;
     }
 
-    // public function restore()
-    // {
-    //     if (!$this->postId) return true;
-    //
-    //     $params = array(
-    //         "owner_id"      => $this->groupId,
-    //         "post_id"       => $this->postId,
-    //         "access_token"  => $this->adminKey
-    //     );
-    //
-    //     $url = self::URLS["wall.restore"];
-    //
-    //     /**
-    //      * @return 1 or false
-    //      */
-    //     $response = $this->sendRequest($url, $params);
-    //
-    //     return $response;
-    // }
-
     /**
      * sendRequest - send post request to $url with $params
      *
-     * @param  {String} $url
-     * @param  {Array}  $params
-     * @return {Array}            decoded json positive response or false on error
+     * @param  {String} $url    — Url for this request
+     * @param  {Array}  $params — POST params
+     * @return {Array}          — decoded json positive response or false on error
      */
     private function sendRequest($url = "", $params = array())
     {
@@ -179,7 +188,7 @@ class Model_Services_Vk extends Model_preDispatch
 
         $response = json_decode($response);
 
-        /** get positive response */
+        /** Good, we've got a positive response */
         if (property_exists($response, "response")) {
 
             return $response->response;
@@ -187,26 +196,39 @@ class Model_Services_Vk extends Model_preDispatch
         }
         /***/
 
-        /** pack response from vk to show error */
+        /** Bad. Need to pack response from vk to show error */
         $response = mb_convert_encoding(json_encode($response, JSON_UNESCAPED_UNICODE), 'cp1251', 'utf8');
 
         throw new Kohana_Exception("Error while trying to use vk api.\nVK response: " . $response);
 
         return false;
+        /***/
     }
 
+    /**
+     * Save pade_id from vk wall for current article to Redis list
+     */
     private function addToFeed()
     {
         $feed = new Model_Feed_VkPosts();
         $feed->add($this->articleId, $this->postId);
     }
 
+    /**
+     * Remove pade_id from Redis list
+     */
     private function removeFromFeed()
     {
         $feed = new Model_Feed_VkPosts();
         $feed->remove($this->articleId);
     }
 
+    /**
+     * Check is this post for this article exist on the public's wall
+     *
+     * @param  {String}  $articleId — article->id
+     * @return {integer} $post_id   — post's id or 0 if no post for the article exists
+     */
     public static function getPostIdByArticleId($articleId = 0)
     {
         if (!$articleId) {
