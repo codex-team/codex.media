@@ -60,7 +60,7 @@ class Controller_Comments extends Controller_Base_preDispatch
         $comment_link__server_name = 'http'. ((Arr::get($_SERVER, 'HTTPS')) ? 's' : '') .'://'.Arr::get($_SERVER, 'SERVER_NAME');
         $comment_link = $comment_link__server_name . "/p/" . $comment->page_id . "#comment" . $comment->id;
         $comment_to_post = $this->user->name . " оставил комментарий на странице \"" . $page->title . "\": $text\n\n $comment_link";
-        Model_Methods::postToSocialPublicPage($comment_to_post);
+        Model_Services_Vk::postToSocialPublicPage($comment_to_post);
         /***/
 
 
