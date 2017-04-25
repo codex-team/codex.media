@@ -16,11 +16,15 @@
 
     <base href="/" />
 
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700&subset=cyrillic" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700&subset=cyrillic" rel="stylesheet"> -->
 
 
     <link rel="stylesheet" type="text/css" media="all" href="/public/build/bundle.css?v=<?= filemtime('public/build/bundle.css'); ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
+
+    <meta name="image" property="og:image"  content="https://school332.ru/public/app/img/meta-image.png" />
+    <link rel="image_src" href="https://school332.ru/public/app/img/meta-image.png" />
+
 
     <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>"></script>
 
