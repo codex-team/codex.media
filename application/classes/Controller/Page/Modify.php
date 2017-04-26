@@ -101,13 +101,13 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         if (Arr::get($_POST, 'isNews')) {
 
             if (!$this->page->isNewsPage && $this->user->isAdmin()) {
-                $this->page->addToFeed(Model_Feed_Pages::TYPE_NEWS);
+                $this->page->addToFeed(Model_Feed_Pages::TYPE_MAIN);
             }
 
         } else {
 
             if ($this->user->isAdmin()) {
-                $this->page->removeFromFeed(Model_Feed_Pages::TYPE_NEWS);
+                $this->page->removeFromFeed(Model_Feed_Pages::TYPE_MAIN);
             }
 
         }
@@ -148,8 +148,8 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                 break;
 
             case 'news':
-                $this->ajax_response['message'] = $this->page->isNewsPage() ? 'Страница добавлена в новости' : 'Страница удалена из новостей';
-                $this->ajax_response['buttonText'] = $this->page->isNewsPage() ? 'Убрать из новостей' : 'Добавить в новости';
+                $this->ajax_response['message'] = $this->page->isNewsPage() ? 'Вывели на главную' : 'Убрали с главной';
+                $this->ajax_response['buttonText'] = $this->page->isNewsPage() ? 'Убрать с главной' : 'На главную';
                 break;
 
         }
@@ -168,7 +168,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             goto finish;
         };
 
-        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_NEWS);
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MAIN);
         $feed->togglePin($id);
 
         $this->ajax_response['success'] = 1;

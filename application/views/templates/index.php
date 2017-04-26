@@ -9,8 +9,8 @@
 <? /***/ ?>
 
 <div class="island tabs">
-    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TYPE_NEWS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TYPE_NEWS ?>">
-        Новости
+    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TYPE_MAIN ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TYPE_MAIN ?>">
+        Главное
     </a>
     <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TYPE_TEACHERS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TYPE_TEACHERS ?>">
         Блоги преподавателей

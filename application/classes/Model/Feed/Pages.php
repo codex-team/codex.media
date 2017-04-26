@@ -4,7 +4,7 @@ class Model_Feed_Pages extends Model_Feed_Abstract {
 
     const TYPE_ALL       = 'all';
     const TYPE_TEACHERS  = 'teachers';
-    const TYPE_NEWS      = 'news';
+    const TYPE_MAIN      = 'news';
     const TYPE_MENU      = 'menu';
 
     public function __construct($type = self::TYPE_ALL, $prefix = '')

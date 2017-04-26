@@ -326,7 +326,7 @@ class Model_Page extends Model
      */
     public function isNewsPage() {
 
-        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_NEWS);
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MAIN);
 
         return $feed->isExist($this->id);
 
@@ -339,7 +339,7 @@ class Model_Page extends Model
      */
     public function removePageFromFeeds()
     {
-        $this->removeFromFeed(Model_Feed_Pages::TYPE_NEWS);
+        $this->removeFromFeed(Model_Feed_Pages::TYPE_MAIN);
         $this->removeFromFeed(Model_Feed_Pages::TYPE_ALL);
         $this->removeFromFeed(Model_Feed_Pages::TYPE_TEACHERS);
         $this->removeFromFeed(Model_Feed_Pages::TYPE_MENU);
