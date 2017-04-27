@@ -16,12 +16,53 @@
     font-size: 15px;
 }
 
-.spb_shield {
+/*.spb_shield {
     display: block;
     width: 26px;
     height: 32px;
     background: url('/public/app/img/spb-shield.png') no-repeat;
     margin-right: var(--islandPadding);
+}*/
+
+.site-head__logo {
+    position: relative;
+    display: inline-block;
+    min-width: 50px;
+    height: 50px;
+    margin-right: 25px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.site-head__logo--empty {
+    background: #3997de;
+}
+
+.site-head__logo--empty:before {
+    content: attr(data-placeholder);
+    color: #fff;
+    line-height: 50px;
+    font-size: 21px;
+    font-weight: 500;
+}
+
+.site-head__logo-upload{
+    position: absolute;
+    display: none;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -40%);
+}
+.site-head__logo:hover .site-head__logo-upload{
+    display: inline-block;
+}
+
+.site-head__logo--admin:hover:before {
+    content: '';
+}
+
+.site-head__title {
+    margin: auto 0;
 }
 
 .main-aside .menu:empty {

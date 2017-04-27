@@ -14,6 +14,7 @@ class Model_Settings extends Model_preDispatch
     public $label;
 
     const BRANDING_KEY = 'branding';
+    const LOGO_KEY = 'logo';
 
     public function __construct()
     {
@@ -116,6 +117,33 @@ class Model_Settings extends Model_preDispatch
                             ->execute();
 
         $this->name = self::BRANDING_KEY;
+        $this->value = $filename;
+
+        if ($brandingExists) {
+
+            $this->update();
+
+        } else {
+
+            $this->insert();
+
+        }
+
+        return $this->value;
+    }
+    /**
+     * Saves new logo image
+     * @param  string $filename   file name
+     * @return string new logo image name
+     */
+    public function newLogo($filename)
+    {
+        $brandingExists = Dao_Settings::select()
+                            ->where('name', '=', self::LOGO_KEY)
+                            ->limit(1)
+                            ->execute();
+
+        $this->name = self::LOGO_KEY;
         $this->value = $filename;
 
         if ($brandingExists) {

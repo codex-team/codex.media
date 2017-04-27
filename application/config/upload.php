@@ -89,4 +89,13 @@ return array
         ),
     ),
 
+    Model_File::SITE_LOGO => array(
+        'path' => 'upload/logo/',
+
+        'sizes' => array(
+            'o'  => array(false, 1000, 1000),
+            'b'  => array(true , 50),
+        ),
+    ),
+
 );

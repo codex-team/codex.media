@@ -22,7 +22,8 @@ class Controller_Transport extends Controller_Base_preDispatch
         Model_File::USER_PHOTO,
         Model_File::BRANDING,
         Model_File::PAGE_COVER,
-        Model_File::EDITOR_PERSONALITY
+        Model_File::EDITOR_PERSONALITY,
+        Model_File::SITE_LOGO,
     );
 
     /**
