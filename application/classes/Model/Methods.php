@@ -400,7 +400,7 @@ class Model_Methods extends Model
 
     public static function getSiteMenu() {
 
-        $menu = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MENU);
+        $menu = new Model_Feed_Pages(Model_Feed_Pages::MENU);
 
         return array_reverse($menu->get());
 

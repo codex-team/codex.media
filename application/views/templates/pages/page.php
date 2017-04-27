@@ -111,7 +111,7 @@
                             handler : codex.pages.addToMenu
                         },
                         {
-                            title : '<?= $page->isNewsPage() ? 'Убрать из новостей' : 'Добавить в новости'; ?>',
+                            title : '<?= $page->isNewsPage() ? 'Убрать с главной' : 'На главную'; ?>',
                             handler : codex.pages.addToNews
                         },
                         <? endif; ?>
