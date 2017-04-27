@@ -100,7 +100,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         if (Arr::get($_POST, 'isNews')) {
 
-            if (!$this->page->isNewsPage && $this->user->isAdmin()) {
+            if (!$this->page->isPageOnMain && $this->user->isAdmin()) {
                 $this->page->addToFeed(Model_Feed_Pages::MAIN);
             }
 
@@ -141,15 +141,15 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $this->ajax_response['success'] = 1;
 
         switch ($feed_key) {
-            case 'menu':
+            case Model_Feed_Pages::MENU :
                 $this->ajax_response['menu'] = View::factory('/templates/components/menu', array('site_menu' => Model_Methods::getSiteMenu()))->render();
                 $this->ajax_response['message'] = $this->page->isMenuItem() ? 'Страница добавлена в меню' : 'Страница удалена из меню';
                 $this->ajax_response['buttonText'] = $this->page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню';
                 break;
 
-            case 'news':
-                $this->ajax_response['message'] = $this->page->isNewsPage() ? 'Вывели на главную' : 'Убрали с главной';
-                $this->ajax_response['buttonText'] = $this->page->isNewsPage() ? 'Убрать с главной' : 'На главную';
+            case Model_Feed_Pages::MAIN :
+                $this->ajax_response['message'] = $this->page->isPageOnMain() ? 'Вывели на главную' : 'Убрали с главной';
+                $this->ajax_response['buttonText'] = $this->page->isPageOnMain() ? 'Убрать с главной' : 'На главную';
                 break;
 
         }

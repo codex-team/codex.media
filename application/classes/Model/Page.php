@@ -24,7 +24,7 @@ class Model_Page extends Model
     public $isPinned        = false;
     public $feed_key        = '';
 
-    public $isNewsPage;
+    public $isPageOnMain;
 
     public $title           = '';
     /**
@@ -98,7 +98,7 @@ class Model_Page extends Model
 
             $this->uri    = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
-            $this->isNewsPage = $this->isNewsPage();
+            $this->isPageOnMain = $this->isPageOnMain();
 
             $this->parent = new Model_Page($this->id_parent);
 
@@ -324,7 +324,7 @@ class Model_Page extends Model
      *
      * @return bool
      */
-    public function isNewsPage() {
+    public function isPageOnMain() {
 
         $feed = new Model_Feed_Pages(Model_Feed_Pages::MAIN);
 

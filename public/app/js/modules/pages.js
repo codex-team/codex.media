@@ -78,16 +78,16 @@ module.exports = (function () {
         var targetId = currentItemClicked.dataset.id;
 
         codex.ajax.call({
-            url : '/p/' + targetId + '/promote?list=menu',
+            url : '/p/' + targetId + '/promote?list=4',
             success: promote
         });
 
     };
 
     /**
-     * Send ajax request to add page to news
+     * Send ajax request to add page to main
      */
-    var addToNews = function () {
+    var addToMain = function () {
 
         currentItemClicked = this;
         currentItemClicked.classList.add('loading');
@@ -95,7 +95,7 @@ module.exports = (function () {
         var targetId = currentItemClicked.dataset.id;
 
         codex.ajax.call({
-            url : '/p/' + targetId + '/promote?list=news',
+            url : '/p/' + targetId + '/promote?list=3',
             success: promote
         });
 
@@ -226,7 +226,7 @@ module.exports = (function () {
         openWriting: openWriting,
         newChild: newChild,
         addToMenu: addToMenu,
-        addToNews: addToNews,
+        addToMain: addToMain,
         remove : remove,
         pin: pin,
         cover: cover

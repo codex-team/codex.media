@@ -138,24 +138,24 @@ var codex =
 	/**
 	* Load modules
 	*/
-	codex.core               = __webpack_require__(7);
-	codex.ajax               = __webpack_require__(8);
-	codex.transport          = __webpack_require__(9);
-	codex.content            = __webpack_require__(10);
-	codex.appender           = __webpack_require__(11);
-	codex.parser             = __webpack_require__(12);
-	codex.comments           = __webpack_require__(13);
-	codex.alerts             = __webpack_require__(14);
-	codex.islandSettings     = __webpack_require__(16);
-	codex.autoresizeTextarea = __webpack_require__(17);
-	codex.user               = __webpack_require__(18);
-	codex.sharer             = __webpack_require__(19);
-	codex.writing            = __webpack_require__(20);
-	codex.loader             = __webpack_require__(22);
-	codex.scrollUp           = __webpack_require__(23);
-	codex.branding           = __webpack_require__(24);
-	codex.pages              = __webpack_require__(25);
-	codex.checkboxes         = __webpack_require__(28);
+	codex.core               = __webpack_require__(2);
+	codex.ajax               = __webpack_require__(3);
+	codex.transport          = __webpack_require__(4);
+	codex.content            = __webpack_require__(5);
+	codex.appender           = __webpack_require__(6);
+	codex.parser             = __webpack_require__(7);
+	codex.comments           = __webpack_require__(8);
+	codex.alerts             = __webpack_require__(9);
+	codex.islandSettings     = __webpack_require__(11);
+	codex.autoresizeTextarea = __webpack_require__(12);
+	codex.user               = __webpack_require__(13);
+	codex.sharer             = __webpack_require__(14);
+	codex.writing            = __webpack_require__(15);
+	codex.loader             = __webpack_require__(17);
+	codex.scrollUp           = __webpack_require__(18);
+	codex.branding           = __webpack_require__(19);
+	codex.pages              = __webpack_require__(20);
+	codex.checkboxes         = __webpack_require__(23);
 	
 	
 	module.exports = codex;
@@ -168,12 +168,7 @@ var codex =
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */
+/* 2 */
 /***/ (function(module, exports) {
 
 	/**
@@ -498,7 +493,7 @@ var codex =
 
 
 /***/ }),
-/* 8 */
+/* 3 */
 /***/ (function(module, exports) {
 
 	/**
@@ -589,7 +584,7 @@ var codex =
 
 
 /***/ }),
-/* 9 */
+/* 4 */
 /***/ (function(module, exports) {
 
 	/**
@@ -725,7 +720,7 @@ var codex =
 
 
 /***/ }),
-/* 10 */
+/* 5 */
 /***/ (function(module, exports) {
 
 	/**
@@ -862,7 +857,7 @@ var codex =
 	}());
 
 /***/ }),
-/* 11 */
+/* 6 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1041,7 +1036,7 @@ var codex =
 
 
 /***/ }),
-/* 12 */
+/* 7 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1122,7 +1117,7 @@ var codex =
 
 
 /***/ }),
-/* 13 */
+/* 8 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1496,7 +1491,7 @@ var codex =
 
 
 /***/ }),
-/* 14 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -1504,7 +1499,7 @@ var codex =
 	*/
 	module.exports = (function () {
 	
-	    __webpack_require__(15);
+	    __webpack_require__(10);
 	
 	    var CSS_ = {
 	        wrapper : 'cdx-notifies-wrapper',
@@ -1584,13 +1579,13 @@ var codex =
 
 
 /***/ }),
-/* 15 */
+/* 10 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 16 */
+/* 11 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1898,7 +1893,7 @@ var codex =
 
 
 /***/ }),
-/* 17 */
+/* 12 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1971,7 +1966,7 @@ var codex =
 
 
 /***/ }),
-/* 18 */
+/* 13 */
 /***/ (function(module, exports) {
 
 	/**
@@ -2583,7 +2578,7 @@ var codex =
 
 
 /***/ }),
-/* 19 */
+/* 14 */
 /***/ (function(module, exports) {
 
 	var sharer = {
@@ -2707,7 +2702,7 @@ var codex =
 	module.exports = sharer;
 
 /***/ }),
-/* 20 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -2734,7 +2729,7 @@ var codex =
 	     * @see  https://github.com/codex-editor/personality
 	     * @type {[type]}
 	     */
-	    var personalityTool = __webpack_require__(21);
+	    var personalityTool = __webpack_require__(16);
 	
 	
 	    var editorIsReady = false,
@@ -3150,7 +3145,7 @@ var codex =
 
 
 /***/ }),
-/* 21 */
+/* 16 */
 /***/ (function(module, exports) {
 
 	var cdxEditorPersonality =
@@ -3382,27 +3377,10 @@ var codex =
 	            citeEl = block.querySelector(`.${ui.css.cite}`),
 	            urlEl  = block.querySelector(`.${ui.css.url}`),
 	            photo  = block.querySelector(`.${ui.css.photo} img`),
-	            toolData = {},
-	            sanitizerConfig = {
-	                tags : {
-	                    p : {},
-	                    a: {
-	                        href: true,
-	                        target: '_blank',
-	                        rel: 'nofollow'
-	                    },
-	                    i: {},
-	                    b: {},
-	                }
-	            },
-	            cite;
-	
-	        cite = citeEl.innerHTML;
-	        cite = codex.editor.content.wrapTextWithParagraphs(cite);
-	        cite = codex.editor.sanitizer.clean(cite, sanitizerConfig);
+	            toolData = {};
 	
 	        toolData.name = nameEl.value;
-	        toolData.cite = cite;
+	        toolData.cite = codex.editor.content.wrapTextWithParagraphs(citeEl.innerHTML);
 	        toolData.url  = urlEl.value;
 	        toolData.photo = null;
 	
@@ -3704,7 +3682,7 @@ var codex =
 	module.exports = cdxEditorPersonality;
 
 /***/ }),
-/* 22 */
+/* 17 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -3800,7 +3778,7 @@ var codex =
 
 
 /***/ }),
-/* 23 */
+/* 18 */
 /***/ (function(module, exports) {
 
 	/**
@@ -3957,7 +3935,7 @@ var codex =
 
 
 /***/ }),
-/* 24 */
+/* 19 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4096,7 +4074,7 @@ var codex =
 
 
 /***/ }),
-/* 25 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -4107,12 +4085,12 @@ var codex =
 	    /**
 	     * Page cover module
 	     */
-	    var cover = __webpack_require__(26);
+	    var cover = __webpack_require__(21);
 	
 	    /**
 	     * Page pin module
 	     */
-	    var pin = __webpack_require__(27);
+	    var pin = __webpack_require__(22);
 	
 	    /**
 	     * Saves current clicked item in page drop-down menu
@@ -4179,16 +4157,16 @@ var codex =
 	        var targetId = currentItemClicked.dataset.id;
 	
 	        codex.ajax.call({
-	            url : '/p/' + targetId + '/promote?list=menu',
+	            url : '/p/' + targetId + '/promote?list=4',
 	            success: promote
 	        });
 	
 	    };
 	
 	    /**
-	     * Send ajax request to add page to news
+	     * Send ajax request to add page to main
 	     */
-	    var addToNews = function () {
+	    var addToMain = function () {
 	
 	        currentItemClicked = this;
 	        currentItemClicked.classList.add('loading');
@@ -4196,7 +4174,7 @@ var codex =
 	        var targetId = currentItemClicked.dataset.id;
 	
 	        codex.ajax.call({
-	            url : '/p/' + targetId + '/promote?list=news',
+	            url : '/p/' + targetId + '/promote?list=3',
 	            success: promote
 	        });
 	
@@ -4327,7 +4305,7 @@ var codex =
 	        openWriting: openWriting,
 	        newChild: newChild,
 	        addToMenu: addToMenu,
-	        addToNews: addToNews,
+	        addToMain: addToMain,
 	        remove : remove,
 	        pin: pin,
 	        cover: cover
@@ -4337,7 +4315,7 @@ var codex =
 
 
 /***/ }),
-/* 26 */
+/* 21 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4578,7 +4556,7 @@ var codex =
 	}({});
 
 /***/ }),
-/* 27 */
+/* 22 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4647,7 +4625,7 @@ var codex =
 
 
 /***/ }),
-/* 28 */
+/* 23 */
 /***/ (function(module, exports) {
 
 	/**
