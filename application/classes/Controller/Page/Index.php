@@ -70,10 +70,11 @@ class Controller_Page_Index extends Controller_Base_preDispatch
 
         if (!$page->id_parent) $page->id_parent = $parent_id;
 
-        $page->isPageOnMain   = Arr::get($_POST, 'isNews', $page->isPageOnMain);
+        $page->isPageOnMain = Arr::get($_POST, 'isNews', $page->isPageOnMain);
         $page->isPostedInVK = Arr::get($_POST, 'vkPost', $page->isPostedInVK);
+        $isPersonalBlog     = Arr::get($_POST, 'isPersonalBlog', '');
 
-        $this->template->content = View::factory('templates/pages/writing', array('page' => $page));
+        $this->template->content = View::factory('templates/pages/writing', array('page' => $page, 'isPersonalBlog' => $isPersonalBlog));
         $this->template->contentOnly = true;
 
     }
