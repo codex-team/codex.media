@@ -274,7 +274,7 @@ class Model_Page extends Model
      *
      * @param string $type - feed type
      */
-    public function addToFeed($type = Model_Feed_Pages::TYPE_ALL) {
+    public function addToFeed($type = Model_Feed_Pages::ALL) {
 
         $feed = new Model_Feed_Pages($type);
         $feed->add($this->id);
@@ -286,14 +286,14 @@ class Model_Page extends Model
      *
      * @param string $type - feed type
      */
-    public function removeFromFeed($type = Model_Feed_Pages::TYPE_ALL) {
+    public function removeFromFeed($type = Model_Feed_Pages::ALL) {
 
         $feed = new Model_Feed_Pages($type);
         $feed->remove($this->id);
 
     }
 
-    public function toggleFeed($type = Model_Feed_Pages::TYPE_ALL) {
+    public function toggleFeed($type = Model_Feed_Pages::ALL) {
 
         $feed = new Model_Feed_Pages($type);
 
@@ -313,7 +313,7 @@ class Model_Page extends Model
      */
     public function isMenuItem() {
 
-        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MENU);
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::MENU);
 
         return $feed->isExist($this->id);
 
@@ -326,7 +326,7 @@ class Model_Page extends Model
      */
     public function isNewsPage() {
 
-        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MAIN);
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::MAIN);
 
         return $feed->isExist($this->id);
 
@@ -339,10 +339,10 @@ class Model_Page extends Model
      */
     public function removePageFromFeeds()
     {
-        $this->removeFromFeed(Model_Feed_Pages::TYPE_MAIN);
-        $this->removeFromFeed(Model_Feed_Pages::TYPE_ALL);
-        $this->removeFromFeed(Model_Feed_Pages::TYPE_TEACHERS);
-        $this->removeFromFeed(Model_Feed_Pages::TYPE_MENU);
+        $this->removeFromFeed(Model_Feed_Pages::MAIN);
+        $this->removeFromFeed(Model_Feed_Pages::ALL);
+        $this->removeFromFeed(Model_Feed_Pages::TEACHERS);
+        $this->removeFromFeed(Model_Feed_Pages::MENU);
     }
 
 

@@ -69,10 +69,10 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         } else {
 
             $this->page = $this->page->insert();
-            $this->page->addToFeed(Model_Feed_Pages::TYPE_ALL);
+            $this->page->addToFeed(Model_Feed_Pages::ALL);
 
             if ($this->page->author->isTeacher()) {
-                $this->page->addToFeed(Model_Feed_Pages::TYPE_TEACHERS);
+                $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
             }
 
         }
@@ -101,13 +101,13 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         if (Arr::get($_POST, 'isNews')) {
 
             if (!$this->page->isNewsPage && $this->user->isAdmin()) {
-                $this->page->addToFeed(Model_Feed_Pages::TYPE_MAIN);
+                $this->page->addToFeed(Model_Feed_Pages::MAIN);
             }
 
         } else {
 
             if ($this->user->isAdmin()) {
-                $this->page->removeFromFeed(Model_Feed_Pages::TYPE_MAIN);
+                $this->page->removeFromFeed(Model_Feed_Pages::MAIN);
             }
 
         }
@@ -168,7 +168,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             goto finish;
         };
 
-        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_MAIN);
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::MAIN);
         $feed->togglePin($id);
 
         $this->ajax_response['success'] = 1;

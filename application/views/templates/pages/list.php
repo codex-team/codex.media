@@ -16,7 +16,7 @@
                 <? endif ?>
                 <time class="post-list-item__date">
                     <a href="<?= $page->url ?>" class="js-article-time">
-                        <? if ($active_tab == Model_Feed_Pages::TYPE_MAIN && $page->isPinned): ?>
+                        <? if ($active_tab == Model_Feed_Pages::MAIN && $page->isPinned): ?>
                             Запись закреплена
                         <? else: ?>
                             <?= date_format(date_create($page->date), 'd F Y, G:i') ?>
@@ -87,7 +87,7 @@
                             title: 'Установить обложку',
                             handler: codex.pages.cover.toggleButton
                         },
-                        <? if ($active_tab == Model_Feed_Pages::TYPE_MAIN): ?>
+                        <? if ($active_tab == Model_Feed_Pages::MAIN): ?>
                         {
                             title: 'Закрепить',
                             handler: codex.pages.pin.toggle

@@ -25,7 +25,7 @@
         <div class="writing__actions-content">
 
             <?
-                $newsFeedKey = Model_Feed_Pages::TYPE_MAIN;
+                $newsFeedKey = Model_Feed_Pages::MAIN;
 
                 $fromIndexPage   = !empty(Request::$current) && Request::$current->controller() == 'Index';
                 $fromNewsTab     = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;

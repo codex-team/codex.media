@@ -2,17 +2,19 @@
 
 class Model_Feed_Pages extends Model_Feed_Abstract {
 
-    const TYPE_ALL       = 'all';
-    const TYPE_TEACHERS  = 'teachers';
-    const TYPE_MAIN      = 'news';
-    const TYPE_MENU      = 'menu';
+    const FEED_PREFIX   = 'feed:';
 
-    public function __construct($type = self::TYPE_ALL, $prefix = '')
+    const ALL           = '1';
+    const TEACHERS      = '2';
+    const MAIN          = '3';
+    const MENU          = '4';
+
+    public function __construct($type = self::ALL, $prefix = '')
     {
 
-        $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:');
+        $redis_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:');
 
-        $this->timeline_key = $key_prefix . $type;
+        $this->timeline_key = $redis_prefix . self::FEED_PREFIX . $type;
 
         parent::__construct($prefix);
 

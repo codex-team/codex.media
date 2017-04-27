@@ -9,13 +9,13 @@
 <? /***/ ?>
 
 <div class="island tabs">
-    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TYPE_MAIN ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TYPE_MAIN ?>">
+    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::MAIN ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::MAIN ?>">
         Главное
     </a>
-    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TYPE_TEACHERS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TYPE_TEACHERS ?>">
+    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TEACHERS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TEACHERS ?>">
         Блоги преподавателей
     </a>
-    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TYPE_ALL ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TYPE_ALL ?>">
+    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::ALL ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::ALL ?>">
         Все записи
     </a>
 </div>
