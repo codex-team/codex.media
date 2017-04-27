@@ -31,7 +31,7 @@
                 $fromNewsTab     = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
                 $fromUserProfile = Request::$current->controller() == 'User_Index';
 
-                $isNews = $page->isNewsPage || ($fromIndexPage && $fromNewsTab);
+                $isNews = $page->isPageOnMain || ($fromIndexPage && $fromNewsTab);
 
                 $vkPost = $page->isPostedInVK || ($fromIndexPage && $fromNewsTab);
             ?>

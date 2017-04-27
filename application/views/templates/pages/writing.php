@@ -11,7 +11,7 @@
         <? include(DOCROOT . "public/app/svg/arrow-right.svg") ?>
         <?
             $action = isset($page->id) && $page->id ? 'Редактирование' : 'Создание';
-            $object = $page->isNewsPage() ? 'новости' : 'материала';
+            $object = $page->isPageOnMain() ? 'новости' : 'материала';
 
             echo $action . ' ' . $object;
         ?>
