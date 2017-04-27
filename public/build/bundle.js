@@ -138,24 +138,24 @@ var codex =
 	/**
 	* Load modules
 	*/
-	codex.core               = __webpack_require__(2);
-	codex.ajax               = __webpack_require__(3);
-	codex.transport          = __webpack_require__(4);
-	codex.content            = __webpack_require__(5);
-	codex.appender           = __webpack_require__(6);
-	codex.parser             = __webpack_require__(7);
-	codex.comments           = __webpack_require__(8);
-	codex.alerts             = __webpack_require__(9);
-	codex.islandSettings     = __webpack_require__(11);
-	codex.autoresizeTextarea = __webpack_require__(12);
-	codex.user               = __webpack_require__(13);
-	codex.sharer             = __webpack_require__(14);
-	codex.writing            = __webpack_require__(15);
-	codex.loader             = __webpack_require__(17);
-	codex.scrollUp           = __webpack_require__(18);
-	codex.branding           = __webpack_require__(19);
-	codex.pages              = __webpack_require__(20);
-	codex.checkboxes         = __webpack_require__(23);
+	codex.core               = __webpack_require__(7);
+	codex.ajax               = __webpack_require__(8);
+	codex.transport          = __webpack_require__(9);
+	codex.content            = __webpack_require__(10);
+	codex.appender           = __webpack_require__(11);
+	codex.parser             = __webpack_require__(12);
+	codex.comments           = __webpack_require__(13);
+	codex.alerts             = __webpack_require__(14);
+	codex.islandSettings     = __webpack_require__(16);
+	codex.autoresizeTextarea = __webpack_require__(17);
+	codex.user               = __webpack_require__(18);
+	codex.sharer             = __webpack_require__(19);
+	codex.writing            = __webpack_require__(20);
+	codex.loader             = __webpack_require__(22);
+	codex.scrollUp           = __webpack_require__(23);
+	codex.branding           = __webpack_require__(24);
+	codex.pages              = __webpack_require__(25);
+	codex.checkboxes         = __webpack_require__(28);
 	
 	
 	module.exports = codex;
@@ -168,7 +168,12 @@ var codex =
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 2 */
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */
 /***/ (function(module, exports) {
 
 	/**
@@ -493,7 +498,7 @@ var codex =
 
 
 /***/ }),
-/* 3 */
+/* 8 */
 /***/ (function(module, exports) {
 
 	/**
@@ -584,7 +589,7 @@ var codex =
 
 
 /***/ }),
-/* 4 */
+/* 9 */
 /***/ (function(module, exports) {
 
 	/**
@@ -720,7 +725,7 @@ var codex =
 
 
 /***/ }),
-/* 5 */
+/* 10 */
 /***/ (function(module, exports) {
 
 	/**
@@ -857,7 +862,7 @@ var codex =
 	}());
 
 /***/ }),
-/* 6 */
+/* 11 */
 /***/ (function(module, exports) {
 
 	/**
@@ -916,6 +921,14 @@ var codex =
 	            codex.appender.autoLoading.init();
 	
 	        }, false);
+	
+	        /** Force init if need no waiting for a first click */
+	        if (this.settings.dontWaitFirstClick) {
+	
+	            codex.appender.autoLoading.init();
+	
+	        }
+	
 	
 	    },
 	
@@ -1036,7 +1049,7 @@ var codex =
 
 
 /***/ }),
-/* 7 */
+/* 12 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1117,7 +1130,7 @@ var codex =
 
 
 /***/ }),
-/* 8 */
+/* 13 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1491,7 +1504,7 @@ var codex =
 
 
 /***/ }),
-/* 9 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -1499,7 +1512,7 @@ var codex =
 	*/
 	module.exports = (function () {
 	
-	    __webpack_require__(10);
+	    __webpack_require__(15);
 	
 	    var CSS_ = {
 	        wrapper : 'cdx-notifies-wrapper',
@@ -1579,13 +1592,13 @@ var codex =
 
 
 /***/ }),
-/* 10 */
+/* 15 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 11 */
+/* 16 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1893,7 +1906,7 @@ var codex =
 
 
 /***/ }),
-/* 12 */
+/* 17 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1966,7 +1979,7 @@ var codex =
 
 
 /***/ }),
-/* 13 */
+/* 18 */
 /***/ (function(module, exports) {
 
 	/**
@@ -2578,7 +2591,7 @@ var codex =
 
 
 /***/ }),
-/* 14 */
+/* 19 */
 /***/ (function(module, exports) {
 
 	var sharer = {
@@ -2702,7 +2715,7 @@ var codex =
 	module.exports = sharer;
 
 /***/ }),
-/* 15 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -2729,7 +2742,7 @@ var codex =
 	     * @see  https://github.com/codex-editor/personality
 	     * @type {[type]}
 	     */
-	    var personalityTool = __webpack_require__(16);
+	    var personalityTool = __webpack_require__(21);
 	
 	
 	    var editorIsReady = false,
@@ -3145,7 +3158,7 @@ var codex =
 
 
 /***/ }),
-/* 16 */
+/* 21 */
 /***/ (function(module, exports) {
 
 	var cdxEditorPersonality =
@@ -3682,7 +3695,7 @@ var codex =
 	module.exports = cdxEditorPersonality;
 
 /***/ }),
-/* 17 */
+/* 22 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -3778,7 +3791,7 @@ var codex =
 
 
 /***/ }),
-/* 18 */
+/* 23 */
 /***/ (function(module, exports) {
 
 	/**
@@ -3935,7 +3948,7 @@ var codex =
 
 
 /***/ }),
-/* 19 */
+/* 24 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4074,7 +4087,7 @@ var codex =
 
 
 /***/ }),
-/* 20 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -4085,12 +4098,12 @@ var codex =
 	    /**
 	     * Page cover module
 	     */
-	    var cover = __webpack_require__(21);
+	    var cover = __webpack_require__(26);
 	
 	    /**
 	     * Page pin module
 	     */
-	    var pin = __webpack_require__(22);
+	    var pin = __webpack_require__(27);
 	
 	    /**
 	     * Saves current clicked item in page drop-down menu
@@ -4315,7 +4328,7 @@ var codex =
 
 
 /***/ }),
-/* 21 */
+/* 26 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4556,7 +4569,7 @@ var codex =
 	}({});
 
 /***/ }),
-/* 22 */
+/* 27 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4625,7 +4638,7 @@ var codex =
 
 
 /***/ }),
-/* 23 */
+/* 28 */
 /***/ (function(module, exports) {
 
 	/**
