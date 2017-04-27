@@ -48,10 +48,6 @@
                 </span>
             <? endif; ?>
 
-            <? if (($user->isAdmin() && $fromUserProfile) || isset($isPersonalBlog)): ?>
-                <?= Form::hidden('isPersonalBlog', $isPersonalBlog ?: '1'); ?>
-            <? endif; ?>
-
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
                 <span class="writing-fullscreen__button" onclick="codex.writing.openEditorFullscreen()">
                     <? include(DOCROOT . 'public/app/svg/zoom.svg') ?>
@@ -62,6 +58,10 @@
         </div>
 
     </div>
+
+    <? if (($user->isAdmin() && $fromUserProfile) || isset($isPersonalBlog)): ?>
+        <?= Form::hidden('isPersonalBlog', isset($isPersonalBlog) ? $isPersonalBlog : '1'); ?>
+    <? endif; ?>
 
 </form>
 
