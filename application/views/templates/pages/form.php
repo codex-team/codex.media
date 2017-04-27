@@ -59,6 +59,10 @@
 
     </div>
 
+    <? if (($user->isAdmin() && $fromUserProfile) || isset($isPersonalBlog)): ?>
+        <?= Form::hidden('isPersonalBlog', isset($isPersonalBlog) ? $isPersonalBlog : '1'); ?>
+    <? endif; ?>
+
 </form>
 
 

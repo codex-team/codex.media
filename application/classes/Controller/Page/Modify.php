@@ -72,7 +72,13 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             $this->page->addToFeed(Model_Feed_Pages::ALL);
 
             if ($this->page->author->isTeacher()) {
-                $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
+
+                $isPersonalBlog = Arr::get($_POST, 'isPersonalBlog', '');
+
+                if (!$this->page->author->isAdmin() || !empty($isPersonalBlog)) {
+                    $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
+                }
+
             }
 
         }
