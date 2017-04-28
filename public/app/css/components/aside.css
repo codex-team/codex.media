@@ -21,6 +21,7 @@
     display: inline-block;
     min-width: 50px;
     height: 50px;
+    margin: auto 0;
     margin-right: 25px;
     border-radius: 3px;
     text-align: center;
@@ -44,7 +45,7 @@
     left: 50%;
     top: 50%;
     padding: 10px;
-    transform: translate(-50%, -40%);
+    transform: translate(-50%, -45%);
     color: #495365;
 }
 .site-head__logo:hover .site-head__logo-upload{
@@ -225,9 +226,23 @@
 
 @media (--mobile) {
     .site-head {
-        padding: 5px 15px;
+        padding: 12px 15px;
         line-height: 1.3em;
         font-size: 13px;
+    }
+
+    .site-head__logo {
+        min-width: 35px;
+        height: 35px;
+    }
+
+    .site-head__logo img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .site-head__logo-upload {
+        padding: 4px;
     }
 
     .main-aside--offset-top {
@@ -249,7 +264,7 @@
     .mobile-menu-toggler {
         display: inline-flex;
         padding: 20px;
-        margin: -3px -15px -10px auto;
+        margin: -10px -15px -10px auto;
         cursor: pointer;
         z-index: 2;
     }
