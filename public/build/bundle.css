@@ -18,6 +18,8 @@
     /** Island inner padding */
 
     /** Social networks colors */
+
+    /** Fonts */
 }
 /**
 * Custom media queries
@@ -1774,6 +1776,10 @@ body {
     margin-bottom: 15px;
     padding: 30px 45px;
 }
+.article__body {
+    max-width: 650px;
+    margin: 0 auto;
+}
 .article__information {
     display: -webkit-box;
     display: -webkit-flex;
@@ -1820,21 +1826,26 @@ body {
     }
 }
 .article__title {
-    margin: 0;
+    margin: 40px 0;
     font-weight: 800;
-    font-size: 33px;
+    font-size: 50px;
     line-height: 1.3em;
+    text-align: center;
 }
 .article__content {
     font-size: 16px;
     line-height: 1.5em;
 }
 .article__content--typed {
-    font-family: 'Lora';
-    font-size: 19.2px;
-    line-height: 1.64em;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.62em;
     color: #000000;
     color: rgba(0, 0, 0, .8);
+    /*
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    */
 }
 .article__content a {
     padding-bottom: 1px;
@@ -1928,6 +1939,7 @@ body {
 .article h3,
 .article h4 {
     line-height: 1.35em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 /**
  * Personality tool
@@ -2185,8 +2197,6 @@ html body aside .codex-special__toolbar {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
     -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;

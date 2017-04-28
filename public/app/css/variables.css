@@ -32,6 +32,10 @@
     --vkColor: #547ba5;
     --twitterColor: #5ca4f6;
     --facebookColor: #30588f;
+
+    /** Fonts */
+    --systemFont: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    --articleFont: 'Lora', Georgia, serif;
 }
 
 /**
