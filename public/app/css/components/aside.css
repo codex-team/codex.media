@@ -11,18 +11,10 @@
 .site-head {
     display: flex;
     border-bottom: 1px solid var(--lightGrayLine);
-    padding: var(--islandPadding);
+    padding: 23px 30px;
     line-height: 1.2em;
     font-size: 15px;
 }
-
-/*.spb_shield {
-    display: block;
-    width: 26px;
-    height: 32px;
-    background: url('/public/app/img/spb-shield.png') no-repeat;
-    margin-right: var(--islandPadding);
-}*/
 
 .site-head__logo {
     position: relative;
@@ -53,10 +45,14 @@
     top: 50%;
     padding: 10px;
     transform: translate(-50%, -40%);
-    color: #fff;
+    color: #495365;
 }
 .site-head__logo:hover .site-head__logo-upload{
     display: inline-block;
+}
+
+.site-head__logo--admin:hover {
+    background: #eef2f9;
 }
 
 .site-head__logo--admin:hover:before {
@@ -65,12 +61,10 @@
 
 .site-head__logo img {
     border-radius: 3px;
-    transition: filter 50ms ease-in;
-    will-change: filter;
 }
 
 .site-head__logo--admin:hover img {
-    filter: blur(5px);
+    display:none;
 }
 
 .site-head__title {
@@ -231,7 +225,7 @@
 
 @media (--mobile) {
     .site-head {
-        padding: 12px 15px;
+        padding: 5px 15px;
         line-height: 1.3em;
         font-size: 13px;
     }
@@ -255,7 +249,7 @@
     .mobile-menu-toggler {
         display: inline-flex;
         padding: 20px;
-        margin: -10px -15px -10px auto;
+        margin: -3px -15px -10px auto;
         cursor: pointer;
         z-index: 2;
     }

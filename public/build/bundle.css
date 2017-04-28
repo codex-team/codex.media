@@ -1274,17 +1274,10 @@ body {
     display: -ms-flexbox;
     display: flex;
     border-bottom: 1px solid #eceff3;
-    padding: 30px;
+    padding: 23px 30px;
     line-height: 1.2em;
     font-size: 15px;
 }
-/*.spb_shield {
-    display: block;
-    width: 26px;
-    height: 32px;
-    background: url('/public/app/img/spb-shield.png') no-repeat;
-    margin-right: var(--islandPadding);
-}*/
 .site-head__logo {
     position: relative;
     display: inline-block;
@@ -1313,26 +1306,22 @@ body {
     -webkit-transform: translate(-50%, -40%);
         -ms-transform: translate(-50%, -40%);
             transform: translate(-50%, -40%);
-    color: #fff;
+    color: #495365;
 }
 .site-head__logo:hover .site-head__logo-upload{
     display: inline-block;
+}
+.site-head__logo--admin:hover {
+    background: #eef2f9;
 }
 .site-head__logo--admin:hover:before {
     content: '';
 }
 .site-head__logo img {
     border-radius: 3px;
-    -webkit-transition: -webkit-filter 50ms ease-in;
-    transition: -webkit-filter 50ms ease-in;
-    transition: filter 50ms ease-in;
-    transition: filter 50ms ease-in, -webkit-filter 50ms ease-in;
-    will-change: filter;
 }
 .site-head__logo--admin:hover img {
-    filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="5" /></filter></svg>#filter');
-    -webkit-filter: blur(5px);
-            filter: blur(5px);
+    display:none;
 }
 .site-head__title {
     margin: auto 0;
@@ -1466,7 +1455,7 @@ body {
 }
 @media all and (max-width: 980px) {
     .site-head {
-        padding: 12px 15px;
+        padding: 5px 15px;
         line-height: 1.3em;
         font-size: 13px;
     }
@@ -1493,7 +1482,7 @@ body {
         display: -ms-inline-flexbox;
         display: inline-flex;
         padding: 20px;
-        margin: -10px -15px -10px auto;
+        margin: -3px -15px -10px auto;
         cursor: pointer;
         z-index: 2;
     }
