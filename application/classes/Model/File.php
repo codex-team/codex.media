@@ -137,8 +137,7 @@ class Model_File extends Model
             case self::SITE_LOGO:
                 $settings = new Model_Settings();
                 $settings->newLogo($savedFilename);
-
-                $this->filename = 'b_' . $savedFilename;
+                $this->filename = 's_' . $savedFilename;
 
                 break;
         }

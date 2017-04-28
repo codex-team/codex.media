@@ -138,7 +138,7 @@ class Model_Settings extends Model_preDispatch
      */
     public function newLogo($filename)
     {
-        $brandingExists = Dao_Settings::select()
+        $logoExists = Dao_Settings::select()
                             ->where('name', '=', self::LOGO_KEY)
                             ->limit(1)
                             ->execute();
@@ -146,7 +146,7 @@ class Model_Settings extends Model_preDispatch
         $this->name = self::LOGO_KEY;
         $this->value = $filename;
 
-        if ($brandingExists) {
+        if ($logoExists) {
 
             $this->update();
 
