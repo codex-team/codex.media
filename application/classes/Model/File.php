@@ -135,6 +135,9 @@ class Model_File extends Model
                 break;
 
             case self::SITE_LOGO:
+                $user = new Model_User($user_id);
+                if (!$user->isAdmin) return false;
+
                 $settings = new Model_Settings();
                 $settings->newLogo($savedFilename);
                 $this->filename = 's_' . $savedFilename;
