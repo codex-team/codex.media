@@ -31,6 +31,10 @@
     background: #3997de;
 }
 
+.site-head__logo--empty img {
+    display: none;
+}
+
 .site-head__logo--empty:before {
     content: attr(data-placeholder);
     color: #fff;
@@ -234,6 +238,10 @@
     .site-head__logo {
         min-width: 35px;
         height: 35px;
+    }
+
+    .site-head__logo--empty:before {
+        line-height: 35px;
     }
 
     .site-head__logo img {
