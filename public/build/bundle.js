@@ -156,6 +156,7 @@ var codex =
 	codex.branding           = __webpack_require__(24);
 	codex.pages              = __webpack_require__(25);
 	codex.checkboxes         = __webpack_require__(28);
+	codex.logo               = __webpack_require__(29);
 	
 	
 	module.exports = codex;
@@ -3390,10 +3391,27 @@ var codex =
 	            citeEl = block.querySelector(`.${ui.css.cite}`),
 	            urlEl  = block.querySelector(`.${ui.css.url}`),
 	            photo  = block.querySelector(`.${ui.css.photo} img`),
-	            toolData = {};
+	            toolData = {},
+	            sanitizerConfig = {
+	                tags : {
+	                    p : {},
+	                    a: {
+	                        href: true,
+	                        target: '_blank',
+	                        rel: 'nofollow'
+	                    },
+	                    i: {},
+	                    b: {},
+	                }
+	            },
+	            cite;
+	
+	        cite = citeEl.innerHTML;
+	        cite = codex.editor.content.wrapTextWithParagraphs(cite);
+	        cite = codex.editor.sanitizer.clean(cite, sanitizerConfig);
 	
 	        toolData.name = nameEl.value;
-	        toolData.cite = codex.editor.content.wrapTextWithParagraphs(citeEl.innerHTML);
+	        toolData.cite = cite;
 	        toolData.url  = urlEl.value;
 	        toolData.photo = null;
 	
@@ -4774,6 +4792,62 @@ var codex =
 	
 	    return {
 	        init: init
+	    };
+	
+	}();
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports) {
+
+	module.exports = function () {
+	
+	    var change = function (e) {
+	
+	        e.preventDefault();
+	        e.stopImmediatePropagation();
+	
+	        var wrapper = this.parentNode;
+	
+	        codex.transport.init({
+	
+	            url : '/upload/7',
+	            accept : 'image/*',
+	            success : function (result) {
+	
+	                var response = JSON.parse(result),
+	                    img = document.getElementById('js-site-logo');
+	
+	                if ( response.success ) {
+	
+	                    img.src = response.data.url;
+	                    wrapper.classList.remove('site-head__logo--empty');
+	
+	                } else {
+	
+	                    codex.alerts.show({
+	                        type: 'error',
+	                        message: 'Uploading failed'
+	                    });
+	
+	                }
+	
+	            },
+	            error: function () {
+	
+	                codex.alerts.show({
+	                    type: 'error',
+	                    message: 'Error while uploading logo'
+	                });
+	
+	            }
+	
+	        });
+	
+	    };
+	
+	    return {
+	        change : change
 	    };
 	
 	}();
