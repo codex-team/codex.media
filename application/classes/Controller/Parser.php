@@ -177,8 +177,8 @@ class Controller_Parser extends Controller_Base_preDispatch
     }
 
     /**
-    * Returns DOMNode inner html content
-    */
+     * Returns DOMNode inner html content
+     */
     private static function DOMinnerHTML(DOMNode $element)
     {
         $innerHTML = '';
@@ -192,92 +192,102 @@ class Controller_Parser extends Controller_Base_preDispatch
         return $innerHTML;
     }
 
+    /**
+     * fetch Action
+     * @public
+     *
+     * Returns JSON response
+     */
     public function action_fetchURL()
     {
-        $result = $this->parseLink();
+        $response = $this->parseLink();
+
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-        $this->response->body(@json_encode($result));
+        $this->response->body(@json_encode($response));
     }
 
     /**
-     * parses link by ajax request
+     * @private
+     *
+     * Parses link by ajax request
      */
-
     private function parseLink()
     {
-        $url = $this->get_url();
-        
-        $url_params = parse_url($url);
+        $URL = Arr::get($_GET, 'url');
 
-        if (!$url)
-        {
-            exit(0);
+        if ( empty($URL) || filter_var($URL, FILTER_VALIDATE_URL) === FALSE ) {
+            return false;
         }
 
-        $html   = $this->file_get_contents_curl($url);
-        $result = $this->get_meta_from_html($html);
+        /**
+         * Make external request
+         * Use Kohana Native Request Factory
+         */
+        $request = Request::factory($URL)
+            ->execute();
+
+        $htmlContent = $request->body();
+
         $result = array_merge(
-            $this->get_meta_from_html($html),
-            array(
-                'linkUrl'   => $url,
-                'linkText' => Arr::get($url_params, 'host') . Arr::get($url_params, 'path', ''),
-            )
+            $this->getLinkInfo($URL),
+            $this->getMetaFromHTML($htmlContent)
         );
 
         return $result;
     }
 
-    private function file_get_contents_curl($url)
+    /**
+     * Gets information about link : params, path and so on
+     * @param $URL
+     * @return array
+     */
+    private function getLinkInfo($URL)
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_USERAGENT,'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36');
-        $data = curl_exec($ch);
-        curl_close($ch);
-        return $data;
+        $URLParams = parse_url($URL);
+
+        return array(
+            'linkUrl'   => $URL,
+            'linkText' => Arr::get($URLParams, 'host') . Arr::get($URLParams, 'path', ''),
+        );
     }
 
-    private function get_url()
+    /**
+     * Parses DOM Document
+     * @param $html
+     * @return array
+     */
+    private function getMetaFromHTML($html)
     {
-        if (!isset($_GET['url']))
-        {
-            return false;
-        }
-        $url = Arr::get($_GET, 'url');
-        if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
-            return false;
-        }
-        return $url;
-    }
+        $DOMdocument = new DOMDocument();
+        @$DOMdocument->loadHTML($html);
 
-    private function get_meta_from_html($html)
-    {
-        $doc = new DOMDocument();
-        @$doc->loadHTML($html);
-        $nodes = $doc->getElementsByTagName('title');
+        $nodes = $DOMdocument->getElementsByTagName('title');
         $title = $nodes->item(0)->nodeValue;
-        $description = "";
-        $keywords = "";
-        $image = "";
-        $metas = $doc->getElementsByTagName('meta');
 
-        for ($i = 0; $i < $metas->length; $i++)
+        $description = "";
+        $keywords    = "";
+        $image       = "";
+
+        $metaData = $DOMdocument->getElementsByTagName('meta');
+
+        for($i = 0; $i < $metaData->length; $i++)
         {
-            $meta = $metas->item($i);
-            if($meta->getAttribute('name') == 'description')
-                $description = $meta->getAttribute('content');
-            if($meta->getAttribute('name') == 'keywords')
-                $keywords = $meta->getAttribute('content');
-            if($meta->getAttribute('property')=='og:image'){
-                $image = $meta->getAttribute('content');
+            $data = $metaData->item($i);
+
+            if ($data->getAttribute('name') == 'description') {
+                $description = $data->getAttribute('content');
+            }
+
+            if ($data->getAttribute('name') == 'keywords') {
+                $keywords = $data->getAttribute('content');
+            }
+
+            if($data->getAttribute('property')=='og:image'){
+                $image = $data->getAttribute('content');
             }
         }
+
         return array(
             'image'         => $image,
             'title'         => $title,

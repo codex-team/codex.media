@@ -171,13 +171,18 @@ module.exports = (function () {
                 },
                 link: {
                     type: 'link',
-                    iconClassname: 'ce-icon-link',
+                    iconClassname: 'cdx-link-icon',
                     displayInToolbox : true,
+                    prepare: cdxEditorLink.prepare,
                     render: cdxEditorLink.render,
                     makeSettings: cdxEditorLink.settings,
                     save: cdxEditorLink.save,
                     destroy: cdxEditorLink.destroy,
                     validate: cdxEditorLink.validate,
+                    config : {
+                        fetchURL : '/fetchURL',
+                        defaultStyle : 'bigCover'
+                    },
                     allowPasteHTML: true
                 },
                 raw : {
