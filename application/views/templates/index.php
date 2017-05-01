@@ -8,23 +8,17 @@
 <? endif ?>
 <? /***/ ?>
 
-<ul class="island tabs">
-    <li>
-        <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TYPE_NEWS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TYPE_NEWS ?>">
-            Новости
-        </a>
-    </li>
-    <li>
-        <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TYPE_TEACHERS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TYPE_TEACHERS ?>">
-            Блоги преподавателей
-        </a>
-    </li>
-    <li>
-        <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TYPE_ALL ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TYPE_ALL ?>">
-            Все записи
-        </a>
-    </li>
-</ul>
+<div class="island tabs">
+    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::MAIN ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::MAIN ?>">
+        Главное
+    </a>
+    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TEACHERS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TEACHERS ?>">
+        Блоги преподавателей
+    </a>
+    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::ALL ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::ALL ?>">
+        Все записи
+    </a>
+</div>
 
 <? /** pages list */ ?>
 <div id="list_of_news" class="post-list">
@@ -43,11 +37,12 @@
     <script>
         codex.docReady(function() {
             codex.appender.init({
-                buttonId      : 'buttonLoadNews',
-                currentPage   : '<?= $page_number ?>',
-                url           : '<?= $active_tab ? "/".$active_tab."/" : "/" ?>',
-                targetBlockId : 'list_of_news',
-                autoLoading   : true,
+                buttonId           : 'buttonLoadNews',
+                currentPage        : '<?= $page_number ?>',
+                url                : '<?= $active_tab ? "/".$active_tab."/" : "/" ?>',
+                targetBlockId      : 'list_of_news',
+                autoLoading        : true,
+                dontWaitFirstClick : true,
             });
         });
     </script>

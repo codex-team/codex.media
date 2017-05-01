@@ -16,15 +16,6 @@ class Controller_Transport extends Controller_Base_preDispatch
 
     private $files  = null;
 
-    private $typesAvailable = array(
-        Model_File::EDITOR_FILE,
-        Model_File::EDITOR_IMAGE,
-        Model_File::USER_PHOTO,
-        Model_File::BRANDING,
-        Model_File::PAGE_COVER,
-        Model_File::EDITOR_PERSONALITY
-    );
-
     /**
      * Transport gateway
      */
@@ -70,6 +61,9 @@ class Controller_Transport extends Controller_Base_preDispatch
      */
     private function check()
     {
+
+        $config = Kohana::$config->load('upload');
+
         if (!$this->user->id) {
 
             $this->transportResponse['message'] = 'Access denied';
@@ -82,7 +76,7 @@ class Controller_Transport extends Controller_Base_preDispatch
             return false;
         }
 
-        if ( !in_array($this->type, $this->typesAvailable) ){
+        if ( empty($config[$this->type]) ){
             $this->transportResponse['message'] = 'Wrong type passed';
             return false;
         }

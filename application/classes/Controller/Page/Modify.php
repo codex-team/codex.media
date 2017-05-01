@@ -63,28 +63,57 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         }
 
         if ($this->page->id) {
-            $this->page->update();
+
+            $this->page = $this->page->update();
+
         } else {
 
             $this->page = $this->page->insert();
-            $this->page->addToFeed(Model_Feed_Pages::TYPE_ALL);
+            $this->page->addToFeed(Model_Feed_Pages::ALL);
 
             if ($this->page->author->isTeacher()) {
-                $this->page->addToFeed(Model_Feed_Pages::TYPE_TEACHERS);
+
+                $isPersonalBlog = Arr::get($_POST, 'isPersonalBlog', '');
+
+                if (!$this->page->author->isAdmin() || !empty($isPersonalBlog)) {
+                    $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
+                }
+
+            }
+
+        }
+
+        if ($this->user->isAdmin()) {
+
+            if (Arr::get($_POST, 'vkPost')) {
+                /** Create or edit post on public's wall */
+                if ($this->page->isPostedInVK) {
+                    $VkPost = $this->vkWall()->edit($this->buildVKPost());
+                } else {
+                    $VkPost = $this->vkWall()->post($this->buildVKPost());
+                }
+                /***/
+            } else {
+
+                /** Delete post from public's wall */
+                if ($this->page->isPostedInVK) {
+                    $VkPost = $this->vkWall()->delete();
+                }
+                /***/
             }
 
         }
 
         if (Arr::get($_POST, 'isNews')) {
 
-            if (!$this->page->isNewsPage && $this->user->isAdmin()) {
-                $this->page->addToFeed(Model_Feed_Pages::TYPE_NEWS);
+            if (!$this->page->isPageOnMain && $this->user->isAdmin()) {
+                $this->page->addToFeed(Model_Feed_Pages::MAIN);
             }
 
         } else {
 
             if ($this->user->isAdmin()) {
-                $this->page->removeFromFeed(Model_Feed_Pages::TYPE_NEWS);
+                $this->page->removeFromFeed(Model_Feed_Pages::MAIN);
             }
 
         }
@@ -118,15 +147,15 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $this->ajax_response['success'] = 1;
 
         switch ($feed_key) {
-            case 'menu':
+            case Model_Feed_Pages::MENU :
                 $this->ajax_response['menu'] = View::factory('/templates/components/menu', array('site_menu' => Model_Methods::getSiteMenu()))->render();
                 $this->ajax_response['message'] = $this->page->isMenuItem() ? 'Страница добавлена в меню' : 'Страница удалена из меню';
                 $this->ajax_response['buttonText'] = $this->page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню';
                 break;
 
-            case 'news':
-                $this->ajax_response['message'] = $this->page->isNewsPage() ? 'Страница добавлена в новости' : 'Страница удалена из новостей';
-                $this->ajax_response['buttonText'] = $this->page->isNewsPage() ? 'Убрать из новостей' : 'Добавить в новости';
+            case Model_Feed_Pages::MAIN :
+                $this->ajax_response['message'] = $this->page->isPageOnMain() ? 'Вывели на главную' : 'Убрали с главной';
+                $this->ajax_response['buttonText'] = $this->page->isPageOnMain() ? 'Убрать с главной' : 'На главную';
                 break;
 
         }
@@ -145,7 +174,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             goto finish;
         };
 
-        $feed = new Model_Feed_Pages(Model_Feed_Pages::TYPE_NEWS);
+        $feed = new Model_Feed_Pages(Model_Feed_Pages::MAIN);
         $feed->togglePin($id);
 
         $this->ajax_response['success'] = 1;
@@ -167,6 +196,10 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
             $this->page->setAsRemoved();
 
+            /** Delete post from public's wall */
+            $this->vkWall()->delete();
+            /***/
+
             $this->ajax_response = array(
                 'success' => 1,
                 'message' => 'Страница удалена',
@@ -187,7 +220,6 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
     /**
      * Gets current page model.
      * Data can be contained in request param or in $_POST array;
-     *
      */
     private function getPage() {
 
@@ -233,6 +265,38 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
     }
 
+    /**
+     * Create an instance of the class Model_Services_Vk for using
+     *
+     * @return object Model_Services_Vk
+     */
+    private function vkWall()
+    {
+        return new Model_Services_Vk($this->page->id);
+    }
 
+    /**
+     * Function for getting text for post
+     *
+     * @return array — text and link for post
+     */
+    private function buildVKPost()
+    {
+        /** Take an instance of class for getting right description */
+        $this->page = new Model_Page($this->page->id);
+
+        $server_name = 'http'. ((Arr::get($_SERVER, 'HTTPS')) ? 's' : '') .'://'.Arr::get($_SERVER, 'SERVER_NAME');
+        $link = "{$server_name}" . "/p/{$this->page->id}/{$this->page->uri}";
+
+        $description = strip_tags($this->page->description);
+
+        $text = "{$this->page->title}\n";
+        $text .= "\n";
+        $text .= "{$description}\n";
+        // $text .= "\n";
+        // $text .= $link;
+
+        return array('text' => $text, 'link' => $link);
+    }
 
 }

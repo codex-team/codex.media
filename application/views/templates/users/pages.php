@@ -15,11 +15,12 @@
     <script>
         codex.docReady(function() {
             codex.appender.init({
-                buttonId      : 'buttonLoadNews',
-                currentPage   : '<?= $page_number ?>',
-                url           : '<?= '/user/' . $viewUser->id . '/pages/' ?>',
-                targetBlockId : 'list_of_news',
-                autoLoading   : true
+                buttonId           : 'buttonLoadNews',
+                currentPage        : '<?= $page_number ?>',
+                url                : '<?= '/user/' . $viewUser->id . '/pages/' ?>',
+                targetBlockId      : 'list_of_news',
+                autoLoading        : true,
+                dontWaitFirstClick : true,
             });
         });
     </script>

@@ -156,6 +156,7 @@ var codex =
 	codex.branding           = __webpack_require__(24);
 	codex.pages              = __webpack_require__(25);
 	codex.checkboxes         = __webpack_require__(28);
+	codex.logo               = __webpack_require__(29);
 	
 	
 	module.exports = codex;
@@ -921,6 +922,14 @@ var codex =
 	            codex.appender.autoLoading.init();
 	
 	        }, false);
+	
+	        /** Force init if need no waiting for a first click */
+	        if (this.settings.dontWaitFirstClick) {
+	
+	            codex.appender.autoLoading.init();
+	
+	        }
+	
 	
 	    },
 	
@@ -2882,20 +2891,19 @@ var codex =
 	                    allowedToPaste: true
 	                },
 	                link: {
-	                    type: 'link',
-	                    iconClassname: 'ce-icon-link',
+	                    type             : 'link',
+	                    iconClassname    : 'cdx-link-icon',
 	                    displayInToolbox : true,
-	                    prepare: cdxEditorLink.prepare,
-	                    render: cdxEditorLink.render,
-	                    makeSettings: cdxEditorLink.settings,
-	                    save: cdxEditorLink.save,
-	                    destroy: cdxEditorLink.destroy,
-	                    validate: cdxEditorLink.validate,
-	                    config : {
-	                        fetchURL : '/fetchURL',
-	                        defaultStyle : 'bigCover'
+	                    prepare          : window.cdxEditorLink.prepare,
+	                    render           : window.cdxEditorLink.render,
+	                    makeSettings     : window.cdxEditorLink.settings,
+	                    save             : window.cdxEditorLink.save,
+	                    destroy          : window.cdxEditorLink.destroy,
+	                    validate         : window.cdxEditorLink.validate,
+	                    config           : {
+	                        fetchURL         : '/fetchURL',
+	                        defaultStyle     : 'bigCover'
 	                    },
-	                    allowPasteHTML: true
 	                },
 	                raw : {
 	                    type: 'raw',
@@ -4195,16 +4203,16 @@ var codex =
 	        var targetId = currentItemClicked.dataset.id;
 	
 	        codex.ajax.call({
-	            url : '/p/' + targetId + '/promote?list=menu',
+	            url : '/p/' + targetId + '/promote?list=4',
 	            success: promote
 	        });
 	
 	    };
 	
 	    /**
-	     * Send ajax request to add page to news
+	     * Send ajax request to add page to main
 	     */
-	    var addToNews = function () {
+	    var addToMain = function () {
 	
 	        currentItemClicked = this;
 	        currentItemClicked.classList.add('loading');
@@ -4212,7 +4220,7 @@ var codex =
 	        var targetId = currentItemClicked.dataset.id;
 	
 	        codex.ajax.call({
-	            url : '/p/' + targetId + '/promote?list=news',
+	            url : '/p/' + targetId + '/promote?list=3',
 	            success: promote
 	        });
 	
@@ -4343,7 +4351,7 @@ var codex =
 	        openWriting: openWriting,
 	        newChild: newChild,
 	        addToMenu: addToMenu,
-	        addToNews: addToNews,
+	        addToMain: addToMain,
 	        remove : remove,
 	        pin: pin,
 	        cover: cover
@@ -4799,6 +4807,62 @@ var codex =
 	
 	    return {
 	        init: init
+	    };
+	
+	}();
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports) {
+
+	module.exports = function () {
+	
+	    var change = function (e) {
+	
+	        e.preventDefault();
+	        e.stopImmediatePropagation();
+	
+	        var wrapper = this.parentNode;
+	
+	        codex.transport.init({
+	
+	            url : '/upload/7',
+	            accept : 'image/*',
+	            success : function (result) {
+	
+	                var response = JSON.parse(result),
+	                    img = document.getElementById('js-site-logo');
+	
+	                if ( response.success ) {
+	
+	                    img.src = response.data.url;
+	                    wrapper.classList.remove('site-head__logo--empty');
+	
+	                } else {
+	
+	                    codex.alerts.show({
+	                        type: 'error',
+	                        message: 'Uploading failed'
+	                    });
+	
+	                }
+	
+	            },
+	            error: function () {
+	
+	                codex.alerts.show({
+	                    type: 'error',
+	                    message: 'Error while uploading logo'
+	                });
+	
+	            }
+	
+	        });
+	
+	    };
+	
+	    return {
+	        change : change
 	    };
 	
 	}();

@@ -170,20 +170,19 @@ module.exports = (function () {
                     allowedToPaste: true
                 },
                 link: {
-                    type: 'link',
-                    iconClassname: 'cdx-link-icon',
+                    type             : 'link',
+                    iconClassname    : 'cdx-link-icon',
                     displayInToolbox : true,
-                    prepare: cdxEditorLink.prepare,
-                    render: cdxEditorLink.render,
-                    makeSettings: cdxEditorLink.settings,
-                    save: cdxEditorLink.save,
-                    destroy: cdxEditorLink.destroy,
-                    validate: cdxEditorLink.validate,
-                    config : {
-                        fetchURL : '/fetchURL',
-                        defaultStyle : 'bigCover'
+                    prepare          : window.cdxEditorLink.prepare,
+                    render           : window.cdxEditorLink.render,
+                    makeSettings     : window.cdxEditorLink.settings,
+                    save             : window.cdxEditorLink.save,
+                    destroy          : window.cdxEditorLink.destroy,
+                    validate         : window.cdxEditorLink.validate,
+                    config           : {
+                        fetchURL         : '/fetchURL',
+                        defaultStyle     : 'bigCover'
                     },
-                    allowPasteHTML: true
                 },
                 raw : {
                     type: 'raw',

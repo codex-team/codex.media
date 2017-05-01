@@ -11,17 +11,69 @@
 .site-head {
     display: flex;
     border-bottom: 1px solid var(--lightGrayLine);
-    padding: var(--islandPadding);
+    padding: 23px 30px;
     line-height: 1.2em;
     font-size: 15px;
 }
 
-.spb_shield {
-    display: block;
-    width: 26px;
-    height: 32px;
-    background: url('/public/app/img/spb-shield.png') no-repeat;
-    margin-right: var(--islandPadding);
+.site-head__logo {
+    position: relative;
+    display: inline-block;
+    min-width: 50px;
+    height: 50px;
+    margin: auto 0;
+    margin-right: 25px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.site-head__logo--empty {
+    background: #3997de;
+}
+
+.site-head__logo--empty img {
+    display: none;
+}
+
+.site-head__logo--empty:before {
+    content: attr(data-placeholder);
+    color: #fff;
+    line-height: 50px;
+    font-size: 21px;
+    font-weight: 500;
+}
+
+.site-head__logo-upload{
+    position: absolute;
+    display: none;
+    left: 50%;
+    top: 50%;
+    padding: 10px;
+    transform: translate(-50%, -45%);
+    color: #495365;
+}
+.site-head__logo:hover .site-head__logo-upload{
+    display: inline-block;
+}
+
+.site-head__logo--admin:hover {
+    background: #eef2f9;
+}
+
+.site-head__logo--admin:hover:before {
+    content: '';
+}
+
+.site-head__logo img {
+    border-radius: 3px;
+}
+
+.site-head__logo--admin:hover img {
+    display:none;
+}
+
+.site-head__title {
+    margin: auto 0;
 }
 
 .main-aside .menu:empty {
@@ -181,6 +233,24 @@
         padding: 12px 15px;
         line-height: 1.3em;
         font-size: 13px;
+    }
+
+    .site-head__logo {
+        min-width: 35px;
+        height: 35px;
+    }
+
+    .site-head__logo--empty:before {
+        line-height: 35px;
+    }
+
+    .site-head__logo img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .site-head__logo-upload {
+        padding: 4px;
     }
 
     .main-aside--offset-top {

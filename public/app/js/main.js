@@ -109,6 +109,7 @@ codex.scrollUp           = require('./modules/scrollUp');
 codex.branding           = require('./modules/branding');
 codex.pages              = require('./modules/pages');
 codex.checkboxes         = require('./modules/checkboxes');
+codex.logo               = require('./modules/logo');
 
 
 module.exports = codex;

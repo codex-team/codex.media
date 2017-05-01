@@ -11,7 +11,7 @@
         <? include(DOCROOT . "public/app/svg/arrow-right.svg") ?>
         <?
             $action = isset($page->id) && $page->id ? 'Редактирование' : 'Создание';
-            $object = $page->isNewsPage() ? 'новости' : 'материала';
+            $object = $page->isPageOnMain() ? 'новости' : 'материала';
 
             echo $action . ' ' . $object;
         ?>
@@ -25,3 +25,12 @@
         'page' => $page
     )); ?>
 </div>
+
+<?
+/**
+ * Hide ESIR-navigator
+ */
+?>
+<style>
+    .esir { display: none; }
+</style>

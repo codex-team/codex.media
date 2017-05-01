@@ -55,6 +55,14 @@ var appender = {
 
         }, false);
 
+        /** Force init if need no waiting for a first click */
+        if (this.settings.dontWaitFirstClick) {
+
+            codex.appender.autoLoading.init();
+
+        }
+
+
     },
 
     load : function () {

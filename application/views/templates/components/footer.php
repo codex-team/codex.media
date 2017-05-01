@@ -1,6 +1,6 @@
 <footer class="site-footer">
 
-    <a class="codex clearfix" href="https://ifmo.su">
+    <a class="codex clearfix" href="https://ifmo.su/media">
         <? include_once(DOCROOT . 'public/app/svg/codex.svg'); ?>
         <span class="codex__title">CodeX Media</span>
         Медиа-платформа для<br> развития сообщества

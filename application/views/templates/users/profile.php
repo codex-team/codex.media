@@ -104,18 +104,14 @@
         )); ?>
 <? endif ?>
 
-<ul class="island tabs island--margined">
-    <li>
-        <a class="tabs__tab <?= $list == 'pages' || !$list ? 'tabs__tab--current' : '' ?>" href='/user/<?= $viewUser->id ?>'>
-            Блог
-        </a>
-    </li>
-    <li>
-        <a class="tabs__tab <?= $list == 'comments' ? 'tabs__tab--current' : '' ?>" href='/user/<?= $viewUser->id ?>/comments'>
-            Комментарии
-        </a>
-    </li>
-</ul>
+<div class="island tabs island--margined">
+    <a class="tabs__tab <?= $list == 'pages' || !$list ? 'tabs__tab--current' : '' ?>" href='/user/<?= $viewUser->id ?>'>
+        Блог
+    </a>
+    <a class="tabs__tab <?= $list == 'comments' ? 'tabs__tab--current' : '' ?>" href='/user/<?= $viewUser->id ?>/comments'>
+        Комментарии
+    </a>
+</div>
 
 
 <?= $listFactory ?>

@@ -5,7 +5,7 @@
   "description": "Open platform for organizations",
   "main": "index.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack --progress  --display-error-details --display-entrypoints --display-reasons"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/codex-team/codex.edu#readme",
   "devDependencies": {
+    "codex.editor.personality": "^1.0.2",
     "css-loader": "^0.26.1",
     "eslint": "^3.12.2",
     "eslint-loader": "^1.6.1",

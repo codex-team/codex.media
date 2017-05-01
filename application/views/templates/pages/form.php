@@ -25,13 +25,15 @@
         <div class="writing__actions-content">
 
             <?
-                $newsFeedKey = Model_Feed_Pages::TYPE_NEWS;
+                $newsFeedKey = Model_Feed_Pages::MAIN;
 
                 $fromIndexPage   = !empty(Request::$current) && Request::$current->controller() == 'Index';
                 $fromNewsTab     = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
                 $fromUserProfile = Request::$current->controller() == 'User_Index';
 
-                $isNews = $page->isNewsPage || ($fromIndexPage && $fromNewsTab);
+                $isNews = $page->isPageOnMain || ($fromIndexPage && $fromNewsTab);
+
+                $vkPost = $page->isPostedInVK || ($fromIndexPage && $fromNewsTab);
             ?>
 
             <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
@@ -39,6 +41,10 @@
             <? if ($user->isAdmin() && !$fromUserProfile): ?>
                 <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
                     Новость
+                </span>
+
+                <span name="cdx-custom-checkbox" class="writing__vk-post" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">
+                    <i class="icon-vkontakte"></i>
                 </span>
             <? endif; ?>
 
@@ -53,6 +59,10 @@
 
     </div>
 
+    <? if (($user->isAdmin() && $fromUserProfile) || isset($isPersonalBlog)): ?>
+        <?= Form::hidden('isPersonalBlog', isset($isPersonalBlog) ? $isPersonalBlog : '1'); ?>
+    <? endif; ?>
+
 </form>
 
 
@@ -64,7 +74,7 @@
     /** Document is ready */
     codex.docReady(function(){
 
-        var plugins = ['paragraph', 'header', 'image', 'attaches', 'list', 'raw'],
+        var plugins = ['paragraph', 'header', 'image', 'attaches', 'list', 'raw', 'link'],
             scriptPath = 'https://cdn.ifmo.su/editor/v1.6/',
             settings = {
                 holderId          : 'placeForEditor',
@@ -75,7 +85,7 @@
                 resources         : []
             };
 
-        // scriptPath = '/public/extensions/codex.editor/'
+        scriptPath = '/public/extensions/codex.editor/'
 
         settings.resources.push({
             name : 'codex-editor',

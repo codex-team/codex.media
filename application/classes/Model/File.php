@@ -32,6 +32,7 @@ class Model_File extends Model
     const BRANDING     = 4;
     const PAGE_COVER   = 5;
     const EDITOR_PERSONALITY = 6;
+    const SITE_LOGO    = 7;
 
     /**
      * This types are images
@@ -42,7 +43,8 @@ class Model_File extends Model
         self::USER_PHOTO,
         self::BRANDING,
         self::PAGE_COVER,
-        self::EDITOR_PERSONALITY
+        self::EDITOR_PERSONALITY,
+        self::SITE_LOGO
     );
 
     public function __construct($id = null, $file_hash_hex = null, $row = array())
@@ -128,8 +130,18 @@ class Model_File extends Model
                 $this->filename = 'o_' . $savedFilename;
                 break;
 
-             case self::EDITOR_PERSONALITY:
+            case self::EDITOR_PERSONALITY:
                 $this->filename = 'b_' . $savedFilename;
+                break;
+
+            case self::SITE_LOGO:
+                $user = new Model_User($user_id);
+                if (!$user->isAdmin) return false;
+
+                $settings = new Model_Settings();
+                $settings->newLogo($savedFilename);
+                $this->filename = 's_' . $savedFilename;
+
                 break;
         }
 
