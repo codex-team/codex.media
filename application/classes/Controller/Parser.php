@@ -242,7 +242,7 @@ class Controller_Parser extends Controller_Base_preDispatch
                 $this->getLinkInfo($URL),
                 $this->getMetaFromHTML($htmlContent)
             );
-            
+
             $response['success'] = 1;
         }
 
@@ -303,7 +303,7 @@ class Controller_Parser extends Controller_Base_preDispatch
             }
         }
 
-        if (!empty($image)) {
+        if (empty($image)) {
 
             $images = $DOMdocument->getElementsByTagName('img');
             $image = $images->item(0)->getAttribute('src');
