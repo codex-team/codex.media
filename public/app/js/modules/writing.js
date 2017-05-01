@@ -23,7 +23,7 @@ module.exports = (function () {
      * @type {[type]}
      */
     var personalityTool = require('exports-loader?cdxEditorPersonality!codex.editor.personality');
-
+    var linkTool = require('exports-loader?cdxEditorLink!codex.editor.link');
 
     var editorIsReady = false,
         submitButton = null,
@@ -173,16 +173,16 @@ module.exports = (function () {
                     type             : 'link',
                     iconClassname    : 'cdx-link-icon',
                     displayInToolbox : true,
-                    prepare          : window.cdxEditorLink.prepare,
-                    render           : window.cdxEditorLink.render,
-                    makeSettings     : window.cdxEditorLink.settings,
-                    save             : window.cdxEditorLink.save,
-                    destroy          : window.cdxEditorLink.destroy,
-                    validate         : window.cdxEditorLink.validate,
+                    prepare          : linkTool.prepare,
+                    render           : linkTool.render,
+                    makeSettings     : linkTool.settings,
+                    save             : linkTool.save,
+                    destroy          : linkTool.destroy,
+                    validate         : linkTool.validate,
                     config           : {
                         fetchURL         : '/fetchURL',
                         defaultStyle     : 'bigCover'
-                    },
+                    }
                 },
                 raw : {
                     type: 'raw',

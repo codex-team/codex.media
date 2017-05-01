@@ -74,7 +74,7 @@
     /** Document is ready */
     codex.docReady(function(){
 
-        var plugins = ['paragraph', 'header', 'image', 'attaches', 'list', 'raw', 'link'],
+        var plugins = ['paragraph', 'header', 'image', 'attaches', 'list', 'raw'],
             scriptPath = 'https://cdn.ifmo.su/editor/v1.6/',
             settings = {
                 holderId          : 'placeForEditor',
@@ -85,13 +85,13 @@
                 resources         : []
             };
 
-        scriptPath = '/public/extensions/codex.editor/'
+//        scriptPath = '/public/extensions/codex.editor/'
 
         settings.resources.push({
             name : 'codex-editor',
             path : {
                 script : scriptPath + 'codex-editor.js',
-                style  : scriptPath + 'codex-editor.css',
+                style  : scriptPath + 'codex-editor.css'
             }
         });
 

@@ -242,6 +242,78 @@
 }
 
 /**
+ * Link tool
+ */
+.article__link {
+    & {
+        position: relative;
+        border: 1px solid #e8e9f1;
+        background: #FDFDFD;
+        box-shadow: inset 0 1px 3px 0 rgba(102, 85, 107, 0.04);
+        margin: 0.7em 0;
+        overflow: hidden;
+    }
+
+    &--smallCover {
+         padding: 30px;
+    }
+
+    &--bigCover {
+         padding: 0;
+    }
+}
+
+.article-link__cover {
+    & {
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    &--small {
+         margin-left: 30px;
+         background-size: auto 100%;
+         width: 70px;
+         height: 70px;
+         border-radius: 2px;
+         float: right;
+     }
+
+    &--big {
+         background-size: 100% auto;
+         height: 160px;
+     }
+}
+
+.article-link__title {
+    font-size: 16px;
+    color: #1a1e25;
+    letter-spacing: 0;
+    line-height: 1.3em;
+}
+
+.article-link__description {
+    margin-top: 11px;
+    font-size: 14px;
+    color: #1a1e25;
+    letter-spacing: 0;
+    line-height: 1.5em;
+}
+
+.article-link__anchor {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #415983 !important;
+    letter-spacing: 0.2px;
+    line-height: 20px;
+    text-decoration: none !important;
+    border: 0 !important;
+}
+
+.article-link-wrapper {
+    padding: 30px;
+}
+
+/**
  * Table
  * =========
  */
