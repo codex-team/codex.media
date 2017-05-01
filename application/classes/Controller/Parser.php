@@ -216,6 +216,7 @@ class Controller_Parser extends Controller_Base_preDispatch
     {
         $URL = Arr::get($_GET, 'url');
 
+        $response = array();
         $response['success'] = 0;
 
         if ( empty($URL) || !filter_var($URL, FILTER_VALIDATE_URL)) {
@@ -232,7 +233,7 @@ class Controller_Parser extends Controller_Base_preDispatch
 
         if ($request->status() != '200') {
 
-            $response['message'] = 'Ссылка не доступна';
+            $response['message'] = 'Ошибка при обработке ссылки';
             goto finish;
 
         } else {
