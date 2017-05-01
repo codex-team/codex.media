@@ -216,8 +216,11 @@ class Controller_Parser extends Controller_Base_preDispatch
     {
         $URL = Arr::get($_GET, 'url');
 
-        if ( empty($URL) || filter_var($URL, FILTER_VALIDATE_URL) === FALSE ) {
-            return false;
+        $response['success'] = 0;
+
+        if ( empty($URL) || !filter_var($URL, FILTER_VALIDATE_URL)) {
+            $response['message'] = 'Неправильный URL';
+            goto finish;
         }
 
         /**
@@ -227,14 +230,24 @@ class Controller_Parser extends Controller_Base_preDispatch
         $request = Request::factory($URL)
             ->execute();
 
-        $htmlContent = $request->body();
+        if ($request->status() != '200') {
 
-        $result = array_merge(
-            $this->getLinkInfo($URL),
-            $this->getMetaFromHTML($htmlContent)
-        );
+            $response['message'] = 'Ссылка не доступна';
+            goto finish;
 
-        return $result;
+        } else {
+
+            $htmlContent = $request->body();
+            $response = array_merge(
+                $this->getLinkInfo($URL),
+                $this->getMetaFromHTML($htmlContent)
+            );
+            
+            $response['success'] = 1;
+        }
+
+        finish:
+        return $response;
     }
 
     /**
@@ -261,8 +274,10 @@ class Controller_Parser extends Controller_Base_preDispatch
     {
         $DOMdocument = new DOMDocument();
         @$DOMdocument->loadHTML($html);
+        $DOMdocument->preserveWhiteSpace = false;
 
         $nodes = $DOMdocument->getElementsByTagName('title');
+
         $title = $nodes->item(0)->nodeValue;
 
         $description = "";
@@ -286,6 +301,13 @@ class Controller_Parser extends Controller_Base_preDispatch
             if($data->getAttribute('property')=='og:image'){
                 $image = $data->getAttribute('content');
             }
+        }
+
+        if (!empty($image)) {
+
+            $images = $DOMdocument->getElementsByTagName('img');
+            $image = $images->item(0)->getAttribute('src');
+
         }
 
         return array(
