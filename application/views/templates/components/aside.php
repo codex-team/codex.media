@@ -12,7 +12,7 @@
         <span class="<?= $logoClasses ?>" data-placeholder="<?= mb_substr($site_info['title'], 0, 1, "UTF-8"); ?>">
 
             <? if (!empty($site_info['logo'])): ?>
-                <img id="js-site-logo" src="/upload/logo/s_<?=  $site_info['logo'] ?>">
+                <img id="js-site-logo" src="/upload/logo/m_<?=  $site_info['logo'] ?>">
             <? endif ?>
 
             <? if ($user->isAdmin): ?>

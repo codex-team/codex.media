@@ -1288,6 +1288,10 @@ body {
     border-radius: 3px;
     text-align: center;
 }
+.site-head__logo img {
+    width: 100%;
+    height: 100%;
+}
 .site-head__logo--empty {
     background: #3997de;
 }
@@ -1474,11 +1478,6 @@ body {
     .site-head__logo--empty:before {
         line-height: 35px;
         font-size: 18px;
-    }
-
-    .site-head__logo img {
-        width: 35px;
-        height: 35px;
     }
 
     .site-head__logo-upload {

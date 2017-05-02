@@ -140,7 +140,7 @@ class Model_File extends Model
 
                 $settings = new Model_Settings();
                 $settings->newLogo($savedFilename);
-                $this->filename = 's_' . $savedFilename;
+                $this->filename = 'm_' . $savedFilename;
 
                 break;
         }
