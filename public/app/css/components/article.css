@@ -248,6 +248,7 @@
     & {
         position: relative;
         border: 1px solid #e8e9f1;
+        border-radius: 3px;
         background: #FDFDFD;
         box-shadow: inset 0 1px 3px 0 rgba(102, 85, 107, 0.04);
         margin: 0.7em 0;
@@ -286,6 +287,7 @@
 
 .article-link__title {
     font-size: 16px;
+    font-weight: 500;
     color: #1a1e25;
     letter-spacing: 0;
     line-height: 1.3em;
@@ -300,7 +302,9 @@
 }
 
 .article-link__anchor {
-    margin-top: 8px;
+    display: block;
+    margin-top: 11px;
+    margin-bottom: -10px;
     font-size: 11px;
     color: #415983 !important;
     letter-spacing: 0.2px;
