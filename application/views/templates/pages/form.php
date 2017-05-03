@@ -84,7 +84,7 @@
                 data              : <?= $page->content ?: '[]' ?>,
                 resources         : []
             };
-        
+
 //        scriptPath = '/public/extensions/codex.editor/'
 
         settings.resources.push({

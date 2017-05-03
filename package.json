@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/codex-team/codex.edu#readme",
   "devDependencies": {
-    "codex.editor.link": "^1.0.0",
+    "codex.editor.link": "^1.0.3",
     "codex.editor.personality": "^1.0.2",
     "css-loader": "^0.26.1",
     "eslint": "^3.12.2",
