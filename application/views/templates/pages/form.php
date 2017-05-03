@@ -84,7 +84,7 @@
                 data              : <?= $page->content ?: '[]' ?>,
                 resources         : []
             };
-
+        
 //        scriptPath = '/public/extensions/codex.editor/'
 
         settings.resources.push({
@@ -112,3 +112,6 @@
         <? endif ?>
     });
 </script>
+
+<script src="/public/extensions/link/link.js"></script>
+<link rel="stylesheet" href="/public/extensions/link/link.css">
