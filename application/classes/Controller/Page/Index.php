@@ -34,6 +34,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
 
         $this->view['page'] = $page;
 
+        $this->title = $page->title;
         $this->template->content = View::factory('templates/pages/page', $this->view);
 
 
