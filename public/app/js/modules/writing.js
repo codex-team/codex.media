@@ -181,7 +181,7 @@ module.exports = (function () {
                     validate         : linkTool.validate,
                     config           : {
                         fetchURL         : '/fetchURL',
-                        defaultStyle     : 'bigCover'
+                        defaultStyle     : 'smallCover'
                     }
                 },
                 raw : {

@@ -245,23 +245,14 @@
  * Link tool
  */
 .article__link {
-    & {
-        position: relative;
-        border: 1px solid #e8e9f1;
-        border-radius: 3px;
-        background: #FDFDFD;
-        box-shadow: inset 0 1px 3px 0 rgba(102, 85, 107, 0.04);
-        margin: 0.7em 0;
-        overflow: hidden;
-    }
-
-    &--smallCover {
-         padding: 30px;
-    }
-
-    &--bigCover {
-         padding: 0;
-    }
+    position: relative;
+    border: 1px solid #e8e9f1;
+    border-radius: 3px;
+    background: #FDFDFD;
+    box-shadow: inset 0 1px 3px 0 rgba(102, 85, 107, 0.04);
+    margin: 0.7em 0;
+    overflow: hidden;
+    padding: 30px;
 }
 
 .article-link__cover {
@@ -277,12 +268,13 @@
          height: 70px;
          border-radius: 2px;
          float: right;
-     }
+    }
 
     &--big {
          background-size: 100% auto;
          height: 160px;
-     }
+         margin: -30px -30px 30px -30px;
+    }
 }
 
 .article-link__title {
