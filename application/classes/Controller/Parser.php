@@ -229,6 +229,7 @@ class Controller_Parser extends Controller_Base_preDispatch
          * Use Kohana Native Request Factory
          */
         $request = Request::factory($URL)
+            ->headers('Content-Type', 'utf8')
             ->execute();
 
         if ($request->status() != '200') {
@@ -244,7 +245,11 @@ class Controller_Parser extends Controller_Base_preDispatch
                 $this->getMetaFromHTML($htmlContent)
             );
 
-            $response['success'] = 1;
+            if (!trim($response['title']) && !trim($response['description'])) {
+                $response['message'] = 'Данные не найдены';
+            } else {
+                $response['success'] = 1;
+            }
         }
 
         finish:
@@ -279,7 +284,9 @@ class Controller_Parser extends Controller_Base_preDispatch
 
         $nodes = $DOMdocument->getElementsByTagName('title');
 
-        $title = $nodes->item(0)->nodeValue;
+        if ($nodes->length > 0) {
+            $title = $nodes->item(0)->nodeValue;
+        }
 
         $description = "";
         $keywords    = "";
@@ -307,14 +314,16 @@ class Controller_Parser extends Controller_Base_preDispatch
         if (empty($image)) {
 
             $images = $DOMdocument->getElementsByTagName('img');
-            $image = $images->item(0)->getAttribute('src');
 
+            if ($images->length > 0) {
+                $image = $images->item(0)->getAttribute('src');
+            }
         }
 
         return array(
-            'image'         => $image,
-            'title'         => $title,
-            'description'   => $description,
+            'image'         => isset($image) ? $image : '',
+            'title'         => isset($title) ? $title : '',
+            'description'   => isset($description) ? $description : '',
         );
     }
 }
