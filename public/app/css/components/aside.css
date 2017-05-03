@@ -19,12 +19,17 @@
 .site-head__logo {
     position: relative;
     display: inline-block;
-    min-width: 50px;
+    width: 50px;
     height: 50px;
     margin: auto 0;
     margin-right: 25px;
     border-radius: 3px;
     text-align: center;
+}
+
+.site-head__logo img {
+    width: 100%;
+    height: 100%;
 }
 
 .site-head__logo--empty {
@@ -35,12 +40,13 @@
     display: none;
 }
 
-.site-head__logo--empty:before {
+.site-head__logo--empty::before {
     content: attr(data-placeholder);
     color: #fff;
     line-height: 50px;
-    font-size: 21px;
+    font-size: 22px;
     font-weight: 500;
+    letter-spacing: -0.08em
 }
 
 .site-head__logo-upload{
@@ -236,17 +242,14 @@
     }
 
     .site-head__logo {
-        min-width: 35px;
-        height: 35px;
-    }
-
-    .site-head__logo--empty:before {
-        line-height: 35px;
-    }
-
-    .site-head__logo img {
         width: 35px;
         height: 35px;
+        margin-right: 15px;
+    }
+
+    .site-head__logo--empty::before {
+        line-height: 35px;
+        font-size: 18px;
     }
 
     .site-head__logo-upload {

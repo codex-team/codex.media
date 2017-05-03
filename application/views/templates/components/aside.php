@@ -11,7 +11,9 @@
 
         <span class="<?= $logoClasses ?>" data-placeholder="<?= mb_substr($site_info['title'], 0, 1, "UTF-8"); ?>">
 
-            <img id="js-site-logo" src="<?= !empty($site_info['logo']) ? '/upload/logo/s_' . $site_info['logo'] : '' ?>">
+            <? if (!empty($site_info['logo'])): ?>
+                <img id="js-site-logo" src="/upload/logo/m_<?=  $site_info['logo'] ?>">
+            <? endif ?>
 
             <? if ($user->isAdmin): ?>
                 <span class="site-head__logo-upload" onclick="codex.logo.change.call(this, event)">

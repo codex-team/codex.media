@@ -4849,6 +4849,13 @@ var codex =
 	
 	                if ( response.success ) {
 	
+	                    if ( !img ) {
+	
+	                        img = document.createElement('IMG');
+	                        wrapper.appendChild(img);
+	
+	                    }
+	
 	                    img.src = response.data.url;
 	                    wrapper.classList.remove('site-head__logo--empty');
 	
