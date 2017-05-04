@@ -60,7 +60,7 @@ class Controller_User_Index extends Controller_Base_preDispatch
 
         $this->view['emailConfirmed'] = Arr::get($_GET, 'confirmed', 0);
 
-        $this->template->title   = $viewUser->name;
+        $this->title = $viewUser->name;
         $this->template->content = View::factory('/templates/users/profile', $this->view);
 
     }
