@@ -85,7 +85,10 @@
                 resources         : []
             };
 
-//        scriptPath = '/public/extensions/codex.editor/'
+        <? if ( Kohana::$environment == Kohana::DEVELOPMENT ): ?>
+            scriptPath = '/public/extensions/codex.editor/';
+        <? endif; ?>
+
 
         settings.resources.push({
             name : 'codex-editor',
@@ -112,6 +115,3 @@
         <? endif ?>
     });
 </script>
-
-<script src="/public/extensions/link/link.js"></script>
-<link rel="stylesheet" href="/public/extensions/link/link.css">

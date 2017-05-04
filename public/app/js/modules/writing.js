@@ -20,9 +20,13 @@ module.exports = (function () {
     /**
      * CodeX Editor Personality-tool
      * @see  https://github.com/codex-editor/personality
-     * @type {[type]}
      */
     var personalityTool = require('exports-loader?cdxEditorPersonality!codex.editor.personality');
+
+    /**
+     * CodeX Editor link embed tool
+     * @see  https://github.com/codex-editor/link
+     */
     var linkTool = require('exports-loader?cdxEditorLink!codex.editor.link');
 
     var editorIsReady = false,

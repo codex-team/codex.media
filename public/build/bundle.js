@@ -138,25 +138,25 @@ var codex =
 	/**
 	* Load modules
 	*/
-	codex.core               = __webpack_require__(12);
-	codex.ajax               = __webpack_require__(13);
-	codex.transport          = __webpack_require__(14);
-	codex.content            = __webpack_require__(15);
-	codex.appender           = __webpack_require__(16);
-	codex.parser             = __webpack_require__(17);
-	codex.comments           = __webpack_require__(18);
-	codex.alerts             = __webpack_require__(19);
-	codex.islandSettings     = __webpack_require__(21);
-	codex.autoresizeTextarea = __webpack_require__(22);
-	codex.user               = __webpack_require__(23);
-	codex.sharer             = __webpack_require__(24);
-	codex.writing            = __webpack_require__(25);
-	codex.loader             = __webpack_require__(28);
-	codex.scrollUp           = __webpack_require__(29);
-	codex.branding           = __webpack_require__(30);
-	codex.pages              = __webpack_require__(31);
-	codex.checkboxes         = __webpack_require__(34);
-	codex.logo               = __webpack_require__(35);
+	codex.core               = __webpack_require__(7);
+	codex.ajax               = __webpack_require__(8);
+	codex.transport          = __webpack_require__(9);
+	codex.content            = __webpack_require__(10);
+	codex.appender           = __webpack_require__(11);
+	codex.parser             = __webpack_require__(12);
+	codex.comments           = __webpack_require__(13);
+	codex.alerts             = __webpack_require__(14);
+	codex.islandSettings     = __webpack_require__(16);
+	codex.autoresizeTextarea = __webpack_require__(17);
+	codex.user               = __webpack_require__(18);
+	codex.sharer             = __webpack_require__(19);
+	codex.writing            = __webpack_require__(20);
+	codex.loader             = __webpack_require__(22);
+	codex.scrollUp           = __webpack_require__(23);
+	codex.branding           = __webpack_require__(24);
+	codex.pages              = __webpack_require__(25);
+	codex.checkboxes         = __webpack_require__(28);
+	codex.logo               = __webpack_require__(29);
 	
 	
 	module.exports = codex;
@@ -174,12 +174,7 @@ var codex =
 /* 4 */,
 /* 5 */,
 /* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */
+/* 7 */
 /***/ (function(module, exports) {
 
 	/**
@@ -504,7 +499,7 @@ var codex =
 
 
 /***/ }),
-/* 13 */
+/* 8 */
 /***/ (function(module, exports) {
 
 	/**
@@ -595,7 +590,7 @@ var codex =
 
 
 /***/ }),
-/* 14 */
+/* 9 */
 /***/ (function(module, exports) {
 
 	/**
@@ -731,7 +726,7 @@ var codex =
 
 
 /***/ }),
-/* 15 */
+/* 10 */
 /***/ (function(module, exports) {
 
 	/**
@@ -868,7 +863,7 @@ var codex =
 	}());
 
 /***/ }),
-/* 16 */
+/* 11 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1055,7 +1050,7 @@ var codex =
 
 
 /***/ }),
-/* 17 */
+/* 12 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1136,7 +1131,7 @@ var codex =
 
 
 /***/ }),
-/* 18 */
+/* 13 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1510,7 +1505,7 @@ var codex =
 
 
 /***/ }),
-/* 19 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -1518,7 +1513,7 @@ var codex =
 	*/
 	module.exports = (function () {
 	
-	    __webpack_require__(20);
+	    __webpack_require__(15);
 	
 	    var CSS_ = {
 	        wrapper : 'cdx-notifies-wrapper',
@@ -1598,13 +1593,13 @@ var codex =
 
 
 /***/ }),
-/* 20 */
+/* 15 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 21 */
+/* 16 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1912,7 +1907,7 @@ var codex =
 
 
 /***/ }),
-/* 22 */
+/* 17 */
 /***/ (function(module, exports) {
 
 	/**
@@ -1985,7 +1980,7 @@ var codex =
 
 
 /***/ }),
-/* 23 */
+/* 18 */
 /***/ (function(module, exports) {
 
 	/**
@@ -2597,7 +2592,7 @@ var codex =
 
 
 /***/ }),
-/* 24 */
+/* 19 */
 /***/ (function(module, exports) {
 
 	var sharer = {
@@ -2721,7 +2716,7 @@ var codex =
 	module.exports = sharer;
 
 /***/ }),
-/* 25 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -2746,10 +2741,15 @@ var codex =
 	    /**
 	     * CodeX Editor Personality-tool
 	     * @see  https://github.com/codex-editor/personality
-	     * @type {[type]}
 	     */
-	    var personalityTool = __webpack_require__(26);
-	    var linkTool = __webpack_require__(27);
+	    var personalityTool = __webpack_require__(21);
+	
+	    /**
+	     * CodeX Editor link embed tool
+	     * @see  https://github.com/codex-editor/link
+	     */
+	    // var linkTool = require('exports-loader?cdxEditorLink!codex.editor.link');
+	    // var linkTool = window.cdxEditorLink;
 	
 	    var editorIsReady = false,
 	        submitButton = null,
@@ -2899,12 +2899,12 @@ var codex =
 	                    type             : 'link',
 	                    iconClassname    : 'cdx-link-icon',
 	                    displayInToolbox : true,
-	                    prepare          : linkTool.prepare,
-	                    render           : linkTool.render,
-	                    makeSettings     : linkTool.settings,
-	                    save             : linkTool.save,
-	                    destroy          : linkTool.destroy,
-	                    validate         : linkTool.validate,
+	                    prepare          : window.cdxEditorLink.prepare,
+	                    render           : window.cdxEditorLink.render,
+	                    makeSettings     : window.cdxEditorLink.settings,
+	                    save             : window.cdxEditorLink.save,
+	                    destroy          : window.cdxEditorLink.destroy,
+	                    validate         : window.cdxEditorLink.validate,
 	                    config           : {
 	                        fetchURL         : '/fetchURL',
 	                        defaultStyle     : 'smallCover'
@@ -3179,7 +3179,7 @@ var codex =
 
 
 /***/ }),
-/* 26 */
+/* 21 */
 /***/ (function(module, exports) {
 
 	var cdxEditorPersonality =
@@ -3733,16 +3733,7 @@ var codex =
 	module.exports = cdxEditorPersonality;
 
 /***/ }),
-/* 27 */
-/***/ (function(module, exports) {
-
-	var cdxEditorLink=function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,t),o.l=!0,o.exports}var n={};return t.m=e,t.c=n,t.i=function(e){return e},t.d=function(e,n,r){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:r})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=6)}([function(e,t,n){"use strict";e.exports=function(){function e(){var e=document.createElement("INPUT");return e.type="input",e.classList.add(a.inputElement),e.placeholder="Paste Link...",e}function t(){var e=document.createElement("DIV");return e.classList.add(a.linkHolder),e}function r(e){var n=t(),r=document.createElement("DIV"),o=document.createElement("DIV"),i=document.createElement("DIV"),l=document.createElement("A");switch(n.dataset.style=e.style,n.classList.add(a.linkHolder,a.linkRendered),o.classList.add(a.cover),o.style.backgroundImage='url("'+e.image+'")',r.textContent=e.title,r.classList.add(a.embedTitle),i.textContent=e.description,i.classList.add(a.description),l.textContent=e.linkText,l.href=e.linkUrl,l.classList.add(a.anchor),n.appendChild(o),e.style){case"smallCover":o.classList.add(a.smallCover);break;case"bigCover":o.classList.add(a.bigCover)}return n.appendChild(r),n.appendChild(i),n.appendChild(l),n}function o(){var e=document.createElement("DIV");return e.classList.add(a.linkSettings),e}function i(e,t){var n=document.createElement("SPAN");return n.textContent=e[t],n.classList.add(a.linkSettingsItem),n}function l(){var e=document.createElement("LABEL");return e.classList.add(a.label),e}function c(e){var t=codex.editor.content.currentNode,n=e||t.querySelector("."+a.linkHolder),r=n.querySelector("."+a.embedTitle),o=n.querySelector("."+a.cover),i=o.style.backgroundImage.match(/http?.[^"]+/),l=n.querySelector("."+a.description),c=n.querySelector("."+a.anchor),s={};return s.style=n.dataset.style,s.image=i,s.title=r.textContent,s.description=l.innerHTML,s.linkText=c.innerHTML,s.linkUrl=c.href,s}var a={linkHolder:"cdx-link-tool",linkRendered:"cdx-link-tool--rendered",embedTitle:"cdx-link-tool__title",cover:"cdx-link-tool__cover",smallCover:"cdx-link-tool__cover--small",bigCover:"cdx-link-tool__cover--big",description:"cdx-link-tool__description",anchor:"cdx-link-tool__anchor",inputElement:"cdx-link-tool__input",label:"cdx-link-tool__label",labelLoading:"cdx-link-tool__label--loading",labelFinish:"cdx-link-tool__label--finish",labelError:"cdx-link-tool__label--error",linkSettings:"link-settings",linkSettingsItem:"link-settings__item",settingsItemActive:"link-settings__item--active"};return n(7),{css:a,drawInput:e,drawLabel:l,drawLinkHolder:t,drawEmbed:r,drawSettingsHolder:o,drawSettingsItem:i,getDataFromHTML:c}}()},function(e,t,n){"use strict";e.exports=function(){function e(e){var t=void 0;if(e&&e.style)t=r.drawEmbed(e);else{var n=void 0;t=r.drawLinkHolder(),n=r.drawInput(),n.addEventListener("paste",o.URLPasted.bind(n)),t.appendChild(n)}return t}function t(t){return e(t)}return t}();var r=n(0),o=n(5)},function(e,t,n){"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};e.exports=function(e){return e.config=null,e.prepare=function(t){return new Promise(function(n,o){"object"===(void 0===t?"undefined":r(t))&&t.fetchURL?(e.config=t,n()):o("Cant initialize plugin without fetch server")})},e}({})},function(e,t,n){"use strict";e.exports=function(){function e(e){var t={tags:{}},n={tags:{p:{}}},r={tags:{p:{},a:{href:!0,target:"_blank",rel:"nofollow"},b:{},i:{}}};return"bigCover"!=e.style&&"smallCover"!=e.style&&(e.style="smallCover"),e.title=codex.editor.sanitizer.clean(e.title,n),e.description=codex.editor.sanitizer.clean(e.description,r),e.linkText=codex.editor.sanitizer.clean(e.linkText,t),e.linkUrl=codex.editor.sanitizer.clean(e.linkUrl,t),e.image=codex.editor.sanitizer.clean(e.image,t),e}function t(t){return e(r.getDataFromHTML(t))}return t}();var r=n(0)},function(e,t,n){"use strict";e.exports=function(){function e(){var e=codex.editor.content.currentNode,n=e.querySelector("."+r.css.linkHolder),o=r.drawSettingsHolder(),i={smallCover:"Маленькая обложка",bigCover:"Большая обложка"};for(var l in i){var c=r.drawSettingsItem(i,l);c.dataset.style=l,c.addEventListener("click",t),n.dataset.style==l&&c.classList.add(r.css.settingsItemActive),o.appendChild(c)}return o}function t(){var e=codex.editor.content.currentNode;switch(this.dataset.style){case"smallCover":n(e);break;case"bigCover":i(e)}codex.editor.toolbar.settings.close()}function n(e){var t=r.getDataFromHTML(),n=void 0;t.style="smallCover",n=o(t),codex.editor.content.switchBlock(e,n)}function i(e){var t=r.getDataFromHTML(),n=void 0;t.style="bigCover",n=o(t),codex.editor.content.switchBlock(e,n)}return e}();var r=n(0),o=n(1)},function(e,t,n){"use strict";e.exports=function(){function e(e){var i=this,c=void 0,a=void 0;c=e.clipboardData||window.clipboardData,a=c.getData("Text"),i.classList.remove(r.css.labelError),codex.editor.core.ajax({url:o.config.fetchURL+"?url="+a,type:"GET",beforeSend:t.bind(i),success:n,error:l.bind(i.parentNode)})}function t(){var e=this,t=r.drawLabel();return e.parentNode.insertBefore(t,e),window.setTimeout(function(){t.classList.add(r.css.labelLoading)},50),e.parentNode}function n(e){var t=codex.editor.content.currentNode,n=void 0,c=this.querySelector("."+r.css.labelLoading),a=void 0;c.classList.add(r.css.labelFinish);try{n=JSON.parse(e),n.style=o.config.defaultStyle,n.success||1===n.success?(a=i(n),window.setTimeout(function(){codex.editor.content.switchBlock(t,a)},2500)):l.call(this)}catch(e){l.call(this)}}function l(e){var t=this,n=t.querySelector("."+r.css.label),o=t.querySelector("."+r.css.inputElement);n.remove(),o.classList.add(r.css.labelError)}return{URLPasted:e}}();var r=n(0),o=n(2),i=n(1)},function(e,t,n){"use strict";e.exports=function(){var e=n(1),t=n(3),r=n(4);return{prepare:n(2).prepare,render:e,save:t,settings:r}}()},function(e,t){}]);
-	
-	/*** EXPORTS FROM exports-loader ***/
-	module.exports = cdxEditorLink;
-
-/***/ }),
-/* 28 */
+/* 22 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -3838,7 +3829,7 @@ var codex =
 
 
 /***/ }),
-/* 29 */
+/* 23 */
 /***/ (function(module, exports) {
 
 	/**
@@ -3995,7 +3986,7 @@ var codex =
 
 
 /***/ }),
-/* 30 */
+/* 24 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4134,7 +4125,7 @@ var codex =
 
 
 /***/ }),
-/* 31 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -4145,12 +4136,12 @@ var codex =
 	    /**
 	     * Page cover module
 	     */
-	    var cover = __webpack_require__(32);
+	    var cover = __webpack_require__(26);
 	
 	    /**
 	     * Page pin module
 	     */
-	    var pin = __webpack_require__(33);
+	    var pin = __webpack_require__(27);
 	
 	    /**
 	     * Saves current clicked item in page drop-down menu
@@ -4375,7 +4366,7 @@ var codex =
 
 
 /***/ }),
-/* 32 */
+/* 26 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4616,7 +4607,7 @@ var codex =
 	}({});
 
 /***/ }),
-/* 33 */
+/* 27 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4685,7 +4676,7 @@ var codex =
 
 
 /***/ }),
-/* 34 */
+/* 28 */
 /***/ (function(module, exports) {
 
 	/**
@@ -4826,7 +4817,7 @@ var codex =
 	}();
 
 /***/ }),
-/* 35 */
+/* 29 */
 /***/ (function(module, exports) {
 
 	module.exports = function () {
