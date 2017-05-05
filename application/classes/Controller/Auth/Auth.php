@@ -95,8 +95,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base
     {
         $vk     = Model::factory('Social_Vk');
         $code   = Arr::get($_GET, 'code', '');
-        $action = Arr::get($_GET, 'action', '');
         $state  = Arr::get($_GET, 'state', 'login');
+
+        $log = Log::instance();
 
         if ($state == 'remove') return $this->social_remove('vk');
 
@@ -320,10 +321,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         } else {
 
-            $log = Log::instance();
-            $log->add(Log::ERROR, 'Twitter authorisation failed');
-            $log->write();
-
             return FALSE;
         }
     }
@@ -349,7 +346,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
             unset($userdata['email'], $userdata['name'],
                   $userdata['photo'], $userdata['photo_medium'], $userdata['photo_big']);
 
-            Model::factory('User')->updateUser($userFound['id'], $userdata);
+            $updateResult = Model::factory('User')->updateUser($userFound['id'], $userdata);
 
             parent::initAuthSession($userFound['id'], $social_cfg['type']);
 
@@ -464,8 +461,11 @@ class Controller_Auth_Auth extends Controller_Auth_Base
     */
     public function action_logout()
     {
-        parent::deleteSession();
-        parent::clearAuthCookie();
+        if ( $this->user->id )
+        {
+            parent::deleteSession();
+            parent::clearAuthCookie();
+        }
 
         $this->redirect('/auth');
 

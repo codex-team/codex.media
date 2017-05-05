@@ -29,7 +29,11 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
     {
         if (!$uid) return;
 
-        if ($sid = Cookie::get(self::COOKIE_SESSION, false)) {
+        $sid = Cookie::get(self::COOKIE_SESSION, false);
+
+        $isSessionExistInDB = (bool) Dao_AuthSessions::select()->where('uid', '=', $uid)->where('cookie', '=', $sid)->execute();
+
+        if ($sid && $isSessionExistInDB) {
 
             $sessionCookie = $sid;
             $authSession   = Dao_AuthSessions::update()->where('uid', '=', $uid)->where('cookie', '=', $sid);
@@ -52,10 +56,10 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
         if ($autoLoginType) $authSession->set('autologin', $autoLoginType);
 
         $authSession    = $authSession->execute();
-        $cookieLifeTime = time() + Date::YEAR * 2;
+        $cookieLifeTime = Date::YEAR * 100;
 
-        Cookie::set(self::COOKIE_USER_ID , $uid, $cookieLifeTime);
-        Cookie::set(self::COOKIE_SESSION , $sessionCookie, $cookieLifeTime);
+        $uidSetting = Cookie::set(self::COOKIE_USER_ID , $uid, $cookieLifeTime);
+        $sidSetting = Cookie::set(self::COOKIE_SESSION , $sessionCookie, $cookieLifeTime);
     }
 
     /**
@@ -131,8 +135,35 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
     {
         if (!$id && !$uid && !$sid) {
 
-            $uid = (int)Cookie::get(self::COOKIE_USER_ID, '');
+            $uid = (int) Cookie::get(self::COOKIE_USER_ID, '');
             $sid = Cookie::get(self::COOKIE_SESSION, false);
+        }
+
+        if ( ! ($id || $uid || $sid) ) {
+
+            /** Debug */
+            $message = array(
+                'id'  => $id,
+                'uid' => $uid,
+                'sid' => $sid
+            );
+
+            $user_id = Controller_Auth_Base::checkAuth();
+
+            $protocol = HTTP::$protocol == 'HTTP' ? 'http://' : 'https://';
+            if (!empty(Request::current())){
+                $path = $protocol . Arr::get($_SERVER, 'SERVER_NAME') . Request::current()->url();
+            } else {
+                $path = '';
+            }
+            $telegramMsg = '⁉️ Trying to delete all rows from AuthSession.' . PHP_EOL;
+            $telegramMsg .= 'user_id = ' . $user_id .  PHP_EOL . PHP_EOL;
+            $telegramMsg .= $path;
+
+            Model_Services_Telegram::sendBotNotification($telegramMsg);
+            /***/
+
+            return;
         }
 
         $query = Dao_AuthSessions::delete();
