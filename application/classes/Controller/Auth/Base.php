@@ -176,6 +176,18 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
                 'sid' => $sid
             );
 
+            $user_id = Controller_Auth_Base::checkAuth();
+
+            $protocol = HTTP::$protocol == 'HTTP' ? 'http://' : 'https://';
+            if (!empty(Request::current())){
+                $path = $protocol . Arr::get($_SERVER, 'SERVER_NAME') . Request::current()->url();
+            } else {
+                $path = '';
+            }
+            $telegramMsg = '⁉️ Trying to delete all rows from AuthSession.' . PHP_EOL;
+            $telegramMsg .= 'user_id = ' . $user_id .  PHP_EOL . PHP_EOL;
+            $telegramMsg .= $path;
+
             Model_Services_Telegram::sendBotNotification($telegramMsg);
             /***/
 
