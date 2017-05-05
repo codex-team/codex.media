@@ -67,7 +67,7 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
         $cookieLifeTime = time() + Date::YEAR * 2;
 
         $log->add(Log::DEBUG, 'New auth session - :result', array(
-            ':result' => $authSession
+            ':result' => json_encode(array('result' => $authSession))
         ));
 
         $uidSetting = Cookie::set(self::COOKIE_USER_ID , $uid, $cookieLifeTime);
@@ -104,11 +104,22 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
         $sid          = Cookie::get(self::COOKIE_SESSION, false);
         $userSessions = $sid ? Dao_AuthSessions::select()->where('uid', '=', $uid)->order_by('id','desc')->cached(Date::DAY, $uid)->execute() : array();
 
+        Log::instance()->add(Log::DEBUG, 'Check auth method. uid[:uid] sid [:sid] foundSessions[:count]', array(
+            ':uid' => $uid,
+            ':sid' => $sid,
+            ':count' => count($userSessions),
+        ));
+
         if ($userSessions) {
 
             foreach ($userSessions as $session) {
 
                 if ($sid == $session['cookie'] && !$session['dt_close']) {
+
+                    Log::instance()->add(Log::DEBUG, 'Current :uid session found! :session', array(
+                        ':uid'  => $uid,
+                        ':session' => json_encode($session)
+                    ));
 
                     return $uid;
                     break;

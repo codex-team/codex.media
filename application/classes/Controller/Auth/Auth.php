@@ -367,8 +367,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
             $updateResult = Model::factory('User')->updateUser($userFound['id'], $userdata);
 
-            Log::instance()->add(Log::DEBUG, 'Update result :result' . PHP_EOL, array(
-                ':result' => $updateResult
+            Log::instance()->add(Log::DEBUG, 'Update result — :result' . PHP_EOL, array(
+                ':result' => $updateResult ? 'success' : 'unknown'
             ));
 
             parent::initAuthSession($userFound['id'], $social_cfg['type']);
