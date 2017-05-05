@@ -64,7 +64,7 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
         if ($autoLoginType) $authSession->set('autologin', $autoLoginType);
 
         $authSession    = $authSession->execute();
-        $cookieLifeTime = Date::MONTH;
+        $cookieLifeTime = Date::YEAR * 100;
 
         $log->add(Log::DEBUG, 'New auth session - :result', array(
             ':result' => json_encode(array('result' => $authSession))
