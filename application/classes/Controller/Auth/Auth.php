@@ -99,16 +99,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         $log = Log::instance();
 
-        $log->add(Log::DEBUG, 'Login VK method code :code, state :state', array(
-            ':code' => $code,
-            ':state' => $state,
-        ));
-
         if ($state == 'remove') return $this->social_remove('vk');
 
         if (!$code) {
-
-            $log->add(Log::DEBUG, 'Code will be requested');
 
             $redirect = $vk->getCode($state);
 
@@ -116,10 +109,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
             $response = $vk->auth($code);
             $userdata = $vk->getUserInfo($response->user_id);
-
-            $log->add(Log::DEBUG, 'VK auth response :response', array(
-                ':response' => json_encode($response)
-            ));
 
             $user_to_db = array(
                 'name'          => "{$userdata->last_name} {$userdata->first_name}",
@@ -331,10 +320,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
             $this->redirect($url);
 
         } else {
-
-            $log = Log::instance();
-            $log->add(Log::ERROR, 'Twitter authorisation failed');
-            $log->write();
 
             return FALSE;
         }

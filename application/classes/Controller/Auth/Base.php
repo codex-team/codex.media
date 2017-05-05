@@ -33,27 +33,15 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
 
         $isSessionExistInDB = (bool) Dao_AuthSessions::select()->where('uid', '=', $uid)->where('cookie', '=', $sid)->execute();
 
-        $log = Log::instance();
-
         if ($sid && $isSessionExistInDB) {
 
             $sessionCookie = $sid;
             $authSession   = Dao_AuthSessions::update()->where('uid', '=', $uid)->where('cookie', '=', $sid);
 
-            $log->add(Log::DEBUG, 'Auth for logined user :uid. Need to update session witd sid :sid', array(
-                ':uid' => $uid,
-                ':sid' => $sessionCookie
-            ));
-
         } else {
 
             $sessionCookie = hash('sha256', openssl_random_pseudo_bytes(30)); // генерим случайный отпечаток для распознавания сессии
             $authSession = Dao_AuthSessions::insert();
-
-            $log->add(Log::DEBUG, 'Auth for not authorized user :uid. Create new session with sid :sid', array(
-                ':uid' => $uid,
-                ':sid' => $sessionCookie
-            ));
 
         }
 
@@ -70,17 +58,8 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
         $authSession    = $authSession->execute();
         $cookieLifeTime = Date::YEAR * 100;
 
-        $log->add(Log::DEBUG, 'New auth session - :result', array(
-            ':result' => json_encode(array('result' => $authSession))
-        ));
-
         $uidSetting = Cookie::set(self::COOKIE_USER_ID , $uid, $cookieLifeTime);
         $sidSetting = Cookie::set(self::COOKIE_SESSION , $sessionCookie, $cookieLifeTime);
-
-        $log->add(Log::DEBUG, 'New cookie set: ' . PHP_EOL . 'uid :uid ' . PHP_EOL . 'sid :sid' . PHP_EOL, array(
-            ':uid' => $uidSetting,
-            ':sid' => $sidSetting
-        ));
     }
 
     /**
