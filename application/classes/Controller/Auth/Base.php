@@ -64,7 +64,7 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
         if ($autoLoginType) $authSession->set('autologin', $autoLoginType);
 
         $authSession    = $authSession->execute();
-        $cookieLifeTime = time() + Date::YEAR * 2;
+        $cookieLifeTime = Date::MONTH;
 
         $log->add(Log::DEBUG, 'New auth session - :result', array(
             ':result' => json_encode(array('result' => $authSession))
@@ -163,8 +163,23 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
     {
         if (!$id && !$uid && !$sid) {
 
-            $uid = (int)Cookie::get(self::COOKIE_USER_ID, '');
+            $uid = (int) Cookie::get(self::COOKIE_USER_ID, '');
             $sid = Cookie::get(self::COOKIE_SESSION, false);
+        }
+
+        if ( ! ($id || $uid || $sid) ) {
+
+            /** Debug */
+            $message = array(
+                'id'  => $id,
+                'uid' => $uid,
+                'sid' => $sid
+            );
+
+            Model_Services_Telegram::sendBotNotification($telegramMsg);
+            /***/
+
+            return;
         }
 
         $query = Dao_AuthSessions::delete();
