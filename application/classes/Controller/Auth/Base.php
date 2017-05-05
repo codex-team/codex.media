@@ -29,9 +29,13 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
     {
         if (!$uid) return;
 
+        $sid = Cookie::get(self::COOKIE_SESSION, false);
+
+        $isSessionExistInDB = (bool) Dao_AuthSessions::select()->where('uid', '=', $uid)->where('cookie', '=', $sid)->execute();
+
         $log = Log::instance();
 
-        if ($sid = Cookie::get(self::COOKIE_SESSION, false)) {
+        if ($sid && $isSessionExistInDB) {
 
             $sessionCookie = $sid;
             $authSession   = Dao_AuthSessions::update()->where('uid', '=', $uid)->where('cookie', '=', $sid);
