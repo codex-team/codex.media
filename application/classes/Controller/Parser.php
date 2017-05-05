@@ -177,8 +177,8 @@ class Controller_Parser extends Controller_Base_preDispatch
     }
 
     /**
-    * Returns DOMNode inner html content
-    */
+     * Returns DOMNode inner html content
+     */
     private static function DOMinnerHTML(DOMNode $element)
     {
         $innerHTML = '';
@@ -190,5 +190,140 @@ class Controller_Parser extends Controller_Base_preDispatch
         }
 
         return $innerHTML;
+    }
+
+    /**
+     * fetch Action
+     * @public
+     *
+     * Returns JSON response
+     */
+    public function action_fetchURL()
+    {
+        $response = $this->parseLink();
+
+        $this->auto_render = false;
+        $this->response->headers('Content-Type', 'application/json; charset=utf-8');
+        $this->response->body(@json_encode($response));
+    }
+
+    /**
+     * @private
+     *
+     * Parses link by ajax request
+     */
+    private function parseLink()
+    {
+        $URL = Arr::get($_GET, 'url');
+
+        $response = array();
+        $response['success'] = 0;
+
+        if ( empty($URL) || !filter_var($URL, FILTER_VALIDATE_URL)) {
+            $response['message'] = 'Неправильный URL';
+            goto finish;
+        }
+
+        /**
+         * Make external request
+         * Use Kohana Native Request Factory
+         */
+        $request = Request::factory($URL)
+            ->headers('Content-Type', 'utf8')
+            ->execute();
+
+        if ($request->status() != '200') {
+
+            $response['message'] = 'Ошибка при обработке ссылки';
+            goto finish;
+
+        } else {
+
+            $htmlContent = $request->body();
+            $response = array_merge(
+                $this->getLinkInfo($URL),
+                $this->getMetaFromHTML($htmlContent)
+            );
+
+            if (!trim($response['title']) && !trim($response['description'])) {
+                $response['message'] = 'Данные не найдены';
+            } else {
+                $response['success'] = 1;
+            }
+        }
+
+        finish:
+        return $response;
+    }
+
+    /**
+     * Gets information about link : params, path and so on
+     * @param $URL
+     * @return array
+     */
+    private function getLinkInfo($URL)
+    {
+        $URLParams = parse_url($URL);
+
+        return array(
+            'linkUrl'   => $URL,
+            'linkText' => Arr::get($URLParams, 'host') . Arr::get($URLParams, 'path', ''),
+        );
+    }
+
+    /**
+     * Parses DOM Document
+     * @param $html
+     * @return array
+     */
+    private function getMetaFromHTML($html)
+    {
+        $DOMdocument = new DOMDocument();
+        @$DOMdocument->loadHTML($html);
+        $DOMdocument->preserveWhiteSpace = false;
+
+        $nodes = $DOMdocument->getElementsByTagName('title');
+
+        if ($nodes->length > 0) {
+            $title = $nodes->item(0)->nodeValue;
+        }
+
+        $description = "";
+        $keywords    = "";
+        $image       = "";
+
+        $metaData = $DOMdocument->getElementsByTagName('meta');
+
+        for($i = 0; $i < $metaData->length; $i++)
+        {
+            $data = $metaData->item($i);
+
+            if ($data->getAttribute('name') == 'description') {
+                $description = $data->getAttribute('content');
+            }
+
+            if ($data->getAttribute('name') == 'keywords') {
+                $keywords = $data->getAttribute('content');
+            }
+
+            if($data->getAttribute('property')=='og:image'){
+                $image = $data->getAttribute('content');
+            }
+        }
+
+        if (empty($image)) {
+
+            $images = $DOMdocument->getElementsByTagName('img');
+
+            if ($images->length > 0) {
+                $image = $images->item(0)->getAttribute('src');
+            }
+        }
+
+        return array(
+            'image'         => isset($image) ? $image : '',
+            'title'         => isset($title) ? $title : '',
+            'description'   => isset($description) ? $description : '',
+        );
     }
 }

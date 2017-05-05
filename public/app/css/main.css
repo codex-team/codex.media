@@ -40,8 +40,9 @@
 @import url('components/profile-settings.css');
 @import url('components/sharing.css');
 @import url('components/scroll-up.css');
-@import url('editor/files.css');
-@import url('editor/list.css');
+@import url('components/article-blocks/files.css');
+@import url('components/article-blocks/list.css');
+@import url('components/article-blocks/link-embed.css');
 @import url('components/island-settings.css');
 @import url('modules/checkboxes.css');
 @import url('components/auth.css');
@@ -51,3 +52,4 @@
  * CodeX Editor Tools
  */
 @import url("~codex.editor.personality/personality.css");
+@import url("~codex.editor.link/link.css");

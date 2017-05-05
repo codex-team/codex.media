@@ -20,10 +20,14 @@ module.exports = (function () {
     /**
      * CodeX Editor Personality-tool
      * @see  https://github.com/codex-editor/personality
-     * @type {[type]}
      */
     var personalityTool = require('exports-loader?cdxEditorPersonality!codex.editor.personality');
 
+    /**
+     * CodeX Editor link embed tool
+     * @see  https://github.com/codex-editor/link
+     */
+    var linkTool = require('exports-loader?cdxEditorLink!codex.editor.link');
 
     var editorIsReady = false,
         submitButton = null,
@@ -168,6 +172,21 @@ module.exports = (function () {
                     showInlineToolbar: true,
                     enableLineBreaks: true,
                     allowedToPaste: true
+                },
+                link: {
+                    type             : 'link',
+                    iconClassname    : 'cdx-link-icon',
+                    displayInToolbox : true,
+                    prepare          : linkTool.prepare,
+                    render           : linkTool.render,
+                    makeSettings     : linkTool.settings,
+                    save             : linkTool.save,
+                    destroy          : linkTool.destroy,
+                    validate         : linkTool.validate,
+                    config           : {
+                        fetchURL         : '/fetchURL',
+                        defaultStyle     : 'smallCover'
+                    }
                 },
                 raw : {
                     type: 'raw',

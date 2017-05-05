@@ -56,7 +56,7 @@
         <div class="article__content js-emoji-included">
             <? foreach ($page->blocks as $block): ?>
                 <?=
-                    View::factory('templates/editor/plugins/' . $block['type'], array(
+                    View::factory('templates/pages/blocks/' . $block['type'], array(
                         'block' => $block['data']
                     ))->render();
                 ?>

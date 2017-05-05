@@ -164,3 +164,9 @@ Route::set('DEL_COMMENT_SCRIPT', 'delete-comment/<comment_id>', array('comment_i
         'controller' => 'comments',
         'action'     => 'delete'
 ));
+
+Route::set('FETCH_URL', 'fetchURL')
+    ->defaults(array(
+        'controller' => 'Parser',
+        'action'    => 'fetchURL'
+    ));
