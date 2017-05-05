@@ -95,12 +95,20 @@ class Controller_Auth_Auth extends Controller_Auth_Base
     {
         $vk     = Model::factory('Social_Vk');
         $code   = Arr::get($_GET, 'code', '');
-        $action = Arr::get($_GET, 'action', '');
         $state  = Arr::get($_GET, 'state', 'login');
+
+        $log = Log::instance();
+
+        $log->add(Log::DEBUG, 'Login VK method code :code, state :state', array(
+            ':code' => $code,
+            ':state' => $state,
+        ));
 
         if ($state == 'remove') return $this->social_remove('vk');
 
         if (!$code) {
+
+            $log->add(Log::DEBUG, 'Code will be requested');
 
             $redirect = $vk->getCode($state);
 
@@ -108,6 +116,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
             $response = $vk->auth($code);
             $userdata = $vk->getUserInfo($response->user_id);
+
+            $log->add(Log::DEBUG, 'VK auth response :response', array(
+                ':response' => json_encode($response)
+            ));
 
             $user_to_db = array(
                 'name'          => "{$userdata->last_name} {$userdata->first_name}",
@@ -344,12 +356,20 @@ class Controller_Auth_Auth extends Controller_Auth_Base
             ->limit(1)
             ->execute();
 
+        Log::instance()->add(Log::DEBUG, 'Social insert method. User found in db: :userFound ' . PHP_EOL, array(
+            ':userFound' => json_encode($userFound)
+        ));
+
         if ($userFound) {
 
             unset($userdata['email'], $userdata['name'],
                   $userdata['photo'], $userdata['photo_medium'], $userdata['photo_big']);
 
-            Model::factory('User')->updateUser($userFound['id'], $userdata);
+            $updateResult = Model::factory('User')->updateUser($userFound['id'], $userdata);
+
+            Log::instance()->add(Log::DEBUG, 'Update result :result' . PHP_EOL, array(
+                ':result' => $updateResult
+            ));
 
             parent::initAuthSession($userFound['id'], $social_cfg['type']);
 

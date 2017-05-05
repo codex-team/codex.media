@@ -52,6 +52,10 @@ class Model_Social_Vk extends Model_preDispatch
     {
         $response = $this->exec( $this->getTokenUri( $code ) );
 
+        Log::instance()->add(Log::DEBUG, 'VK access token given - :token', array(
+            ':token' => $response->access_token,
+        ));
+
         $this->token = $response->access_token;
 
         return $response;
@@ -76,8 +80,8 @@ class Model_Social_Vk extends Model_preDispatch
     /**
      *  Make uri and exec him by method name and params
      *  @param  string $method
-     *  @param  array  $params # fields after url 
-     *  @return object 
+     *  @param  array  $params # fields after url
+     *  @return object
      */
     private function method($method, $params)
     {
@@ -97,20 +101,20 @@ class Model_Social_Vk extends Model_preDispatch
 
         return "{$this->url_auth}?".
             "client_id={$settings['client_id']}".
-            "&scope={$settings['scopes']}" . 
+            "&scope={$settings['scopes']}" .
             "&redirect_uri={$settings['redirect_uri']}" .
-            "&display=page" . 
+            "&display=page" .
             "&response_type=code".
             "&https=1".
             "&v=5.40".
             "&https={$this->https}" .
-            "&state={$state}"; 
+            "&state={$state}";
     }
 
     /**
      *  Create url for get token
      *  @param  string $code
-     *  @return string 
+     *  @return string
      */
     private function getTokenUri($code = NULL) {
 
@@ -142,7 +146,7 @@ class Model_Social_Vk extends Model_preDispatch
      *  Create url uses method name + params
      *  @param  string $method
      *  @param  array  $params
-     *  @return string 
+     *  @return string
      */
     private function getMethodUri( $method, $params ) {
         $parameters = http_build_query($params);
