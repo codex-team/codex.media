@@ -341,20 +341,12 @@ class Controller_Auth_Auth extends Controller_Auth_Base
             ->limit(1)
             ->execute();
 
-        Log::instance()->add(Log::DEBUG, 'Social insert method. User found in db: :userFound ' . PHP_EOL, array(
-            ':userFound' => json_encode($userFound)
-        ));
-
         if ($userFound) {
 
             unset($userdata['email'], $userdata['name'],
                   $userdata['photo'], $userdata['photo_medium'], $userdata['photo_big']);
 
             $updateResult = Model::factory('User')->updateUser($userFound['id'], $userdata);
-
-            Log::instance()->add(Log::DEBUG, 'Update result — :result' . PHP_EOL, array(
-                ':result' => $updateResult ? 'success' : 'unknown'
-            ));
 
             parent::initAuthSession($userFound['id'], $social_cfg['type']);
 

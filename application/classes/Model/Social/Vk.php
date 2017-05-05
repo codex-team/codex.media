@@ -52,10 +52,6 @@ class Model_Social_Vk extends Model_preDispatch
     {
         $response = $this->exec( $this->getTokenUri( $code ) );
 
-        Log::instance()->add(Log::DEBUG, 'VK access token given - :token', array(
-            ':token' => $response->access_token,
-        ));
-
         $this->token = $response->access_token;
 
         return $response;
