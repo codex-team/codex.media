@@ -484,8 +484,11 @@ class Controller_Auth_Auth extends Controller_Auth_Base
     */
     public function action_logout()
     {
-        parent::deleteSession();
-        parent::clearAuthCookie();
+        if ( $this->user->id )
+        {
+            parent::deleteSession();
+            parent::clearAuthCookie();
+        }
 
         $this->redirect('/auth');
 
