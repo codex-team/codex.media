@@ -92,6 +92,10 @@
 
     <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
 
+        <? if ( !empty($_SERVER['HAWK_TOKEN']) && $_SERVER['HAWK_TOKEN'] ): ?>
+            <script src="https://raw.githubusercontent.com/codex-team/hawk.client/master/hawk.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');"></script>
+        <? endif; ?>
+
         <? if ( !empty($_SERVER['ENABLE_GOV_SITE_WIDGET']) && $_SERVER['ENABLE_GOV_SITE_WIDGET'] ): ?>
             <script type="text/javascript" src="https://esir.gov.spb.ru/static/widget/js/widget.js" charset="utf-8"></script>
         <? endif; ?>
