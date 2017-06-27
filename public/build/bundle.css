@@ -1867,11 +1867,11 @@ body {
 .article__information {
 }
 .article__information-right{
-    margin-left: auto;
+        margin-left: auto;
 }
 .article__information .island-settings{
-    float: none;
-    margin-left: 20px;
+        float: none;
+        margin-left: 20px;
 }
 @media all and (max-width: 500px) {
     .article__comments-counter {
@@ -2000,50 +2000,50 @@ body {
 .article__person {
 }
 .article__person{
-    background: #fff;
-    border: 1px solid #e5e6ec;
-    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03);
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03);
-    border-radius: 3px;
-    padding: 30px;
-    margin: 0.7em 0;
-    line-height: 1.4em;
+        background: #fff;
+        border: 1px solid #e5e6ec;
+        -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03);
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03);
+        border-radius: 3px;
+        padding: 30px;
+        margin: 0.7em 0;
+        line-height: 1.4em;
 }
 .article__person-name{
-    font-size: 16px;
-    font-weight: 600;
+        font-size: 16px;
+        font-weight: 600;
 }
 .article__person-cite{
-    font-size: 14px;
-    margin: 10px 0;
+        font-size: 14px;
+        margin: 10px 0;
 }
 .article__person-url{
-    display: block;
-    margin-top: 15px;
-    border-bottom: 0 !important;
-    font-size: 11px;
-    color: #6e758a !important;
-    letter-spacing: 0.1px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 80%;
-    line-height: 1em;
+        display: block;
+        margin-top: 15px;
+        border-bottom: 0 !important;
+        font-size: 11px;
+        color: #6e758a !important;
+        letter-spacing: 0.1px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 80%;
+        line-height: 1em;
 }
 .article__person-url:hover{
-    color: #d03931 !important;
+        color: #d03931 !important;
 }
 .article__person-photo{
-    float: right;
-    width: 70px;
-    height: 70px;
-    border-radius: 3px;
-    background-color: #f6f6f9;
-    background-image: url('/public/app/svg/photo-placeholder.svg');
-    background-repeat: no-repeat;
-    background-position: center center;
-    overflow: hidden;
-    margin-left: 30px;
+        float: right;
+        width: 70px;
+        height: 70px;
+        border-radius: 3px;
+        background-color: #f6f6f9;
+        background-image: url('/public/app/svg/photo-placeholder.svg');
+        background-repeat: no-repeat;
+        background-position: center center;
+        overflow: hidden;
+        margin-left: 30px;
 }
 /**
  * Table
@@ -2114,18 +2114,18 @@ body {
 .special-white aside div .codex-special__toolbar,
 .special-green aside div .codex-special__toolbar,
 .special-blue aside div .codex-special__toolbar{
-    background-color: #ffed14 !important;
+        background-color: #ffed14 !important;
 }
 .special-white .main-aside .user_panel:hover,
 .special-green .main-aside .user_panel:hover,
 .special-blue .main-aside .user_panel:hover{
-    background: transparent !important;
+        background: transparent !important;
 }
 .special-white .island,
 .special-green .island,
 .special-blue .island{
-    background: #ffffff !important;
-    background: rgba(255, 255, 255, .04) !important;
+        background: #ffffff !important;
+        background: rgba(255, 255, 255, .04) !important;
 }
 .special-white .island div,
 .special-green .island div,
@@ -2139,13 +2139,13 @@ body {
 .special-white .island form,
 .special-green .island form,
 .special-blue .island form{
-    background: transparent !important;
+        background: transparent !important;
 }
 .special-white .button,
 .special-green .button,
 .special-blue .button{
-    background-color: #2b2c2d !important;
-    color: #fff !important;
+        background-color: #2b2c2d !important;
+        color: #fff !important;
 }
 .special-white .button.master,
 .special-green .button.master,
@@ -2153,7 +2153,7 @@ body {
 .special-white input[type=submit],
 .special-green input[type=submit],
 .special-blue input[type=submit]{
-    background-color: #1b439c !important;
+        background-color: #1b439c !important;
 }
 html body aside .codex-special__toolbar {
     padding: 15px 30px !important;
@@ -2166,8 +2166,8 @@ html body aside .codex-special__toolbar {
 }
 .special-big .site-footer,
     .special-big .site-head{
-    font-size: 13px !important;
-    line-height: 1.4em;
+        font-size: 13px !important;
+        line-height: 1.4em;
 }
 /**
  * Remove branding
@@ -2181,14 +2181,14 @@ html body aside .codex-special__toolbar {
 .special-white .main-aside,
 .special-green .main-aside,
 .special-blue .main-aside{
-    position: static;
-    margin-top: 0;
+        position: static;
+        margin-top: 0;
 }
 .special-big .branding,
 .special-white .branding,
 .special-green .branding,
 .special-blue .branding{
-    display: none;
+        display: none;
 }
 /**
  * Black version
@@ -2197,7 +2197,7 @@ html body aside .codex-special__toolbar {
 }
 .special-white .island textarea,
     .special-white .island input{
-    background-color: #0c0c0c !important;
+        background-color: #0c0c0c !important;
 }
 /**
  * Blue
@@ -2205,8 +2205,8 @@ html body aside .codex-special__toolbar {
 .special-blue {
 }
 .special-blue .island{
-    background: #ffffff !important;
-    background: rgba(255, 255, 255, .2) !important;
+        background: #ffffff !important;
+        background: rgba(255, 255, 255, .2) !important;
 }
 .codex-special__toolbar-text {
     vertical-align: baseline !important;
@@ -2935,51 +2935,51 @@ html body aside .codex-special__toolbar {
     color: #1a1e25 !important
 }
 .link-embed:hover{
-    border-color: #e8e9f1;
+        border-color: #e8e9f1;
 }
 .link-embed__cover{
 }
 .link-embed__cover{
-    background-position: center center;
-    background-repeat: no-repeat;
+            background-position: center center;
+            background-repeat: no-repeat;
 }
 .link-embed__cover--small{
-    margin: 0 0 25px 25px;
-    background-size: auto 100%;
-    width: 70px;
-    height: 70px;
-    border-radius: 2px;
-    float: right;
+            margin: 0 0 25px 25px;
+            background-size: auto 100%;
+            width: 70px;
+            height: 70px;
+            border-radius: 2px;
+            float: right;
 }
 .link-embed__cover--big{
-    background-size: 100% auto;
-    height: 180px;
-    margin: -26px -26px 25px;
-    border-radius: 2px 2px 0 0;
+            background-size: 100% auto;
+            height: 180px;
+            margin: -26px -26px 25px;
+            border-radius: 2px 2px 0 0;
 }
 .link-embed__title{
-    font-size: 17px;
-    font-weight: 500;
-    line-height: 1.4em;
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 1.4em;
 }
 .link-embed__description{
-    margin-top: 11px;
-    font-size: 14px;
-    line-height: 1.5em;
+        margin-top: 11px;
+        font-size: 14px;
+        line-height: 1.5em;
 }
 .link-embed__anchor{
-    display: block;
-    margin-top: 15px;
-    font-size: 11px;
-    color: #415983 !important;
-    letter-spacing: 0.2px;
-    line-height: 1.1em;
-    text-decoration: none !important;
-    border: 0 !important;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 400px;
+        display: block;
+        margin-top: 15px;
+        font-size: 11px;
+        color: #415983 !important;
+        letter-spacing: 0.2px;
+        line-height: 1.1em;
+        text-decoration: none !important;
+        border: 0 !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 400px;
 }
 .island-settings {
     position: relative;
@@ -3149,55 +3149,55 @@ body {
 .esir {
 }
 .esir{
-    background: #edf1f5 url('/public/app/svg/spb-herb.svg') no-repeat 5px center;
-    height: 30px;
-    line-height: 30px;
-    padding-left: 28px;
-    font-size: 12px;
-    color: #414e5e;
-    cursor: pointer;
-    white-space: nowrap;
+        background: #edf1f5 url('/public/app/svg/spb-herb.svg') no-repeat 5px center;
+        height: 30px;
+        line-height: 30px;
+        padding-left: 28px;
+        font-size: 12px;
+        color: #414e5e;
+        cursor: pointer;
+        white-space: nowrap;
 }
 .esir:hover{
-    background-color: #f4f5f7;
+        background-color: #f4f5f7;
 }
 .esir__search{
-    display: inline-block;
-    background: url('/public/app/svg/search.svg') no-repeat 10px center;
-    height: 30px;
-    line-height: 30px;
-    padding-left: 30px;
-    margin-left: 10px;
-    border-left: 1px solid #cfd8e1;
-    color: #7b8999;
+        display: inline-block;
+        background: url('/public/app/svg/search.svg') no-repeat 10px center;
+        height: 30px;
+        line-height: 30px;
+        padding-left: 30px;
+        margin-left: 10px;
+        border-left: 1px solid #cfd8e1;
+        color: #7b8999;
 }
 .esir__navigator{
-    float: left;
+        float: left;
 }
 .esir__included{
-    float: right;
-    border-left: 1px solid #cfd8e1;
-    padding: 0 10px;
+        float: right;
+        border-left: 1px solid #cfd8e1;
+        padding: 0 10px;
 }
 @media all and (max-width: 980px) {
+    .esir__search{
+            margin-left: 0;
+            border-left: 0;
+            font-size: 0;
+            position: absolute;
+            top: 0;
+            right: 0;
+    }
+    .esir__included{
+            display: none;
+    }
     .esir{
 }
     .esir{
-        font-size: 10px;
-        background-size: auto 12px;
-        padding-left: 22px;
-        padding-right: 20px;
-    }
-    .esir__included{
-        display: none;
-    }
-    .esir__search{
-        margin-left: 0;
-        border-left: 0;
-        font-size: 0;
-        position: absolute;
-        top: 0;
-        right: 0;
+            font-size: 10px;
+            background-size: auto 12px;
+            padding-left: 22px;
+            padding-right: 20px;
     }
     }
 /**
@@ -3209,7 +3209,8 @@ body {
 .cdx-notifies-wrapper {
     position: fixed;
     z-index: 2;
-    bottom: 20px; left: 20px;
+    bottom: 20px;
+    left: 20px;
 }
 .cdx-notifies-cross {
     position: absolute;

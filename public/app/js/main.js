@@ -72,6 +72,11 @@ codex = (function (codex) {
          */
         codex.branding.init();
 
+        /**
+         * Set listener for mobile menu toggler
+         */
+        codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
+
     };
 
     return codex;
