@@ -7,7 +7,7 @@
           data-desc="<?= $desc ?>"
           title="Forward in VK">
         <i class="icon-vkontakte"></i>
-        Нравится
+        Поделиться
     </span>
 
     <span class="sharing__button sharing__button--facebook js-share"
