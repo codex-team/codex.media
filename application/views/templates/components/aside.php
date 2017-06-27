@@ -28,7 +28,7 @@
             <?= $site_info['city'] ?>
         </div>
 
-        <span class="mobile-menu-toggler" onclick="codex.content.toggleMobileMenu(event);">
+        <span class="mobile-menu-toggler" id="js-mobile-menu-toggler">
             <? include(DOCROOT . "public/app/svg/menu.svg") ?>
         </span>
 

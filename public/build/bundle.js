@@ -119,6 +119,11 @@ var codex =
 	         */
 	        codex.branding.init();
 	
+	        /**
+	         * Set listener for mobile menu toggler
+	         */
+	        codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
+	
 	    };
 	
 	    return codex;
@@ -775,6 +780,19 @@ var codex =
 	    };
 	
 	    /**
+	     * Create listener for mobile menu toggler
+	     * @param {String} id — toggler's id
+	     */
+	    var setMobileMenuToggler = function ( id ) {
+	
+	        var menuToggler = document.getElementById(id);
+	
+	        menuToggler.addEventListener('click', toggleMobileMenu);
+	
+	    };
+	
+	
+	    /**
 	    * Module uses for toggle custom checkboxes
 	    * that has 'js-custom-checkbox' class and input[type="checkbox"] included
 	    * Example:
@@ -859,6 +877,7 @@ var codex =
 	    return {
 	
 	        toggleMobileMenu : toggleMobileMenu,
+	        setMobileMenuToggler : setMobileMenuToggler,
 	        customCheckboxes : customCheckboxes,
 	        approvalButtons : approvalButtons,
 	        toggle : toggle
@@ -866,6 +885,7 @@ var codex =
 	    };
 	
 	}());
+
 
 /***/ }),
 /* 16 */

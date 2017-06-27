@@ -18,6 +18,13 @@
 
     <!-- <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700&subset=cyrillic" rel="stylesheet"> -->
 
+    <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
+
+        <? if ( !empty($_SERVER['HAWK_TOKEN']) && $_SERVER['HAWK_TOKEN'] ): ?>
+            <script src="https://cdn.rawgit.com/codex-team/hawk.client/master/hawk.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');"></script>
+        <? endif; ?>
+
+    <? endif; ?>
 
     <link rel="stylesheet" type="text/css" media="all" href="/public/build/bundle.css?v=<?= filemtime('public/build/bundle.css'); ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
@@ -91,10 +98,6 @@
     <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>
 
     <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
-
-        <? if ( !empty($_SERVER['HAWK_TOKEN']) && $_SERVER['HAWK_TOKEN'] ): ?>
-            <script src="https://cdn.rawgit.com/codex-team/hawk.client/master/hawk.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');"></script>
-        <? endif; ?>
 
         <? if ( !empty($_SERVER['ENABLE_GOV_SITE_WIDGET']) && $_SERVER['ENABLE_GOV_SITE_WIDGET'] ): ?>
             <script type="text/javascript" src="https://esir.gov.spb.ru/static/widget/js/widget.js" charset="utf-8"></script>
