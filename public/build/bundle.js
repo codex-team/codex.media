@@ -787,6 +787,12 @@ var codex =
 	
 	        var menuToggler = document.getElementById(id);
 	
+	        if ( !menuToggler ) {
+	
+	            return;
+	
+	        }
+	
 	        menuToggler.addEventListener('click', toggleMobileMenu);
 	
 	    };
