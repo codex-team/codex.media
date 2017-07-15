@@ -1,5 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-class Kohana_Exception extends Kohana_Kohana_Exception {
+class Kohana_Exception extends Kohana_Kohana_Exception
+{
     public static function _handler($e)
     {
         switch (Kohana::$environment) {
@@ -18,10 +19,10 @@ class Kohana_Exception extends Kohana_Kohana_Exception {
      * Compose error trace for Telegram
      * @param Exception $e - kohana exception object
      */
-    private static function formatErrorForTelegrams( $e )
+    private static function formatErrorForTelegrams($e)
     {
         $protocol = HTTP::$protocol == 'HTTP' ? 'http://' : 'https://';
-        if (!empty(Request::current())){
+        if (!empty(Request::current())) {
             $path = $protocol . Arr::get($_SERVER, 'SERVER_NAME') . Request::current()->url();
         } else {
             $path = '';

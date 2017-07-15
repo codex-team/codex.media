@@ -6,21 +6,23 @@ class Controller_Admin extends Controller_Base_preDispatch
 
     public function action_index()
     {
-        if (!$this->user->id) $this->redirect('/');
+        if (!$this->user->id) {
+            $this->redirect('/');
+        }
 
         $this->title = $this->view['title'] = 'Панель управления сайтом';
 
         $page = $this->view['category'] = $this->request->param('page');
 
-        $form_saved = FALSE;
+        $form_saved = false;
 
         switch ($page) {
 
-            case 'pages'  : $form_saved = self::pages(Model_Page::TYPE_SITE_PAGE); break;
-            case 'news'   : $form_saved = self::pages(Model_Page::TYPE_SITE_NEWS); break;
-            case 'users'  : self::users(); break;
-            case 'parser' : self::parser(); break;
-            case 'index'  : default : self::adminIndexPage();
+            case 'pages': $form_saved = self::pages(Model_Page::TYPE_SITE_PAGE); break;
+            case 'news': $form_saved = self::pages(Model_Page::TYPE_SITE_NEWS); break;
+            case 'users': self::users(); break;
+            case 'parser': self::parser(); break;
+            case 'index': default: self::adminIndexPage();
         }
 
         $this->view['form_saved'] = $form_saved;

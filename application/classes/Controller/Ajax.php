@@ -2,8 +2,8 @@
 
 class Controller_Ajax extends Controller_Base_preDispatch
 {
-    public function action_send_confirmation_email() {
-
+    public function action_send_confirmation_email()
+    {
         $model_auth = new Model_Auth(array(
             "id"    => $this->user->id,
             "name"  => $this->user->name,
@@ -22,6 +22,5 @@ class Controller_Ajax extends Controller_Base_preDispatch
 
         $this->auto_render = false;
         $this->response->body(@json_encode($response));
-
     }
 }

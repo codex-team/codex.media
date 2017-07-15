@@ -17,8 +17,8 @@ class Model_Social_Fb extends Model_preDispatch
      *  Create uri for auth with fb
      *  @return string
      */
-    public function auth($state) {
-
+    public function auth($state)
+    {
         $settings = Kohana::$config->load('social.facebook');
 
         $uri = "{$this->url_dialog}" .
@@ -32,8 +32,8 @@ class Model_Social_Fb extends Model_preDispatch
         exit();
     }
 
-    public function getToken($code) {
-
+    public function getToken($code)
+    {
         $settings = Kohana::$config->load('social.facebook');
         
         $uri = "{$this->url_token}" .
@@ -45,7 +45,8 @@ class Model_Social_Fb extends Model_preDispatch
         return $this->exec($uri);
     }
 
-    public function getUser($token) {
+    public function getUser($token)
+    {
         $fields = "id,name,email,picture,domains";
         $uri = "{$this->url_user}?fields={$fields}&access_token={$token}";
 
@@ -61,7 +62,8 @@ class Model_Social_Fb extends Model_preDispatch
         return (object) $userdata;
     }
 
-    private function exec($uri) {
+    private function exec($uri)
+    {
         $response = file_get_contents($uri);
 
         return json_decode($response);

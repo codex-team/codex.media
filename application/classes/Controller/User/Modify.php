@@ -9,8 +9,8 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         'success' => 0
     );
 
-    public function action_settings() {
-
+    public function action_settings()
+    {
         if (!$this->user->id) {
             throw new HTTP_Exception_403();
         }
@@ -18,7 +18,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         $this->view['success'] = Arr::get($_GET, 'success', 0);
 
         if (Security::check(Arr::get($_POST, 'csrf'))) {
-           $this->view['success'] = $this->update();
+            $this->view['success'] = $this->update();
         };
 
         $model_auth = new Model_Auth(array(
@@ -29,11 +29,10 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         $this->view['newPasswordRequested'] = $model_auth->checkIfEmailWasSent(Model_Auth::TYPE_EMAIL_CHANGE);
 
         $this->template->content = View::factory('/templates/users/settings', $this->view);
-
     }
 
-    public function update () {
-
+    public function update()
+    {
         $name = Arr::get($_POST, 'name', $this->user->name);
         $bio  = Arr::get($_POST, 'bio', $this->user->bio);
 
@@ -43,19 +42,16 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         );
 
         if ($this->validateForm($fields)) {
-
             $this->user->updateUser($this->user->id, $fields);
             $this->redirect('user/settings?success=1');
             return true;
-
         }
 
         return false;
-
     }
 
-    private function validateForm($fields) {
-
+    private function validateForm($fields)
+    {
         $success = true;
 
         if (!trim($fields['name'])) {
@@ -64,11 +60,10 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         }
 
         return $success;
-
     }
 
-    public function action_request_password_change() {
-
+    public function action_request_password_change()
+    {
         $this->auto_render = false;
 
         $response = array(
@@ -96,19 +91,15 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         }
 
         if (empty($password) && $this->user->password) {
-
             $response['message'] = 'Введите пароль';
             $this->response->body(json_encode($response));
             return;
-
         }
 
         if ($this->user->password && !$this->user->checkPassword($password)) {
-
             $response['message'] = 'Неверный пароль';
             $this->response->body(json_encode($response));
             return;
-
         }
 
         $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CHANGE);
@@ -119,7 +110,6 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         );
 
         $this->response->body(json_encode($response));
-
     }
 
     /**
@@ -138,7 +128,6 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         $bio = trim($bio);
 
         if (Security::check($csrf) && $bio) {
-
             $saving = $this->user->updateUser($this->user->id, array(
                 'bio' => $bio
             ));
@@ -146,12 +135,11 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             $response['success'] = 1;
             $response['bio']     = $bio;
             $response['csrf']    = Security::token(true);
-
         }
 
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-        $this->response->body( json_encode($response) );
+        $this->response->body(json_encode($response));
     }
 
     /**
@@ -164,7 +152,6 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         $value  = Arr::get($_POST, 'value');
 
         if (!$this->user->isAdmin) {
-
             $this->ajaxResponse['message'] = 'Access denied';
             goto finish;
         }
@@ -181,7 +168,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         finish:
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-        $this->response->body( json_encode($this->ajaxResponse) );
+        $this->response->body(json_encode($this->ajaxResponse));
     }
 
     /**
@@ -210,7 +197,6 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         return $viewUser->updateUser($viewUser->id, array(
             'status' => $status
         ));
-
     }
 
     /**
@@ -250,11 +236,10 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         return $viewUser->updateUser($viewUser->id, array(
             'role' => $newRole
         ));
-
     }
 
-    public function action_changeEmail () {
-
+    public function action_changeEmail()
+    {
         if (!$this->request->is_ajax() || !$this->user) {
             throw new HTTP_Exception_403();
         }
@@ -286,7 +271,6 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
 
         if (Security::check($csrf)) {
-
             $update = $this->user->updateUser($this->user->id, array(
                 'email'       => $email,
                 'isConfirmed' => 0
@@ -307,13 +291,11 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             $response['success'] = 1;
 
             $response['island'] = View::factory('templates/components/email_confirm_island')->render();
-
         }
 
         finish:
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-        $this->response->body( json_encode($response) );
-
+        $this->response->body(json_encode($response));
     }
 }

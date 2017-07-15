@@ -60,13 +60,11 @@ class Model_User extends Model
      */
     public function __construct($needle = null)
     {
-
         if (Valid::email($needle)) {
             self::getByEmail($needle);
-        } elseif(Valid::digit($needle)) {
+        } elseif (Valid::digit($needle)) {
             self::get($needle);
         }
-
     }
 
     private function fillByRow($user)
@@ -75,15 +73,12 @@ class Model_User extends Model
 
             /** Fill model by DB row */
             foreach ($user as $field => $value) {
-
                 if (property_exists($this, $field)) {
-
                     $this->$field = $value;
                 }
             }
 
-            if (!$this->photo || !$this->photo_medium || !$this->photo_big){
-
+            if (!$this->photo || !$this->photo_medium || !$this->photo_big) {
                 $this->photo        = '/public/app/img/default_ava_small.png';
                 $this->photo_medium = '/public/app/img/default_ava.png';
                 $this->photo_big    = '/public/app/img/default_ava_big.png';
@@ -106,7 +101,9 @@ class Model_User extends Model
             ->limit(1)
             ->execute();
 
-        if (!$arr) return true;
+        if (!$arr) {
+            return true;
+        }
 
         return false;
     }
@@ -119,12 +116,11 @@ class Model_User extends Model
             ->cached(5 * Date::MINUTE, 'user:' . $id)
             ->execute();
 
-       return $this->fillByRow($user);
-
+        return $this->fillByRow($user);
     }
 
-    public function getByEmail($email) {
-
+    public function getByEmail($email)
+    {
         $user = Dao_Users::select()
             ->where('email', '=', $email)
             ->limit(1)
@@ -132,7 +128,6 @@ class Model_User extends Model
             ->execute();
 
         return $this->fillByRow($user);
-
     }
 
     /**
@@ -142,7 +137,6 @@ class Model_User extends Model
      */
     public function updateUser($user_id, $fields)
     {
-
         $user = Dao_Users::update()
             ->where('id', '=', $user_id)
             ->clearcache('user:' . $user_id);
@@ -187,14 +181,18 @@ class Model_User extends Model
 
     public function isAdmin()
     {
-        if (!$this->id) return false;
+        if (!$this->id) {
+            return false;
+        }
 
         return $this->role == self::ADMIN;
     }
 
     public function isTeacher()
     {
-        if (!$this->id) return false;
+        if (!$this->id) {
+            return false;
+        }
 
         return $this->role >= self::TEACHER;
     }
@@ -205,10 +203,12 @@ class Model_User extends Model
         $pages = Dao_Pages::select()
             ->where('author', '=', $this->id)
             ->where('status', '=', Model_Page::STATUS_SHOWING_PAGE)
-            ->order_by('id','DESC')
+            ->order_by('id', 'DESC')
             ->offset($offset);
 
-        if ($count) $pages->limit($count);
+        if ($count) {
+            $pages->limit($count);
+        }
 
         $pages = $pages->execute();
 
@@ -221,7 +221,7 @@ class Model_User extends Model
     {
         $teachers = Dao_Users::select()
             ->where('role', '>=', $role)
-            ->order_by('id','ASC')
+            ->order_by('id', 'ASC')
             ->cached(5 * Date::MINUTE, 'users_list:' . $role, array('users'))
             ->execute();
 
@@ -233,9 +233,7 @@ class Model_User extends Model
         $users = array();
 
         if (!empty($users_rows)) {
-
             foreach ($users_rows as $user_row) {
-
                 $user = new Model_User();
 
                 $user->fillByRow($user_row);
@@ -266,8 +264,8 @@ class Model_User extends Model
      *
      * @return bool
      */
-    public static function exists($field, $value) {
-
+    public static function exists($field, $value)
+    {
         $selection = Dao_Users::select($field)
             ->where($field, '=', $value)
             ->limit(1)
@@ -280,5 +278,4 @@ class Model_User extends Model
     {
         return $this->status == self::BANNED;
     }
-
 }

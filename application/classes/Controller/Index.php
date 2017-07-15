@@ -24,7 +24,6 @@ class Controller_Index extends Controller_Base_preDispatch
         /***/
 
         if (Model_Methods::isAjax()) {
-
             $response = array();
             $response['success']    = 1;
             $response['next_page']  = $next_page;
@@ -32,10 +31,8 @@ class Controller_Index extends Controller_Base_preDispatch
 
             $this->auto_render = false;
             $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-            $this->response->body( json_encode($response) );
-
+            $this->response->body(json_encode($response));
         } else {
-
             $this->view['pages']        = $pages;
             $this->view['next_page']    = $next_page;
             $this->view['page_number']  = $page_number;

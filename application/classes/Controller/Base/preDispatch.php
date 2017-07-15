@@ -17,21 +17,16 @@ class Controller_Base_preDispatch extends Controller_Template
     public function before()
     {
         if (!$this->request->param('iframe-embedding')) {
-
             $this->response->headers("X-Frame-Options", "SAMEORIGIN");
         }
 
         if (!empty($_SERVER['DOMAINS'])) {
-
             $domainsAvailable = explode(' ', $_SERVER['DOMAINS']);
 
             /** Disallow requests from other domains */
-            if (Kohana::$environment === Kohana::PRODUCTION ) {
-
-                if ( !in_array(Arr::get($_SERVER, 'SERVER_NAME'), $domainsAvailable) ) {
-
+            if (Kohana::$environment === Kohana::PRODUCTION) {
+                if (!in_array(Arr::get($_SERVER, 'SERVER_NAME'), $domainsAvailable)) {
                     exit('Wrong hostname. Please drop a line on team@ifmo.su. You\'ve got ' . Arr::get($_SERVER, 'SERVER_NAME', 'UNRECOGNIZED domain sign ¯\_(⊙︿⊙)_/¯'));
-
                 }
             }
         }
@@ -73,9 +68,12 @@ class Controller_Base_preDispatch extends Controller_Template
         //echo View::factory('profiler/stats');
 
         if ($this->auto_render) {
-
-            if ( $this->title )       $this->template->title       = $this->title;
-            if ( $this->description ) $this->template->description = $this->description;
+            if ($this->title) {
+                $this->template->title       = $this->title;
+            }
+            if ($this->description) {
+                $this->template->description = $this->description;
+            }
         }
 
         parent::after();
@@ -106,17 +104,14 @@ class Controller_Base_preDispatch extends Controller_Template
         $uid  = Controller_Auth_Base::checkAuth();
         $this->user = new Model_User($uid ?: 0);
         View::set_global('user', $this->user);
-
     }
 
     public function userOnline()
     {
         if ($this->user->id) {
-
             $this->user->isOnline = 1;
 
             if (!$this->redis->exists('user:'.$this->user->id.':online')) {
-
                 $this->redis->set('user:'.$this->user->id.':online', $this->user->id, Date::MINUTE);
                 $this->redis->set('user:'.$this->user->id.':online:timestamp', time());
             }
@@ -133,22 +128,17 @@ class Controller_Base_preDispatch extends Controller_Template
         $exceptions = array( 'long_desc' , 'blog_text', 'long_description' , 'content' ); // Исключения для полей с визуальным редактором
 
         foreach ($_POST as $key => $value) {
-
-            $value = stripos( $value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $value ;
+            $value = stripos($value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $value ;
 
             if (in_array($key, $exceptions) === false) {
-
                 $_POST[$key] = Security::xss_clean(HTML::chars($value));
-
             } else {
-
-                $_POST[$key] = strip_tags(trim($value), '<br><em><del><p><a><b><strong><i><strike><blockquote><ul><li><ol><img><tr><table><td><th><span><h1><h2><h3><iframe>' );
+                $_POST[$key] = strip_tags(trim($value), '<br><em><del><p><a><b><strong><i><strike><blockquote><ul><li><ol><img><tr><table><td><th><span><h1><h2><h3><iframe>');
             }
         }
 
         foreach ($_GET  as $key => $value) {
-
-            $value = stripos( $value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $value;
+            $value = stripos($value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $value;
 
             $_GET[$key] = Security::xss_clean(HTML::chars($value));
         }
@@ -156,7 +146,9 @@ class Controller_Base_preDispatch extends Controller_Template
 
     public static function _redis()
     {
-        if (!class_exists("Redis")) return null;
+        if (!class_exists("Redis")) {
+            return null;
+        }
 
         $redis_config = Kohana::$config->load('redis');
 

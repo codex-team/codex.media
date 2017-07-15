@@ -36,7 +36,8 @@ class Model_Social_Vk extends Model_preDispatch
      *  Make and load URL to catch code for auth
      *  @param string $state # login, attach or remove vk profile
      */
-    public function getCode($state) {
+    public function getCode($state)
+    {
         $url = $this->getAuthUri($state);
 
         header("Location: {$url}");
@@ -50,7 +51,7 @@ class Model_Social_Vk extends Model_preDispatch
      */
     public function auth($code)
     {
-        $response = $this->exec( $this->getTokenUri( $code ) );
+        $response = $this->exec($this->getTokenUri($code));
 
         $this->token = $response->access_token;
 
@@ -81,9 +82,9 @@ class Model_Social_Vk extends Model_preDispatch
      */
     private function method($method, $params)
     {
-        $uri = $this->getMethodUri( $method, $params );
+        $uri = $this->getMethodUri($method, $params);
 
-        return current( $this->exec( $uri )->response );
+        return current($this->exec($uri)->response);
     }
 
     /**
@@ -91,8 +92,8 @@ class Model_Social_Vk extends Model_preDispatch
      *  @param  string $state # login, attach or remove profile. Used in controller
      *  @return string
      */
-    private function getAuthUri($state='') {
-
+    private function getAuthUri($state='')
+    {
         $settings = Kohana::$config->load('social.vk');
 
         return "{$this->url_auth}?".
@@ -112,12 +113,13 @@ class Model_Social_Vk extends Model_preDispatch
      *  @param  string $code
      *  @return string
      */
-    private function getTokenUri($code = NULL) {
-
+    private function getTokenUri($code = null)
+    {
         $settings = Kohana::$config->load('social.vk');
 
-        if ($code === NULL) throw new Exception("Code not setted");
-        else {
+        if ($code === null) {
+            throw new Exception("Code not setted");
+        } else {
             return "{$this->url_token}?" .
                 "client_id={$settings['client_id']}" .
                 "&client_secret={$settings['client_secret']}" .
@@ -132,7 +134,8 @@ class Model_Social_Vk extends Model_preDispatch
      *  @param  string $uri
      *  @return object
      */
-    private function exec( $uri ) {
+    private function exec($uri)
+    {
         $response = file_get_contents($uri);
 
         return json_decode($response);
@@ -144,7 +147,8 @@ class Model_Social_Vk extends Model_preDispatch
      *  @param  array  $params
      *  @return string
      */
-    private function getMethodUri( $method, $params ) {
+    private function getMethodUri($method, $params)
+    {
         $parameters = http_build_query($params);
 
         return "{$this->url_method}{$method}?{$parameters}".

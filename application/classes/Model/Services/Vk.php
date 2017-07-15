@@ -36,7 +36,7 @@ class Model_Services_Vk extends Model_preDispatch
     {
         $this->isConfigOk = $this->loadConfig();
 
-        if ( !$this->isConfigOk ) {
+        if (!$this->isConfigOk) {
             return false;
         }
 
@@ -53,13 +53,12 @@ class Model_Services_Vk extends Model_preDispatch
         $config = Kohana::$config->load($configFilename);
 
         /** Check is config exist. If it doesn't then do nothing */
-        if ( empty((array) $config) ) {
+        if (empty((array) $config)) {
             return false;
         }
 
         /** If config doesn't contain params for vk */
         if (!property_exists($config, 'vk')) {
-
             throw new Kohana_Exception("No configuration for VK was found in $configFilename config file!");
 
             return false;
@@ -70,7 +69,6 @@ class Model_Services_Vk extends Model_preDispatch
         $this->adminKey = Arr::get($config->vk, 'admin_key', '');
 
         if (!$this->groupId || !$this->adminKey) {
-
             throw new Kohana_Exception("Invalid configuration of $configFilename config file ");
 
             return false;
@@ -104,7 +102,6 @@ class Model_Services_Vk extends Model_preDispatch
         $response = $this->sendRequest($url, $params);
 
         if ($response) {
-
             $this->postId = $response->post_id;
 
             $this->addToFeed();
@@ -126,7 +123,9 @@ class Model_Services_Vk extends Model_preDispatch
      */
     public function edit($values = array())
     {
-        if (!$this->postId) return true;
+        if (!$this->postId) {
+            return true;
+        }
 
         $params = array(
             'message'       => $values['text'],
@@ -150,7 +149,9 @@ class Model_Services_Vk extends Model_preDispatch
      */
     public function delete()
     {
-        if (!$this->postId) return true;
+        if (!$this->postId) {
+            return true;
+        }
 
         $params = array(
             'owner_id'      => $this->groupId,
@@ -178,7 +179,7 @@ class Model_Services_Vk extends Model_preDispatch
      */
     private function sendRequest($url = '', $params = array())
     {
-        if ( !$this->isConfigOk ) {
+        if (!$this->isConfigOk) {
             return false;
         }
 
@@ -188,9 +189,7 @@ class Model_Services_Vk extends Model_preDispatch
 
         /** Good, we've got a positive response */
         if (property_exists($response, 'response')) {
-
             return $response->response;
-
         }
         /***/
 

@@ -10,7 +10,9 @@ class Controller_Parser extends Controller_Base_preDispatch
 
         $response['success'] = 0;
 
-        if ($response['title'] != $response['article']) $response['success'] = 1;
+        if ($response['title'] != $response['article']) {
+            $response['success'] = 1;
+        }
 
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
@@ -22,7 +24,6 @@ class Controller_Parser extends Controller_Base_preDispatch
         $response = array("title" => "", "article" => "");
 
         if ($url) {
-
             $page = self::getPageHtmlByUrl($url);
 
             $doc = new DOMDocument();
@@ -50,7 +51,7 @@ class Controller_Parser extends Controller_Base_preDispatch
     {
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_USERAGENT,"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:31.0) Gecko/20100101 Firefox/31.0 " );
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:31.0) Gecko/20100101 Firefox/31.0 ");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -76,11 +77,8 @@ class Controller_Parser extends Controller_Base_preDispatch
 
         /** получаем h1 или title */
         if ($h1->length) {
-
             $pageTitle = $h1->item(0)->nodeValue;
-
         } elseif ($title->length) {
-
             $pageTitle = $title->item(0)->nodeValue;
         }
 
@@ -115,21 +113,17 @@ class Controller_Parser extends Controller_Base_preDispatch
         $parents = array();
 
         for ($i = 0; $i < $paragraphs->length; $i++) {
-
             $parentNode = $paragraphs->item($i)->parentNode;
 
             /** Compose node text-identifier looks like 'TAGNAME@classname' */
             $parentNodeIdentifier = self::getNodeIdentifier($parentNode);
 
             if (!isset($parents[$parentNodeIdentifier])) {
-
                 $parents[$parentNodeIdentifier] = array(
                     'node'   => $parentNode,
                     'childs' => 1
                 );
-
             } else {
-
                 $parents[$parentNodeIdentifier]['childs']++;
             }
         }
@@ -142,9 +136,7 @@ class Controller_Parser extends Controller_Base_preDispatch
         $nodeWithMaximumParagraphs = null;
 
         foreach ($parents as $item) {
-
             if ($item['childs'] > $maximumParagraphsCount) {
-
                 $maximumParagraphsCount    = $item['childs'];
                 $nodeWithMaximumParagraphs = $item['node'];
             }
@@ -169,7 +161,6 @@ class Controller_Parser extends Controller_Base_preDispatch
         $className = '';
 
         if ($classAttr = $node->attributes->getNamedItem('class')) {
-
             $className = $classAttr->nodeValue;
         }
 
@@ -185,7 +176,6 @@ class Controller_Parser extends Controller_Base_preDispatch
         $children  = $element->childNodes;
 
         foreach ($children as $child) {
-
             $innerHTML .= $element->ownerDocument->saveHTML($child);
         }
 
@@ -219,7 +209,7 @@ class Controller_Parser extends Controller_Base_preDispatch
         $response = array();
         $response['success'] = 0;
 
-        if ( empty($URL) || !filter_var($URL, FILTER_VALIDATE_URL)) {
+        if (empty($URL) || !filter_var($URL, FILTER_VALIDATE_URL)) {
             $response['message'] = 'Неправильный URL';
             goto finish;
         }
@@ -233,12 +223,9 @@ class Controller_Parser extends Controller_Base_preDispatch
             ->execute();
 
         if ($request->status() != '200') {
-
             $response['message'] = 'Ошибка при обработке ссылки';
             goto finish;
-
         } else {
-
             $htmlContent = $request->body();
             $response = array_merge(
                 $this->getLinkInfo($URL),
@@ -294,8 +281,7 @@ class Controller_Parser extends Controller_Base_preDispatch
 
         $metaData = $DOMdocument->getElementsByTagName('meta');
 
-        for($i = 0; $i < $metaData->length; $i++)
-        {
+        for ($i = 0; $i < $metaData->length; $i++) {
             $data = $metaData->item($i);
 
             if ($data->getAttribute('name') == 'description') {
@@ -306,13 +292,12 @@ class Controller_Parser extends Controller_Base_preDispatch
                 $keywords = $data->getAttribute('content');
             }
 
-            if($data->getAttribute('property')=='og:image'){
+            if ($data->getAttribute('property')=='og:image') {
                 $image = $data->getAttribute('content');
             }
         }
 
         if (empty($image)) {
-
             $images = $DOMdocument->getElementsByTagName('img');
 
             if ($images->length > 0) {

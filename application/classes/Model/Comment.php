@@ -1,6 +1,6 @@
-<?php defined('SYSPATH') OR die('No Direct Script Access');
+<?php defined('SYSPATH') or die('No Direct Script Access');
 
-Class Model_Comment extends Model_preDispatch
+class Model_Comment extends Model_preDispatch
 {
     public $id             = 0;
     public $author         = null;
@@ -16,7 +16,9 @@ Class Model_Comment extends Model_preDispatch
 
     public function __construct($id = 0)
     {
-        if ($id) return self::get($id);
+        if ($id) {
+            return self::get($id);
+        }
 
         return false;
     }
@@ -64,10 +66,10 @@ Class Model_Comment extends Model_preDispatch
     public function insert()
     {
         $idAndRowAffected = Dao_Comments::insert()
-            ->set('user_id',   $this->author['id'])
-            ->set('text',      $this->text)
-            ->set('page_id',   $this->page_id)
-            ->set('root_id',   $this->root_id)
+            ->set('user_id', $this->author['id'])
+            ->set('text', $this->text)
+            ->set('page_id', $this->page_id)
+            ->set('root_id', $this->root_id)
             ->set('parent_id', $this->parent_comment['id'])
             ->clearcache('comments_page:' . $this->page_id, array('comments:by:page:' . $this->page_id))
             ->execute();
@@ -102,7 +104,9 @@ Class Model_Comment extends Model_preDispatch
             ->order_by('id', 'DESC')
             ->offset($offset);
 
-        if ($count) $comment_rows->limit($count);
+        if ($count) {
+            $comment_rows->limit($count);
+        }
 
         $comment_rows = $comment_rows->execute();
 
@@ -122,9 +126,7 @@ Class Model_Comment extends Model_preDispatch
         $parent = array();
 
         foreach ($allComments as $parent_row) {
-
             if ($parent_id == $parent_row['id']) {
-
                 $parent = new Model_Comment;
 
                 return $parent->fillByRow($parent_row);
@@ -145,16 +147,13 @@ Class Model_Comment extends Model_preDispatch
         $comments = array();
 
         if ($comment_rows) {
-
             foreach ($comment_rows as $comment_row) {
-
                 $comment = new Model_Comment();
 
                 $comment->fillByRow($comment_row);
 
                 /* добавление информации о родительском комментарии */
                 if ($add_parent) {
-
                     $parent = array();
                     $parent = self::getParentForCommentFromCommentsArray($comment_rows, $comment_row['parent_id']);
                     $comment->parent_comment = $parent;
@@ -195,11 +194,9 @@ Class Model_Comment extends Model_preDispatch
 
         /* удалить подкомментарии */
         if ($with_subcomments) {
-
             $subcomments = $this->getSubcomments();
 
             foreach ($subcomments as $subcomment) {
-
                 $subcomment->delete(true);
             }
         }

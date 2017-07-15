@@ -59,7 +59,6 @@ class Controller_Comments extends Controller_Base_preDispatch
         finish:
 
         if (Model_Methods::isAjax()) {
-
             $response = array();
 
             if ($error) {
@@ -73,16 +72,15 @@ class Controller_Comments extends Controller_Base_preDispatch
 
             $this->auto_render = false;
             $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-            $this->response->body( json_encode($response) );
+            $this->response->body(json_encode($response));
 
             return true;
-
         }
 
         if ($error) {
-            $this->redirect( '/p/' . $page->id . '/' . $page->uri . '?error=' . $error );
+            $this->redirect('/p/' . $page->id . '/' . $page->uri . '?error=' . $error);
         } else {
-            $this->redirect( '/p/' . $page->id . '/' . $page->uri );
+            $this->redirect('/p/' . $page->id . '/' . $page->uri);
         }
     }
 
