@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Dao_MySQL_Base {
-
+class Dao_MySQL_Base
+{
     protected $table = 'null';
 
     const INSERT  = 1;
@@ -136,8 +136,12 @@ class Dao_MySQL_Base {
     public function cached($seconds, $key = null, array $tags = null)
     {
         $this->lifetime = $seconds;
-        if ($key) $this->keycached = $this->db_name . ':' . $this->cache_key . ':' . $key;
-        if ($tags) $this->tagcached = $tags;
+        if ($key) {
+            $this->keycached = $this->db_name . ':' . $this->cache_key . ':' . $key;
+        }
+        if ($tags) {
+            $this->tagcached = $tags;
+        }
         return $this;
     }
 
@@ -151,7 +155,11 @@ class Dao_MySQL_Base {
             $memcache->delete(mb_strtolower($full_key));
         }
 
-        if ($tags) foreach ($tags as $tag) $memcache->delete_tag($tag);
+        if ($tags) {
+            foreach ($tags as $tag) {
+                $memcache->delete_tag($tag);
+            }
+        }
 
         return $this;
     }
@@ -185,24 +193,34 @@ class Dao_MySQL_Base {
     private function insertExecute()
     {
         $insert = DB::insert($this->table, array_keys($this->fields))->values(array_values($this->fields))->execute();
-        if ($insert) return current($insert);
+        if ($insert) {
+            return current($insert);
+        }
         return false;
     }
 
     private function deleteExecute()
     {
         $delete = DB::delete($this->table);
-        foreach($this->where as $key => $value) $delete->where($key, key($value), current($value));
+        foreach ($this->where as $key => $value) {
+            $delete->where($key, key($value), current($value));
+        }
         return $delete->execute();
     }
 
     private function updateExecute()
     {
-        if (!$this->where) throw new Exception('Попытка обновить все записи в таблице!');
+        if (!$this->where) {
+            throw new Exception('Попытка обновить все записи в таблице!');
+        }
         $update = DB::update($this->table)->set($this->fields);
-        foreach($this->where as $key => $value) $update->where($key, key($value), current($value));
+        foreach ($this->where as $key => $value) {
+            $update->where($key, key($value), current($value));
+        }
         $update = $update->execute();
-        if ($update)  return $update;
+        if ($update) {
+            return $update;
+        }
         return false;
     }
 
@@ -214,8 +232,9 @@ class Dao_MySQL_Base {
         /** Проверяем есть ли кэш в мемкэше */
         if ($this->lifetime) {
             if ($this->keycached || $this->tagcached) {
-
-                if (!$this->keycached) $this->keycached = sha1($this->getCacheKey());
+                if (!$this->keycached) {
+                    $this->keycached = sha1($this->getCacheKey());
+                }
 
                 try {
                     $cache = $memcache->get(mb_strtolower($this->keycached));
@@ -232,11 +251,19 @@ class Dao_MySQL_Base {
         /** Собираем конструктор MySQL */
         $select = DB::select_array((array)$this->select_fields)->from($this->table);
 
-        foreach($this->where as $key => $value) $select->where($key, key($value), current($value));
-        foreach($this->where_in as $key => $value) $select->where($key, 'IN', $value);
+        foreach ($this->where as $key => $value) {
+            $select->where($key, key($value), current($value));
+        }
+        foreach ($this->where_in as $key => $value) {
+            $select->where($key, 'IN', $value);
+        }
 
-        if ($this->limit) $select->limit($this->limit);
-        if ($this->offset) $select->offset($this->offset);
+        if ($this->limit) {
+            $select->limit($this->limit);
+        }
+        if ($this->offset) {
+            $select->offset($this->offset);
+        }
 
         if ($this->order_by) {
             foreach ($this->order_by as $field => $sort) {
@@ -262,7 +289,7 @@ class Dao_MySQL_Base {
 
         $select = $select->execute();
 
-        if ( $this->limit === 1 ) {
+        if ($this->limit === 1) {
             $select = $select->current();
         } else {
             $select = $select->as_array($selectKey);
@@ -272,14 +299,17 @@ class Dao_MySQL_Base {
             $memcache->set(mb_strtolower($this->keycached), ($select ? $select : array()), $this->tagcached, $this->lifetime);
         }
 
-        if ($select) return (array)$select;
+        if ($select) {
+            return (array)$select;
+        }
         return false;
     }
 
     private function getMemcacheInstance()
     {
-        if (!$this->memcache) $this->memcache = Cache::instance('memcacheimp');
+        if (!$this->memcache) {
+            $this->memcache = Cache::instance('memcacheimp');
+        }
         return $this->memcache;
     }
-
 }

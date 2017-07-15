@@ -1,7 +1,7 @@
 <?php
 
-class Model_Feed_Pages extends Model_Feed_Abstract {
-
+class Model_Feed_Pages extends Model_Feed_Abstract
+{
     const FEED_PREFIX   = 'feed:';
 
     const ALL           = '1';
@@ -11,13 +11,11 @@ class Model_Feed_Pages extends Model_Feed_Abstract {
 
     public function __construct($type = self::ALL, $prefix = '')
     {
-
         $redis_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:');
 
         $this->timeline_key = $redis_prefix . self::FEED_PREFIX . $type;
 
         parent::__construct($prefix);
-
     }
 
     /**
@@ -46,17 +44,17 @@ class Model_Feed_Pages extends Model_Feed_Abstract {
         $items = parent::get($numberOfItems, $offset);
 
         if (is_array($items)) {
-
             $models_list = array();
 
             foreach ($items as $id) {
-
                 $page = new Model_Page($id, true); //sets $escapeHTML param true to escape HTML entities
 
                 $page->isPinned = $this->isPinned($id);
 
                 /** if page with $id doen't exist then ignore it */
-                if (!$page->id) continue;
+                if (!$page->id) {
+                    continue;
+                }
 
                 $models_list[] = $page;
             }
@@ -66,5 +64,4 @@ class Model_Feed_Pages extends Model_Feed_Abstract {
 
         return false;
     }
-
 }

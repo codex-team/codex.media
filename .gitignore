@@ -24,3 +24,5 @@ node_modules/
 *~
 
 .ftpconfig
+
+.php_cs.cache

@@ -40,7 +40,6 @@ class Controller_Auth_Signup extends Controller_Auth_Base
             ));
 
             if ($userId) {
-
                 parent::initAuthSession($userId);
 
                 $model_auth = new Model_Auth(array(
@@ -52,7 +51,7 @@ class Controller_Auth_Signup extends Controller_Auth_Base
                 $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CONFIRM);
 
                 /** Redirect user after succeeded auth */
-                $this->redirect( self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH );
+                $this->redirect(self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH);
             }
         }
     }
@@ -68,61 +67,55 @@ class Controller_Auth_Signup extends Controller_Auth_Base
     {
         /** Check for CSRF token*/
         if (!Security::check(Arr::get($_POST, 'csrf', ''))) {
-            return FALSE;
+            return false;
         }
 
         /** Check for correct name */
         if (!$fields['name']) {
-
             $this->view['signup_error_fields']['name'] = 'Не указано имя пользователя';
-            return FALSE;
+            return false;
         }
 
         /** Check for correct email */
         if (!Valid::email($fields['email'])) {
-
             $this->view['signup_error_fields']['email'] = 'Некорректный email';
-            return FALSE;
+            return false;
         }
 
         /** Check for password existing */
         if (!$fields['password']) {
-
             $this->view['signup_error_fields']['password'] = 'Не указан пароль';
-            return FALSE;
+            return false;
         }
 
         /** Check for password-repeation existing */
         if (!$fields['password_repeat']) {
-
             $this->view['signup_error_fields']['password_repeat'] = 'Не заполнено подтверждение пароля';
-            return FALSE;
+            return false;
         }
 
         /** Check for correct passsword repeation */
         if ($fields['password'] != $fields['password_repeat']) {
-
             $this->view['signup_error_fields']['password_repeat'] = 'Подтверждение пароля не пройдено. Проверьте правильность ввода';
-            return FALSE;
+            return false;
         }
 
         /** Generates new CSRF token */
-        Security::token(TRUE);
+        Security::token(true);
 
         /** Check for email exisiting in DB  */
         if (!$this->user->hasUniqueEmail($fields['email'])) {
-
             $this->view['signup_error_text'] = 'Адрес <b>' . $fields['email'] . '</b> уже зарегистрирован <a href="/auth">Войти на сайт</a>';
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 
     /**
      * Action for confirmation link
      */
-    public function action_confirm() {
-
+    public function action_confirm()
+    {
         $hash = $this->request->param('hash');
 
         $model_auth = new Model_Auth();
@@ -148,7 +141,5 @@ class Controller_Auth_Signup extends Controller_Auth_Base
         $user->updateUser($user->id, array('isConfirmed' => 1));
 
         $this->redirect('/user/' . $id . '?confirmed=1');
-
     }
-
 }

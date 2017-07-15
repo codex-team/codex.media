@@ -1,7 +1,7 @@
 <?php
 
-class Model_Feed_VkPosts extends Model_Feed_Abstract {
-
+class Model_Feed_VkPosts extends Model_Feed_Abstract
+{
     const TYPE = 'vkPosts';
 
     public function __construct($type = self::TYPE, $prefix = '')
@@ -25,5 +25,4 @@ class Model_Feed_VkPosts extends Model_Feed_Abstract {
     {
         return parent::add($article_id, $post_id);
     }
-
 }

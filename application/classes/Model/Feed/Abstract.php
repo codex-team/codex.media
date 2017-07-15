@@ -1,7 +1,7 @@
 <?php
 
-class Model_Feed_Abstract extends Model {
-
+class Model_Feed_Abstract extends Model
+{
     protected $redis;
     protected $prefix;
     protected $pin_limit = 1;
@@ -66,7 +66,7 @@ class Model_Feed_Abstract extends Model {
             return false;
         }
 
-        if($this->redis->zRank($this->timeline_key, $item_below_value) === false) {
+        if ($this->redis->zRank($this->timeline_key, $item_below_value) === false) {
             return false;
         }
 
@@ -111,7 +111,6 @@ class Model_Feed_Abstract extends Model {
             $pinned = $this->getPinnedFeed();
             $pinned->remove($item_id);
         }
-
     }
 
 
@@ -145,7 +144,6 @@ class Model_Feed_Abstract extends Model {
     public function init($items)
     {
         foreach ($items as $item) {
-
             $this->add($item['id'], $item['dt_create']);
         }
     }
@@ -191,7 +189,6 @@ class Model_Feed_Abstract extends Model {
         }
 
         $pinned->add($item_id, $score);
-
     }
 
     /**
@@ -199,8 +196,8 @@ class Model_Feed_Abstract extends Model {
      *
      * @param $item_id
      */
-    public function unpin($item_id) {
-
+    public function unpin($item_id)
+    {
         if (!$this->isExist($item_id)) {
             return;
         }
@@ -214,7 +211,6 @@ class Model_Feed_Abstract extends Model {
         $this->redis->zIncrBy($this->timeline_key, -$pinned->getScore($item_id), $this->composeValueIdentity($item_id));
 
         $pinned->remove($item_id);
-
     }
 
     /**
@@ -222,15 +218,14 @@ class Model_Feed_Abstract extends Model {
      *
      * @param $item_id
      */
-    public function togglePin($item_id) {
-
+    public function togglePin($item_id)
+    {
         if ($this->isPinned($item_id)) {
             $this->unpin($item_id);
             return;
         }
 
         $this->pin($item_id);
-
     }
 
     /**
@@ -239,12 +234,11 @@ class Model_Feed_Abstract extends Model {
      * @param $item_id
      * @return bool
      */
-    public function isPinned($item_id) {
-
+    public function isPinned($item_id)
+    {
         $pinned = $this->getPinnedFeed();
 
         return $pinned->isExist($item_id);
-
     }
 
     /**
@@ -252,10 +246,9 @@ class Model_Feed_Abstract extends Model {
      *
      * @return int
      */
-    public function length() {
-
+    public function length()
+    {
         return $this->redis->zCount($this->timeline_key, '-inf', '+inf');
-
     }
 
     /**
@@ -263,7 +256,8 @@ class Model_Feed_Abstract extends Model {
      *
      * @return Model_Feed_Abstract
      */
-    private function getPinnedFeed() {
+    private function getPinnedFeed()
+    {
         $pinned = new self($this->prefix);
         $pinned->timeline_key = $this->timeline_key . '-pinned';
 
@@ -276,10 +270,9 @@ class Model_Feed_Abstract extends Model {
      * @param $item_id
      * @return float
      */
-    public function getScore($item_id) {
+    public function getScore($item_id)
+    {
         $item_id = $this->composeValueIdentity($item_id);
         return $this->redis->zScore($this->timeline_key, $item_id);
     }
-
-
 }

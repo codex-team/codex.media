@@ -13,15 +13,14 @@ class Controller_Page_Index extends Controller_Base_preDispatch
      *
      * @throws HTTP_Exception_404 if page not found
      */
-    public function action_show() {
-
+    public function action_show()
+    {
         $id  = $this->request->param('id');
         $uri = $this->request->param('uri');
 
         $page = new Model_Page($id, true);
 
         if (!$page->id || $page->status == Model_Page::STATUS_REMOVED_PAGE) {
-
             throw new HTTP_Exception_404();
         }
 
@@ -36,8 +35,6 @@ class Controller_Page_Index extends Controller_Base_preDispatch
 
         $this->title = $page->title;
         $this->template->content = View::factory('templates/pages/page', $this->view);
-
-
     }
 
     /**
@@ -45,8 +42,8 @@ class Controller_Page_Index extends Controller_Base_preDispatch
      *
      * @throws HTTP_Exception_403 if user has no access for editing
      */
-    public function action_writing() {
-
+    public function action_writing()
+    {
         $page_id = (int) Arr::get($_POST, 'id', Arr::get($_GET, 'id', 0));
         $parent_id = (int) Arr::get($_POST, 'parent', Arr::get($_GET, 'parent', 0));
 
@@ -62,14 +59,14 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         }
 
         if (Security::check(Arr::get($_POST, 'csrf'))) {
-
             $page->title   = Arr::get($_POST, 'title');
             $page->content = Arr::get($_POST, 'content', '{items:[]}');
             $page->author  = $this->user;
-
         }
 
-        if (!$page->id_parent) $page->id_parent = $parent_id;
+        if (!$page->id_parent) {
+            $page->id_parent = $parent_id;
+        }
 
         $page->isPageOnMain = Arr::get($_POST, 'isNews', $page->isPageOnMain);
         $page->isPostedInVK = Arr::get($_POST, 'vkPost', $page->isPostedInVK);
@@ -77,7 +74,5 @@ class Controller_Page_Index extends Controller_Base_preDispatch
 
         $this->template->content = View::factory('templates/pages/writing', array('page' => $page, 'isPersonalBlog' => $isPersonalBlog));
         $this->template->contentOnly = true;
-
     }
-
 }

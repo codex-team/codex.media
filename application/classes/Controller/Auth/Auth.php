@@ -17,33 +17,35 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         /** Remember $_GET 'redirect' param if need */
         if ($redirect = Arr::get($_GET, 'redirect')) {
-
             $this->session->set('redirect', htmlspecialchars_decode($redirect));
         }
 
         /** To handle login/signup form submitting */
         $action        = Arr::get($_POST, 'action');
         $method        = $this->request->param('method');
-        $authSucceeded = FALSE;
+        $authSucceeded = false;
 
-        if ($action) switch ($action) {
+        if ($action) {
+            switch ($action) {
 
-            case 'login' : $authSucceeded = $this->login(); break;
+            case 'login': $authSucceeded = $this->login(); break;
+        }
         }
 
-        if ($method) switch ($method) {
+        if ($method) {
+            switch ($method) {
 
-            case 'vk' : $authSucceeded = $this->login_vk(); break;
-            case 'fb' : $authSucceeded = $this->login_fb(); break;
-            case 'tw' : $authSucceeded = $this->login_tw(); break;
+            case 'vk': $authSucceeded = $this->login_vk(); break;
+            case 'fb': $authSucceeded = $this->login_fb(); break;
+            case 'tw': $authSucceeded = $this->login_tw(); break;
+        }
         }
 
         /** Redirect user after succeeded auth */
         if ($authSucceeded) {
-
             $urlToRedirect = $this->session->get('redirect', self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH);
             $this->session->delete('redirect');
-            $this->redirect( $urlToRedirect );
+            $this->redirect($urlToRedirect);
         }
 
         $this->view['passwordReseted'] = Arr::get($_GET, 'reseted', 0);
@@ -65,7 +67,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         );
 
         if (self::checkUserLogin($loginForm)) {
-
             $passwordHash = parent::createPasswordHash($loginForm['password']);
             $userFound    = Dao_Users::select()
                                 ->where('email', '=', $loginForm['email'])
@@ -76,12 +77,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base
             if ($userFound) {
                 /** Success login */
                 parent::initAuthSession($userFound['id']);
-                return TRUE;
-
+                return true;
             } else {
-
                 $this->view['login_error_text'] = 'Неверный email или пароль';
-                return FALSE;
+                return false;
             }
         }
     }
@@ -99,14 +98,13 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         $log = Log::instance();
 
-        if ($state == 'remove') return $this->social_remove('vk');
+        if ($state == 'remove') {
+            return $this->social_remove('vk');
+        }
 
         if (!$code) {
-
             $redirect = $vk->getCode($state);
-
         } else {
-
             $response = $vk->auth($code);
             $userdata = $vk->getUserInfo($response->user_id);
 
@@ -128,7 +126,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base
              *  What to do with response data?
              *  @var string $state
              */
-            if ($state) switch ($state) {
+            if ($state) {
+                switch ($state) {
 
                 case 'login':
                     $status = $this->social_insert('vk', $user_to_db);
@@ -137,6 +136,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                 case 'attach':
                     $status = $this->social_attach('vk', $userdata->uid, $user_to_db);
                     break;
+            }
             }
             return $status;
         }
@@ -153,19 +153,17 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         $state  = Arr::get($_GET, 'state', 'login');
 
         if (Arr::get($_GET, 'error')) {
-
             $this->view['login_error_text'] = Arr::get($_GET, 'error_description', '');
-            return FALSE;
+            return false;
         }
 
-        if ($state == 'remove') return $this->social_remove('facebook');
+        if ($state == 'remove') {
+            return $this->social_remove('facebook');
+        }
 
         if (!$code) {
-
             $fb->auth($state);
-
         } else {
-
             $response = $fb->getToken($code);
             $userdata = $fb->getUser($response->access_token);
 
@@ -173,7 +171,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                 'name'              => $userdata->name,
                 'facebook'          => $userdata->id,
                 'facebook_name'     => $userdata->name,
-                'facebook_username' => NULL,
+                'facebook_username' => null,
                 'photo'             => $userdata->picture['100'],
                 'photo_medium'      => $userdata->picture['200'],
                 'photo_big'         => $userdata->picture['500']
@@ -187,7 +185,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base
              *  What to do with response data?
              *  @var string $state
              */
-            if ($state) switch ($state) {
+            if ($state) {
+                switch ($state) {
 
                 case 'login':
                     $status = $this->social_insert('facebook', $user_to_db);
@@ -196,6 +195,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                 case 'attach':
                     $status = $this->social_attach('facebook', $userdata->id, $user_to_db);
                     break;
+            }
             }
 
             return $status;
@@ -215,7 +215,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         $oauth_token        = $session->get('oauth_token', '');
         $oauth_token_secret = $session->get('oauth_token_secret', '');
 
-        if ($state == 'remove') return $this->social_remove('twitter');
+        if ($state == 'remove') {
+            return $this->social_remove('twitter');
+        }
 
         //If there was a redirect from twitter and it sent us some auth data
         $twitter_initiated = !empty($oauth_verifier)
@@ -223,13 +225,12 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                           && !empty($oauth_token_secret);
 
         if ($twitter_initiated) {
-
-            $userdata = $this->login_tw_get_userdata( $oauth_verifier, $oauth_token, $oauth_token_secret, $session);
+            $userdata = $this->login_tw_get_userdata($oauth_verifier, $oauth_token, $oauth_token_secret, $session);
 
             // 'include_email' Use of this parameter requires whitelisting.
             $user_to_db = array(
                 'name'            => $userdata->name,
-                'email'           => NULL,
+                'email'           => null,
                 'twitter'         => $userdata->id_str,
                 'twitter_name'    => $userdata->name,
                 'twitter_username'=> $userdata->screen_name,
@@ -243,7 +244,8 @@ class Controller_Auth_Auth extends Controller_Auth_Base
              *  @var string $state
              */
             $state = $session->get('state', 'login');
-            if ($state) switch ($state) {
+            if ($state) {
+                switch ($state) {
 
                 case 'login':
                     $status = $this->social_insert('twitter', $user_to_db);
@@ -253,9 +255,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                     $status = $this->social_attach('twitter', $userdata->id_str, $user_to_db);
                     break;
             }
+            }
 
             return $status;
-
         } else {
             // if we do not have data from Twitter
             return $this->login_tw_get_request_token($session, $state);
@@ -315,13 +317,10 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         $session->set('state', $state);
 
         if ($twitter_oauth->http_code == 200) {
-
             $url = $twitter_oauth->getAuthorizeURL($request_token['oauth_token']);
             $this->redirect($url);
-
         } else {
-
-            return FALSE;
+            return false;
         }
     }
 
@@ -337,12 +336,11 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         $social_cfg = Kohana::$config->load('social')->$social;
 
         $userFound = Dao_Users::select('id')
-            ->where($social,  '=', $userdata[$social])
+            ->where($social, '=', $userdata[$social])
             ->limit(1)
             ->execute();
 
         if ($userFound) {
-
             unset($userdata['email'], $userdata['name'],
                   $userdata['photo'], $userdata['photo_medium'], $userdata['photo_big']);
 
@@ -350,14 +348,12 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
             parent::initAuthSession($userFound['id'], $social_cfg['type']);
 
-            return TRUE;
-
+            return true;
         } else {
-
-            $userId = parent::insertUser( $userdata );
+            $userId = parent::insertUser($userdata);
 
             parent::initAuthSession($userId, $social_cfg['type']);
-            return TRUE;
+            return true;
         }
     }
 
@@ -369,29 +365,24 @@ class Controller_Auth_Auth extends Controller_Auth_Base
     private function social_attach($social, $social_id, $userdata)
     {
         if ($userId = parent::checkAuth()) {
-
             $userFound = Dao_Users::select('id')
-                ->where($social,  '=', $social_id)
+                ->where($social, '=', $social_id)
                 ->limit(1)
                 ->execute();
 
             if (!$userFound) {
-
                 unset($userdata['email'], $userdata['name'],
                       $userdata['photo'], $userdata['photo_medium'], $userdata['photo_big']);
 
                 Model::factory('User')->updateUser($userId, $userdata);
-                return TRUE;
-            }
-            else {
+                return true;
+            } else {
                 $this->view['login_error_text'] = 'Профиль, который вы хотите прикрепить, уже прикреплен';
-                return FALSE;
+                return false;
             }
-
         } else {
-
             $this->view['login_error_text'] = 'Не удалось прикрепить профиль соцсети';
-            return FALSE;
+            return false;
         }
     }
 
@@ -403,28 +394,22 @@ class Controller_Auth_Auth extends Controller_Auth_Base
     {
         switch ($social) {
 
-            case 'vk':       $fieldsToClean = array('vk'=> NULL,'vk_name'=> NULL,'vk_uri'=> NULL); break;
-            case 'facebook': $fieldsToClean = array('facebook'=> NULL,'facebook_username'=> NULL,'facebook_name'=> NULL); break;
-            case 'twitter':  $fieldsToClean = array('twitter'=> NULL,'twitter_name'=> NULL,'twitter_username'=> NULL); break;
+            case 'vk':       $fieldsToClean = array('vk'=> null,'vk_name'=> null,'vk_uri'=> null); break;
+            case 'facebook': $fieldsToClean = array('facebook'=> null,'facebook_username'=> null,'facebook_name'=> null); break;
+            case 'twitter':  $fieldsToClean = array('twitter'=> null,'twitter_name'=> null,'twitter_username'=> null); break;
         }
 
         if ($userId = parent::checkAuth()) {
-
-            if (TRUE == parent::rightToUnbindSocial($userId)) {
-
+            if (true == parent::rightToUnbindSocial($userId)) {
                 Model::factory('User')->updateUser($userId, $fieldsToClean);
-                return TRUE;
-
+                return true;
             } else {
-
                 $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети, т.к. это ваша последняя возможность авторизации на сайте';
-                return FALSE;
+                return false;
             }
-
         } else {
-
             $this->view['login_error_text'] = 'Не удалось открепить профиль соцсети';
-            return FALSE;
+            return false;
         }
     }
 
@@ -436,23 +421,23 @@ class Controller_Auth_Auth extends Controller_Auth_Base
     protected function checkUserLogin($fields)
     {
         /** Check for CSRF token*/
-        if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
+        if (!Security::check(Arr::get($_POST, 'csrf', ''))) {
+            return false;
+        }
 
         if (!Valid::email($fields['email'])) {
-
             $this->view['login_error_fields']['email'] = 'Некорректный email';
-            return FALSE;
+            return false;
         }
 
         if (!$fields['password']) {
-
             $this->view['login_error_fields']['password'] = 'Введите пароль';
-            return FALSE;
+            return false;
         }
 
         /** Generates new CSRF token */
-        Security::token(TRUE);
-        return TRUE;
+        Security::token(true);
+        return true;
     }
 
 
@@ -461,21 +446,19 @@ class Controller_Auth_Auth extends Controller_Auth_Base
     */
     public function action_logout()
     {
-        if ( $this->user->id )
-        {
+        if ($this->user->id) {
             parent::deleteSession();
             parent::clearAuthCookie();
         }
 
         $this->redirect('/auth');
-
     }
 
     /**
      * Action for /reset route
      */
-    public function action_reset() {
-
+    public function action_reset()
+    {
         $this->title = 'Восстановление пароля';
         $this->description = 'Страница для восстановления пароля';
 
@@ -485,14 +468,11 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         $email = Arr::get($_POST, 'reset_email', '');
 
         if ($this->checkEmail($email)) {
-
             $this->view['header'] = 'Мы отправили письмо с инструкциями на вашу почту';
             $this->view['email'] = $email;
-
         }
 
         $this->template->content = View::factory('/templates/auth/reset_password', $this->view);
-
     }
 
     /**
@@ -501,23 +481,25 @@ class Controller_Auth_Auth extends Controller_Auth_Base
      * @param $email
      * @return bool
      */
-    private function checkEmail($email) {
+    private function checkEmail($email)
+    {
 
         /** Check for CSRF token*/
-        if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
+        if (!Security::check(Arr::get($_POST, 'csrf', ''))) {
+            return false;
+        }
 
         /** Check for correct email */
         if (!Valid::email($email)) {
             $this->view['reset_password_error_fields']['email'] = 'Некорректный email';
-            return FALSE;
+            return false;
         }
 
         $user = new Model_User($email);
 
         if (!$user->id) {
-
             $this->view['reset_password_error_fields']['email'] = 'Пользователь с таким email не найден';
-            return FALSE;
+            return false;
         }
 
         $model_auth = new Model_Auth(array(
@@ -528,15 +510,14 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_RESET);
 
-        return TRUE;
-
+        return true;
     }
 
     /**
      * Action for reset link
      */
-    public function action_reset_password() {
-
+    public function action_reset_password()
+    {
         $hash   = $this->request->param('hash');
         $method = $this->request->param('method');
 
@@ -545,21 +526,17 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         $id = $model_auth->getUserIdByHash($hash, $method);
 
         if (!$id) {
-
             $error_text = 'Ссылка не действительна';
             $this->template->content = View::factory('templates/error', array('error_text' => $error_text));
             return;
-
         }
 
         $user = new Model_User($id);
 
         if (!$user->id) {
-
             $error_text = 'Переданы некорректные данные';
             $this->template->content = View::factory('templates/error', array('error_text' => $error_text));
             return;
-
         }
 
         $fields = array(
@@ -570,7 +547,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         );
 
         if ($this->checkNewPassword($fields)) {
-
             $user->updateUser($id, array('password' => parent::createPasswordHash($fields['password'])));
             $model_auth->deleteHash($hash, $method);
 
@@ -583,7 +559,6 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         $this->view['method'] = $method;
 
         $this->template->content = View::factory('templates/auth/new_password', $this->view);
-
     }
 
 
@@ -593,35 +568,32 @@ class Controller_Auth_Auth extends Controller_Auth_Base
      * @param $fields
      * @return bool
      */
-    private function checkNewPassword($fields) {
+    private function checkNewPassword($fields)
+    {
 
         /** Check for CSRF token*/
-        if (!Security::check(Arr::get($_POST, 'csrf', ''))) return FALSE;
+        if (!Security::check(Arr::get($_POST, 'csrf', ''))) {
+            return false;
+        }
 
         if (!$fields['password']) {
-
             $this->view['reset_password_error_fields']['password'] = 'Введите пароль';
-            return FALSE;
-
+            return false;
         }
 
         if (!$fields['password_repeat']) {
-
             $this->view['reset_password_error_fields']['password_repeat'] = 'Повторите пароль';
-            return FALSE;
-
+            return false;
         }
 
         if ($fields['password_repeat'] != $fields['password']) {
-
             $this->view['reset_password_error_fields']['password_repeat'] = 'Пароли не совпадают';
-            return FALSE;
-
+            return false;
         }
 
         /** Generates new CSRF token */
-        Security::token(TRUE);
+        Security::token(true);
 
-        return TRUE;
+        return true;
     }
 }

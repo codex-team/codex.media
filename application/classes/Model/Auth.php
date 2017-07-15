@@ -2,7 +2,6 @@
 
 class Model_Auth extends Model_preDispatch
 {
-
     const TYPE_EMAIL_CONFIRM = 'confirm';
     const TYPE_EMAIL_RESET   = 'reset';
     const TYPE_EMAIL_CHANGE  = 'change';
@@ -36,11 +35,11 @@ class Model_Auth extends Model_preDispatch
      * @param string $type - email type
      * @return integer - number of emails sent
      */
-    public function sendEmail($type) {
-
+    public function sendEmail($type)
+    {
         $hash = $this->addHash($type);
 
-        $message = View::factory('templates/emails/auth/' . $type , array('user' => $this->user, 'hash' => $hash));
+        $message = View::factory('templates/emails/auth/' . $type, array('user' => $this->user, 'hash' => $hash));
 
         return Model_Email::instance()->send(
             array(
@@ -61,17 +60,16 @@ class Model_Auth extends Model_preDispatch
      * @param $type - hash type
      * @return string $hash
      */
-    private function addHash($type) {
-
+    private function addHash($type)
+    {
         $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:') . 'hashes:';
         $hash = $this->makeHashByUserData($this->user['id'], $this->user['email']);
 
         $key = $key_prefix . $type . $hash;
 
-        $this->redis->setex($key, Date::DAY,  $this->user['id']);
+        $this->redis->setex($key, Date::DAY, $this->user['id']);
 
         return $hash;
-
     }
 
     /**
@@ -81,8 +79,8 @@ class Model_Auth extends Model_preDispatch
      * @param $type - hash type
      * @return integer - user id
      */
-    public function getUserIdByHash($hash, $type) {
-
+    public function getUserIdByHash($hash, $type)
+    {
         $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:') . 'hashes:';
         $key        = $key_prefix . $type . $hash;
 
@@ -97,13 +95,12 @@ class Model_Auth extends Model_preDispatch
      * @param $hash
      * @param $type - hash type
      */
-    public function deleteHash($hash, $type) {
-
+    public function deleteHash($hash, $type)
+    {
         $key_prefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:') . 'hashes:';
         $key        = $key_prefix . $type . $hash;
 
         $this->redis->del($key);
-
     }
 
     /**
@@ -113,12 +110,11 @@ class Model_Auth extends Model_preDispatch
      * @param $email
      * @return string $hash
      */
-    public function makeHashByUserData($id, $email) {
-
+    public function makeHashByUserData($id, $email)
+    {
         $salt = Arr::get($_SERVER, 'EMAIL_HASH_SALT', self::DEFAULT_EMAIL_HASH_SALT);
 
         return hash('sha256', $id . $salt . $email);
-
     }
 
     /**
@@ -127,12 +123,10 @@ class Model_Auth extends Model_preDispatch
      * @param $type - hash type
      * @return bool
      */
-    public function checkIfEmailWasSent($type) {
-
+    public function checkIfEmailWasSent($type)
+    {
         $hash = $this->makeHashByUserData($this->user['id'], $this->user['email']);
 
         return (bool) $this->getUserIdByHash($hash, $type);
-
     }
-
 }

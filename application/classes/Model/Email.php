@@ -11,26 +11,27 @@ use SendGrid\Email;
 use SendGrid\Mail;
 use SendGrid\Content;
 
-class Model_Email {
-
+class Model_Email
+{
     private $apiKey  = null;
     private $sender  = null;
 
-    private function __construct() {
-
+    private function __construct()
+    {
         $config = Kohana::$config->load('email');
 
-        $this->sender = new Email( Arr::get($config, 'senderName'), Arr::get($config, 'senderEmail') );
+        $this->sender = new Email(Arr::get($config, 'senderName'), Arr::get($config, 'senderEmail'));
         $this->apiKey = Arr::get($config, 'apiKey');
-
     }
 
-    private function __clone() {}
+    private function __clone()
+    {
+    }
 
     protected static $_instance = null;
 
-    public static function instance() {
-
+    public static function instance()
+    {
         if (self::$_instance === null) {
             self::$_instance = new self();
         }
@@ -50,8 +51,8 @@ class Model_Email {
      *
      * @return mixed
      */
-    public function send($receiver, $subject, $content) {
-
+    public function send($receiver, $subject, $content)
+    {
         $receiver = new Email($receiver['name'], $receiver['email']);
         $content  = new Content($content['format'], $content['message']);
         $mail     = new Mail($this->sender, $subject, $receiver, $content);

@@ -27,13 +27,13 @@ class Controller_Transport extends Controller_Base_preDispatch
 
         $file = new Model_File();
 
-        if ( !$this->check() ){
+        if (!$this->check()) {
             goto finish;
         }
 
         $uploadedFile = $file->upload($this->type, $this->files, $this->user->id, $this->target);
 
-        if ( $uploadedFile ) {
+        if ($uploadedFile) {
             $this->transportResponse['success'] = 1;
             $this->transportResponse['data'] = array(
                 'url'       => $uploadedFile->filepath,
@@ -52,7 +52,6 @@ class Controller_Transport extends Controller_Base_preDispatch
 
         $this->auto_render = false;
         $this->response->body($response);
-
     }
 
     /**
@@ -61,51 +60,43 @@ class Controller_Transport extends Controller_Base_preDispatch
      */
     private function check()
     {
-
         $config = Kohana::$config->load('upload');
 
         if (!$this->user->id) {
-
             $this->transportResponse['message'] = 'Access denied';
             return false;
         }
 
         if (!$this->type) {
-
             $this->transportResponse['message'] = 'Transport type missed';
             return false;
         }
 
-        if ( empty($config[$this->type]) ){
+        if (empty($config[$this->type])) {
             $this->transportResponse['message'] = 'Wrong type passed';
             return false;
         }
 
         if (!Upload::size($this->files, UPLOAD_MAX_SIZE . "M")) {
-
             $this->transportResponse['message'] = 'File size exceeded limit';
             return false;
         }
 
-        if (!$this->files){
-
+        if (!$this->files) {
             $this->transportResponse['message'] = 'File was not transferred';
             return false;
         }
 
-        if (!Upload::not_empty($this->files)){
-
+        if (!Upload::not_empty($this->files)) {
             $this->transportResponse['message'] = 'File is empty';
             return false;
         }
 
-        if (!Upload::valid($this->files)){
-
+        if (!Upload::valid($this->files)) {
             $this->transportResponse['message'] = 'Uploaded file is damaged';
             return false;
         }
 
         return true;
-
     }
 }

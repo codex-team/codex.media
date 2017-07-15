@@ -40,12 +40,13 @@ class Controller_User_Index extends Controller_Base_preDispatch
         /** If next page exist we need to unset last elem */
         $nextPage = Model_Methods::isNextPageExist($userFeed, self::ELEMS_IN_LIST);
 
-        if ($nextPage) unset($userFeed[self::ELEMS_IN_LIST]);
+        if ($nextPage) {
+            unset($userFeed[self::ELEMS_IN_LIST]);
+        }
         /***/
 
         /** If ajax request */
         if (Model_Methods::isAjax()) {
-
             $this->ajax_pagination($list, $userFeed, $nextPage);
             return;
         }
@@ -62,7 +63,6 @@ class Controller_User_Index extends Controller_Base_preDispatch
 
         $this->title = $viewUser->name;
         $this->template->content = View::factory('/templates/users/profile', $this->view);
-
     }
 
     private function ajax_pagination($type, $models, $nextPage = false)
@@ -88,7 +88,6 @@ class Controller_User_Index extends Controller_Base_preDispatch
 
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
-        $this->response->body( json_encode($response) );
+        $this->response->body(json_encode($response));
     }
-
 }

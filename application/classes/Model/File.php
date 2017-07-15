@@ -49,7 +49,9 @@ class Model_File extends Model
 
     public function __construct($id = null, $file_hash_hex = null, $row = array())
     {
-        if (!$id && !$file_hash_hex && !$row) return;
+        if (!$id && !$file_hash_hex && !$row) {
+            return;
+        }
 
         return self::get($id, $file_hash_hex, $row);
     }
@@ -115,7 +117,9 @@ class Model_File extends Model
 
             case self::BRANDING:
                 $user = new Model_User($user_id);
-                if (!$user->isAdmin) return false;
+                if (!$user->isAdmin) {
+                    return false;
+                }
 
                 // save branding as site_info
                 $settings = new Model_Settings();
@@ -136,7 +140,9 @@ class Model_File extends Model
 
             case self::SITE_LOGO:
                 $user = new Model_User($user_id);
-                if (!$user->isAdmin) return false;
+                if (!$user->isAdmin) {
+                    return false;
+                }
 
                 $settings = new Model_Settings();
                 $settings->newLogo($savedFilename);
@@ -153,7 +159,6 @@ class Model_File extends Model
         $this->author    = $user_id;
 
         return $this->insert();
-
     }
 
 
@@ -161,62 +166,61 @@ class Model_File extends Model
      * Returns size of file
      * @return int
      */
-    public function getSize(){
-
+    public function getSize()
+    {
         return @filesize($this->filepath);
-
     }
 
     /**
      * Returns file mime type by filepath
      * @return string mime-type
      */
-    public function getMime(){
-
+    public function getMime()
+    {
         return File::mime($this->filepath);
-
     }
 
     /**
      * Returns file extension by mime-type
      * @return string  extension
      */
-    public function getExtension(){
-
+    public function getExtension()
+    {
         return File::ext_by_mime($this->mime);
-
     }
 
     /**
      * Returns file extension by mime-type
      * @return string  extension
      */
-    public function getOriginalName($filepath){
-
+    public function getOriginalName($filepath)
+    {
         $info = pathinfo($filepath);
 
         return $info['filename'];
-
     }
 
     public function get($id = null, $file_hash_hex = null, $file_row = array())
     {
         if ($id || $file_hash_hex) {
-
             $file = Dao_Files::select();
 
-            if ($id)             $file->where('id', '=', $id);
-            if ($file_hash_hex)  $file->where('file_hash', '=', hex2bin($file_hash_hex));
+            if ($id) {
+                $file->where('id', '=', $id);
+            }
+            if ($file_hash_hex) {
+                $file->where('file_hash', '=', hex2bin($file_hash_hex));
+            }
 
             $file_row = $file->limit(1)->execute();
         }
 
-        if(!$file_row) return false;
+        if (!$file_row) {
+            return false;
+        }
 
         foreach ($file_row as $field => $value) {
-
             if (property_exists($this, $field)) {
-
                 $this->$field = $value;
             }
         }
@@ -232,25 +236,22 @@ class Model_File extends Model
         $file = Dao_Files::insert();
 
         if ($fields) {
-
             foreach ($fields as $key => $value) {
-
                 $file->set($key, $value);
             }
 
             $this->filename = $fields['filename'];
-
         } else {
 
             /** если на вход идет модель */
-            $file->set('filename',  $this->filename)
-                 ->set('title',     $this->title)
-                 ->set('author',    $this->author)
-                 ->set('size',      $this->size)
+            $file->set('filename', $this->filename)
+                 ->set('title', $this->title)
+                 ->set('author', $this->author)
+                 ->set('size', $this->size)
                  ->set('extension', $this->extension)
-                 ->set('mime',      $this->mime)
-                 ->set('type',      $this->type)
-                 ->set('target',    $this->target)
+                 ->set('mime', $this->mime)
+                 ->set('type', $this->type)
+                 ->set('target', $this->target)
                  ->set('file_hash', hex2bin($this->file_hash_hex));
         }
 
@@ -269,7 +270,9 @@ class Model_File extends Model
 
             // сбрасываем буфер вывода PHP, чтобы избежать переполнения памяти выделенной под скрипт
             // если этого не сделать файл будет читаться в память полностью!
-            if (ob_get_level()) ob_end_clean();
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
 
             // заставляем браузер показать окно сохранения файла
             header('Content-Description: File Transfer');
@@ -290,16 +293,20 @@ class Model_File extends Model
     /**
     * Files uploading section
     */
-    public function saveImage($file , $path, $sizesConfig)
+    public function saveImage($file, $path, $sizesConfig)
     {
         /**
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
-        if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) return FALSE;
+        if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) {
+            return false;
+        }
 
-        if (!is_dir($path)) mkdir($path);
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
 
-        $file = Upload::save($file, NULL, $path);
+        $file = Upload::save($file, null, $path);
 
         if (!$file) {
             return false;
@@ -325,21 +332,17 @@ class Model_File extends Model
 
             // Вырезание квадрата
             if ($isSquare) {
-
                 if ($image->width >= $image->height) {
-                    $image->resize( NULL , $height, Image::AUTO );
+                    $image->resize(null, $height, Image::AUTO);
                 } else {
-                    $image->resize( $width , NULL, Image::AUTO );
+                    $image->resize($width, null, Image::AUTO);
                 }
 
-                $image->crop( $width, $height );
-
+                $image->crop($width, $height);
             } else {
-
-                if ( $image->width > $width || $image->height > $height  ) {
-                    $image->resize( $width , $height , Image::AUTO );
+                if ($image->width > $width || $image->height > $height) {
+                    $image->resize($width, $height, Image::AUTO);
                 }
-
             }
 
             $image->save($path . $prefix . '_' . $filename);
@@ -349,7 +352,6 @@ class Model_File extends Model
         unlink($file);
 
         return $filename;
-
     }
 
     /**
@@ -362,12 +364,14 @@ class Model_File extends Model
      * @todo  Add translited file title to file name
      * @todo  Check extension by mime type — see https://kohanaframework.org/3.3/guide-api/File#mime
      */
-    public function saveFile($file , $path)
+    public function saveFile($file, $path)
     {
         /**
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
-        if (!is_dir($path)) mkdir($path);
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
 
         $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
@@ -376,9 +380,10 @@ class Model_File extends Model
 
         $file = Upload::save($file, $filename, $path);
 
-        if ($file) return $filename;
+        if ($file) {
+            return $filename;
+        }
 
-        return FALSE;
+        return false;
     }
-
 }

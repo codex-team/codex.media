@@ -8,43 +8,31 @@ class Model_Methods extends Model
 
     /* Надо будет выпилить - устаревает функция */
 
-    public function ftime($timestamp, $long = false , $need_time = true , $short_month = false)
+    public function ftime($timestamp, $long = false, $need_time = true, $short_month = false)
     {
-        if ($long && !$need_time) return $this->rusDate("j F Y", $timestamp);
+        if ($long && !$need_time) {
+            return $this->rusDate("j F Y", $timestamp);
+        }
 
         $time = time() - $timestamp;
 
         if (date('d-m-Y', time()) == date('d-m-Y', $timestamp)) {
-
             return 'сегодня в ' . date('H:i', $timestamp);
-
         } elseif (date('d-m-Y', strtotime("-1 day")) == date('d-m-Y', $timestamp)) {
-
             return 'вчера в ' . date('H:i', $timestamp);
-
         } elseif ($long) { // если нужна полная дата
 
             if ($short_month) {
-
                 return $this->rusDate("j M Y в H:i", $timestamp);
-
             } else {
-
                 return $this->rusDate("j F Y в H:i", $timestamp);
-
             }
-
         } elseif ($time > Date::MONTH && $time < Date::YEAR) {
-
-            return round($time / Date::MONTH) . ' ' . self::num_decline(round($time / Date::MONTH), 'месяц','месяца','месяцев') .  ' назад';
-
+            return round($time / Date::MONTH) . ' ' . self::num_decline(round($time / Date::MONTH), 'месяц', 'месяца', 'месяцев') .  ' назад';
         } elseif ($time > Date::YEAR) {
-
             return $this->rusDate("j F Y", $timestamp);
-
         } else {
-
-            return round($time / Date::DAY) . ' ' . self::num_decline(round($time / Date::DAY), 'день','дня','дней') .' назад';
+            return round($time / Date::DAY) . ' ' . self::num_decline(round($time / Date::DAY), 'день', 'дня', 'дней') .' назад';
         }
     }
 
@@ -54,21 +42,14 @@ class Model_Methods extends Model
         $ltime = $time - $timestamp;
 
         if ($ltime < Date::HOUR) {
-
             $timeToMinute = round($ltime / Date::MINUTE);
 
-            return  $timeToMinute . PHP_EOL . self::num_decline($timeToMinute, 'минуту','минуты','минут') . ' назад';
-
+            return  $timeToMinute . PHP_EOL . self::num_decline($timeToMinute, 'минуту', 'минуты', 'минут') . ' назад';
         } elseif (date('dmY', $time) == date('dmY', $timestamp)) {
-
             return 'сегодня в ' . date('H:i', $timestamp);
-
         } elseif (date('dmY', strtotime("-1 day")) == date('dmY', $timestamp)) {
-
             return 'вчера в ' . date('H:i', $timestamp);
-
         } else {
-
             return $this->rusDate("j M Y в H:i", $timestamp);
         }
     }
@@ -78,13 +59,9 @@ class Model_Methods extends Model
         $time = time() - $timestamp;
 
         if ($type == 'extra_short') {
-
             if (date('d-m-Y', time()) == date('d-m-Y', $timestamp)) {
-
                 return date('H:i', $timestamp);
-
             } else {
-
                 return round($time / Date::DAY) . ' дн.';
             }
         }
@@ -142,13 +119,10 @@ class Model_Methods extends Model
         );
 
         if (func_num_args() > 1) {
-
             $timestamp = func_get_arg(1);
 
             return strtr(date(func_get_arg(0), $timestamp), $translate);
-
         } else {
-
             return strtr(date(func_get_arg(0)), $translate);
         }
     }
@@ -156,11 +130,8 @@ class Model_Methods extends Model
     public function num_decline($num, $nominative, $genitive_singular, $genitive_plural)
     {
         if ($num > 10 && (floor(($num % 100) / 10))  == 1) {
-
             return $genitive_plural;
-
         } else {
-
             switch ($num % 10) {
                 case 1: return $nominative;
                 case 2: case 3: case 4: return $genitive_singular;
@@ -172,16 +143,13 @@ class Model_Methods extends Model
     public function short($string = '', $limit = 999999)
     {
         if (strlen($string) > $limit) {
-
             return Kohana_UTF8::substr($string, 0, $limit) . '...';
-
         } else {
-
             return $string;
         }
     }
 
-    public function specc_short($string = '' , $limit = 999999)
+    public function specc_short($string = '', $limit = 999999)
     {
         // $string = 'You <br> gonna be <h2>all right</h2><img src="/public/img/favicon.png" /> So go take <a href="/">down</a> the cross.';
         // $limit = 30;
@@ -194,38 +162,33 @@ class Model_Methods extends Model
         // echo 'Char number -> char number without tags -> Char ; Parameters <br>';
 
         for ($i = 0 ; $i < strlen($string); $i++) {
-
-            $char = mb_substr( $string , $i , 1 );
+            $char = mb_substr($string, $i, 1);
 
             // echo  $i . '  -> ' . $real_count . '   ->   \'' . $char . '\'' . ' : ';
             if ($char == '<') {
-
                 $inside_tag = true;
                 // echo ' opened!'; echo $tag_opened ? ' [tag opened] ' : ' [not tag opened] ' ;
 
                 $ret .= $char;        // 1 - символ открытия тэга. Нужен
 
-                $substr = mb_substr( $string, $i+1 , 5);
+                $substr = mb_substr($string, $i+1, 5);
 
-                if ($tag_opened && mb_substr( $string ,  $i + 1 , 1 ) == '/') {
-
+                if ($tag_opened && mb_substr($string, $i + 1, 1) == '/') {
                     $inside_close_tag = true;
                     // echo " inside_close_tag";
-
-                } elseif (stripos( $substr , 'img') !== false || stripos( $substr , 'br') !== false || stripos( $substr , 'hr') !== false) {
-
+                } elseif (stripos($substr, 'img') !== false || stripos($substr, 'br') !== false || stripos($substr, 'hr') !== false) {
                     $insede_alone_tag = true;
                     // echo ' inside alone tag ';
                 }
-
             } elseif ($char == '>') {
-
                 $inside_tag = false;
                 // echo ' closed! ' ;
 
                 $ret .= $char;  // 4 - символ закрытия тэга
 
-                if (! $insede_alone_tag) $tag_opened = true;
+                if (! $insede_alone_tag) {
+                    $tag_opened = true;
+                }
 
                 if ($inside_close_tag || $insede_alone_tag) {
                     $tag_opened = false;
@@ -238,31 +201,22 @@ class Model_Methods extends Model
                     // echo '<br> STOPPED AFTER CLOSED TAG';
                     break;
                 }
-
             } else {
-
                 if (!$tag_opened) {
-
                     if ($inside_tag) {
                         // echo " in tag ";
                         $ret .= $char; // 2 - символы внутри тэга. Нужны
-
                     } else {
                         // echo('*');
                         if ($real_count <= $limit - 1) {
-
                             $real_count++;
                             $ret .= $char;     // 3 - Обычные сиволы - не внутри тэга и открытых тегов нет.
-
                         } else {
-
                             if ($char != ' ' && $char != '\n') { // даем закончить слово
 
                                 $real_count++;
                                 $ret .= $char;
-
                             } else {
-
                                 $ret .= ' …';
                                 $is_trimmed = true;
                                 // echo '<br/>';
@@ -270,13 +224,10 @@ class Model_Methods extends Model
                             }
                         }
                     }
-
                 } else {
-
                     if ($inside_tag) { // Мы внутри закрывающего тега
                         // echo ' in tag ';
                     } else {
-
                         $real_count++;
                     }
 
@@ -323,9 +274,9 @@ class Model_Methods extends Model
         $stats = new Model_Stats();
 
         $data['social'] = array(
-            self::SOCIAL_VK => $stats->redis->get( $stats->getRedisKey(Controller_Ajax::getShareKey($type, $target, self::SOCIAL_VK), Model_Stats::TYPE_HIT_SHARE_BUTTON, 0) ),
-            self::SOCIAL_FB => $stats->redis->get( $stats->getRedisKey(Controller_Ajax::getShareKey($type, $target, self::SOCIAL_FB), Model_Stats::TYPE_HIT_SHARE_BUTTON, 0) ),
-            self::SOCIAL_TW => $stats->redis->get( $stats->getRedisKey(Controller_Ajax::getShareKey($type, $target, self::SOCIAL_TW), Model_Stats::TYPE_HIT_SHARE_BUTTON, 0) ),
+            self::SOCIAL_VK => $stats->redis->get($stats->getRedisKey(Controller_Ajax::getShareKey($type, $target, self::SOCIAL_VK), Model_Stats::TYPE_HIT_SHARE_BUTTON, 0)),
+            self::SOCIAL_FB => $stats->redis->get($stats->getRedisKey(Controller_Ajax::getShareKey($type, $target, self::SOCIAL_FB), Model_Stats::TYPE_HIT_SHARE_BUTTON, 0)),
+            self::SOCIAL_TW => $stats->redis->get($stats->getRedisKey(Controller_Ajax::getShareKey($type, $target, self::SOCIAL_TW), Model_Stats::TYPE_HIT_SHARE_BUTTON, 0)),
         );
 
         $result = View::factory('/share/buttons', $data)->render();
@@ -333,7 +284,7 @@ class Model_Methods extends Model
         return $result;
     }
 
-    public function makeCorrectUrl( $string )
+    public function makeCorrectUrl($string)
     {
         return preg_match('/^(?:ht|f)tps?:\/\//', $string) ? $string : 'http://' . $string;
     }
@@ -398,12 +349,11 @@ class Model_Methods extends Model
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
     }
 
-    public static function getSiteMenu() {
-
+    public static function getSiteMenu()
+    {
         $menu = new Model_Feed_Pages(Model_Feed_Pages::MENU);
 
         return array_reverse($menu->get());
-
     }
 
     public static function isNextPageExist($list = array(), $limit = 0)
@@ -413,7 +363,9 @@ class Model_Methods extends Model
 
     public static function sendPostRequest($url = '', $params = array())
     {
-        if (!$url || !$params) return false;
+        if (!$url || !$params) {
+            return false;
+        }
 
         $request = curl_init($url);
         curl_setopt($request, CURLOPT_POSTFIELDS, $params);
@@ -423,5 +375,4 @@ class Model_Methods extends Model
 
         return $response;
     }
-
 }

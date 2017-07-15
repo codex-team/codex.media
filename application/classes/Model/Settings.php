@@ -32,13 +32,14 @@ class Model_Settings extends Model_preDispatch
             $key   = Arr::get($info, 'name');
             $value = Arr::get($info, 'value');
 
-            if (!$key && !$value) continue;
+            if (!$key && !$value) {
+                continue;
+            }
 
             $siteSettings[$key] = $value;
         }
 
         return $siteSettings;
-
     }
 
     /**
@@ -58,11 +59,8 @@ class Model_Settings extends Model_preDispatch
     private function fillByRow($parameterRow)
     {
         if (!empty($parameterRow)) {
-
             foreach ($parameterRow as $field => $value) {
-
                 if (property_exists($this, $field)) {
-
                     $this->$field = $value;
                 }
             }
@@ -74,13 +72,15 @@ class Model_Settings extends Model_preDispatch
     public function insert()
     {
         $parameterRow = Dao_Settings::insert()
-            ->set('name',  $this->name)
+            ->set('name', $this->name)
             ->set('value', $this->value)
             ->set('label', $this->label)
             ->clearcache('settings')
             ->execute();
 
-        if ($parameterRow) return $this;
+        if ($parameterRow) {
+            return $this;
+        }
 
         return false;
     }
@@ -94,7 +94,9 @@ class Model_Settings extends Model_preDispatch
             ->clearcache('settings')
             ->execute();
 
-        if ($parameterRow) return $this;
+        if ($parameterRow) {
+            return $this;
+        }
 
         return false;
     }
@@ -120,13 +122,9 @@ class Model_Settings extends Model_preDispatch
         $this->value = $filename;
 
         if ($brandingExists) {
-
             $this->update();
-
         } else {
-
             $this->insert();
-
         }
 
         return $this->value;
@@ -147,13 +145,9 @@ class Model_Settings extends Model_preDispatch
         $this->value = $filename;
 
         if ($logoExists) {
-
             $this->update();
-
         } else {
-
             $this->insert();
-
         }
 
         return $this->value;

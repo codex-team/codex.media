@@ -61,7 +61,9 @@ class Model_Page extends Model
 
     public function __construct($id = 0, $escapeHTML = false)
     {
-        if (!$id) return;
+        if (!$id) {
+            return;
+        }
 
         self::get($id);
 
@@ -70,7 +72,6 @@ class Model_Page extends Model
             $this->blocks = $this->getBlocks($escapeHTML);
             $this->description = $this->getDescription();
         }
-
     }
 
     public function get($id = 0)
@@ -86,11 +87,8 @@ class Model_Page extends Model
 
     private function fillByRow($page_row)
     {
-
         if (!empty($page_row)) {
-
             foreach ($page_row as $field => $value) {
-
                 if (property_exists($this, $field)) {
                     $this->$field = $value;
                 }
@@ -106,7 +104,6 @@ class Model_Page extends Model
             $this->commentsCount = $this->getCommentsCount();
 
             $this->isPostedInVK = Model_Services_Vk::getPostIdByArticleId($this->id);
-
         }
 
         return $this;
@@ -115,31 +112,33 @@ class Model_Page extends Model
     public function insert()
     {
         $page = Dao_Pages::insert()
-            ->set('author',         $this->author->id)
-            ->set('id_parent',      $this->id_parent)
-            ->set('title',          $this->title)
-            ->set('content',        $this->content)
-            ->set('cover',          $this->cover)
-            ->set('rich_view',      $this->rich_view)
-            ->set('dt_pin',         $this->dt_pin);
+            ->set('author', $this->author->id)
+            ->set('id_parent', $this->id_parent)
+            ->set('title', $this->title)
+            ->set('content', $this->content)
+            ->set('cover', $this->cover)
+            ->set('rich_view', $this->rich_view)
+            ->set('dt_pin', $this->dt_pin);
 
         $pageId = $page->execute();
 
-        if ($pageId) return new Model_Page($pageId);
+        if ($pageId) {
+            return new Model_Page($pageId);
+        }
     }
 
     public function update()
     {
         $page = Dao_Pages::update()
             ->where('id', '=', $this->id)
-            ->set('id',             $this->id)
-            ->set('status',         $this->status)
-            ->set('id_parent',      $this->id_parent)
-            ->set('title',          $this->title)
-            ->set('cover',          $this->cover)
-            ->set('content',        $this->content)
-            ->set('rich_view',      $this->rich_view)
-            ->set('dt_pin',         $this->dt_pin);
+            ->set('id', $this->id)
+            ->set('status', $this->status)
+            ->set('id_parent', $this->id_parent)
+            ->set('title', $this->title)
+            ->set('cover', $this->cover)
+            ->set('content', $this->content)
+            ->set('rich_view', $this->rich_view)
+            ->set('dt_pin', $this->dt_pin);
 
         $page->clearcache('page:' . $this->id, array('site_menu'));
 
@@ -160,16 +159,13 @@ class Model_Page extends Model
         $comments = Model_Comment::getCommentsByPageId($this->id);
 
         foreach ($comments as $comment) {
-
             $comment->delete();
-
         }
 
         /* remove childs */
         $this->getChildrenPages();
 
         foreach ($this->children as $page) {
-
             $page->setAsRemoved();
         }
 
@@ -181,9 +177,7 @@ class Model_Page extends Model
         $pages = array();
 
         if (!empty($page_rows)) {
-
             foreach ($page_rows as $page_row) {
-
                 $page = new Model_Page();
 
                 $page->fillByRow($page_row);
@@ -203,8 +197,8 @@ class Model_Page extends Model
     {
         $query = Dao_Pages::select()
             ->where('status', '=', self::STATUS_SHOWING_PAGE)
-            ->where('id_parent','=', $this->id)
-            ->order_by('id','ASC')
+            ->where('id_parent', '=', $this->id)
+            ->order_by('id', 'ASC')
             ->execute();
 
         return self::rowsToModels($query);
@@ -233,17 +227,12 @@ class Model_Page extends Model
         $config = Kohana::$config->load('editor');
 
         try {
-
             $CodexEditor = new CodexEditor($this->content, $config);
 
             return $CodexEditor->getBlocks($escapeHTML);
-
         } catch (Exception $e) {
-
             throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
-
         }
-
     }
 
     /**
@@ -253,19 +242,15 @@ class Model_Page extends Model
      * @return string           - JSON with validated data
      * @throws Kohana_Exception   if data is not valid
      */
-    public function validateContent($escapeHTML = false) {
-
+    public function validateContent($escapeHTML = false)
+    {
         $config = Kohana::$config->load('editor');
 
         try {
-
             $CodexEditor = new CodexEditor($this->content, $config);
             return $CodexEditor->getData($escapeHTML);
-
         } catch (Exception $e) {
-
             throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
-
         }
     }
 
@@ -274,11 +259,10 @@ class Model_Page extends Model
      *
      * @param string $type - feed type
      */
-    public function addToFeed($type = Model_Feed_Pages::ALL) {
-
+    public function addToFeed($type = Model_Feed_Pages::ALL)
+    {
         $feed = new Model_Feed_Pages($type);
         $feed->add($this->id);
-
     }
 
     /**
@@ -286,15 +270,14 @@ class Model_Page extends Model
      *
      * @param string $type - feed type
      */
-    public function removeFromFeed($type = Model_Feed_Pages::ALL) {
-
+    public function removeFromFeed($type = Model_Feed_Pages::ALL)
+    {
         $feed = new Model_Feed_Pages($type);
         $feed->remove($this->id);
-
     }
 
-    public function toggleFeed($type = Model_Feed_Pages::ALL) {
-
+    public function toggleFeed($type = Model_Feed_Pages::ALL)
+    {
         $feed = new Model_Feed_Pages($type);
 
         if (!$feed->isExist($this->id)) {
@@ -302,7 +285,6 @@ class Model_Page extends Model
         } else {
             $this->removeFromFeed($type);
         }
-
     }
 
 
@@ -311,12 +293,11 @@ class Model_Page extends Model
      *
      * @return bool
      */
-    public function isMenuItem() {
-
+    public function isMenuItem()
+    {
         $feed = new Model_Feed_Pages(Model_Feed_Pages::MENU);
 
         return $feed->isExist($this->id);
-
     }
 
     /**
@@ -324,12 +305,11 @@ class Model_Page extends Model
      *
      * @return bool
      */
-    public function isPageOnMain() {
-
+    public function isPageOnMain()
+    {
         $feed = new Model_Feed_Pages(Model_Feed_Pages::MAIN);
 
         return $feed->isExist($this->id);
-
     }
 
     /**
@@ -356,19 +336,14 @@ class Model_Page extends Model
         $blocks = $this->blocks;
 
         if ($blocks) {
-
             foreach ($blocks as $block) {
-
                 if ($block['type'] == 'paragraph') {
-
                     return $block['data']['text'];
-
                 }
             }
         }
 
         return '';
-
     }
 
     /**
@@ -383,7 +358,7 @@ class Model_Page extends Model
 
         $cached = $cache->get($cacheKey);
 
-        if ( $cached) {
+        if ($cached) {
             return $cached;
         }
 
@@ -398,22 +373,18 @@ class Model_Page extends Model
         return $count;
     }
 
-    public function getComments() {
+    public function getComments()
+    {
         return Model_Comment::getCommentsByPageId($this->id);
     }
 
     public function getUrlToParentPage()
     {
         if ($this->id_parent != 0) {
-
             return '/p/' . $this->parent->id . '/' . $this->parent->uri;
-
         } elseif (!$this->isMenuItem()) {
-
             return '/user/' . $this->author->id;
-
         } else {
-
             return '/';
         }
     }
@@ -424,8 +395,8 @@ class Model_Page extends Model
      * @param Model_User $user
      * @return bool
      */
-    public function canModify($user) {
-
+    public function canModify($user)
+    {
         if ($user->isAdmin()) {
             return true;
         }
@@ -443,7 +414,5 @@ class Model_Page extends Model
         }
 
         return true;
-
     }
-
 }

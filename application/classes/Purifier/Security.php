@@ -9,7 +9,8 @@
  * @copyright  (c) 2010 Woody Gilk
  * @license    BSD
  */
-class Purifier_Security extends Kohana_Security {
+class Purifier_Security extends Kohana_Security
+{
 
     // Current purifier version
     const PURIFIER = '1.2.1';
@@ -31,12 +32,9 @@ class Purifier_Security extends Kohana_Security {
      */
     public static function htmlpurifier()
     {
-        if ( ! Security::$htmlpurifier)
-        {
-            if ( ! class_exists('HTMLPurifier_Config', FALSE))
-            {
-                if (Kohana::$config->load('purifier.preload'))
-                {
+        if (! Security::$htmlpurifier) {
+            if (! class_exists('HTMLPurifier_Config', false)) {
+                if (Kohana::$config->load('purifier.preload')) {
                     // Load the all of HTML Purifier right now.
                     // This increases performance with a slight hit to memory usage.
                     require 'modules/purifier/vendor/htmlpurifier/library/HTMLPurifier.includes.php';
@@ -49,18 +47,16 @@ class Purifier_Security extends Kohana_Security {
             // Create a new configuration object
             $config = HTMLPurifier_Config::createDefault();
 
-            if ( ! Kohana::$config->load('purifier.finalize'))
-            {
+            if (! Kohana::$config->load('purifier.finalize')) {
                 // Allow configuration to be modified
-                $config->autoFinalize = FALSE;
+                $config->autoFinalize = false;
             }
 
             // Use the same character set as Kohana
             $config->set('Core.Encoding', Kohana::$charset);
 
 
-            if (is_array($settings = Kohana::$config->load('purifier.settings')))
-            {
+            if (is_array($settings = Kohana::$config->load('purifier.settings'))) {
                 // Load the settings
                 $config->loadArray($settings);
             }
@@ -70,8 +66,6 @@ class Purifier_Security extends Kohana_Security {
 
             // Create the purifier instance
             Security::$htmlpurifier = new HTMLPurifier($config);
-
-
         }
 
 
@@ -104,10 +98,8 @@ class Purifier_Security extends Kohana_Security {
      */
     public static function xss_clean($str)
     {
-        if (is_array($str))
-        {
-            foreach ($str as $i => $s)
-            {
+        if (is_array($str)) {
+            foreach ($str as $i => $s) {
                 // Recursively clean arrays
                 $str[$i] = Security::xss_clean($s);
             }
@@ -121,5 +113,4 @@ class Purifier_Security extends Kohana_Security {
         // Clean the HTML and return it
         return $purifier->purify($str);
     }
-
 } // End Purifier Security
