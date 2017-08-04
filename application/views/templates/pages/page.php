@@ -1,4 +1,6 @@
-<article class="article island island--padded">
+<article class="article island island--padded" itemscope itemtype="http://schema.org/Article">
+
+    <meta itemprop="datePublished" content="<?= date(DATE_ISO8601, strtotime($page->date)) ?>" />
 
     <? if (!empty($page->parent->id)): ?>
         <div class="article__parent js-emoji-included">
@@ -18,8 +20,9 @@
             </a>
         </time>
 
-        <a class="article__author" href="/user/<?= $page->author->id ?>">
-            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>"><?= $page->author->name ?>
+        <a class="article__author" href="/user/<?= $page->author->id ?>" itemscope itemtype="http://schema.org/Person" itemprop="author">
+            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>" itemprop="image">
+            <span itemprop="name"><?= $page->author->name ?></span>
         </a>
 
         <div class="article__information-right">
@@ -47,13 +50,13 @@
     </header>
 
     <? /* Page title */ ?>
-    <h1 class="article__title js-emoji-included">
-    	<?= $page->title ?>
+    <h1 class="article__title js-emoji-included" itemprop="headline">
+        <?= $page->title ?>
     </h1>
 
     <? /* Page content */ ?>
     <? if (!empty($page->blocks)): ?>
-        <div class="article__content js-emoji-included">
+        <div class="article__content js-emoji-included" itemprop="articleBody">
             <? foreach ($page->blocks as $block): ?>
                 <?=
                     View::factory('templates/pages/blocks/' . $block['type'], array(
