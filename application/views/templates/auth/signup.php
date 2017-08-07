@@ -49,13 +49,14 @@
 
     </form>
 
-    <? if (isset($site_info['privacy_policy_url'])): ?>
-        <span class="privacy-policy-ic">
-            <? include(DOCROOT . "public/app/svg/info.svg") ?>
-        </span>
-        <span class="privacy-policy-text">
-            Регистрируясь, вы соглашаетесь с <a class="privacy-policy-link" href="<?= $site_info['privacy_policy_url'] ?>">политикой конфиденциальности</a>
-        </span>
+    <? if (!empty($site_info['privacy_policy_url'])): ?>
+        <div class="privacy-policy">
+            <span class="privacy-policy__ic">
+            </span>
+            <span class="privacy-policy__text">
+                Регистрируясь, вы соглашаетесь с <a class="privacy-policy__link" href="<?= $site_info['privacy_policy_url'] ?>">политикой конфиденциальности</a>
+            </span>
+        </div>
     <? endif; ?>
 
     <div class="auth-form__footer">

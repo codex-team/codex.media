@@ -31,19 +31,19 @@
     border: 1px solid #F44336;
 }
 
-.privacy-policy-text {
+.privacy-policy__text {
     font-size: 15px;
     color: #6f7689;
     vertical-align: middle;
 }
 
-.privacy-policy-ic svg {
+.privacy-policy__ic svg {
     width: 15px;
     height: 15px;
     vertical-align: middle;
     margin-right: 5px;
 }
 
-.privacy-policy-link {
+.privacy-policy__link {
     text-decoration: underline;
 }
