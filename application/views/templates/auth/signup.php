@@ -52,7 +52,7 @@
     <? if (isset($site_info['privacy_policy_url'])): ?>
         <img class="privacy-policy-ic" src="public/app/svg/info.svg">
         <span class="privacy-policy-text">
-            Регистрация означает согласие с <a href="<?= $site_info['privacy_policy_url'] ?>">политикой конфиденциальности</a>
+            Регистрируясь, Вы соглашаетесь с <a class="privacy-policy-link" href="<?= $site_info['privacy_policy_url'] ?>">политикой конфиденциальности</a>
         </span>
     <? endif; ?>
 

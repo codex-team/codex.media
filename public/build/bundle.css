@@ -1842,6 +1842,9 @@ body {
     vertical-align: middle;
     margin-right: 5px;
 }
+.privacy-policy-link {
+    text-decoration: underline;
+}
 /**
  * Article page styles
  */
