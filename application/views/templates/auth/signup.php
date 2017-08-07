@@ -50,7 +50,9 @@
     </form>
 
     <? if (isset($site_info['privacy_policy_url'])): ?>
-        <img class="privacy-policy-ic" src="public/app/svg/info.svg">
+        <span class="privacy-policy-ic">
+            <? include(DOCROOT . "public/app/svg/info.svg") ?>
+        </span>
         <span class="privacy-policy-text">
             Регистрируясь, вы соглашаетесь с <a class="privacy-policy-link" href="<?= $site_info['privacy_policy_url'] ?>">политикой конфиденциальности</a>
         </span>
