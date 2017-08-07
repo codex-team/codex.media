@@ -1831,6 +1831,17 @@ body {
             box-shadow: 0 0 5px #F44336;
     border: 1px solid #F44336;
 }
+.privacy-policy-text {
+    font-size: 15px;
+    color: #6f7689;
+    vertical-align: middle;
+}
+.privacy-policy-ic {
+    width: 15px;
+    height: 15px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
 /**
  * Article page styles
  */

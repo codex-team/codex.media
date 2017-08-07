@@ -49,6 +49,13 @@
 
     </form>
 
+    <? if (isset($site_info['privacy_policy_url'])): ?>
+        <img class="privacy-policy-ic" src="public/app/svg/info.svg">
+        <span class="privacy-policy-text">
+            Регистрация означает согласие с <a href="<?= $site_info['privacy_policy_url'] ?>">политикой конфиденциальности</a>
+        </span>
+    <? endif; ?>
+
     <div class="auth-form__footer">
         <a href="/reset">Восстановить пароль</a>
         <a href="/auth">Вход</a>
