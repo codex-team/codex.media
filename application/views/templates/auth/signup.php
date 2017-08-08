@@ -52,6 +52,7 @@
     <? if (!empty($site_info['privacy_policy_url'])): ?>
         <div class="privacy-policy">
             <span class="privacy-policy__ic">
+                <? include(DOCROOT . "public/app/svg/info.svg") ?>
             </span>
             <span class="privacy-policy__text">
                 Регистрируясь, вы соглашаетесь с <a class="privacy-policy__link" href="<?= $site_info['privacy_policy_url'] ?>">политикой конфиденциальности</a>
