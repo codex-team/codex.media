@@ -55,7 +55,7 @@
                 <? include(DOCROOT . "public/app/svg/info.svg") ?>
             </span>
             <span class="privacy-policy__text">
-                Регистрируясь, вы соглашаетесь с <a class="privacy-policy__link" href="<?= $site_info['privacy_policy_url'] ?>">политикой конфиденциальности</a>
+                Регистрируясь, вы соглашаетесь с <a class="privacy-policy__link" href="<?= $site_info['privacy_policy_url'] ?>" target="_blank">политикой конфиденциальности</a>
             </span>
         </div>
     <? endif; ?>
