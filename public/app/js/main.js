@@ -7,7 +7,9 @@ require('../css/main.css');
 * Codex client
 * @author Savchenko Peter <specc.dev@gmail.com>
 */
-let codex = (function () {
+let codex = {};
+
+codex = (function () {
 
     'use strict';
 

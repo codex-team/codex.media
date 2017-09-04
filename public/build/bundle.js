@@ -54,7 +54,9 @@ var codex =
 	* Codex client
 	* @author Savchenko Peter <specc.dev@gmail.com>
 	*/
-	let codex = (function () {
+	let codex = {};
+	
+	codex = (function () {
 	
 	    'use strict';
 	
