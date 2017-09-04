@@ -54,7 +54,7 @@ var codex =
 	* Codex client
 	* @author Savchenko Peter <specc.dev@gmail.com>
 	*/
-	codex = (function (codex) {
+	let codex = (function () {
 	
 	    'use strict';
 	
@@ -124,6 +124,15 @@ var codex =
 	         */
 	        codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
 	
+	        /**
+	         * CodeX Special
+	         *
+	         * Availiable options:
+	         *    position {String} (optional) — toolbar position on screen
+	         *        'top-left', 'bottom-right', 'bottom-left', 'top-right'
+	         *    blockId {String} (optional) — toolbar wrapper
+	         *    lang {String} (optional) — language 'ru' or 'en'. (default: 'ru')
+	         */
 	        codex.special.init({
 	            blockId: 'js-contrast-version-holder'
 	        });
@@ -132,7 +141,7 @@ var codex =
 	
 	    return codex;
 	
-	})({});
+	})();
 	
 	/**
 	* Document ready handler

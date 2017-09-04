@@ -7,7 +7,7 @@ require('../css/main.css');
 * Codex client
 * @author Savchenko Peter <specc.dev@gmail.com>
 */
-codex = (function (codex) {
+let codex = (function () {
 
     'use strict';
 
@@ -77,6 +77,15 @@ codex = (function (codex) {
          */
         codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
 
+        /**
+         * CodeX Special
+         *
+         * Availiable options:
+         *    position {String} (optional) — toolbar position on screen
+         *        'top-left', 'bottom-right', 'bottom-left', 'top-right'
+         *    blockId {String} (optional) — toolbar wrapper
+         *    lang {String} (optional) — language 'ru' or 'en'. (default: 'ru')
+         */
         codex.special.init({
             blockId: 'js-contrast-version-holder'
         });
@@ -85,7 +94,7 @@ codex = (function (codex) {
 
     return codex;
 
-})({});
+})();
 
 /**
 * Document ready handler
