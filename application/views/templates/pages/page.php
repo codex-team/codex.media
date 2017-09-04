@@ -1,6 +1,27 @@
+<?
+    $protocol = "http" . (Arr::get($_SERVER, 'HTTPS') ? 's' : '') . "://";
+    $host     = $_SERVER['HTTP_HOST'];
+
+    $link = $protocol . $host;
+?>
 <article class="article island island--padded" itemscope itemtype="http://schema.org/Article">
 
     <meta itemprop="datePublished" content="<?= date(DATE_ISO8601, strtotime($page->date)) ?>" />
+
+    <span itemscope itemtype="http://schema.org/ImageObject" itemprop="image">
+        <? if (!empty($page->cover)): ?>
+            <meta itemprop="url" content="<?= $link . "/upload/pages/covers/o_" . $page->cover ?>">
+        <? else: ?>
+            <meta itemprop="url" content="<?= $link . "/public/app/img/meta-image.png" ?>">
+        <? endif ?>
+    </span>
+
+    <span itemscope itemtype="http://schema.org/Organization" itemprop="publisher">
+        <meta itemprop="name" content="<?= $site_info['title'] ?>" />
+        <span itemscope itemtype="http://schema.org/ImageObject" itemprop="logo">
+            <meta itemprop="url" content="<?= $link . "/upload/logo/m_" . $site_info['logo'] ?>" />
+        </span>
+    </span>
 
     <? if (!empty($page->parent->id)): ?>
         <div class="article__parent js-emoji-included">
