@@ -25,9 +25,11 @@
   "devDependencies": {
     "codex.editor.link": "^1.0.3",
     "codex.editor.personality": "^1.0.2",
+    "codex.special": "^1.4.1",
     "css-loader": "^0.26.1",
     "eslint": "^3.12.2",
     "eslint-loader": "^1.6.1",
+    "exports-loader": "^0.6.4",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.11.1",
     "postcss-cssnext": "^2.9.0",
@@ -35,9 +37,5 @@
     "postcss-smart-import": "^0.6.6",
     "stylelint-webpack-plugin": "^0.4.2",
     "webpack": "^1.14.0"
-  },
-  "dependencies": {
-    "codex.editor.personality": "^1.0.0",
-    "exports-loader": "^0.6.4"
   }
 }
