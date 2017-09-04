@@ -8,20 +8,15 @@
 
     <meta itemprop="datePublished" content="<?= date(DATE_ISO8601, strtotime($page->date)) ?>" />
 
-    <span itemscope itemtype="http://schema.org/ImageObject" itemprop="image">
-        <? if (!empty($page->cover)): ?>
-            <meta itemprop="url" content="<?= $link . "/upload/pages/covers/o_" . $page->cover ?>">
-        <? else: ?>
-            <meta itemprop="url" content="<?= $link . "/public/app/img/meta-image.png" ?>">
-        <? endif ?>
-    </span>
+    <meta itemscope itemtype="http://schema.org/ImageObject" itemprop="image" itemref="coverUrl">
 
-    <span itemscope itemtype="http://schema.org/Organization" itemprop="publisher">
-        <meta itemprop="name" content="<?= $site_info['title'] ?>" />
-        <span itemscope itemtype="http://schema.org/ImageObject" itemprop="logo">
-            <meta itemprop="url" content="<?= $link . "/upload/logo/m_" . $site_info['logo'] ?>" />
-        </span>
-    </span>
+    <meta itemprop="url" content="<?= $link ?><? if (!empty($page->cover)): ?><?= "/upload/pages/covers/o_" . $page->cover ?><? else: ?><?= "/public/app/img/meta-image.png" ?><? endif ?>" id="coverUrl">
+
+    <meta itemscope itemtype="http://schema.org/Organization" itemprop="publisher" itemref="organizationImg organizationName">
+    <meta itemprop="name" content="<?= $site_info['title'] ?>" id="organizationName" />
+    <meta itemscope itemtype="http://schema.org/ImageObject" itemprop="logo" id="organizationImg" itemref="organizationImgUrl">
+    <meta itemprop="url" content="<?= $link . "/upload/logo/m_" . $site_info['logo'] ?>" id="organizationImgUrl" />
+
 
     <? if (!empty($page->parent->id)): ?>
         <div class="article__parent js-emoji-included">
