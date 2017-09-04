@@ -77,6 +77,10 @@ codex = (function (codex) {
          */
         codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
 
+        codex.special.init({
+            blockId: 'js-contrast-version-holder'
+        });
+
     };
 
     return codex;
@@ -115,6 +119,6 @@ codex.branding           = require('./modules/branding');
 codex.pages              = require('./modules/pages');
 codex.checkboxes         = require('./modules/checkboxes');
 codex.logo               = require('./modules/logo');
-
+codex.special            = require('codex.special');
 
 module.exports = codex;
