@@ -1,63 +1,116 @@
 <?php defined('SYSPATH') or die('No Direct Script Access');
+
 /**
- * Содержит функции для работы с redis и
- * статистикой просмотров.
- *
- * @author Ivan Zhuravlev
+ * Stats module stores page views in Redis.
  */
-class Model_Stats extends Model
-{
+class Model_Stats extends Model {
+
+    /**
+     * Const with type
+     */
     const PAGE = 'page';
+
+    /**
+     * Redis instance
+     */
     private $redis;
 
+    /**
+     * Number of seconds in one rank to collect hits
+     *
+     * You can set any anount of seconds or use Kohana Date class.
+     *
+     * Date::YEAR   = 31556926;
+   	 * Date::MONTH  = 2629744;
+   	 * Date::WEEK   = 604800;
+   	 * Date::DAY    = 86400;
+   	 * Date::HOUR   = 3600;
+   	 * Date::MINUTE = 60;
+     */
+    private $sensetivity = Date::HOUR;
 
-    public function __construct()
+    /**
+     * Item's params
+     */
+    private $type;
+    private $id;
+    private $key;
+
+    /**
+     * TODO decription
+     *
+     * @param $type
+     * @param $id
+     */
+    public function __construct($type, $id)
     {
         $this->redis = Controller_Base_preDispatch::_redis();
-    }
 
-    /*
-    * Если статистики с такими параметрами нет, то
-    * создает ее.
-    * Если есть, то инкрементирует (увеличивает на 1).
-    */
-    public function hit($type, $id, $time = 0)
-    {
         if (!$this->redis) {
             return;
         }
 
-        $key = self::getKey($type, $id, $time);
+        $this->type = $type;
+        # TODO check for type existing of throw an error
 
-        if (!$this->redis->get($key)) {
-            $this->redis->set($key, 0);
-        }
+        $this->id = $id;
 
-        return $this->redis->incr($key);
+        $this->key = $this->generateKey();
+
+        # TODO create a set
     }
 
-    /*
-    * Форматирует ключ для статистики.
-    * Принимает на вход тип статистики, цель (то, к чему она применяется) и дату.
-    * Возвращает ключ.
-    */
-    public function getKey($type, $id, $time)
+    /**
+     * Generates key for set
+     *
+     * @return $key     Key for this item set
+     */
+    public function generateKey()
     {
-        $key = 'stats:' . $type . ':target:' . $id . ':time:' . $time;
+        $key = 'stats:' . $this->type . ':' . $this->id;
 
         return $key;
     }
 
-    public function get($type, $id, $time = 0)
+    /**
+     * TODO Incr by 1
+     *
+     * @param $time
+     */
+    public function hit($time = strtotime("now"))
     {
-        if (!$this->redis) {
-            return;
-        }
+        # TODO get a set
 
-        $key = self::getKey($type, $id, $time);
+        # TODO one hit to set by timestamp
 
-        $views = $this->redis->get($key);
+        # TODO return result of hitting (boolean)
 
-        return $views;
+        // if (!$this->redis->get($this->key)) {
+        //     $this->redis->set($this->key, 0);
+        // }
+        //
+        // return $this->redis->incr($this->key);
+    }
+
+
+
+    /**
+     * Return a sum of hits for target interval
+     *
+     ??????* @param $interval (optional)
+     * @param $start    (optional) timestamp for the start of interval
+     * @param $end      (optional) timestamp for the end of interval
+     *
+     * @return $sum     Sum of hits for target interval
+     */
+    public function get($interval = null, $start = 0, $end = strtotime("now"))
+    {
+        #  TODO get a set
+
+        #
+
+        // $views = $this->redis->get($key);
+        //
+        // return $views;
     }
 }
