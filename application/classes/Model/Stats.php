@@ -27,8 +27,7 @@ class Model_Stats extends Model {
    	 * Date::HOUR   = 3600;
    	 * Date::MINUTE = 60;
      */
-    // private $sensetivity = Date::DAY;
-    private $sensetivity = Date::MINUTE;
+    private $sensetivity = Date::DAY;
 
     /**
      * Item's params
