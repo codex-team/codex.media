@@ -1707,8 +1707,8 @@ body {
 .post-list-item__views svg {
     display: inline-block;
     margin-right: 0.2em;
+    margin-top: -0.15em;
     height: 15px;
-    margin-top: -3px;
 }
 /**
 * Pinned post list item
@@ -1868,33 +1868,43 @@ body {
     display: flex;
     color: #6e758a;
     font-size: 14px;
+    margin-bottom: 10px;
 }
-.article__time,
+.article__time {
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: middle;
+}
 .article__author {
     display: inline-block;
-    margin: 0 1em 15px 0;
-    white-space: nowrap;
+    white-space: nowrap
 }
-.article__author img {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    vertical-align: bottom;
-    margin-right: 1em;
+.article__author img{
+        margin-left: 15px;
+        margin-right: 1em;
+        vertical-align: middle;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
 }
 .article__views-counter {
-    margin-right:15px;
+
+    vertical-align: middle
 }
-.article__views-counter svg {
-    display: inline-block;
-    margin-right: 0.2em;
-    height: 15px;
-    margin-top: -3px;
+.article__views-counter svg{
+      display: inline-block;
+      height: 16px;
+      margin-top: -1px;
 }
-.article__comments-counter svg {
-    display: inline-block;
-    margin-right: 0.2em;
-    height: 15px;
+.article__comments-counter {
+}
+.article__comments-counter svg{
+        display: inline-block;
+        vertical-align: middle;
+        margin-top: 1px;
+        margin-right: 0.2em;
+        margin-left: 10px;
+        height: 15px;
 }
 .article__information {
 }
@@ -1903,15 +1913,11 @@ body {
 }
 .article__information .island-settings{
         float: none;
-        margin-left: 20px;
+        margin-left: 10px;
+        vertical-align: middle;
 }
 @media all and (max-width: 500px) {
-    .article__comments-counter {
-        font-size: 0;
-    }
-}
-@media all and (max-width: 330px) {
-    .article__comments-counter {
+    .article__comments-counter{
         display: none;
     }
 }

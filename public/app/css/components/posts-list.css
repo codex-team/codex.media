@@ -76,8 +76,8 @@
 .post-list-item__views svg {
     display: inline-block;
     margin-right: 0.2em;
+    margin-top: -0.15em;
     height: 15px;
-    margin-top: -3px;
 }
 
 /**
