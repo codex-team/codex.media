@@ -18,7 +18,7 @@ class Model_Stats extends Model {
     /**
      * Number of seconds in one rank to collect hits
      *
-     * You can set any anount of seconds or use Kohana Date class.
+     * You can set any amount of seconds or use Kohana Date class.
      *
      * Date::YEAR   = 31556926;
    	 * Date::MONTH  = 2629744;
@@ -27,7 +27,8 @@ class Model_Stats extends Model {
    	 * Date::HOUR   = 3600;
    	 * Date::MINUTE = 60;
      */
-    private $sensetivity = Date::HOUR;
+    // private $sensetivity = Date::DAY;
+    private $sensetivity = Date::MINUTE;
 
     /**
      * Item's params
@@ -37,10 +38,10 @@ class Model_Stats extends Model {
     private $key;
 
     /**
-     * TODO decription
+     * Stats for items
      *
-     * @param $type
-     * @param $id
+     * @param $type     Pass a type name for this item
+     * @param $id       This item uniq identifier
      */
     public function __construct($type, $id)
     {
@@ -51,21 +52,16 @@ class Model_Stats extends Model {
         }
 
         $this->type = $type;
-        # TODO check for type existing of throw an error
-
         $this->id = $id;
-
         $this->key = $this->generateKey();
-
-        # TODO create a set
     }
 
     /**
-     * Generates key for set
+     * Generate key for sorted set
      *
      * @return $key     Key for this item set
      */
-    public function generateKey()
+    private function generateKey()
     {
         $key = 'stats:' . $this->type . ':' . $this->id;
 
@@ -73,44 +69,78 @@ class Model_Stats extends Model {
     }
 
     /**
-     * TODO Incr by 1
+     * Return group name (sorted set member) for this event by time
      *
-     * @param $time
+     * @return $member    Group for this event by current sensetivity
      */
-    public function hit($time = strtotime("now"))
+    private function generateGroup()
     {
-        # TODO get a set
+        $time = strtotime("now");
 
-        # TODO one hit to set by timestamp
+        $member = floor($time / $this->sensetivity) * $this->sensetivity;
 
-        # TODO return result of hitting (boolean)
-
-        // if (!$this->redis->get($this->key)) {
-        //     $this->redis->set($this->key, 0);
-        // }
-        //
-        // return $this->redis->incr($this->key);
+        return $member;
     }
 
+    /**
+     * Increment item's stats
+     */
+    public function hit()
+    {
+        $group = $this->generateGroup();
 
+        $updated = $this->redis->zIncrBy($this->key, 1, $group);
+
+        return $updated;
+    }
 
     /**
      * Return a sum of hits for target interval
      *
-     ??????* @param $interval (optional)
      * @param $start    (optional) timestamp for the start of interval
      * @param $end      (optional) timestamp for the end of interval
      *
      * @return $sum     Sum of hits for target interval
      */
-    public function get($interval = null, $start = 0, $end = strtotime("now"))
+    public function get($start = 0, $end = false)
     {
-        #  TODO get a set
+        if ($end === false) {
+            $end = strtotime("now");
+        }
 
-        #
+        $items = $this->redis->zRevRange($this->key, 0, -1);
 
-        // $views = $this->redis->get($key);
-        //
-        // return $views;
+        $sum = 0;
+
+        foreach ($items as $item) {
+            if (($start <= $item) && ($item <= $end)) {
+                $value = $this->redis->zScore($this->key, $item);
+                $sum += (int) $value;
+            }
+        };
+
+        return $sum;
+    }
+
+    /**
+     * Used to get stats for last perion in seconds
+     *
+     * You can set any amount of seconds or use Kohana Date class.
+     *
+     * Date::YEAR   = 31556926;
+   	 * Date::MONTH  = 2629744;
+   	 * Date::WEEK   = 604800;
+   	 * Date::DAY    = 86400;
+   	 * Date::HOUR   = 3600;
+   	 * Date::MINUTE = 60;
+     *
+     * @param $interval     For which last number of seconds you need to get stats
+     * @return              Sum of hits for target period
+     */
+    public function getLast($interval)
+    {
+      $intervalStart = strtotime("now") - $interval;
+
+      return $this->get($intervalStart);
     }
 }

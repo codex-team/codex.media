@@ -28,8 +28,8 @@ class Controller_Page_Index extends Controller_Base_preDispatch
             $this->redirect('/p/' . $page->id . '/' . $page->uri);
         }
 
-        $stats = new Model_Stats();
-        $page->views = $stats->hit(Model_Stats::PAGE, $page->id);
+        $page->stats->hit();
+        $page->views += 1;
 
         $page->children = $page->getChildrenPages();
         $page->comments = $page->getComments();
