@@ -62,12 +62,10 @@
                     <? endif ?>
                 </a>
 
-                <? if ($user->isAdmin): ?>
-                    <span class="post-list-item__views">
-                        <? include(DOCROOT . "public/app/svg/eye.svg") ?>
-                        <?= $page->views ?>
-                    </span>
-                <? endif ?>
+                <span class="post-list-item__views">
+                    <? include(DOCROOT . "public/app/svg/eye.svg") ?>
+                    <?= $page->views ?>
+                </span>
             </div>
         </article>
 
