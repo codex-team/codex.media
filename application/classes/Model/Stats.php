@@ -37,6 +37,11 @@ class Model_Stats extends Model {
     private $key;
 
     /**
+     * Set Redis prefix
+     */
+    private $redisPrefix;
+
+    /**
      * Stats for items
      *
      * @param $type     Pass a type name for this item
@@ -50,6 +55,8 @@ class Model_Stats extends Model {
             return;
         }
 
+        $this->redisPrefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:');
+
         $this->type = $type;
         $this->id = $id;
         $this->key = $this->generateKey();
@@ -62,7 +69,7 @@ class Model_Stats extends Model {
      */
     private function generateKey()
     {
-        $key = 'stats:' . $this->type . ':' . $this->id;
+        $key = $this->redisPrefix . 'stats:' . $this->type . ':' . $this->id;
 
         return $key;
     }
