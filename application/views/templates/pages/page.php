@@ -24,13 +24,23 @@
 
         <div class="article__information-right">
 
+            <? if ($user->isAdmin): ?>
+                <span class="article__views-counter">
+                    <? include(DOCROOT . "public/app/svg/eye.svg") ?>
+                    <?= $page->views ?>
+                </span>
+            <? endif ?>
+
             <a class="article__comments-counter" href="<?= $page->url ?>#comments">
                 <? include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>
+                <? /* ?>
                 <? if ($page->commentsCount > 0): ?>
                     <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
                 <? else: ?>
                     Комментировать
                 <? endif ?>
+                <? */ ?>
+                <?= $page->commentsCount ?>
             </a>
 
             <? /* Manage page buttons */ ?>

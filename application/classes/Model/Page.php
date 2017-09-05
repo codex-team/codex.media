@@ -47,6 +47,7 @@ class Model_Page extends Model
     public $comments        = array();
 
     public $commentsCount   = 0;
+    public $views           = 0;
 
     /** post_id in the public's wall or 0  */
     public $isPostedInVK    = 0;
@@ -104,6 +105,9 @@ class Model_Page extends Model
             $this->commentsCount = $this->getCommentsCount();
 
             $this->isPostedInVK = Model_Services_Vk::getPostIdByArticleId($this->id);
+
+            $stats = new Model_Stats();
+            $this->views = $stats->get(Model_Stats::PAGE, $this->id);
         }
 
         return $this;

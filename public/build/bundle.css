@@ -1701,6 +1701,15 @@ body {
     margin-right: 0.5em;
     height: 15px;
 }
+.post-list-item__views {
+    float: right;
+}
+.post-list-item__views svg {
+    display: inline-block;
+    margin-right: 0.2em;
+    height: 15px;
+    margin-top: -3px;
+}
 /**
 * Pinned post list item
 */
@@ -1872,6 +1881,15 @@ body {
     border-radius: 50%;
     vertical-align: bottom;
     margin-right: 1em;
+}
+.article__views-counter {
+    margin-right:15px;
+}
+.article__views-counter svg {
+    display: inline-block;
+    margin-right: 0.2em;
+    height: 15px;
+    margin-top: -3px;
 }
 .article__comments-counter svg {
     display: inline-block;
