@@ -11,19 +11,26 @@
     margin-bottom: 1em;
     color: var(--grayText);
     font-size: 0.8em;
+    white-space: nowrap;
 }
 
 .post-list-item__date {
     margin-right: 1em;
+    margin-bottom: 12px;
+    vertical-align: middle;
 }
 
-.post-list-item__author img {
-    display: inline-block;
-    width: 1.2em;
-    height: 1.2em;
-    border-radius: 50%;
-    vertical-align: text-top;
-    margin-right: 0.8em;
+.post-list-item__author {
+    vertical-align: middle;
+
+    & img {
+        display: inline-block;
+        width: 1.2em;
+        height: 1.2em;
+        border-radius: 50%;
+        vertical-align: text-top;
+        margin-right: 0.8em;
+    }
 }
 
 .post-list-item__title {

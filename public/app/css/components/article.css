@@ -11,6 +11,10 @@
     color: var(--grayText);
     font-size: 14px;
     margin-bottom: 10px;
+
+    &-right {
+        white-space: nowrap;
+    }
 }
 
 .article__time {
@@ -24,6 +28,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 360px;
 
     & img {
         margin-left: 15px;
@@ -52,7 +57,6 @@
 .article__comments-counter {
 
     vertical-align: middle;
-
     margin-left: 15px;
 
     & svg {

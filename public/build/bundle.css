@@ -1653,17 +1653,23 @@ body {
     margin-bottom: 1em;
     color: #6e758a;
     font-size: 0.8em;
+    white-space: nowrap;
 }
 .post-list-item__date {
     margin-right: 1em;
+    margin-bottom: 12px;
+    vertical-align: middle;
 }
-.post-list-item__author img {
-    display: inline-block;
-    width: 1.2em;
-    height: 1.2em;
-    border-radius: 50%;
-    vertical-align: text-top;
-    margin-right: 0.8em;
+.post-list-item__author {
+    vertical-align: middle
+}
+.post-list-item__author img{
+        display: inline-block;
+        width: 1.2em;
+        height: 1.2em;
+        border-radius: 50%;
+        vertical-align: text-top;
+        margin-right: 0.8em;
 }
 .post-list-item__title {
     margin: 0;
@@ -1872,7 +1878,10 @@ body {
     display: flex;
     color: #6e758a;
     font-size: 14px;
-    margin-bottom: 10px;
+    margin-bottom: 10px
+}
+.article__information-right{
+        white-space: nowrap;
 }
 .article__time {
     display: inline-block;
@@ -1883,7 +1892,8 @@ body {
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    max-width: 360px
 }
 .article__author img{
         margin-left: 15px;
@@ -1907,7 +1917,6 @@ body {
 .article__comments-counter {
 
     vertical-align: middle;
-
     margin-left: 15px
 }
 .article__comments-counter svg{
