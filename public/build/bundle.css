@@ -1881,7 +1881,10 @@ body {
 }
 .article__author {
     display: inline-block;
-    white-space: nowrap
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
 }
 .article__author img{
         margin-left: 15px;
@@ -1893,7 +1896,8 @@ body {
 }
 .article__views-counter {
 
-    vertical-align: middle
+    vertical-align: middle;
+    margin-left: 5px
 }
 .article__views-counter svg{
       display: inline-block;
