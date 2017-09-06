@@ -1881,7 +1881,6 @@ body {
 }
 .article__author {
     display: inline-block;
-    max-width: 300px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis
