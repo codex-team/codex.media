@@ -1653,17 +1653,23 @@ body {
     margin-bottom: 1em;
     color: #6e758a;
     font-size: 0.8em;
+    white-space: nowrap;
 }
 .post-list-item__date {
     margin-right: 1em;
+    margin-bottom: 12px;
+    vertical-align: middle;
 }
-.post-list-item__author img {
-    display: inline-block;
-    width: 1.2em;
-    height: 1.2em;
-    border-radius: 50%;
-    vertical-align: text-top;
-    margin-right: 0.8em;
+.post-list-item__author {
+    vertical-align: middle
+}
+.post-list-item__author img{
+        display: inline-block;
+        width: 1.2em;
+        height: 1.2em;
+        border-radius: 50%;
+        vertical-align: text-top;
+        margin-right: 0.8em;
 }
 .post-list-item__title {
     margin: 0;
@@ -1699,6 +1705,15 @@ body {
 }
 .post-list-item__comments svg {
     margin-right: 0.5em;
+    height: 15px;
+}
+.post-list-item__views {
+    float: right;
+}
+.post-list-item__views svg {
+    display: inline-block;
+    margin-right: 0.2em;
+    margin-top: -0.15em;
     height: 15px;
 }
 /**
@@ -1792,6 +1807,10 @@ body {
         padding-top: 15px;
     }
 
+    .post-list-item__views svg {
+        margin-top: -0.15em;
+    }
+
     .posts-list-item__cover,
     .posts-list-item__cover--empty-showed {
         height: 170px;
@@ -1859,24 +1878,52 @@ body {
     display: flex;
     color: #6e758a;
     font-size: 14px;
+    margin-bottom: 10px
 }
-.article__time,
+.article__information-right{
+        white-space: nowrap;
+}
+.article__time {
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: middle;
+}
 .article__author {
     display: inline-block;
-    margin: 0 1em 15px 0;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 360px
 }
-.article__author img {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    vertical-align: bottom;
-    margin-right: 1em;
+.article__author img{
+        margin-left: 15px;
+        margin-right: 1em;
+        vertical-align: middle;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
 }
-.article__comments-counter svg {
-    display: inline-block;
-    margin-right: 0.2em;
-    height: 15px;
+.article__views-counter {
+
+    vertical-align: middle;
+    margin-left: 5px
+}
+.article__views-counter svg{
+      display: inline-block;
+      height: 17px;
+      margin-top: -2px;
+      margin-right: 0.2em;
+}
+.article__comments-counter {
+
+    vertical-align: middle;
+    margin-left: 15px
+}
+.article__comments-counter svg{
+        display: inline-block;
+        margin-top: 1px;
+        margin-right: 0.2em;
+        height: 15px;
 }
 .article__information {
 }
@@ -1885,15 +1932,11 @@ body {
 }
 .article__information .island-settings{
         float: none;
-        margin-left: 20px;
+        margin-left: 10px;
+        vertical-align: middle;
 }
 @media all and (max-width: 500px) {
-    .article__comments-counter {
-        font-size: 0;
-    }
-}
-@media all and (max-width: 330px) {
-    .article__comments-counter {
+    .article__comments-counter{
         display: none;
     }
 }
