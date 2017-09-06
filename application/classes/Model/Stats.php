@@ -55,7 +55,7 @@ class Model_Stats extends Model {
             return;
         }
 
-        $this->redisPrefix = Arr::get($_SERVER, 'REDIS_PREFIX', 'codex.org:');
+        $this->redisPrefix = Arr::get($_SERVER, 'REDIS_PREFIX', '');
 
         $this->type = $type;
         $this->id = $id;
@@ -114,7 +114,7 @@ class Model_Stats extends Model {
             $end = strtotime("now");
         }
 
-        $items = $this->redis->zRevRange($this->key, 0, -1);
+        $items = $this->redis->zRangeByLex($this->key, '['.$start, '['.$end);
 
         $sum = 0;
 
