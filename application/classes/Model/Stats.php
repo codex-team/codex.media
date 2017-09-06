@@ -81,6 +81,10 @@ class Model_Stats extends Model {
      */
     private function generateGroup()
     {
+        if ($this->sensetivity === 0) {
+            return 0;
+        }
+
         $time = strtotime("now");
 
         $member = floor($time / $this->sensetivity) * $this->sensetivity;
