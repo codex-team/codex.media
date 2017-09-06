@@ -1903,13 +1903,14 @@ body {
 }
 .article__comments-counter {
 
-    vertical-align: middle
+    vertical-align: middle;
+
+    margin-left: 15px
 }
 .article__comments-counter svg{
         display: inline-block;
         margin-top: 1px;
         margin-right: 0.2em;
-        margin-left: 10px;
         height: 15px;
 }
 .article__information {

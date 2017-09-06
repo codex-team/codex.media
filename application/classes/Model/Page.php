@@ -108,7 +108,7 @@ class Model_Page extends Model
 
             $this->isPostedInVK = Model_Services_Vk::getPostIdByArticleId($this->id);
 
-            $this->stats = new Model_Stats(Model_Stats::PAGE, $this->id);
+            $this->stats = new Model_Stats(Model_Stats::PAGE_VIEWS, $this->id);
             $this->views = $this->stats->get();
         }
 

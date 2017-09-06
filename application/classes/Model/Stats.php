@@ -8,7 +8,7 @@ class Model_Stats extends Model {
     /**
      * Const with type
      */
-    const PAGE = 'page';
+    const PAGE_VIEWS = 'PAGE_VIEWS';
 
     /**
      * Redis instance
