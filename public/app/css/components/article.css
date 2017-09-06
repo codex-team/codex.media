@@ -40,16 +40,18 @@
 
     & svg {
       display: inline-block;
-      height: 16px;
-      margin-top: -1px;
+      height: 17px;
+      margin-top: -2px;
+      margin-right: 0.2em;
     }
 }
 
 .article__comments-counter {
 
+    vertical-align: middle;
+
     & svg {
         display: inline-block;
-        vertical-align: middle;
         margin-top: 1px;
         margin-right: 0.2em;
         margin-left: 10px;

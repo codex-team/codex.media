@@ -1801,6 +1801,10 @@ body {
         padding-top: 15px;
     }
 
+    .post-list-item__views svg {
+        margin-top: -0.15em;
+    }
+
     .posts-list-item__cover,
     .posts-list-item__cover--empty-showed {
         height: 170px;
@@ -1893,14 +1897,16 @@ body {
 }
 .article__views-counter svg{
       display: inline-block;
-      height: 16px;
-      margin-top: -1px;
+      height: 17px;
+      margin-top: -2px;
+      margin-right: 0.2em;
 }
 .article__comments-counter {
+
+    vertical-align: middle
 }
 .article__comments-counter svg{
         display: inline-block;
-        vertical-align: middle;
         margin-top: 1px;
         margin-right: 0.2em;
         margin-left: 10px;

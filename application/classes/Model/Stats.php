@@ -118,14 +118,13 @@ class Model_Stats extends Model {
             $end = strtotime("now");
         }
 
-        $items = $this->redis->zRangeByLex($this->key, '['.$start, '['.$end);
+        $items = $this->redis->zRange($this->key, 0, -1, 'WITHSCORES');
 
         $sum = 0;
 
         foreach ($items as $item) {
             if (($start <= $item) && ($item <= $end)) {
-                $value = $this->redis->zScore($this->key, $item);
-                $sum += (int) $value;
+                $sum += (int) $item;
             }
         };
 
