@@ -28,6 +28,18 @@
     <meta name="image" property="og:image"  content="https://school332.ru/public/app/img/meta-image.png" />
     <link rel="image_src" href="https://school332.ru/public/app/img/meta-image.png" />
 
+    <script type="text/javascript">
+
+        /**
+        * Document ready handler
+        */
+        window.docReady = function (f) {
+
+            /in/.test(document.readyState) ? window.setTimeout(window.docReady, 9, f) : f();
+
+        };
+
+    </script>
 
     <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>"></script>
 
@@ -67,7 +79,7 @@
 
         window.csrf = '<?= Security::token(); ?>';
 
-        codex.docReady(function () {
+        window.docReady(function () {
 
             codex.init({
                 uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>

@@ -102,7 +102,7 @@
     </div>
 
     <script>
-        codex.docReady(function() {
+        window.docReady(function() {
             codex.islandSettings.init({
                     selector: '.js-page-settings',
                     items : [{

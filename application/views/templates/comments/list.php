@@ -41,7 +41,7 @@
 
     <script>
 
-        codex.docReady(function(){
+        window.docReady(function(){
 
             /**
             * Comments module

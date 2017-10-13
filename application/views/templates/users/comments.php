@@ -13,7 +13,7 @@
         Показать больше комментариев
     </a>
     <script>
-        codex.docReady(function() {
+        window.docReady(function() {
             codex.appender.init({
                 buttonId      : 'buttonLoadComments',
                 currentPage   : '<?= $page_number ?>',

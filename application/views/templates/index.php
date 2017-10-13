@@ -35,7 +35,7 @@
         Показать больше записей
     </a>
     <script>
-        codex.docReady(function() {
+        window.docReady(function() {
             codex.appender.init({
                 buttonId           : 'buttonLoadNews',
                 currentPage        : '<?= $page_number ?>',
