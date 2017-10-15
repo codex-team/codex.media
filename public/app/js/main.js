@@ -107,6 +107,9 @@ codex.docReady = function (f) {
 
 };
 
+const moduleDispatcher = require('./moduleDispatcher').default;
+this.moduleDisp = new moduleDispatcher();
+
 
 /**
 * Load modules

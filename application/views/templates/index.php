@@ -34,7 +34,7 @@
     <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/<?= $page_number + 1 ?>">
         Показать больше записей
     </a>
-    <script>
+   <!--  <script>
         window.docReady(function() {
             codex.appender.init({
                 buttonId           : 'buttonLoadNews',
@@ -45,5 +45,18 @@
                 dontWaitFirstClick : true,
             });
         });
-    </script>
+    </script> -->
+
+    <div module="appender">
+        <module-settings>
+            {
+                "buttonId" : "buttonLoadNews",
+                "currentPage" : "<?= $page_number ?>",
+                "url",          : "<?= $active_tab ? "/".$active_tab."/" : "/" ?>",
+                "targetBlockId" : "list_of_news",
+                "autoLoading": "true",
+                "dontWaitFirstClick": "true"
+            }
+        </module-settings>
+    </div>
 <? endif ?>
