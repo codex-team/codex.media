@@ -3,6 +3,22 @@
 */
 require('../css/main.css');
 
+const moduleDispatcher = require('./moduleDispatcher').default;
+
+/**
+ * Document ready callback
+ */
+let documentReady = () => {
+    /**
+    * Initiate modules
+    * @type {moduleDispatcher}
+    */
+    let modules = new moduleDispatcher();
+    modules.initModules();
+};
+
+document.addEventListener('DOMContentLoaded', documentReady, false);
+
 /**
 * Codex client
 * @author Savchenko Peter <specc.dev@gmail.com>
@@ -107,8 +123,6 @@ codex.docReady = function (f) {
 
 };
 
-const moduleDispatcher = require('./moduleDispatcher').default;
-this.moduleDisp = new moduleDispatcher();
 
 
 /**

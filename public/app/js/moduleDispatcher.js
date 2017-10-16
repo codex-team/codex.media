@@ -4,7 +4,7 @@ export default class moduleDispatcher = class {
         
     }
 
-    delegate (element) {
+    initModules (element) {
         let modulesRequired;
 
         if (element) {
