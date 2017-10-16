@@ -30,7 +30,7 @@
 
     <script type="text/javascript">
 
-        /**
+      /**
         * Document ready handler
         */
         window.docReady = function (f) {
