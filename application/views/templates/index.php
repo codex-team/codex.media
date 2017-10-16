@@ -47,7 +47,7 @@
         });
     </script> -->
 
-    <div data-module-required="appender">
+    <div data-module-required="codex.appender">
         <module-settings>
             {
                 "buttonId" : "buttonLoadNews",

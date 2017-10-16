@@ -1,22 +1,27 @@
-export default class moduleDispatcher = class {
+export default class moduleDispatcher {
 
-    constructor() {
-        
-    }
+    constructor() {}
 
-    initModules (element) {
+    initModules(element) {
+
         let modulesRequired;
 
         if (element) {
-          modulesRequired = element.querySelectorAll('[data-module-required]');
+
+            modulesRequired = element.querySelectorAll('[data-module-required]');
+
         } else {
-          modulesRequired = document.querySelectorAll('[data-module-required]');
+
+            modulesRequired = document.querySelectorAll('[data-module-required]');
+
         }
 
         for (let i = 0; i < modulesRequired.length; i++) {
-          initModule(modulesRequired[i]);
-          console.log(modulesRequired[i])
+
+            moduleDispatcher.initModule(modulesRequired[i]);
+
         }
+
     };
 
     /**
@@ -25,23 +30,29 @@ export default class moduleDispatcher = class {
     */
     initModule(foundRequiredModule) {
 
-    let moduleName = foundRequiredModule.dataset.moduleRequired,
-        moduleSettings;
+        let moduleName = foundRequiredModule.dataset.moduleRequired,
+            moduleSettings;
 
-        if (self[moduleName]) {
+        if (moduleName) {
 
             moduleSettings = foundRequiredModule.querySelector('module-settings');
 
             if (moduleSettings) {
+
                 moduleSettings = moduleSettings.textContent.trim();
+
             }
 
-            if (self[moduleName].init) {
+            if ((moduleName).init) {
+
                 let parsedSettings = JSON.parse(moduleSettings);
 
-                self[moduleName].init.call(foundRequiredModule, parsedSettings);
+                (moduleName).init.call(foundRequiredModule, parsedSettings);
+
             }
+
         }
+
     }
 
 };
