@@ -1,67 +1,67 @@
-  /**
-    * Initiate modules
-    * @type {moduleDispatcher}
-    *
-    * let modules = new moduleDispatcher();
-    *
-    * modules.initModules();
-    *
-    */
-    export default class moduleDispatcher {
+/**
+  * Initiate modules
+  * @type {moduleDispatcher}
+  *
+  * let modules = new moduleDispatcher();
+  *
+  * modules.initModules();
+  *
+  */
+export default class moduleDispatcher {
 
-        constructor() {}
+    constructor() {}
 
-        initModules(element) {
+    initModules(element) {
 
-            let modulesRequired;
+        let modulesRequired;
 
-            if (element) {
+        if (element) {
 
-                modulesRequired = element.querySelectorAll('[data-module-required]');
+            modulesRequired = element.querySelectorAll('[data-module-required]');
 
-            } else {
+        } else {
 
-                modulesRequired = document.querySelectorAll('[data-module-required]');
+            modulesRequired = document.querySelectorAll('[data-module-required]');
+
+        }
+
+        for (let i = 0; i < modulesRequired.length; i++) {
+
+            moduleDispatcher.initModule(modulesRequired[i]);
+
+        }
+
+    }
+
+    /**
+      * Get module's name from data attributes
+      * Call module with settings that are defined below on <module-settings> tag
+      */
+    initModule(foundRequiredModule) {
+
+        let moduleName = foundRequiredModule.dataset.moduleRequired,
+            moduleSettings;
+
+        if (moduleName) {
+
+            moduleSettings = foundRequiredModule.querySelector('module-settings');
+
+            if (moduleSettings) {
+
+                moduleSettings = moduleSettings.textContent.trim();
 
             }
 
-            for (let i = 0; i < modulesRequired.length; i++) {
+            if (moduleName.init) {
 
-                moduleDispatcher.initModule(modulesRequired[i]);
+                let parsedSettings = JSON.parse(moduleSettings);
 
-            }
-
-        };
-
-      /**
-        * Get module's name from data attributes
-        * Call module with settings that are defined below on <module-settings> tag
-        */
-        initModule(foundRequiredModule) {
-
-            let moduleName = foundRequiredModule.dataset.moduleRequired,
-                moduleSettings;
-
-            if (moduleName) {
-
-                moduleSettings = foundRequiredModule.querySelector('module-settings');
-
-                if (moduleSettings) {
-
-                    moduleSettings = moduleSettings.textContent.trim();
-
-                }
-
-                if ((moduleName).init) {
-
-                    let parsedSettings = JSON.parse(moduleSettings);
-
-                    (moduleName).init.call(foundRequiredModule, parsedSettings);
-
-                }
+                moduleName.init.call(foundRequiredModule, parsedSettings);
 
             }
 
         }
 
-    };
+    }
+
+};

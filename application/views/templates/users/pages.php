@@ -12,16 +12,18 @@
     <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/user/<?= $viewUser->id ?>/pages/<?= $page_number + 1 ?>">
         Показать больше записей
     </a>
-    <script>
-        window.docReady(function() {
-            codex.appender.init({
-                buttonId           : 'buttonLoadNews',
-                currentPage        : '<?= $page_number ?>',
-                url                : '<?= '/user/' . $viewUser->id . '/pages/' ?>',
-                targetBlockId      : 'list_of_news',
-                autoLoading        : true,
-                dontWaitFirstClick : true,
-            });
-        });
-    </script>
+
+    <div data-module-required="codex.appender">
+        <module-settings>
+            {
+                "buttonId" : "buttonLoadNews",
+                "currentPage" : "<?= $page_number ?>",
+                "url"          : "<?= "/user/" . $viewUser->id . "/pages/" ?>",
+                "targetBlockId" : "list_of_news",
+                "autoLoading": "true",
+                "dontWaitFirstClick": "true"
+            }
+        </module-settings>
+    </div>
+    
 <? endif ?>

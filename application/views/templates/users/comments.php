@@ -12,15 +12,17 @@
     <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadComments" href="/user/<?= $viewUser->id ?>/comments/<?= $page_number + 1 ?>">
         Показать больше комментариев
     </a>
-    <script>
-        window.docReady(function() {
-            codex.appender.init({
-                buttonId      : 'buttonLoadComments',
-                currentPage   : '<?= $page_number ?>',
-                url           : '<?= '/user/' . $viewUser->id . '/comments/' ?>',
-                targetBlockId : 'list_of_comments',
-                autoLoading   : true,
-            });
-        });
-    </script>
+
+    <div data-module-required="codex.appender">
+        <module-settings>
+            {
+                "buttonId" : "buttonLoadComments",
+                "currentPage" : "<?= $page_number ?>",
+                "url"          : "<?= "/user/" . $viewUser->id . "/comments/" ?>",
+                "targetBlockId" : "list_of_comments",
+                "autoLoading": "true"
+            }
+        </module-settings>
+    </div>
+    
 <? endif ?>
