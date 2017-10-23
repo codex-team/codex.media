@@ -38,29 +38,24 @@
 
 
 <? if ($user->id): ?>
-
-    <script>
-
-        window.docReady(function(){
-
-            /**
-            * Comments module
-            */
-            codex.comments.init({
-                listId : "commentsList",
-            });
-
-            /** Island settings menu */
-            codex.islandSettings.init({
-                selector : '.js-comment-settings',
-                items : [{
-                        title : 'Удалить',
-                        handler : codex.comments.remove
-                    }]
-            });
-
-        });
-
-    </script>
+   <!--  Comments module   -->     
+    <div data-module-required="codex.comments">
+        <module-settings>
+            {
+                "listId" : "commentsList"
+            }
+        </module-settings>
+    </div>
+    
+    <!-- Island settings menu -->
+    <div data-module-required="codex.islandSettings">
+        <module-settings>
+            {
+                "selector" : ".js-comment-settings",
+                "items.title"    : "Удалить",
+                "items.handler"  : "codex.comments.remove"
+            }
+        </module-settings>
+    </div>
 
 <? endif ?>
