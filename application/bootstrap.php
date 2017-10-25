@@ -100,7 +100,10 @@ if (isset($_SERVER['KOHANA_ENV'])) {
  *
  * @link https://hawk.so/docs
  */
-\Hawk\HawkCatcher::instance($_SERVER['HAWK_TOKEN']);
+if (isset($_SERVER['HAWK_TOKEN'])) {
+
+    \Hawk\HawkCatcher::instance($_SERVER['HAWK_TOKEN']);
+}
 
 /**
  * Initialize Kohana, setting the default options.
