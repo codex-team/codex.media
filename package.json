@@ -1,5 +1,5 @@
 {
-  "name": "codex-org",
+  "name": "codex.media",
   "version": "1.0.0",
   "private": true,
   "description": "Open platform for organizations",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codex-team/codex.edu.git"
+    "url": "git+https://github.com/codex-team/codex.media.git"
   },
   "keywords": [
     "codex",
@@ -19,9 +19,9 @@
   "author": "CodeX Team",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/codex-team/codex.edu/issues"
+    "url": "https://github.com/codex-team/codex.media/issues"
   },
-  "homepage": "https://github.com/codex-team/codex.edu#readme",
+  "homepage": "https://github.com/codex-team/codex.media#readme",
   "devDependencies": {
     "codex.editor.link": "^1.0.3",
     "codex.editor.personality": "^1.0.2",
