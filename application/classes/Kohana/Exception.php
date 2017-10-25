@@ -3,9 +3,9 @@
 
 class Kohana_Exception extends Kohana_Kohana_Exception
 {
-    public static function response(Exception $e) {
+    public static function response($e) {
 
-        Model_Hawk::Log($e);
+        \Hawk\HawkCatcher::catchException($e);
 
         if (Kohana::$environment == Kohana::DEVELOPMENT) {
 
