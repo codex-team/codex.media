@@ -3,6 +3,7 @@
 		"phpunit/phpunit": "3.7.*",
 		"vlucas/phpdotenv": "^2.4",
 		"codex-team/codex.editor": "dev-codex-org",
-		"sendgrid/sendgrid": "^5.4"
+		"sendgrid/sendgrid": "^5.4",
+		"codex-team/hawk.php": "^1.0"
 	}
 }
