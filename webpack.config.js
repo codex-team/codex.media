@@ -136,7 +136,7 @@ module.exports = {
     watch: true,
     watchOptions: {
 
-        /** Таймаут перед пересборкой */
-        aggragateTimeout: 50
+        /* Таймаут перед пересборкой */
+        aggregateTimeout: 50
     }
 };

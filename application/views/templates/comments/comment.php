@@ -4,7 +4,13 @@
 
 
         <? if ($user->isAdmin || $user->id == $comment->author->id): ?>
-            <span class="island-settings js-comment-settings" data-id="<?= $comment->id ?>">
+            <span class="island-settings js-comment-settings" data-id="<?= $comment->id ?>" data-module="codex.islandSettings">
+            <module-settings>
+                {
+                    "selector" : ".js-comment-settings",
+                    "items"    : { "title" : "Удалить", "handler" : "codex.comments.remove"}
+                }
+            </module-settings>
                 <? include(DOCROOT . 'public/app/svg/ellipsis.svg') ?>
             </span>
         <? endif ?>

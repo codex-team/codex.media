@@ -9,11 +9,7 @@
 </div>
 
 <? if (isset($next_page) && $next_page): ?>
-    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/user/<?= $viewUser->id ?>/pages/<?= $page_number + 1 ?>">
-        Показать больше записей
-    </a>
-
-    <div data-module-required="codex.appender">
+    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/user/<?= $viewUser->id ?>/pages/<?= $page_number + 1 ?>" data-module-required="codex.appender">
         <module-settings>
             {
                 "buttonId" : "buttonLoadNews",
@@ -24,6 +20,7 @@
                 "dontWaitFirstClick": "true"
             }
         </module-settings>
-    </div>
+        Показать больше записей
+    </a>
     
 <? endif ?>

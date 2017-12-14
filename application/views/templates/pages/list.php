@@ -73,7 +73,7 @@
 
     <? if ($user->id): ?>
         <script>
-            window.docReady(function() {
+            codex.docReady(function() {
 
                 /** Island settings menu */
                 codex.islandSettings.init({

@@ -16,7 +16,7 @@
                 <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
             </span>
             <script>
-                window.docReady(function() {
+                codex.docReady(function() {
 
                     /** Island settings menu */
                     codex.islandSettings.init({

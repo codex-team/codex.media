@@ -72,7 +72,7 @@
 <script>
 
     /** Document is ready */
-    window.docReady(function(){
+    codex.docReady(function(){
 
         var plugins = ['paragraph', 'header', 'image', 'attaches', 'list', 'raw'],
             scriptPath = 'https://cdn.ifmo.su/editor/v1.6/',

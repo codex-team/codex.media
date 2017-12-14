@@ -264,15 +264,15 @@ var moduleDispatcher = function () {
 
             if (element) {
 
-                modulesRequired = element.querySelectorAll('[data-module-required]');
+                modulesRequired = element.querySelectorAll('[data-module]');
             } else {
 
-                modulesRequired = document.querySelectorAll('[data-module-required]');
+                modulesRequired = document.querySelectorAll('[data-module]');
             }
 
             for (var i = 0; i < modulesRequired.length; i++) {
 
-                moduleDispatcher.initModule(modulesRequired[i]);
+                this.initModule(modulesRequired[i]);
             }
         }
 
@@ -3832,21 +3832,21 @@ module.exports = cdxEditorLink;
 
 module.exports = {
 
-    prefixJS: 'cdx-script-',
-
-    prefixCSS: 'cdx-style-',
-
     importScript: function importScript(scriptPath, instanceName) {
 
         return new Promise(function (resolve, reject) {
 
-            var script;
+            var prefixJS = 'cdx-script-',
+                script;
+            /**
+             * @todo create static function
+             */
 
             /** Script is already loaded */
             if (!instanceName) {
 
                 reject('Instance name is missed');
-            } else if (document.getElementById(this.prefixJS + instanceName)) {
+            } else if (document.getElementById(prefixJS + instanceName)) {
 
                 resolve(scriptPath);
             }
@@ -3875,13 +3875,17 @@ module.exports = {
 
         return new Promise(function (resolve, reject) {
 
-            var style;
+            var style,
+                prefixCSS = 'cdx-style-';
+            /**
+             * @todo create static function
+             */
 
             /** Style is already loaded */
             if (!instanceName) {
 
                 reject('Instance name is missed');
-            } else if (document.getElementById(this.prefixCSS + instanceName)) {
+            } else if (document.getElementById(prefixCSS + instanceName)) {
 
                 resolve(stylePath);
             }

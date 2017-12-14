@@ -17,17 +17,17 @@ export default class moduleDispatcher {
 
         if (element) {
 
-            modulesRequired = element.querySelectorAll('[data-module-required]');
+            modulesRequired = element.querySelectorAll('[data-module]');
 
         } else {
 
-            modulesRequired = document.querySelectorAll('[data-module-required]');
+            modulesRequired = document.querySelectorAll('[data-module]');
 
         }
 
         for (let i = 0; i < modulesRequired.length; i++) {
 
-            moduleDispatcher.initModule(modulesRequired[i]);
+            this.initModule(modulesRequired[i]);
 
         }
 

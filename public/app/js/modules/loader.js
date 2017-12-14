@@ -1,21 +1,24 @@
 module.exports = {
 
-    prefixJS : 'cdx-script-',
 
-    prefixCSS : 'cdx-style-',
+
 
     importScript : function (scriptPath, instanceName) {
 
         return new Promise(function (resolve, reject) {
 
-            var script;
+            var prefixJS = 'cdx-script-',
+                script;
+                /**
+                 * @todo create static function
+                 */
 
             /** Script is already loaded */
             if ( !instanceName ) {
 
                 reject('Instance name is missed');
 
-            } else if ( document.getElementById(this.prefixJS + instanceName) ) {
+            } else if ( document.getElementById(prefixJS + instanceName) ) {
 
                 resolve(scriptPath);
 
@@ -49,14 +52,19 @@ module.exports = {
 
         return new Promise(function (resolve, reject) {
 
-            var style;
+            var style,
+                prefixCSS = 'cdx-style-';
+                /**
+                 * @todo create static function
+                 */
+
 
             /** Style is already loaded */
             if ( !instanceName ) {
 
                 reject('Instance name is missed');
 
-            } else if ( document.getElementById(this.prefixCSS + instanceName) ) {
+            } else if ( document.getElementById(prefixCSS + instanceName) ) {
 
                 resolve(stylePath);
 
