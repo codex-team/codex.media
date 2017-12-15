@@ -8,7 +8,10 @@
             <module-settings>
                 {
                     "selector" : ".js-comment-settings",
-                    "items"    : { "title" : "Удалить", "handler" : "codex.comments.remove"}
+                    "items"    : "[{
+                        title : 'Удалить',
+                        handler : codex.comments.remove
+                    }]"
                 }
             </module-settings>
                 <? include(DOCROOT . 'public/app/svg/ellipsis.svg') ?>

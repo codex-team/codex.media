@@ -28,6 +28,7 @@
     <meta name="image" property="og:image"  content="https://school332.ru/public/app/img/meta-image.png" />
     <link rel="image_src" href="https://school332.ru/public/app/img/meta-image.png" />
 
+
     <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>"></script>
 
 </head>

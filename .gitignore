@@ -27,4 +27,3 @@ node_modules/
 
 .php_cs.cache
 package-lock.json
-application/classes/Kohana/Exception.php

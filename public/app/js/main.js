@@ -1,6 +1,6 @@
 /**
-* Require CSS build
-*/
+ * Require CSS build
+ */
 require('../css/main.css');
 
 const moduleDispatcher = require('./moduleDispatcher').default;
@@ -11,9 +11,9 @@ const moduleDispatcher = require('./moduleDispatcher').default;
 let documentReady = () => {
 
   /**
-  * Initiate modules
-  * @type {moduleDispatcher}
-  */
+   * Initiate modules
+   * @type {moduleDispatcher}
+   */
     let modules = new moduleDispatcher();
 
     modules.initModules();
@@ -23,9 +23,9 @@ let documentReady = () => {
 document.addEventListener('DOMContentLoaded', documentReady, false);
 
 /**
-* Codex client
-* @author Savchenko Peter <specc.dev@gmail.com>
-*/
+ * Codex client
+ * @author Savchenko Peter <specc.dev@gmail.com>
+ */
 var codex = {};
 
 codex = function () {
@@ -33,8 +33,8 @@ codex = function () {
     'use strict';
 
   /**
-  * Static nodes cache
-  */
+   * Static nodes cache
+   */
 
     codex.nodes = {
         content: null
@@ -65,13 +65,13 @@ codex = function () {
         }
 
     /**
-    * Stylize custom checkboxes
-    */
+     * Stylize custom checkboxes
+     */
         codex.checkboxes.init();
 
     /**
-    * Init approval buttons
-    */
+     * Init approval buttons
+     */
         codex.content.approvalButtons.init();
 
     /**
@@ -119,8 +119,8 @@ codex = function () {
 }();
 
 /**
-* Document ready handler
-*/
+ * Document ready handler
+ */
 codex.docReady = function (f) {
 
     /in/.test(document.readyState) ? window.setTimeout(codex.docReady, 9, f) : f();
@@ -128,8 +128,8 @@ codex.docReady = function (f) {
 };
 
 /**
-* Load modules
-*/
+ * Load modules
+ */
 codex.core = require('./modules/core');
 codex.ajax = require('./modules/ajax');
 codex.transport = require('./modules/transport');

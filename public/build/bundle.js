@@ -72,8 +72,8 @@ var codex =
 
 
 /**
-* Require CSS build
-*/
+ * Require CSS build
+ */
 __webpack_require__(1);
 
 var moduleDispatcher = __webpack_require__(2).default;
@@ -83,121 +83,121 @@ var moduleDispatcher = __webpack_require__(2).default;
  */
 var documentReady = function documentReady() {
 
-    /**
-    * Initiate modules
-    * @type {moduleDispatcher}
-    */
-    var modules = new moduleDispatcher();
+  /**
+   * Initiate modules
+   * @type {moduleDispatcher}
+   */
+  var modules = new moduleDispatcher();
 
-    modules.initModules();
+  modules.initModules();
 };
 
 document.addEventListener('DOMContentLoaded', documentReady, false);
 
 /**
-* Codex client
-* @author Savchenko Peter <specc.dev@gmail.com>
-*/
+ * Codex client
+ * @author Savchenko Peter <specc.dev@gmail.com>
+ */
 var codex = {};
 
 codex = function () {
 
-    'use strict';
+  'use strict';
+
+  /**
+   * Static nodes cache
+   */
+
+  codex.nodes = {
+    content: null
+  };
+
+  /**
+   * @var Application settings
+   * @type {Object}
+   * @type {Number} appSettings.uploadMaxSize    - max size for Editor uploads in MB
+   */
+  codex.appSettings = {
+    uploadMaxSize: 25
+  };
+
+  /**
+   * Initiztes application
+   * @param {Object} appSettings - initial settings
+   */
+  codex.init = function (appSettings) {
 
     /**
-    * Static nodes cache
-    */
-
-    codex.nodes = {
-        content: null
-    };
-
-    /**
-     * @var Application settings
-     * @type {Object}
-     * @type {Number} appSettings.uploadMaxSize    - max size for Editor uploads in MB
+     * Accept settings
      */
-    codex.appSettings = {
-        uploadMaxSize: 25
-    };
+    for (var key in appSettings) {
+
+      codex.appSettings[key] = appSettings[key];
+    }
 
     /**
-     * Initiztes application
-     * @param {Object} appSettings - initial settings
+     * Stylize custom checkboxes
      */
-    codex.init = function (appSettings) {
+    codex.checkboxes.init();
 
-        /**
-         * Accept settings
-         */
-        for (var key in appSettings) {
+    /**
+     * Init approval buttons
+     */
+    codex.content.approvalButtons.init();
 
-            codex.appSettings[key] = appSettings[key];
-        }
+    /**
+     * Enable textarea autoresizer
+     */
+    codex.autoresizeTextarea.init();
 
-        /**
-        * Stylize custom checkboxes
-        */
-        codex.checkboxes.init();
+    /**
+     * Activate scroll-up button
+     */
+    codex.scrollUp.init('js-layout-holder');
 
-        /**
-        * Init approval buttons
-        */
-        codex.content.approvalButtons.init();
+    /**
+     * Client is ready
+     */
+    codex.core.log('Initialized', 'CodeX', 'info');
 
-        /**
-         * Enable textarea autoresizer
-         */
-        codex.autoresizeTextarea.init();
+    /**
+     * Initiate branding preload
+     */
+    codex.branding.init();
 
-        /**
-         * Activate scroll-up button
-         */
-        codex.scrollUp.init('js-layout-holder');
+    /**
+     * Set listener for mobile menu toggler
+     */
+    codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
 
-        /**
-         * Client is ready
-         */
-        codex.core.log('Initialized', 'CodeX', 'info');
+    /**
+     * CodeX Special
+     *
+     * Availiable options:
+     *    position {String} (optional) — toolbar position on screen
+     *        'top-left', 'bottom-right', 'bottom-left', 'top-right'
+     *    blockId {String} (optional) — toolbar wrapper
+     *    lang {String} (optional) — language 'ru' or 'en'. (default: 'ru')
+     */
+    codex.special.init({
+      blockId: 'js-contrast-version-holder'
+    });
+  };
 
-        /**
-         * Initiate branding preload
-         */
-        codex.branding.init();
-
-        /**
-         * Set listener for mobile menu toggler
-         */
-        codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
-
-        /**
-         * CodeX Special
-         *
-         * Availiable options:
-         *    position {String} (optional) — toolbar position on screen
-         *        'top-left', 'bottom-right', 'bottom-left', 'top-right'
-         *    blockId {String} (optional) — toolbar wrapper
-         *    lang {String} (optional) — language 'ru' or 'en'. (default: 'ru')
-         */
-        codex.special.init({
-            blockId: 'js-contrast-version-holder'
-        });
-    };
-
-    return codex;
+  return codex;
 }();
 
 /**
-* Document ready handler
-*/
+ * Document ready handler
+ */
 codex.docReady = function (f) {
 
-    /in/.test(document.readyState) ? window.setTimeout(codex.docReady, 9, f) : f();
+  /in/.test(document.readyState) ? window.setTimeout(codex.docReady, 9, f) : f();
 };
 
 /**
-* Load modules
-*/
+ * Load modules
+ */
 codex.core = __webpack_require__(3);
 codex.ajax = __webpack_require__(4);
 codex.transport = __webpack_require__(5);
@@ -3839,7 +3839,9 @@ module.exports = {
             var prefixJS = 'cdx-script-',
                 script;
             /**
-             * @todo create static function
+             * @todo make importStyle static function,
+             * because now in Promise construction
+             * this.prefixJS is undefined
              */
 
             /** Script is already loaded */
@@ -3878,7 +3880,9 @@ module.exports = {
             var style,
                 prefixCSS = 'cdx-style-';
             /**
-             * @todo create static function
+             * @todo make importStyle static function,
+             * because now in Promise construction
+             * this.prefixCSS is undefined
              */
 
             /** Style is already loaded */

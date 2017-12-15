@@ -9,9 +9,11 @@ module.exports = {
 
             var prefixJS = 'cdx-script-',
                 script;
-                /**
-                 * @todo create static function
-                 */
+            /**
+             * @todo make importStyle static function,
+             * because now in Promise construction
+             * this.prefixJS is undefined
+             */
 
             /** Script is already loaded */
             if ( !instanceName ) {
@@ -54,9 +56,11 @@ module.exports = {
 
             var style,
                 prefixCSS = 'cdx-style-';
-                /**
-                 * @todo create static function
-                 */
+            /**
+             * @todo make importStyle static function,
+             * because now in Promise construction
+             * this.prefixCSS is undefined
+             */
 
 
             /** Style is already loaded */

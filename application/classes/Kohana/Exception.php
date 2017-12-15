@@ -3,7 +3,7 @@
 
 class Kohana_Exception extends Kohana_Kohana_Exception
 {
-    public static function response($e) {
+    public static function response(Exception $e) {
 
         Model_Hawk::Log($e);
 
