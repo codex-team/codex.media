@@ -286,7 +286,8 @@ var moduleDispatcher = function () {
         value: function initModule(foundRequiredModule) {
 
             var moduleName = foundRequiredModule.dataset.module,
-                moduleSettings = {},
+                moduleSettings = void 0,
+                parsedSettings = void 0,
                 moduleObject = void 0;
 
             if (moduleName) {
@@ -295,14 +296,15 @@ var moduleDispatcher = function () {
 
                 if (moduleSettings) {
 
-                    moduleSettings = JSON.parse(moduleSettings.textContent.trim());
-
-                    moduleObject = window[moduleName];
+                    moduleSettings = moduleSettings.textContent.trim();
+                    parsedSettings = JSON.parse(moduleSettings);
                 }
+
+                moduleObject = codex[moduleName];
 
                 if (moduleObject.init) {
 
-                    moduleObject.init.call(foundRequiredModule, moduleSettings);
+                    moduleObject.init(parsedSettings);
                 }
             }
         }

@@ -9,7 +9,7 @@
 </div>
 
 <? if (isset($next_page) && $next_page): ?>
-    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadComments" href="/user/<?= $viewUser->id ?>/comments/<?= $page_number + 1 ?>" data-module="codex.appender">
+    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadComments" href="/user/<?= $viewUser->id ?>/comments/<?= $page_number + 1 ?>" data-module="appender">
         <module-settings>
             {
                 "buttonId" : "buttonLoadComments",

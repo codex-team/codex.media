@@ -12,7 +12,7 @@
     <div class="profile__content clearfix">
 
         <? if ($user->isAdmin): ?>
-            <span class="island-settings js-user-settings" data-id="<?= $viewUser->id ?>" data-module="codex.islandSettings">
+            <span class="island-settings js-user-settings" data-id="<?= $viewUser->id ?>" data-module="islandSettings">
                 <module-settings>
                     {
                         "selector" : ".js-user-settings",

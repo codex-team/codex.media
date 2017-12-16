@@ -35,7 +35,7 @@
         Показать больше записей
     </a>
 
-    <div data-module="codex.appender">
+    <div data-module="appender">
         <module-settings>
             {
                 "buttonId" : "buttonLoadNews",

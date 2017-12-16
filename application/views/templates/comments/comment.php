@@ -4,7 +4,7 @@
 
 
         <? if ($user->isAdmin || $user->id == $comment->author->id): ?>
-            <span class="island-settings js-comment-settings" data-id="<?= $comment->id ?>" data-module="codex.islandSettings">
+            <span class="island-settings js-comment-settings" data-id="<?= $comment->id ?>" data-module="islandSettings">
             <module-settings>
                 {
                     "selector" : ".js-comment-settings",

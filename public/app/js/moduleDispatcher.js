@@ -40,7 +40,8 @@ export default class moduleDispatcher {
     initModule(foundRequiredModule) {
 
         let moduleName = foundRequiredModule.dataset.module,
-            moduleSettings = {},
+            moduleSettings,
+            parsedSettings,
             moduleObject;
 
         if (moduleName) {
@@ -49,15 +50,16 @@ export default class moduleDispatcher {
 
             if (moduleSettings) {
 
-                moduleSettings = JSON.parse(moduleSettings.textContent.trim());
-
-                moduleObject =  window[moduleName];
+                moduleSettings = moduleSettings.textContent.trim();
+                parsedSettings = JSON.parse(moduleSettings);
 
             }
 
+            moduleObject = codex[moduleName];
+
             if (moduleObject.init) {
 
-                moduleObject.init.call(foundRequiredModule, moduleSettings);
+                moduleObject.init(parsedSettings);
 
             }
 
