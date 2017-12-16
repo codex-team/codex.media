@@ -15,7 +15,7 @@ export default class moduleDispatcher {
 
         let modulesRequired;
 
-        if (element) {
+        if (element !== undefined) {
 
             modulesRequired = element.querySelectorAll('[data-module]');
 
@@ -39,7 +39,7 @@ export default class moduleDispatcher {
       */
     initModule(foundRequiredModule) {
 
-        let moduleName = foundRequiredModule.dataset.moduleRequired,
+        let moduleName = foundRequiredModule.dataset.module,
             moduleSettings;
 
         if (moduleName) {
@@ -52,7 +52,9 @@ export default class moduleDispatcher {
 
             }
 
-            if (moduleName.init) {
+            console.log(typeof moduleName);
+
+            if (moduleName.init !== undefined) {
 
                 let parsedSettings = JSON.parse(moduleSettings);
 
