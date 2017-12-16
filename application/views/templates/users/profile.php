@@ -18,17 +18,17 @@
                         "selector" : ".js-user-settings",
                         "items" : "[
                             {
-                                title : '<?= $viewUser->isBanned ? 'Разблокировать' : 'Заблокировать' ?>',
-                                handler : codex.user.promote.status,
-                                arguments : {
-                                    value : <?= $viewUser->isBanned ? 0 : 1; ?>
+                                "title" : <?= $viewUser->isBanned ? 'Разблокировать' : 'Заблокировать' ?>,
+                                "handler" : "codex.user.promote.status",
+                                "arguments" : {
+                                    "value" : <?= $viewUser->isBanned ? 0 : 1; ?>
                                 }
                             },
                             {
-                                title : '<?= !$viewUser->isTeacher ? 'Сделать преподавателем' : 'Не преподаватель' ?>',
-                                handler : codex.user.promote.role,
-                                arguments : {
-                                    value : <?= !$viewUser->isTeacher ? Model_User::TEACHER : Model_User::REGISTERED; ?>
+                                "title" : <?= !$viewUser->isTeacher ? 'Сделать преподавателем' : 'Не преподаватель' ?>,
+                                "handler" : codex.user.promote.role,
+                                "arguments" : {
+                                    "value" : <?= !$viewUser->isTeacher ? Model_User::TEACHER : Model_User::REGISTERED; ?>
                                 }
                             }]"
                     }
