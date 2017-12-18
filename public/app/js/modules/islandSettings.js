@@ -174,9 +174,13 @@ module.exports = (function () {
     */
     var createItem = function ( item ) {
 
-        var itemEl = document.createElement('LI');
+        var itemEl = document.createElement('LI'),
+            method = item.handler.method,
+            module = item.handler.module;
+
 
         itemEl.classList.add(CSS.item);
+        item.handler = codex[module][method];
 
         console.assert(item.title, 'islandSettings: item title is missed');
         console.assert(typeof item.handler == 'function', 'islandSettings: item handler is not a function');

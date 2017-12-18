@@ -10,7 +10,10 @@
                     "selector" : ".js-comment-settings",
                     "items"    : [{
                         "title" : "Удалить",
-                        "handler" : "codex.comments.remove"
+                        "handler" : {
+                            "module": "comments",
+                            "method": "remove"
+                        }
                     }]
                 }
             </module-settings>
