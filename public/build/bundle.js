@@ -1850,16 +1850,23 @@ module.exports = function () {
             handler,
             module,
             method,
+            submethod,
             args;
 
         menuParams = getMenuParams(togglerIndex);
 
         module = menuParams.items[itemIndex].handler.module;
         method = menuParams.items[itemIndex].handler.method;
+        submethod = menuParams.items[itemIndex].handler.submethod;
 
         if (module && method) {
 
             handler = codex[module][method];
+
+            if (submethod) {
+
+                handler = codex[module][method][submethod];
+            }
         } else {
 
             handler = menuParams.items[itemIndex].handler;
