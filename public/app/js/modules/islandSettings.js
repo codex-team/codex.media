@@ -174,13 +174,9 @@ module.exports = (function () {
     */
     var createItem = function ( item ) {
 
-        var itemEl = document.createElement('LI'),
-            method = item.handler.method,
-            module = item.handler.module;
-
+        var itemEl = document.createElement('LI');
 
         itemEl.classList.add(CSS.item);
-        item.handler = codex[module][method];
 
         console.assert(item.title, 'islandSettings: item title is missed');
         console.assert(typeof item.handler == 'function', 'islandSettings: item handler is not a function');
@@ -203,11 +199,16 @@ module.exports = (function () {
             itemIndex = itemEl.dataset.itemIndex,
             menuParams,
             handler,
+            module,
+            method,
             args;
 
         menuParams = getMenuParams(togglerIndex);
 
-        handler = menuParams.items[itemIndex].handler;
+        module = menuParams.items[itemIndex].handler.module;
+        method = menuParams.items[itemIndex].handler.method;
+
+        handler = codex[module][method];
         args    = menuParams.items[itemIndex].arguments;
 
         handler.call(itemEl, args || {});
