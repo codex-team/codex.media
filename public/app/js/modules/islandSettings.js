@@ -208,8 +208,17 @@ module.exports = (function () {
         module = menuParams.items[itemIndex].handler.module;
         method = menuParams.items[itemIndex].handler.method;
 
-        handler = codex[module][method];
-        args    = menuParams.items[itemIndex].arguments;
+        if (module && method) {
+
+            handler = codex[module][method];
+
+        } else {
+
+            handler = menuParams.items[itemIndex].handler;
+
+        }
+
+        args = menuParams.items[itemIndex].arguments;
 
         handler.call(itemEl, args || {});
 
