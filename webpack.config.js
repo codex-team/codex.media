@@ -20,7 +20,17 @@ module.exports = {
         rules: [
       {
         test : /\.(png|jpg|svg)$/,
-        use : 'file-loader?name=[path][name].[ext]'
+        use : [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[1].[ext]',
+              publicPath: '/',
+              regExp: 'node_modules/(.*)',
+              outputPath: 'public/build/assets/'
+            },
+          }
+        ]
       },
       {
         /**
