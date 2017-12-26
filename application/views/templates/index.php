@@ -31,11 +31,8 @@
 </div>
 
 <? if ($next_page): ?>
-    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/<?= $page_number + 1 ?>">
+    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/<?= $page_number + 1 ?>" data-module="appender">
         Показать больше записей
-    </a>
-
-    <div data-module="appender">
         <module-settings>
             {
                 "buttonId" : "buttonLoadNews",
@@ -46,5 +43,5 @@
                 "dontWaitFirstClick": "true"
             }
         </module-settings>
-    </div>
+    </a>
 <? endif ?>
