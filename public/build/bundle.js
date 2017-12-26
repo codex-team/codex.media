@@ -1871,7 +1871,7 @@ module.exports = function () {
         method = menuParams.items[itemIndex].handler.method;
         submethod = menuParams.items[itemIndex].handler.submethod;
 
-        if (module && method) {
+        try {
 
             handler = codex[module][method];
 
@@ -1879,7 +1879,7 @@ module.exports = function () {
 
                 handler = codex[module][method][submethod];
             }
-        } else {
+        } catch (e) {
 
             handler = menuParams.items[itemIndex].handler;
         }
