@@ -8,10 +8,20 @@
   *
   */
 export default class moduleDispatcher {
+    /*
+     * @param {object} obj
+     */
+    constructor(obj) {
 
-    constructor() {}
+        this.initModules(obj);
 
-    initModules(element) {
+    }
+
+    /**
+     * @param {HTMLElement} element
+     */
+
+    initModules(obj, element) {
 
         let modulesRequired;
 
@@ -27,7 +37,7 @@ export default class moduleDispatcher {
 
         for (let i = 0; i < modulesRequired.length; i++) {
 
-            this.initModule(modulesRequired[i]);
+            this.initModule(obj, modulesRequired[i]);
 
         }
 
@@ -36,17 +46,19 @@ export default class moduleDispatcher {
     /**
       * Get module's name from data attributes
       * Call module with settings that are defined below on <module-settings> tag
+      *
+      * @param {object} moduleNode
       */
-    initModule(foundRequiredModule) {
+    initModule(obj, moduleNode) {
 
-        let moduleName = foundRequiredModule.dataset.module,
+        let moduleName = moduleNode.dataset.module,
             moduleSettings,
             parsedSettings,
             moduleObject;
 
         if (moduleName) {
 
-            moduleSettings = foundRequiredModule.querySelector('module-settings');
+            moduleSettings = moduleNode.querySelector('module-settings');
 
             if (moduleSettings) {
 
@@ -55,11 +67,15 @@ export default class moduleDispatcher {
 
             }
 
-            moduleObject = codex[moduleName];
+            moduleObject = obj[moduleName];
 
             if (moduleObject.init) {
 
                 moduleObject.init(parsedSettings);
+
+            } else {
+
+                console.assert(moduleObject.init, 'ModuleDispatcher: module «' + moduleName + '» should implement init method');
 
             }
 

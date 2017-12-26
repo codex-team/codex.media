@@ -14,9 +14,7 @@ let documentReady = () => {
    * Initiate modules
    * @type {moduleDispatcher}
    */
-    let modules = new moduleDispatcher();
-
-    modules.initModules();
+    new moduleDispatcher(codex);
 
 };
 

@@ -64,57 +64,19 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [ 'env' ]
-            },
+              presets: [ 'es2015' ]
+            }
           },
           /** ES lint For webpack build */
           {
             loader: 'eslint-loader',
             options: {
-              fix: true,
-              sourceType: 'module'
+              fix: true
             }
           }
         ]
       }
-    ]
-        // loaders: [
-        //     {
-        //         test: /\.css$/,
-        //         loader: ExtractTextPlugin.extract("css-loader?uglify=1&importLoaders=1!postcss-loader")
-        //     },
-        //     {
-        //         test : /\.js$/,
-        //         exclude: /node_modules/,
-        //         loaders: "eslint-loader?fix=true&babel-loader"
-    
-        //     },
-        //     /**
-        //      * File loader for external assets
-        //      * Uses in codex.editor.personality
-        //      */
-        //     {
-        //       test : /\.(png|jpg|svg)$/,
-        //       include : /node_modules/,
-        //       loaders : "file-loader?name=[1].[ext]&outputPath=public/build/assets/&publicPath=/&regExp=node_modules/(.*)"
-        //     },
-        // ]
-    },
-
-    /**
-    * PostCSS configuration
-    */
-    // postcss: function () {
-    //     return [
-
-    //         /** Позволяет использовать CSSnext во вложенных файлах*/
-    //         require('postcss-smart-import'),
-
-    //         /** Позволяет использовать новые возможности CSS: переменные, фукнции и тд*/
-    //         require('postcss-cssnext'),
-
-    //     ];
-    // },
+    ]},
 
     plugins: [
 

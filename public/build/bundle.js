@@ -87,9 +87,7 @@ var documentReady = function documentReady() {
    * Initiate modules
    * @type {moduleDispatcher}
    */
-  var modules = new moduleDispatcher();
-
-  modules.initModules();
+  new moduleDispatcher(codex);
 };
 
 document.addEventListener('DOMContentLoaded', documentReady, false);
@@ -252,13 +250,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   *
   */
 var moduleDispatcher = function () {
-    function moduleDispatcher() {
+    /*
+     * @param {object} obj
+     */
+    function moduleDispatcher(obj) {
         _classCallCheck(this, moduleDispatcher);
+
+        this.initModules(obj);
     }
+
+    /**
+     * @param {HTMLElement} element
+     */
 
     _createClass(moduleDispatcher, [{
         key: 'initModules',
-        value: function initModules(element) {
+        value: function initModules(obj, element) {
 
             var modulesRequired = void 0;
 
@@ -272,27 +279,29 @@ var moduleDispatcher = function () {
 
             for (var i = 0; i < modulesRequired.length; i++) {
 
-                this.initModule(modulesRequired[i]);
+                this.initModule(obj, modulesRequired[i]);
             }
         }
 
         /**
           * Get module's name from data attributes
           * Call module with settings that are defined below on <module-settings> tag
+          *
+          * @param {object} moduleNode
           */
 
     }, {
         key: 'initModule',
-        value: function initModule(foundRequiredModule) {
+        value: function initModule(obj, moduleNode) {
 
-            var moduleName = foundRequiredModule.dataset.module,
+            var moduleName = moduleNode.dataset.module,
                 moduleSettings = void 0,
                 parsedSettings = void 0,
                 moduleObject = void 0;
 
             if (moduleName) {
 
-                moduleSettings = foundRequiredModule.querySelector('module-settings');
+                moduleSettings = moduleNode.querySelector('module-settings');
 
                 if (moduleSettings) {
 
@@ -300,11 +309,14 @@ var moduleDispatcher = function () {
                     parsedSettings = JSON.parse(moduleSettings);
                 }
 
-                moduleObject = codex[moduleName];
+                moduleObject = obj[moduleName];
 
                 if (moduleObject.init) {
 
                     moduleObject.init(parsedSettings);
+                } else {
+
+                    console.assert(moduleObject.init, 'ModuleDispatcher: module «' + moduleName + '» should implement init method');
                 }
             }
         }

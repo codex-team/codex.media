@@ -26,6 +26,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.0",
     "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
     "codex.editor.link": "^1.0.3",
     "codex.editor.personality": "^1.0.2",
     "codex.special": "^1.4.1",
