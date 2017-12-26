@@ -56,7 +56,7 @@ export default class moduleDispatcher {
             parsedSettings,
             moduleObject;
 
-        if (moduleName) {
+        try {
 
             moduleSettings = moduleNode.querySelector('module-settings');
 
@@ -73,11 +73,11 @@ export default class moduleDispatcher {
 
                 moduleObject.init(parsedSettings);
 
-            } else {
-
-                console.assert(moduleObject.init, 'ModuleDispatcher: module «' + moduleName + '» should implement init method');
-
             }
+
+        } catch(e) {
+
+            console.assert(moduleObject.init, 'ModuleDispatcher: module «' + moduleName + '» should implement init method');
 
         }
 

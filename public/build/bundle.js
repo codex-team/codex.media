@@ -299,7 +299,7 @@ var moduleDispatcher = function () {
                 parsedSettings = void 0,
                 moduleObject = void 0;
 
-            if (moduleName) {
+            try {
 
                 moduleSettings = moduleNode.querySelector('module-settings');
 
@@ -314,10 +314,10 @@ var moduleDispatcher = function () {
                 if (moduleObject.init) {
 
                     moduleObject.init(parsedSettings);
-                } else {
-
-                    console.assert(moduleObject.init, 'ModuleDispatcher: module «' + moduleName + '» should implement init method');
                 }
+            } catch (e) {
+
+                console.assert(moduleObject.init, 'ModuleDispatcher: module «' + moduleName + '» should implement init method');
             }
         }
     }]);
