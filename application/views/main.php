@@ -29,7 +29,7 @@
     <link rel="image_src" href="https://school332.ru/public/app/img/meta-image.png" />
 
 
-    <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>"></script>
+    <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
 
 </head>
 <body>
@@ -66,14 +66,6 @@
     <script>
 
         window.csrf = '<?= Security::token(); ?>';
-
-        codex.docReady(function () {
-
-            codex.init({
-                uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>
-            });
-
-        });
 
     </script>
 

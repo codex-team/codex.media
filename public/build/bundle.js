@@ -133,6 +133,27 @@ codex = function () {
       codex.appSettings[key] = appSettings[key];
     }
 
+    codex.docReady(function () {
+
+      initModules();
+    });
+  };
+
+  function initModules() {
+
+    /**
+     * CodeX Special
+     *
+     * Availiable options:
+     *    position {String} (optional) — toolbar position on screen
+     *        'top-left', 'bottom-right', 'bottom-left', 'top-right'
+     *    blockId {String} (optional) — toolbar wrapper
+     *    lang {String} (optional) — language 'ru' or 'en'. (default: 'ru')
+     */
+    codex.special.init({
+      blockId: 'js-contrast-version-holder'
+    });
+
     /**
      * Stylize custom checkboxes
      */
@@ -167,19 +188,6 @@ codex = function () {
      * Set listener for mobile menu toggler
      */
     codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
-
-    /**
-     * CodeX Special
-     *
-     * Availiable options:
-     *    position {String} (optional) — toolbar position on screen
-     *        'top-left', 'bottom-right', 'bottom-left', 'top-right'
-     *    blockId {String} (optional) — toolbar wrapper
-     *    lang {String} (optional) — language 'ru' or 'en'. (default: 'ru')
-     */
-    codex.special.init({
-      blockId: 'js-contrast-version-holder'
-    });
   };
 
   return codex;
@@ -256,7 +264,9 @@ var moduleDispatcher = function () {
     function moduleDispatcher(obj) {
         _classCallCheck(this, moduleDispatcher);
 
-        this.initModules(obj);
+        this.globalObj = obj;
+
+        this.initModules();
     }
 
     /**
@@ -265,7 +275,7 @@ var moduleDispatcher = function () {
 
     _createClass(moduleDispatcher, [{
         key: 'initModules',
-        value: function initModules(obj, element) {
+        value: function initModules(element) {
 
             var modulesRequired = void 0;
 
@@ -279,7 +289,7 @@ var moduleDispatcher = function () {
 
             for (var i = 0; i < modulesRequired.length; i++) {
 
-                this.initModule(obj, modulesRequired[i]);
+                this.initModule(modulesRequired[i]);
             }
         }
 
@@ -292,7 +302,7 @@ var moduleDispatcher = function () {
 
     }, {
         key: 'initModule',
-        value: function initModule(obj, moduleNode) {
+        value: function initModule(moduleNode) {
 
             var moduleName = moduleNode.dataset.module,
                 moduleSettings = void 0,
@@ -309,15 +319,17 @@ var moduleDispatcher = function () {
                     parsedSettings = JSON.parse(moduleSettings);
                 }
 
-                moduleObject = obj[moduleName];
+                moduleObject = this.globalObj[moduleName];
+
+                console.assert('ModuleDispatcher: module «' + moduleName + '» should implement init method');
 
                 if (moduleObject.init) {
 
-                    moduleObject.init(parsedSettings);
+                    moduleObject.init(parsedSettings, moduleNode);
                 }
             } catch (e) {
 
-                console.assert(moduleObject.init, 'ModuleDispatcher: module «' + moduleName + '» should implement init method');
+                console.warn('ModuleDispatcher error: ', e);
             }
         }
     }]);
@@ -1018,12 +1030,12 @@ var appender = {
      */
     buttonText: null,
 
-    init: function init(settings) {
+    init: function init(settings, moduleElement) {
 
         this.settings = settings;
 
         /* Checking for existing button and field for loaded info */
-        this.loadMoreButton = document.getElementById(this.settings.buttonId);
+        this.loadMoreButton = moduleElement;
 
         if (!this.loadMoreButton) return false;
 
@@ -1841,7 +1853,6 @@ module.exports = function () {
         itemEl.classList.add(CSS.item);
 
         console.assert(item.title, 'islandSettings: item title is missed');
-        console.assert(typeof item.handler == 'function', 'islandSettings: item handler is not a function');
 
         itemEl.textContent = item.title;
         itemEl.addEventListener('click', itemClicked);

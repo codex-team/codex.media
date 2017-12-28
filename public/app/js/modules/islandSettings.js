@@ -179,7 +179,6 @@ module.exports = (function () {
         itemEl.classList.add(CSS.item);
 
         console.assert(item.title, 'islandSettings: item title is missed');
-        console.assert(typeof item.handler == 'function', 'islandSettings: item handler is not a function');
 
         itemEl.textContent = item.title;
         itemEl.addEventListener('click', itemClicked);

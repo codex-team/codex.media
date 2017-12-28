@@ -30,85 +30,96 @@ codex = function () {
 
     'use strict';
 
-  /**
-   * Static nodes cache
-   */
+   /**
+    * Static nodes cache
+    */
 
     codex.nodes = {
         content: null
     };
 
-  /**
-   * @var Application settings
-   * @type {Object}
-   * @type {Number} appSettings.uploadMaxSize    - max size for Editor uploads in MB
-   */
+   /**
+    * @var Application settings
+    * @type {Object}
+    * @type {Number} appSettings.uploadMaxSize    - max size for Editor uploads in MB
+    */
     codex.appSettings = {
         uploadMaxSize: 25
     };
 
-  /**
-   * Initiztes application
-   * @param {Object} appSettings - initial settings
-   */
+   /**
+    * Initiztes application
+    * @param {Object} appSettings - initial settings
+    */
     codex.init = function (appSettings) {
 
-    /**
-     * Accept settings
-     */
+        /**
+         * Accept settings
+         */
         for (var key in appSettings) {
 
             codex.appSettings[key] = appSettings[key];
 
         }
 
-    /**
-     * Stylize custom checkboxes
-     */
-        codex.checkboxes.init();
+        codex.docReady(function () {
 
-    /**
-     * Init approval buttons
-     */
-        codex.content.approvalButtons.init();
+            initModules();
 
-    /**
-     * Enable textarea autoresizer
-     */
-        codex.autoresizeTextarea.init();
+        });
 
-    /**
-     * Activate scroll-up button
-     */
-        codex.scrollUp.init('js-layout-holder');
 
-    /**
-     * Client is ready
-     */
-        codex.core.log('Initialized', 'CodeX', 'info');
+    };
 
-    /**
-     * Initiate branding preload
-     */
-        codex.branding.init();
+    function initModules() {
 
-    /**
-     * Set listener for mobile menu toggler
-     */
-        codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
-
-    /**
-     * CodeX Special
-     *
-     * Availiable options:
-     *    position {String} (optional) — toolbar position on screen
-     *        'top-left', 'bottom-right', 'bottom-left', 'top-right'
-     *    blockId {String} (optional) — toolbar wrapper
-     *    lang {String} (optional) — language 'ru' or 'en'. (default: 'ru')
-     */
+       /**
+        * CodeX Special
+        *
+        * Availiable options:
+        *    position {String} (optional) — toolbar position on screen
+        *        'top-left', 'bottom-right', 'bottom-left', 'top-right'
+        *    blockId {String} (optional) — toolbar wrapper
+        *    lang {String} (optional) — language 'ru' or 'en'. (default: 'ru')
+        */
         codex.special.init({
             blockId: 'js-contrast-version-holder'
         });
+
+       /**
+        * Stylize custom checkboxes
+        */
+        codex.checkboxes.init();
+
+       /**
+        * Init approval buttons
+        */
+        codex.content.approvalButtons.init();
+
+       /**
+        * Enable textarea autoresizer
+        */
+        codex.autoresizeTextarea.init();
+
+       /**
+        * Activate scroll-up button
+        */
+        codex.scrollUp.init('js-layout-holder');
+
+       /**
+        * Client is ready
+        */
+        codex.core.log('Initialized', 'CodeX', 'info');
+
+       /**
+        * Initiate branding preload
+        */
+        codex.branding.init();
+
+        /**
+         * Set listener for mobile menu toggler
+         */
+        codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
 
     };
 

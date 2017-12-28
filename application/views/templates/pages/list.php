@@ -10,7 +10,54 @@
 
             <div class="post-list-item__header">
                 <? if ($user->isAdmin || $user->id == $page->author->id): ?>
-                    <span class="island-settings js-page-settings" data-id="<?= $page->id ?>">
+                    <span class="island-settings js-page-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
+                    <module-settings>
+                    {
+                        "selector" : ".js-page-settings",
+                        "items"    : [{
+                            "title" : "Редактировать",
+                            "handler" : {
+                                "module": "pages",
+                                "method": "openWriting"
+                            }
+                        }, 
+                        {
+                            "title" : "Вложенная страница",
+                            "handler" : {
+                                "module": "pages",
+                                "method": "newChild"
+                            }
+
+                        },
+                        <? if ($user->isAdmin): ?>
+                        {
+                            "title" : "Установить обложку",
+                            "handler" : {
+                                "module": "pages",
+                                "method": "cover",
+                                "submethod": "toggleButton"
+                            }
+                        },
+                        <? if ($active_tab == Model_Feed_Pages::MAIN): ?>
+                        {
+                            "title" : "Закрепить",
+                            "handler" : {
+                                "module": "pages",
+                                "method": "pin",
+                                "submethod" : "toggle"
+                            }
+                        },
+                        <? endif; ?>
+                        <? endif; ?>
+                        {
+                            "title" : "Удалить",
+                            "handler" : {
+                                "module": "pages",
+                                "method": "remove"
+                            }
+                        }]
+                    }
+                    </module-settings>
                         <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
                     </span>
                 <? endif ?>
@@ -70,40 +117,6 @@
         </article>
 
     <? endforeach; ?>
-
-    <? if ($user->id): ?>
-        <script>
-            codex.docReady(function() {
-
-                /** Island settings menu */
-                codex.islandSettings.init({
-                    selector: '.js-page-settings',
-                    items: [
-                        {
-                            title: 'Редактировать',
-                            handler: codex.pages.openWriting
-                        },
-                        {
-                            title: 'Удалить',
-                            handler: codex.pages.remove
-                        },
-                        <? if ($user->isAdmin): ?>
-                        {
-                            title: 'Установить обложку',
-                            handler: codex.pages.cover.toggleButton
-                        },
-                        <? if ($active_tab == Model_Feed_Pages::MAIN): ?>
-                        {
-                            title: 'Закрепить',
-                            handler: codex.pages.pin.toggle
-                        }
-                        <? endif; ?>
-                        <? endif; ?>
-                    ]
-                })
-            });
-        </script>
-    <? endif ?>
 
 <? else: ?>
 

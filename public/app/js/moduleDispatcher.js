@@ -13,7 +13,9 @@ export default class moduleDispatcher {
      */
     constructor(obj) {
 
-        this.initModules(obj);
+        this.globalObj = obj;
+
+        this.initModules();
 
     }
 
@@ -21,7 +23,7 @@ export default class moduleDispatcher {
      * @param {HTMLElement} element
      */
 
-    initModules(obj, element) {
+    initModules(element) {
 
         let modulesRequired;
 
@@ -37,7 +39,7 @@ export default class moduleDispatcher {
 
         for (let i = 0; i < modulesRequired.length; i++) {
 
-            this.initModule(obj, modulesRequired[i]);
+            this.initModule(modulesRequired[i]);
 
         }
 
@@ -49,7 +51,7 @@ export default class moduleDispatcher {
       *
       * @param {object} moduleNode
       */
-    initModule(obj, moduleNode) {
+    initModule(moduleNode) {
 
         let moduleName = moduleNode.dataset.module,
             moduleSettings,
@@ -67,17 +69,21 @@ export default class moduleDispatcher {
 
             }
 
-            moduleObject = obj[moduleName];
+
+            moduleObject = this.globalObj[moduleName];
+
+            console.assert('ModuleDispatcher: module «' + moduleName + '» should implement init method');
+
 
             if (moduleObject.init) {
 
-                moduleObject.init(parsedSettings);
+                moduleObject.init(parsedSettings, moduleNode);
 
             }
 
         } catch(e) {
 
-            console.assert(moduleObject.init, 'ModuleDispatcher: module «' + moduleName + '» should implement init method');
+            console.warn('ModuleDispatcher error: ', e);
 
         }
 

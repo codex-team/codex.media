@@ -9,10 +9,9 @@
 </div>
 
 <? if (isset($next_page) && $next_page): ?>
-    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadComments" href="/user/<?= $viewUser->id ?>/comments/<?= $page_number + 1 ?>" data-module="appender">
+    <a class="button button--load-more island island--padded island--centered island--stretched" href="/user/<?= $viewUser->id ?>/comments/<?= $page_number + 1 ?>" data-module="appender">
         <module-settings>
             {
-                "buttonId" : "buttonLoadComments",
                 "currentPage" : "<?= $page_number ?>",
                 "url"          : "<?= "/user/" . $viewUser->id . "/comments/" ?>",
                 "targetBlockId" : "list_of_comments",

@@ -27,12 +27,12 @@ var appender = {
      */
     buttonText : null,
 
-    init : function (settings) {
+    init : function (settings, moduleElement) {
 
         this.settings = settings;
 
         /* Checking for existing button and field for loaded info */
-        this.loadMoreButton = document.getElementById(this.settings.buttonId);
+        this.loadMoreButton = moduleElement;
 
         if (!this.loadMoreButton) return false;
 
