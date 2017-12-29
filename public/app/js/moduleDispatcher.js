@@ -48,27 +48,27 @@ export default class moduleDispatcher {
       * Get module's name from data attributes
       * Call module with settings that are defined below on <module-settings> tag
       *
-      * @param {object} moduleNode — HTML element with data-module="" attribute
+      * @param {object} dataModuleNode — HTML element with data-module="" attribute
       */
-    initModule(moduleNode) {
+    initModule(dataModuleNode) {
 
        /**
         * @type {String} moduleName — name of module to init
         * @example
-        * moduleNode: <span data-module="islandSettings">
+        * dataModuleNode: <span data-module="islandSettings">
         * moduleName: islandSettings
         *
         * @type {Object} moduleSettings — contents of <module-settings> tag
         *
-        * @type {Object} parsedSettings — JSON-parsed value of moduleSettings
+        * @type {Object} parsedModuleSettings — JSON-parsed value of moduleSettings
         *
-        * @type {String} moduleObject — module from the Library selected by name
+        * @type {String} module — module from the Library selected by name
         * @example
-        * moduleObject = codex[moduleName[i]];
+        * module = codex[moduleName[i]];
         */
-        let moduleName = moduleNode.dataset.module,
+        let moduleName = dataModuleNode.dataset.module,
             moduleSettings,
-            parsedSettings = {};
+            parsedModuleSettings = {};
 
         try {
 
@@ -81,12 +81,12 @@ export default class moduleDispatcher {
            /**
             * Find settings values in <module-settings> and parse them
             */
-            moduleSettings = moduleNode.querySelector('module-settings');
+            moduleSettings = dataModuleNode.querySelector('module-settings');
 
             if (moduleSettings) {
 
                 moduleSettings = moduleSettings.textContent.trim();
-                parsedSettings = JSON.parse(moduleSettings);
+                parsedModuleSettings = JSON.parse(moduleSettings);
 
             }
 
@@ -95,7 +95,7 @@ export default class moduleDispatcher {
             */
             for (let i = 0; i < moduleName.length; i++) {
 
-                this.initMultiple(moduleName[i], parsedSettings, moduleNode);
+                this.initMultipleModules(moduleName[i], parsedModuleSettings, dataModuleNode);
 
             }
 
@@ -112,7 +112,7 @@ export default class moduleDispatcher {
     * If data-module="" has more than one module name
     * And <module-settings> contains multiple settings values
     */
-    initMultiple(moduleName, parsedSettings, moduleNode) {
+    initMultipleModules(moduleName, parsedModuleSettings, dataModuleNode) {
 
         try {
 
@@ -120,24 +120,24 @@ export default class moduleDispatcher {
             * Select module by name from the Library
             *
             * @example
-            * moduleObject = codex[moduleName[i]];
+            * module = codex[moduleName[i]];
             */
-            let moduleObject = this.Library[moduleName];
+            let module = this.Library[moduleName];
 
            /**
             * If we have multiple modules to init
             * With multiple parsed settings values
             *
-            * @param {HTMLElement} moduleNode — HTML element with data-module="" attribute
+            * @param {HTMLElement} dataModuleNode — HTML element with data-module="" attribute
             * On which ModuleDispatcher is called
             */
-            if (parsedSettings.length > 1) {
+            if (parsedModuleSettings.length > 1) {
 
-                if (moduleObject.init) {
+                if (module.init) {
 
-                    for (let i = 0; i < parsedSettings.length; i++) {
+                    for (let i = 0; i < parsedModuleSettings.length; i++) {
 
-                        moduleObject.init(parsedSettings[i], moduleNode);
+                        module.init(parsedModuleSettings[i], dataModuleNode);
 
                     }
 
@@ -149,9 +149,9 @@ export default class moduleDispatcher {
 
             } else {
 
-                if (moduleObject.init instanceof Function) {
+                if (module.init instanceof Function) {
 
-                    moduleObject.init(parsedSettings, moduleNode);
+                    module.init(parsedModuleSettings, dataModuleNode);
 
                 }
 
