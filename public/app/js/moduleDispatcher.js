@@ -60,6 +60,8 @@ export default class moduleDispatcher {
 
         try {
 
+            moduleName = moduleName.split(' ');
+
             moduleSettings = moduleNode.querySelector('module-settings');
 
             if (moduleSettings) {
@@ -69,17 +71,38 @@ export default class moduleDispatcher {
 
             }
 
+            for (var i = 0; i < moduleName.length; i++) {
 
-            moduleObject = this.globalObj[moduleName];
+                try {
 
-            console.assert('ModuleDispatcher: module «' + moduleName + '» should implement init method');
+                    moduleObject = this.globalObj[moduleName[i]];
 
+                    if (parsedSettings['multipleSettings']) {
 
-            if (moduleObject.init) {
+                        if (moduleObject.init) {
 
-                moduleObject.init(parsedSettings, moduleNode);
+                            moduleObject.init(parsedSettings['multipleSettings'][i], moduleNode);
+
+                        }
+
+                    } else {
+
+                        if (moduleObject.init) {
+
+                            moduleObject.init(parsedSettings, moduleNode);
+
+                        }
+
+                    }
+
+                } catch(e) {
+
+                    console.assert('ModuleDispatcher: module «' + moduleName[i] + '» should implement init method');
+
+                }
 
             }
+
 
         } catch(e) {
 

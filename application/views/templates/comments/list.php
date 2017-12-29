@@ -2,11 +2,25 @@
     $count = isset($page) ? count($page->comments) : '0'
 ?>
 
-<div class="comments-list" id="commentsList" data-count="<?= $count ?>" data-module="comments">
+<div class="comments-list" id="commentsList" data-count="<?= $count ?>" data-module="comments islandSettings">
 
     <module-settings>
         {
-            "listId" : "commentsList"
+            "multipleSettings" : [
+                {
+                    "listId" : "commentsList"
+                },
+                {
+                    "selector" : ".js-comment-settings",
+                    "items"    : [{
+                        "title" : "Удалить",
+                        "handler" : {
+                            "module": "comments",
+                            "method": "remove"
+                        }
+                    }]
+                }
+            ]
         }
     </module-settings>
 

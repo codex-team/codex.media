@@ -311,6 +311,8 @@ var moduleDispatcher = function () {
 
             try {
 
+                moduleName = moduleName.split(' ');
+
                 moduleSettings = moduleNode.querySelector('module-settings');
 
                 if (moduleSettings) {
@@ -319,13 +321,29 @@ var moduleDispatcher = function () {
                     parsedSettings = JSON.parse(moduleSettings);
                 }
 
-                moduleObject = this.globalObj[moduleName];
+                for (var i = 0; i < moduleName.length; i++) {
 
-                console.assert('ModuleDispatcher: module «' + moduleName + '» should implement init method');
+                    try {
 
-                if (moduleObject.init) {
+                        moduleObject = this.globalObj[moduleName[i]];
 
-                    moduleObject.init(parsedSettings, moduleNode);
+                        if (parsedSettings['multipleSettings']) {
+
+                            if (moduleObject.init) {
+
+                                moduleObject.init(parsedSettings['multipleSettings'][i], moduleNode);
+                            }
+                        } else {
+
+                            if (moduleObject.init) {
+
+                                moduleObject.init(parsedSettings, moduleNode);
+                            }
+                        }
+                    } catch (e) {
+
+                        console.assert('ModuleDispatcher: module «' + moduleName[i] + '» should implement init method');
+                    }
                 }
             } catch (e) {
 
