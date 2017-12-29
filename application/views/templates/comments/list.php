@@ -5,23 +5,21 @@
 <div class="comments-list" id="commentsList" data-count="<?= $count ?>" data-module="comments islandSettings">
 
     <module-settings>
-        {
-            "multipleSettings" : [
-                {
-                    "listId" : "commentsList"
-                },
-                {
-                    "selector" : ".js-comment-settings",
-                    "items"    : [{
-                        "title" : "Удалить",
-                        "handler" : {
-                            "module": "comments",
-                            "method": "remove"
-                        }
-                    }]
-                }
-            ]
-        }
+        [
+            {
+                "listId" : "commentsList"
+            },
+            {
+                "selector" : ".js-comment-settings",
+                "items"    : [{
+                    "title" : "Удалить",
+                    "handler" : {
+                        "module": "comments",
+                        "method": "remove"
+                    }
+                }]
+            }
+        ]
     </module-settings>
 
     <?
