@@ -13,7 +13,7 @@ export default class moduleDispatcher {
     */
     constructor(obj) {
 
-        this.globalObj = obj;
+        this.Library = obj;
 
         this.initModules();
 
@@ -62,13 +62,13 @@ export default class moduleDispatcher {
         *
         * @type {Object} parsedSettings — JSON-parsed value of moduleSettings
         *
-        * @type {String} moduleObject — module from the globalObj selected by name
+        * @type {String} moduleObject — module from the Library selected by name
         * @example
         * moduleObject = codex[moduleName[i]];
         */
         let moduleName = moduleNode.dataset.module,
             moduleSettings,
-            parsedSettings;
+            parsedSettings = {};
 
         try {
 
@@ -117,12 +117,12 @@ export default class moduleDispatcher {
         try {
 
            /**
-            * Select module by name from the globalObj
+            * Select module by name from the Library
             *
             * @example
             * moduleObject = codex[moduleName[i]];
             */
-            let moduleObject = this.globalObj[moduleName];
+            let moduleObject = this.Library[moduleName];
 
            /**
             * If we have multiple modules to init
@@ -149,7 +149,7 @@ export default class moduleDispatcher {
 
             } else {
 
-                if (moduleObject.init) {
+                if (moduleObject.init instanceof Function) {
 
                     moduleObject.init(parsedSettings, moduleNode);
 

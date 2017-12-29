@@ -264,7 +264,7 @@ var moduleDispatcher = function () {
     function moduleDispatcher(obj) {
         _classCallCheck(this, moduleDispatcher);
 
-        this.globalObj = obj;
+        this.Library = obj;
 
         this.initModules();
     }
@@ -315,13 +315,13 @@ var moduleDispatcher = function () {
              *
              * @type {Object} parsedSettings — JSON-parsed value of moduleSettings
              *
-             * @type {String} moduleObject — module from the globalObj selected by name
+             * @type {String} moduleObject — module from the Library selected by name
              * @example
              * moduleObject = codex[moduleName[i]];
              */
             var moduleName = moduleNode.dataset.module,
                 moduleSettings = void 0,
-                parsedSettings = void 0;
+                parsedSettings = {};
 
             try {
 
@@ -368,12 +368,12 @@ var moduleDispatcher = function () {
             try {
 
                 /**
-                 * Select module by name from the globalObj
+                 * Select module by name from the Library
                  *
                  * @example
                  * moduleObject = codex[moduleName[i]];
                  */
-                var moduleObject = this.globalObj[moduleName];
+                var moduleObject = this.Library[moduleName];
 
                 /**
                  * If we have multiple modules to init
@@ -397,7 +397,7 @@ var moduleDispatcher = function () {
                      */
                 } else {
 
-                    if (moduleObject.init) {
+                    if (moduleObject.init instanceof Function) {
 
                         moduleObject.init(parsedSettings, moduleNode);
                     }
