@@ -71,12 +71,16 @@ var codex =
 "use strict";
 
 
+var _moduleDispatcher = __webpack_require__(1);
+
+var _moduleDispatcher2 = _interopRequireDefault(_moduleDispatcher);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /**
  * Require CSS build
  */
-__webpack_require__(1);
-
-var moduleDispatcher = __webpack_require__(2).default;
+__webpack_require__(2);
 
 /**
  * Document ready callback
@@ -87,7 +91,7 @@ var documentReady = function documentReady() {
    * Initiate modules
    * @type {moduleDispatcher}
    */
-  new moduleDispatcher(codex);
+  new _moduleDispatcher2.default(codex);
 };
 
 document.addEventListener('DOMContentLoaded', documentReady, false);
@@ -229,12 +233,6 @@ module.exports = codex;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -254,29 +252,57 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  * let modules = new moduleDispatcher();
  *
- * modules.initModules();
+ * modules.findModules();
  *
  */
 var moduleDispatcher = function () {
     /**
-     * @param {object} obj
+     * @param {object} Library
      */
     function moduleDispatcher(obj) {
         _classCallCheck(this, moduleDispatcher);
 
+        var settingsStyles = 'module-settings { display: none; }';
+
         this.Library = obj;
 
-        this.initModules();
+        this.appendStyle(settingsStyles);
+
+        this.findModules();
     }
 
     /**
-     * @param {HTMLElement} element
+     * Hides settings tags <module-settings>
+     * @param {String} settingsStyles
      */
 
 
     _createClass(moduleDispatcher, [{
-        key: 'initModules',
-        value: function initModules(element) {
+        key: 'appendStyle',
+        value: function appendStyle(settingsStyles) {
+
+            var styleTag = document.createElement('style');
+
+            styleTag.type = 'text/css';
+
+            if (styleTag.styleSheet) {
+
+                styleTag.styleSheet.cssText = settingsStyles;
+            } else {
+
+                styleTag.appendChild(document.createTextNode(settingsStyles));
+            };
+
+            document.getElementsByTagName('head')[0].appendChild(styleTag);
+        }
+
+        /**
+         * @param {HTMLElement} element
+         */
+
+    }, {
+        key: 'findModules',
+        value: function findModules(element) {
 
             var modulesRequired = void 0;
 
@@ -290,7 +316,7 @@ var moduleDispatcher = function () {
 
             for (var i = 0; i < modulesRequired.length; i++) {
 
-                this.initModule(modulesRequired[i]);
+                this.initModules(modulesRequired[i]);
             }
         }
 
@@ -302,20 +328,28 @@ var moduleDispatcher = function () {
          */
 
     }, {
-        key: 'initModule',
-        value: function initModule(dataModuleNode) {
+        key: 'initModules',
+        value: function initModules(dataModuleNode) {
 
             /**
              * @type {String} moduleName — name of module to init
+             *
              * @example
              * dataModuleNode: <span data-module="islandSettings">
              * moduleName: islandSettings
-             *
+             */
+
+            /**
              * @type {Object} moduleSettings — contents of <module-settings> tag
-             *
+             */
+
+            /**
              * @type {Object} parsedModuleSettings — JSON-parsed value of moduleSettings
-             *
+             */
+
+            /**
              * @type {String} module — module from the Library selected by name
+             *
              * @example
              * module = codex[moduleName[i]];
              */
@@ -347,7 +381,7 @@ var moduleDispatcher = function () {
                  */
                 for (var i = 0; i < moduleName.length; i++) {
 
-                    this.initMultipleModules(moduleName[i], parsedModuleSettings, dataModuleNode);
+                    this.initModule(moduleName[i], parsedModuleSettings, dataModuleNode);
                 }
             } catch (e) {
 
@@ -355,7 +389,7 @@ var moduleDispatcher = function () {
             }
         }
     }, {
-        key: 'initMultipleModules',
+        key: 'initModule',
 
 
         /**
@@ -363,7 +397,7 @@ var moduleDispatcher = function () {
         * If data-module="" has more than one module name
         * And <module-settings> contains multiple settings values
         */
-        value: function initMultipleModules(moduleName, parsedModuleSettings, dataModuleNode) {
+        value: function initModule(moduleName, parsedModuleSettings, dataModuleNode) {
 
             try {
 
@@ -371,7 +405,10 @@ var moduleDispatcher = function () {
                  * Select module by name from the Library
                  *
                  * @example
-                 * module = codex[moduleName[i]];
+                 * module = this.Library[moduleName];
+                 *
+                 * For this.Library
+                 * See {@link moduleDispatcher constructor} and [constructor's obj @param]
                  */
                 var module = this.Library[moduleName];
 
@@ -382,22 +419,19 @@ var moduleDispatcher = function () {
                  * @param {HTMLElement} dataModuleNode — HTML element with data-module="" attribute
                  * On which ModuleDispatcher is called
                  */
-                if (parsedModuleSettings.length > 1) {
+                if (module.init instanceof Function) {
 
-                    if (module.init) {
+                    if (parsedModuleSettings.length > 1) {
 
                         for (var i = 0; i < parsedModuleSettings.length; i++) {
 
                             module.init(parsedModuleSettings[i], dataModuleNode);
                         }
-                    }
 
-                    /**
-                     * Otherwise init a single module with parsed settings
-                     */
-                } else {
-
-                    if (module.init instanceof Function) {
+                        /**
+                         * Otherwise init a single module with parsed settings
+                         */
+                    } else {
 
                         module.init(parsedModuleSettings, dataModuleNode);
                     }
@@ -414,6 +448,12 @@ var moduleDispatcher = function () {
 
 exports.default = moduleDispatcher;
 ;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 3 */
@@ -1102,15 +1142,18 @@ var appender = {
     /**
      * Button's text for saving it.
      * On its place dots will be while news are loading
+     *
+     * @param {Object} dataModuleNode — HTML element with data-module="" attribute
+     * Passed from moduleDispatcher
      */
     buttonText: null,
 
-    init: function init(settings, moduleElement) {
+    init: function init(settings, dataModuleNode) {
 
         this.settings = settings;
 
         /* Checking for existing button and field for loaded info */
-        this.loadMoreButton = moduleElement;
+        this.loadMoreButton = dataModuleNode;
 
         if (!this.loadMoreButton) return false;
 
@@ -1351,11 +1394,12 @@ module.exports = function () {
     /**
      * Initialize comments
      * @param {object} data        params
-     * @param {sring} data.listId  comments list wrapper id
+     * @param {Object} dataModuleNode — HTML element with data-module="" attribute
+     * Passed from moduleDispatcher, comments list wrapper id
      */
-    function init(data) {
+    function init(data, moduleElement) {
 
-        commentsList = document.getElementById(data.listId);
+        commentsList = moduleElement;
 
         if (anchor) {
 
@@ -1957,7 +2001,7 @@ module.exports = function () {
         method = menuParams.items[itemIndex].handler.method;
         submethod = menuParams.items[itemIndex].handler.submethod;
 
-        try {
+        if (module && method) {
 
             handler = codex[module][method];
 
@@ -1965,7 +2009,7 @@ module.exports = function () {
 
                 handler = codex[module][method][submethod];
             }
-        } catch (e) {
+        } else {
 
             handler = menuParams.items[itemIndex].handler;
         }

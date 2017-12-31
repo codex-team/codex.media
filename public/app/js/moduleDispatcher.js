@@ -4,25 +4,53 @@
   *
   * let modules = new moduleDispatcher();
   *
-  * modules.initModules();
+  * modules.findModules();
   *
   */
 export default class moduleDispatcher {
    /**
-    * @param {object} obj
+    * @param {object} Library
     */
     constructor(obj) {
 
+        let settingsStyles = 'module-settings { display: none; }';
+
         this.Library = obj;
 
-        this.initModules();
+        this.appendStyle(settingsStyles);
+
+        this.findModules();
+
+    }
+
+   /**
+    * Hides settings tags <module-settings>
+    * @param {String} settingsStyles
+    */
+    appendStyle(settingsStyles) {
+
+        let styleTag = document.createElement('style');
+
+        styleTag.type = 'text/css';
+
+        if (styleTag.styleSheet) {
+
+            styleTag.styleSheet.cssText = settingsStyles;
+
+        } else {
+
+            styleTag.appendChild(document.createTextNode(settingsStyles));
+
+        };
+
+        document.getElementsByTagName('head')[0].appendChild(styleTag);
 
     }
 
    /**
     * @param {HTMLElement} element
     */
-    initModules(element) {
+    findModules(element) {
 
         let modulesRequired;
 
@@ -38,7 +66,7 @@ export default class moduleDispatcher {
 
         for (let i = 0; i < modulesRequired.length; i++) {
 
-            this.initModule(modulesRequired[i]);
+            this.initModules(modulesRequired[i]);
 
         }
 
@@ -50,19 +78,27 @@ export default class moduleDispatcher {
       *
       * @param {object} dataModuleNode — HTML element with data-module="" attribute
       */
-    initModule(dataModuleNode) {
+    initModules(dataModuleNode) {
 
        /**
         * @type {String} moduleName — name of module to init
+        *
         * @example
         * dataModuleNode: <span data-module="islandSettings">
         * moduleName: islandSettings
-        *
+        */
+
+       /**
         * @type {Object} moduleSettings — contents of <module-settings> tag
-        *
+        */
+
+       /**
         * @type {Object} parsedModuleSettings — JSON-parsed value of moduleSettings
-        *
+        */
+
+       /**
         * @type {String} module — module from the Library selected by name
+        *
         * @example
         * module = codex[moduleName[i]];
         */
@@ -95,7 +131,7 @@ export default class moduleDispatcher {
             */
             for (let i = 0; i < moduleName.length; i++) {
 
-                this.initMultipleModules(moduleName[i], parsedModuleSettings, dataModuleNode);
+                this.initModule(moduleName[i], parsedModuleSettings, dataModuleNode);
 
             }
 
@@ -112,7 +148,7 @@ export default class moduleDispatcher {
     * If data-module="" has more than one module name
     * And <module-settings> contains multiple settings values
     */
-    initMultipleModules(moduleName, parsedModuleSettings, dataModuleNode) {
+    initModule(moduleName, parsedModuleSettings, dataModuleNode) {
 
         try {
 
@@ -120,7 +156,10 @@ export default class moduleDispatcher {
             * Select module by name from the Library
             *
             * @example
-            * module = codex[moduleName[i]];
+            * module = this.Library[moduleName];
+            *
+            * For this.Library
+            * See {@link moduleDispatcher constructor} and [constructor's obj @param]
             */
             let module = this.Library[moduleName];
 
@@ -131,9 +170,9 @@ export default class moduleDispatcher {
             * @param {HTMLElement} dataModuleNode — HTML element with data-module="" attribute
             * On which ModuleDispatcher is called
             */
-            if (parsedModuleSettings.length > 1) {
+            if (module.init instanceof Function) {
 
-                if (module.init) {
+                if (parsedModuleSettings.length > 1) {
 
                     for (let i = 0; i < parsedModuleSettings.length; i++) {
 
@@ -141,15 +180,11 @@ export default class moduleDispatcher {
 
                     }
 
-                }
+               /**
+                * Otherwise init a single module with parsed settings
+                */
 
-           /**
-            * Otherwise init a single module with parsed settings
-            */
-
-            } else {
-
-                if (module.init instanceof Function) {
+                } else {
 
                     module.init(parsedModuleSettings, dataModuleNode);
 

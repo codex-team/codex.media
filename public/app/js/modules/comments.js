@@ -26,11 +26,12 @@ module.exports = (function () {
     /**
      * Initialize comments
      * @param {object} data        params
-     * @param {sring} data.listId  comments list wrapper id
+     * @param {Object} dataModuleNode — HTML element with data-module="" attribute
+     * Passed from moduleDispatcher, comments list wrapper id
      */
-    function init(data) {
+    function init(data, moduleElement) {
 
-        commentsList = document.getElementById(data.listId);
+        commentsList = moduleElement;
 
         if (anchor) {
 

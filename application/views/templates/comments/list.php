@@ -7,7 +7,7 @@
     <module-settings>
         [
             {
-                "listId" : "commentsList"
+
             },
             {
                 "selector" : ".js-comment-settings",

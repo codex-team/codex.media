@@ -3,7 +3,7 @@
  */
 require('../css/main.css');
 
-const moduleDispatcher = require('./moduleDispatcher').default;
+import moduleDispatcher from './moduleDispatcher';
 
 /**
  * Document ready callback
