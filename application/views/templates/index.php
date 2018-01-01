@@ -31,11 +31,10 @@
 </div>
 
 <? if ($next_page): ?>
-    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/<?= $page_number + 1 ?>" data-module="appender">
+    <a class="button button--load-more island island--padded island--centered island--stretched" href="/<?= $page_number + 1 ?>" data-module="appender">
         Показать больше записей
         <module-settings>
             {
-                "buttonId" : "buttonLoadNews",
                 "currentPage" : "<?= $page_number ?>",
                 "url"          : "<?= $active_tab ? "/".$active_tab."/" : "/" ?>",
                 "targetBlockId" : "list_of_news",

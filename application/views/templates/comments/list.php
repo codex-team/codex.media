@@ -2,7 +2,7 @@
     $count = isset($page) ? count($page->comments) : '0'
 ?>
 
-<div class="comments-list" id="commentsList" data-count="<?= $count ?>" data-module="comments islandSettings">
+<div class="comments-list" data-count="<?= $count ?>" data-module="comments islandSettings">
 
     <module-settings>
         [

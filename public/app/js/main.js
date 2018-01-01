@@ -71,6 +71,10 @@ codex = function () {
 
     };
 
+   /**
+    * Function responsible for modules initialization
+    * Called no earlier than document is ready
+    */
     function initModules() {
 
        /**

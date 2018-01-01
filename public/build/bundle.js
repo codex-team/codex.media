@@ -143,6 +143,10 @@ codex = function () {
     });
   };
 
+  /**
+   * Function responsible for modules initialization
+   * Called no earlier than document is ready
+   */
   function initModules() {
 
     /**
@@ -257,14 +261,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var moduleDispatcher = function () {
     /**
-     * @param {object} Library
+     * @param {object} library — parent object
+     * Containing all modules we are going to init
      */
     function moduleDispatcher(obj) {
         _classCallCheck(this, moduleDispatcher);
 
         var settingsStyles = 'module-settings { display: none; }';
 
-        this.Library = obj;
+        this.library = obj;
 
         this.appendStyle(settingsStyles);
 
@@ -291,13 +296,16 @@ var moduleDispatcher = function () {
             } else {
 
                 styleTag.appendChild(document.createTextNode(settingsStyles));
-            };
+            }
 
             document.getElementsByTagName('head')[0].appendChild(styleTag);
         }
 
         /**
-         * @param {HTMLElement} element
+         * Searches for module settings in <data-module> tags
+         *
+         * @param {HTMLElement} element — starts to search inside specified element
+         * Or if this element is undefined, searches whole document for settings
          */
 
     }, {
@@ -338,24 +346,15 @@ var moduleDispatcher = function () {
              * dataModuleNode: <span data-module="islandSettings">
              * moduleName: islandSettings
              */
-
+            var moduleName = dataModuleNode.dataset.module;
             /**
-             * @type {Object} moduleSettings — contents of <module-settings> tag
-             */
-
+            * @type {Object} moduleSettings — contents of <module-settings> tag
+            */
+            var moduleSettings = void 0;
             /**
-             * @type {Object} parsedModuleSettings — JSON-parsed value of moduleSettings
-             */
-
-            /**
-             * @type {String} module — module from the Library selected by name
-             *
-             * @example
-             * module = codex[moduleName[i]];
-             */
-            var moduleName = dataModuleNode.dataset.module,
-                moduleSettings = void 0,
-                parsedModuleSettings = {};
+            * @type {Object} parsedModuleSettings — JSON-parsed value of moduleSettings
+            */
+            var parsedModuleSettings = {};
 
             try {
 
@@ -402,15 +401,15 @@ var moduleDispatcher = function () {
             try {
 
                 /**
-                 * Select module by name from the Library
+                 * Select module by name from the library
                  *
                  * @example
-                 * module = this.Library[moduleName];
+                 * module = this.library[moduleName];
                  *
-                 * For this.Library
+                 * For this.library
                  * See {@link moduleDispatcher constructor} and [constructor's obj @param]
                  */
-                var module = this.Library[moduleName];
+                var module = this.library[moduleName];
 
                 /**
                  * If we have multiple modules to init

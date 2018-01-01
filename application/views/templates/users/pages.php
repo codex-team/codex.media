@@ -9,10 +9,9 @@
 </div>
 
 <? if (isset($next_page) && $next_page): ?>
-    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/user/<?= $viewUser->id ?>/pages/<?= $page_number + 1 ?>" data-module="appender">
+    <a class="button button--load-more island island--padded island--centered island--stretched" href="/user/<?= $viewUser->id ?>/pages/<?= $page_number + 1 ?>" data-module="appender">
         <module-settings>
             {
-                "buttonId" : "buttonLoadNews",
                 "currentPage" : "<?= $page_number ?>",
                 "url"          : "<?= "/user/" . $viewUser->id . "/pages/" ?>",
                 "targetBlockId" : "list_of_news",
