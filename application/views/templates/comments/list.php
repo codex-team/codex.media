@@ -4,7 +4,7 @@
 
 <div class="comments-list" data-count="<?= $count ?>" data-module="comments islandSettings">
 
-    <module-settings>
+    <module-settings hidden>
         [
             {
 

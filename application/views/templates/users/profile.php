@@ -13,7 +13,7 @@
 
         <? if ($user->isAdmin): ?>
             <span class="island-settings js-user-settings" data-id="<?= $viewUser->id ?>" data-module="islandSettings">
-                <module-settings>
+                <module-settings hidden>
                     {
                         "selector" : ".js-user-settings",
                         "items" : [

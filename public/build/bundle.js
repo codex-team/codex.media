@@ -83,22 +83,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 __webpack_require__(2);
 
 /**
- * Document ready callback
- */
-var DOMContentLoaded = function DOMContentLoaded() {
-
-  /**
-   * Initiate modules
-   * @type {moduleDispatcher}
-   */
-  new _moduleDispatcher2.default({
-    Library: codex
-  });
-};
-
-document.addEventListener('DOMContentLoaded', DOMContentLoaded, false);
-
-/**
  * Codex client
  * @author Savchenko Peter <specc.dev@gmail.com>
  */
@@ -150,6 +134,14 @@ codex = function () {
    * Called no earlier than document is ready
    */
   function initModules() {
+
+    /**
+     * Initiate modules
+     * @type {moduleDispatcher}
+     */
+    new _moduleDispatcher2.default({
+      Library: codex
+    });
 
     /**
      * CodeX Special
@@ -258,7 +250,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  * let modules = new moduleDispatcher();
  *
- * modules.findAndInitModules ();
+ * modules.findAndInitModules();
  *
  */
 var moduleDispatcher = function () {
@@ -271,45 +263,17 @@ var moduleDispatcher = function () {
 
         this.Library = settings.Library || window;
 
-        this.appendStyle();
-
         this.findAndInitModules(document);
     }
 
     /**
-     * Hides settings tags <module-settings>
-     * @param {String} settingsStyles
+     * Searches for Module settings in <module-settings> tags
+     *
+     * @param {Object} element — starts to search Module settings inside element
      */
 
 
     _createClass(moduleDispatcher, [{
-        key: 'appendStyle',
-        value: function appendStyle() {
-
-            var settingsStyles = 'module-settings { display: none; }';
-
-            var styleTag = document.createElement('style');
-
-            styleTag.type = 'text/css';
-
-            if (styleTag.styleSheet) {
-
-                styleTag.styleSheet.cssText = settingsStyles;
-            } else {
-
-                styleTag.appendChild(document.createTextNode(settingsStyles));
-            }
-
-            document.getElementsByTagName('head')[0].appendChild(styleTag);
-        }
-
-        /**
-         * Searches for Module settings in <data-module> tags
-         *
-         * @param {Object} element — starts to search Module settings inside element
-         */
-
-    }, {
         key: 'findAndInitModules',
         value: function findAndInitModules(element) {
 
@@ -326,6 +290,21 @@ var moduleDispatcher = function () {
         /**
          * Get Module's name from data attributes
          * Call Module with settings that are defined below on <module-settings> tag
+         *
+         * Don't forget to add attribute 'hidden' to <module-settings>
+         *
+         * @example <module-settings hidden>
+         *           {
+         *               "selector" : ".js-comment-settings",
+         *               "items"    : [{
+         *                   "title" : "Удалить",
+         *                   "handler" : {
+         *                       "module": "comments",
+         *                       "method": "remove"
+         *                   }
+         *               }]
+         *           }
+         *        </module-settings>
          *
          * @param {object} dataModuleNode — HTML element with data-module="" attribute
          */

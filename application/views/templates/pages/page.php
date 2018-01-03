@@ -45,7 +45,7 @@
             <? if ($page->canModify($user)): ?>
 
                 <span class="island-settings js-page-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
-                    <module-settings>
+                    <module-settings hidden>
                     {
                         "selector" : ".js-page-settings",
                         "items"    : [{

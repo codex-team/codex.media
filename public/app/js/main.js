@@ -6,23 +6,6 @@ require('../css/main.css');
 import moduleDispatcher from './moduleDispatcher';
 
 /**
- * Document ready callback
- */
-let DOMContentLoaded = () => {
-
-  /**
-   * Initiate modules
-   * @type {moduleDispatcher}
-   */
-    new moduleDispatcher({
-        Library : codex
-    });
-
-};
-
-document.addEventListener('DOMContentLoaded', DOMContentLoaded, false);
-
-/**
  * Codex client
  * @author Savchenko Peter <specc.dev@gmail.com>
  */
@@ -78,6 +61,14 @@ codex = function () {
     * Called no earlier than document is ready
     */
     function initModules() {
+
+      /**
+       * Initiate modules
+       * @type {moduleDispatcher}
+       */
+        new moduleDispatcher({
+            Library : codex
+        });
 
        /**
         * CodeX Special

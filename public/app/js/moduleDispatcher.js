@@ -4,7 +4,7 @@
   *
   * let modules = new moduleDispatcher();
   *
-  * modules.findAndInitModules ();
+  * modules.findAndInitModules();
   *
   */
 export default class moduleDispatcher {
@@ -16,40 +16,12 @@ export default class moduleDispatcher {
 
         this.Library = settings.Library || window;
 
-        this.appendStyle();
-
         this.findAndInitModules(document);
 
     }
 
    /**
-    * Hides settings tags <module-settings>
-    * @param {String} settingsStyles
-    */
-    appendStyle() {
-
-        let settingsStyles = 'module-settings { display: none; }';
-
-        let styleTag = document.createElement('style');
-
-        styleTag.type = 'text/css';
-
-        if (styleTag.styleSheet) {
-
-            styleTag.styleSheet.cssText = settingsStyles;
-
-        } else {
-
-            styleTag.appendChild(document.createTextNode(settingsStyles));
-
-        }
-
-        document.getElementsByTagName('head')[0].appendChild(styleTag);
-
-    }
-
-   /**
-    * Searches for Module settings in <data-module> tags
+    * Searches for Module settings in <module-settings> tags
     *
     * @param {Object} element — starts to search Module settings inside element
     */
@@ -70,6 +42,21 @@ export default class moduleDispatcher {
    /**
     * Get Module's name from data attributes
     * Call Module with settings that are defined below on <module-settings> tag
+    *
+    * Don't forget to add attribute 'hidden' to <module-settings>
+    *
+    * @example <module-settings hidden>
+    *           {
+    *               "selector" : ".js-comment-settings",
+    *               "items"    : [{
+    *                   "title" : "Удалить",
+    *                   "handler" : {
+    *                       "module": "comments",
+    *                       "method": "remove"
+    *                   }
+    *               }]
+    *           }
+    *        </module-settings>
     *
     * @param {object} dataModuleNode — HTML element with data-module="" attribute
     */

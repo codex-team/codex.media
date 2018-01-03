@@ -10,7 +10,7 @@
 
 <? if (isset($next_page) && $next_page): ?>
     <a class="button button--load-more island island--padded island--centered island--stretched" href="/user/<?= $viewUser->id ?>/comments/<?= $page_number + 1 ?>" data-module="appender">
-        <module-settings>
+        <module-settings hidden>
             {
                 "currentPage" : "<?= $page_number ?>",
                 "url"          : "<?= "/user/" . $viewUser->id . "/comments/" ?>",

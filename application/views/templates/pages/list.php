@@ -11,7 +11,7 @@
             <div class="post-list-item__header">
                 <? if ($user->isAdmin || $user->id == $page->author->id): ?>
                     <span class="island-settings js-page-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
-                        <module-settings>
+                        <module-settings hidden>
                         {
                             "selector" : ".js-page-settings",
                             "items"    : [{
