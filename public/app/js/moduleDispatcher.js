@@ -4,23 +4,21 @@
   *
   * let modules = new moduleDispatcher();
   *
-  * modules.findModules();
+  * modules.findAndInitModules ();
   *
   */
 export default class moduleDispatcher {
    /**
-    * @param {object} library — parent object
-    * Containing all modules we are going to init
+    * @param {Object} settings — settings object
+    * @param {Object} settings.Library — Library, containing Modules to init
     */
-    constructor(obj) {
+    constructor(settings) {
 
-        let settingsStyles = 'module-settings { display: none; }';
+        this.Library = settings.Library || window;
 
-        this.library = obj;
+        this.appendStyle();
 
-        this.appendStyle(settingsStyles);
-
-        this.findModules();
+        this.findAndInitModules(document);
 
     }
 
@@ -28,7 +26,9 @@ export default class moduleDispatcher {
     * Hides settings tags <module-settings>
     * @param {String} settingsStyles
     */
-    appendStyle(settingsStyles) {
+    appendStyle() {
+
+        let settingsStyles = 'module-settings { display: none; }';
 
         let styleTag = document.createElement('style');
 
@@ -49,24 +49,15 @@ export default class moduleDispatcher {
     }
 
    /**
-    * Searches for module settings in <data-module> tags
+    * Searches for Module settings in <data-module> tags
     *
-    * @param {HTMLElement} element — starts to search inside specified element
-    * Or if this element is undefined, searches whole document for settings
+    * @param {Object} element — starts to search Module settings inside element
     */
-    findModules(element) {
+    findAndInitModules(element) {
 
         let modulesRequired;
 
-        if (element !== undefined) {
-
-            modulesRequired = element.querySelectorAll('[data-module]');
-
-        } else {
-
-            modulesRequired = document.querySelectorAll('[data-module]');
-
-        }
+        modulesRequired = element.querySelectorAll('[data-module]');
 
         for (let i = 0; i < modulesRequired.length; i++) {
 
@@ -77,15 +68,15 @@ export default class moduleDispatcher {
     }
 
    /**
-    * Get module's name from data attributes
-    * Call module with settings that are defined below on <module-settings> tag
+    * Get Module's name from data attributes
+    * Call Module with settings that are defined below on <module-settings> tag
     *
     * @param {object} dataModuleNode — HTML element with data-module="" attribute
     */
     initModules(dataModuleNode) {
 
        /**
-        * @type {String} moduleName — name of module to init
+        * @type {String} moduleName — name of Module to init
         *
         * @example
         * dataModuleNode: <span data-module="islandSettings">
@@ -139,49 +130,49 @@ export default class moduleDispatcher {
     };
 
     /**
-    * Calls init method of multiple modules
-    * If data-module="" has more than one module name
-    * And <module-settings> contains multiple settings values
-    */
+     * Calls init method of Module
+     */
     initModule(moduleName, parsedModuleSettings, dataModuleNode) {
 
         try {
 
            /**
-            * Select module by name from the library
+            * Select Module by name from the Library
             *
             * @example
-            * module = this.library[moduleName];
+            * Module = this.Library[moduleName];
             *
-            * For this.library
-            * See {@link moduleDispatcher constructor} and [constructor's obj @param]
+            * For this.Library
+            * See {@link moduleDispatcher#constructor}
             */
-            let module = this.library[moduleName];
+            let Module = this.Library[moduleName];
 
            /**
             * If we have multiple modules to init
             * With multiple parsed settings values
             *
-            * @param {HTMLElement} dataModuleNode — HTML element with data-module="" attribute
-            * On which ModuleDispatcher is called
+            * @param {HTMLElement} dataModuleNode — HTML element with data-module="" attribute,
+            *                                       on which ModuleDispatcher is called
             */
-            if (module.init instanceof Function) {
+            console.assert('ModuleDispatcher: Module «' + moduleName + '» should implement init method');
+
+            if (Module.init instanceof Function) {
 
                 if (parsedModuleSettings.length > 1) {
 
                     for (let i = 0; i < parsedModuleSettings.length; i++) {
 
-                        module.init(parsedModuleSettings[i], dataModuleNode);
+                        Module.init(parsedModuleSettings[i], dataModuleNode);
 
                     }
 
                /**
-                * Otherwise init a single module with parsed settings
+                * Otherwise init a single Module with parsed settings
                 */
 
                 } else {
 
-                    module.init(parsedModuleSettings, dataModuleNode);
+                    Module.init(parsedModuleSettings, dataModuleNode);
 
                 }
 
@@ -189,7 +180,7 @@ export default class moduleDispatcher {
 
         } catch(e) {
 
-            console.assert('ModuleDispatcher: module «' + moduleName + '» should implement init method');
+            console.log('ModuleDispatcher: Module «' + moduleName + '» was not initialized. ' + e);
 
         }
 

@@ -8,17 +8,19 @@ import moduleDispatcher from './moduleDispatcher';
 /**
  * Document ready callback
  */
-let documentReady = () => {
+let DOMContentLoaded = () => {
 
   /**
    * Initiate modules
    * @type {moduleDispatcher}
    */
-    new moduleDispatcher(codex);
+    new moduleDispatcher({
+        Library : codex
+    });
 
 };
 
-document.addEventListener('DOMContentLoaded', documentReady, false);
+document.addEventListener('DOMContentLoaded', DOMContentLoaded, false);
 
 /**
  * Codex client

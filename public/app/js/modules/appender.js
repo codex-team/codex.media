@@ -25,17 +25,17 @@ var appender = {
      * Button's text for saving it.
      * On its place dots will be while news are loading
      *
-     * @param {Object} dataModuleNode — HTML element with data-module="" attribute
-     * Passed from moduleDispatcher
+     * @param {Object} button — button loading more news,
+     *                          passed from moduleDispatcher
      */
     buttonText : null,
 
-    init : function (settings, dataModuleNode) {
+    init : function (settings, button) {
 
         this.settings = settings;
 
         /* Checking for existing button and field for loaded info */
-        this.loadMoreButton = dataModuleNode;
+        this.loadMoreButton = button;
 
         if (!this.loadMoreButton) return false;
 

@@ -85,16 +85,18 @@ __webpack_require__(2);
 /**
  * Document ready callback
  */
-var documentReady = function documentReady() {
+var DOMContentLoaded = function DOMContentLoaded() {
 
   /**
    * Initiate modules
    * @type {moduleDispatcher}
    */
-  new _moduleDispatcher2.default(codex);
+  new _moduleDispatcher2.default({
+    Library: codex
+  });
 };
 
-document.addEventListener('DOMContentLoaded', documentReady, false);
+document.addEventListener('DOMContentLoaded', DOMContentLoaded, false);
 
 /**
  * Codex client
@@ -256,24 +258,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  * let modules = new moduleDispatcher();
  *
- * modules.findModules();
+ * modules.findAndInitModules ();
  *
  */
 var moduleDispatcher = function () {
     /**
-     * @param {object} library — parent object
-     * Containing all modules we are going to init
+     * @param {Object} settings — settings object
+     * @param {Object} settings.Library — Library, containing Modules to init
      */
-    function moduleDispatcher(obj) {
+    function moduleDispatcher(settings) {
         _classCallCheck(this, moduleDispatcher);
 
-        var settingsStyles = 'module-settings { display: none; }';
+        this.Library = settings.Library || window;
 
-        this.library = obj;
+        this.appendStyle();
 
-        this.appendStyle(settingsStyles);
-
-        this.findModules();
+        this.findAndInitModules(document);
     }
 
     /**
@@ -284,7 +284,9 @@ var moduleDispatcher = function () {
 
     _createClass(moduleDispatcher, [{
         key: 'appendStyle',
-        value: function appendStyle(settingsStyles) {
+        value: function appendStyle() {
+
+            var settingsStyles = 'module-settings { display: none; }';
 
             var styleTag = document.createElement('style');
 
@@ -302,25 +304,18 @@ var moduleDispatcher = function () {
         }
 
         /**
-         * Searches for module settings in <data-module> tags
+         * Searches for Module settings in <data-module> tags
          *
-         * @param {HTMLElement} element — starts to search inside specified element
-         * Or if this element is undefined, searches whole document for settings
+         * @param {Object} element — starts to search Module settings inside element
          */
 
     }, {
-        key: 'findModules',
-        value: function findModules(element) {
+        key: 'findAndInitModules',
+        value: function findAndInitModules(element) {
 
             var modulesRequired = void 0;
 
-            if (element !== undefined) {
-
-                modulesRequired = element.querySelectorAll('[data-module]');
-            } else {
-
-                modulesRequired = document.querySelectorAll('[data-module]');
-            }
+            modulesRequired = element.querySelectorAll('[data-module]');
 
             for (var i = 0; i < modulesRequired.length; i++) {
 
@@ -329,8 +324,8 @@ var moduleDispatcher = function () {
         }
 
         /**
-         * Get module's name from data attributes
-         * Call module with settings that are defined below on <module-settings> tag
+         * Get Module's name from data attributes
+         * Call Module with settings that are defined below on <module-settings> tag
          *
          * @param {object} dataModuleNode — HTML element with data-module="" attribute
          */
@@ -340,7 +335,7 @@ var moduleDispatcher = function () {
         value: function initModules(dataModuleNode) {
 
             /**
-             * @type {String} moduleName — name of module to init
+             * @type {String} moduleName — name of Module to init
              *
              * @example
              * dataModuleNode: <span data-module="islandSettings">
@@ -392,52 +387,52 @@ var moduleDispatcher = function () {
 
 
         /**
-        * Calls init method of multiple modules
-        * If data-module="" has more than one module name
-        * And <module-settings> contains multiple settings values
-        */
+         * Calls init method of Module
+         */
         value: function initModule(moduleName, parsedModuleSettings, dataModuleNode) {
 
             try {
 
                 /**
-                 * Select module by name from the library
+                 * Select Module by name from the Library
                  *
                  * @example
-                 * module = this.library[moduleName];
+                 * Module = this.Library[moduleName];
                  *
-                 * For this.library
-                 * See {@link moduleDispatcher constructor} and [constructor's obj @param]
+                 * For this.Library
+                 * See {@link moduleDispatcher#constructor}
                  */
-                var module = this.library[moduleName];
+                var Module = this.Library[moduleName];
 
                 /**
                  * If we have multiple modules to init
                  * With multiple parsed settings values
                  *
-                 * @param {HTMLElement} dataModuleNode — HTML element with data-module="" attribute
-                 * On which ModuleDispatcher is called
+                 * @param {HTMLElement} dataModuleNode — HTML element with data-module="" attribute,
+                 *                                       on which ModuleDispatcher is called
                  */
-                if (module.init instanceof Function) {
+                console.assert('ModuleDispatcher: Module «' + moduleName + '» should implement init method');
+
+                if (Module.init instanceof Function) {
 
                     if (parsedModuleSettings.length > 1) {
 
                         for (var i = 0; i < parsedModuleSettings.length; i++) {
 
-                            module.init(parsedModuleSettings[i], dataModuleNode);
+                            Module.init(parsedModuleSettings[i], dataModuleNode);
                         }
 
                         /**
-                         * Otherwise init a single module with parsed settings
+                         * Otherwise init a single Module with parsed settings
                          */
                     } else {
 
-                        module.init(parsedModuleSettings, dataModuleNode);
+                        Module.init(parsedModuleSettings, dataModuleNode);
                     }
                 }
             } catch (e) {
 
-                console.assert('ModuleDispatcher: module «' + moduleName + '» should implement init method');
+                console.log('ModuleDispatcher: Module «' + moduleName + '» was not initialized. ' + e);
             }
         }
     }]);
@@ -1142,17 +1137,17 @@ var appender = {
      * Button's text for saving it.
      * On its place dots will be while news are loading
      *
-     * @param {Object} dataModuleNode — HTML element with data-module="" attribute
-     * Passed from moduleDispatcher
+     * @param {Object} button — button loading more news,
+     *                          passed from moduleDispatcher
      */
     buttonText: null,
 
-    init: function init(settings, dataModuleNode) {
+    init: function init(settings, button) {
 
         this.settings = settings;
 
         /* Checking for existing button and field for loaded info */
-        this.loadMoreButton = dataModuleNode;
+        this.loadMoreButton = button;
 
         if (!this.loadMoreButton) return false;
 
@@ -1392,13 +1387,13 @@ module.exports = function () {
 
     /**
      * Initialize comments
-     * @param {object} data        params
-     * @param {Object} dataModuleNode — HTML element with data-module="" attribute
-     * Passed from moduleDispatcher, comments list wrapper id
+     * @param {Object} data params
+     * @param {Object} list — list of comments,
+     *                        passed from moduleDispatcher
      */
-    function init(data, moduleElement) {
+    function init(data, list) {
 
-        commentsList = moduleElement;
+        commentsList = list;
 
         if (anchor) {
 

@@ -25,13 +25,13 @@ module.exports = (function () {
 
     /**
      * Initialize comments
-     * @param {object} data        params
-     * @param {Object} dataModuleNode — HTML element with data-module="" attribute
-     * Passed from moduleDispatcher, comments list wrapper id
+     * @param {Object} data params
+     * @param {Object} list — list of comments,
+     *                        passed from moduleDispatcher
      */
-    function init(data, moduleElement) {
+    function init(data, list) {
 
-        commentsList = moduleElement;
+        commentsList = list;
 
         if (anchor) {
 
