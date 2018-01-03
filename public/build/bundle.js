@@ -390,7 +390,7 @@ var moduleDispatcher = function () {
                  * @param {HTMLElement} dataModuleNode — HTML element with data-module="" attribute,
                  *                                       on which ModuleDispatcher is called
                  */
-                console.assert('ModuleDispatcher: Module «' + moduleName + '» should implement init method');
+                console.assert(Module.init instanceof Function, 'ModuleDispatcher: Module «' + moduleName + '» should implement init method');
 
                 if (Module.init instanceof Function) {
 
