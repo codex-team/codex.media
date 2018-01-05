@@ -2,13 +2,10 @@
     $count = isset($page) ? count($page->comments) : '0'
 ?>
 
-<div class="comments-list" data-count="<?= $count ?>" data-module="comments islandSettings">
+<div class="comments-list" data-count="<?= $count ?>" data-module="islandSettings comments">
 
     <module-settings hidden>
         [
-            {
-
-            },
             {
                 "selector" : ".js-comment-settings",
                 "items"    : [{
