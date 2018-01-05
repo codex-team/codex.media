@@ -75,7 +75,7 @@
                             "title" : "<?= $page->isPageOnMain() ? 'Убрать с главной' : 'На главную'; ?>",
                             "handler" : {
                                 "module": "pages",
-                                "method": "addToMenu"
+                                "method": "addToMain"
                             }
                         },
                         <? endif; ?>
