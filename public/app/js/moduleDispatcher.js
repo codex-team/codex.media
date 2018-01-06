@@ -33,11 +33,47 @@ export default class moduleDispatcher {
 
         for (let i = 0; i < modulesRequired.length; i++) {
 
-            let moduleIsUsed = false;
-
-            this.initModules(modulesRequired[i], moduleIsUsed);
+            this.initModules(modulesRequired[i]);
 
         }
+
+    }
+
+  /**
+    * Converts Array of Module names to Object with moduleIsUsed flags
+    * moduleIsUsed flags show whether Module was already inited or not
+    *
+    * @param {String} moduleName — name of Module to init, contents of data-module=""
+    */
+    moduleToObject(moduleName) {
+
+       /**
+        * @type {Boolean} moduleIsUsed - flag for whether Module was already inited or not
+        */
+        let moduleIsUsed = false;
+
+       /**
+        * Split contents of data-module="" into array
+        * Of one or more modules to init
+        */
+        moduleName = moduleName.split(' ');
+       /**
+        * Convert array of moduleNames to Object with moduleIsUsed flags
+        */
+        let moduleNameObj = [];
+
+        for (let i = 0; i < moduleName.length; i++) {
+
+            moduleNameObj[i] = {
+                'name' : moduleName[i],
+                'moduleIsUsed' : moduleIsUsed
+            };
+
+            moduleName[i] = moduleNameObj[i];
+
+        }
+
+        return moduleName;
 
     }
 
@@ -61,9 +97,8 @@ export default class moduleDispatcher {
     *        </module-settings>
     *
     * @param {object} dataModuleNode — HTML element with data-module="" attribute
-    * @param {Boolean} moduleIsUsed - flag for whether Module was already inited or not
     */
-    initModules(dataModuleNode, moduleIsUsed) {
+    initModules(dataModuleNode) {
 
        /**
         * @type {String} moduleName — name of Module to init
@@ -85,10 +120,10 @@ export default class moduleDispatcher {
         try {
 
            /**
-            * Split contents of data-module="" into array
-            * Of one or more modules to init
+            * Convert contents of data-module="" to Object with moduleIsUsed flags
+            * {@link moduleToObject}
             */
-            moduleName = moduleName.split(' ');
+            moduleName = this.moduleToObject(moduleName);
 
            /**
             * Find settings values in <module-settings> and parse them
@@ -101,25 +136,26 @@ export default class moduleDispatcher {
                 parsedModuleSettings = JSON.parse(moduleSettings);
 
             }
+
            /**
             * Call function to init multiple modules
             */
 
             for (let i = 0; i < moduleName.length; i++) {
 
-                if (!moduleIsUsed) {
+                if (!moduleName[i]['moduleIsUsed']) {
 
                     if (parsedModuleSettings instanceof Array) {
 
-                        this.initModule(moduleName[i], parsedModuleSettings[i], dataModuleNode, moduleIsUsed);
+                        this.initModule(moduleName[i]['name'], parsedModuleSettings[i], dataModuleNode);
 
                     } else {
 
-                        this.initModule(moduleName[i], parsedModuleSettings, dataModuleNode);
-
-                        moduleIsUsed = true;
+                        this.initModule(moduleName[i]['name'], parsedModuleSettings, dataModuleNode);
 
                     }
+
+                    moduleName[i]['moduleIsUsed'] = true;
 
                 }
 
@@ -135,10 +171,8 @@ export default class moduleDispatcher {
 
     /**
      * Calls init method of Module
-     *
-     * @param {Boolean} moduleIsUsed - flag for whether Module was already inited or not
      */
-    initModule(moduleName, parsedModuleSettings, dataModuleNode, moduleIsUsed) {
+    initModule(moduleName, parsedModuleSettings, dataModuleNode) {
 
         try {
 
@@ -163,8 +197,6 @@ export default class moduleDispatcher {
             console.assert(Module.init instanceof Function, 'ModuleDispatcher: Module «' + moduleName + '» should implement init method');
 
             if (Module.init instanceof Function) {
-
-                moduleIsUsed = true;
 
                 Module.init(parsedModuleSettings, dataModuleNode);
 

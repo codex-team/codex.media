@@ -283,10 +283,47 @@ var moduleDispatcher = function () {
 
             for (var i = 0; i < modulesRequired.length; i++) {
 
-                var moduleIsUsed = false;
-
-                this.initModules(modulesRequired[i], moduleIsUsed);
+                this.initModules(modulesRequired[i]);
             }
+        }
+
+        /**
+          * Converts Array of Module names to Object with moduleIsUsed flags
+          * moduleIsUsed flags show whether Module was already inited or not
+          *
+          * @param {String} moduleName — name of Module to init, contents of data-module=""
+          */
+
+    }, {
+        key: 'moduleToObject',
+        value: function moduleToObject(moduleName) {
+
+            /**
+             * @type {Boolean} moduleIsUsed - flag for whether Module was already inited or not
+             */
+            var moduleIsUsed = false;
+
+            /**
+             * Split contents of data-module="" into array
+             * Of one or more modules to init
+             */
+            moduleName = moduleName.split(' ');
+            /**
+             * Convert array of moduleNames to Object with moduleIsUsed flags
+             */
+            var moduleNameObj = [];
+
+            for (var i = 0; i < moduleName.length; i++) {
+
+                moduleNameObj[i] = {
+                    'name': moduleName[i],
+                    'moduleIsUsed': moduleIsUsed
+                };
+
+                moduleName[i] = moduleNameObj[i];
+            }
+
+            return moduleName;
         }
 
         /**
@@ -309,12 +346,11 @@ var moduleDispatcher = function () {
          *        </module-settings>
          *
          * @param {object} dataModuleNode — HTML element with data-module="" attribute
-         * @param {Boolean} moduleIsUsed - flag for whether Module was already inited or not
          */
 
     }, {
         key: 'initModules',
-        value: function initModules(dataModuleNode, moduleIsUsed) {
+        value: function initModules(dataModuleNode) {
 
             /**
              * @type {String} moduleName — name of Module to init
@@ -336,10 +372,10 @@ var moduleDispatcher = function () {
             try {
 
                 /**
-                 * Split contents of data-module="" into array
-                 * Of one or more modules to init
+                 * Convert contents of data-module="" to Object with moduleIsUsed flags
+                 * {@link moduleToObject}
                  */
-                moduleName = moduleName.split(' ');
+                moduleName = this.moduleToObject(moduleName);
 
                 /**
                  * Find settings values in <module-settings> and parse them
@@ -351,23 +387,24 @@ var moduleDispatcher = function () {
                     moduleSettings = moduleSettings.textContent.trim();
                     parsedModuleSettings = JSON.parse(moduleSettings);
                 }
+
                 /**
                  * Call function to init multiple modules
                  */
 
                 for (var i = 0; i < moduleName.length; i++) {
 
-                    if (!moduleIsUsed) {
+                    if (!moduleName[i]['moduleIsUsed']) {
 
                         if (parsedModuleSettings instanceof Array) {
 
-                            this.initModule(moduleName[i], parsedModuleSettings[i], dataModuleNode, moduleIsUsed);
+                            this.initModule(moduleName[i]['name'], parsedModuleSettings[i], dataModuleNode);
                         } else {
 
-                            this.initModule(moduleName[i], parsedModuleSettings, dataModuleNode);
-
-                            moduleIsUsed = true;
+                            this.initModule(moduleName[i]['name'], parsedModuleSettings, dataModuleNode);
                         }
+
+                        moduleName[i]['moduleIsUsed'] = true;
                     }
                 }
             } catch (e) {
@@ -381,10 +418,8 @@ var moduleDispatcher = function () {
 
         /**
          * Calls init method of Module
-         *
-         * @param {Boolean} moduleIsUsed - flag for whether Module was already inited or not
          */
-        value: function initModule(moduleName, parsedModuleSettings, dataModuleNode, moduleIsUsed) {
+        value: function initModule(moduleName, parsedModuleSettings, dataModuleNode) {
 
             try {
 
@@ -409,8 +444,6 @@ var moduleDispatcher = function () {
                 console.assert(Module.init instanceof Function, 'ModuleDispatcher: Module «' + moduleName + '» should implement init method');
 
                 if (Module.init instanceof Function) {
-
-                    moduleIsUsed = true;
 
                     Module.init(parsedModuleSettings, dataModuleNode);
                 }
