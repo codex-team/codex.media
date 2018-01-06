@@ -288,45 +288,6 @@ var moduleDispatcher = function () {
         }
 
         /**
-          * Converts Array of Module names to Object with moduleIsUsed flags
-          * moduleIsUsed flags show whether Module was already inited or not
-          *
-          * @param {String} moduleName — name of Module to init, contents of data-module=""
-          */
-
-    }, {
-        key: 'moduleToObject',
-        value: function moduleToObject(moduleName) {
-
-            /**
-             * @type {Boolean} moduleIsUsed - flag for whether Module was already inited or not
-             */
-            var moduleIsUsed = false;
-
-            /**
-             * Split contents of data-module="" into array
-             * Of one or more modules to init
-             */
-            moduleName = moduleName.split(' ');
-            /**
-             * Convert array of moduleNames to Object with moduleIsUsed flags
-             */
-            var moduleNameObj = [];
-
-            for (var i = 0; i < moduleName.length; i++) {
-
-                moduleNameObj[i] = {
-                    'name': moduleName[i],
-                    'moduleIsUsed': moduleIsUsed
-                };
-
-                moduleName[i] = moduleNameObj[i];
-            }
-
-            return moduleName;
-        }
-
-        /**
          * Get Module's name from data attributes
          * Call Module with settings that are defined below on <module-settings> tag
          *
@@ -361,21 +322,25 @@ var moduleDispatcher = function () {
              */
             var moduleName = dataModuleNode.dataset.module;
             /**
-            * @type {Object} moduleSettings — contents of <module-settings> tag
-            */
+             * @type {Object} moduleSettings — contents of <module-settings> tag
+             */
             var moduleSettings = void 0;
             /**
-            * @type {Object} parsedModuleSettings — JSON-parsed value of moduleSettings
-            */
+             * @type {Object} parsedModuleSettings — JSON-parsed value of moduleSettings
+             */
             var parsedModuleSettings = [];
+            /**
+             * @type {Boolean} settingsUsedAlready — flag for whether Module was already inited or not
+             */
+            var settingsUsedAlready = false;
 
             try {
 
                 /**
-                 * Convert contents of data-module="" to Object with moduleIsUsed flags
-                 * {@link moduleToObject}
+                 * Split contents of data-module="" into array
+                 * Of one or more modules to init
                  */
-                moduleName = this.moduleToObject(moduleName);
+                moduleName = moduleName.split(' ');
 
                 /**
                  * Find settings values in <module-settings> and parse them
@@ -387,24 +352,19 @@ var moduleDispatcher = function () {
                     moduleSettings = moduleSettings.textContent.trim();
                     parsedModuleSettings = JSON.parse(moduleSettings);
                 }
-
                 /**
                  * Call function to init multiple modules
                  */
 
                 for (var i = 0; i < moduleName.length; i++) {
 
-                    if (!moduleName[i]['moduleIsUsed']) {
+                    if (parsedModuleSettings instanceof Array) {
 
-                        if (parsedModuleSettings instanceof Array) {
+                        this.initModule(moduleName[i], parsedModuleSettings[i], dataModuleNode);
+                    } else if (!settingsUsedAlready) {
 
-                            this.initModule(moduleName[i]['name'], parsedModuleSettings[i], dataModuleNode);
-                        } else {
-
-                            this.initModule(moduleName[i]['name'], parsedModuleSettings, dataModuleNode);
-                        }
-
-                        moduleName[i]['moduleIsUsed'] = true;
+                        this.initModule(moduleName[i], parsedModuleSettings, dataModuleNode);
+                        settingsUsedAlready = true;
                     }
                 }
             } catch (e) {

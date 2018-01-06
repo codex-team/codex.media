@@ -39,44 +39,6 @@ export default class moduleDispatcher {
 
     }
 
-  /**
-    * Converts Array of Module names to Object with moduleIsUsed flags
-    * moduleIsUsed flags show whether Module was already inited or not
-    *
-    * @param {String} moduleName — name of Module to init, contents of data-module=""
-    */
-    moduleToObject(moduleName) {
-
-       /**
-        * @type {Boolean} moduleIsUsed - flag for whether Module was already inited or not
-        */
-        let moduleIsUsed = false;
-
-       /**
-        * Split contents of data-module="" into array
-        * Of one or more modules to init
-        */
-        moduleName = moduleName.split(' ');
-       /**
-        * Convert array of moduleNames to Object with moduleIsUsed flags
-        */
-        let moduleNameObj = [];
-
-        for (let i = 0; i < moduleName.length; i++) {
-
-            moduleNameObj[i] = {
-                'name' : moduleName[i],
-                'moduleIsUsed' : moduleIsUsed
-            };
-
-            moduleName[i] = moduleNameObj[i];
-
-        }
-
-        return moduleName;
-
-    }
-
    /**
     * Get Module's name from data attributes
     * Call Module with settings that are defined below on <module-settings> tag
@@ -108,22 +70,26 @@ export default class moduleDispatcher {
         * moduleName: islandSettings
         */
         let moduleName = dataModuleNode.dataset.module;
-        /**
+       /**
         * @type {Object} moduleSettings — contents of <module-settings> tag
         */
         let moduleSettings;
-        /**
+       /**
         * @type {Object} parsedModuleSettings — JSON-parsed value of moduleSettings
         */
         let parsedModuleSettings = [];
+       /**
+        * @type {Boolean} settingsUsedAlready — flag for whether Module was already inited or not
+        */
+        let settingsUsedAlready = false;
 
         try {
 
            /**
-            * Convert contents of data-module="" to Object with moduleIsUsed flags
-            * {@link moduleToObject}
+            * Split contents of data-module="" into array
+            * Of one or more modules to init
             */
-            moduleName = this.moduleToObject(moduleName);
+            moduleName = moduleName.split(' ');
 
            /**
             * Find settings values in <module-settings> and parse them
@@ -136,26 +102,20 @@ export default class moduleDispatcher {
                 parsedModuleSettings = JSON.parse(moduleSettings);
 
             }
-
            /**
             * Call function to init multiple modules
             */
 
             for (let i = 0; i < moduleName.length; i++) {
 
-                if (!moduleName[i]['moduleIsUsed']) {
+                if (parsedModuleSettings instanceof Array) {
 
-                    if (parsedModuleSettings instanceof Array) {
+                    this.initModule(moduleName[i], parsedModuleSettings[i], dataModuleNode);
 
-                        this.initModule(moduleName[i]['name'], parsedModuleSettings[i], dataModuleNode);
+                } else if (!settingsUsedAlready) {
 
-                    } else {
-
-                        this.initModule(moduleName[i]['name'], parsedModuleSettings, dataModuleNode);
-
-                    }
-
-                    moduleName[i]['moduleIsUsed'] = true;
+                    this.initModule(moduleName[i], parsedModuleSettings, dataModuleNode);
+                    settingsUsedAlready = true;
 
                 }
 
