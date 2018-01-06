@@ -283,7 +283,9 @@ var moduleDispatcher = function () {
 
             for (var i = 0; i < modulesRequired.length; i++) {
 
-                this.initModules(modulesRequired[i]);
+                var moduleIsUsed = false;
+
+                this.initModules(modulesRequired[i], moduleIsUsed);
             }
         }
 
@@ -307,11 +309,12 @@ var moduleDispatcher = function () {
          *        </module-settings>
          *
          * @param {object} dataModuleNode — HTML element with data-module="" attribute
+         * @param {Boolean} moduleIsUsed - flag for whether Module was already inited or not
          */
 
     }, {
         key: 'initModules',
-        value: function initModules(dataModuleNode) {
+        value: function initModules(dataModuleNode, moduleIsUsed) {
 
             /**
              * @type {String} moduleName — name of Module to init
@@ -328,7 +331,7 @@ var moduleDispatcher = function () {
             /**
             * @type {Object} parsedModuleSettings — JSON-parsed value of moduleSettings
             */
-            var parsedModuleSettings = {};
+            var parsedModuleSettings = [];
 
             try {
 
@@ -348,13 +351,24 @@ var moduleDispatcher = function () {
                     moduleSettings = moduleSettings.textContent.trim();
                     parsedModuleSettings = JSON.parse(moduleSettings);
                 }
-
                 /**
                  * Call function to init multiple modules
                  */
+
                 for (var i = 0; i < moduleName.length; i++) {
 
-                    this.initModule(moduleName[i], parsedModuleSettings, dataModuleNode);
+                    if (!moduleIsUsed) {
+
+                        if (parsedModuleSettings instanceof Array) {
+
+                            this.initModule(moduleName[i], parsedModuleSettings[i], dataModuleNode, moduleIsUsed);
+                        } else {
+
+                            this.initModule(moduleName[i], parsedModuleSettings, dataModuleNode);
+
+                            moduleIsUsed = true;
+                        }
+                    }
                 }
             } catch (e) {
 
@@ -367,8 +381,10 @@ var moduleDispatcher = function () {
 
         /**
          * Calls init method of Module
+         *
+         * @param {Boolean} moduleIsUsed - flag for whether Module was already inited or not
          */
-        value: function initModule(moduleName, parsedModuleSettings, dataModuleNode) {
+        value: function initModule(moduleName, parsedModuleSettings, dataModuleNode, moduleIsUsed) {
 
             try {
 
@@ -394,20 +410,9 @@ var moduleDispatcher = function () {
 
                 if (Module.init instanceof Function) {
 
-                    if (parsedModuleSettings.length > 1) {
+                    moduleIsUsed = true;
 
-                        for (var i = 0; i < parsedModuleSettings.length; i++) {
-
-                            Module.init(parsedModuleSettings[i], dataModuleNode);
-                        }
-
-                        /**
-                         * Otherwise init a single Module with parsed settings
-                         */
-                    } else {
-
-                        Module.init(parsedModuleSettings, dataModuleNode);
-                    }
+                    Module.init(parsedModuleSettings, dataModuleNode);
                 }
             } catch (e) {
 

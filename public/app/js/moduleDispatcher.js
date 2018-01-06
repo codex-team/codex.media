@@ -33,7 +33,9 @@ export default class moduleDispatcher {
 
         for (let i = 0; i < modulesRequired.length; i++) {
 
-            this.initModules(modulesRequired[i]);
+            let moduleIsUsed = false;
+
+            this.initModules(modulesRequired[i], moduleIsUsed);
 
         }
 
@@ -59,8 +61,9 @@ export default class moduleDispatcher {
     *        </module-settings>
     *
     * @param {object} dataModuleNode — HTML element with data-module="" attribute
+    * @param {Boolean} moduleIsUsed - flag for whether Module was already inited or not
     */
-    initModules(dataModuleNode) {
+    initModules(dataModuleNode, moduleIsUsed) {
 
        /**
         * @type {String} moduleName — name of Module to init
@@ -77,7 +80,7 @@ export default class moduleDispatcher {
         /**
         * @type {Object} parsedModuleSettings — JSON-parsed value of moduleSettings
         */
-        let parsedModuleSettings = {};
+        let parsedModuleSettings = [];
 
         try {
 
@@ -98,13 +101,27 @@ export default class moduleDispatcher {
                 parsedModuleSettings = JSON.parse(moduleSettings);
 
             }
-
            /**
             * Call function to init multiple modules
             */
+
             for (let i = 0; i < moduleName.length; i++) {
 
-                this.initModule(moduleName[i], parsedModuleSettings, dataModuleNode);
+                if (!moduleIsUsed) {
+
+                    if (parsedModuleSettings instanceof Array) {
+
+                        this.initModule(moduleName[i], parsedModuleSettings[i], dataModuleNode, moduleIsUsed);
+
+                    } else {
+
+                        this.initModule(moduleName[i], parsedModuleSettings, dataModuleNode);
+
+                        moduleIsUsed = true;
+
+                    }
+
+                }
 
             }
 
@@ -118,8 +135,10 @@ export default class moduleDispatcher {
 
     /**
      * Calls init method of Module
+     *
+     * @param {Boolean} moduleIsUsed - flag for whether Module was already inited or not
      */
-    initModule(moduleName, parsedModuleSettings, dataModuleNode) {
+    initModule(moduleName, parsedModuleSettings, dataModuleNode, moduleIsUsed) {
 
         try {
 
@@ -145,23 +164,9 @@ export default class moduleDispatcher {
 
             if (Module.init instanceof Function) {
 
-                if (parsedModuleSettings.length > 1) {
+                moduleIsUsed = true;
 
-                    for (let i = 0; i < parsedModuleSettings.length; i++) {
-
-                        Module.init(parsedModuleSettings[i], dataModuleNode);
-
-                    }
-
-               /**
-                * Otherwise init a single Module with parsed settings
-                */
-
-                } else {
-
-                    Module.init(parsedModuleSettings, dataModuleNode);
-
-                }
+                Module.init(parsedModuleSettings, dataModuleNode);
 
             }
 
