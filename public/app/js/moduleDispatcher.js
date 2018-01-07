@@ -4,7 +4,7 @@
   *
   * let modules = new moduleDispatcher();
   *
-  * modules.findAndInitModules();
+  * modules.findModules();
   *
   */
 export default class moduleDispatcher {
@@ -16,7 +16,7 @@ export default class moduleDispatcher {
 
         this.Library = settings.Library || window;
 
-        this.findAndInitModules(document);
+        this.findModules(document);
 
     }
 
@@ -25,7 +25,7 @@ export default class moduleDispatcher {
     *
     * @param {Object} element — starts to search Module settings inside element
     */
-    findAndInitModules(element) {
+    findModules(element) {
 
         let modulesRequired;
 
@@ -33,7 +33,7 @@ export default class moduleDispatcher {
 
         for (let i = 0; i < modulesRequired.length; i++) {
 
-            this.initModules(modulesRequired[i]);
+            this.prepareModuleSettings(modulesRequired[i]);
 
         }
 
@@ -60,7 +60,7 @@ export default class moduleDispatcher {
     *
     * @param {object} dataModuleNode — HTML element with data-module="" attribute
     */
-    initModules(dataModuleNode) {
+    prepareModuleSettings(dataModuleNode) {
 
        /**
         * @type {String} moduleName — name of Module to init

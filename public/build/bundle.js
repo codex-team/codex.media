@@ -250,7 +250,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  * let modules = new moduleDispatcher();
  *
- * modules.findAndInitModules();
+ * modules.findModules();
  *
  */
 var moduleDispatcher = function () {
@@ -263,7 +263,7 @@ var moduleDispatcher = function () {
 
         this.Library = settings.Library || window;
 
-        this.findAndInitModules(document);
+        this.findModules(document);
     }
 
     /**
@@ -274,8 +274,8 @@ var moduleDispatcher = function () {
 
 
     _createClass(moduleDispatcher, [{
-        key: 'findAndInitModules',
-        value: function findAndInitModules(element) {
+        key: 'findModules',
+        value: function findModules(element) {
 
             var modulesRequired = void 0;
 
@@ -283,7 +283,7 @@ var moduleDispatcher = function () {
 
             for (var i = 0; i < modulesRequired.length; i++) {
 
-                this.initModules(modulesRequired[i]);
+                this.prepareModuleSettings(modulesRequired[i]);
             }
         }
 
@@ -310,8 +310,8 @@ var moduleDispatcher = function () {
          */
 
     }, {
-        key: 'initModules',
-        value: function initModules(dataModuleNode) {
+        key: 'prepareModuleSettings',
+        value: function prepareModuleSettings(dataModuleNode) {
 
             /**
              * @type {String} moduleName — name of Module to init
