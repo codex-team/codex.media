@@ -242,34 +242,130 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Initiate modules
- * @type {moduleDispatcher}
+ * Module Dispatcher
+ * ...
  *
- * let modules = new moduleDispatcher();
+ * @copyright CodeX Team
+ * @license [url] [description]
+ * @author @polinashneider
  *
- * modules.findModules();
+ * @version 1.0.0
+ *
+
  *
  */
+
+/*
+* Module object structure:
+*
+* @typedef {Module} Module
+* @property {String} name          - Module's name
+* @property {Element} element      - DOM Element with data-module
+* @property {Object|null} settings - Module settings got from <module-settings>
+* @property {Object} moduleClass   - JS class that handles the Module
+*/
+
+var Module = function () {
+    function Module(_ref) {
+        var name = _ref.name,
+            element = _ref.element,
+            settings = _ref.settings,
+            moduleClass = _ref.moduleClass;
+
+        _classCallCheck(this, Module);
+
+        this.name = name;
+        this.element = element;
+        this.settings = settings;
+        this.moduleClass = moduleClass;
+    }
+
+    /**
+     * Initialize each Module by calling its own «init» method
+     */
+
+
+    _createClass(Module, [{
+        key: 'init',
+        value: function init() {
+
+            try {
+
+                console.assert(this.moduleClass.init instanceof Function, 'ModuleDispatcher: Module «' + this.name + '» should implement init method');
+
+                if (this.moduleClass.init instanceof Function) {
+
+                    this.moduleClass.init(this.settings, this.element);
+                    console.log('Module \xAB' + this.name + '\xBB initialized');
+                }
+            } catch (e) {
+
+                console.warn('Module «' + this.name + '» was not initialized because of ', e);
+            }
+        }
+
+        /**
+         * Destroy each Module by calling its own «destroy» method, if it exists
+         * It is optional
+         */
+
+    }, {
+        key: 'destroy',
+        value: function destroy() {
+
+            if (this.moduleClass.destroy instanceof Function) {
+
+                this.moduleClass.destroy();
+                console.log('Module \xAB' + this.name + '\xBB destroyed.');
+            }
+        }
+    }]);
+
+    return Module;
+}();
+
+/*
+ * Class structure
+ *
+ * @typedef {moduleDispatcher} moduleDispatcher
+ * @property {Object} Library    - global object, containing Modules to init
+ * @property {Module[]} modules  - list of Modules
+*/
+
+
 var moduleDispatcher = function () {
+
     /**
      * @param {Object} settings — settings object
-     * @param {Object} settings.Library — Library, containing Modules to init
      */
     function moduleDispatcher(settings) {
         _classCallCheck(this, moduleDispatcher);
 
         this.Library = settings.Library || window;
 
-        this.findModules(document);
+        /**
+         * Found modules list
+         * @type {Module[]}
+         */
+        this.modules = this.findModules(document);
+
+        /**
+         * Now we are ready to init Modules
+         */
+        this.initModules();
     }
 
     /**
-     * Searches for Module settings in <module-settings> tags
+     * Return all modules in the passed Element
      *
-     * @param {Object} element — starts to search Module settings inside element
+     * @param {Object} element — where to find modules
+     *
+     * @return {Module[]} found modules list
      */
 
 
@@ -277,140 +373,171 @@ var moduleDispatcher = function () {
         key: 'findModules',
         value: function findModules(element) {
 
-            var modulesRequired = void 0;
+            /**
+             * Store found modules
+             * @type {Module[]}
+             */
+            var modules = [];
 
-            modulesRequired = element.querySelectorAll('[data-module]');
+            /**
+             * Elements with data-module
+             * @type {NodeList}
+             */
+            var elements = element.querySelectorAll('[data-module]');
 
-            for (var i = 0; i < modulesRequired.length; i++) {
+            /**
+             * Iterate found Elements and push them to the Modules list
+             */
+            for (var i = elements.length - 1; i >= 0; i--) {
 
-                this.prepareModuleSettings(modulesRequired[i]);
+                /**
+                 * One Element can contain several Modules
+                 * @type {Array}
+                 */
+                modules.push.apply(modules, _toConsumableArray(this.extractModulesData(elements[i])));
             }
+
+            return modules;
         }
 
         /**
-         * Get Module's name from data attributes
-         * Call Module with settings that are defined below on <module-settings> tag
-         *
-         * Don't forget to add attribute 'hidden' to <module-settings>
-         *
-         * @example <module-settings hidden>
-         *           {
-         *               "selector" : ".js-comment-settings",
-         *               "items"    : [{
-         *                   "title" : "Удалить",
-         *                   "handler" : {
-         *                       "module": "comments",
-         *                       "method": "remove"
-         *                   }
-         *               }]
-         *           }
-         *        </module-settings>
-         *
-         * @param {object} dataModuleNode — HTML element with data-module="" attribute
+         * Get all modules from an Element
+         * @example <div data-module="comments likes">
+         * @type {Module[]}
          */
 
     }, {
-        key: 'prepareModuleSettings',
-        value: function prepareModuleSettings(dataModuleNode) {
+        key: 'extractModulesData',
+        value: function extractModulesData(element) {
+            var _this = this;
+
+            var modules = [];
+            /**
+             * Get value of data-module attribute
+             */
+            var modulesList = element.dataset.module;
 
             /**
-             * @type {String} moduleName — name of Module to init
+             * One Element can contain several modules
+             * @example <div data-module="comments likes">
+             * @type {Array}
+             */
+            var moduleNames = modulesList.split(' ');
+
+            moduleNames.forEach(function (name, index) {
+
+                var module = new Module({
+                    name: name,
+                    element: element,
+                    settings: _this.getModuleSettings(element, index, name),
+                    moduleClass: _this.Library[name]
+                });
+
+                modules.push(module);
+            });
+
+            return modules;
+        }
+
+        /**
+        * Returns Settings for the Module
+        *
+        * @param {object} element — HTML element with data-module attribute
+        * @param {Number} index   - index of module (in case if an Element countains several modules)
+        * @param {String} name    - Module's name
+        */
+
+    }, {
+        key: 'getModuleSettings',
+        value: function getModuleSettings(element, index, name) {
+
+            var settingsNodes = element.querySelector('module-settings'),
+                settingsObject = void 0;
+
+            if (!settingsNodes) {
+
+                return null;
+            }
+
+            try {
+
+                settingsObject = settingsNodes.textContent.trim();
+                settingsObject = JSON.parse(settingsObject);
+            } catch (e) {
+
+                console.warn('Can not parse Module \xAB' + name + '\xBB settings bacause of: ' + e);
+                console.groupCollapsed(name + ' settings');
+                console.log(settingsObject);
+                console.groupEnd();
+
+                return null;
+            }
+
+            /**
+             * Case 1:
              *
-             * @example
-             * dataModuleNode: <span data-module="islandSettings">
-             * moduleName: islandSettings
+             * Single module, settings via object
+             *
+             * <module-settings>
+             *     {
+             *         // Comments Module settings
+             *     }
+             * </module-settings>
              */
-            var moduleName = dataModuleNode.dataset.module;
-            /**
-             * @type {Object} moduleSettings — contents of <module-settings> tag
-             */
-            var moduleSettings = void 0;
-            /**
-             * @type {Object} parsedModuleSettings — JSON-parsed value of moduleSettings
-             */
-            var parsedModuleSettings = [];
-            /**
-             * @type {Boolean} settingsUsedAlready — flag for whether Module was already inited or not
-             */
-            var settingsUsedAlready = false;
+            if (!Array.isArray(settingsObject)) {
 
-            try {
+                if (index === 0) {
 
-                /**
-                 * Split contents of data-module="" into array
-                 * Of one or more modules to init
-                 */
-                moduleName = moduleName.split(' ');
+                    return settingsObject;
+                } else {
 
-                /**
-                 * Find settings values in <module-settings> and parse them
-                 */
-                moduleSettings = dataModuleNode.querySelector('module-settings');
-
-                if (moduleSettings) {
-
-                    moduleSettings = moduleSettings.textContent.trim();
-                    parsedModuleSettings = JSON.parse(moduleSettings);
+                    console.warn('Wrong settings format. For several Modules use an array instead of object.');
+                    return null;
                 }
-                /**
-                 * Call function to init multiple modules
-                 */
+            }
 
-                for (var i = 0; i < moduleName.length; i++) {
+            /**
+             * Case 2:
+             *
+             * Several modules, settings via array
+             *
+             * <module-settings>
+             *   [
+             *     {
+             *         // Module 1 settings
+             *     },
+             *     {
+             *         // Module 2 settings
+             *     },
+             *     ...
+             *   ]
+             * </module-settings>
+             */
+            if (settingsObject[index]) {
 
-                    if (parsedModuleSettings instanceof Array) {
+                return settingsObject[index];
+            } else {
 
-                        this.initModule(moduleName[i], parsedModuleSettings[i], dataModuleNode);
-                    } else if (!settingsUsedAlready) {
-
-                        this.initModule(moduleName[i], parsedModuleSettings, dataModuleNode);
-                        settingsUsedAlready = true;
-                    }
-                }
-            } catch (e) {
-
-                console.warn('ModuleDispatcher error: ', e);
+                return null;
             }
         }
-    }, {
-        key: 'initModule',
-
 
         /**
-         * Calls init method of Module
+         * Initializes a list of Modules via calling {@link Module#init} for each
          */
-        value: function initModule(moduleName, parsedModuleSettings, dataModuleNode) {
 
-            try {
+    }, {
+        key: 'initModules',
+        value: function initModules() {
 
-                /**
-                 * Select Module by name from the Library
-                 *
-                 * @example
-                 * Module = this.Library[moduleName];
-                 *
-                 * For this.Library
-                 * See {@link moduleDispatcher#constructor}
-                 */
-                var Module = this.Library[moduleName];
+            console.groupCollapsed('ModuleDispatcher');
 
-                /**
-                 * If we have multiple modules to init
-                 * With multiple parsed settings values
-                 *
-                 * @param {HTMLElement} dataModuleNode — HTML element with data-module="" attribute,
-                 *                                       on which ModuleDispatcher is called
-                 */
-                console.assert(Module.init instanceof Function, 'ModuleDispatcher: Module «' + moduleName + '» should implement init method');
+            this.modules.forEach(function (module) {
 
-                if (Module.init instanceof Function) {
+                module.init();
+            });
 
-                    Module.init(parsedModuleSettings, dataModuleNode);
-                }
-            } catch (e) {
-
-                console.log('ModuleDispatcher: Module «' + moduleName + '» was not initialized. ' + e);
-            }
+            console.groupEnd();
         }
     }]);
 

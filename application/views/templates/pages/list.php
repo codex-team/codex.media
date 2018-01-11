@@ -12,51 +12,51 @@
                 <? if ($user->isAdmin || $user->id == $page->author->id): ?>
                     <span class="island-settings js-page-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
                         <module-settings hidden>
-                        {
-                            "selector" : ".js-page-settings",
-                            "items"    : [{
-                                "title" : "Редактировать",
-                                "handler" : {
-                                    "module": "pages",
-                                    "method": "openWriting"
-                                }
-                            }, 
                             {
-                                "title" : "Вложенная страница",
-                                "handler" : {
-                                    "module": "pages",
-                                    "method": "newChild"
-                                }
-
-                            },
-                            <? if ($user->isAdmin): ?>
-                                {
-                                    "title" : "Установить обложку",
+                                "selector" : ".js-page-settings",
+                                "items"    : [{
+                                    "title" : "Редактировать",
                                     "handler" : {
                                         "module": "pages",
-                                        "method": "cover",
-                                        "submethod": "toggleButton"
+                                        "method": "openWriting"
                                     }
+                                }, 
+                                {
+                                    "title" : "Вложенная страница",
+                                    "handler" : {
+                                        "module": "pages",
+                                        "method": "newChild"
+                                    }
+
                                 },
-                                <? if ($active_tab == Model_Feed_Pages::MAIN): ?>
+                                <? if ($user->isAdmin): ?>
                                     {
-                                        "title" : "Закрепить",
+                                        "title" : "Установить обложку",
                                         "handler" : {
                                             "module": "pages",
-                                            "method": "pin",
-                                            "submethod" : "toggle"
+                                            "method": "cover",
+                                            "submethod": "toggleButton"
                                         }
                                     },
+                                    <? if ($active_tab == Model_Feed_Pages::MAIN): ?>
+                                        {
+                                            "title" : "Закрепить",
+                                            "handler" : {
+                                                "module": "pages",
+                                                "method": "pin",
+                                                "submethod" : "toggle"
+                                            }
+                                        },
+                                    <? endif; ?>
                                 <? endif; ?>
-                            <? endif; ?>
-                            {
-                                "title" : "Удалить",
-                                "handler" : {
-                                    "module": "pages",
-                                    "method": "remove"
-                                }
-                            }]
-                        }
+                                {
+                                    "title" : "Удалить",
+                                    "handler" : {
+                                        "module": "pages",
+                                        "method": "remove"
+                                    }
+                                }]
+                            }
                         </module-settings>
                         <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
                     </span>

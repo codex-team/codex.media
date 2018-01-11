@@ -46,47 +46,47 @@
 
                 <span class="island-settings js-page-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
                     <module-settings hidden>
-                    {
-                        "selector" : ".js-page-settings",
-                        "items"    : [{
-                            "title" : "Редактировать",
-                            "handler" : {
-                                "module": "pages",
-                                "method": "openWriting"
-                            }
-                        }, 
                         {
-                            "title" : "Вложенная страница",
-                            "handler" : {
-                                "module": "pages",
-                                "method": "newChild"
-                            }
+                            "selector" : ".js-page-settings",
+                            "items"    : [{
+                                "title" : "Редактировать",
+                                "handler" : {
+                                    "module": "pages",
+                                    "method": "openWriting"
+                                }
+                            }, 
+                            {
+                                "title" : "Вложенная страница",
+                                "handler" : {
+                                    "module": "pages",
+                                    "method": "newChild"
+                                }
 
-                        },
-                        <? if ($user->isAdmin()): ?>
-                        {
-                            "title" : "<?= $page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню'; ?>",
-                            "handler" : {
-                                "module": "pages",
-                                "method": "addToMenu"
-                            }
-                        },
-                        {
-                            "title" : "<?= $page->isPageOnMain() ? 'Убрать с главной' : 'На главную'; ?>",
-                            "handler" : {
-                                "module": "pages",
-                                "method": "addToMain"
-                            }
-                        },
-                        <? endif; ?>
-                        {
-                            "title" : "Удалить",
-                            "handler" : {
-                                "module": "pages",
-                                "method": "remove"
-                            }
-                        }]
-                    }
+                            },
+                            <? if ($user->isAdmin()): ?>
+                                {
+                                    "title" : "<?= $page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню'; ?>",
+                                    "handler" : {
+                                        "module": "pages",
+                                        "method": "addToMenu"
+                                    }
+                                },
+                                {
+                                    "title" : "<?= $page->isPageOnMain() ? 'Убрать с главной' : 'На главную'; ?>",
+                                    "handler" : {
+                                        "module": "pages",
+                                        "method": "addToMain"
+                                    }
+                                },
+                            <? endif; ?>
+                            {
+                                "title" : "Удалить",
+                                "handler" : {
+                                    "module": "pages",
+                                    "method": "remove"
+                                }
+                            }]
+                        }
                     </module-settings>
                     <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
                 </span>
