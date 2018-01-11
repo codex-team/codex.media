@@ -1,6 +1,6 @@
 /**
  * Module Dispatcher
- * ...
+ * Class for Modules' initialization via calling their «init» methods
  *
  * @copyright CodeX Team
  * @license [url] [description]
@@ -8,19 +8,24 @@
  *
  * @version 1.0.0
  *
-
+ * @example
  *
+ * @param {Object|null} Library — global object containing Modules
+ *
+ * new moduleDispatcher({
+ *   Library : codex
+ * });
  */
 
 /*
-* Module object structure:
-*
-* @typedef {Module} Module
-* @property {String} name          - Module's name
-* @property {Element} element      - DOM Element with data-module
-* @property {Object|null} settings - Module settings got from <module-settings>
-* @property {Object} moduleClass   - JS class that handles the Module
-*/
+ * Module object structure:
+ *
+ * @typedef {Module} Module
+ * @property {String} name          - Module's name
+ * @property {Element} element      - DOM Element with data-module
+ * @property {Object|null} settings - Module settings got from <module-settings>
+ * @property {Object} moduleClass   - JS class that handles the Module
+ */
 
 class Module {
     constructor({name, element, settings, moduleClass}) {
