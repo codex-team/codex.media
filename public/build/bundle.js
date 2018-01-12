@@ -368,7 +368,6 @@ var moduleDispatcher = function () {
      * Return all modules inside the passed Element
      *
      * @param {Element} element — where to find modules
-     *
      * @return {Module[]} found modules list
      */
 
@@ -408,9 +407,6 @@ var moduleDispatcher = function () {
          * Get all modules from an Element
          *
          * @example <div data-module="comments likes">
-         *
-         * @type {Module[]}
-         *
          * @return {Module[]} - Array of Module objects with settings
          */
 
@@ -424,7 +420,6 @@ var moduleDispatcher = function () {
              * Get value of data-module attribute
              */
             var modulesList = element.dataset.module;
-
             /**
              * In case of multiple spaces in modulesList replace with single ones
              */
@@ -464,9 +459,7 @@ var moduleDispatcher = function () {
          *
          * <module-settings hidden>
          *     {
-         *       "currentPage" : "<?= $page_number ?>",
-         *       "targetBlockId" : "list_of_news",
-         *       "autoLoading": "true"
+         *         // your module's settings
          *     }
          * </module-settings>
          *
