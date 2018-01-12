@@ -1,23 +1,21 @@
 /**
  * Module Dispatcher
- * Class for Modules' initialization via calling their «init» methods
+ * Class for Modules initialization
  *
  * @copyright CodeX Team
- * @license [url] [description]
+ * @license MIT/GPL
  * @author @polinashneider
  *
  * @version 1.0.0
  *
  * @example
  *
- * @param {Object|null} Library — global object containing Modules
- *
  * new moduleDispatcher({
  *   Library : codex
  * });
  */
 
-/*
+/**
  * Module object structure:
  *
  * @typedef {Module} Module
@@ -44,7 +42,7 @@ class Module {
 
         try {
 
-            console.assert(this.moduleClass.init instanceof Function, 'ModuleDispatcher: Module «' + this.name + '» should implement init method');
+            console.assert(this.moduleClass.init instanceof Function, 'Module «' + this.name + '» should implement init method');
 
 
             if (this.moduleClass.init instanceof Function) {
@@ -80,7 +78,7 @@ class Module {
 
 
 
-/*
+/**
  * Class structure
  *
  * @typedef {moduleDispatcher} moduleDispatcher
@@ -90,7 +88,8 @@ class Module {
 export default class moduleDispatcher {
 
     /**
-     * @param {Object} settings — settings object
+     * @param {Object|null} settings — settings object, optional
+     * @param {Object} settings.Library — global object containing Modules
      */
     constructor(settings) {
 
@@ -110,9 +109,9 @@ export default class moduleDispatcher {
     }
 
    /**
-    * Return all modules in the passed Element
+    * Return all modules inside the passed Element
     *
-    * @param {Object} element — where to find modules
+    * @param {Element} element — where to find modules
     *
     * @return {Module[]} found modules list
     */
@@ -149,8 +148,12 @@ export default class moduleDispatcher {
 
     /**
      * Get all modules from an Element
+     *
      * @example <div data-module="comments likes">
+     *
      * @type {Module[]}
+     *
+     * @return {Module[]} - Array of Module objects with settings
      */
     extractModulesData(element) {
 
@@ -159,6 +162,12 @@ export default class moduleDispatcher {
          * Get value of data-module attribute
          */
         let modulesList = element.dataset.module;
+
+        /**
+         * In case of multiple spaces in modulesList replace with single ones
+         */
+
+        modulesList = modulesList.replace(/\s+/, ' ');
 
         /**
          * One Element can contain several modules
@@ -184,12 +193,23 @@ export default class moduleDispatcher {
 
     }
 
-    /**
+   /**
     * Returns Settings for the Module
     *
     * @param {object} element — HTML element with data-module attribute
     * @param {Number} index   - index of module (in case if an Element countains several modules)
     * @param {String} name    - Module's name
+    *
+    * @example
+    *
+    * <module-settings hidden>
+    *     {
+    *       "currentPage" : "<?= $page_number ?>",
+    *       "targetBlockId" : "list_of_news",
+    *       "autoLoading": "true"
+    *     }
+    * </module-settings>
+    *
     */
     getModuleSettings(element, index, name) {
 
