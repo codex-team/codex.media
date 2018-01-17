@@ -61,7 +61,7 @@ var codex =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,7 +71,37 @@ var codex =
 "use strict";
 
 
-var _moduleDispatcher = __webpack_require__(1);
+module.exports = function (module) {
+	if (!module.webpackPolyfill) {
+		module.deprecate = function () {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if (!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function get() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function get() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _moduleDispatcher = __webpack_require__(2);
 
 var _moduleDispatcher2 = _interopRequireDefault(_moduleDispatcher);
 
@@ -80,7 +110,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * Require CSS build
  */
-__webpack_require__(2);
+__webpack_require__(3);
+
+/**
+ * Import Dispatcher for Frontend Modules initialization
+ */
+
 
 /**
  * Codex client
@@ -136,7 +171,7 @@ codex = function () {
   function initModules() {
 
     /**
-     * Initiate modules
+     * Instantiate moduleDispatcher to init Modules
      * @type {moduleDispatcher}
      */
     new _moduleDispatcher2.default({
@@ -206,373 +241,139 @@ codex.docReady = function (f) {
 /**
  * Load modules
  */
-codex.core = __webpack_require__(3);
-codex.ajax = __webpack_require__(4);
-codex.transport = __webpack_require__(5);
-codex.content = __webpack_require__(6);
-codex.appender = __webpack_require__(7);
-codex.parser = __webpack_require__(8);
-codex.comments = __webpack_require__(9);
-codex.alerts = __webpack_require__(10);
-codex.islandSettings = __webpack_require__(12);
-codex.autoresizeTextarea = __webpack_require__(13);
-codex.user = __webpack_require__(14);
-codex.sharer = __webpack_require__(15);
-codex.writing = __webpack_require__(16);
-codex.loader = __webpack_require__(19);
-codex.scrollUp = __webpack_require__(20);
-codex.branding = __webpack_require__(21);
-codex.pages = __webpack_require__(22);
-codex.checkboxes = __webpack_require__(25);
-codex.logo = __webpack_require__(26);
-codex.special = __webpack_require__(27);
+codex.core = __webpack_require__(4);
+codex.ajax = __webpack_require__(5);
+codex.transport = __webpack_require__(6);
+codex.content = __webpack_require__(7);
+codex.appender = __webpack_require__(8);
+codex.parser = __webpack_require__(9);
+codex.comments = __webpack_require__(10);
+codex.alerts = __webpack_require__(11);
+codex.islandSettings = __webpack_require__(13);
+codex.autoresizeTextarea = __webpack_require__(14);
+codex.user = __webpack_require__(15);
+codex.sharer = __webpack_require__(16);
+codex.writing = __webpack_require__(17);
+codex.loader = __webpack_require__(20);
+codex.scrollUp = __webpack_require__(21);
+codex.branding = __webpack_require__(22);
+codex.pages = __webpack_require__(23);
+codex.checkboxes = __webpack_require__(26);
+codex.logo = __webpack_require__(27);
+codex.special = __webpack_require__(28);
 
 module.exports = codex;
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
+/*!
+ * CodeX Module Dispatcher — Initialize frontend Modules from the DOM without inline scripts
+ * 
+ * @copyright CodeX Team <team@ifmo.su>
+ * @license MIT https://github.com/codex-team/dispatcher/LICENSE
+ * @author @polinashneider https://github.com/polinashneider
+ * @version 0.0.1
+ */
+!function (e, t) {
+  "object" == ( false ? "undefined" : _typeof(exports)) && "object" == ( false ? "undefined" : _typeof(module)) ? module.exports = t() :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (t),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : "object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) ? exports.moduleDispatcher = t() : e.moduleDispatcher = t();
+}("undefined" != typeof self ? self : undefined, function () {
+  return function (e) {
+    function t(o) {
+      if (n[o]) return n[o].exports;var r = n[o] = { i: o, l: !1, exports: {} };return e[o].call(r.exports, r, r.exports, t), r.l = !0, r.exports;
+    }var n = {};return t.m = e, t.c = n, t.d = function (e, n, o) {
+      t.o(e, n) || Object.defineProperty(e, n, { configurable: !1, enumerable: !0, get: o });
+    }, t.n = function (e) {
+      var n = e && e.__esModule ? function () {
+        return e.default;
+      } : function () {
+        return e;
+      };return t.d(n, "a", n), n;
+    }, t.o = function (e, t) {
+      return Object.prototype.hasOwnProperty.call(e, t);
+    }, t.p = "", t(t.s = 0);
+  }([function (e, t, n) {
+    "use strict";
+    function o(e) {
+      if (Array.isArray(e)) {
+        for (var t = 0, n = Array(e.length); t < e.length; t++) {
+          n[t] = e[t];
+        }return n;
+      }return Array.from(e);
+    }function r(e, t) {
+      if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
+    }Object.defineProperty(t, "__esModule", { value: !0 });var s = function () {
+      function e(e, t) {
+        for (var n = 0; n < t.length; n++) {
+          var o = t[n];o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, o.key, o);
+        }
+      }return function (t, n, o) {
+        return n && e(t.prototype, n), o && e(t, o), t;
+      };
+    }(),
+        i = function () {
+      function e(t) {
+        var n = t.name,
+            o = t.element,
+            s = t.settings,
+            i = t.moduleClass;r(this, e), this.name = n, this.element = o, this.settings = s, this.moduleClass = i;
+      }return s(e, [{ key: "init", value: function value() {
+          try {
+            console.assert(this.moduleClass.init instanceof Function, "Module «" + this.name + "» should implement init method"), this.moduleClass.init instanceof Function && (this.moduleClass.init(this.settings, this.element), console.log("Module «" + this.name + "» initialized"));
+          } catch (e) {
+            console.warn("Module «" + this.name + "» was not initialized because of ", e);
+          }
+        } }, { key: "destroy", value: function value() {
+          this.moduleClass.destroy instanceof Function && (this.moduleClass.destroy(), console.log("Module «" + this.name + "» destroyed."));
+        } }]), e;
+    }(),
+        u = function () {
+      function e(t) {
+        r(this, e), this.Library = t.Library || window, this.modules = this.findModules(document), this.initModules();
+      }return s(e, [{ key: "findModules", value: function value(e) {
+          for (var t = [], n = e.querySelectorAll("[data-module]"), r = n.length - 1; r >= 0; r--) {
+            t.push.apply(t, o(this.extractModulesData(n[r])));
+          }return t;
+        } }, { key: "extractModulesData", value: function value(e) {
+          var t = this,
+              n = [],
+              o = e.dataset.module;return o = o.replace(/\s+/, " "), o.split(" ").forEach(function (o, r) {
+            var s = new i({ name: o, element: e, settings: t.getModuleSettings(e, r, o), moduleClass: t.Library[o] });n.push(s);
+          }), n;
+        } }, { key: "getModuleSettings", value: function value(e, t, n) {
+          var o = e.querySelector("module-settings"),
+              r = void 0;if (!o) return null;try {
+            r = o.textContent.trim(), r = JSON.parse(r);
+          } catch (e) {
+            return console.warn("Can not parse Module «" + n + "» settings bacause of: " + e), console.groupCollapsed(n + " settings"), console.log(r), console.groupEnd(), null;
+          }return Array.isArray(r) ? r[t] ? r[t] : null : 0 === t ? r : (console.warn("Wrong settings format. For several Modules use an array instead of object."), null);
+        } }, { key: "initModules", value: function value() {
+          console.groupCollapsed("ModuleDispatcher"), this.modules.forEach(function (e) {
+            e.init();
+          }), console.groupEnd();
+        } }]), e;
+    }();t.default = u;
+  }]);
 });
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Module Dispatcher
- * Class for Modules initialization
- *
- * @copyright CodeX Team
- * @license MIT/GPL
- * @author @polinashneider
- *
- * @version 1.0.0
- *
- * @example
- *
- * new moduleDispatcher({
- *   Library : codex
- * });
- */
-
-/**
- * Module object structure:
- *
- * @typedef {Module} Module
- * @property {String} name          - Module's name
- * @property {Element} element      - DOM Element with data-module
- * @property {Object|null} settings - Module settings got from <module-settings>
- * @property {Object} moduleClass   - JS class that handles the Module
- */
-
-var Module = function () {
-    function Module(_ref) {
-        var name = _ref.name,
-            element = _ref.element,
-            settings = _ref.settings,
-            moduleClass = _ref.moduleClass;
-
-        _classCallCheck(this, Module);
-
-        this.name = name;
-        this.element = element;
-        this.settings = settings;
-        this.moduleClass = moduleClass;
-    }
-
-    /**
-     * Initialize each Module by calling its own «init» method
-     */
-
-
-    _createClass(Module, [{
-        key: 'init',
-        value: function init() {
-
-            try {
-
-                console.assert(this.moduleClass.init instanceof Function, 'Module «' + this.name + '» should implement init method');
-
-                if (this.moduleClass.init instanceof Function) {
-
-                    this.moduleClass.init(this.settings, this.element);
-                    console.log('Module \xAB' + this.name + '\xBB initialized');
-                }
-            } catch (e) {
-
-                console.warn('Module «' + this.name + '» was not initialized because of ', e);
-            }
-        }
-
-        /**
-         * Destroy each Module by calling its own «destroy» method, if it exists
-         * It is optional
-         */
-
-    }, {
-        key: 'destroy',
-        value: function destroy() {
-
-            if (this.moduleClass.destroy instanceof Function) {
-
-                this.moduleClass.destroy();
-                console.log('Module \xAB' + this.name + '\xBB destroyed.');
-            }
-        }
-    }]);
-
-    return Module;
-}();
-
-/**
- * Class structure
- *
- * @typedef {moduleDispatcher} moduleDispatcher
- * @property {Object} Library    - global object, containing Modules to init
- * @property {Module[]} modules  - list of Modules
-*/
-
-
-var moduleDispatcher = function () {
-
-    /**
-     * @param {Object|null} settings — settings object, optional
-     * @param {Object} settings.Library — global object containing Modules
-     */
-    function moduleDispatcher(settings) {
-        _classCallCheck(this, moduleDispatcher);
-
-        this.Library = settings.Library || window;
-
-        /**
-         * Found modules list
-         * @type {Module[]}
-         */
-        this.modules = this.findModules(document);
-
-        /**
-         * Now we are ready to init Modules
-         */
-        this.initModules();
-    }
-
-    /**
-     * Return all modules inside the passed Element
-     *
-     * @param {Element} element — where to find modules
-     * @return {Module[]} found modules list
-     */
-
-
-    _createClass(moduleDispatcher, [{
-        key: 'findModules',
-        value: function findModules(element) {
-
-            /**
-             * Store found modules
-             * @type {Module[]}
-             */
-            var modules = [];
-
-            /**
-             * Elements with data-module
-             * @type {NodeList}
-             */
-            var elements = element.querySelectorAll('[data-module]');
-
-            /**
-             * Iterate found Elements and push them to the Modules list
-             */
-            for (var i = elements.length - 1; i >= 0; i--) {
-
-                /**
-                 * One Element can contain several Modules
-                 * @type {Array}
-                 */
-                modules.push.apply(modules, _toConsumableArray(this.extractModulesData(elements[i])));
-            }
-
-            return modules;
-        }
-
-        /**
-         * Get all modules from an Element
-         *
-         * @example <div data-module="comments likes">
-         * @return {Module[]} - Array of Module objects with settings
-         */
-
-    }, {
-        key: 'extractModulesData',
-        value: function extractModulesData(element) {
-            var _this = this;
-
-            var modules = [];
-            /**
-             * Get value of data-module attribute
-             */
-            var modulesList = element.dataset.module;
-            /**
-             * In case of multiple spaces in modulesList replace with single ones
-             */
-
-            modulesList = modulesList.replace(/\s+/, ' ');
-
-            /**
-             * One Element can contain several modules
-             * @example <div data-module="comments likes">
-             * @type {Array}
-             */
-            var moduleNames = modulesList.split(' ');
-
-            moduleNames.forEach(function (name, index) {
-
-                var module = new Module({
-                    name: name,
-                    element: element,
-                    settings: _this.getModuleSettings(element, index, name),
-                    moduleClass: _this.Library[name]
-                });
-
-                modules.push(module);
-            });
-
-            return modules;
-        }
-
-        /**
-         * Returns Settings for the Module
-         *
-         * @param {object} element — HTML element with data-module attribute
-         * @param {Number} index   - index of module (in case if an Element countains several modules)
-         * @param {String} name    - Module's name
-         *
-         * @example
-         *
-         * <module-settings hidden>
-         *     {
-         *         // your module's settings
-         *     }
-         * </module-settings>
-         *
-         */
-
-    }, {
-        key: 'getModuleSettings',
-        value: function getModuleSettings(element, index, name) {
-
-            var settingsNodes = element.querySelector('module-settings'),
-                settingsObject = void 0;
-
-            if (!settingsNodes) {
-
-                return null;
-            }
-
-            try {
-
-                settingsObject = settingsNodes.textContent.trim();
-                settingsObject = JSON.parse(settingsObject);
-            } catch (e) {
-
-                console.warn('Can not parse Module \xAB' + name + '\xBB settings bacause of: ' + e);
-                console.groupCollapsed(name + ' settings');
-                console.log(settingsObject);
-                console.groupEnd();
-
-                return null;
-            }
-
-            /**
-             * Case 1:
-             *
-             * Single module, settings via object
-             *
-             * <module-settings>
-             *     {
-             *         // Comments Module settings
-             *     }
-             * </module-settings>
-             */
-            if (!Array.isArray(settingsObject)) {
-
-                if (index === 0) {
-
-                    return settingsObject;
-                } else {
-
-                    console.warn('Wrong settings format. For several Modules use an array instead of object.');
-                    return null;
-                }
-            }
-
-            /**
-             * Case 2:
-             *
-             * Several modules, settings via array
-             *
-             * <module-settings>
-             *   [
-             *     {
-             *         // Module 1 settings
-             *     },
-             *     {
-             *         // Module 2 settings
-             *     },
-             *     ...
-             *   ]
-             * </module-settings>
-             */
-            if (settingsObject[index]) {
-
-                return settingsObject[index];
-            } else {
-
-                return null;
-            }
-        }
-
-        /**
-         * Initializes a list of Modules via calling {@link Module#init} for each
-         */
-
-    }, {
-        key: 'initModules',
-        value: function initModules() {
-
-            console.groupCollapsed('ModuleDispatcher');
-
-            this.modules.forEach(function (module) {
-
-                module.init();
-            });
-
-            console.groupEnd();
-        }
-    }]);
-
-    return moduleDispatcher;
-}();
-
-exports.default = moduleDispatcher;
-;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)(module)))
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -871,7 +672,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -955,7 +756,7 @@ var ajax = function () {
 module.exports = ajax;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1083,7 +884,7 @@ module.exports = function (transport) {
 }({});
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1226,7 +1027,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1402,7 +1203,7 @@ var appender = {
 module.exports = appender;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1476,7 +1277,7 @@ var parser = {
 module.exports = parser;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1825,7 +1626,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1836,7 +1637,7 @@ module.exports = function () {
 */
 module.exports = function () {
 
-    __webpack_require__(11);
+    __webpack_require__(12);
 
     var CSS_ = {
         wrapper: 'cdx-notifies-wrapper',
@@ -1908,13 +1709,13 @@ module.exports = function () {
 }({});
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2217,7 +2018,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2284,7 +2085,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2845,7 +2646,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2963,7 +2764,7 @@ var sharer = {
 module.exports = sharer;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2991,13 +2792,13 @@ module.exports = function () {
      * CodeX Editor Personality-tool
      * @see  https://github.com/codex-editor/personality
      */
-    var personalityTool = __webpack_require__(17);
+    var personalityTool = __webpack_require__(18);
 
     /**
      * CodeX Editor link embed tool
      * @see  https://github.com/codex-editor/link
      */
-    var linkTool = __webpack_require__(18);
+    var linkTool = __webpack_require__(19);
 
     var editorIsReady = false,
         submitButton = null,
@@ -3398,7 +3199,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3945,7 +3746,7 @@ var cdxEditorPersonality =
 module.exports = cdxEditorPersonality;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4104,7 +3905,7 @@ var cdxEditorLink = function (e) {
 module.exports = cdxEditorLink;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4198,7 +3999,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4343,7 +4144,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4469,7 +4270,7 @@ module.exports = function () {
 }({});
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4483,12 +4284,12 @@ module.exports = function () {
     /**
      * Page cover module
      */
-    var cover = __webpack_require__(23);
+    var cover = __webpack_require__(24);
 
     /**
      * Page pin module
      */
-    var pin = __webpack_require__(24);
+    var pin = __webpack_require__(25);
 
     /**
      * Saves current clicked item in page drop-down menu
@@ -4694,7 +4495,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4915,7 +4716,7 @@ module.exports = function (cover) {
 }({});
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4981,7 +4782,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5118,7 +4919,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5177,7 +4978,7 @@ module.exports = function () {
 }();
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5284,37 +5085,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }]);
 });
 //# sourceMappingURL=codex-special.min.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)(module)))
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function () {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function get() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function get() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)(module)))
 
 /***/ })
 /******/ ]);

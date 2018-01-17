@@ -3,7 +3,10 @@
  */
 require('../css/main.css');
 
-import moduleDispatcher from './moduleDispatcher';
+/**
+ * Import Dispatcher for Frontend Modules initialization
+ */
+import moduleDispatcher from 'module-dispatcher';
 
 /**
  * Codex client
@@ -63,7 +66,7 @@ codex = function () {
     function initModules() {
 
       /**
-       * Initiate modules
+       * Instantiate moduleDispatcher to init Modules
        * @type {moduleDispatcher}
        */
         new moduleDispatcher({
