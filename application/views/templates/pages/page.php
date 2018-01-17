@@ -48,11 +48,11 @@
                     <module-settings hidden>
                         {
                             "selector" : ".js-page-settings",
-                            "items"    : [{
+                            "items" : [{
                                 "title" : "Редактировать",
                                 "handler" : {
-                                    "module": "pages",
-                                    "method": "openWriting"
+                                    "module" : "pages",
+                                    "method" : "openWriting"
                                 }
                             }, 
                             {
@@ -67,23 +67,23 @@
                                 {
                                     "title" : "<?= $page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню'; ?>",
                                     "handler" : {
-                                        "module": "pages",
-                                        "method": "addToMenu"
+                                        "module" : "pages",
+                                        "method" : "addToMenu"
                                     }
                                 },
                                 {
                                     "title" : "<?= $page->isPageOnMain() ? 'Убрать с главной' : 'На главную'; ?>",
                                     "handler" : {
-                                        "module": "pages",
-                                        "method": "addToMain"
+                                        "module" : "pages",
+                                        "method" : "addToMain"
                                     }
                                 },
                             <? endif; ?>
                             {
                                 "title" : "Удалить",
                                 "handler" : {
-                                    "module": "pages",
-                                    "method": "remove"
+                                    "module" : "pages",
+                                    "method" : "remove"
                                 }
                             }]
                         }

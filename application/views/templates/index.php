@@ -36,10 +36,10 @@
         <module-settings hidden>
             {
                 "currentPage" : "<?= $page_number ?>",
-                "url"          : "<?= $active_tab ? "/".$active_tab."/" : "/" ?>",
+                "url" : "<?= $active_tab ? "/".$active_tab."/" : "/" ?>",
                 "targetBlockId" : "list_of_news",
-                "autoLoading": "true",
-                "dontWaitFirstClick": "true"
+                "autoLoading" : "true",
+                "dontWaitFirstClick" : "true"
             }
         </module-settings>
     </a>

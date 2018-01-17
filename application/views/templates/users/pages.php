@@ -13,10 +13,10 @@
         <module-settings hidden>
             {
                 "currentPage" : "<?= $page_number ?>",
-                "url"          : "<?= "/user/" . $viewUser->id . "/pages/" ?>",
+                "url" : "<?= "/user/" . $viewUser->id . "/pages/" ?>",
                 "targetBlockId" : "list_of_news",
                 "autoLoading": "true",
-                "dontWaitFirstClick": "true"
+                "dontWaitFirstClick" : "true"
             }
         </module-settings>
         Показать больше записей

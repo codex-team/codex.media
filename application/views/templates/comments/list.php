@@ -8,11 +8,11 @@
         [
             {
                 "selector" : ".js-comment-settings",
-                "items"    : [{
+                "items" : [{
                     "title" : "Удалить",
                     "handler" : {
-                        "module": "comments",
-                        "method": "remove"
+                        "module" : "comments",
+                        "method" : "remove"
                     }
                 }]
             }

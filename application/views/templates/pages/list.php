@@ -14,18 +14,18 @@
                         <module-settings hidden>
                             {
                                 "selector" : ".js-page-settings",
-                                "items"    : [{
+                                "items" : [{
                                     "title" : "Редактировать",
                                     "handler" : {
-                                        "module": "pages",
-                                        "method": "openWriting"
+                                        "module" : "pages",
+                                        "method" : "openWriting"
                                     }
                                 }, 
                                 {
                                     "title" : "Вложенная страница",
                                     "handler" : {
-                                        "module": "pages",
-                                        "method": "newChild"
+                                        "module" : "pages",
+                                        "method" : "newChild"
                                     }
 
                                 },
@@ -33,17 +33,17 @@
                                     {
                                         "title" : "Установить обложку",
                                         "handler" : {
-                                            "module": "pages",
-                                            "method": "cover",
-                                            "submethod": "toggleButton"
+                                            "module" : "pages",
+                                            "method" : "cover",
+                                            "submethod" : "toggleButton"
                                         }
                                     },
                                     <? if ($active_tab == Model_Feed_Pages::MAIN): ?>
                                         {
                                             "title" : "Закрепить",
                                             "handler" : {
-                                                "module": "pages",
-                                                "method": "pin",
+                                                "module" : "pages",
+                                                "method" : "pin",
                                                 "submethod" : "toggle"
                                             }
                                         },
@@ -52,8 +52,8 @@
                                 {
                                     "title" : "Удалить",
                                     "handler" : {
-                                        "module": "pages",
-                                        "method": "remove"
+                                        "module" : "pages",
+                                        "method" : "remove"
                                     }
                                 }]
                             }

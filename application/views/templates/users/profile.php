@@ -20,9 +20,9 @@
                             {
                                 "title" : "<?= $viewUser->isBanned ? "Разблокировать" : "Заблокировать" ?>",
                                 "handler" : {
-                                    "module": "user",
-                                    "method": "promote",
-                                    "submethod": "status" 
+                                    "module" : "user",
+                                    "method" : "promote",
+                                    "submethod" : "status" 
                                 },
                                 "arguments" : {
                                     "value" : <?= $viewUser->isBanned ? 0 : 1; ?>
@@ -31,9 +31,9 @@
                             {
                                 "title" : "<?= !$viewUser->isTeacher ? "Сделать преподавателем" : "Не преподаватель" ?>",
                                 "handler" : {
-                                    "module": "user",
-                                    "method": "promote",
-                                    "submethod": "role" 
+                                    "module" : "user",
+                                    "method" : "promote",
+                                    "submethod" : "role" 
                                 },
                                 "arguments" : {
                                     "value" : <?= !$viewUser->isTeacher ? Model_User::TEACHER : Model_User::REGISTERED; ?>

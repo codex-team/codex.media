@@ -13,9 +13,9 @@
         <module-settings hidden>
             {
                 "currentPage" : "<?= $page_number ?>",
-                "url"          : "<?= "/user/" . $viewUser->id . "/comments/" ?>",
+                "url" : "<?= "/user/" . $viewUser->id . "/comments/" ?>",
                 "targetBlockId" : "list_of_comments",
-                "autoLoading": "true"
+                "autoLoading" : "true"
             }
         </module-settings>
         Показать больше комментариев
