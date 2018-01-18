@@ -179,7 +179,6 @@ module.exports = (function () {
         itemEl.classList.add(CSS.item);
 
         console.assert(item.title, 'islandSettings: item title is missed');
-        console.assert(typeof item.handler == 'function', 'islandSettings: item handler is not a function');
 
         itemEl.textContent = item.title;
         itemEl.addEventListener('click', itemClicked);
@@ -199,12 +198,34 @@ module.exports = (function () {
             itemIndex = itemEl.dataset.itemIndex,
             menuParams,
             handler,
+            module,
+            method,
+            submethod,
             args;
 
         menuParams = getMenuParams(togglerIndex);
 
-        handler = menuParams.items[itemIndex].handler;
-        args    = menuParams.items[itemIndex].arguments;
+        module = menuParams.items[itemIndex].handler.module;
+        method = menuParams.items[itemIndex].handler.method;
+        submethod = menuParams.items[itemIndex].handler.submethod;
+
+        if (module && method) {
+
+            handler = codex[module][method];
+
+            if (submethod) {
+
+                handler = codex[module][method][submethod];
+
+            }
+
+        } else {
+
+            handler = menuParams.items[itemIndex].handler;
+
+        }
+
+        args = menuParams.items[itemIndex].arguments;
 
         handler.call(itemEl, args || {});
 

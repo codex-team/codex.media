@@ -25,12 +25,13 @@ module.exports = (function () {
 
     /**
      * Initialize comments
-     * @param {object} data        params
-     * @param {sring} data.listId  comments list wrapper id
+     * @param {Object} data params
+     * @param {Object} list — list of comments,
+     *                        passed from moduleDispatcher
      */
-    function init(data) {
+    function init(data, list) {
 
-        commentsList = document.getElementById(data.listId);
+        commentsList = list;
 
         if (anchor) {
 
