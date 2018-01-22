@@ -410,6 +410,10 @@ class Model_Page extends Model
         if (!$user->id) {
             return false;
         }
+        
+        if (!$user->isConfirmed || $user->isBanned) {
+            return false;
+        }
 
         if ($this->parent->id && $this->parent->author->id != $user->id) {
             return false;
