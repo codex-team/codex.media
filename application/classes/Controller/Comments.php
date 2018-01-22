@@ -17,12 +17,21 @@ class Controller_Comments extends Controller_Base_preDispatch
         /***/
 
         /**
-         * Checking for authorized user
+         * Checking for banned user
          */
         if ($this->user->isBanned) {
-            $error = 'Ошибка доступа';
+            $error = 'Пользователь заблокирован';
             goto finish;
         }
+        
+        /**
+         * Checking for confirmed user
+         */
+        if (!$this->user->isConfirmed) {
+            $error = 'Пользователь не подтвердил свою страницу';
+            goto finish;
+        }
+        
         /***/
 
         /**
