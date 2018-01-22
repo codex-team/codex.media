@@ -10,7 +10,7 @@ class Model_User extends Model
     public $photo_medium        = '';
     public $photo_big           = '';
     public $email               = '';
-    public $isConfirmed         = 0;
+    public $isConfirmed         = false;
 
     public $twitter             = '';
     public $twitter_name        = '';
@@ -31,7 +31,6 @@ class Model_User extends Model
 
     /** user's status */
     public $isBanned            = false;
-    public $isConfirmed         = false;
 
     public $isOnline            = 0;
     public $lastOnline          = 0;
