@@ -31,6 +31,7 @@ class Model_User extends Model
 
     /** user's status */
     public $isBanned            = false;
+    public $isConfirmed         = false;
 
     public $isOnline            = 0;
     public $lastOnline          = 0;
@@ -87,6 +88,7 @@ class Model_User extends Model
             $this->isTeacher        = $this->isTeacher();
             $this->isAdmin          = $this->isAdmin();
             $this->isBanned         = $this->isBanned();
+            $this->isConfirmed      = $this->isConfirmed();
 
             // $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
             // $this->lastOnline       = self::getLastOnlineTimestamp();
@@ -277,5 +279,10 @@ class Model_User extends Model
     public function isBanned()
     {
         return $this->status == self::BANNED;
+    }
+    
+    public function isConfirmed()
+    {
+        return !!$this->isConfirmed;
     }
 }
