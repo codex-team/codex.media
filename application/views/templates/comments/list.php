@@ -2,7 +2,22 @@
     $count = isset($page) ? count($page->comments) : '0'
 ?>
 
-<div class="comments-list" id="commentsList" data-count="<?= $count ?>">
+<div class="comments-list" data-count="<?= $count ?>" data-module="islandSettings comments">
+
+    <module-settings hidden>
+        [
+            {
+                "selector" : ".js-comment-settings",
+                "items" : [{
+                    "title" : "Удалить",
+                    "handler" : {
+                        "module" : "comments",
+                        "method" : "remove"
+                    }
+                }]
+            }
+        ]
+    </module-settings>
 
     <?
         $comments = isset($page) ? $page->comments : $comments;
@@ -35,32 +50,3 @@
     <? endif ?>
 
 </div>
-
-
-<? if ($user->id): ?>
-
-    <script>
-
-        codex.docReady(function(){
-
-            /**
-            * Comments module
-            */
-            codex.comments.init({
-                listId : "commentsList",
-            });
-
-            /** Island settings menu */
-            codex.islandSettings.init({
-                selector : '.js-comment-settings',
-                items : [{
-                        title : 'Удалить',
-                        handler : codex.comments.remove
-                    }]
-            });
-
-        });
-
-    </script>
-
-<? endif ?>

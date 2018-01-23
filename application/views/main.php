@@ -18,12 +18,8 @@
 
     <!-- <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700&subset=cyrillic" rel="stylesheet"> -->
 
-    <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
-
-        <? if ( !empty($_SERVER['HAWK_TOKEN']) && $_SERVER['HAWK_TOKEN'] ): ?>
-            <script src="https://cdn.rawgit.com/codex-team/hawk.client/master/hawk.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');"></script>
-        <? endif; ?>
-
+    <? if ( !empty($_SERVER['HAWK_TOKEN']) ): ?>
+        <script src="https://rawgit.com/codex-team/hawk.client/master/hawk.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');"></script>
     <? endif; ?>
 
     <link rel="stylesheet" type="text/css" media="all" href="/public/build/bundle.css?v=<?= filemtime('public/build/bundle.css'); ?>">
@@ -33,7 +29,7 @@
     <link rel="image_src" href="https://school332.ru/public/app/img/meta-image.png" />
 
 
-    <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>"></script>
+    <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
 
 </head>
 <body>
@@ -71,29 +67,7 @@
 
         window.csrf = '<?= Security::token(); ?>';
 
-        codex.docReady(function () {
-
-            codex.init({
-                uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>
-            });
-
-        });
-
     </script>
-
-    <? if ( empty($contentOnly) ): ?>
-
-        <?
-            $specialPath = 'https://cdn.ifmo.su/special/v1.2';
-
-            if ( Kohana::$environment === Kohana::DEVELOPMENT ) {
-                $specialPath = '/public/extensions/codex.special';
-            }
-        ?>
-
-        <script src="<?= $specialPath ?>/codex-special.min.js" onload="codexSpecial.init({blockId : 'js-contrast-version-holder',})"></script>
-
-    <? endif; ?>
 
     <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>
 

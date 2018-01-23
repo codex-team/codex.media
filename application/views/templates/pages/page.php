@@ -43,19 +43,70 @@
 
         <div class="article__information-right">
 
+            <span class="article__views-counter">
+                <? include(DOCROOT . "public/app/svg/eye.svg") ?>
+                <?= $page->views ?>
+            </span>
+
             <a class="article__comments-counter" href="<?= $page->url ?>#comments">
                 <? include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>
+                <? /* ?>
                 <? if ($page->commentsCount > 0): ?>
                     <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
                 <? else: ?>
                     Комментировать
                 <? endif ?>
+                <? */ ?>
+                <?= $page->commentsCount ?>
             </a>
 
             <? /* Manage page buttons */ ?>
             <? if ($page->canModify($user)): ?>
 
-                <span class="island-settings js-page-settings" data-id="<?= $page->id ?>">
+                <span class="island-settings js-page-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
+                    <module-settings hidden>
+                        {
+                            "selector" : ".js-page-settings",
+                            "items" : [{
+                                "title" : "Редактировать",
+                                "handler" : {
+                                    "module" : "pages",
+                                    "method" : "openWriting"
+                                }
+                            }, 
+                            {
+                                "title" : "Вложенная страница",
+                                "handler" : {
+                                    "module": "pages",
+                                    "method": "newChild"
+                                }
+
+                            },
+                            <? if ($user->isAdmin()): ?>
+                                {
+                                    "title" : "<?= $page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню'; ?>",
+                                    "handler" : {
+                                        "module" : "pages",
+                                        "method" : "addToMenu"
+                                    }
+                                },
+                                {
+                                    "title" : "<?= $page->isPageOnMain() ? 'Убрать с главной' : 'На главную'; ?>",
+                                    "handler" : {
+                                        "module" : "pages",
+                                        "method" : "addToMain"
+                                    }
+                                },
+                            <? endif; ?>
+                            {
+                                "title" : "Удалить",
+                                "handler" : {
+                                    "module" : "pages",
+                                    "method" : "remove"
+                                }
+                            }]
+                        }
+                    </module-settings>
                     <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
                 </span>
 
@@ -111,36 +162,6 @@
     <div class="comment-form__island island island--margined clearfix" id="comments">
         <?= View::factory('templates/comments/form', array('page_id' => $page->id, 'user' => $user)); ?>
     </div>
-
-    <script>
-        codex.docReady(function() {
-            codex.islandSettings.init({
-                    selector: '.js-page-settings',
-                    items : [{
-                            title : 'Редактировать',
-                            handler : codex.pages.openWriting
-                        },
-                        {
-                            title : 'Вложенная страница',
-                            handler : codex.pages.newChild
-                        },
-                        <? if ($user->isAdmin()): ?>
-                        {
-                            title : '<?= $page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню'; ?>',
-                            handler : codex.pages.addToMenu
-                        },
-                        {
-                            title : '<?= $page->isPageOnMain() ? 'Убрать с главной' : 'На главную'; ?>',
-                            handler : codex.pages.addToMain
-                        },
-                        <? endif; ?>
-                        {
-                            title : 'Удалить',
-                            handler : codex.pages.remove
-                    }]
-                })
-        })
-    </script>
 
 <? endif ?>
 

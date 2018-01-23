@@ -10,7 +10,7 @@ class Model_User extends Model
     public $photo_medium        = '';
     public $photo_big           = '';
     public $email               = '';
-    public $isConfirmed         = 0;
+    public $isConfirmed         = false;
 
     public $twitter             = '';
     public $twitter_name        = '';
@@ -87,6 +87,7 @@ class Model_User extends Model
             $this->isTeacher        = $this->isTeacher();
             $this->isAdmin          = $this->isAdmin();
             $this->isBanned         = $this->isBanned();
+            $this->isConfirmed      = $this->isConfirmed();
 
             // $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
             // $this->lastOnline       = self::getLastOnlineTimestamp();
@@ -277,5 +278,10 @@ class Model_User extends Model
     public function isBanned()
     {
         return $this->status == self::BANNED;
+    }
+    
+    public function isConfirmed()
+    {
+        return !!$this->isConfirmed;
     }
 }

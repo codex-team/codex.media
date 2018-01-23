@@ -31,19 +31,16 @@
 </div>
 
 <? if ($next_page): ?>
-    <a class="button button--load-more island island--padded island--centered island--stretched" id="buttonLoadNews" href="/<?= $page_number + 1 ?>">
+    <a class="button button--load-more island island--padded island--centered island--stretched" href="/<?= $page_number + 1 ?>" data-module="appender">
         Показать больше записей
+        <module-settings hidden>
+            {
+                "currentPage" : "<?= $page_number ?>",
+                "url" : "<?= $active_tab ? "/".$active_tab."/" : "/" ?>",
+                "targetBlockId" : "list_of_news",
+                "autoLoading" : "true",
+                "dontWaitFirstClick" : "true"
+            }
+        </module-settings>
     </a>
-    <script>
-        codex.docReady(function() {
-            codex.appender.init({
-                buttonId           : 'buttonLoadNews',
-                currentPage        : '<?= $page_number ?>',
-                url                : '<?= $active_tab ? "/".$active_tab."/" : "/" ?>',
-                targetBlockId      : 'list_of_news',
-                autoLoading        : true,
-                dontWaitFirstClick : true,
-            });
-        });
-    </script>
 <? endif ?>

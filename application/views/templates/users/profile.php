@@ -12,34 +12,37 @@
     <div class="profile__content clearfix">
 
         <? if ($user->isAdmin): ?>
-            <span class="island-settings js-user-settings" data-id="<?= $viewUser->id ?>">
-                <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
-            </span>
-            <script>
-                codex.docReady(function() {
-
-                    /** Island settings menu */
-                    codex.islandSettings.init({
-                        selector : '.js-user-settings',
-                        items : [
+            <span class="island-settings js-user-settings" data-id="<?= $viewUser->id ?>" data-module="islandSettings">
+                <module-settings hidden>
+                    {
+                        "selector" : ".js-user-settings",
+                        "items" : [
                             {
-                                title : '<?= $viewUser->isBanned ? 'Разблокировать' : 'Заблокировать' ?>',
-                                handler : codex.user.promote.status,
-                                arguments : {
-                                    value : <?= $viewUser->isBanned ? 0 : 1; ?>
+                                "title" : "<?= $viewUser->isBanned ? "Разблокировать" : "Заблокировать" ?>",
+                                "handler" : {
+                                    "module" : "user",
+                                    "method" : "promote",
+                                    "submethod" : "status" 
+                                },
+                                "arguments" : {
+                                    "value" : <?= $viewUser->isBanned ? 0 : 1; ?>
                                 }
                             },
                             {
-                                title : '<?= !$viewUser->isTeacher ? 'Сделать преподавателем' : 'Не преподаватель' ?>',
-                                handler : codex.user.promote.role,
-                                arguments : {
-                                    value : <?= !$viewUser->isTeacher ? Model_User::TEACHER : Model_User::REGISTERED; ?>
+                                "title" : "<?= !$viewUser->isTeacher ? "Сделать преподавателем" : "Не преподаватель" ?>",
+                                "handler" : {
+                                    "module" : "user",
+                                    "method" : "promote",
+                                    "submethod" : "role" 
+                                },
+                                "arguments" : {
+                                    "value" : <?= !$viewUser->isTeacher ? Model_User::TEACHER : Model_User::REGISTERED; ?>
                                 }
                             }]
-                    });
-
-                });
-            </script>
+                    }
+                </module-settings>
+                <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
+            </span>
         <? endif ?>
 
         <img class="profile__ava" src="<?= $viewUser->photo_medium ?>" />

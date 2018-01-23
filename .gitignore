@@ -5,7 +5,6 @@ vendor/*
 
 .env
 
-composer.lock
 
 phpmyadmin/*
 pma/*
@@ -26,3 +25,4 @@ node_modules/
 .ftpconfig
 
 .php_cs.cache
+package-lock.json

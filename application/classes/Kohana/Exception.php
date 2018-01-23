@@ -1,35 +1,23 @@
 <?php defined('SYSPATH') or die('No direct script access.');
+
+
 class Kohana_Exception extends Kohana_Kohana_Exception
 {
-    public static function _handler($e)
-    {
-        switch (Kohana::$environment) {
-            case Kohana::PRODUCTION:
-                self::$error_view = 'templates/errors/500';
-                self::formatErrorForTelegrams($e);
-            break;
-            case Kohana::TESTING:
-            case Kohana::STAGING:
-                self::$error_view = 'templates/errors/500';
-            break;
-        }
-        return parent::_handler($e);
-    }
-    /**
-     * Compose error trace for Telegram
-     * @param Exception $e - kohana exception object
-     */
-    private static function formatErrorForTelegrams($e)
-    {
-        $protocol = HTTP::$protocol == 'HTTP' ? 'http://' : 'https://';
-        if (!empty(Request::current())) {
-            $path = $protocol . Arr::get($_SERVER, 'SERVER_NAME') . Request::current()->url();
+    public static function response($e) {
+
+        \Hawk\HawkCatcher::catchException($e);
+
+        if (Kohana::$environment == Kohana::DEVELOPMENT) {
+
+            return parent::response($e);
+
         } else {
-            $path = '';
+
+            $view = new View('templates/errors/500');
+
+            $response = Response::factory()->status(500)->body($view->render());
+
+            return $response;
         }
-        $telegramMsg = '⚠️ ' . $e->getMessage() . '';
-        $telegramMsg .= PHP_EOL .  PHP_EOL . $e->getFile() . ': ' . $e->getLine() .  PHP_EOL . PHP_EOL;
-        $telegramMsg .= $path;
-        Model_Services_Telegram::sendBotNotification($telegramMsg);
     }
 }

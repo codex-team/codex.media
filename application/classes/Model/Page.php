@@ -48,6 +48,9 @@ class Model_Page extends Model
 
     public $commentsCount   = 0;
 
+    public $stats;
+    public $views           = 0;
+
     /** post_id in the public's wall or 0  */
     public $isPostedInVK    = 0;
 
@@ -104,6 +107,9 @@ class Model_Page extends Model
             $this->commentsCount = $this->getCommentsCount();
 
             $this->isPostedInVK = Model_Services_Vk::getPostIdByArticleId($this->id);
+
+            $this->stats = new Model_Stats(Model_Stats::PAGE_VIEWS, $this->id);
+            $this->views = $this->stats->get();
         }
 
         return $this;
@@ -402,6 +408,10 @@ class Model_Page extends Model
         }
 
         if (!$user->id) {
+            return false;
+        }
+        
+        if (!$user->isConfirmed || $user->isBanned) {
             return false;
         }
 
