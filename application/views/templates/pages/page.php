@@ -1,22 +1,38 @@
-<?
-    $protocol = "http" . (Arr::get($_SERVER, 'HTTPS') ? 's' : '') . "://";
-    $host     = $_SERVER['HTTP_HOST'];
+<article class="article island island--padded">
 
-    $link = $protocol . $host;
-?>
-<article class="article island island--padded" itemscope itemtype="http://schema.org/Article">
-
-    <meta itemprop="datePublished" content="<?= date(DATE_ISO8601, strtotime($page->date)) ?>" />
-
-    <meta itemscope itemtype="http://schema.org/ImageObject" itemprop="image" itemref="coverUrl">
-
-    <meta itemprop="url" content="<?= $link ?><? if (!empty($page->cover)): ?><?= "/upload/pages/covers/o_" . $page->cover ?><? else: ?><?= "/public/app/img/meta-image.png" ?><? endif ?>" id="coverUrl">
-
-    <meta itemscope itemtype="http://schema.org/Organization" itemprop="publisher" itemref="organizationImg organizationName">
-    <meta itemprop="name" content="<?= $site_info['title'] ?>" id="organizationName" />
-    <meta itemscope itemtype="http://schema.org/ImageObject" itemprop="logo" id="organizationImg" itemref="organizationImgUrl">
-    <meta itemprop="url" content="<?= $link . "/upload/logo/m_" . $site_info['logo'] ?>" id="organizationImgUrl" />
-
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Article",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "<?= Model_Methods::getDomainAndProtocol(); ?><?= "/p/" . $page->id . "/" . $page->uri ?>"
+            },
+            "headline": "<?= $page->title; ?>",
+            "datePublished": "<?= date(DATE_ISO8601, strtotime($page->date)) ?>",
+            "image": {
+                "@type": "ImageObject",
+                <? if (isset($page->cover)): ?>
+                "url": "<?= Model_Methods::getDomainAndProtocol();?>/<?= "/upload/pages/covers/o_" . $page->cover ?>"
+                <? else: ?>
+                "url": "<?= Model_Methods::getDomainAndProtocol();?>/public/app/img/meta-image.png"
+                <? endif; ?>
+            },
+            "author": {
+                "@type": "Person",
+                "name": "<?= $page->author->name ?>",
+                "image": "<?= $page->author->photo ?>"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "<?= $site_info['title'] ?>",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "<?= Model_Methods::getDomainAndProtocol();?><?= "/upload/logo/m_" . $site_info['logo'] ?>"
+                }
+            }
+        }
+    </script>
 
     <? if (!empty($page->parent->id)): ?>
         <div class="article__parent js-emoji-included">
@@ -36,9 +52,9 @@
             </a>
         </time>
 
-        <a class="article__author" href="/user/<?= $page->author->id ?>" itemscope itemtype="http://schema.org/Person" itemprop="author">
-            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>" itemprop="image">
-            <span itemprop="name"><?= $page->author->name ?></span>
+        <a class="article__author" href="/user/<?= $page->author->id ?>">
+            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>">
+            <span><?= $page->author->name ?></span>
         </a>
 
         <div class="article__information-right">
@@ -117,13 +133,13 @@
     </header>
 
     <? /* Page title */ ?>
-    <h1 class="article__title js-emoji-included" itemprop="headline">
+    <h1 class="article__title js-emoji-included">
         <?= $page->title ?>
     </h1>
 
     <? /* Page content */ ?>
     <? if (!empty($page->blocks)): ?>
-        <div class="article__content js-emoji-included" itemprop="articleBody">
+        <div class="article__content js-emoji-included">
             <? foreach ($page->blocks as $block): ?>
                 <?=
                     View::factory('templates/pages/blocks/' . $block['type'], array(
