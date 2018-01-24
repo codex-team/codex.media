@@ -35,20 +35,28 @@
     </script>
 
     <meta itemprop="datePublished" content="<?= date(DATE_ISO8601, strtotime($page->date)) ?>" />
+    <?  
+        $domainAndProtocol = Model_Methods::getDomainAndProtocol();
+        $siteLogo = $domainAndProtocol . "/upload/logo/m_" . $site_info['logo'];
 
+        if (!empty($page->cover)) {
+
+            $articleCover = $domainAndProtocol . "/upload/pages/covers/o_" . $page->cover;
+
+        } else {
+
+            $articleCover = $domainAndProtocol . "/public/app/img/meta-image.png";
+
+        }
+
+    ?>
     <meta itemscope itemtype="http://schema.org/ImageObject" itemprop="image" itemref="coverUrl">
-    <meta itemprop="url" content="<?= Model_Methods::getDomainAndProtocol(); ?>
-
-    <? if (!empty($page->cover)): ?>
-        <?= "/upload/pages/covers/o_" . $page->cover ?>
-    <? else: ?>
-        <?= "/public/app/img/meta-image.png" ?>
-    <? endif ?>" id="coverUrl">
+    <meta itemprop="url" id="coverUrl" content="<?= $articleCover ?>">
 
     <div itemscope itemtype="http://schema.org/Organization" itemprop="publisher">
         <meta itemprop="name" content="<?= $site_info['title'] ?>"/>
         <meta itemscope itemtype="http://schema.org/ImageObject" itemprop="logo" itemref="organizationImgUrl">
-        <meta itemprop="url" content="<?= Model_Methods::getDomainAndProtocol();?><?= "/upload/logo/m_" . $site_info['logo'] ?>" id="organizationImgUrl" />
+        <meta itemprop="url" content="<?= $siteLogo ?>" id="organizationImgUrl" />
     </div>
 
     <? if (!empty($page->parent->id)): ?>
