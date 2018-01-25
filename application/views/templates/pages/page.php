@@ -1,43 +1,9 @@
 <article class="article island island--padded" itemscope itemtype="http://schema.org/Article">
 
-    <script type="application/ld+json">
-        {
-            "@context": "http://schema.org",
-            "@type": "Article",
-            "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "<?= Model_Methods::getDomainAndProtocol(); ?><?= "/p/" . $page->id . "/" . $page->uri ?>"
-            },
-            "headline": "<?= $page->title; ?>",
-            "datePublished": "<?= date(DATE_ISO8601, strtotime($page->date)) ?>",
-            "image": {
-                "@type": "ImageObject",
-                <? if (isset($page->cover)): ?>
-                "url": "<?= Model_Methods::getDomainAndProtocol();?>/<?= "/upload/pages/covers/o_" . $page->cover ?>"
-                <? else: ?>
-                "url": "<?= Model_Methods::getDomainAndProtocol();?>/public/app/img/meta-image.png"
-                <? endif; ?>
-            },
-            "author": {
-                "@type": "Person",
-                "name": "<?= $page->author->name ?>",
-                "image": "<?= $page->author->photo ?>"
-            },
-            "publisher": {
-                "@type": "Organization",
-                "name": "<?= $site_info['title'] ?>",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "<?= Model_Methods::getDomainAndProtocol();?><?= "/upload/logo/m_" . $site_info['logo'] ?>"
-                }
-            }
-        }
-    </script>
-
-    <meta itemprop="datePublished" content="<?= date(DATE_ISO8601, strtotime($page->date)) ?>" />
     <?  
         $domainAndProtocol = Model_Methods::getDomainAndProtocol();
         $siteLogo = $domainAndProtocol . "/upload/logo/m_" . $site_info['logo'];
+        $pageId = $domainAndProtocol . "/p/" . $page->id . "/" . $page->uri;
 
         if (!empty($page->cover)) {
 
@@ -50,6 +16,39 @@
         }
 
     ?>
+
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Article",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "<?= $pageId ?>"
+            },
+            "headline": "<?= $page->title; ?>",
+            "datePublished": "<?= date(DATE_ISO8601, strtotime($page->date)) ?>",
+            "image": {
+                "@type": "ImageObject",
+                "url": "<?= $articleCover ?>"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "<?= $page->author->name ?>",
+                "image": "<?= $page->author->photo ?>"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "<?= $site_info['title'] ?>",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "<?= $siteLogo ?>"
+                }
+            }
+        }
+    </script>
+
+    <meta itemprop="datePublished" content="<?= date(DATE_ISO8601, strtotime($page->date)) ?>" />
+
     <meta itemscope itemtype="http://schema.org/ImageObject" itemprop="image" itemref="coverUrl">
     <meta itemprop="url" id="coverUrl" content="<?= $articleCover ?>">
 
