@@ -394,7 +394,7 @@ class Model_Methods extends Model
         }
 
         $request = curl_init($url);
-        curl_setopt($request, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($request, CURLOPT_POSTFIELDS, http_build_query($params));
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($request);
         curl_close($request);
