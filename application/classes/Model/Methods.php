@@ -2,6 +2,32 @@
 
 class Model_Methods extends Model
 {
+    /**
+     * Get server domain name and protocol
+     *
+     * @return {string} $protocol.$domain
+     */
+    public static function getDomainAndProtocol()
+    {
+        return self::getProtocol() . "://" . $_SERVER['HTTP_HOST'];
+    }
+
+    /**
+     * Get protocol
+     *
+     * @return {string} $protocol
+     */
+    public static function getProtocol()
+    {
+        if ( isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+            isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+            $protocol = 'https';
+        } else {
+            $protocol = 'http';
+        }
+        return $protocol;
+    }
+
     const SOCIAL_VK = 1;
     const SOCIAL_FB = 2;
     const SOCIAL_TW = 3;

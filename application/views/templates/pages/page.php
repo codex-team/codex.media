@@ -1,4 +1,62 @@
-<article class="article island island--padded">
+<article class="article island island--padded" itemscope itemtype="http://schema.org/Article">
+
+    <?  
+        $domainAndProtocol = Model_Methods::getDomainAndProtocol();
+        $siteLogo = $domainAndProtocol . "/upload/logo/m_" . $site_info['logo'];
+        $pageId = $domainAndProtocol . "/p/" . $page->id . "/" . $page->uri;
+
+        if (!empty($page->cover)) {
+
+            $articleCover = $domainAndProtocol . "/upload/pages/covers/o_" . $page->cover;
+
+        } else {
+
+            $articleCover = $domainAndProtocol . "/public/app/img/meta-image.png";
+
+        }
+
+    ?>
+
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Article",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "<?= $pageId ?>"
+            },
+            "headline": "<?= $page->title; ?>",
+            "datePublished": "<?= date(DATE_ISO8601, strtotime($page->date)) ?>",
+            "image": {
+                "@type": "ImageObject",
+                "url": "<?= $articleCover ?>"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "<?= $page->author->name ?>",
+                "image": "<?= $page->author->photo ?>"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "<?= $site_info['title'] ?>",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "<?= $siteLogo ?>"
+                }
+            }
+        }
+    </script>
+
+    <meta itemprop="datePublished" content="<?= date(DATE_ISO8601, strtotime($page->date)) ?>" />
+
+    <meta itemscope itemtype="http://schema.org/ImageObject" itemprop="image" itemref="coverUrl">
+    <meta itemprop="url" id="coverUrl" content="<?= $articleCover ?>">
+
+    <div itemscope itemtype="http://schema.org/Organization" itemprop="publisher">
+        <meta itemprop="name" content="<?= $site_info['title'] ?>"/>
+        <meta itemscope itemtype="http://schema.org/ImageObject" itemprop="logo" itemref="organizationImgUrl">
+        <meta itemprop="url" content="<?= $siteLogo ?>" id="organizationImgUrl" />
+    </div>
 
     <? if (!empty($page->parent->id)): ?>
         <div class="article__parent js-emoji-included">
@@ -18,8 +76,9 @@
             </a>
         </time>
 
-        <a class="article__author" href="/user/<?= $page->author->id ?>">
-            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>"><?= $page->author->name ?>
+        <a class="article__author" href="/user/<?= $page->author->id ?>" itemscope itemtype="http://schema.org/Person" itemprop="author">
+            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>" itemprop="image">
+            <span itemprop="name"><?= $page->author->name ?></span>
         </a>
 
         <div class="article__information-right">
@@ -98,13 +157,13 @@
     </header>
 
     <? /* Page title */ ?>
-    <h1 class="article__title js-emoji-included">
-    	<?= $page->title ?>
+    <h1 class="article__title js-emoji-included" itemprop="headline">
+        <?= $page->title ?>
     </h1>
 
     <? /* Page content */ ?>
     <? if (!empty($page->blocks)): ?>
-        <div class="article__content js-emoji-included">
+        <div class="article__content js-emoji-included" itemprop="articleBody">
             <? foreach ($page->blocks as $block): ?>
                 <?=
                     View::factory('templates/pages/blocks/' . $block['type'], array(
