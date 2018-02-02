@@ -2,12 +2,12 @@
 
 class Model_Feed_Pages extends Model_Feed_Abstract
 {
-    const FEED_PREFIX   = 'feed:';
+    const FEED_PREFIX = 'feed:';
 
-    const ALL           = '1';
-    const TEACHERS      = '2';
-    const MAIN          = '3';
-    const MENU          = '4';
+    const ALL = '1';
+    const TEACHERS = '2';
+    const MAIN = '3';
+    const MENU = '4';
 
     public function __construct($type = self::ALL, $prefix = '')
     {
@@ -34,17 +34,19 @@ class Model_Feed_Pages extends Model_Feed_Abstract
     /**
      * Получаем массив моделей страниц.
      *
-     * @param int $numberOfItems - количество элементов, которое хотим получить. Если не указан - получаем все
+     * @param int   $numberOfItems - количество элементов, которое хотим получить. Если не указан - получаем все
+     * @param mixed $offset
+     *
+     * @throws Exception
      *
      * @return bool|array
-     * @throws Exception
      */
     public function get($numberOfItems = 0, $offset = 0)
     {
         $items = parent::get($numberOfItems, $offset);
 
         if (is_array($items)) {
-            $models_list = array();
+            $models_list = [];
 
             foreach ($items as $id) {
                 $page = new Model_Page($id, true); //sets $escapeHTML param true to escape HTML entities

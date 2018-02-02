@@ -1,25 +1,25 @@
-<aside class="island main-aside <?= !empty($site_info['branding']) ?  'main-aside--offset-top' : '' ?>">
+<aside class="island main-aside <?= !empty($site_info['branding']) ? 'main-aside--offset-top' : '' ?>">
 
     <a class="site-head clear" href="/">
 
-        <?
+        <?php
             $logoIsEmpty = empty($site_info['logo']);
-            $logoClasses  = 'site-head__logo ';
+            $logoClasses = 'site-head__logo ';
             $logoClasses .= $user->isAdmin ? 'site-head__logo--admin ' : '';
             $logoClasses .= $logoIsEmpty ? 'site-head__logo--empty' : '';
         ?>
 
         <span class="<?= $logoClasses ?>" data-placeholder="<?= mb_substr($site_info['title'], 0, 1, "UTF-8"); ?>">
 
-            <? if (!empty($site_info['logo'])): ?>
+            <?php if (!empty($site_info['logo'])): ?>
                 <img id="js-site-logo" src="/upload/logo/m_<?=  $site_info['logo'] ?>">
-            <? endif ?>
+            <?php endif ?>
 
-            <? if ($user->isAdmin): ?>
+            <?php if ($user->isAdmin): ?>
                 <span class="site-head__logo-upload" onclick="codex.logo.change.call(this, event)">
-                    <? include(DOCROOT . "public/app/svg/picture-upload.svg") ?>
+                    <?php include(DOCROOT . "public/app/svg/picture-upload.svg") ?>
                 </span>
-            <? endif; ?>
+            <?php endif; ?>
         </span>
 
 
@@ -29,15 +29,15 @@
         </div>
 
         <span class="mobile-menu-toggler" id="js-mobile-menu-toggler">
-            <? include(DOCROOT . "public/app/svg/menu.svg") ?>
+            <?php include(DOCROOT . "public/app/svg/menu.svg") ?>
         </span>
 
     </a>
 
     <div class="mobile-menu-holder" id="js-mobile-menu-holder">
 
-        <? /* User badge */ ?>
-        <? if ( $user->id ): ?>
+        <?php /* User badge */ ?>
+        <?php if ($user->id): ?>
             <a class="fl_r logout" href="/logout" data-title="Выйти">
 
                 <i class="icon-logout"></i>
@@ -50,24 +50,24 @@
                 <span class="user_panel__name overflow_long"><?= $user->name ?></span>
 
             </a>
-        <? endif ?>
+        <?php endif ?>
 
-        <? /* Email confirmation */ ?>
-        <? if ($user->id && !$user->isConfirmed): ?>
+        <?php /* Email confirmation */ ?>
+        <?php if ($user->id && !$user->isConfirmed): ?>
 
             <?= View::factory('templates/components/email_confirm')->render(); ?>
 
-        <? endif; ?>
+        <?php endif; ?>
 
         <?= View::factory('templates/components/menu')->render(); ?>
 
-        <? if (!$user->id): ?>
+        <?php if (!$user->id): ?>
             <section class="aside-section">
                 <a class="button master" href="/auth">Войти на сайт</a>
             </section>
-        <? endif ?>
+        <?php endif ?>
 
-        <? /* Footer */ ?>
+        <?php /* Footer */ ?>
         <?= View::factory('templates/components/footer')->render(); ?>
 
 

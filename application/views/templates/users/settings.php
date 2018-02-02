@@ -2,7 +2,7 @@
 
     <div class="island__navigation">
         <a href="/user/<?= $user->id ?>" class="island__navigation-item">
-            <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
+            <?php include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
             Профиль
         </a>
         <a href="/logout" class="island__navigation-item island__navigation-item--right logout-button">
@@ -17,7 +17,7 @@
 
             <div class="profile-settings__photo">
                 <div class="profile-settings__photo-hover" onclick="codex.user.photo.change( event , <?= Model_File::USER_PHOTO ?>);">
-                    <? include(DOCROOT . "public/app/svg/camera.svg") ?>
+                    <?php include(DOCROOT . "public/app/svg/camera.svg") ?>
                 </div>
                 <img src="<?= $user->photo_medium ?>" name="js-img-updatable">
             </div>
@@ -34,17 +34,17 @@
         </form>
 
         <a class="border-button <?= !$user->vk ? 'border-button--vk' : '' ?>" href="/auth/vk?state=<?= !$user->vk ? 'attach' : 'remove' ?>">
-            <? include(DOCROOT . "public/app/svg/vk.svg") ?>
+            <?php include(DOCROOT . "public/app/svg/vk.svg") ?>
             <?= !$user->vk ? 'Привязать' : ($user->vk_name ?: $user->vk_uri) ?>
         </a>
 
         <a class="border-button <?= !$user->facebook ? 'border-button--facebook' : '' ?>" href="/auth/fb?state=<?= !$user->facebook ? 'attach' : 'remove' ?>">
-            <? include(DOCROOT . "public/app/svg/facebook-circle.svg") ?>
+            <?php include(DOCROOT . "public/app/svg/facebook-circle.svg") ?>
             <?= !$user->facebook ? 'Привязать' : $user->facebook_name ?>
         </a>
 
         <a class="border-button <?= !$user->twitter ? 'border-button--twitter' : '' ?>" href="/auth/tw?state=<?= !$user->twitter ? 'attach' : 'remove' ?>">
-            <? include(DOCROOT . "public/app/svg/twitter.svg") ?>
+            <?php include(DOCROOT . "public/app/svg/twitter.svg") ?>
             <?= !$user->twitter ? 'Привязать' : $user->twitter_name ?>
         </a>
 
@@ -52,34 +52,34 @@
 
 </div>
 
-<? if ($user->email): ?>
+<?php if ($user->email): ?>
     <?= View::factory('templates/components/email_confirm_island'); ?>
-<? else: ?>
+<?php else: ?>
     <?= View::factory('templates/components/email_set_island'); ?>
-<? endif; ?>
+<?php endif; ?>
 
-<? if ($user->email && $user->isConfirmed): ?>
-    <?= View::factory('templates/components/password_change_island', array('newPasswordRequested' => $newPasswordRequested)); ?>
-<? endif; ?>
+<?php if ($user->email && $user->isConfirmed): ?>
+    <?= View::factory('templates/components/password_change_island', ['newPasswordRequested' => $newPasswordRequested]); ?>
+<?php endif; ?>
 
 <script>
-    <? if (isset($success) && $success): ?>
+    <?php if (isset($success) && $success): ?>
 
         codex.alerts.show({
             type: 'success',
             message: 'Обновления сохранены'
         });
 
-    <? endif; ?>
+    <?php endif; ?>
 
-    <? if (isset($errors) && $errors): ?>
+    <?php if (isset($errors) && $errors): ?>
 
-        <? foreach ($errors as $info): ?>
+        <?php foreach ($errors as $info): ?>
             codex.alerts.show({
                 type: 'error',
                 message: '<?= $info ?>'
             });
-        <? endforeach; ?>
+        <?php endforeach; ?>
 
-    <? endif; ?>
+    <?php endif; ?>
 </script>

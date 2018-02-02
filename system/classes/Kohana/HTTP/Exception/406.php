@@ -1,10 +1,10 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php defined('SYSPATH') or die('No direct script access.');
 
-class Kohana_HTTP_Exception_406 extends HTTP_Exception {
+class Kohana_HTTP_Exception_406 extends HTTP_Exception
+{
 
-	/**
-	 * @var   integer    HTTP 406 Not Acceptable
-	 */
-	protected $_code = 406;
-
+    /**
+     * @var int HTTP 406 Not Acceptable
+     */
+    protected $_code = 406;
 }

@@ -19,12 +19,13 @@ class Model_Methods extends Model
      */
     public static function getProtocol()
     {
-        if ( isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+        if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
             isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
             $protocol = 'https';
         } else {
             $protocol = 'http';
         }
+
         return $protocol;
     }
 
@@ -54,11 +55,11 @@ class Model_Methods extends Model
                 return $this->rusDate("j F Y в H:i", $timestamp);
             }
         } elseif ($time > Date::MONTH && $time < Date::YEAR) {
-            return round($time / Date::MONTH) . ' ' . self::num_decline(round($time / Date::MONTH), 'месяц', 'месяца', 'месяцев') .  ' назад';
+            return round($time / Date::MONTH) . ' ' . self::num_decline(round($time / Date::MONTH), 'месяц', 'месяца', 'месяцев') . ' назад';
         } elseif ($time > Date::YEAR) {
             return $this->rusDate("j F Y", $timestamp);
         } else {
-            return round($time / Date::DAY) . ' ' . self::num_decline(round($time / Date::DAY), 'день', 'дня', 'дней') .' назад';
+            return round($time / Date::DAY) . ' ' . self::num_decline(round($time / Date::DAY), 'день', 'дня', 'дней') . ' назад';
         }
     }
 
@@ -95,54 +96,54 @@ class Model_Methods extends Model
 
     public function rusDate()
     {
-        $translate = array(
-            "am"        => "дп",
-            "pm"        => "пп",
-            "AM"        => "ДП",
-            "PM"        => "ПП",
-            "Monday"    => "Понедельник",
-            "Mon"       => "Пн",
-            "Tuesday"   => "Вторник",
-            "Tue"       => "Вт",
+        $translate = [
+            "am" => "дп",
+            "pm" => "пп",
+            "AM" => "ДП",
+            "PM" => "ПП",
+            "Monday" => "Понедельник",
+            "Mon" => "Пн",
+            "Tuesday" => "Вторник",
+            "Tue" => "Вт",
             "Wednesday" => "Среда",
-            "Wed"       => "Ср",
-            "Thursday"  => "Четверг",
-            "Thu"       => "Чт",
-            "Friday"    => "Пятница",
-            "Fri"       => "Пт",
-            "Saturday"  => "Суббота",
-            "Sat"       => "Сб",
-            "Sunday"    => "Воскресенье",
-            "Sun"       => "Вс",
-            "January"   => "Января",
-            "Jan"       => "Янв",
-            "February"  => "Февраля",
-            "Feb"       => "Фев",
-            "March"     => "Марта",
-            "Mar"       => "Мар",
-            "April"     => "Апреля",
-            "Apr"       => "Апр",
-            "May"       => "Мая",
-            "May"       => "Мая",
-            "June"      => "Июня",
-            "Jun"       => "Июн",
-            "July"      => "Июля",
-            "Jul"       => "Июл",
-            "August"    => "Августа",
-            "Aug"       => "Авг",
+            "Wed" => "Ср",
+            "Thursday" => "Четверг",
+            "Thu" => "Чт",
+            "Friday" => "Пятница",
+            "Fri" => "Пт",
+            "Saturday" => "Суббота",
+            "Sat" => "Сб",
+            "Sunday" => "Воскресенье",
+            "Sun" => "Вс",
+            "January" => "Января",
+            "Jan" => "Янв",
+            "February" => "Февраля",
+            "Feb" => "Фев",
+            "March" => "Марта",
+            "Mar" => "Мар",
+            "April" => "Апреля",
+            "Apr" => "Апр",
+            "May" => "Мая",
+            "May" => "Мая",
+            "June" => "Июня",
+            "Jun" => "Июн",
+            "July" => "Июля",
+            "Jul" => "Июл",
+            "August" => "Августа",
+            "Aug" => "Авг",
             "September" => "Сентября",
-            "Sep"       => "Сен",
-            "October"   => "Октября",
-            "Oct"       => "Окт",
-            "November"  => "Ноября",
-            "Nov"       => "Ноя",
-            "December"  => "Декабря",
-            "Dec"       => "Дек",
-            "st"        => "ое",
-            "nd"        => "ое",
-            "rd"        => "е",
-            "th"        => "ое"
-        );
+            "Sep" => "Сен",
+            "October" => "Октября",
+            "Oct" => "Окт",
+            "November" => "Ноября",
+            "Nov" => "Ноя",
+            "December" => "Декабря",
+            "Dec" => "Дек",
+            "st" => "ое",
+            "nd" => "ое",
+            "rd" => "е",
+            "th" => "ое"
+        ];
 
         if (func_num_args() > 1) {
             $timestamp = func_get_arg(1);
@@ -155,7 +156,7 @@ class Model_Methods extends Model
 
     public function num_decline($num, $nominative, $genitive_singular, $genitive_plural)
     {
-        if ($num > 10 && (floor(($num % 100) / 10))  == 1) {
+        if ($num > 10 && (floor(($num % 100) / 10)) == 1) {
             return $genitive_plural;
         } else {
             switch ($num % 10) {
@@ -180,10 +181,10 @@ class Model_Methods extends Model
         // $string = 'You <br> gonna be <h2>all right</h2><img src="/public/img/favicon.png" /> So go take <a href="/">down</a> the cross.';
         // $limit = 30;
 
-        $inside_tag  = $inside_close_tag = $insede_alone_tag = $tag_opened = false;
+        $inside_tag = $inside_close_tag = $insede_alone_tag = $tag_opened = false;
         $char = $ret = '';
-        $real_count  = 0; // Количество обычных символов (не в тегах), к которому нам и надо стремиться
-        $is_trimmed  = false;
+        $real_count = 0; // Количество обычных символов (не в тегах), к которому нам и надо стремиться
+        $is_trimmed = false;
 
         // echo 'Char number -> char number without tags -> Char ; Parameters <br>';
 
@@ -197,11 +198,11 @@ class Model_Methods extends Model
 
                 $ret .= $char;        // 1 - символ открытия тэга. Нужен
 
-                $substr = mb_substr($string, $i+1, 5);
+                $substr = mb_substr($string, $i + 1, 5);
 
                 if ($tag_opened && mb_substr($string, $i + 1, 1) == '/') {
                     $inside_close_tag = true;
-                    // echo " inside_close_tag";
+                // echo " inside_close_tag";
                 } elseif (stripos($substr, 'img') !== false || stripos($substr, 'br') !== false || stripos($substr, 'hr') !== false) {
                     $insede_alone_tag = true;
                     // echo ' inside alone tag ';
@@ -266,7 +267,7 @@ class Model_Methods extends Model
         // exit();
 
         // echo '<br/><br/>-------------<br><br>';
-        return array('text' => $ret , 'changed' => $is_trimmed);
+        return ['text' => $ret, 'changed' => $is_trimmed];
     }
 
     public function auto_link_urls($text)
@@ -286,24 +287,24 @@ class Model_Methods extends Model
 
     public function _auto_link_urls_callback2($matches)
     {
-        return HTML::anchor('http://'.$matches[0], $matches[0]);
+        return HTML::anchor('http://' . $matches[0], $matches[0]);
     }
 
     public function renderShareButton($data, $type, $target)
     {
         $result = '';
 
-        $data['data_type']   = $type;
+        $data['data_type'] = $type;
         $data['data_target'] = $target;
         $data['sharingData'] = $data;
 
         $stats = new Model_Stats();
 
-        $data['social'] = array(
+        $data['social'] = [
             self::SOCIAL_VK => $stats->redis->get($stats->getRedisKey(Controller_Ajax::getShareKey($type, $target, self::SOCIAL_VK), Model_Stats::TYPE_HIT_SHARE_BUTTON, 0)),
             self::SOCIAL_FB => $stats->redis->get($stats->getRedisKey(Controller_Ajax::getShareKey($type, $target, self::SOCIAL_FB), Model_Stats::TYPE_HIT_SHARE_BUTTON, 0)),
             self::SOCIAL_TW => $stats->redis->get($stats->getRedisKey(Controller_Ajax::getShareKey($type, $target, self::SOCIAL_TW), Model_Stats::TYPE_HIT_SHARE_BUTTON, 0)),
-        );
+        ];
 
         $result = View::factory('/share/buttons', $data)->render();
 
@@ -317,11 +318,12 @@ class Model_Methods extends Model
 
     /**
      * Транслитерация кириллицы
+     *
      * @param string $string - строка с киррилицей
      */
     public static function rus2translit($string)
     {
-        $converter = array(
+        $converter = [
             'а' => 'a',   'б' => 'b',   'в' => 'v',
             'г' => 'g',   'д' => 'd',   'е' => 'e',
             'ё' => 'e',   'ж' => 'zh',  'з' => 'z',
@@ -345,7 +347,7 @@ class Model_Methods extends Model
             'Ч' => 'Ch',  'Ш' => 'Sh',  'Щ' => 'Sch',
             'Ь' => "",    'Ы' => 'Y',   'Ъ' => "",
             'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
-        );
+        ];
 
         // translit
         $converted_string = strtr($string, $converter);
@@ -382,12 +384,12 @@ class Model_Methods extends Model
         return array_reverse($menu->get());
     }
 
-    public static function isNextPageExist($list = array(), $limit = 0)
+    public static function isNextPageExist($list = [], $limit = 0)
     {
         return count($list) > $limit;
     }
 
-    public static function sendPostRequest($url = '', $params = array())
+    public static function sendPostRequest($url = '', $params = [])
     {
         if (!$url || !$params) {
             return false;

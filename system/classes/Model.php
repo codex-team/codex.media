@@ -1,3 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php defined('SYSPATH') or die('No direct script access.');
 
-abstract class Model extends Kohana_Model {}
+abstract class Model extends Kohana_Model
+{
+}

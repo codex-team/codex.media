@@ -1,10 +1,10 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php defined('SYSPATH') or die('No direct script access.');
 
-class Kohana_HTTP_Exception_410 extends HTTP_Exception {
+class Kohana_HTTP_Exception_410 extends HTTP_Exception
+{
 
-	/**
-	 * @var   integer    HTTP 410 Gone
-	 */
-	protected $_code = 410;
-
+    /**
+     * @var int HTTP 410 Gone
+     */
+    protected $_code = 410;
 }

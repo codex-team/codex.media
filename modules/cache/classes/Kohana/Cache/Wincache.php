@@ -37,104 +37,108 @@
  *
  * @package    Kohana/Cache
  * @category   Base
+ *
  * @author     Kohana Team
  * @copyright  (c) 2009-2012 Kohana Team
  * @license    http://kohanaphp.com/license
  */
-class Kohana_Cache_Wincache extends Cache {
+class Kohana_Cache_Wincache extends Cache
+{
+    /**
+     * Check for existence of the wincache extension This method cannot be invoked externally. The driver must
+     * be instantiated using the `Cache::instance()` method.
+     *
+     * @param array $config configuration
+     *
+     * @throws Cache_Exception
+     */
+    protected function __construct(array $config)
+    {
+        if (! extension_loaded('wincache')) {
+            throw new Cache_Exception('PHP wincache extension is not available.');
+        }
 
-	/**
-	 * Check for existence of the wincache extension This method cannot be invoked externally. The driver must
-	 * be instantiated using the `Cache::instance()` method.
-	 *
-	 * @param  array  $config  configuration
-	 * @throws Cache_Exception
-	 */
-	protected function __construct(array $config)
-	{
-		if ( ! extension_loaded('wincache'))
-		{
-			throw new Cache_Exception('PHP wincache extension is not available.');
-		}
+        parent::__construct($config);
+    }
 
-		parent::__construct($config);
-	}
+    /**
+     * Retrieve a cached value entry by id.
+     *
+     *     // Retrieve cache entry from wincache group
+     *     $data = Cache::instance('wincache')->get('foo');
+     *
+     *     // Retrieve cache entry from wincache group and return 'bar' if miss
+     *     $data = Cache::instance('wincache')->get('foo', 'bar');
+     *
+     * @param string $id      id of cache to entry
+     * @param string $default default value to return if cache miss
+     *
+     * @throws Cache_Exception
+     *
+     * @return mixed
+     */
+    public function get($id, $default = null)
+    {
+        $data = wincache_ucache_get($this->_sanitize_id($id), $success);
 
-	/**
-	 * Retrieve a cached value entry by id.
-	 *
-	 *     // Retrieve cache entry from wincache group
-	 *     $data = Cache::instance('wincache')->get('foo');
-	 *
-	 *     // Retrieve cache entry from wincache group and return 'bar' if miss
-	 *     $data = Cache::instance('wincache')->get('foo', 'bar');
-	 *
-	 * @param   string  $id       id of cache to entry
-	 * @param   string  $default  default value to return if cache miss
-	 * @return  mixed
-	 * @throws  Cache_Exception
-	 */
-	public function get($id, $default = NULL)
-	{
-		$data = wincache_ucache_get($this->_sanitize_id($id), $success);
+        return $success ? $data : $default;
+    }
 
-		return $success ? $data : $default;
-	}
+    /**
+     * Set a value to cache with id and lifetime
+     *
+     *     $data = 'bar';
+     *
+     *     // Set 'bar' to 'foo' in wincache group, using default expiry
+     *     Cache::instance('wincache')->set('foo', $data);
+     *
+     *     // Set 'bar' to 'foo' in wincache group for 30 seconds
+     *     Cache::instance('wincache')->set('foo', $data, 30);
+     *
+     * @param string $id       id of cache entry
+     * @param string $data     data to set to cache
+     * @param int    $lifetime lifetime in seconds
+     *
+     * @return bool
+     */
+    public function set($id, $data, $lifetime = null)
+    {
+        if ($lifetime === null) {
+            $lifetime = Arr::get($this->_config, 'default_expire', Cache::DEFAULT_EXPIRE);
+        }
 
-	/**
-	 * Set a value to cache with id and lifetime
-	 *
-	 *     $data = 'bar';
-	 *
-	 *     // Set 'bar' to 'foo' in wincache group, using default expiry
-	 *     Cache::instance('wincache')->set('foo', $data);
-	 *
-	 *     // Set 'bar' to 'foo' in wincache group for 30 seconds
-	 *     Cache::instance('wincache')->set('foo', $data, 30);
-	 *
-	 * @param   string   $id        id of cache entry
-	 * @param   string   $data      data to set to cache
-	 * @param   integer  $lifetime  lifetime in seconds
-	 * @return  boolean
-	 */
-	public function set($id, $data, $lifetime = NULL)
-	{
-		if ($lifetime === NULL)
-		{
-			$lifetime = Arr::get($this->_config, 'default_expire', Cache::DEFAULT_EXPIRE);
-		}
+        return wincache_ucache_set($this->_sanitize_id($id), $data, $lifetime);
+    }
 
-		return wincache_ucache_set($this->_sanitize_id($id), $data, $lifetime);
-	}
+    /**
+     * Delete a cache entry based on id
+     *
+     *     // Delete 'foo' entry from the wincache group
+     *     Cache::instance('wincache')->delete('foo');
+     *
+     * @param string $id id to remove from cache
+     *
+     * @return bool
+     */
+    public function delete($id)
+    {
+        return wincache_ucache_delete($this->_sanitize_id($id));
+    }
 
-	/**
-	 * Delete a cache entry based on id
-	 *
-	 *     // Delete 'foo' entry from the wincache group
-	 *     Cache::instance('wincache')->delete('foo');
-	 *
-	 * @param   string  $id  id to remove from cache
-	 * @return  boolean
-	 */
-	public function delete($id)
-	{
-		return wincache_ucache_delete($this->_sanitize_id($id));
-	}
-
-	/**
-	 * Delete all cache entries.
-	 *
-	 * Beware of using this method when
-	 * using shared memory cache systems, as it will wipe every
-	 * entry within the system for all clients.
-	 *
-	 *     // Delete all cache entries in the wincache group
-	 *     Cache::instance('wincache')->delete_all();
-	 *
-	 * @return  boolean
-	 */
-	public function delete_all()
-	{
-		return wincache_ucache_clear();
-	}
+    /**
+     * Delete all cache entries.
+     *
+     * Beware of using this method when
+     * using shared memory cache systems, as it will wipe every
+     * entry within the system for all clients.
+     *
+     *     // Delete all cache entries in the wincache group
+     *     Cache::instance('wincache')->delete_all();
+     *
+     * @return bool
+     */
+    public function delete_all()
+    {
+        return wincache_ucache_clear();
+    }
 }

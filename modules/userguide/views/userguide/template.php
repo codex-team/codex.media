@@ -5,9 +5,13 @@
 
 <title><?php echo $title ?> | Kohana <?php echo 'User Guide'; ?></title>
 
-<?php foreach ($styles as $style => $media) echo HTML::style($style, array('media' => $media), NULL, TRUE), "\n" ?>
+<?php foreach ($styles as $style => $media) {
+    echo HTML::style($style, ['media' => $media], null, true), "\n";
+} ?>
 
-<?php foreach ($scripts as $script) echo HTML::script($script, NULL, NULL, TRUE), "\n" ?>
+<?php foreach ($scripts as $script) {
+    echo HTML::script($script, null, null, true), "\n";
+} ?>
 
 <!--[if lt IE 9]>
 <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
@@ -18,7 +22,7 @@
 	<div id="kodoc-header">
 		<div class="container">
 			<a href="http://kohanaframework.org/" id="kodoc-logo">
-				<img src="<?php echo Route::url('docs/media', array('file' => 'img/kohana.png')) ?>" />
+				<img src="<?php echo Route::url('docs/media', ['file' => 'img/kohana.png']) ?>" />
 			</a>
 			<div id="kodoc-menu">
 				<ul>
@@ -42,7 +46,7 @@
 					<ul id="kodoc-breadcrumb">
 						<?php foreach ($breadcrumb as $link => $title): ?>
 							<?php if (is_string($link)): ?>
-							<li><?php echo HTML::anchor($link, $title, NULL, NULL, TRUE) ?></li>
+							<li><?php echo HTML::anchor($link, $title, null, null, true) ?></li>
 							<?php else: ?>
 							<li class="last"><?php echo $title ?></li>
 							<?php endif ?>

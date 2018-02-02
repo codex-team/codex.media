@@ -1,12 +1,12 @@
 <form class="writing island island--bottom-rounded" action="/p/writing" id="atlasForm" method="post" name="atlas">
 
-    <?
+    <?php
         /** if there is no information about page */
         if (!isset($page)) {
             $page = new Model_Page();
         }
 
-        /** Name of object's type in genitive declension */
+    /** Name of object's type in genitive declension */
         // $object_name = $page->is_news_page ? 'новости' : 'страницы';
     ?>
 
@@ -24,11 +24,11 @@
 
         <div class="writing__actions-content">
 
-            <?
+            <?php
                 $newsFeedKey = Model_Feed_Pages::MAIN;
 
-                $fromIndexPage   = !empty(Request::$current) && Request::$current->controller() == 'Index';
-                $fromNewsTab     = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
+                $fromIndexPage = !empty(Request::$current) && Request::$current->controller() == 'Index';
+                $fromNewsTab = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
                 $fromUserProfile = Request::$current->controller() == 'User_Index';
 
                 $isNews = $page->isPageOnMain || ($fromIndexPage && $fromNewsTab);
@@ -38,7 +38,7 @@
 
             <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
 
-            <? if ($user->isAdmin() && !$fromUserProfile): ?>
+            <?php if ($user->isAdmin() && !$fromUserProfile): ?>
                 <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
                     Новость
                 </span>
@@ -46,27 +46,27 @@
                 <span name="cdx-custom-checkbox" class="writing__vk-post" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">
                     <i class="icon-vkontakte"></i>
                 </span>
-            <? endif; ?>
+            <?php endif; ?>
 
-            <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
+            <?php if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
                 <span class="writing-fullscreen__button" onclick="codex.writing.openEditorFullscreen()">
-                    <? include(DOCROOT . 'public/app/svg/zoom.svg') ?>
+                    <?php include(DOCROOT . 'public/app/svg/zoom.svg') ?>
                     <span class="writing-fullscreen__text">На весь экран</span>
                 </span>
-            <? endif ?>
+            <?php endif ?>
 
         </div>
 
     </div>
 
-    <? if (($user->isAdmin() && $fromUserProfile) || isset($isPersonalBlog)): ?>
+    <?php if (($user->isAdmin() && $fromUserProfile) || isset($isPersonalBlog)): ?>
         <?= Form::hidden('isPersonalBlog', isset($isPersonalBlog) ? $isPersonalBlog : '1'); ?>
-    <? endif; ?>
+    <?php endif; ?>
 
 </form>
 
 
-<?
+<?php
     $hideEditorToolbar = !empty($hideEditorToolbar) && $hideEditorToolbar;
 ?>
 <script>
@@ -105,8 +105,8 @@
 
         var editorReady = codex.writing.prepare(settings);
 
-        <? if (!$hideEditorToolbar): ?>
+        <?php if (!$hideEditorToolbar): ?>
             editorReady.then(codex.writing.init);
-        <? endif ?>
+        <?php endif ?>
     });
 </script>

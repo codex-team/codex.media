@@ -1,13 +1,12 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php defined('SYSPATH') or die('No direct script access.');
 
-return array
-(
-	'modules' => array(
-		'unittest' => array(
-			'enabled' => TRUE,
-			'name' => 'Unittest',
-			'description' => 'Unit testing module',
-			'copyright' => '&copy; 2009-2011 Kohana Team',
-		)
-	)
-);
+return [
+    'modules' => [
+        'unittest' => [
+            'enabled' => true,
+            'name' => 'Unittest',
+            'description' => 'Unit testing module',
+            'copyright' => '&copy; 2009-2011 Kohana Team',
+        ]
+    ]
+];

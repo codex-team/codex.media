@@ -6,18 +6,21 @@
  *
  * @package    Kohana/Cache
  * @category   Base
+ *
  * @version    2.0
+ *
  * @author     Kohana Team
  * @copyright  (c) 2009-2012 Kohana Team
  * @license    http://kohanaphp.com/license
+ *
  * @since      3.0.8
  */
-interface Kohana_Cache_GarbageCollect {
-	/**
-	 * Garbage collection method that cleans any expired
-	 * cache entries from the cache.
-	 *
-	 * @return void
-	 */
-	public function garbage_collect();
+interface Kohana_Cache_GarbageCollect
+{
+    /**
+     * Garbage collection method that cleans any expired
+     * cache entries from the cache.
+     *
+     */
+    public function garbage_collect();
 }

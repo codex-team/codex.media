@@ -6,15 +6,15 @@
     <div class="auth-social">
 
         <a class="button button--vk" href="/auth/vk">
-            <? include(DOCROOT . "public/app/svg/vk.svg") ?>
+            <?php include(DOCROOT . "public/app/svg/vk.svg") ?>
             ВКонтакте
         </a>
         <a class="button button--facebook" href="/auth/fb">
-            <? include(DOCROOT . "public/app/svg/facebook-circle.svg") ?>
+            <?php include(DOCROOT . "public/app/svg/facebook-circle.svg") ?>
             Facebook
         </a>
         <a class="button button--twitter" href="/auth/tw">
-            <? include(DOCROOT . "public/app/svg/twitter.svg") ?>
+            <?php include(DOCROOT . "public/app/svg/twitter.svg") ?>
             Twitter
         </a>
 
@@ -24,30 +24,30 @@
 
     	<h3>Вход через пароль</h3>
 
-        <? $loginFields = array(
-                'email' => array(
+        <?php $loginFields = [
+                'email' => [
                     'label' => 'Email',
-                    'type'  => 'email',
-                    'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'login_email'),
-                ),
-                'password' => array(
+                    'type' => 'email',
+                    'value' => isset($inviteData['mail']) ? $inviteData['mail'] : Arr::get($_POST, 'login_email'),
+                ],
+                'password' => [
                     'label' => 'Пароль',
-                    'type'  => 'password',
-                )
-            );
+                    'type' => 'password',
+                ]
+            ];
         ?>
 
-        <? foreach ($loginFields as $fieldName => $field): ?>
+        <?php foreach ($loginFields as $fieldName => $field): ?>
             <p>
                 <input placeholder="<?= Arr::get($field, 'label') ?>" type="<?= Arr::get($field, 'type', 'text') ?>" name="login_<?= $fieldName?>" id="login_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>" />
             </p>
-        <? endforeach ?>
+        <?php endforeach ?>
 
 
         <button class="button master">Войти</button>
 
         <?= Form::hidden('csrf', Security::token()); ?>
-        <?= Form::hidden('action', 'login' ); ?>
+        <?= Form::hidden('action', 'login'); ?>
 
     </form>
 
@@ -59,17 +59,17 @@
 </div>
 
 <script>
-    <? if ($passwordReseted): ?>
+    <?php if ($passwordReseted): ?>
         codex.alerts.show({
             type: 'success',
             message: 'Новый пароль установлен'
         });
-    <? endif; ?>
+    <?php endif; ?>
 
-    <? if (!empty($login_error_text)): ?>
+    <?php if (!empty($login_error_text)): ?>
         codex.alerts.show({
             type: 'error',
             message: '<?= $login_error_text ?>'
         });
-    <? endif; ?>
+    <?php endif; ?>
 </script>

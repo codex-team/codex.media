@@ -2,37 +2,37 @@
 
     <form class="auth-form" action="" method="post">
 
-        <? if ($method == Model_Auth::TYPE_EMAIL_RESET): ?>
+        <?php if ($method == Model_Auth::TYPE_EMAIL_RESET): ?>
 
                 <h3>Восстановление пароля</h3>
 
-        <? elseif ($method == Model_Auth::TYPE_EMAIL_CHANGE): ?>
+        <?php elseif ($method == Model_Auth::TYPE_EMAIL_CHANGE): ?>
 
                 <h3>Смена пароля</h3>
 
-        <? endif; ?>
+        <?php endif; ?>
 
-        <? $regFields = array(
-            'password'  => array(
+        <?php $regFields = [
+            'password' => [
                 'label' => 'Новый пароль',
-                'type'  => 'password',
-            ),
-            'password_repeat' => array(
+                'type' => 'password',
+            ],
+            'password_repeat' => [
                 'label' => 'Повторите пароль',
-                'type'  => 'password',
-                'id'    => 'password_repeat'
-            )
-        ); ?>
+                'type' => 'password',
+                'id' => 'password_repeat'
+            ]
+        ]; ?>
 
-        <? foreach ($regFields as $fieldName => $field): ?>
-            <? if (isset($reset_password_error_fields[$fieldName])): ?>
+        <?php foreach ($regFields as $fieldName => $field): ?>
+            <?php if (isset($reset_password_error_fields[$fieldName])): ?>
                 <p class="auth-field__error">
-            <? else: ?>
+            <?php else: ?>
                 <p>
-            <? endif; ?>
+            <?php endif; ?>
             <input placeholder="<?= Arr::get($field, 'label') ?>" type="<?= Arr::get($field, 'type', 'text') ?>" name="reset_<?= $fieldName?>" id="reset_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>" required />
             </p>
-        <? endforeach ?>
+        <?php endforeach ?>
 
         <?= Form::hidden('csrf', Security::token()); ?>
 
@@ -44,12 +44,12 @@
 
 
 <script>
-    <? if (!empty($reset_password_error_fields)): ?>
-        <? foreach($reset_password_error_fields as $fieldName => $errorText ): ?>
+    <?php if (!empty($reset_password_error_fields)): ?>
+        <?php foreach ($reset_password_error_fields as $fieldName => $errorText): ?>
             codex.alerts.show({
                 type: 'error',
                 message: '<?= $errorText ?>'
             });
-        <? endforeach; ?>
-    <? endif; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </script>

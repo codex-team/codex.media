@@ -5,10 +5,10 @@
     <button class="button master" onclick="codex.user.changePassword.repeatEmail(this)">Отправить еще раз</button>
 </div>
 
-<? if (empty($newPasswordRequested)): ?>
+<?php if (empty($newPasswordRequested)): ?>
     <div class="island island--padded island--margined island--centered island--bottomed form profile-settings__change-password-btn"
          onclick="<?= $user->password ? 'codex.user.changePassword.showForm(this)' : 'codex.user.changePassword.set(this)'; ?>">
-        <? include(DOCROOT . "public/app/svg/lock.svg") ?>
+        <?php include(DOCROOT . "public/app/svg/lock.svg") ?>
         <?= $user->password ? 'Изменить пароль' : 'Установить пароль'; ?>
     </div>
     <div id="change-password-form" class="island island--padded island--margined island--bottomed form hide">
@@ -17,4 +17,4 @@
         <span class="button form__hint master" onclick="codex.user.changePassword.requestChange(this)">Подтвердить</span>
         <div id="password-change-message"></div>
     </div>
-<? endif; ?>
+<?php endif; ?>

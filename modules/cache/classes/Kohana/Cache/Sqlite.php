@@ -6,329 +6,307 @@
  *
  * @package    Kohana/Cache
  * @category   Base
+ *
  * @author     Kohana Team
  * @copyright  (c) 2009-2012 Kohana Team
  * @license    http://kohanaphp.com/license
  */
-class Kohana_Cache_Sqlite extends Cache implements Cache_Tagging, Cache_GarbageCollect {
+class Kohana_Cache_Sqlite extends Cache implements Cache_Tagging, Cache_GarbageCollect
+{
 
-	/**
-	 * Database resource
-	 *
-	 * @var  PDO
-	 */
-	protected $_db;
+    /**
+     * Database resource
+     *
+     * @var PDO
+     */
+    protected $_db;
 
-	/**
-	 * Sets up the PDO SQLite table and
-	 * initialises the PDO connection
-	 *
-	 * @param  array  $config  configuration
-	 * @throws  Cache_Exception
-	 */
-	protected function __construct(array $config)
-	{
-		parent::__construct($config);
+    /**
+     * Sets up the PDO SQLite table and
+     * initialises the PDO connection
+     *
+     * @param array $config configuration
+     *
+     * @throws Cache_Exception
+     */
+    protected function __construct(array $config)
+    {
+        parent::__construct($config);
 
-		$database = Arr::get($this->_config, 'database', NULL);
+        $database = Arr::get($this->_config, 'database', null);
 
-		if ($database === NULL)
-		{
-			throw new Cache_Exception('Database path not available in Kohana Cache configuration');
-		}
+        if ($database === null) {
+            throw new Cache_Exception('Database path not available in Kohana Cache configuration');
+        }
 
-		// Load new Sqlite DB
-		$this->_db = new PDO('sqlite:'.$database);
+        // Load new Sqlite DB
+        $this->_db = new PDO('sqlite:' . $database);
 
-		// Test for existing DB
-		$result = $this->_db->query("SELECT * FROM sqlite_master WHERE name = 'caches' AND type = 'table'")->fetchAll();
+        // Test for existing DB
+        $result = $this->_db->query("SELECT * FROM sqlite_master WHERE name = 'caches' AND type = 'table'")->fetchAll();
 
-		// If there is no table, create a new one
-		if (0 == count($result))
-		{
-			$database_schema = Arr::get($this->_config, 'schema', NULL);
+        // If there is no table, create a new one
+        if (0 == count($result)) {
+            $database_schema = Arr::get($this->_config, 'schema', null);
 
-			if ($database_schema === NULL)
-			{
-				throw new Cache_Exception('Database schema not found in Kohana Cache configuration');
-			}
+            if ($database_schema === null) {
+                throw new Cache_Exception('Database schema not found in Kohana Cache configuration');
+            }
 
-			try
-			{
-				// Create the caches table
-				$this->_db->query(Arr::get($this->_config, 'schema', NULL));
-			}
-			catch (PDOException $e)
-			{
-				throw new Cache_Exception('Failed to create new SQLite caches table with the following error : :error', array(':error' => $e->getMessage()));
-			}
-		}
-	}
+            try {
+                // Create the caches table
+                $this->_db->query(Arr::get($this->_config, 'schema', null));
+            } catch (PDOException $e) {
+                throw new Cache_Exception('Failed to create new SQLite caches table with the following error : :error', [':error' => $e->getMessage()]);
+            }
+        }
+    }
 
-	/**
-	 * Retrieve a value based on an id
-	 *
-	 * @param   string  $id       id
-	 * @param   string  $default  default [Optional] Default value to return if id not found
-	 * @return  mixed
-	 * @throws  Cache_Exception
-	 */
-	public function get($id, $default = NULL)
-	{
-		// Prepare statement
-		$statement = $this->_db->prepare('SELECT id, expiration, cache FROM caches WHERE id = :id LIMIT 0, 1');
+    /**
+     * Retrieve a value based on an id
+     *
+     * @param string $id      id
+     * @param string $default default [Optional] Default value to return if id not found
+     *
+     * @throws Cache_Exception
+     *
+     * @return mixed
+     */
+    public function get($id, $default = null)
+    {
+        // Prepare statement
+        $statement = $this->_db->prepare('SELECT id, expiration, cache FROM caches WHERE id = :id LIMIT 0, 1');
 
-		// Try and load the cache based on id
-		try
-		{
-			$statement->execute(array(':id' => $this->_sanitize_id($id)));
-		}
-		catch (PDOException $e)
-		{
-			throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', array(':error' => $e->getMessage()));
-		}
+        // Try and load the cache based on id
+        try {
+            $statement->execute([':id' => $this->_sanitize_id($id)]);
+        } catch (PDOException $e) {
+            throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', [':error' => $e->getMessage()]);
+        }
 
-		if ( ! $result = $statement->fetch(PDO::FETCH_OBJ))
-		{
-			return $default;
-		}
+        if (! $result = $statement->fetch(PDO::FETCH_OBJ)) {
+            return $default;
+        }
 
-		// If the cache has expired
-		if ($result->expiration != 0 and $result->expiration <= time())
-		{
-			// Delete it and return default value
-			$this->delete($id);
-			return $default;
-		}
-		// Otherwise return cached object
-		else
-		{
-			// Disable notices for unserializing
-			$ER = error_reporting(~E_NOTICE);
+        // If the cache has expired
+        if ($result->expiration != 0 and $result->expiration <= time()) {
+            // Delete it and return default value
+            $this->delete($id);
 
-			// Return the valid cache data
-			$data = unserialize($result->cache);
+            return $default;
+        }
+        // Otherwise return cached object
+        else {
+            // Disable notices for unserializing
+            $ER = error_reporting(~E_NOTICE);
 
-			// Turn notices back on
-			error_reporting($ER);
+            // Return the valid cache data
+            $data = unserialize($result->cache);
 
-			// Return the resulting data
-			return $data;
-		}
-	}
+            // Turn notices back on
+            error_reporting($ER);
 
-	/**
-	 * Set a value based on an id. Optionally add tags.
-	 *
-	 * @param   string   $id        id
-	 * @param   mixed    $data      data
-	 * @param   integer  $lifetime  lifetime [Optional]
-	 * @return  boolean
-	 */
-	public function set($id, $data, $lifetime = NULL)
-	{
-		return (bool) $this->set_with_tags($id, $data, $lifetime);
-	}
+            // Return the resulting data
+            return $data;
+        }
+    }
 
-	/**
-	 * Delete a cache entry based on id
-	 *
-	 * @param   string  $id  id
-	 * @return  boolean
-	 * @throws  Cache_Exception
-	 */
-	public function delete($id)
-	{
-		// Prepare statement
-		$statement = $this->_db->prepare('DELETE FROM caches WHERE id = :id');
+    /**
+     * Set a value based on an id. Optionally add tags.
+     *
+     * @param string $id       id
+     * @param mixed  $data     data
+     * @param int    $lifetime lifetime [Optional]
+     *
+     * @return bool
+     */
+    public function set($id, $data, $lifetime = null)
+    {
+        return (bool) $this->set_with_tags($id, $data, $lifetime);
+    }
 
-		// Remove the entry
-		try
-		{
-			$statement->execute(array(':id' => $this->_sanitize_id($id)));
-		}
-		catch (PDOException $e)
-		{
-			throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', array(':error' => $e->getMessage()));
-		}
+    /**
+     * Delete a cache entry based on id
+     *
+     * @param string $id id
+     *
+     * @throws Cache_Exception
+     *
+     * @return bool
+     */
+    public function delete($id)
+    {
+        // Prepare statement
+        $statement = $this->_db->prepare('DELETE FROM caches WHERE id = :id');
 
-		return (bool) $statement->rowCount();
-	}
+        // Remove the entry
+        try {
+            $statement->execute([':id' => $this->_sanitize_id($id)]);
+        } catch (PDOException $e) {
+            throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', [':error' => $e->getMessage()]);
+        }
 
-	/**
-	 * Delete all cache entries
-	 *
-	 * @return  boolean
-	 */
-	public function delete_all()
-	{
-		// Prepare statement
-		$statement = $this->_db->prepare('DELETE FROM caches');
+        return (bool) $statement->rowCount();
+    }
 
-		// Remove the entry
-		try
-		{
-			$statement->execute();
-		}
-		catch (PDOException $e)
-		{
-			throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', array(':error' => $e->getMessage()));
-		}
+    /**
+     * Delete all cache entries
+     *
+     * @return bool
+     */
+    public function delete_all()
+    {
+        // Prepare statement
+        $statement = $this->_db->prepare('DELETE FROM caches');
 
-		return (bool) $statement->rowCount();
-	}
+        // Remove the entry
+        try {
+            $statement->execute();
+        } catch (PDOException $e) {
+            throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', [':error' => $e->getMessage()]);
+        }
 
-	/**
-	 * Set a value based on an id. Optionally add tags.
-	 *
-	 * @param   string   $id        id
-	 * @param   mixed    $data      data
-	 * @param   integer  $lifetime  lifetime [Optional]
-	 * @param   array    $tags      tags [Optional]
-	 * @return  boolean
-	 * @throws  Cache_Exception
-	 */
-	public function set_with_tags($id, $data, $lifetime = NULL, array $tags = NULL)
-	{
-		// Serialize the data
-		$data = serialize($data);
+        return (bool) $statement->rowCount();
+    }
 
-		// Normalise tags
-		$tags = (NULL === $tags) ? NULL : ('<'.implode('>,<', $tags).'>');
+    /**
+     * Set a value based on an id. Optionally add tags.
+     *
+     * @param string $id       id
+     * @param mixed  $data     data
+     * @param int    $lifetime lifetime [Optional]
+     * @param array  $tags     tags [Optional]
+     *
+     * @throws Cache_Exception
+     *
+     * @return bool
+     */
+    public function set_with_tags($id, $data, $lifetime = null, array $tags = null)
+    {
+        // Serialize the data
+        $data = serialize($data);
 
-		// Setup lifetime
-		if ($lifetime === NULL)
-		{
-			$lifetime = (0 === Arr::get($this->_config, 'default_expire', NULL)) ? 0 : (Arr::get($this->_config, 'default_expire', Cache::DEFAULT_EXPIRE) + time());
-		}
-		else
-		{
-			$lifetime = (0 === $lifetime) ? 0 : ($lifetime + time());
-		}
+        // Normalise tags
+        $tags = (null === $tags) ? null : ('<' . implode('>,<', $tags) . '>');
 
-		// Prepare statement
-		// $this->exists() may throw Cache_Exception, no need to catch/rethrow
-		$statement = $this->exists($id) ? $this->_db->prepare('UPDATE caches SET expiration = :expiration, cache = :cache, tags = :tags WHERE id = :id') : $this->_db->prepare('INSERT INTO caches (id, cache, expiration, tags) VALUES (:id, :cache, :expiration, :tags)');
+        // Setup lifetime
+        if ($lifetime === null) {
+            $lifetime = (0 === Arr::get($this->_config, 'default_expire', null)) ? 0 : (Arr::get($this->_config, 'default_expire', Cache::DEFAULT_EXPIRE) + time());
+        } else {
+            $lifetime = (0 === $lifetime) ? 0 : ($lifetime + time());
+        }
 
-		// Try to insert
-		try
-		{
-			$statement->execute(array(':id' => $this->_sanitize_id($id), ':cache' => $data, ':expiration' => $lifetime, ':tags' => $tags));
-		}
-		catch (PDOException $e)
-		{
-			throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', array(':error' => $e->getMessage()));
-		}
+        // Prepare statement
+        // $this->exists() may throw Cache_Exception, no need to catch/rethrow
+        $statement = $this->exists($id) ? $this->_db->prepare('UPDATE caches SET expiration = :expiration, cache = :cache, tags = :tags WHERE id = :id') : $this->_db->prepare('INSERT INTO caches (id, cache, expiration, tags) VALUES (:id, :cache, :expiration, :tags)');
 
-		return (bool) $statement->rowCount();
-	}
+        // Try to insert
+        try {
+            $statement->execute([':id' => $this->_sanitize_id($id), ':cache' => $data, ':expiration' => $lifetime, ':tags' => $tags]);
+        } catch (PDOException $e) {
+            throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', [':error' => $e->getMessage()]);
+        }
 
-	/**
-	 * Delete cache entries based on a tag
-	 *
-	 * @param   string  $tag  tag
-	 * @return  boolean
-	 * @throws  Cache_Exception
-	 */
-	public function delete_tag($tag)
-	{
-		// Prepare the statement
-		$statement = $this->_db->prepare('DELETE FROM caches WHERE tags LIKE :tag');
+        return (bool) $statement->rowCount();
+    }
 
-		// Try to delete
-		try
-		{
-			$statement->execute(array(':tag' => "%<{$tag}>%"));
-		}
-		catch (PDOException $e)
-		{
-			throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', array(':error' => $e->getMessage()));
-		}
+    /**
+     * Delete cache entries based on a tag
+     *
+     * @param string $tag tag
+     *
+     * @throws Cache_Exception
+     *
+     * @return bool
+     */
+    public function delete_tag($tag)
+    {
+        // Prepare the statement
+        $statement = $this->_db->prepare('DELETE FROM caches WHERE tags LIKE :tag');
 
-		return (bool) $statement->rowCount();
-	}
+        // Try to delete
+        try {
+            $statement->execute([':tag' => "%<{$tag}>%"]);
+        } catch (PDOException $e) {
+            throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', [':error' => $e->getMessage()]);
+        }
 
-	/**
-	 * Find cache entries based on a tag
-	 *
-	 * @param   string  $tag  tag
-	 * @return  array
-	 * @throws  Cache_Exception
-	 */
-	public function find($tag)
-	{
-		// Prepare the statement
-		$statement = $this->_db->prepare('SELECT id, cache FROM caches WHERE tags LIKE :tag');
+        return (bool) $statement->rowCount();
+    }
 
-		// Try to find
-		try
-		{
-			if ( ! $statement->execute(array(':tag' => "%<{$tag}>%")))
-			{
-				return array();
-			}
-		}
-		catch (PDOException $e)
-		{
-			throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', array(':error' => $e->getMessage()));
-		}
+    /**
+     * Find cache entries based on a tag
+     *
+     * @param string $tag tag
+     *
+     * @throws Cache_Exception
+     *
+     * @return array
+     */
+    public function find($tag)
+    {
+        // Prepare the statement
+        $statement = $this->_db->prepare('SELECT id, cache FROM caches WHERE tags LIKE :tag');
 
-		$result = array();
+        // Try to find
+        try {
+            if (! $statement->execute([':tag' => "%<{$tag}>%"])) {
+                return [];
+            }
+        } catch (PDOException $e) {
+            throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', [':error' => $e->getMessage()]);
+        }
 
-		while ($row = $statement->fetchObject())
-		{
-			// Disable notices for unserializing
-			$ER = error_reporting(~E_NOTICE);
+        $result = [];
 
-			$result[$row->id] = unserialize($row->cache);
+        while ($row = $statement->fetchObject()) {
+            // Disable notices for unserializing
+            $ER = error_reporting(~E_NOTICE);
 
-			// Turn notices back on
-			error_reporting($ER);
-		}
+            $result[$row->id] = unserialize($row->cache);
 
-		return $result;
-	}
+            // Turn notices back on
+            error_reporting($ER);
+        }
 
-	/**
-	 * Garbage collection method that cleans any expired
-	 * cache entries from the cache.
-	 *
-	 * @return  void
-	 */
-	public function garbage_collect()
-	{
-		// Create the sequel statement
-		$statement = $this->_db->prepare('DELETE FROM caches WHERE expiration < :expiration');
+        return $result;
+    }
 
-		try
-		{
-			$statement->execute(array(':expiration' => time()));
-		}
-		catch (PDOException $e)
-		{
-			throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', array(':error' => $e->getMessage()));
-		}
-	}
+    /**
+     * Garbage collection method that cleans any expired
+     * cache entries from the cache.
+     *
+     */
+    public function garbage_collect()
+    {
+        // Create the sequel statement
+        $statement = $this->_db->prepare('DELETE FROM caches WHERE expiration < :expiration');
 
-	/**
-	 * Tests whether an id exists or not
-	 *
-	 * @param   string  $id  id
-	 * @return  boolean
-	 * @throws  Cache_Exception
-	 */
-	protected function exists($id)
-	{
-		$statement = $this->_db->prepare('SELECT id FROM caches WHERE id = :id');
-		try
-		{
-			$statement->execute(array(':id' => $this->_sanitize_id($id)));
-		}
-		catch (PDOExeption $e)
-		{
-			throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', array(':error' => $e->getMessage()));
-		}
+        try {
+            $statement->execute([':expiration' => time()]);
+        } catch (PDOException $e) {
+            throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', [':error' => $e->getMessage()]);
+        }
+    }
 
-		return (bool) $statement->fetchAll();
-	}
+    /**
+     * Tests whether an id exists or not
+     *
+     * @param string $id id
+     *
+     * @throws Cache_Exception
+     *
+     * @return bool
+     */
+    protected function exists($id)
+    {
+        $statement = $this->_db->prepare('SELECT id FROM caches WHERE id = :id');
+        try {
+            $statement->execute([':id' => $this->_sanitize_id($id)]);
+        } catch (PDOExeption $e) {
+            throw new Cache_Exception('There was a problem querying the local SQLite3 cache. :error', [':error' => $e->getMessage()]);
+        }
+
+        return (bool) $statement->fetchAll();
+    }
 }

@@ -1,4 +1,4 @@
-<?
+<?php
     $coverStyle = $block['style'] == 'bigCover' ? 'link-embed__cover--big' : 'link-embed__cover--small';
 ?>
 <a class="link-embed clearfix" href="<?=$block['linkUrl']; ?>" target="_blank" rel="nofollow">

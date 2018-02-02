@@ -1,3 +1,5 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php defined('SYSPATH') or die('No direct script access.');
 
-class HTTP_Exception_417 extends Kohana_HTTP_Exception_417 {}
+class HTTP_Exception_417 extends Kohana_HTTP_Exception_417
+{
+}

@@ -1,15 +1,15 @@
-<? if ($pages): ?>
+<?php if ($pages): ?>
 
-    <? foreach ($pages as $index => $page): ?>
+    <?php foreach ($pages as $index => $page): ?>
 
-        <? /**
+        <?php /**
             * if the elem is the first
             * $page === reset($pages)
             */ ?>
         <article id="js-page-<?= $page->id ?>" class="island <?= $index != 0 ? 'island--margined' : '' ?> post-list-item <?= $page->rich_view ? 'post-list-item--big' : '' ?> <?= $page->dt_pin ? 'post-list-item_pinned' : '' ?>">
 
             <div class="post-list-item__header">
-                <? if ($user->isAdmin || $user->id == $page->author->id): ?>
+                <?php if ($user->isAdmin || $user->id == $page->author->id): ?>
                     <span class="island-settings js-page-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
                         <module-settings hidden>
                             {
@@ -29,7 +29,7 @@
                                     }
 
                                 },
-                                <? if ($user->isAdmin): ?>
+                                <?php if ($user->isAdmin): ?>
                                     {
                                         "title" : "Установить обложку",
                                         "handler" : {
@@ -38,7 +38,7 @@
                                             "submethod" : "toggleButton"
                                         }
                                     },
-                                    <? if ($active_tab == Model_Feed_Pages::MAIN): ?>
+                                    <?php if ($active_tab == Model_Feed_Pages::MAIN): ?>
                                         {
                                             "title" : "Закрепить",
                                             "handler" : {
@@ -47,8 +47,8 @@
                                                 "submethod" : "toggle"
                                             }
                                         },
-                                    <? endif; ?>
-                                <? endif; ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
                                 {
                                     "title" : "Удалить",
                                     "handler" : {
@@ -58,16 +58,16 @@
                                 }]
                             }
                         </module-settings>
-                        <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
+                        <?php include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
                     </span>
-                <? endif ?>
+                <?php endif ?>
                 <time class="post-list-item__date">
                     <a href="<?= $page->url ?>" class="js-article-time">
-                        <? if ($active_tab == Model_Feed_Pages::MAIN && $page->isPinned): ?>
+                        <?php if ($active_tab == Model_Feed_Pages::MAIN && $page->isPinned): ?>
                             Запись закреплена
-                        <? else: ?>
+                        <?php else: ?>
                             <?= date_format(date_create($page->date), 'd F Y, G:i') ?>
-                        <? endif; ?>
+                        <?php endif; ?>
                     </a>
                 </time>
                 <a class="post-list-item__author" href="/user/<?= $page->author->id ?>">
@@ -81,50 +81,50 @@
                 </a>
             </h3>
 
-            <? if (!$page->rich_view && $page->description): ?>
+            <?php if (!$page->rich_view && $page->description): ?>
                 <div class="post-list-item__body js-emoji-included">
                     <?= $page->description ?>
                 </div>
-            <? endif ?>
+            <?php endif ?>
 
-            <? if (!empty($page->cover)): ?>
+            <?php if (!empty($page->cover)): ?>
                 <a class="posts-list-item__cover" style="background-image:  url('/upload/pages/covers/o_<?= $page->cover ?>');" href="/p/<?= $page->id ?>/<?= $page->uri ?>">
-                    <? include(DOCROOT . "public/app/svg/camera.svg") ?>
+                    <?php include(DOCROOT . "public/app/svg/camera.svg") ?>
                 </a>
-            <? elseif( $user->isAdmin) : ?>
+            <?php elseif ($user->isAdmin) : ?>
                 <div class="posts-list-item__cover posts-list-item__cover--empty" onclick="codex.pages.cover.set(<?= $page->id ?>)">
-                    <? include(DOCROOT . "public/app/svg/camera.svg") ?>
+                    <?php include(DOCROOT . "public/app/svg/camera.svg") ?>
                 </div>
-            <? endif ?>
+            <?php endif ?>
 
 
 
             <div class="post-list-item__footer">
                 <a class="post-list-item__comments" href="/p/<?= $page->id ?>/<?= $page->uri ?>" rel="nofollow">
-                    <? include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>
-                    <? if ($page->commentsCount > 0): ?>
+                    <?php include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>
+                    <?php if ($page->commentsCount > 0): ?>
                         <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
-                    <? else: ?>
+                    <?php else: ?>
                         Комментировать
-                    <? endif ?>
+                    <?php endif ?>
                 </a>
 
                 <span class="post-list-item__views">
-                    <? include(DOCROOT . "public/app/svg/eye.svg") ?>
+                    <?php include(DOCROOT . "public/app/svg/eye.svg") ?>
                     <?= $page->views ?>
                 </span>
             </div>
         </article>
 
-    <? endforeach; ?>
+    <?php endforeach; ?>
 
-<? else: ?>
+<?php else: ?>
 
     <div class="island island--padded island--centered">
         <div class="empty-motivator">
-            <? include(DOCROOT . "public/app/svg/article.svg") ?><br>
+            <?php include(DOCROOT . "public/app/svg/article.svg") ?><br>
             <?= $emptyListMessage ?: 'Список статей пуст' ?>
         </div>
     </div>
 
-<? endif ?>
+<?php endif ?>

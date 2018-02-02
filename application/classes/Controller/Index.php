@@ -6,7 +6,7 @@ class Controller_Index extends Controller_Base_preDispatch
 
     public function action_index()
     {
-        $feed_key    = $this->request->param('feed_key') ?: Model_Feed_Pages::MAIN;
+        $feed_key = $this->request->param('feed_key') ?: Model_Feed_Pages::MAIN;
         $page_number = $this->request->param('page_number') ?: 1;
 
         $offset = ($page_number - 1) * self::NEWS_LIMIT_PER_PAGE;
@@ -24,19 +24,19 @@ class Controller_Index extends Controller_Base_preDispatch
         /***/
 
         if (Model_Methods::isAjax()) {
-            $response = array();
-            $response['success']    = 1;
-            $response['next_page']  = $next_page;
-            $response['list']       = View::factory('templates/pages/list', array('pages' => $pages, 'active_tab' => $feed_key))->render();
+            $response = [];
+            $response['success'] = 1;
+            $response['next_page'] = $next_page;
+            $response['list'] = View::factory('templates/pages/list', ['pages' => $pages, 'active_tab' => $feed_key])->render();
 
             $this->auto_render = false;
             $this->response->headers('Content-Type', 'application/json; charset=utf-8');
             $this->response->body(json_encode($response));
         } else {
-            $this->view['pages']        = $pages;
-            $this->view['next_page']    = $next_page;
-            $this->view['page_number']  = $page_number;
-            $this->view['active_tab']   = $feed_key ?: Model_Feed_Pages::MAIN;
+            $this->view['pages'] = $pages;
+            $this->view['next_page'] = $next_page;
+            $this->view['page_number'] = $page_number;
+            $this->view['active_tab'] = $feed_key ?: Model_Feed_Pages::MAIN;
 
             $this->template->content = View::factory('templates/index', $this->view);
         }

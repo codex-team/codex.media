@@ -1,17 +1,17 @@
 <div class="profile island island--padded">
 
-    <? if ($viewUser->isMe): ?>
+    <?php if ($viewUser->isMe): ?>
         <div class="island__navigation">
             Профиль
             <a href="\user\settings" class="island__navigation-item island__navigation-item--right">
                 Настройки
             </a>
         </div>
-    <? endif; ?>
+    <?php endif; ?>
 
     <div class="profile__content clearfix">
 
-        <? if ($user->isAdmin): ?>
+        <?php if ($user->isAdmin): ?>
             <span class="island-settings js-user-settings" data-id="<?= $viewUser->id ?>" data-module="islandSettings">
                 <module-settings hidden>
                     {
@@ -41,71 +41,71 @@
                             }]
                     }
                 </module-settings>
-                <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
+                <?php include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
             </span>
-        <? endif ?>
+        <?php endif ?>
 
         <img class="profile__ava" src="<?= $viewUser->photo_medium ?>" />
 
         <h1 class="profile__name">
     		<?= $viewUser->name ?>
-            <? if ($viewUser->isTeacher): ?>
+            <?php if ($viewUser->isTeacher): ?>
                 <span class="verified" title="Преподаватель">
-                    <? include(DOCROOT . "public/app/svg/verified.svg") ?>
+                    <?php include(DOCROOT . "public/app/svg/verified.svg") ?>
                 </span>
-            <? endif ?>
+            <?php endif ?>
         </h1>
 
         <div class="profile__about <?= $viewUser->isMe ? 'profile__about--editable' : '' ?> js-emoji-included" <?= $viewUser->isMe ? 'onclick="codex.user.bio.edit(this)"' : ''?>>
-            <? if (!empty($viewUser->bio)): ?>
+            <?php if (!empty($viewUser->bio)): ?>
                 <?= $viewUser->bio ?>
-            <? else: ?>
+            <?php else: ?>
                 Ничем полезным не занимаюсь
-            <? endif ?>
-            <? if ($viewUser->isMe): ?>
-                <? include(DOCROOT . "public/app/svg/pencil-circle.svg") ?>
-            <? endif ?>
+            <?php endif ?>
+            <?php if ($viewUser->isMe): ?>
+                <?php include(DOCROOT . "public/app/svg/pencil-circle.svg") ?>
+            <?php endif ?>
         </div>
 
-        <? if ($viewUser->vk): ?>
+        <?php if ($viewUser->vk): ?>
             <a class="border-button border-button--vk" href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
-                <? include(DOCROOT . "public/app/svg/vk.svg") ?>
+                <?php include(DOCROOT . "public/app/svg/vk.svg") ?>
                 <?= $viewUser->vk_uri ?: $viewUser->vk_name ?>
             </a>
-        <? endif; ?>
+        <?php endif; ?>
 
-        <? if ($viewUser->facebook): ?>
+        <?php if ($viewUser->facebook): ?>
             <a class="border-button border-button--facebook" href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
-                <? include(DOCROOT . "public/app/svg/facebook-circle.svg") ?>
+                <?php include(DOCROOT . "public/app/svg/facebook-circle.svg") ?>
                 <?= $viewUser->facebook_name ?: $viewUser->name ?>
             </a>
-        <? endif ?>
+        <?php endif ?>
 
-        <? if ($viewUser->twitter): ?>
+        <?php if ($viewUser->twitter): ?>
             <a class="border-button border-button--twitter" href="//twitter.com/<?= $viewUser->twitter_username ?>" target="_blank">
-                <? include(DOCROOT . "public/app/svg/twitter.svg") ?>
+                <?php include(DOCROOT . "public/app/svg/twitter.svg") ?>
                 <?= $viewUser->twitter_name ?: $viewUser->name ?>
             </a>
-        <? endif ?>
+        <?php endif ?>
 
     </div>
 
 </div>
 
-<? /* */ ?>
-<? if (isset($isUpdateSaved) && $isUpdateSaved): ?>
+<?php /* */ ?>
+<?php if (isset($isUpdateSaved) && $isUpdateSaved): ?>
 
     <div class="info_block align_c">
         Обновления сохранены
     </div>
 
-<? endif; ?>
+<?php endif; ?>
 
-<? if ($viewUser->isMe): ?>
-    <?= View::factory('templates/pages/form_wrapper', array(
+<?php if ($viewUser->isMe): ?>
+    <?= View::factory('templates/pages/form_wrapper', [
             'hideEditorToolbar' => true
-        )); ?>
-<? endif ?>
+        ]); ?>
+<?php endif ?>
 
 <div class="island tabs island--margined">
     <a class="tabs__tab <?= $list == 'pages' || !$list ? 'tabs__tab--current' : '' ?>" href='/user/<?= $viewUser->id ?>'>
@@ -119,11 +119,11 @@
 
 <?= $listFactory ?>
 
-<? if ($emailConfirmed): ?>
+<?php if ($emailConfirmed): ?>
     <script>
         codex.alerts.show({
             type: 'success',
             message: 'Email успешно подтвержден!'
         })
     </script>
-<? endif; ?>
+<?php endif; ?>

@@ -11,54 +11,54 @@
 
         <h3>Регистрация</h3>
 
-        <? $regFields = array(
-            'name' => array(
+        <?php $regFields = [
+            'name' => [
                 'label' => 'Фамилия, Имя',
-                'value' => isset( $inviteData['name'] ) ? $inviteData['name'] : Arr::get($_POST, 'signup_name', ''),
-            ),
-            'email' => array(
+                'value' => isset($inviteData['name']) ? $inviteData['name'] : Arr::get($_POST, 'signup_name', ''),
+            ],
+            'email' => [
                 'label' => 'Email',
-                'type'  => 'email',
-                'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'signup_email'),
-            ),
-            'password'  => array(
+                'type' => 'email',
+                'value' => isset($inviteData['mail']) ? $inviteData['mail'] : Arr::get($_POST, 'signup_email'),
+            ],
+            'password' => [
                 'label' => 'Пароль',
-                'type'  => 'password',
-            ),
-            'password_repeat' => array(
+                'type' => 'password',
+            ],
+            'password_repeat' => [
                 'label' => 'Повторите пароль',
-                'type'  => 'password',
-                'id'    => 'password_repeat'
-            )
-        ); ?>
+                'type' => 'password',
+                'id' => 'password_repeat'
+            ]
+        ]; ?>
 
-        <? foreach ($regFields as $fieldName => $field): ?>
-            <? if (isset($signup_error_fields[$fieldName])): ?>
+        <?php foreach ($regFields as $fieldName => $field): ?>
+            <?php if (isset($signup_error_fields[$fieldName])): ?>
                 <p class="auth-field__error">
-            <? else: ?>
+            <?php else: ?>
                 <p>
-            <? endif; ?>
+            <?php endif; ?>
                     <input placeholder="<?= Arr::get($field, 'label') ?>" type="<?= Arr::get($field, 'type', 'text') ?>" name="signup_<?= $fieldName?>" id="signup_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>" required />
                 </p>
-        <? endforeach ?>
+        <?php endforeach ?>
 
         <?= Form::hidden('csrf', Security::token()); ?>
-        <?= Form::hidden('action', 'signup' ); ?>
+        <?= Form::hidden('action', 'signup'); ?>
 
         <button class="button master">Зарегистрироваться</button>
 
     </form>
 
-    <? if (!empty($site_info['privacy_policy_url'])): ?>
+    <?php if (!empty($site_info['privacy_policy_url'])): ?>
         <div class="privacy-policy">
             <span class="privacy-policy__ic">
-                <? include(DOCROOT . "public/app/svg/info.svg") ?>
+                <?php include(DOCROOT . "public/app/svg/info.svg") ?>
             </span>
             <span class="privacy-policy__text">
                 Регистрируясь, вы соглашаетесь с <a class="privacy-policy__link" href="<?= $site_info['privacy_policy_url'] ?>" target="_blank">политикой конфиденциальности</a>
             </span>
         </div>
-    <? endif; ?>
+    <?php endif; ?>
 
     <div class="auth-form__footer">
         <a href="/reset">Восстановить пароль</a>
@@ -68,13 +68,13 @@
 </div>
 
 <script>
-    <? if (!empty($signup_error_fields)): ?>
-        <? foreach($signup_error_fields as $fieldName => $errorText ): ?>
+    <?php if (!empty($signup_error_fields)): ?>
+        <?php foreach ($signup_error_fields as $fieldName => $errorText): ?>
             codex.alerts.show({
                 type: 'error',
                 message: '<?= $errorText ?>'
             });
-        <? endforeach; ?>
-    <? endif; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </script>
 
