@@ -5,9 +5,9 @@ class Controller_User_Modify extends Controller_Base_preDispatch
     /**
      * @var array - AJAX response
      */
-    private $ajaxResponse = [
+    private $ajaxResponse = array(
         'success' => 0
-    ];
+    );
 
     public function action_settings()
     {
@@ -19,13 +19,13 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         if (Security::check(Arr::get($_POST, 'csrf'))) {
             $this->view['success'] = $this->update();
-        }
+        };
 
-        $model_auth = new Model_Auth([
-            "id" => $this->user->id,
-            "name" => $this->user->name,
+        $model_auth = new Model_Auth(array(
+            "id"    => $this->user->id,
+            "name"  => $this->user->name,
             "email" => $this->user->email
-        ]);
+        ));
         $this->view['newPasswordRequested'] = $model_auth->checkIfEmailWasSent(Model_Auth::TYPE_EMAIL_CHANGE);
 
         $this->template->content = View::factory('/templates/users/settings', $this->view);
@@ -34,17 +34,16 @@ class Controller_User_Modify extends Controller_Base_preDispatch
     public function update()
     {
         $name = Arr::get($_POST, 'name', $this->user->name);
-        $bio = Arr::get($_POST, 'bio', $this->user->bio);
+        $bio  = Arr::get($_POST, 'bio', $this->user->bio);
 
-        $fields = [
+        $fields = array(
             'name' => $name,
-            'bio' => $bio,
-        ];
+            'bio'  => $bio,
+        );
 
         if ($this->validateForm($fields)) {
             $this->user->updateUser($this->user->id, $fields);
             $this->redirect('user/settings?success=1');
-
             return true;
         }
 
@@ -67,18 +66,18 @@ class Controller_User_Modify extends Controller_Base_preDispatch
     {
         $this->auto_render = false;
 
-        $response = [
+        $response = array(
             'success' => 0
-        ];
+        );
 
-        $model_auth = new Model_Auth([
-            "id" => $this->user->id,
-            "name" => $this->user->name,
+        $model_auth  = new Model_Auth(array(
+            "id"    => $this->user->id,
+            "name"  => $this->user->name,
             "email" => $this->user->email
-        ]);
-        $csrf = Arr::get($_POST, 'csrf');
+        ));
+        $csrf        = Arr::get($_POST, 'csrf');
         $repeatEmail = Arr::get($_POST, 'repeatEmail', false);
-        $password = Arr::get($_POST, 'currentPassword', '');
+        $password    = Arr::get($_POST, 'currentPassword', '');
 
         if (!Security::check($csrf) || !$this->request->is_ajax()) {
             throw new HTTP_Exception_403();
@@ -88,30 +87,27 @@ class Controller_User_Modify extends Controller_Base_preDispatch
             $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CHANGE);
             $response['success'] = 1;
             $this->response->body(json_encode($response));
-
             return;
         }
 
         if (empty($password) && $this->user->password) {
             $response['message'] = 'Введите пароль';
             $this->response->body(json_encode($response));
-
             return;
         }
 
         if ($this->user->password && !$this->user->checkPassword($password)) {
             $response['message'] = 'Неверный пароль';
             $this->response->body(json_encode($response));
-
             return;
         }
 
         $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CHANGE);
 
-        $response = [
+        $response = array(
             'success' => 1,
             'message' => 'Мы отправили на вашу почту письмо с подтверждением. Перейдите по ссылке в письме, чтобы установить новый пароль.'
-        ];
+        );
 
         $this->response->body(json_encode($response));
     }
@@ -122,23 +118,23 @@ class Controller_User_Modify extends Controller_Base_preDispatch
      */
     public function action_updateBio()
     {
-        $response = [
+        $response = array(
             'success' => 0
-        ];
+        );
 
-        $bio = Arr::get($_POST, 'bio');
+        $bio  = Arr::get($_POST, 'bio');
         $csrf = Arr::get($_POST, 'csrf');
 
         $bio = trim($bio);
 
         if (Security::check($csrf) && $bio) {
-            $saving = $this->user->updateUser($this->user->id, [
+            $saving = $this->user->updateUser($this->user->id, array(
                 'bio' => $bio
-            ]);
+            ));
 
             $response['success'] = 1;
-            $response['bio'] = $bio;
-            $response['csrf'] = Security::token(true);
+            $response['bio']     = $bio;
+            $response['csrf']    = Security::token(true);
         }
 
         $this->auto_render = false;
@@ -151,9 +147,9 @@ class Controller_User_Modify extends Controller_Base_preDispatch
      */
     public function action_promote()
     {
-        $field = $this->request->param('field');
+        $field  = $this->request->param('field');
         $userId = $this->request->param('id');
-        $value = Arr::get($_POST, 'value');
+        $value  = Arr::get($_POST, 'value');
 
         if (!$this->user->isAdmin) {
             $this->ajaxResponse['message'] = 'Access denied';
@@ -162,10 +158,10 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         switch ($field) {
             case 'status':
-                $this->ajaxResponse['success'] = (bool) $this->changeStatus($userId, $value);
+                $this->ajaxResponse['success'] = (boolean) $this->changeStatus($userId, $value);
                 break;
             case 'role':
-                $this->ajaxResponse['success'] = (bool) $this->changeRole($userId, $value);
+                $this->ajaxResponse['success'] = (boolean) $this->changeRole($userId, $value);
                 break;
         }
 
@@ -178,8 +174,7 @@ class Controller_User_Modify extends Controller_Base_preDispatch
     /**
      * @param $userId
      * @param $status
-     *
-     * @return bool
+     * @return boolean
      */
     private function changeStatus($userId, $status)
     {
@@ -187,28 +182,27 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         switch ($status) {
             case Model_User::BANNED:
-                $this->ajaxResponse['message'] = 'Пользователь заблокирован';
-                $this->ajaxResponse['buttonText'] = 'Разблокировать';
+                $this->ajaxResponse['message']     = 'Пользователь заблокирован';
+                $this->ajaxResponse['buttonText']  = 'Разблокировать';
                 $this->ajaxResponse['buttonValue'] = Model_User::STANDARD;
                 break;
 
             case Model_User::STANDARD:
-                $this->ajaxResponse['message'] = 'Пользователь разблокирован';
-                $this->ajaxResponse['buttonText'] = 'Заблокировать';
+                $this->ajaxResponse['message']     = 'Пользователь разблокирован';
+                $this->ajaxResponse['buttonText']  = 'Заблокировать';
                 $this->ajaxResponse['buttonValue'] = Model_User::BANNED;
                 break;
         }
 
-        return $viewUser->updateUser($viewUser->id, [
+        return $viewUser->updateUser($viewUser->id, array(
             'status' => $status
-        ]);
+        ));
     }
 
     /**
      * @param $userId
      * @param $role
-     *
-     * @return bool
+     * @return boolean
      */
     private function changeRole($userId, $role)
     {
@@ -239,9 +233,9 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
         }
 
-        return $viewUser->updateUser($viewUser->id, [
+        return $viewUser->updateUser($viewUser->id, array(
             'role' => $newRole
-        ]);
+        ));
     }
 
     public function action_changeEmail()
@@ -251,12 +245,12 @@ class Controller_User_Modify extends Controller_Base_preDispatch
         }
 
 
-        $response = [
+        $response = array(
             'success' => 0
-        ];
+        );
 
         $email = Arr::get($_POST, 'email');
-        $csrf = Arr::get($_POST, 'csrf');
+        $csrf  = Arr::get($_POST, 'csrf');
 
         $email = trim($email);
 
@@ -277,21 +271,21 @@ class Controller_User_Modify extends Controller_Base_preDispatch
 
 
         if (Security::check($csrf)) {
-            $update = $this->user->updateUser($this->user->id, [
-                'email' => $email,
+            $update = $this->user->updateUser($this->user->id, array(
+                'email'       => $email,
                 'isConfirmed' => 0
-            ]);
+            ));
 
             if (!$update) {
                 $response['message'] = 'Произошла ошибка при сохранении email';
                 goto finish;
             }
 
-            $model_auth = new Model_Auth([
-                "id" => $this->user->id,
-                "name" => $this->user->name,
+            $model_auth = new Model_Auth(array(
+                "id"    => $this->user->id,
+                "name"  => $this->user->name,
                 "email" => $this->user->email
-            ]);
+            ));
             $model_auth->sendEmail(Model_Auth::TYPE_EMAIL_CONFIRM);
 
             $response['success'] = 1;

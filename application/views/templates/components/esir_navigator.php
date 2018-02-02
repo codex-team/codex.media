@@ -7,4 +7,4 @@
     </div>
     <div class="esir__search">Поиск по сайту</div>
 </div>
-<?php include(DOCROOT . 'public/app/svg/clip.svg') ?>
+<? include(DOCROOT . 'public/app/svg/clip.svg') ?>

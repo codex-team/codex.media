@@ -23,7 +23,7 @@ class Controller_Comments extends Controller_Base_preDispatch
             $error = 'Пользователь заблокирован';
             goto finish;
         }
-
+        
         /**
          * Checking for confirmed user
          */
@@ -31,7 +31,7 @@ class Controller_Comments extends Controller_Base_preDispatch
             $error = 'Пользователь не подтвердил свою страницу';
             goto finish;
         }
-
+        
         /***/
 
         /**
@@ -55,11 +55,11 @@ class Controller_Comments extends Controller_Base_preDispatch
         /***/
 
         $comment = new Model_Comment();
-        $comment->page_id = $page->id;
-        $comment->text = $text;
+        $comment->page_id              = $page->id;
+        $comment->text                 = $text;
         $comment->parent_comment['id'] = Arr::get($_POST, 'parent_id', '0');
-        $comment->author['id'] = $this->user->id;
-        $comment->root_id = Arr::get($_POST, 'root_id', '0');
+        $comment->author['id']         = $this->user->id;
+        $comment->root_id              = Arr::get($_POST, 'root_id', '0');
         $comment_id = $comment->insert();
 
         $comment = Model_Comment::get($comment_id);
@@ -68,14 +68,14 @@ class Controller_Comments extends Controller_Base_preDispatch
         finish:
 
         if (Model_Methods::isAjax()) {
-            $response = [];
+            $response = array();
 
             if ($error) {
                 $response['success'] = 0;
                 $response['error'] = $error;
             } else {
                 $response['success'] = 1;
-                $response['comment'] = View::factory('templates/comments/comment', ['user' => $this->user, 'comment' => $comment, 'isOnPage' => true])->render();
+                $response['comment'] = View::factory('templates/comments/comment', array('user' => $this->user, 'comment' => $comment, 'isOnPage' => true))->render();
                 $response['commentId'] = $comment->id;
             }
 

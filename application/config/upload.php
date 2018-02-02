@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
-return [
-    Model_File::EDITOR_IMAGE => [
+return array
+(
+    Model_File::EDITOR_IMAGE => array(
         'path' => 'upload/pages/images/',
         /**
          * Image sizes config
@@ -10,15 +10,15 @@ return [
          * second argument — max width
          * third argument  — max height
          */
-        'sizes' => [
-            'o' => [false, 1500, 1500],
-            'b' => [true, 200],
-            'm' => [true, 100],
-            's' => [true, 50],
-        ],
-    ],
+        'sizes' => array(
+            'o'  => array(false, 1500, 1500),
+            'b'  => array(true , 200),
+            'm'  => array(true , 100),
+            's'  => array(true , 50),
+        ),
+    ),
 
-    Model_File::BRANDING => [
+    Model_File::BRANDING => array(
         'path' => 'upload/branding/',
         /**
          * Image sizes config
@@ -27,20 +27,20 @@ return [
          * second argument — max width
          * third argument  — max height
          */
-        'sizes' => [
-            'o' => [false, 2000, 1500],
-            'b' => [true, 1000, 700],
-            'm' => [true, 400, 250],
-            'preload' => [false, 40, 25]
-        ]
+        'sizes' => array(
+            'o'  => array(false, 2000, 1500),
+            'b'  => array(true , 1000, 700),
+            'm'  => array(true , 400, 250),
+            'preload' => array(false, 40, 25)
+        )
 
-    ],
+    ),
 
-    Model_File::EDITOR_FILE => [
+    Model_File::EDITOR_FILE => array(
         'path' => 'upload/pages/files/'
-    ],
+    ),
 
-    Model_File::USER_PHOTO => [
+    Model_File::USER_PHOTO => array(
         'path' => 'upload/users/',
         /**
          * Image sizes config
@@ -49,15 +49,15 @@ return [
          * second argument — max width
          * third argument  — max height
          */
-        'sizes' => [
-            'o' => [false, 1000, 1000],
-            'b' => [true, 200],
-            'm' => [true, 100],
-            's' => [true, 50],
-        ],
-    ],
+        'sizes' => array(
+            'o'  => array(false, 1000, 1000),
+            'b'  => array(true , 200),
+            'm'  => array(true , 100),
+            's'  => array(true , 50),
+        ),
+    ),
 
-    Model_File::EDITOR_PERSONALITY => [
+    Model_File::EDITOR_PERSONALITY => array(
         'path' => 'upload/pages/persons/',
         /**
          * Image sizes config
@@ -66,15 +66,15 @@ return [
          * second argument — max width
          * third argument  — max height
          */
-        'sizes' => [
-            'o' => [false, 1000, 1000],
-            'b' => [true, 200],
-            'm' => [true, 100],
-            's' => [true, 50],
-        ],
-    ],
+        'sizes' => array(
+            'o'  => array(false, 1000, 1000),
+            'b'  => array(true , 200),
+            'm'  => array(true , 100),
+            's'  => array(true , 50),
+        ),
+    ),
 
-    Model_File::PAGE_COVER => [
+    Model_File::PAGE_COVER => array(
         'path' => 'upload/pages/covers/',
         /**
          * Image sizes config
@@ -83,22 +83,22 @@ return [
          * second argument — max width
          * third argument  — max height
          */
-        'sizes' => [
-            'o' => [false, 1500, 1500],
-            'b' => [true, 200],
-        ],
-    ],
+        'sizes' => array(
+            'o'  => array(false, 1500, 1500),
+            'b'  => array(true , 200),
+        ),
+    ),
 
-    Model_File::SITE_LOGO => [
+    Model_File::SITE_LOGO => array(
         'path' => 'upload/logo/',
 
-        'sizes' => [
-            'o' => [false, 1000, 1000],
-            'l' => [true, 400],
-            'b' => [true, 200],
-            'm' => [true, 100],
-            's' => [true, 50],
-        ],
-    ],
+        'sizes' => array(
+            'o'  => array(false, 1000, 1000),
+            'l'  => array(true, 400),
+            'b'  => array(true , 200),
+            'm'  => array(true , 100),
+            's'  => array(true , 50),
+        ),
+    ),
 
-];
+);

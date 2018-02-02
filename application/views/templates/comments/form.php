@@ -1,10 +1,10 @@
-<?php
-    $parent_id = isset($comment) ? $comment->id : '0';
-    $root_id = isset($comment) ? $comment->root_id : '0';
-    $page_id = isset($comment) ? $comment->page_id : $page_id;
+<?
+    $parent_id = isset($comment) ? $comment->id      : '0';
+    $root_id   = isset($comment) ? $comment->root_id : '0';
+    $page_id   = isset($comment) ? $comment->page_id : $page_id;
 ?>
 
-<?php if ($user->id): ?>
+<? if ($user->id): ?>
 
     <div class="comment-form__placeholder" onclick="codex.comments.reply( this );" id="reply<?= $parent_id ?>"
         data-parent-id="<?= $parent_id ?>"
@@ -17,10 +17,10 @@
 
     </div>
 
-<?php else: ?>
+<? else: ?>
 
     <a class="comment-form__placeholder" href="/auth">
-        <?php include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>  Комментировать
+        <? include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>  Комментировать
     </a>
 
-<?php endif ?>
+<? endif ?>

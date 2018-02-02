@@ -1,219 +1,248 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php defined('SYSPATH') OR die('No direct script access.');
 /**
  * Database query builder. See [Query Builder](/database/query/builder) for usage and examples.
  *
  * @package    Kohana/Database
  * @category   Query
- *
  * @author     Kohana Team
  * @copyright  (c) 2008-2009 Kohana Team
  * @license    http://kohanaphp.com/license
  */
-abstract class Kohana_Database_Query_Builder extends Database_Query
-{
-    /**
-     * Compiles an array of JOIN statements into an SQL partial.
-     *
-     * @param object $db    Database instance
-     * @param array  $joins join statements
-     *
-     * @return string
-     */
-    protected function _compile_join(Database $db, array $joins)
-    {
-        $statements = [];
+abstract class Kohana_Database_Query_Builder extends Database_Query {
 
-        foreach ($joins as $join) {
-            // Compile each of the join statements
-            $statements[] = $join->compile($db);
-        }
+	/**
+	 * Compiles an array of JOIN statements into an SQL partial.
+	 *
+	 * @param   object  $db     Database instance
+	 * @param   array   $joins  join statements
+	 * @return  string
+	 */
+	protected function _compile_join(Database $db, array $joins)
+	{
+		$statements = array();
 
-        return implode(' ', $statements);
-    }
+		foreach ($joins as $join)
+		{
+			// Compile each of the join statements
+			$statements[] = $join->compile($db);
+		}
 
-    /**
-     * Compiles an array of conditions into an SQL partial. Used for WHERE
-     * and HAVING.
-     *
-     * @param object $db         Database instance
-     * @param array  $conditions condition statements
-     *
-     * @return string
-     */
-    protected function _compile_conditions(Database $db, array $conditions)
-    {
-        $last_condition = null;
+		return implode(' ', $statements);
+	}
 
-        $sql = '';
-        foreach ($conditions as $group) {
-            // Process groups of conditions
-            foreach ($group as $logic => $condition) {
-                if ($condition === '(') {
-                    if (! empty($sql) and $last_condition !== '(') {
-                        // Include logic operator
-                        $sql .= ' ' . $logic . ' ';
-                    }
+	/**
+	 * Compiles an array of conditions into an SQL partial. Used for WHERE
+	 * and HAVING.
+	 *
+	 * @param   object  $db          Database instance
+	 * @param   array   $conditions  condition statements
+	 * @return  string
+	 */
+	protected function _compile_conditions(Database $db, array $conditions)
+	{
+		$last_condition = NULL;
 
-                    $sql .= '(';
-                } elseif ($condition === ')') {
-                    $sql .= ')';
-                } else {
-                    if (! empty($sql) and $last_condition !== '(') {
-                        // Add the logic operator
-                        $sql .= ' ' . $logic . ' ';
-                    }
+		$sql = '';
+		foreach ($conditions as $group)
+		{
+			// Process groups of conditions
+			foreach ($group as $logic => $condition)
+			{
+				if ($condition === '(')
+				{
+					if ( ! empty($sql) AND $last_condition !== '(')
+					{
+						// Include logic operator
+						$sql .= ' '.$logic.' ';
+					}
 
-                    // Split the condition
-                    list($column, $op, $value) = $condition;
+					$sql .= '(';
+				}
+				elseif ($condition === ')')
+				{
+					$sql .= ')';
+				}
+				else
+				{
+					if ( ! empty($sql) AND $last_condition !== '(')
+					{
+						// Add the logic operator
+						$sql .= ' '.$logic.' ';
+					}
 
-                    if ($value === null) {
-                        if ($op === '=') {
-                            // Convert "val = NULL" to "val IS NULL"
-                            $op = 'IS';
-                        } elseif ($op === '!=') {
-                            // Convert "val != NULL" to "valu IS NOT NULL"
-                            $op = 'IS NOT';
-                        }
-                    }
+					// Split the condition
+					list($column, $op, $value) = $condition;
 
-                    // Database operators are always uppercase
-                    $op = strtoupper($op);
+					if ($value === NULL)
+					{
+						if ($op === '=')
+						{
+							// Convert "val = NULL" to "val IS NULL"
+							$op = 'IS';
+						}
+						elseif ($op === '!=')
+						{
+							// Convert "val != NULL" to "valu IS NOT NULL"
+							$op = 'IS NOT';
+						}
+					}
 
-                    if ($op === 'BETWEEN' and is_array($value)) {
-                        // BETWEEN always has exactly two arguments
-                        list($min, $max) = $value;
+					// Database operators are always uppercase
+					$op = strtoupper($op);
 
-                        if ((is_string($min) and array_key_exists($min, $this->_parameters)) === false) {
-                            // Quote the value, it is not a parameter
-                            $min = $db->quote($min);
-                        }
+					if ($op === 'BETWEEN' AND is_array($value))
+					{
+						// BETWEEN always has exactly two arguments
+						list($min, $max) = $value;
 
-                        if ((is_string($max) and array_key_exists($max, $this->_parameters)) === false) {
-                            // Quote the value, it is not a parameter
-                            $max = $db->quote($max);
-                        }
+						if ((is_string($min) AND array_key_exists($min, $this->_parameters)) === FALSE)
+						{
+							// Quote the value, it is not a parameter
+							$min = $db->quote($min);
+						}
 
-                        // Quote the min and max value
-                        $value = $min . ' AND ' . $max;
-                    } elseif ((is_string($value) and array_key_exists($value, $this->_parameters)) === false) {
-                        // Quote the value, it is not a parameter
-                        $value = $db->quote($value);
-                    }
+						if ((is_string($max) AND array_key_exists($max, $this->_parameters)) === FALSE)
+						{
+							// Quote the value, it is not a parameter
+							$max = $db->quote($max);
+						}
 
-                    if ($column) {
-                        if (is_array($column)) {
-                            // Use the column name
-                            $column = $db->quote_identifier(reset($column));
-                        } else {
-                            // Apply proper quoting to the column
-                            $column = $db->quote_column($column);
-                        }
-                    }
+						// Quote the min and max value
+						$value = $min.' AND '.$max;
+					}
+					elseif ((is_string($value) AND array_key_exists($value, $this->_parameters)) === FALSE)
+					{
+						// Quote the value, it is not a parameter
+						$value = $db->quote($value);
+					}
 
-                    // Append the statement to the query
-                    $sql .= trim($column . ' ' . $op . ' ' . $value);
-                }
+					if ($column)
+					{
+						if (is_array($column))
+						{
+							// Use the column name
+							$column = $db->quote_identifier(reset($column));
+						}
+						else
+						{
+							// Apply proper quoting to the column
+							$column = $db->quote_column($column);
+						}
+					}
 
-                $last_condition = $condition;
-            }
-        }
+					// Append the statement to the query
+					$sql .= trim($column.' '.$op.' '.$value);
+				}
 
-        return $sql;
-    }
+				$last_condition = $condition;
+			}
+		}
 
-    /**
-     * Compiles an array of set values into an SQL partial. Used for UPDATE.
-     *
-     * @param object $db     Database instance
-     * @param array  $values updated values
-     *
-     * @return string
-     */
-    protected function _compile_set(Database $db, array $values)
-    {
-        $set = [];
-        foreach ($values as $group) {
-            // Split the set
-            list($column, $value) = $group;
+		return $sql;
+	}
 
-            // Quote the column name
-            $column = $db->quote_column($column);
+	/**
+	 * Compiles an array of set values into an SQL partial. Used for UPDATE.
+	 *
+	 * @param   object  $db      Database instance
+	 * @param   array   $values  updated values
+	 * @return  string
+	 */
+	protected function _compile_set(Database $db, array $values)
+	{
+		$set = array();
+		foreach ($values as $group)
+		{
+			// Split the set
+			list ($column, $value) = $group;
 
-            if ((is_string($value) and array_key_exists($value, $this->_parameters)) === false) {
-                // Quote the value, it is not a parameter
-                $value = $db->quote($value);
-            }
+			// Quote the column name
+			$column = $db->quote_column($column);
 
-            $set[$column] = $column . ' = ' . $value;
-        }
+			if ((is_string($value) AND array_key_exists($value, $this->_parameters)) === FALSE)
+			{
+				// Quote the value, it is not a parameter
+				$value = $db->quote($value);
+			}
 
-        return implode(', ', $set);
-    }
+			$set[$column] = $column.' = '.$value;
+		}
 
-    /**
-     * Compiles an array of GROUP BY columns into an SQL partial.
-     *
-     * @param object $db      Database instance
-     * @param array  $columns
-     *
-     * @return string
-     */
-    protected function _compile_group_by(Database $db, array $columns)
-    {
-        $group = [];
+		return implode(', ', $set);
+	}
 
-        foreach ($columns as $column) {
-            if (is_array($column)) {
-                // Use the column alias
-                $column = $db->quote_identifier(end($column));
-            } else {
-                // Apply proper quoting to the column
-                $column = $db->quote_column($column);
-            }
+	/**
+	 * Compiles an array of GROUP BY columns into an SQL partial.
+	 *
+	 * @param   object  $db       Database instance
+	 * @param   array   $columns
+	 * @return  string
+	 */
+	protected function _compile_group_by(Database $db, array $columns)
+	{
+		$group = array();
 
-            $group[] = $column;
-        }
+		foreach ($columns as $column)
+		{
+			if (is_array($column))
+			{
+				// Use the column alias
+				$column = $db->quote_identifier(end($column));
+			}
+			else
+			{
+				// Apply proper quoting to the column
+				$column = $db->quote_column($column);
+			}
 
-        return 'GROUP BY ' . implode(', ', $group);
-    }
+			$group[] = $column;
+		}
 
-    /**
-     * Compiles an array of ORDER BY statements into an SQL partial.
-     *
-     * @param object $db      Database instance
-     * @param array  $columns sorting columns
-     *
-     * @return string
-     */
-    protected function _compile_order_by(Database $db, array $columns)
-    {
-        $sort = [];
-        foreach ($columns as $group) {
-            list($column, $direction) = $group;
+		return 'GROUP BY '.implode(', ', $group);
+	}
 
-            if (is_array($column)) {
-                // Use the column alias
-                $column = $db->quote_identifier(end($column));
-            } else {
-                // Apply proper quoting to the column
-                $column = $db->quote_column($column);
-            }
+	/**
+	 * Compiles an array of ORDER BY statements into an SQL partial.
+	 *
+	 * @param   object  $db       Database instance
+	 * @param   array   $columns  sorting columns
+	 * @return  string
+	 */
+	protected function _compile_order_by(Database $db, array $columns)
+	{
+		$sort = array();
+		foreach ($columns as $group)
+		{
+			list ($column, $direction) = $group;
 
-            if ($direction) {
-                // Make the direction uppercase
-                $direction = ' ' . strtoupper($direction);
-            }
+			if (is_array($column))
+			{
+				// Use the column alias
+				$column = $db->quote_identifier(end($column));
+			}
+			else
+			{
+				// Apply proper quoting to the column
+				$column = $db->quote_column($column);
+			}
 
-            $sort[] = $column . $direction;
-        }
+			if ($direction)
+			{
+				// Make the direction uppercase
+				$direction = ' '.strtoupper($direction);
+			}
 
-        return 'ORDER BY ' . implode(', ', $sort);
-    }
+			$sort[] = $column.$direction;
+		}
 
-    /**
-     * Reset the current builder status.
-     *
-     * @return $this
-     */
-    abstract public function reset();
+		return 'ORDER BY '.implode(', ', $sort);
+	}
+
+	/**
+	 * Reset the current builder status.
+	 *
+	 * @return  $this
+	 */
+	abstract public function reset();
+
 } // End Database_Query_Builder

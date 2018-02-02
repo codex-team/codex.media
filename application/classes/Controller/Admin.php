@@ -2,7 +2,7 @@
 
 class Controller_Admin extends Controller_Base_preDispatch
 {
-    public static $categories = ['pages', 'page', 'index', 'news', 'users', 'parser', 'base'];
+    public static $categories = array('pages', 'page', 'index', 'news', 'users', 'parser', 'base');
 
     public function action_index()
     {

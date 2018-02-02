@@ -5,168 +5,168 @@
  * defaults for the URI.
  */
 
-$DIGIT = '\d+';
+$DIGIT  = '\d+';
 $STRING = '[-a-zA-Z\d]+';
 
-$FEED_KEYS = implode('|', [
+$FEED_KEYS = implode('|', array(
     Model_Feed_Pages::ALL,
     Model_Feed_Pages::TEACHERS,
     Model_Feed_Pages::MAIN
-]);
+));
 
-$USER_FEED_LISTS = implode('|', [
+$USER_FEED_LISTS = implode('|', array(
     Controller_User_Index::LIST_PAGES,
     Controller_User_Index::LIST_COMMENTS
-]);
+));
 
 /**
  * Static pages
  */
 Route::set('INDEX', '(<feed_key>(/))(<page_number>)', // #TODO rewrite expression for: IF <feed_key> && <page_number> THEN need this slash (/)
-    [
+    array(
         'feed_key' => $FEED_KEYS,
         'page_number' => $DIGIT,
-    ]
-)->defaults([
+    )
+)->defaults(array(
     'controller' => 'index',
     'action' => 'index'
-]);
+));
 
 /**
  * Pages section
  */
 Route::set('ACTION_FOR_PAGE', 'p/<id>/<action>',
-    [
+    array(
         'id' => $DIGIT,
         'action' => 'delete|promote|pin'
-    ]
-)->defaults([
+    )
+)->defaults(array(
     'controller' => 'Page_Modify',
-]);
+));
 
-Route::set('NEW_PAGE', 'p/writing')->defaults([
+Route::set('NEW_PAGE', 'p/writing')->defaults(array(
     'controller' => 'Page_Index',
     'action' => 'writing'
-]);
+));
 
-Route::set('SAVE_PAGE', 'p/save')->defaults([
+Route::set('SAVE_PAGE', 'p/save')->defaults(array(
     'controller' => 'Page_Modify',
     'action' => 'save'
-]);
+));
 
-Route::set('PAGE', 'p/<id>(/<uri>)', ['id' => $DIGIT, 'uri' => $STRING])->defaults([
+Route::set('PAGE', 'p/<id>(/<uri>)', array('id' => $DIGIT, 'uri' => $STRING))->defaults(array(
     'controller' => 'Page_Index',
     'action' => 'show'
-]);
+));
 
 /**
  * User section
  */
-Route::set('CHANGE_USER_STATUS', 'user/<id>/change/<field>', [
+Route::set('CHANGE_USER_STATUS', 'user/<id>/change/<field>', array(
     'id' => $DIGIT,
     'field' => 'role|status'
-])->defaults([
-    'controller' => 'user_modify',
-    'action' => 'promote'
-]);
+))->defaults(array(
+    'controller'      => 'user_modify',
+    'action'          => 'promote'
+));
 
-Route::set('PROFILE', 'user/<id>(/<list>(/<page_number>))', ['id' => $DIGIT, 'list' => $USER_FEED_LISTS, 'page_number' => $DIGIT])->defaults([
+Route::set('PROFILE', 'user/<id>(/<list>(/<page_number>))', array('id' => $DIGIT, 'list' => $USER_FEED_LISTS, 'page_number' => $DIGIT))->defaults(array(
     'controller' => 'User_Index',
     'action' => 'profile'
-]);
+));
 
-Route::set('USER_SETTINGS', 'user/settings')->defaults([
+Route::set('USER_SETTINGS', 'user/settings')->defaults(array(
     'controller' => 'User_Modify',
     'action' => 'settings'
-]);
-Route::set('PASSWORD_CHANGE', 'user/passchange')->defaults([
+));
+Route::set('PASSWORD_CHANGE', 'user/passchange')->defaults(array(
     'controller' => 'User_Modify',
-    'action' => 'request_password_change'
-]);
-Route::set('fast saving bio', 'user/updateBio')->defaults([
+    'action'     => 'request_password_change'
+));
+Route::set('fast saving bio', 'user/updateBio')->defaults(array(
     'controller' => 'User_Modify',
     'action' => 'updateBio'
-]);
+));
 
 /**
- * Admin section
- */
-Route::set('ADMIN_PAGE', 'admin(/<page>(/<id>))')->defaults([
+* Admin section
+*/
+Route::set('ADMIN_PAGE', 'admin(/<page>(/<id>))')->defaults(array(
     'controller' => 'admin',
     'action' => 'index'
-]);
+));
 
 /**
- * Ajax routes
- */
-Route::set('AJAX_FILE_TRANSPORT', 'upload/<type>')->defaults([
-    'controller' => 'transport',
-    'action' => 'upload'
-]);
+* Ajax routes
+*/
+Route::set('AJAX_FILE_TRANSPORT', 'upload/<type>')->defaults(array(
+    'controller'      => 'transport',
+    'action'          => 'upload'
+));
 
 
-Route::set('REPEAT_CONFIRMATION_EMAIL_SENDING', 'ajax/confirmation-email')->defaults([
-    'controller' => 'ajax',
-    'action' => 'send_confirmation_email'
-]);
+Route::set('REPEAT_CONFIRMATION_EMAIL_SENDING', 'ajax/confirmation-email')->defaults(array(
+    'controller'      => 'ajax',
+    'action'          => 'send_confirmation_email'
+));
 
-Route::set('CHANGE_USER_EMAIL', 'user/changeEmail')->defaults([
-    'controller' => 'user_modify',
-    'action' => 'changeEmail'
-]);
+Route::set('CHANGE_USER_EMAIL', 'user/changeEmail')->defaults(array(
+    'controller'      => 'user_modify',
+    'action'          => 'changeEmail'
+));
 
 /**
- * Downloading files
- */
-Route::set('DOWNLOAD_FILE', 'file/<file_hash_hex>', ['file_hash_hex' => $STRING])->defaults([
+* Downloading files
+*/
+Route::set('DOWNLOAD_FILE', 'file/<file_hash_hex>', array('file_hash_hex' => $STRING))->defaults(array(
     'controller' => 'files',
     'action' => 'download'
-]);
+));
 
 
 /** Auth */
-Route::set('AUTH_PAGE', 'auth(/<method>)')->defaults([
+Route::set('AUTH_PAGE', 'auth(/<method>)')->defaults(array(
     'controller' => 'auth_auth',
     'action' => 'auth'
-]);
+));
 
-Route::set('SIGNUP', '<action>(/<hash>)', ['action' => 'signup|confirm', 'hash' => $STRING])->defaults([
+Route::set('SIGNUP', '<action>(/<hash>)', array('action' => 'signup|confirm', 'hash' => $STRING))->defaults(array(
     'controller' => 'auth_signup',
     'action' => 'signup'
-]);
+));
 
-Route::set('LOGOUT', 'logout')->defaults([
+Route::set('LOGOUT', 'logout')->defaults(array(
     'controller' => 'auth_auth',
     'action' => 'logout'
-]);
+));
 
-Route::set('SEND_RESET_PASSWORD_EMAIL', 'reset')->defaults([
+Route::set('SEND_RESET_PASSWORD_EMAIL', 'reset')->defaults(array(
     'controller' => 'auth_auth',
     'action' => 'reset'
-]);
-Route::set('SET_NEW_PASSWORD', '<method>/<hash>', ['method' => 'reset|change', 'hash' => $STRING])
-    ->defaults([
+));
+Route::set('SET_NEW_PASSWORD', '<method>/<hash>', array('method' => 'reset|change', 'hash' => $STRING))
+    ->defaults(array(
         'controller' => 'auth_auth',
         'action' => 'reset_password'
-]);
+));
 
 
 /**
  * Comments
  */
-Route::set('ADD_COMMENT_SCRIPT', 'add-comment/p-<id>', ['id' => $DIGIT])->defaults([
+Route::set('ADD_COMMENT_SCRIPT', 'add-comment/p-<id>', array('id' => $DIGIT))->defaults(array(
     'controller' => 'comments',
     'action' => 'add'
-]);
+));
 
-Route::set('DEL_COMMENT_SCRIPT', 'delete-comment/<comment_id>', ['comment_id' => $DIGIT])
-    ->defaults([
+Route::set('DEL_COMMENT_SCRIPT', 'delete-comment/<comment_id>', array('comment_id' => $DIGIT))
+    ->defaults(array(
         'controller' => 'comments',
-        'action' => 'delete'
-]);
+        'action'     => 'delete'
+));
 
 Route::set('FETCH_URL', 'fetchURL')
-    ->defaults([
+    ->defaults(array(
         'controller' => 'Parser',
-        'action' => 'fetchURL'
-    ]);
+        'action'    => 'fetchURL'
+    ));

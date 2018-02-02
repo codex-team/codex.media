@@ -2,54 +2,52 @@
 
 class Model_File extends Model
 {
-    public $id = 0;
-    public $title = '';
-    public $is_removed = 0;
+    public $id          = 0;
+    public $title       = '';
+    public $is_removed  = 0;
 
-    public $extension = '';
-    public $mime = '';
-    public $filename = '';
-    public $author = 0;
-    public $size = 0;
-    public $date = null;
-    public $status = 0;
-    public $type = 0;
-    public $target = 0;
+    public $extension   = '';
+    public $mime        = '';
+    public $filename    = '';
+    public $author      = 0;
+    public $size        = 0;
+    public $date        = null;
+    public $status      = 0;
+    public $type        = 0;
+    public $target      = 0;
 
 
     /**
      * File destination
-     *
      * @var string
      */
-    public $filepath = '';
+    public $filepath    = '';
 
-    public $file_hash = '';
+    public $file_hash     = '';
     public $file_hash_hex = '';
 
     const EDITOR_IMAGE = 1;
-    const EDITOR_FILE = 2;
-    const USER_PHOTO = 3;
-    const BRANDING = 4;
-    const PAGE_COVER = 5;
+    const EDITOR_FILE  = 2;
+    const USER_PHOTO   = 3;
+    const BRANDING     = 4;
+    const PAGE_COVER   = 5;
     const EDITOR_PERSONALITY = 6;
-    const SITE_LOGO = 7;
+    const SITE_LOGO    = 7;
 
     /**
      * This types are images
-     *
      * @var array
      */
-    public $imageTypes = [
+    public $imageTypes = array(
         self::EDITOR_IMAGE,
         self::USER_PHOTO,
         self::BRANDING,
         self::PAGE_COVER,
         self::EDITOR_PERSONALITY,
         self::SITE_LOGO
-    ];
+    );
 
-    public function __construct($id = null, $file_hash_hex = null, $row = [])
+    public function __construct($id = null, $file_hash_hex = null, $row = array())
     {
         if (!$id && !$file_hash_hex && !$row) {
             return;
@@ -58,11 +56,10 @@ class Model_File extends Model
         return self::get($id, $file_hash_hex, $row);
     }
 
+
     /**
      * Returns uploaded file path by type and filename
-     *
      * @uses  config/upload.php
-     *
      * @return stirng filepath from base dir
      */
     private function getFilePath()
@@ -74,13 +71,11 @@ class Model_File extends Model
 
     /**
      * Uploads file to the server
-     *
-     * @param int      $type    file type constant
-     * @param array    $file    file object
-     * @param int      $user_id author
-     * @param null|int $target  target
-     *
-     * @return string uploaded file name
+     * @param  int  $type file type constant
+     * @param  array $file file object
+     * @param  int $user_id  author
+     * @param  null|int $target  target
+     * @return string   uploaded file name
      */
     public function upload($type, $file, $user_id, $target = null)
     {
@@ -88,8 +83,8 @@ class Model_File extends Model
         $this->target = $target;
 
         $config = Kohana::$config->load('upload')[$this->type];
-        $path = $config['path'];
-        $saved = false;
+        $path   = $config['path'];
+        $saved  = false;
 
         $isImage = in_array($type, $this->imageTypes);
 
@@ -156,19 +151,19 @@ class Model_File extends Model
                 break;
         }
 
-        $this->title = $this->getOriginalName($file['name']);
-        $this->filepath = $path . $this->filename;
-        $this->size = $this->getSize();
-        $this->mime = $this->getMime();
+        $this->title     = $this->getOriginalName($file['name']);
+        $this->filepath  = $path . $this->filename;
+        $this->size      = $this->getSize();
+        $this->mime      = $this->getMime();
         $this->extension = $this->getExtension();
-        $this->author = $user_id;
+        $this->author    = $user_id;
 
         return $this->insert();
     }
 
+
     /**
      * Returns size of file
-     *
      * @return int
      */
     public function getSize()
@@ -178,7 +173,6 @@ class Model_File extends Model
 
     /**
      * Returns file mime type by filepath
-     *
      * @return string mime-type
      */
     public function getMime()
@@ -188,8 +182,7 @@ class Model_File extends Model
 
     /**
      * Returns file extension by mime-type
-     *
-     * @return string extension
+     * @return string  extension
      */
     public function getExtension()
     {
@@ -198,10 +191,7 @@ class Model_File extends Model
 
     /**
      * Returns file extension by mime-type
-     *
-     * @param mixed $filepath
-     *
-     * @return string extension
+     * @return string  extension
      */
     public function getOriginalName($filepath)
     {
@@ -210,7 +200,7 @@ class Model_File extends Model
         return $info['filename'];
     }
 
-    public function get($id = null, $file_hash_hex = null, $file_row = [])
+    public function get($id = null, $file_hash_hex = null, $file_row = array())
     {
         if ($id || $file_hash_hex) {
             $file = Dao_Files::select();
@@ -236,12 +226,12 @@ class Model_File extends Model
         }
 
         $this->file_hash_hex = bin2hex($this->file_hash);
-        $this->filepath = self::getFilePath();
+        $this->filepath      = self::getFilePath();
 
         return $this;
     }
 
-    public function insert($fields = [])
+    public function insert($fields = array())
     {
         $file = Dao_Files::insert();
 
@@ -271,9 +261,9 @@ class Model_File extends Model
     }
 
     /**
-     *   Функция для скачивания файла
-     *   Источник: https://habrahabr.ru/post/151795/
-     */
+    *   Функция для скачивания файла
+    *   Источник: https://habrahabr.ru/post/151795/
+    */
     public function returnFileToUser()
     {
         if (file_exists($this->filepath)) {
@@ -301,18 +291,14 @@ class Model_File extends Model
     }
 
     /**
-     * Files uploading section
-     *
-     * @param mixed $file
-     * @param mixed $path
-     * @param mixed $sizesConfig
-     */
+    * Files uploading section
+    */
     public function saveImage($file, $path, $sizesConfig)
     {
         /**
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
-        if (!Upload::type($file, ['jpg', 'jpeg', 'png', 'gif'])) {
+        if (!Upload::type($file, array('jpg', 'jpeg', 'png', 'gif'))) {
             return false;
         }
 
@@ -333,14 +319,14 @@ class Model_File extends Model
         foreach ($sizesConfig as $prefix => $sizes) {
 
             /**
-             * Все операции делаем с исходным файлом.
-             * Для этого заново его загружаем в переменную
-             */
+            * Все операции делаем с исходным файлом.
+            * Для этого заново его загружаем в переменную
+            */
             $image = Image::factory($file);
 
             $isSquare = !!$sizes[0];
-            $width = Arr::get($sizes, 1, null);
-            $height = !$isSquare ? Arr::get($sizes, 2, null) : $width;
+            $width    = Arr::get($sizes, 1, null);
+            $height   = !$isSquare ? Arr::get($sizes, 2, null) : $width;
 
             $image->background('#fff');
 
@@ -371,10 +357,9 @@ class Model_File extends Model
     /**
      * Saves file to the server
      *
-     * @param array  $file file array from input
-     * @param string $path path to store file
-     *
-     * @return string saved file name
+     * @param  array    $file   file array from input
+     * @param  string   $path   path to store file
+     * @return string   saved file name
      *
      * @todo  Add translited file title to file name
      * @todo  Check extension by mime type — see https://kohanaframework.org/3.3/guide-api/File#mime

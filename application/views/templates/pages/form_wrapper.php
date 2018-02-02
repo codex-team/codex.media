@@ -7,9 +7,9 @@
     </div>
 
     <span class="hide" id="writingForm">
-        <?= View::factory('templates/pages/form', [
+        <?= View::factory('templates/pages/form', array(
             'hideEditorToolbar' => true
-        ]); ?>
+        )); ?>
     </span>
 
 </div>

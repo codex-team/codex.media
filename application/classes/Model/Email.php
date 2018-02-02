@@ -7,14 +7,14 @@
  * Uses Send Grid Api
  */
 
-use SendGrid\Content;
 use SendGrid\Email;
 use SendGrid\Mail;
+use SendGrid\Content;
 
 class Model_Email
 {
-    private $apiKey = null;
-    private $sender = null;
+    private $apiKey  = null;
+    private $sender  = null;
 
     private function __construct()
     {
@@ -43,19 +43,19 @@ class Model_Email
      * @param $to [Array] - must have 2 fields:
      *     - username
      *     - email
+     *
      * @param $subject [String] - Mail title
      * @param $content [Array]
      *      - format
      *      - message
-     * @param mixed $receiver
      *
      * @return mixed
      */
     public function send($receiver, $subject, $content)
     {
         $receiver = new Email($receiver['name'], $receiver['email']);
-        $content = new Content($content['format'], $content['message']);
-        $mail = new Mail($this->sender, $subject, $receiver, $content);
+        $content  = new Content($content['format'], $content['message']);
+        $mail     = new Mail($this->sender, $subject, $receiver, $content);
 
         $sendGrid = new SendGrid($this->apiKey);
         $response = $sendGrid->client->mail()->send()->post($mail);

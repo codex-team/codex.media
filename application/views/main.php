@@ -18,9 +18,9 @@
 
     <!-- <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700&subset=cyrillic" rel="stylesheet"> -->
 
-    <?php if (!empty($_SERVER['HAWK_TOKEN'])): ?>
+    <? if ( !empty($_SERVER['HAWK_TOKEN']) ): ?>
         <script src="https://rawgit.com/codex-team/hawk.client/master/hawk.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');"></script>
-    <?php endif; ?>
+    <? endif; ?>
 
     <link rel="stylesheet" type="text/css" media="all" href="/public/build/bundle.css?v=<?= filemtime('public/build/bundle.css'); ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
@@ -36,24 +36,24 @@
 
     <?= View::factory('templates/components/esir_navigator')->render(); ?>
 
-    <?php if (empty($contentOnly)): ?>
+    <? if (empty($contentOnly)): ?>
         <?= View::factory('templates/components/branding')->render(); ?>
-    <?php endif; ?>
+    <? endif; ?>
 
     <div class="center-col" id="js-layout-holder">
 
         <div class="grid-cols-wrapper">
 
-            <?php if (empty($contentOnly)): ?>
-                <?php /* Left */ ?>
+            <? if(empty($contentOnly)): ?>
+                <? /* Left */ ?>
                 <div class="grid-col grid-col--left">
 
                     <?= View::factory('templates/components/aside')->render(); ?>
 
                 </div>
-            <?php endif; ?>
+            <? endif; ?>
 
-            <?php /* Main block for page */ ?>
+            <? /* Main block for page */ ?>
             <div class="grid-content <?= !empty($contentOnly) ? 'grid-content--stretched' : '' ?>">
                 <?= $content ?>
             </div>
@@ -71,13 +71,13 @@
 
     <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>
 
-    <?php if (Kohana::$environment === Kohana::PRODUCTION): ?>
+    <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
 
-        <?php if (!empty($_SERVER['ENABLE_GOV_SITE_WIDGET']) && $_SERVER['ENABLE_GOV_SITE_WIDGET']): ?>
+        <? if ( !empty($_SERVER['ENABLE_GOV_SITE_WIDGET']) && $_SERVER['ENABLE_GOV_SITE_WIDGET'] ): ?>
             <script type="text/javascript" src="https://esir.gov.spb.ru/static/widget/js/widget.js" charset="utf-8"></script>
-        <?php endif; ?>
+        <? endif; ?>
 
-        <?php if (!empty($_SERVER['YANDEX_METRIKA_ID'])): ?>
+        <? if ( !empty($_SERVER['YANDEX_METRIKA_ID'] )): ?>
             <!-- Yandex.Metrika counter -->
             <script type="text/javascript">
                 (function (d, w, c) {
@@ -106,9 +106,9 @@
             </script>
             <noscript><div><img src="https://mc.yandex.ru/watch/<?= $_SERVER['YANDEX_METRIKA_ID'] ?>" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
             <!-- /Yandex.Metrika counter -->
-        <?php endif; ?>
+        <? endif; ?>
 
-    <?php endif; ?>
+    <? endif; ?>
 
 </body>
 </html>

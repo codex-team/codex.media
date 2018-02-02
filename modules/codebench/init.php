@@ -2,7 +2,7 @@
 
 // Catch-all route for Codebench classes to run
 Route::set('codebench', 'codebench(/<class>)')
-    ->defaults([
-        'controller' => 'Codebench',
-        'action' => 'index',
-        'class' => null]);
+	->defaults(array(
+		'controller' => 'Codebench',
+		'action' => 'index',
+		'class' => NULL));

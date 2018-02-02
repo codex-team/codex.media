@@ -26,7 +26,6 @@ class Model_Feed_Abstract extends Model
      * Получаем идентефикатор, с учетом типа (префикса) элемента
      *
      * @param $id
-     *
      * @return string
      */
     public function composeValueIdentity($id)
@@ -35,7 +34,7 @@ class Model_Feed_Abstract extends Model
             return $id;
         }
 
-        return $this->prefix . ':' . $id;
+        return $this->prefix.':'.$id;
     }
 
     /**
@@ -82,7 +81,6 @@ class Model_Feed_Abstract extends Model
      *
      * @param int $item_id
      * @param int $item_score
-     *
      * @return bool|int
      */
     public function add($item_id, $item_score = null)
@@ -115,6 +113,7 @@ class Model_Feed_Abstract extends Model
         }
     }
 
+
     /**
      * Получаем индентефикаторы первых $numberOfItems элементов в фиде,
      * сделав отступ в $offset элементов (для пагинации).
@@ -122,7 +121,6 @@ class Model_Feed_Abstract extends Model
      *
      * @param int $numberOfItems
      * @param int $offset
-     *
      * @return array - массив идентефикаторов элементов
      */
     public function get($numberOfItems = 0, $offset = 0)
@@ -160,13 +158,10 @@ class Model_Feed_Abstract extends Model
 
     /**
      * Поиск значения в фидах
-     *
-     * @param mixed $item_id
      */
     public function isExist($item_id)
     {
         $item_id = $this->composeValueIdentity($item_id);
-
         return $this->redis->zRank($this->timeline_key, $item_id) !== false;
     }
 
@@ -227,7 +222,6 @@ class Model_Feed_Abstract extends Model
     {
         if ($this->isPinned($item_id)) {
             $this->unpin($item_id);
-
             return;
         }
 
@@ -238,7 +232,6 @@ class Model_Feed_Abstract extends Model
      * Возвращает true, если запись закреплена
      *
      * @param $item_id
-     *
      * @return bool
      */
     public function isPinned($item_id)
@@ -275,13 +268,11 @@ class Model_Feed_Abstract extends Model
      * Получает значение score для записи $item_id
      *
      * @param $item_id
-     *
      * @return float
      */
     public function getScore($item_id)
     {
         $item_id = $this->composeValueIdentity($item_id);
-
         return $this->redis->zScore($this->timeline_key, $item_id);
     }
 }

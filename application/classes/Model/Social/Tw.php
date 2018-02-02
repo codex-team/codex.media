@@ -8,7 +8,6 @@
 
 /**
  *  The first PHP Library to support OAuth for Twitter's REST API
- *
  *  @author Abraham Williams (abraham@abrah.am) http://abrah.am
  */
 
@@ -23,7 +22,7 @@ class OAuthConsumer
     public $key;
     public $secret;
 
-    public function __construct($key, $secret, $callback_url = null)
+    public function __construct($key, $secret, $callback_url=null)
     {
         $this->key = $key;
         $this->secret = $secret;
@@ -45,9 +44,6 @@ class OAuthToken
     /**
      * key = the token
      * secret = the token secret
-     *
-     * @param mixed $key
-     * @param mixed $secret
      */
     public function __construct($key, $secret)
     {
@@ -81,7 +77,6 @@ abstract class OAuthSignatureMethod
 {
     /**
      * Needs to return the name of the Signature Method (ie HMAC-SHA1)
-     *
      * @return string
      */
     abstract public function get_name();
@@ -91,29 +86,24 @@ abstract class OAuthSignatureMethod
      * NOTE: The output of this function MUST NOT be urlencoded.
      * the encoding is handled in OAuthRequest when the final
      * request is serialized
-     *
-     * @param OAuthRequest  $request
+     * @param OAuthRequest $request
      * @param OAuthConsumer $consumer
-     * @param OAuthToken    $token
-     *
+     * @param OAuthToken $token
      * @return string
      */
     abstract public function build_signature($request, $consumer, $token);
 
     /**
      * Verifies that a given signature is correct
-     *
-     * @param OAuthRequest  $request
+     * @param OAuthRequest $request
      * @param OAuthConsumer $consumer
-     * @param OAuthToken    $token
-     * @param string        $signature
-     *
+     * @param OAuthToken $token
+     * @param string $signature
      * @return bool
      */
     public function check_signature($request, $consumer, $token, $signature)
     {
         $built = $this->build_signature($request, $consumer, $token);
-
         return $built == $signature;
     }
 }
@@ -137,10 +127,10 @@ class OAuthSignatureMethod_HMAC_SHA1 extends OAuthSignatureMethod
         $base_string = $request->get_signature_base_string();
         $request->base_string = $base_string;
 
-        $key_parts = [
+        $key_parts = array(
             $consumer->secret,
             ($token) ? $token->secret : ""
-        ];
+        );
 
         $key_parts = OAuthUtil::urlencode_rfc3986($key_parts);
         $key = implode('&', $key_parts);
@@ -169,17 +159,13 @@ class OAuthSignatureMethod_PLAINTEXT extends OAuthSignatureMethod
      *
      * Please note that the second encoding MUST NOT happen in the SignatureMethod, as
      * OAuthRequest handles this!
-     *
-     * @param mixed $request
-     * @param mixed $consumer
-     * @param mixed $token
      */
     public function build_signature($request, $consumer, $token)
     {
-        $key_parts = [
+        $key_parts = array(
             $consumer->secret,
             ($token) ? $token->secret : ""
-        ];
+        );
 
         $key_parts = OAuthUtil::urlencode_rfc3986($key_parts);
         $key = implode('&', $key_parts);
@@ -270,23 +256,20 @@ class OAuthRequest
     public static $version = '1.0';
     public static $POST_INPUT = 'php://input';
 
-    public function __construct($http_method, $http_url, $parameters = null)
+    public function __construct($http_method, $http_url, $parameters=null)
     {
-        @$parameters or $parameters = [];
+        @$parameters or $parameters = array();
         $parameters = array_merge(OAuthUtil::parse_parameters(parse_url($http_url, PHP_URL_QUERY)), $parameters);
         $this->parameters = $parameters;
         $this->http_method = $http_method;
         $this->http_url = $http_url;
     }
 
+
     /**
      * attempt to build up a request from what was passed to the server
-     *
-     * @param null|mixed $http_method
-     * @param null|mixed $http_url
-     * @param null|mixed $parameters
      */
-    public static function from_request($http_method = null, $http_url = null, $parameters = null)
+    public static function from_request($http_method=null, $http_url=null, $parameters=null)
     {
         $scheme = (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")
                             ? 'http'
@@ -336,20 +319,14 @@ class OAuthRequest
 
     /**
      * pretty much a helper function to set up the request
-     *
-     * @param mixed      $consumer
-     * @param mixed      $token
-     * @param mixed      $http_method
-     * @param mixed      $http_url
-     * @param null|mixed $parameters
      */
-    public static function from_consumer_and_token($consumer, $token, $http_method, $http_url, $parameters = null)
+    public static function from_consumer_and_token($consumer, $token, $http_method, $http_url, $parameters=null)
     {
-        @$parameters or $parameters = [];
-        $defaults = ["oauth_version" => OAuthRequest::$version,
+        @$parameters or $parameters = array();
+        $defaults = array("oauth_version" => OAuthRequest::$version,
                                             "oauth_nonce" => OAuthRequest::generate_nonce(),
                                             "oauth_timestamp" => OAuthRequest::generate_timestamp(),
-                                            "oauth_consumer_key" => $consumer->key];
+                                            "oauth_consumer_key" => $consumer->key);
         if ($token) {
             $defaults['oauth_token'] = $token->key;
         }
@@ -366,7 +343,7 @@ class OAuthRequest
             if (is_scalar($this->parameters[$name])) {
                 // This is the first duplicate, so transform scalar (string)
                 // into an array so we can add the duplicates
-                $this->parameters[$name] = [$this->parameters[$name]];
+                $this->parameters[$name] = array($this->parameters[$name]);
             }
 
             $this->parameters[$name][] = $value;
@@ -392,7 +369,6 @@ class OAuthRequest
 
     /**
      * The request parameters, sorted and concatenated into a normalized string.
-     *
      * @return string
      */
     public function get_signable_parameters()
@@ -418,11 +394,11 @@ class OAuthRequest
      */
     public function get_signature_base_string()
     {
-        $parts = [
+        $parts = array(
             $this->get_normalized_http_method(),
             $this->get_normalized_http_url(),
             $this->get_signable_parameters()
-        ];
+        );
 
         $parts = OAuthUtil::urlencode_rfc3986($parts);
 
@@ -456,7 +432,6 @@ class OAuthRequest
                 || ($scheme == 'http' && $port != '80')) {
             $host = "$host:$port";
         }
-
         return "$scheme://$host$path";
     }
 
@@ -468,9 +443,8 @@ class OAuthRequest
         $post_data = $this->to_postdata();
         $out = $this->get_normalized_http_url();
         if ($post_data) {
-            $out .= '?' . $post_data;
+            $out .= '?'.$post_data;
         }
-
         return $out;
     }
 
@@ -484,10 +458,8 @@ class OAuthRequest
 
     /**
      * builds the Authorization: header
-     *
-     * @param null|mixed $realm
      */
-    public function to_header($realm = null)
+    public function to_header($realm=null)
     {
         $first = true;
         if ($realm) {
@@ -497,7 +469,7 @@ class OAuthRequest
             $out = 'Authorization: OAuth';
         }
 
-        $total = [];
+        $total = array();
         foreach ($this->parameters as $k => $v) {
             if (substr($k, 0, 5) != "oauth") {
                 continue;
@@ -512,7 +484,6 @@ class OAuthRequest
                             '"';
             $first = false;
         }
-
         return $out;
     }
 
@@ -520,6 +491,7 @@ class OAuthRequest
     {
         return $this->to_url();
     }
+
 
     public function sign_request($signature_method, $consumer, $token)
     {
@@ -535,7 +507,6 @@ class OAuthRequest
     public function build_signature($signature_method, $consumer, $token)
     {
         $signature = $signature_method->build_signature($this, $consumer, $token);
-
         return $signature;
     }
 
@@ -563,7 +534,7 @@ class OAuthServer
 {
     protected $timestamp_threshold = 300; // in seconds, five minutes
     protected $version = '1.0';             // hi blaine
-    protected $signature_methods = [];
+    protected $signature_methods = array();
 
     protected $data_store;
 
@@ -633,12 +604,10 @@ class OAuthServer
         $consumer = $this->get_consumer($request);
         $token = $this->get_token($request, $consumer, "access");
         $this->check_signature($request, $consumer, $token);
-
-        return [$consumer, $token];
+        return array($consumer, $token);
     }
 
     // Internals from here
-
     /**
      * version 1
      */
@@ -653,7 +622,6 @@ class OAuthServer
         if ($version !== $this->version) {
             throw new OAuthException("OAuth version '$version' not supported");
         }
-
         return $version;
     }
 
@@ -679,7 +647,6 @@ class OAuthServer
                 implode(", ", array_keys($this->signature_methods))
             );
         }
-
         return $this->signature_methods[$signature_method];
     }
 
@@ -703,11 +670,8 @@ class OAuthServer
 
     /**
      * try to find the token for the provided request's token key
-     *
-     * @param mixed $consumer
-     * @param mixed $token_type
      */
-    private function get_token(&$request, $consumer, $token_type = "access")
+    private function get_token(&$request, $consumer, $token_type="access")
     {
         $token_field = @$request->get_parameter('oauth_token');
         $token = $this->data_store->lookup_token(
@@ -716,16 +680,12 @@ class OAuthServer
         if (!$token) {
             throw new OAuthException("Invalid $token_type token: $token_field");
         }
-
         return $token;
     }
 
     /**
      * all-in-one function to check the signature on a request
      * should guess the signature method appropriately
-     *
-     * @param mixed $consumer
-     * @param mixed $token
      */
     private function check_signature(&$request, $consumer, $token)
     {
@@ -753,8 +713,6 @@ class OAuthServer
 
     /**
      * check that the timestamp is new enough
-     *
-     * @param mixed $timestamp
      */
     private function check_timestamp($timestamp)
     {
@@ -763,7 +721,7 @@ class OAuthServer
                 'Missing timestamp parameter. The parameter is required'
             );
         }
-
+        
         // verify that timestamp is recentish
         $now = time();
         if (abs($now - $timestamp) > $this->timestamp_threshold) {
@@ -775,11 +733,6 @@ class OAuthServer
 
     /**
      * check that the nonce is not repeated
-     *
-     * @param mixed $consumer
-     * @param mixed $token
-     * @param mixed $nonce
-     * @param mixed $timestamp
      */
     private function check_nonce($consumer, $token, $nonce, $timestamp)
     {
@@ -838,7 +791,7 @@ class OAuthUtil
     public static function urlencode_rfc3986($input)
     {
         if (is_array($input)) {
-            return array_map(['OAuthUtil', 'urlencode_rfc3986'], $input);
+            return array_map(array('OAuthUtil', 'urlencode_rfc3986'), $input);
         } elseif (is_scalar($input)) {
             return str_replace(
             '+',
@@ -849,6 +802,7 @@ class OAuthUtil
             return '';
         }
     }
+
 
     // This decode function isn't taking into consideration the above
     // modifications to the encoding process. However, this method doesn't
@@ -865,7 +819,7 @@ class OAuthUtil
     {
         $pattern = '/(([-_a-z]*)=("([^"]*)"|([^,]*)),?)/';
         $offset = 0;
-        $params = [];
+        $params = array();
         while (preg_match($pattern, $header, $matches, PREG_OFFSET_CAPTURE, $offset) > 0) {
             $match = $matches[0];
             $header_name = $matches[2][0];
@@ -895,7 +849,7 @@ class OAuthUtil
             // we always want the keys to be Cased-Like-This and arh()
             // returns the headers in the same case as they are in the
             // request
-            $out = [];
+            $out = array();
             foreach ($headers as $key => $value) {
                 $key = str_replace(
                         " ",
@@ -907,7 +861,7 @@ class OAuthUtil
         } else {
             // otherwise we don't have apache and are just going to have to hope
             // that $_SERVER actually contains what we need
-            $out = [];
+            $out = array();
             if (isset($_SERVER['CONTENT_TYPE'])) {
                 $out['Content-Type'] = $_SERVER['CONTENT_TYPE'];
             }
@@ -929,7 +883,6 @@ class OAuthUtil
                 }
             }
         }
-
         return $out;
     }
 
@@ -939,12 +892,12 @@ class OAuthUtil
     public static function parse_parameters($input)
     {
         if (!isset($input) || !$input) {
-            return [];
+            return array();
         }
 
         $pairs = explode('&', $input);
 
-        $parsed_parameters = [];
+        $parsed_parameters = array();
         foreach ($pairs as $pair) {
             $split = explode('=', $pair, 2);
             $parameter = OAuthUtil::urldecode_rfc3986($split[0]);
@@ -957,7 +910,7 @@ class OAuthUtil
                 if (is_scalar($parsed_parameters[$parameter])) {
                     // This is the first duplicate, so transform scalar (string) into an array
                     // so we can add the duplicates
-                    $parsed_parameters[$parameter] = [$parsed_parameters[$parameter]];
+                    $parsed_parameters[$parameter] = array($parsed_parameters[$parameter]);
                 }
 
                 $parsed_parameters[$parameter][] = $value;
@@ -965,7 +918,6 @@ class OAuthUtil
                 $parsed_parameters[$parameter] = $value;
             }
         }
-
         return $parsed_parameters;
     }
 
@@ -984,7 +936,7 @@ class OAuthUtil
         // Ref: Spec: 9.1.1 (1)
         uksort($params, 'strcmp');
 
-        $pairs = [];
+        $pairs = array();
         foreach ($params as $parameter => $value) {
             if (is_array($value)) {
                 // If two or more parameters share the same name, they are sorted by their value
@@ -1031,6 +983,9 @@ class Model_Social_Tw
     /* Immediately retry the API call if the response was not successful. */
     //public $retry = TRUE;
 
+
+
+
     /**
      * Set API URLS
      */
@@ -1038,17 +993,14 @@ class Model_Social_Tw
     {
         return 'https://api.twitter.com/oauth/access_token';
     }
-
     public function authenticateURL()
     {
         return 'https://api.twitter.com/oauth/authenticate';
     }
-
     public function authorizeURL()
     {
         return 'https://api.twitter.com/oauth/authorize';
     }
-
     public function requestTokenURL()
     {
         return 'https://api.twitter.com/oauth/request_token';
@@ -1061,7 +1013,6 @@ class Model_Social_Tw
     {
         return $this->http_status;
     }
-
     public function lastAPICall()
     {
         return $this->last_api_call;
@@ -1069,11 +1020,6 @@ class Model_Social_Tw
 
     /**
      * construct TwitterOAuth object
-     *
-     * @param mixed      $consumer_key
-     * @param mixed      $consumer_secret
-     * @param null|mixed $oauth_token
-     * @param null|mixed $oauth_token_secret
      */
     public function __construct($consumer_key, $consumer_secret, $oauth_token = null, $oauth_token_secret = null)
     {
@@ -1086,21 +1032,19 @@ class Model_Social_Tw
         }
     }
 
+
     /**
      * Get a request_token from Twitter
      *
      * @returns a key/value array containing oauth_token and oauth_token_secret
-     *
-     * @param mixed $oauth_callback
      */
     public function getRequestToken($oauth_callback)
     {
-        $parameters = [];
+        $parameters = array();
         $parameters['oauth_callback'] = $oauth_callback;
         $request = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);
         $token = OAuthUtil::parse_parameters($request);
         $this->token = new OAuthConsumer(Arr::get($token, 'oauth_token'), Arr::get($token, 'oauth_token_secret'));
-
         return $token;
     }
 
@@ -1108,9 +1052,6 @@ class Model_Social_Tw
      * Get the authorize URL
      *
      * @returns a string
-     *
-     * @param mixed $token
-     * @param mixed $sign_in_with_twitter
      */
     public function getAuthorizeURL($token, $sign_in_with_twitter = true)
     {
@@ -1132,17 +1073,14 @@ class Model_Social_Tw
      *                "oauth_token_secret" => "the-access-secret",
      *                "user_id" => "9436992",
      *                "screen_name" => "abraham")
-     *
-     * @param mixed $oauth_verifier
      */
     public function getAccessToken($oauth_verifier)
     {
-        $parameters = [];
+        $parameters = array();
         $parameters['oauth_verifier'] = $oauth_verifier;
         $request = $this->oAuthRequest($this->accessTokenURL(), 'GET', $parameters);
         $token = OAuthUtil::parse_parameters($request);
         $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
-
         return $token;
     }
 
@@ -1154,77 +1092,57 @@ class Model_Social_Tw
      *                "user_id" => "9436992",
      *                "screen_name" => "abraham",
      *                "x_auth_expires" => "0")
-     *
-     * @param mixed $username
-     * @param mixed $password
      */
     public function getXAuthToken($username, $password)
     {
-        $parameters = [];
+        $parameters = array();
         $parameters['x_auth_username'] = $username;
         $parameters['x_auth_password'] = $password;
         $parameters['x_auth_mode'] = 'client_auth';
         $request = $this->oAuthRequest($this->accessTokenURL(), 'POST', $parameters);
         $token = OAuthUtil::parse_parameters($request);
         $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
-
         return $token;
     }
 
     /**
      * GET wrapper for oAuthRequest.
-     *
-     * @param mixed $url
-     * @param mixed $parameters
      */
-    public function get($url, $parameters = [])
+    public function get($url, $parameters = array())
     {
         $response = $this->oAuthRequest($url, 'GET', $parameters);
         if ($this->format === 'json' && $this->decode_json) {
             return json_decode($response);
         }
-
         return $response;
     }
 
     /**
      * POST wrapper for oAuthRequest.
-     *
-     * @param mixed $url
-     * @param mixed $parameters
      */
-    public function post($url, $parameters = [])
+    public function post($url, $parameters = array())
     {
         $response = $this->oAuthRequest($url, 'POST', $parameters);
         if ($this->format === 'json' && $this->decode_json) {
             return json_decode($response);
         }
-
         return $response;
     }
 
     /**
      * DELETE wrapper for oAuthReqeust.
-     *
-     * @param mixed $url
-     * @param mixed $parameters
      */
-    public function delete($url, $parameters = [])
+    public function delete($url, $parameters = array())
     {
         $response = $this->oAuthRequest($url, 'DELETE', $parameters);
         if ($this->format === 'json' && $this->decode_json) {
             return json_decode($response);
         }
-
         return $response;
     }
 
     /**
      * Format and sign an OAuth / API request
-     *
-     * @param mixed $url
-     * @param mixed $method
-     * @param mixed $parameters
      */
     public function oAuthRequest($url, $method, $parameters)
     {
@@ -1244,24 +1162,20 @@ class Model_Social_Tw
     /**
      * Make an HTTP request
      *
-     * @param mixed      $url
-     * @param mixed      $method
-     * @param null|mixed $postfields
-     *
      * @return API results
      */
     public function http($url, $method, $postfields = null)
     {
-        $this->http_info = [];
+        $this->http_info = array();
         $ci = curl_init();
         /* Curl settings */
         curl_setopt($ci, CURLOPT_USERAGENT, $this->useragent);
         curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, $this->connecttimeout);
         curl_setopt($ci, CURLOPT_TIMEOUT, $this->timeout);
         curl_setopt($ci, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ci, CURLOPT_HTTPHEADER, ['Expect:']);
+        curl_setopt($ci, CURLOPT_HTTPHEADER, array('Expect:'));
         curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, $this->ssl_verifypeer);
-        curl_setopt($ci, CURLOPT_HEADERFUNCTION, [$this, 'getHeader']);
+        curl_setopt($ci, CURLOPT_HEADERFUNCTION, array($this, 'getHeader'));
         curl_setopt($ci, CURLOPT_HEADER, false);
 
         switch ($method) {
@@ -1284,15 +1198,11 @@ class Model_Social_Tw
         $this->http_info = array_merge($this->http_info, curl_getinfo($ci));
         $this->url = $url;
         curl_close($ci);
-
         return $response;
     }
 
     /**
      * Get the header info to store.
-     *
-     * @param mixed $ch
-     * @param mixed $header
      */
     public function getHeader($ch, $header)
     {
@@ -1302,7 +1212,6 @@ class Model_Social_Tw
             $value = trim(substr($header, $i + 2));
             $this->http_header[$key] = $value;
         }
-
         return strlen($header);
     }
 }

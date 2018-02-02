@@ -24,7 +24,7 @@
 <body>
 <div class="wrapper">
     <a href="/">
-        <?php include(DOCROOT . "public/app/svg/codex-logo.svg") ?>
+        <? include(DOCROOT . "public/app/svg/codex-logo.svg") ?>
     </a>
     <h1>Access denied</h1>
 </div>

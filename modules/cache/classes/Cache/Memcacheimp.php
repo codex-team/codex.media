@@ -6,8 +6,8 @@
  * @author Kolger
  * Реализует метод работы с тэгами, описанный на странице http://www.smira.ru/2008/10/29/web-caching-memcached-5/
  */
-class Cache_Memcacheimp
-{
+class Cache_Memcacheimp {
+
     protected $memcache;
 
     /**
@@ -22,11 +22,9 @@ class Cache_Memcacheimp
      * Метод find не поддеживается, но предусмотрен интерфейсом
      *
      * @param $tag
-     *
      * @return exception
      */
-    public function find($tag)
-    {
+    public function find($tag) {
         // Метод не поддерживается
         throw new BadMethodCallException();
     }
@@ -37,16 +35,14 @@ class Cache_Memcacheimp
      * Реализует метод работы с тэгами, описанный на странице http://www.smira.ru/2008/10/29/web-caching-memcached-5/
      *
      * @param $id
-     *
      * @return NULL or data
      */
-    public function get($id)
-    {
+    public function get($id) {
         $value = $this->memcache->get($id);
 
         // Если ключ не найден - завершаемся и возвращает NULL
-        if ($value === false) {
-            return null;
+        if ($value === FALSE) {
+            return NULL;
         }
 
         // Если у значения есть тэги - обрабатываем им и проверяем, не изменилось ли их значение
@@ -55,7 +51,7 @@ class Cache_Memcacheimp
 
             foreach ($value['tags'] as $tag => $tag_stored_value) {
                 // Получаем значение текущее значение тэга
-                $tag_current_value = $this->get_tag_value($tag);
+                $tag_current_value = $this->get_tag_value ($tag);
 
                 // И сравниваем это значение с тем, которое хранится в теле элемента кэша
                 if ($tag_current_value != $tag_stored_value) {
@@ -67,11 +63,11 @@ class Cache_Memcacheimp
 
             // Если ключ не валидный - возвращаем NULL
             if ($expired) {
-                return null;
+                return NULL;
             }
         }
 
-        return isset($value['data']) ? $value['data'] : null;
+        return isset($value['data']) ? $value['data'] : NULL;
     }
 
     /**
@@ -80,15 +76,13 @@ class Cache_Memcacheimp
      * Реализует метод работы с тэгами, описанный на странице http://www.smira.ru/2008/10/29/web-caching-memcached-5/
      *
      * @param $tag
-     *
      * @return
      */
-    public function delete_tag($tag)
-    {
-        $key = "tag_" . $tag;
+    public function delete_tag($tag) {
+        $key = "tag_".$tag;
         $tag_value = $this->get_tag_value($tag);
 
-        $this->set($key, microtime(true), null, 60 * 60 * 24 * 30);
+        $this->set($key, microtime(true), NULL, 60*60*24*30);
 
         return true;
     }
@@ -98,18 +92,17 @@ class Cache_Memcacheimp
      * Реализует метод работы с тэгами, описанный на странице http://www.smira.ru/2008/10/29/web-caching-memcached-5/
      *
      * @param $tag
-     *
      * @return int
      */
-    private function get_tag_value($tag)
-    {
-        $key = "tag_" . $tag;
+    private function get_tag_value($tag) {
+        $key = "tag_".$tag;
 
         $tag_value = $this->get($key);
 
-        if ($tag_value === null) {
+        if ($tag_value === NULL) {
             $tag_value = microtime(true);
-            $this->set($key, $tag_value, null, 60 * 60 * 24 * 30);
+            $this->set($key, $tag_value, NULL, 60*60*24*30);
+
         }
 
         return $tag_value;
@@ -118,16 +111,11 @@ class Cache_Memcacheimp
     /**
      * Добавляет ключ id со значением data, метками tags.
      * Реализует метод работы с тэгами, описанный на странице http://www.smira.ru/2008/10/29/web-caching-memcached-5/
-     *
-     * @param mixed $id
-     * @param mixed $data
-     * @param mixed $lifetime
      */
-    public function set($id, $data, array $tags = null, $lifetime)
-    {
+    public function set($id, $data, array $tags = NULL, $lifetime) {
         // Если заданы тэги — получаем их текущие значения в $key_tags
         if (!empty($tags)) {
-            $key_tags = [];
+            $key_tags = array();
 
             foreach ($tags as $tag) {
                 $key_tags[$tag] = $this->get_tag_value($tag);
@@ -147,12 +135,9 @@ class Cache_Memcacheimp
      *
      * @param $id ID ключа
      * @param $tag Не используется, но предусмотрен интерфейсом
-     * @param mixed $key
-     *
      * @return bool
      */
-    public function delete($key)
-    {
+    public function delete($key) {
         // Шлем запрос на удаление в драйвер memcached
         return $this->memcache->delete($key);
     }
@@ -161,11 +146,9 @@ class Cache_Memcacheimp
      * Метод delete_expired не поддеживается, но предусмотрен интерфейсом
      *
      * @param $tag
-     *
      * @return exception
      */
-    public function delete_expired()
-    {
+    public function delete_expired() {
         // Метод не поддерживается
         throw new BadMethodCallException();
     }

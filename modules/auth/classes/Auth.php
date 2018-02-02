@@ -1,5 +1,3 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 
-abstract class Auth extends Kohana_Auth
-{
-}
+abstract class Auth extends Kohana_Auth { }

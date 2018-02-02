@@ -4,41 +4,38 @@
  *
  * @package    Kohana/Cache
  * @category   Base
- *
  * @author     Kohana Team
  * @copyright  (c) 2009-2012 Kohana Team
  * @license    http://kohanaphp.com/license
  */
-interface Kohana_Cache_Tagging
-{
-    /**
-     * Set a value based on an id. Optionally add tags.
-     *
-     * Note : Some caching engines do not support
-     * tagging
-     *
-     * @param string $id       id
-     * @param mixed  $data     data
-     * @param int    $lifetime lifetime [Optional]
-     * @param array  $tags     tags [Optional]
-     *
-     * @return bool
-     */
-    public function set_with_tags($id, $data, $lifetime = null, array $tags = null);
+interface Kohana_Cache_Tagging {
 
-    /**
-     * Delete cache entries based on a tag
-     *
-     * @param string $tag tag
-     */
-    public function delete_tag($tag);
+	/**
+	 * Set a value based on an id. Optionally add tags.
+	 *
+	 * Note : Some caching engines do not support
+	 * tagging
+	 *
+	 * @param   string   $id        id
+	 * @param   mixed    $data      data
+	 * @param   integer  $lifetime  lifetime [Optional]
+	 * @param   array    $tags      tags [Optional]
+	 * @return  boolean
+	 */
+	public function set_with_tags($id, $data, $lifetime = NULL, array $tags = NULL);
 
-    /**
-     * Find cache entries based on a tag
-     *
-     * @param string $tag tag
-     *
-     * @return array
-     */
-    public function find($tag);
+	/**
+	 * Delete cache entries based on a tag
+	 *
+	 * @param   string  $tag  tag
+	 */
+	public function delete_tag($tag);
+
+	/**
+	 * Find cache entries based on a tag
+	 *
+	 * @param   string  $tag  tag
+	 * @return  array
+	 */
+	public function find($tag);
 }

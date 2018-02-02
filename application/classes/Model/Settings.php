@@ -29,7 +29,7 @@ class Model_Settings extends Model_preDispatch
         $siteSettings = [];
 
         foreach ($parameterRow as $item => $info) {
-            $key = Arr::get($info, 'name');
+            $key   = Arr::get($info, 'name');
             $value = Arr::get($info, 'value');
 
             if (!$key && !$value) {
@@ -44,8 +44,6 @@ class Model_Settings extends Model_preDispatch
 
     /**
      * @deprecated
-     *
-     * @param null|mixed $name
      */
     private function get($name = null)
     {
@@ -110,10 +108,8 @@ class Model_Settings extends Model_preDispatch
 
     /**
      * Saves new branding image
-     *
-     * @param string $filename file name
-     *
-     * @return string new brangind image name
+     * @param  string $filename   file name
+     * @return string    new brangind image name
      */
     public function newBranding($filename)
     {
@@ -133,12 +129,9 @@ class Model_Settings extends Model_preDispatch
 
         return $this->value;
     }
-
     /**
      * Saves new logo image
-     *
-     * @param string $filename file name
-     *
+     * @param  string $filename   file name
      * @return string new logo image name
      */
     public function newLogo($filename)

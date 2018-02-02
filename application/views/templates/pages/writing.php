@@ -8,8 +8,8 @@
         <a href="/" rel="nofollow">
             Главная
         </a>
-        <?php include(DOCROOT . "public/app/svg/arrow-right.svg") ?>
-        <?php
+        <? include(DOCROOT . "public/app/svg/arrow-right.svg") ?>
+        <?
             $action = isset($page->id) && $page->id ? 'Редактирование' : 'Создание';
             $object = $page->isPageOnMain() ? 'новости' : 'материала';
 
@@ -21,12 +21,12 @@
 </div>
 
 <div class="writing--fullscreen">
-    <?= View::factory('templates/pages/form', [
+    <?= View::factory('templates/pages/form', array(
         'page' => $page
-    ]); ?>
+    )); ?>
 </div>
 
-<?php
+<?
 /**
  * Hide ESIR-navigator
  */

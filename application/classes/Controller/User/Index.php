@@ -2,7 +2,7 @@
 
 class Controller_User_Index extends Controller_Base_preDispatch
 {
-    const LIST_PAGES = 'pages';
+    const LIST_PAGES    = 'pages';
     const LIST_COMMENTS = 'comments';
     const ELEMS_IN_LIST = 7;
 
@@ -19,7 +19,7 @@ class Controller_User_Index extends Controller_Base_preDispatch
         }
 
         $viewUser->isMe = $viewUser->id == $this->user->id;
-        $this->view['viewUser'] = $viewUser;
+        $this->view['viewUser']  = $viewUser;
 
         $offset = ($pageNumber - 1) * self::ELEMS_IN_LIST;
         switch ($list) {
@@ -33,7 +33,7 @@ class Controller_User_Index extends Controller_Base_preDispatch
                 break;
 
             default:
-                $userFeed = [];
+                $userFeed = array();
                 break;
         }
 
@@ -48,16 +48,15 @@ class Controller_User_Index extends Controller_Base_preDispatch
         /** If ajax request */
         if (Model_Methods::isAjax()) {
             $this->ajax_pagination($list, $userFeed, $nextPage);
-
             return;
         }
         /***/
 
-        $this->view['user_feed'] = $userFeed;
-        $this->view['next_page'] = $nextPage;
+        $this->view['user_feed']   = $userFeed;
+        $this->view['next_page']   = $nextPage;
         $this->view['page_number'] = $pageNumber;
 
-        $this->view['list'] = $list;
+        $this->view['list']        = $list;
         $this->view['listFactory'] = View::factory('/templates/users/' . $list, $this->view);
 
         $this->view['emailConfirmed'] = Arr::get($_GET, 'confirmed', 0);
@@ -68,16 +67,16 @@ class Controller_User_Index extends Controller_Base_preDispatch
 
     private function ajax_pagination($type, $models, $nextPage = false)
     {
-        $response = [];
+        $response = array();
         $response['success'] = 1;
 
         switch ($type) {
             case self::LIST_COMMENTS:
-                $response['list'] = View::factory('templates/users/comments', ['user_feed' => $models])->render();
+                $response['list'] = View::factory('templates/users/comments', array('user_feed' => $models))->render();
                 break;
 
             case self::LIST_PAGES:
-                $response['list'] = View::factory('templates/users/pages', ['user_feed' => $models])->render();
+                $response['list'] = View::factory('templates/users/pages', array('user_feed' => $models))->render();
                 break;
 
             default:
@@ -85,7 +84,7 @@ class Controller_User_Index extends Controller_Base_preDispatch
                 break;
         }
 
-        $response['next_page'] = $nextPage;
+        $response['next_page']  = $nextPage;
 
         $this->auto_render = false;
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');

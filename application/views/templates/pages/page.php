@@ -1,14 +1,18 @@
 <article class="article island island--padded" itemscope itemtype="http://schema.org/Article">
 
-    <?php 
+    <?  
         $domainAndProtocol = Model_Methods::getDomainAndProtocol();
         $siteLogo = $domainAndProtocol . "/upload/logo/m_" . $site_info['logo'];
         $pageId = $domainAndProtocol . "/p/" . $page->id . "/" . $page->uri;
 
         if (!empty($page->cover)) {
+
             $articleCover = $domainAndProtocol . "/upload/pages/covers/o_" . $page->cover;
+
         } else {
+
             $articleCover = $domainAndProtocol . "/public/app/img/meta-image.png";
+
         }
 
     ?>
@@ -54,16 +58,16 @@
         <meta itemprop="url" content="<?= $siteLogo ?>" id="organizationImgUrl" />
     </div>
 
-    <?php if (!empty($page->parent->id)): ?>
+    <? if (!empty($page->parent->id)): ?>
         <div class="article__parent js-emoji-included">
             <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri?>">
-                <?php include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
+                <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
                 <?= $page->parent->title ?>
             </a>
         </div>
-    <?php endif ?>
+    <? endif ?>
 
-    <?php /* Page info */ ?>
+    <? /* Page info */ ?>
     <header class="article__information">
 
         <time class="article__time">
@@ -80,13 +84,13 @@
         <div class="article__information-right">
 
             <span class="article__views-counter">
-                <?php include(DOCROOT . "public/app/svg/eye.svg") ?>
+                <? include(DOCROOT . "public/app/svg/eye.svg") ?>
                 <?= $page->views ?>
             </span>
 
             <a class="article__comments-counter" href="<?= $page->url ?>#comments">
-                <?php include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>
-                <?php /* ?>
+                <? include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>
+                <? /* ?>
                 <? if ($page->commentsCount > 0): ?>
                     <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
                 <? else: ?>
@@ -96,8 +100,8 @@
                 <?= $page->commentsCount ?>
             </a>
 
-            <?php /* Manage page buttons */ ?>
-            <?php if ($page->canModify($user)): ?>
+            <? /* Manage page buttons */ ?>
+            <? if ($page->canModify($user)): ?>
 
                 <span class="island-settings js-page-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
                     <module-settings hidden>
@@ -118,7 +122,7 @@
                                 }
 
                             },
-                            <?php if ($user->isAdmin()): ?>
+                            <? if ($user->isAdmin()): ?>
                                 {
                                     "title" : "<?= $page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню'; ?>",
                                     "handler" : {
@@ -133,7 +137,7 @@
                                         "method" : "addToMain"
                                     }
                                 },
-                            <?php endif; ?>
+                            <? endif; ?>
                             {
                                 "title" : "Удалить",
                                 "handler" : {
@@ -143,66 +147,66 @@
                             }]
                         }
                     </module-settings>
-                    <?php include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
+                    <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
                 </span>
 
-            <?php endif ?>
+            <? endif ?>
 
         </div>
 
     </header>
 
-    <?php /* Page title */ ?>
+    <? /* Page title */ ?>
     <h1 class="article__title js-emoji-included" itemprop="headline">
         <?= $page->title ?>
     </h1>
 
-    <?php /* Page content */ ?>
-    <?php if (!empty($page->blocks)): ?>
+    <? /* Page content */ ?>
+    <? if (!empty($page->blocks)): ?>
         <div class="article__content js-emoji-included" itemprop="articleBody">
-            <?php foreach ($page->blocks as $block): ?>
+            <? foreach ($page->blocks as $block): ?>
                 <?=
-                    View::factory('templates/pages/blocks/' . $block['type'], [
+                    View::factory('templates/pages/blocks/' . $block['type'], array(
                         'block' => $block['data']
-                    ])->render();
+                    ))->render();
                 ?>
-            <?php endforeach; ?>
+            <? endforeach; ?>
         </div>
-    <?php endif ?>
+    <? endif ?>
 
-    <?php /* Child pages */ ?>
-    <?php if ($page->children): ?>
+    <? /* Child pages */ ?>
+    <? if ($page->children): ?>
         <ul class="children-pages">
-            <?php foreach ($page->children as $child): ?>
+            <? foreach ($page->children as $child): ?>
                 <li class="children-pages__item">
                     <a class="children-pages__link" href="/p/<?= $child->id ?>/<?= $child->uri ?>">
                         <?= $child->title ?>
                     </a>
                 </li>
-            <?php endforeach ?>
+            <? endforeach ?>
         </ul>
-    <?php endif ?>
+    <? endif ?>
 
-    <?= View::factory('templates/components/share', [
+    <?= View::factory('templates/components/share', array(
         'offer' => 'Если вам понравилась статья, поделитесь ссылкой на нее',
-        'url' => 'https://' . Arr::get($_SERVER, 'HTTP_HOST', Arr::get($_SERVER, 'SERVER_NAME', 'edu.ifmo.su')) . '/p/' . $page->id,
+        'url'   => 'https://' . Arr::get($_SERVER, 'HTTP_HOST', Arr::get($_SERVER, 'SERVER_NAME', 'edu.ifmo.su')) . '/p/' . $page->id,
         'title' => html_entity_decode($page->title),
-        'desc' => ' ',
-    ]); ?>
+        'desc'  => ' ',
+    )); ?>
 
 </article>
 
-<?php /* Comments block */ ?>
-<?php if ($user->id): ?>
+<? /* Comments block */ ?>
+<? if ($user->id): ?>
 
     <div class="comment-form__island island island--margined clearfix" id="comments">
-        <?= View::factory('templates/comments/form', ['page_id' => $page->id, 'user' => $user]); ?>
+        <?= View::factory('templates/comments/form', array('page_id' => $page->id, 'user' => $user)); ?>
     </div>
 
-<?php endif ?>
+<? endif ?>
 
-<?= View::factory('templates/comments/list', [
+<?= View::factory('templates/comments/list', array(
     'page' => $page,
     'user' => $user,
     'emptyListMessage' => '<p>Станьте первым, кто оставит <br/> комментарий к данному материалу.</p>'
-]); ?>
+)); ?>

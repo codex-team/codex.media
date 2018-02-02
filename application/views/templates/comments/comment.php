@@ -3,11 +3,11 @@
     <div class="comment__header clearfix">
 
 
-        <?php if ($user->isAdmin || $user->id == $comment->author->id): ?>
+        <? if ($user->isAdmin || $user->id == $comment->author->id): ?>
             <span class="island-settings js-comment-settings" data-id="<?= $comment->id ?>">
-                <?php include(DOCROOT . 'public/app/svg/ellipsis.svg') ?>
+                <? include(DOCROOT . 'public/app/svg/ellipsis.svg') ?>
             </span>
-        <?php endif ?>
+        <? endif ?>
 
         <a class="comment__author-photo" href="/user/<?= $comment->author->id ?>">
             <img src="<?= $comment->author->photo ?>">
@@ -22,15 +22,15 @@
 
     </div>
 
-    <?php if ($comment->parent_comment || !$isOnPage): ?>
+    <? if ($comment->parent_comment || !$isOnPage): ?>
 
-        <?php
-            $target = [
-                'text' => isset($comment->parent_comment->text) ? $comment->parent_comment->text : $comment->page->title,
-                'author' => isset($comment->parent_comment->author) ? $comment->parent_comment->author : $comment->page->author,
-                'date' => isset($comment->parent_comment->dt_create) ? $comment->parent_comment->dt_create : $comment->page->date,
-                'url' => '/p/' . $comment->page->id . (!empty($comment->parent_comment->id) ? '#comment' . $comment->parent_comment->id : ''),
-            ];
+        <?
+            $target = array(
+                'text'   => isset($comment->parent_comment->text)      ? $comment->parent_comment->text      : $comment->page->title,
+                'author' => isset($comment->parent_comment->author)    ? $comment->parent_comment->author    : $comment->page->author,
+                'date'   => isset($comment->parent_comment->dt_create) ? $comment->parent_comment->dt_create : $comment->page->date,
+                'url'    => '/p/' . $comment->page->id . ( !empty($comment->parent_comment->id) ? '#comment' . $comment->parent_comment->id : ''),
+            );
 
             $targetTextShort = $methods->specc_short($target['text'], 200);
         ?>
@@ -41,37 +41,37 @@
                 <span class="comment-target__short-text js-emoji-included">
                     <?= $targetTextShort['text'] ?>
                 </span>
-                <?php if ($targetTextShort['changed']): ?>
+                <? if ($targetTextShort['changed']): ?>
                     <span class="comment-target__text-hided js-emoji-included">
                         <?= $target['text'] ?>
                     </span>
                     <span class="comment-target__show-more" data-text-show="Показать целиком" data-text-hide="Свернуть" onclick="codex.content.toggle('#js-comment-target-<?= $comment->id ?>', 'show-more'); event.preventDefault(); ">
-                        <?php include(DOCROOT . "public/app/svg/arrow-down.svg") ?>
+                        <? include(DOCROOT . "public/app/svg/arrow-down.svg") ?>
                     </span>
-                <?php endif ?>
+                <? endif ?>
             </a>
 
-            <?php if (!empty($target['author']->id)): ?>
+            <? if (!empty($target['author']->id)): ?>
                 <a class="comment-target__author" href="/user/<?= $target['author']->id ?>">
                     <?= $target['author']->name ?>
                 </a>
-            <?php endif ?>
+            <? endif ?>
 
-            <?php if ($comment->parent_comment && !$isOnPage): ?>
+            <? if ($comment->parent_comment && !$isOnPage): ?>
                 <span class="comment-target__arrow">
-                    <?php include(DOCROOT . "public/app/svg/arrow-right.svg") ?>
+                    <? include(DOCROOT . "public/app/svg/arrow-right.svg") ?>
                 </span>
                 <a class="comment-target__page" href="/p/<?= $comment->page->id ?>">
                     <?= $comment->page->title ?>
                 </a>
-            <?php endif ?>
+            <? endif ?>
 
             <a class="comment-target__date" href="<?= $target['url'] ?>">
                 <?= $methods->ftime(strtotime($target['date'])) ?>
             </a>
 
         </div>
-    <?php endif ?>
+    <? endif ?>
 
     <div class="comment__text js-emoji-included">
         <?= $methods->auto_link_urls($comment->text); ?>
@@ -79,13 +79,13 @@
 
     <div class="comment__footer">
 
-        <?= View::factory('templates/comments/form', [
-                'comment' => $comment,
-                'page_id' => $comment->page_id,
-                'user' => $user,
+        <?= View::factory('templates/comments/form', array(
+                'comment'   => $comment,
+                'page_id'   => $comment->page_id,
+                'user'      => $user,
                 'parent_id' => $comment->id,
-                'root_id' => $comment->root_id
-        ]); ?>
+                'root_id'   =>  $comment->root_id
+        )); ?>
 
     </div>
 

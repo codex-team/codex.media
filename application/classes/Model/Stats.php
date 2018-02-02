@@ -3,8 +3,7 @@
 /**
  * Stats module stores page views in Redis.
  */
-class Model_Stats extends Model
-{
+class Model_Stats extends Model {
 
     /**
      * Const with type
@@ -22,11 +21,11 @@ class Model_Stats extends Model
      * You can set any amount of seconds or use Kohana Date class.
      *
      * Date::YEAR   = 31556926;
-     * Date::MONTH  = 2629744;
-     * Date::WEEK   = 604800;
-     * Date::DAY    = 86400;
-     * Date::HOUR   = 3600;
-     * Date::MINUTE = 60;
+   	 * Date::MONTH  = 2629744;
+   	 * Date::WEEK   = 604800;
+   	 * Date::DAY    = 86400;
+   	 * Date::HOUR   = 3600;
+   	 * Date::MINUTE = 60;
      */
     private $sensetivity = Date::DAY;
 
@@ -66,7 +65,7 @@ class Model_Stats extends Model
     /**
      * Generate key for sorted set
      *
-     * @return $key Key for this item set
+     * @return $key     Key for this item set
      */
     private function generateKey()
     {
@@ -78,7 +77,7 @@ class Model_Stats extends Model
     /**
      * Return group name (sorted set member) for this event by time
      *
-     * @return $member Group for this event by current sensetivity
+     * @return $member    Group for this event by current sensetivity
      */
     private function generateGroup()
     {
@@ -111,7 +110,7 @@ class Model_Stats extends Model
      * @param $start    (optional) timestamp for the start of interval
      * @param $end      (optional) timestamp for the end of interval
      *
-     * @return $sum Sum of hits for target interval
+     * @return $sum     Sum of hits for target interval
      */
     public function get($start = 0, $end = false)
     {
@@ -127,7 +126,7 @@ class Model_Stats extends Model
             if (($start <= $item) && ($item <= $end)) {
                 $sum += (int) $item;
             }
-        }
+        };
 
         return $sum;
     }
@@ -138,20 +137,19 @@ class Model_Stats extends Model
      * You can set any amount of seconds or use Kohana Date class.
      *
      * Date::YEAR   = 31556926;
-     * Date::MONTH  = 2629744;
-     * Date::WEEK   = 604800;
-     * Date::DAY    = 86400;
-     * Date::HOUR   = 3600;
-     * Date::MINUTE = 60;
+   	 * Date::MONTH  = 2629744;
+   	 * Date::WEEK   = 604800;
+   	 * Date::DAY    = 86400;
+   	 * Date::HOUR   = 3600;
+   	 * Date::MINUTE = 60;
      *
      * @param $interval     For which last number of seconds you need to get stats
-     *
-     * @return Sum of hits for target period
+     * @return              Sum of hits for target period
      */
     public function getLast($interval)
     {
-        $intervalStart = strtotime("now") - $interval;
+      $intervalStart = strtotime("now") - $interval;
 
-        return $this->get($intervalStart);
+      return $this->get($intervalStart);
     }
 }

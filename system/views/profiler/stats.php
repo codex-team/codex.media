@@ -1,13 +1,13 @@
-<?php defined('SYSPATH') or die('No direct script access.') ?>
+<?php defined('SYSPATH') OR die('No direct script access.') ?>
 
 <style type="text/css">
 <?php include Kohana::find_file('views', 'profiler/style', 'css') ?>
 </style>
 
 <?php
-$group_stats = Profiler::group_stats();
-$group_cols = ['min', 'max', 'average', 'total'];
-$application_cols = ['min', 'max', 'average', 'current'];
+$group_stats      = Profiler::group_stats();
+$group_cols       = array('min', 'max', 'average', 'total');
+$application_cols = array('min', 'max', 'average', 'current');
 ?>
 
 <div class="kohana">
@@ -60,7 +60,7 @@ $application_cols = ['min', 'max', 'average', 'current'];
 	<table class="profiler">
 		<?php $stats = Profiler::application() ?>
 		<tr class="final mark time">
-			<th class="name" rowspan="2" scope="rowgroup"><?php echo __('Application Execution') . ' (' . $stats['count'] . ')' ?></th>
+			<th class="name" rowspan="2" scope="rowgroup"><?php echo __('Application Execution').' ('.$stats['count'].')' ?></th>
 			<?php foreach ($application_cols as $key): ?>
 			<td class="<?php echo $key ?>"><?php echo number_format($stats[$key]['time'], 6) ?> <abbr title="seconds">s</abbr></td>
 			<?php endforeach ?>

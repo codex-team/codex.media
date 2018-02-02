@@ -25,9 +25,9 @@ class Model_Services_Telegram extends Model_preDispatch
         }
 
         /** Set up params for request */
-        $params = [
+        $params = array(
             'message' => $text
-        ];
+        );
 
         /** Get response */
         $response = Model_Methods::sendPostRequest($url, $params);

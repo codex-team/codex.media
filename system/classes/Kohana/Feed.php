@@ -1,167 +1,185 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php defined('SYSPATH') OR die('No direct script access.');
 /**
  * RSS and Atom feed helper.
  *
  * @package    Kohana
  * @category   Helpers
- *
  * @author     Kohana Team
  * @copyright  (c) 2007-2012 Kohana Team
  * @license    http://kohanaframework.org/license
  */
-class Kohana_Feed
-{
-    /**
-     * Parses a remote feed into an array.
-     *
-     * @param string $feed  remote feed URL
-     * @param int    $limit item limit to fetch
-     *
-     * @return array
-     */
-    public static function parse($feed, $limit = 0)
-    {
-        // Check if SimpleXML is installed
-        if (! function_exists('simplexml_load_file')) {
-            throw new Kohana_Exception('SimpleXML must be installed!');
-        }
+class Kohana_Feed {
 
-        // Make limit an integer
-        $limit = (int) $limit;
+	/**
+	 * Parses a remote feed into an array.
+	 *
+	 * @param   string  $feed   remote feed URL
+	 * @param   integer $limit  item limit to fetch
+	 * @return  array
+	 */
+	public static function parse($feed, $limit = 0)
+	{
+		// Check if SimpleXML is installed
+		if ( ! function_exists('simplexml_load_file'))
+			throw new Kohana_Exception('SimpleXML must be installed!');
 
-        // Disable error reporting while opening the feed
-        $error_level = error_reporting(0);
+		// Make limit an integer
+		$limit = (int) $limit;
 
-        // Allow loading by filename or raw XML string
-        if (Valid::url($feed)) {
-            // Use native Request client to get remote contents
-            $response = Request::factory($feed)->execute();
-            $feed = $response->body();
-        } elseif (is_file($feed)) {
-            // Get file contents
-            $feed = file_get_contents($feed);
-        }
+		// Disable error reporting while opening the feed
+		$error_level = error_reporting(0);
 
-        // Load the feed
-        $feed = simplexml_load_string($feed, 'SimpleXMLElement', LIBXML_NOCDATA);
+		// Allow loading by filename or raw XML string
+		if (Valid::url($feed))
+		{
+			// Use native Request client to get remote contents
+			$response = Request::factory($feed)->execute();
+			$feed     = $response->body();
+		}
+		elseif (is_file($feed))
+		{
+			// Get file contents
+			$feed = file_get_contents($feed);
+		}
 
-        // Restore error reporting
-        error_reporting($error_level);
+		// Load the feed
+		$feed = simplexml_load_string($feed, 'SimpleXMLElement', LIBXML_NOCDATA);
 
-        // Feed could not be loaded
-        if ($feed === false) {
-            return [];
-        }
+		// Restore error reporting
+		error_reporting($error_level);
 
-        $namespaces = $feed->getNamespaces(true);
+		// Feed could not be loaded
+		if ($feed === FALSE)
+			return array();
 
-        // Detect the feed type. RSS 1.0/2.0 and Atom 1.0 are supported.
-        $feed = isset($feed->channel) ? $feed->xpath('//item') : $feed->entry;
+		$namespaces = $feed->getNamespaces(TRUE);
 
-        $i = 0;
-        $items = [];
+		// Detect the feed type. RSS 1.0/2.0 and Atom 1.0 are supported.
+		$feed = isset($feed->channel) ? $feed->xpath('//item') : $feed->entry;
 
-        foreach ($feed as $item) {
-            if ($limit > 0 and $i++ === $limit) {
-                break;
-            }
-            $item_fields = (array) $item;
+		$i = 0;
+		$items = array();
 
-            // get namespaced tags
-            foreach ($namespaces as $ns) {
-                $item_fields += (array) $item->children($ns);
-            }
-            $items[] = $item_fields;
-        }
+		foreach ($feed as $item)
+		{
+			if ($limit > 0 AND $i++ === $limit)
+				break;
+			$item_fields = (array) $item;
 
-        return $items;
-    }
+			// get namespaced tags
+			foreach ($namespaces as $ns)
+			{
+				$item_fields += (array) $item->children($ns);
+			}
+			$items[] = $item_fields;
+		}
 
-    /**
-     * Creates a feed from the given parameters.
-     *
-     * @param array  $info     feed information
-     * @param array  $items    items to add to the feed
-     * @param string $encoding define which encoding to use
-     *
-     * @return string
-     */
-    public static function create($info, $items, $encoding = 'UTF-8')
-    {
-        $info += ['title' => 'Generated Feed', 'link' => '', 'generator' => 'KohanaPHP'];
+		return $items;
+	}
 
-        $feed = '<?xml version="1.0" encoding="' . $encoding . '"?><rss version="2.0"><channel></channel></rss>';
-        $feed = simplexml_load_string($feed);
+	/**
+	 * Creates a feed from the given parameters.
+	 *
+	 * @param   array   $info       feed information
+	 * @param   array   $items      items to add to the feed
+	 * @param   string  $encoding   define which encoding to use
+	 * @return  string
+	 */
+	public static function create($info, $items, $encoding = 'UTF-8')
+	{
+		$info += array('title' => 'Generated Feed', 'link' => '', 'generator' => 'KohanaPHP');
 
-        foreach ($info as $name => $value) {
-            if ($name === 'image') {
-                // Create an image element
-                $image = $feed->channel->addChild('image');
+		$feed = '<?xml version="1.0" encoding="'.$encoding.'"?><rss version="2.0"><channel></channel></rss>';
+		$feed = simplexml_load_string($feed);
 
-                if (! isset($value['link'], $value['url'], $value['title'])) {
-                    throw new Kohana_Exception('Feed images require a link, url, and title');
-                }
+		foreach ($info as $name => $value)
+		{
+			if ($name === 'image')
+			{
+				// Create an image element
+				$image = $feed->channel->addChild('image');
 
-                if (strpos($value['link'], '://') === false) {
-                    // Convert URIs to URLs
-                    $value['link'] = URL::site($value['link'], 'http');
-                }
+				if ( ! isset($value['link'], $value['url'], $value['title']))
+				{
+					throw new Kohana_Exception('Feed images require a link, url, and title');
+				}
 
-                if (strpos($value['url'], '://') === false) {
-                    // Convert URIs to URLs
-                    $value['url'] = URL::site($value['url'], 'http');
-                }
+				if (strpos($value['link'], '://') === FALSE)
+				{
+					// Convert URIs to URLs
+					$value['link'] = URL::site($value['link'], 'http');
+				}
 
-                // Create the image elements
-                $image->addChild('link', $value['link']);
-                $image->addChild('url', $value['url']);
-                $image->addChild('title', $value['title']);
-            } else {
-                if (($name === 'pubDate' or $name === 'lastBuildDate') and (is_int($value) or ctype_digit($value))) {
-                    // Convert timestamps to RFC 822 formatted dates
-                    $value = date('r', $value);
-                } elseif (($name === 'link' or $name === 'docs') and strpos($value, '://') === false) {
-                    // Convert URIs to URLs
-                    $value = URL::site($value, 'http');
-                }
+				if (strpos($value['url'], '://') === FALSE)
+				{
+					// Convert URIs to URLs
+					$value['url'] = URL::site($value['url'], 'http');
+				}
 
-                // Add the info to the channel
-                $feed->channel->addChild($name, $value);
-            }
-        }
+				// Create the image elements
+				$image->addChild('link', $value['link']);
+				$image->addChild('url', $value['url']);
+				$image->addChild('title', $value['title']);
+			}
+			else
+			{
+				if (($name === 'pubDate' OR $name === 'lastBuildDate') AND (is_int($value) OR ctype_digit($value)))
+				{
+					// Convert timestamps to RFC 822 formatted dates
+					$value = date('r', $value);
+				}
+				elseif (($name === 'link' OR $name === 'docs') AND strpos($value, '://') === FALSE)
+				{
+					// Convert URIs to URLs
+					$value = URL::site($value, 'http');
+				}
 
-        foreach ($items as $item) {
-            // Add the item to the channel
-            $row = $feed->channel->addChild('item');
+				// Add the info to the channel
+				$feed->channel->addChild($name, $value);
+			}
+		}
 
-            foreach ($item as $name => $value) {
-                if ($name === 'pubDate' and (is_int($value) or ctype_digit($value))) {
-                    // Convert timestamps to RFC 822 formatted dates
-                    $value = date('r', $value);
-                } elseif (($name === 'link' or $name === 'guid') and strpos($value, '://') === false) {
-                    // Convert URIs to URLs
-                    $value = URL::site($value, 'http');
-                }
+		foreach ($items as $item)
+		{
+			// Add the item to the channel
+			$row = $feed->channel->addChild('item');
 
-                // Add the info to the row
-                $row->addChild($name, $value);
-            }
-        }
+			foreach ($item as $name => $value)
+			{
+				if ($name === 'pubDate' AND (is_int($value) OR ctype_digit($value)))
+				{
+					// Convert timestamps to RFC 822 formatted dates
+					$value = date('r', $value);
+				}
+				elseif (($name === 'link' OR $name === 'guid') AND strpos($value, '://') === FALSE)
+				{
+					// Convert URIs to URLs
+					$value = URL::site($value, 'http');
+				}
 
-        if (function_exists('dom_import_simplexml')) {
-            // Convert the feed object to a DOM object
-            $feed = dom_import_simplexml($feed)->ownerDocument;
+				// Add the info to the row
+				$row->addChild($name, $value);
+			}
+		}
 
-            // DOM generates more readable XML
-            $feed->formatOutput = true;
+		if (function_exists('dom_import_simplexml'))
+		{
+			// Convert the feed object to a DOM object
+			$feed = dom_import_simplexml($feed)->ownerDocument;
 
-            // Export the document as XML
-            $feed = $feed->saveXML();
-        } else {
-            // Export the document as XML
-            $feed = $feed->asXML();
-        }
+			// DOM generates more readable XML
+			$feed->formatOutput = TRUE;
 
-        return $feed;
-    }
+			// Export the document as XML
+			$feed = $feed->saveXML();
+		}
+		else
+		{
+			// Export the document as XML
+			$feed = $feed->asXML();
+		}
+
+		return $feed;
+	}
+
 } // End Feed

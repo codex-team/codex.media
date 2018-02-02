@@ -2,12 +2,12 @@
 
 <p>The following modules have userguide pages:</p>
 
-<?php if (! empty($modules)): ?>
+<?php if( ! empty($modules)): ?>
 
-	<?php foreach ($modules as $url => $options): ?>
+	<?php foreach($modules as $url => $options): ?>
 	
 		<p>
-			<strong><?php echo html::anchor(Route::get('docs/guide')->uri(['module' => $url]), $options['name'], null, null, true) ?></strong> -
+			<strong><?php echo html::anchor(Route::get('docs/guide')->uri(array('module' => $url)), $options['name'], NULL, NULL, TRUE) ?></strong> -
 			<?php echo $options['description'] ?>
 		</p>
 	

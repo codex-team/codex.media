@@ -1,7 +1,7 @@
-<?php
+<?
     $protocol = "http" . (Arr::get($_SERVER, 'HTTPS') ? 's' : '') . "://";
-    $host = $_SERVER['HTTP_HOST'];
-    $uri = "/reset/" . $hash;
+    $host     = $_SERVER['HTTP_HOST'];
+    $uri      = "/reset/" . $hash;
 
     $link = $protocol . $host . $uri;
 ?>

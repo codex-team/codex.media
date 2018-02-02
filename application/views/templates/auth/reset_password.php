@@ -4,23 +4,23 @@
 
         <h3><?= $header ?></h3>
 
-        <?php $regFields = [
-            'email' => [
+        <? $regFields = array(
+            'email'  => array(
                 'label' => 'Ваш email',
-                'type' => $email ? 'hidden' : 'email',
+                'type'  => $email?'hidden':'email',
                 'value' => $email
-            ]
-        ]; ?>
+            )
+        ); ?>
 
-        <?php foreach ($regFields as $fieldName => $field): ?>
-            <?php if (isset($signup_error_fields[$fieldName])): ?>
+        <? foreach ($regFields as $fieldName => $field): ?>
+            <? if (isset($signup_error_fields[$fieldName])): ?>
                 <p class="auth-field__error">
-            <?php else: ?>
+            <? else: ?>
                 <p>
-            <?php endif; ?>
+            <? endif; ?>
             <input placeholder="<?= Arr::get($field, 'label') ?>" type="<?= Arr::get($field, 'type', 'text') ?>" name="reset_<?= $fieldName?>" id="reset_<?= $fieldName ?>" value="<?= Arr::get($field, 'value') ?>" required />
             </p>
-        <?php endforeach ?>
+        <? endforeach ?>
 
         <?= Form::hidden('csrf', Security::token()); ?>
 
@@ -33,12 +33,12 @@
 
 
 <script>
-    <?php if (!empty($reset_password_error_fields)): ?>
-        <?php foreach ($reset_password_error_fields as $fieldName => $errorText): ?>
+    <? if (!empty($reset_password_error_fields)): ?>
+        <? foreach($reset_password_error_fields as $fieldName => $errorText ): ?>
             codex.alerts.show({
                 type: 'error',
                 message: '<?= $errorText ?>'
             });
-        <?php endforeach; ?>
-    <?php endif; ?>
+        <? endforeach; ?>
+    <? endif; ?>
 </script>

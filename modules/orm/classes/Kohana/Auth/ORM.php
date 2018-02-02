@@ -1,283 +1,291 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * ORM Auth driver.
  *
  * @package    Kohana/Auth
- *
  * @author     Kohana Team
  * @copyright  (c) 2007-2012 Kohana Team
  * @license    http://kohanaframework.org/license
  */
-class Kohana_Auth_ORM extends Auth
-{
-    /**
-     * Checks if a session is active.
-     *
-     * @param mixed $role Role name string, role ORM object, or array with role names
-     *
-     * @return bool
-     */
-    public function logged_in($role = null)
-    {
-        // Get the user from the session
-        $user = $this->get_user();
+class Kohana_Auth_ORM extends Auth {
 
-        if (! $user) {
-            return false;
-        }
+	/**
+	 * Checks if a session is active.
+	 *
+	 * @param   mixed    $role Role name string, role ORM object, or array with role names
+	 * @return  boolean
+	 */
+	public function logged_in($role = NULL)
+	{
+		// Get the user from the session
+		$user = $this->get_user();
 
-        if ($user instanceof Model_User and $user->loaded()) {
-            // If we don't have a roll no further checking is needed
-            if (! $role) {
-                return true;
-            }
+		if ( ! $user)
+			return FALSE;
 
-            if (is_array($role)) {
-                // Get all the roles
-                $roles = ORM::factory('Role')
-                            ->where('name', 'IN', $role)
-                            ->find_all()
-                            ->as_array(null, 'id');
+		if ($user instanceof Model_User AND $user->loaded())
+		{
+			// If we don't have a roll no further checking is needed
+			if ( ! $role)
+				return TRUE;
 
-                // Make sure all the roles are valid ones
-                if (count($roles) !== count($role)) {
-                    return false;
-                }
-            } else {
-                if (! is_object($role)) {
-                    // Load the role
-                    $roles = ORM::factory('Role', ['name' => $role]);
+			if (is_array($role))
+			{
+				// Get all the roles
+				$roles = ORM::factory('Role')
+							->where('name', 'IN', $role)
+							->find_all()
+							->as_array(NULL, 'id');
 
-                    if (! $roles->loaded()) {
-                        return false;
-                    }
-                }
-            }
+				// Make sure all the roles are valid ones
+				if (count($roles) !== count($role))
+					return FALSE;
+			}
+			else
+			{
+				if ( ! is_object($role))
+				{
+					// Load the role
+					$roles = ORM::factory('Role', array('name' => $role));
 
-            return $user->has('roles', $roles);
-        }
-    }
+					if ( ! $roles->loaded())
+						return FALSE;
+				}
+			}
 
-    /**
-     * Logs a user in.
-     *
-     * @param string $username
-     * @param string $password
-     * @param bool   $remember enable autologin
-     * @param mixed  $user
-     *
-     * @return bool
-     */
-    protected function _login($user, $password, $remember)
-    {
-        if (! is_object($user)) {
-            $username = $user;
+			return $user->has('roles', $roles);
+		}
+	}
 
-            // Load the user
-            $user = ORM::factory('User');
-            $user->where($user->unique_key($username), '=', $username)->find();
-        }
+	/**
+	 * Logs a user in.
+	 *
+	 * @param   string   $username
+	 * @param   string   $password
+	 * @param   boolean  $remember  enable autologin
+	 * @return  boolean
+	 */
+	protected function _login($user, $password, $remember)
+	{
+		if ( ! is_object($user))
+		{
+			$username = $user;
 
-        if (is_string($password)) {
-            // Create a hashed password
-            $password = $this->hash($password);
-        }
+			// Load the user
+			$user = ORM::factory('User');
+			$user->where($user->unique_key($username), '=', $username)->find();
+		}
 
-        // If the passwords match, perform a login
-        if ($user->has('roles', ORM::factory('Role', ['name' => 'login'])) and $user->password === $password) {
-            if ($remember === true) {
-                // Token data
-                $data = [
-                    'user_id' => $user->pk(),
-                    'expires' => time() + $this->_config['lifetime'],
-                    'user_agent' => sha1(Request::$user_agent),
-                ];
+		if (is_string($password))
+		{
+			// Create a hashed password
+			$password = $this->hash($password);
+		}
 
-                // Create a new autologin token
-                $token = ORM::factory('User_Token')
-                            ->values($data)
-                            ->create();
+		// If the passwords match, perform a login
+		if ($user->has('roles', ORM::factory('Role', array('name' => 'login'))) AND $user->password === $password)
+		{
+			if ($remember === TRUE)
+			{
+				// Token data
+				$data = array(
+					'user_id'    => $user->pk(),
+					'expires'    => time() + $this->_config['lifetime'],
+					'user_agent' => sha1(Request::$user_agent),
+				);
 
-                // Set the autologin cookie
-                Cookie::set('authautologin', $token->token, $this->_config['lifetime']);
-            }
+				// Create a new autologin token
+				$token = ORM::factory('User_Token')
+							->values($data)
+							->create();
 
-            // Finish the login
-            $this->complete_login($user);
+				// Set the autologin cookie
+				Cookie::set('authautologin', $token->token, $this->_config['lifetime']);
+			}
 
-            return true;
-        }
+			// Finish the login
+			$this->complete_login($user);
 
-        // Login failed
-        return false;
-    }
+			return TRUE;
+		}
 
-    /**
-     * Forces a user to be logged in, without specifying a password.
-     *
-     * @param mixed $user                   username string, or user ORM object
-     * @param bool  $mark_session_as_forced mark the session as forced
-     *
-     * @return bool
-     */
-    public function force_login($user, $mark_session_as_forced = false)
-    {
-        if (! is_object($user)) {
-            $username = $user;
+		// Login failed
+		return FALSE;
+	}
 
-            // Load the user
-            $user = ORM::factory('User');
-            $user->where($user->unique_key($username), '=', $username)->find();
-        }
+	/**
+	 * Forces a user to be logged in, without specifying a password.
+	 *
+	 * @param   mixed    $user                    username string, or user ORM object
+	 * @param   boolean  $mark_session_as_forced  mark the session as forced
+	 * @return  boolean
+	 */
+	public function force_login($user, $mark_session_as_forced = FALSE)
+	{
+		if ( ! is_object($user))
+		{
+			$username = $user;
 
-        if ($mark_session_as_forced === true) {
-            // Mark the session as forced, to prevent users from changing account information
-            $this->_session->set('auth_forced', true);
-        }
+			// Load the user
+			$user = ORM::factory('User');
+			$user->where($user->unique_key($username), '=', $username)->find();
+		}
 
-        // Run the standard completion
-        $this->complete_login($user);
-    }
+		if ($mark_session_as_forced === TRUE)
+		{
+			// Mark the session as forced, to prevent users from changing account information
+			$this->_session->set('auth_forced', TRUE);
+		}
 
-    /**
-     * Logs a user in, based on the authautologin cookie.
-     *
-     * @return mixed
-     */
-    public function auto_login()
-    {
-        if ($token = Cookie::get('authautologin')) {
-            // Load the token and user
-            $token = ORM::factory('User_Token', ['token' => $token]);
+		// Run the standard completion
+		$this->complete_login($user);
+	}
 
-            if ($token->loaded() and $token->user->loaded()) {
-                if ($token->user_agent === sha1(Request::$user_agent)) {
-                    // Save the token to create a new unique token
-                    $token->save();
+	/**
+	 * Logs a user in, based on the authautologin cookie.
+	 *
+	 * @return  mixed
+	 */
+	public function auto_login()
+	{
+		if ($token = Cookie::get('authautologin'))
+		{
+			// Load the token and user
+			$token = ORM::factory('User_Token', array('token' => $token));
 
-                    // Set the new token
-                    Cookie::set('authautologin', $token->token, $token->expires - time());
+			if ($token->loaded() AND $token->user->loaded())
+			{
+				if ($token->user_agent === sha1(Request::$user_agent))
+				{
+					// Save the token to create a new unique token
+					$token->save();
 
-                    // Complete the login with the found data
-                    $this->complete_login($token->user);
+					// Set the new token
+					Cookie::set('authautologin', $token->token, $token->expires - time());
 
-                    // Automatic login was successful
-                    return $token->user;
-                }
+					// Complete the login with the found data
+					$this->complete_login($token->user);
 
-                // Token is invalid
-                $token->delete();
-            }
-        }
+					// Automatic login was successful
+					return $token->user;
+				}
 
-        return false;
-    }
+				// Token is invalid
+				$token->delete();
+			}
+		}
 
-    /**
-     * Gets the currently logged in user from the session (with auto_login check).
-     * Returns $default if no user is currently logged in.
-     *
-     * @param mixed $default to return in case user isn't logged in
-     *
-     * @return mixed
-     */
-    public function get_user($default = null)
-    {
-        $user = parent::get_user($default);
+		return FALSE;
+	}
 
-        if ($user === $default) {
-            // check for "remembered" login
-            if (($user = $this->auto_login()) === false) {
-                return $default;
-            }
-        }
+	/**
+	 * Gets the currently logged in user from the session (with auto_login check).
+	 * Returns $default if no user is currently logged in.
+	 *
+	 * @param   mixed    $default to return in case user isn't logged in
+	 * @return  mixed
+	 */
+	public function get_user($default = NULL)
+	{
+		$user = parent::get_user($default);
 
-        return $user;
-    }
+		if ($user === $default)
+		{
+			// check for "remembered" login
+			if (($user = $this->auto_login()) === FALSE)
+				return $default;
+		}
 
-    /**
-     * Log a user out and remove any autologin cookies.
-     *
-     * @param bool $destroy    completely destroy the session
-     * @param bool $logout_all remove all tokens for user
-     *
-     * @return bool
-     */
-    public function logout($destroy = false, $logout_all = false)
-    {
-        // Set by force_login()
-        $this->_session->delete('auth_forced');
+		return $user;
+	}
 
-        if ($token = Cookie::get('authautologin')) {
-            // Delete the autologin cookie to prevent re-login
-            Cookie::delete('authautologin');
+	/**
+	 * Log a user out and remove any autologin cookies.
+	 *
+	 * @param   boolean  $destroy     completely destroy the session
+	 * @param	boolean  $logout_all  remove all tokens for user
+	 * @return  boolean
+	 */
+	public function logout($destroy = FALSE, $logout_all = FALSE)
+	{
+		// Set by force_login()
+		$this->_session->delete('auth_forced');
 
-            // Clear the autologin token from the database
-            $token = ORM::factory('User_Token', ['token' => $token]);
+		if ($token = Cookie::get('authautologin'))
+		{
+			// Delete the autologin cookie to prevent re-login
+			Cookie::delete('authautologin');
 
-            if ($token->loaded() and $logout_all) {
-                // Delete all user tokens. This isn't the most elegant solution but does the job
-                $tokens = ORM::factory('User_Token')->where('user_id', '=', $token->user_id)->find_all();
+			// Clear the autologin token from the database
+			$token = ORM::factory('User_Token', array('token' => $token));
 
-                foreach ($tokens as $_token) {
-                    $_token->delete();
-                }
-            } elseif ($token->loaded()) {
-                $token->delete();
-            }
-        }
+			if ($token->loaded() AND $logout_all)
+			{
+				// Delete all user tokens. This isn't the most elegant solution but does the job
+				$tokens = ORM::factory('User_Token')->where('user_id','=',$token->user_id)->find_all();
+				
+				foreach ($tokens as $_token)
+				{
+					$_token->delete();
+				}
+			}
+			elseif ($token->loaded())
+			{
+				$token->delete();
+			}
+		}
 
-        return parent::logout($destroy);
-    }
+		return parent::logout($destroy);
+	}
 
-    /**
-     * Get the stored password for a username.
-     *
-     * @param mixed $user username string, or user ORM object
-     *
-     * @return string
-     */
-    public function password($user)
-    {
-        if (! is_object($user)) {
-            $username = $user;
+	/**
+	 * Get the stored password for a username.
+	 *
+	 * @param   mixed   $user  username string, or user ORM object
+	 * @return  string
+	 */
+	public function password($user)
+	{
+		if ( ! is_object($user))
+		{
+			$username = $user;
 
-            // Load the user
-            $user = ORM::factory('User');
-            $user->where($user->unique_key($username), '=', $username)->find();
-        }
+			// Load the user
+			$user = ORM::factory('User');
+			$user->where($user->unique_key($username), '=', $username)->find();
+		}
 
-        return $user->password;
-    }
+		return $user->password;
+	}
 
-    /**
-     * Complete the login for a user by incrementing the logins and setting
-     * session data: user_id, username, roles.
-     *
-     * @param object $user user ORM object
-     */
-    protected function complete_login($user)
-    {
-        $user->complete_login();
+	/**
+	 * Complete the login for a user by incrementing the logins and setting
+	 * session data: user_id, username, roles.
+	 *
+	 * @param   object  $user  user ORM object
+	 * @return  void
+	 */
+	protected function complete_login($user)
+	{
+		$user->complete_login();
 
-        return parent::complete_login($user);
-    }
+		return parent::complete_login($user);
+	}
 
-    /**
-     * Compare password with original (hashed). Works for current (logged in) user
-     *
-     * @param string $password
-     *
-     * @return bool
-     */
-    public function check_password($password)
-    {
-        $user = $this->get_user();
+	/**
+	 * Compare password with original (hashed). Works for current (logged in) user
+	 *
+	 * @param   string  $password
+	 * @return  boolean
+	 */
+	public function check_password($password)
+	{
+		$user = $this->get_user();
 
-        if (! $user) {
-            return false;
-        }
+		if ( ! $user)
+			return FALSE;
 
-        return ($this->hash($password) === $user->password);
-    }
+		return ($this->hash($password) === $user->password);
+	}
+
 } // End Auth ORM

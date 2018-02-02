@@ -11,9 +11,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
     /**
      * @var array - response for AJAX-request
      */
-    public $ajax_response = [
+    public $ajax_response = array(
         'success' => 0,
-    ];
+    );
 
     public function before()
     {
@@ -39,16 +39,15 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             $this->ajax_response['message'] = 'Похоже, у вас нет доступа';
 
             $this->response->body(json_encode($this->ajax_response));
-
             return;
         }
 
         $this->page->title = Arr::get($_POST, 'title', $this->page->title);
         $this->page->content = Arr::get($_POST, 'content', $this->page->content);
 
-        $error = $this->getErrors([
+        $error = $this->getErrors(array(
             'title' => Arr::get($_POST, 'title', '')
-        ]);
+        ));
 
         if ($error) {
             $this->ajax_response['message'] = $error['message'];
@@ -78,7 +77,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                 /** Create or edit post on public's wall */
                 if (!$this->page->isPostedInVK) {
                     $VkPost = $this->vkWall()->post($this->buildVKPost());
-                    // } else {
+                // } else {
                 //     $VkPost = $this->vkWall()->edit($this->buildVKPost());
                 }
                 /***/
@@ -102,11 +101,11 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             }
         }
 
-        $this->ajax_response = [
-            'success' => 1,
-            'message' => 'Страница успешно сохранена',
+        $this->ajax_response = array(
+            'success'  => 1,
+            'message'  => 'Страница успешно сохранена',
             'redirect' => '/p/' . $this->page->id . '/' . $this->page->uri
-        ];
+        );
 
         $this->auto_render = false;
         $this->response->body(json_encode($this->ajax_response));
@@ -120,7 +119,6 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         if (!$this->user->isAdmin) {
             $this->ajax_response['message'] = 'Вы не можете изменить статус статьи';
             $this->response->body(json_encode($this->ajax_response));
-
             return;
         }
 
@@ -132,7 +130,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         switch ($feed_key) {
             case Model_Feed_Pages::MENU:
-                $this->ajax_response['menu'] = View::factory('/templates/components/menu', ['site_menu' => Model_Methods::getSiteMenu()])->render();
+                $this->ajax_response['menu'] = View::factory('/templates/components/menu', array('site_menu' => Model_Methods::getSiteMenu()))->render();
                 $this->ajax_response['message'] = $this->page->isMenuItem() ? 'Страница добавлена в меню' : 'Страница удалена из меню';
                 $this->ajax_response['buttonText'] = $this->page->isMenuItem() ? 'Убрать из меню' : 'Добавить в меню';
                 break;
@@ -155,7 +153,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         if (!$this->user->isAdmin()) {
             $this->ajax_response['message'] = 'Похоже, у вас нет доступа';
             goto finish;
-        }
+        };
 
         $feed = new Model_Feed_Pages(Model_Feed_Pages::MAIN);
         $feed->togglePin($id);
@@ -181,11 +179,11 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             $this->vkWall()->delete();
             /***/
 
-            $this->ajax_response = [
+            $this->ajax_response = array(
                 'success' => 1,
                 'message' => 'Страница удалена',
                 'redirect' => $this->page->getUrlToParentPage()
-            ];
+            );
         } else {
             $this->ajax_response['message'] = 'Вы не можете удалить эту страницу';
         }
@@ -215,10 +213,10 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $id = (int) Arr::get($_POST, 'id', 0);
         $parent_id = (int) Arr::get($_POST, 'id_parent', 0);
 
-        $page = new Model_Page($id);
-        $page->author = $this->user;
-        $page->id_parent = $parent_id;
-        $page->parent = new Model_Page($parent_id);
+        $page             = new Model_Page($id);
+        $page->author     = $this->user;
+        $page->id_parent  = $parent_id;
+        $page->parent     = new Model_Page($parent_id);
 
         return $page;
     }
@@ -227,15 +225,14 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
      * Validate form fields and returns array with error or false if all right
      *
      * @param $fields
-     *
      * @return array|bool
      */
     private function getErrors($fields)
     {
         if (!Valid::not_empty($fields['title'])) {
-            return [
+            return array(
                 'message' => 'Не заполнен заголовок'
-            ];
+            );
         }
 
         return false;
@@ -261,7 +258,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         /** Take an instance of class for getting right description */
         $this->page = new Model_Page($this->page->id);
 
-        $server_name = 'http' . ((Arr::get($_SERVER, 'HTTPS')) ? 's' : '') . '://' . Arr::get($_SERVER, 'SERVER_NAME');
+        $server_name = 'http'. ((Arr::get($_SERVER, 'HTTPS')) ? 's' : '') .'://'.Arr::get($_SERVER, 'SERVER_NAME');
         $link = "{$server_name}" . "/p/{$this->page->id}/{$this->page->uri}";
 
         $description = strip_tags($this->page->description);
@@ -272,6 +269,6 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         // $text .= "\n";
         // $text .= $link;
 
-        return ['text' => $text, 'link' => $link];
+        return array('text' => $text, 'link' => $link);
     }
 }

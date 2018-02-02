@@ -4,7 +4,6 @@
  *
  * @package    Kohana/Database
  * @category   Drivers
- *
  * @author     Tom Lankhorst (Webhub)
  * @copyright  (c) 2008-2009 Kohana Team
  * @license    http://kohanaphp.com/license
@@ -13,7 +12,7 @@ class Database_MySQLi extends Database
 {
 
     // Database in use by each connection
-    protected static $_current_databases = [];
+    protected static $_current_databases = array();
 
     // Use SET NAMES to set the character set
     protected static $_set_names;
@@ -37,14 +36,14 @@ class Database_MySQLi extends Database
         }
 
         // Extract the connection parameters, adding required variabels
-        extract($this->_config['connection'] + [
-            'database' => '',
-            'hostname' => '',
-            'username' => '',
-            'password' => '',
-            'port' => null,
-            'socket' => ''
-        ]);
+        extract($this->_config['connection'] + array(
+            'database'   => '',
+            'hostname'   => '',
+            'username'   => '',
+            'password'   => '',
+            'port'       => null,
+            'socket'     => ''
+        ));
 
         // Prevent this information from showing up in traces
         unset($this->_config['connection']['username'], $this->_config['connection']['password']);
@@ -56,12 +55,12 @@ class Database_MySQLi extends Database
             $this->_connection = null;
 
             throw new Database_Exception(':error',
-                [':error' => $e->getMessage()],
+                array(':error' => $e->getMessage()),
                 $e->getCode());
         }
 
         // \xFF is a better delimiter, but the PHP driver uses underscore
-        $this->_connection_id = sha1($hostname . '_' . $username . '_' . $password);
+        $this->_connection_id = sha1($hostname.'_'.$username.'_'.$password);
 
         $this->_select_db($database);
 
@@ -72,20 +71,21 @@ class Database_MySQLi extends Database
 
         if (! empty($this->_config['connection']['variables'])) {
             // Set session variables
-            $variables = [];
+            $variables = array();
 
             foreach ($this->_config['connection']['variables'] as $var => $val) {
-                $variables[] = 'SESSION ' . $var . ' = ' . $this->quote($val);
+                $variables[] = 'SESSION '.$var.' = '.$this->quote($val);
             }
 
-            mysqli_query($this->_connection, 'SET ' . implode(', ', $variables));
+            mysqli_query($this->_connection, 'SET '.implode(', ', $variables));
         }
     }
 
     /**
      * Select the database
      *
-     * @param string $database Database
+     * @param   string  $database Database
+     * @return  void
      */
     protected function _select_db($database)
     {
@@ -124,7 +124,7 @@ class Database_MySQLi extends Database
 
         if (Database_MySQLi::$_set_names === true) {
             // PHP is compiled against MySQLi 4.x
-            $status = (bool) mysqli_query($this->_connection, 'SET NAMES ' . $this->quote($charset));
+            $status = (bool) mysqli_query($this->_connection, 'SET NAMES '.$this->quote($charset));
         } else {
             // PHP is compiled against MySQLi 5.x
             $status = mysqli_set_charset($this->_connection, $charset);
@@ -132,7 +132,7 @@ class Database_MySQLi extends Database
 
         if ($status === false) {
             throw new Database_Exception(':error',
-                [':error' => mysqli_error($this->_connection)],
+                array(':error' => mysqli_error($this->_connection)),
                 mysqli_errno($this->_connection));
         }
     }
@@ -155,7 +155,7 @@ class Database_MySQLi extends Database
             }
 
             throw new Database_Exception(':error [ :query ]',
-                [':error' => mysqli_error($this->_connection), ':query' => $sql],
+                array(':error' => mysqli_error($this->_connection), ':query' => $sql),
                 mysqli_errno($this->_connection));
         }
 
@@ -171,10 +171,10 @@ class Database_MySQLi extends Database
             return new Database_MySQLi_Result($result, $sql, $as_object, $params);
         } elseif ($type === Database::INSERT) {
             // Return a list of insert id and rows created
-            return [
+            return array(
                 mysqli_insert_id($this->_connection),
                 mysqli_affected_rows($this->_connection),
-            ];
+            );
         } else {
             // Return the number of rows affected
             return mysqli_affected_rows($this->_connection);
@@ -183,41 +183,41 @@ class Database_MySQLi extends Database
 
     public function datatype($type)
     {
-        static $types = [
-            'blob' => ['type' => 'string', 'binary' => true, 'character_maximum_length' => '65535'],
-            'bool' => ['type' => 'bool'],
-            'bigint unsigned' => ['type' => 'int', 'min' => '0', 'max' => '18446744073709551615'],
-            'datetime' => ['type' => 'string'],
-            'decimal unsigned' => ['type' => 'float', 'exact' => true, 'min' => '0'],
-            'double' => ['type' => 'float'],
-            'double precision unsigned' => ['type' => 'float', 'min' => '0'],
-            'double unsigned' => ['type' => 'float', 'min' => '0'],
-            'enum' => ['type' => 'string'],
-            'fixed' => ['type' => 'float', 'exact' => true],
-            'fixed unsigned' => ['type' => 'float', 'exact' => true, 'min' => '0'],
-            'float unsigned' => ['type' => 'float', 'min' => '0'],
-            'int unsigned' => ['type' => 'int', 'min' => '0', 'max' => '4294967295'],
-            'integer unsigned' => ['type' => 'int', 'min' => '0', 'max' => '4294967295'],
-            'longblob' => ['type' => 'string', 'binary' => true, 'character_maximum_length' => '4294967295'],
-            'longtext' => ['type' => 'string', 'character_maximum_length' => '4294967295'],
-            'mediumblob' => ['type' => 'string', 'binary' => true, 'character_maximum_length' => '16777215'],
-            'mediumint' => ['type' => 'int', 'min' => '-8388608', 'max' => '8388607'],
-            'mediumint unsigned' => ['type' => 'int', 'min' => '0', 'max' => '16777215'],
-            'mediumtext' => ['type' => 'string', 'character_maximum_length' => '16777215'],
-            'national varchar' => ['type' => 'string'],
-            'numeric unsigned' => ['type' => 'float', 'exact' => true, 'min' => '0'],
-            'nvarchar' => ['type' => 'string'],
-            'point' => ['type' => 'string', 'binary' => true],
-            'real unsigned' => ['type' => 'float', 'min' => '0'],
-            'set' => ['type' => 'string'],
-            'smallint unsigned' => ['type' => 'int', 'min' => '0', 'max' => '65535'],
-            'text' => ['type' => 'string', 'character_maximum_length' => '65535'],
-            'tinyblob' => ['type' => 'string', 'binary' => true, 'character_maximum_length' => '255'],
-            'tinyint' => ['type' => 'int', 'min' => '-128', 'max' => '127'],
-            'tinyint unsigned' => ['type' => 'int', 'min' => '0', 'max' => '255'],
-            'tinytext' => ['type' => 'string', 'character_maximum_length' => '255'],
-            'year' => ['type' => 'string'],
-        ];
+        static $types = array(
+            'blob'                      => array('type' => 'string', 'binary' => true, 'character_maximum_length' => '65535'),
+            'bool'                      => array('type' => 'bool'),
+            'bigint unsigned'           => array('type' => 'int', 'min' => '0', 'max' => '18446744073709551615'),
+            'datetime'                  => array('type' => 'string'),
+            'decimal unsigned'          => array('type' => 'float', 'exact' => true, 'min' => '0'),
+            'double'                    => array('type' => 'float'),
+            'double precision unsigned' => array('type' => 'float', 'min' => '0'),
+            'double unsigned'           => array('type' => 'float', 'min' => '0'),
+            'enum'                      => array('type' => 'string'),
+            'fixed'                     => array('type' => 'float', 'exact' => true),
+            'fixed unsigned'            => array('type' => 'float', 'exact' => true, 'min' => '0'),
+            'float unsigned'            => array('type' => 'float', 'min' => '0'),
+            'int unsigned'              => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
+            'integer unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '4294967295'),
+            'longblob'                  => array('type' => 'string', 'binary' => true, 'character_maximum_length' => '4294967295'),
+            'longtext'                  => array('type' => 'string', 'character_maximum_length' => '4294967295'),
+            'mediumblob'                => array('type' => 'string', 'binary' => true, 'character_maximum_length' => '16777215'),
+            'mediumint'                 => array('type' => 'int', 'min' => '-8388608', 'max' => '8388607'),
+            'mediumint unsigned'        => array('type' => 'int', 'min' => '0', 'max' => '16777215'),
+            'mediumtext'                => array('type' => 'string', 'character_maximum_length' => '16777215'),
+            'national varchar'          => array('type' => 'string'),
+            'numeric unsigned'          => array('type' => 'float', 'exact' => true, 'min' => '0'),
+            'nvarchar'                  => array('type' => 'string'),
+            'point'                     => array('type' => 'string', 'binary' => true),
+            'real unsigned'             => array('type' => 'float', 'min' => '0'),
+            'set'                       => array('type' => 'string'),
+            'smallint unsigned'         => array('type' => 'int', 'min' => '0', 'max' => '65535'),
+            'text'                      => array('type' => 'string', 'character_maximum_length' => '65535'),
+            'tinyblob'                  => array('type' => 'string', 'binary' => true, 'character_maximum_length' => '255'),
+            'tinyint'                   => array('type' => 'int', 'min' => '-128', 'max' => '127'),
+            'tinyint unsigned'          => array('type' => 'int', 'min' => '0', 'max' => '255'),
+            'tinytext'                  => array('type' => 'string', 'character_maximum_length' => '255'),
+            'year'                      => array('type' => 'string'),
+        );
 
         $type = str_replace(' zerofill', '', $type);
 
@@ -233,9 +233,8 @@ class Database_MySQLi extends Database
      *
      * @link http://dev.mysql.com/doc/refman/5.0/en/set-transaction.html
      *
-     * @param string $mode Isolation level
-     *
-     * @return bool
+     * @param string $mode  Isolation level
+     * @return boolean
      */
     public function begin($mode = null)
     {
@@ -244,7 +243,7 @@ class Database_MySQLi extends Database
 
         if ($mode and ! mysqli_query($this->_connection, "SET TRANSACTION ISOLATION LEVEL $mode")) {
             throw new Database_Exception(':error',
-                [':error' => mysqli_error($this->_connection)],
+                array(':error' => mysqli_error($this->_connection)),
                 mysqli_errno($this->_connection));
         }
 
@@ -254,7 +253,7 @@ class Database_MySQLi extends Database
     /**
      * Commit a SQL transaction
      *
-     * @return bool
+     * @return boolean
      */
     public function commit()
     {
@@ -267,7 +266,7 @@ class Database_MySQLi extends Database
     /**
      * Rollback a SQL transaction
      *
-     * @return bool
+     * @return boolean
      */
     public function rollback()
     {
@@ -281,13 +280,13 @@ class Database_MySQLi extends Database
     {
         if (is_string($like)) {
             // Search for table names
-            $result = $this->query(Database::SELECT, 'SHOW TABLES LIKE ' . $this->quote($like), false);
+            $result = $this->query(Database::SELECT, 'SHOW TABLES LIKE '.$this->quote($like), false);
         } else {
             // Find all table names
             $result = $this->query(Database::SELECT, 'SHOW TABLES', false);
         }
 
-        $tables = [];
+        $tables = array();
         foreach ($result as $row) {
             $tables[] = reset($row);
         }
@@ -302,23 +301,23 @@ class Database_MySQLi extends Database
 
         if (is_string($like)) {
             // Search for column names
-            $result = $this->query(Database::SELECT, 'SHOW FULL COLUMNS FROM ' . $table . ' LIKE ' . $this->quote($like), false);
+            $result = $this->query(Database::SELECT, 'SHOW FULL COLUMNS FROM '.$table.' LIKE '.$this->quote($like), false);
         } else {
             // Find all column names
-            $result = $this->query(Database::SELECT, 'SHOW FULL COLUMNS FROM ' . $table, false);
+            $result = $this->query(Database::SELECT, 'SHOW FULL COLUMNS FROM '.$table, false);
         }
 
         $count = 0;
-        $columns = [];
+        $columns = array();
         foreach ($result as $row) {
             list($type, $length) = $this->_parse_type($row['Type']);
 
             $column = $this->datatype($type);
 
-            $column['column_name'] = $row['Field'];
-            $column['column_default'] = $row['Default'];
-            $column['data_type'] = $type;
-            $column['is_nullable'] = ($row['Null'] == 'YES');
+            $column['column_name']      = $row['Field'];
+            $column['column_default']   = $row['Default'];
+            $column['data_type']        = $type;
+            $column['is_nullable']      = ($row['Null'] == 'YES');
             $column['ordinal_position'] = ++$count;
 
             switch ($column['type']) {
@@ -342,7 +341,6 @@ class Database_MySQLi extends Database
                         case 'char':
                         case 'varchar':
                             $column['character_maximum_length'] = $length;
-                            // no break
                         case 'text':
                         case 'tinytext':
                         case 'mediumtext':
@@ -359,10 +357,10 @@ class Database_MySQLi extends Database
             }
 
             // MySQLi attributes
-            $column['comment'] = $row['Comment'];
-            $column['extra'] = $row['Extra'];
-            $column['key'] = $row['Key'];
-            $column['privileges'] = $row['Privileges'];
+            $column['comment']      = $row['Comment'];
+            $column['extra']        = $row['Extra'];
+            $column['key']          = $row['Key'];
+            $column['privileges']   = $row['Privileges'];
 
             $columns[$row['Field']] = $column;
         }
@@ -377,7 +375,7 @@ class Database_MySQLi extends Database
 
         if (($value = mysqli_real_escape_string($this->_connection, (string) $value)) === false) {
             throw new Database_Exception(':error',
-                [':error' => mysqli_error($this->_connection)],
+                array(':error' => mysqli_error($this->_connection)),
                 mysqli_errno($this->_connection));
         }
 

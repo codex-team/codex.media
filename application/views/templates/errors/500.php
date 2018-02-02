@@ -23,7 +23,7 @@
 <body>
 <div class="wrapper">
     <a href="/">
-        <?php include(DOCROOT . "public/app/svg/codex-logo.svg") ?>
+        <? include(DOCROOT . "public/app/svg/codex-logo.svg") ?>
     </a>
 
     <h1>Сервис временно недоступен</h1>

@@ -10,12 +10,12 @@
  */
 class Model_Services_Vk extends Model_preDispatch
 {
-    const URLS = [
-        'wall.post' => 'https://api.vk.com/method/wall.post',
-        'wall.edit' => 'https://api.vk.com/method/wall.edit',
-        'wall.delete' => 'https://api.vk.com/method/wall.delete',
+    const URLS = array(
+        'wall.post'    => 'https://api.vk.com/method/wall.post',
+        'wall.edit'    => 'https://api.vk.com/method/wall.edit',
+        'wall.delete'  => 'https://api.vk.com/method/wall.delete',
         'wall.restore' => 'https://api.vk.com/method/wall.restore',
-    ];
+    );
 
     /** Config params for requests */
     private $groupId;
@@ -24,13 +24,13 @@ class Model_Services_Vk extends Model_preDispatch
     private $isConfigOk = 0;
 
     /** Pair */
-    private $postId = 0;
+    private $postId    = 0;
     private $articleId = 0;
 
     /**
      * This model combines artile's id and post's id on the public wall
      *
-     * @param int $articleId
+     * @param integer $articleId
      */
     public function __construct($articleId = 0)
     {
@@ -65,7 +65,7 @@ class Model_Services_Vk extends Model_preDispatch
         }
 
         /** Trying to get params */
-        $this->groupId = Arr::get($config->vk, 'group_id', '');
+        $this->groupId  = Arr::get($config->vk, 'group_id', '');
         $this->adminKey = Arr::get($config->vk, 'admin_key', '');
 
         if (!$this->groupId || !$this->adminKey) {
@@ -84,19 +84,18 @@ class Model_Services_Vk extends Model_preDispatch
      * $values['text'] — New text for the post
      * $values['link'] — Attache link
      *
-     * @param array $values
-     *
-     * @return int $post_id — new post's id or 0
+     * @param  array $values
+     * @return integer $post_id — new post's id or 0
      */
-    public function post($values = [])
+    public function post($values = array())
     {
-        $params = [
-            'message' => $values['text'],
-            'owner_id' => $this->groupId,
-            'from_group' => 1,
-            'access_token' => $this->adminKey,
-            'attachments' => $values['link']
-        ];
+        $params = array(
+            'message'       => $values['text'],
+            'owner_id'      => $this->groupId,
+            'from_group'    => 1,
+            'access_token'  => $this->adminKey,
+            'attachments'   => $values['link']
+        );
 
         $url = self::URLS['wall.post'];
 
@@ -119,35 +118,34 @@ class Model_Services_Vk extends Model_preDispatch
      * $values['text'] — New text for the post
      * $values['link'] — Attache link
      *
-     * @param array $values
-     *
-     * @return bool — result
+     * @param  array $values
+     * @return boolean — result
      */
-    public function edit($values = [])
+    public function edit($values = array())
     {
         if (!$this->postId) {
             return true;
         }
 
-        $params = [
-            'message' => $values['text'],
-            'owner_id' => $this->groupId,
-            'post_id' => $this->postId,
-            'access_token' => $this->adminKey,
-            'attachments' => $values['link']
-        ];
+        $params = array(
+            'message'       => $values['text'],
+            'owner_id'      => $this->groupId,
+            'post_id'       => $this->postId,
+            'access_token'  => $this->adminKey,
+            'attachments'   => $values['link']
+        );
 
         $url = self::URLS['wall.edit'];
 
         $response = $this->sendRequest($url, $params);
 
-        return (bool) $response;
+        return (boolean) $response;
     }
 
     /**
      * Delete post from the public's wall
      *
-     * @return bool — result
+     * @return boolean — result
      */
     public function delete()
     {
@@ -155,11 +153,11 @@ class Model_Services_Vk extends Model_preDispatch
             return true;
         }
 
-        $params = [
-            'owner_id' => $this->groupId,
-            'post_id' => $this->postId,
-            'access_token' => $this->adminKey
-        ];
+        $params = array(
+            'owner_id'      => $this->groupId,
+            'post_id'      => $this->postId,
+            'access_token'  => $this->adminKey
+        );
 
         $url = self::URLS['wall.delete'];
 
@@ -169,18 +167,17 @@ class Model_Services_Vk extends Model_preDispatch
             $this->removeFromFeed();
         }
 
-        return (bool) $response;
+        return (boolean) $response;
     }
 
     /**
      * sendRequest - send post request to $url with $params
      *
-     * @param string $url    — Url for this request
-     * @param array  $params — POST params
-     *
-     * @return array — decoded json positive response or false on error
+     * @param  string $url    — Url for this request
+     * @param  array  $params — POST params
+     * @return array          — decoded json positive response or false on error
      */
-    private function sendRequest($url = '', $params = [])
+    private function sendRequest($url = '', $params = array())
     {
         if (!$this->isConfigOk) {
             return false;
@@ -226,9 +223,8 @@ class Model_Services_Vk extends Model_preDispatch
     /**
      * Check is this post for this article exist on the public's wall
      *
-     * @param string $articleId — article->id
-     *
-     * @return int $post_id   — post's id or 0 if no post for the article exists
+     * @param  string  $articleId — article->id
+     * @return integer $post_id   — post's id or 0 if no post for the article exists
      */
     public static function getPostIdByArticleId($articleId = 0)
     {

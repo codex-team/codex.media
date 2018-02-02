@@ -7,6 +7,7 @@
  */
 class Controller_Page_Index extends Controller_Base_preDispatch
 {
+
     /**
      * Gets page data and sends it into View template /page/pages
      *
@@ -14,7 +15,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
      */
     public function action_show()
     {
-        $id = $this->request->param('id');
+        $id  = $this->request->param('id');
         $uri = $this->request->param('uri');
 
         $page = new Model_Page($id, true);
@@ -61,9 +62,9 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         }
 
         if (Security::check(Arr::get($_POST, 'csrf'))) {
-            $page->title = Arr::get($_POST, 'title');
+            $page->title   = Arr::get($_POST, 'title');
             $page->content = Arr::get($_POST, 'content', '{items:[]}');
-            $page->author = $this->user;
+            $page->author  = $this->user;
         }
 
         if (!$page->id_parent) {
@@ -72,9 +73,9 @@ class Controller_Page_Index extends Controller_Base_preDispatch
 
         $page->isPageOnMain = Arr::get($_POST, 'isNews', $page->isPageOnMain);
         $page->isPostedInVK = Arr::get($_POST, 'vkPost', $page->isPostedInVK);
-        $isPersonalBlog = Arr::get($_POST, 'isPersonalBlog', '');
+        $isPersonalBlog     = Arr::get($_POST, 'isPersonalBlog', '');
 
-        $this->template->content = View::factory('templates/pages/writing', ['page' => $page, 'isPersonalBlog' => $isPersonalBlog]);
+        $this->template->content = View::factory('templates/pages/writing', array('page' => $page, 'isPersonalBlog' => $isPersonalBlog));
         $this->template->contentOnly = true;
     }
 }

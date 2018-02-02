@@ -1,4 +1,4 @@
-<?php
+<?
     $count = isset($page) ? count($page->comments) : '0'
 ?>
 
@@ -19,34 +19,34 @@
         ]
     </module-settings>
 
-    <?php
+    <?
         $comments = isset($page) ? $page->comments : $comments;
     ?>
 
-    <?php if ($comments): ?>
+    <? if ($comments): ?>
 
-        <?php foreach ($comments as $index => $comment): ?>
-            <?= View::factory('templates/comments/comment', [
+        <? foreach ($comments as $index => $comment): ?>
+            <?= View::factory('templates/comments/comment', array(
                 'user' => $user,
                 'comment' => $comment,
                 'index' => $index,
                 'isOnPage' => isset($page) ? $page : null,
-            ]); ?>
-        <?php endforeach ?>
+            )); ?>
+        <? endforeach ?>
 
-    <?php else: ?>
+    <? else: ?>
 
         <div class="empty-motivator island island--padded js-empty-comments">
 
-            <?php include(DOCROOT . "public/app/svg/comments.svg") ?>
+            <? include(DOCROOT . "public/app/svg/comments.svg") ?>
             <?= $emptyListMessage ?: 'Комментариев нет.' ?>
 
-            <?php if (!$user->id && isset($page)): ?>
+            <? if (!$user->id && isset($page)): ?>
                 <a class="button master" href="/auth">Авторизоваться</a>
-            <?php endif ?>
+            <? endif ?>
 
         </div>
 
-    <?php endif ?>
+    <? endif ?>
 
 </div>

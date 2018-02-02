@@ -1,104 +1,107 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php defined('SYSPATH') OR die('No direct script access.');
 /**
  * Native PHP session class.
  *
  * @package    Kohana
  * @category   Session
- *
  * @author     Kohana Team
  * @copyright  (c) 2008-2012 Kohana Team
  * @license    http://kohanaframework.org/license
  */
-class Kohana_Session_Native extends Session
-{
-    /**
-     * @return string
-     */
-    public function id()
-    {
-        return session_id();
-    }
+class Kohana_Session_Native extends Session {
 
-    /**
-     * @param string $id session id
-     */
-    protected function _read($id = null)
-    {
-        // Sync up the session cookie with Cookie parameters
-        session_set_cookie_params($this->_lifetime, Cookie::$path, Cookie::$domain, Cookie::$secure, Cookie::$httponly);
+	/**
+	 * @return  string
+	 */
+	public function id()
+	{
+		return session_id();
+	}
 
-        // Do not allow PHP to send Cache-Control headers
-        session_cache_limiter(false);
+	/**
+	 * @param   string  $id  session id
+	 * @return  null
+	 */
+	protected function _read($id = NULL)
+	{
+		// Sync up the session cookie with Cookie parameters
+		session_set_cookie_params($this->_lifetime, Cookie::$path, Cookie::$domain, Cookie::$secure, Cookie::$httponly);
 
-        // Set the session cookie name
-        session_name($this->_name);
+		// Do not allow PHP to send Cache-Control headers
+		session_cache_limiter(FALSE);
 
-        if ($id) {
-            // Set the session id
-            session_id($id);
-        }
+		// Set the session cookie name
+		session_name($this->_name);
 
-        // Start the session
-        session_start();
+		if ($id)
+		{
+			// Set the session id
+			session_id($id);
+		}
 
-        // Use the $_SESSION global for storing data
-        $this->_data = & $_SESSION;
+		// Start the session
+		session_start();
 
-        return null;
-    }
+		// Use the $_SESSION global for storing data
+		$this->_data =& $_SESSION;
 
-    /**
-     * @return string
-     */
-    protected function _regenerate()
-    {
-        // Regenerate the session id
-        session_regenerate_id();
+		return NULL;
+	}
 
-        return session_id();
-    }
+	/**
+	 * @return  string
+	 */
+	protected function _regenerate()
+	{
+		// Regenerate the session id
+		session_regenerate_id();
 
-    /**
-     * @return bool
-     */
-    protected function _write()
-    {
-        // Write and close the session
-        session_write_close();
+		return session_id();
+	}
 
-        return true;
-    }
+	/**
+	 * @return  bool
+	 */
+	protected function _write()
+	{
+		// Write and close the session
+		session_write_close();
 
-    /**
-     * @return bool
-     */
-    protected function _restart()
-    {
-        // Fire up a new session
-        $status = session_start();
+		return TRUE;
+	}
 
-        // Use the $_SESSION global for storing data
-        $this->_data = & $_SESSION;
+	/**
+	 * @return  bool
+	 */
+	protected function _restart()
+	{
+		// Fire up a new session
+		$status = session_start();
 
-        return $status;
-    }
+		// Use the $_SESSION global for storing data
+		$this->_data =& $_SESSION;
 
-    /**
-     * @return bool
-     */
-    protected function _destroy()
-    {
-        // Destroy the current session
-        session_destroy();
+		return $status;
+	}
 
-        // Did destruction work?
-        $status = ! session_id();
+	/**
+	 * @return  bool
+	 */
+	protected function _destroy()
+	{
+		// Destroy the current session
+		session_destroy();
 
-        if ($status) {
-            // Make sure the session cannot be restarted
-            Cookie::delete($this->_name);
-        }
+		// Did destruction work?
+		$status = ! session_id();
 
-        return $status;
-    }
+		if ($status)
+		{
+			// Make sure the session cannot be restarted
+			Cookie::delete($this->_name);
+		}
+
+		return $status;
+	}
+
 } // End Session_Native
