@@ -21,7 +21,7 @@ class Controller_Parser extends Controller_Base_preDispatch
 
     public function getPageTitleAndArticleByUrl($url)
     {
-        $response = array("title" => "", "article" => "");
+        $response = ["title" => "", "article" => ""];
 
         if ($url) {
             $page = self::getPageHtmlByUrl($url);
@@ -37,7 +37,7 @@ class Controller_Parser extends Controller_Base_preDispatch
 
             libxml_clear_errors();
 
-            $response['title']   = self::getTitle($doc);
+            $response['title'] = self::getTitle($doc);
             $response['article'] = self::getArticleText($doc);
         }
 
@@ -45,8 +45,10 @@ class Controller_Parser extends Controller_Base_preDispatch
     }
 
     /**
-    * Получаем код страницы
-    */
+     * Получаем код страницы
+     *
+     * @param mixed $url
+     */
     public function getPageHtmlByUrl($url)
     {
         $ch = curl_init();
@@ -66,13 +68,15 @@ class Controller_Parser extends Controller_Base_preDispatch
     }
 
     /**
-    * Получаем заголовок страницы
-    */
+     * Получаем заголовок страницы
+     *
+     * @param mixed $doc
+     */
     public function getTitle($doc)
     {
-        $pageTitle  = '';
+        $pageTitle = '';
 
-        $h1    = $doc->getElementsByTagName('h1');
+        $h1 = $doc->getElementsByTagName('h1');
         $title = $doc->getElementsByTagName('title');
 
         /** получаем h1 или title */
@@ -94,23 +98,23 @@ class Controller_Parser extends Controller_Base_preDispatch
     public function getArticleText($doc)
     {
         /**
-        * Working with all paragraphs on page
-        */
+         * Working with all paragraphs on page
+         */
         $paragraphs = $doc->getElementsByTagName('p');
 
         /**
-        * Collect information about each <p> parent element.
-        *
-        * Save it in parents array:
-        *   array = (
-        *       'DIV@article_content' => array(
-        *           node   => DOMElement    // cursor to node
-        *           childs => 12            // paragraphs count
-        *       ),
-        *       ...
-        *   )
-        */
-        $parents = array();
+         * Collect information about each <p> parent element.
+         *
+         * Save it in parents array:
+         *   array = (
+         *       'DIV@article_content' => array(
+         *           node   => DOMElement    // cursor to node
+         *           childs => 12            // paragraphs count
+         *       ),
+         *       ...
+         *   )
+         */
+        $parents = [];
 
         for ($i = 0; $i < $paragraphs->length; $i++) {
             $parentNode = $paragraphs->item($i)->parentNode;
@@ -119,45 +123,47 @@ class Controller_Parser extends Controller_Base_preDispatch
             $parentNodeIdentifier = self::getNodeIdentifier($parentNode);
 
             if (!isset($parents[$parentNodeIdentifier])) {
-                $parents[$parentNodeIdentifier] = array(
-                    'node'   => $parentNode,
+                $parents[$parentNodeIdentifier] = [
+                    'node' => $parentNode,
                     'childs' => 1
-                );
+                ];
             } else {
                 $parents[$parentNodeIdentifier]['childs']++;
             }
         }
 
         /**
-        * Now, get parent-node with maximum paragraphs count
-        * It might be an article we look for.
-        */
-        $maximumParagraphsCount    = 0;
+         * Now, get parent-node with maximum paragraphs count
+         * It might be an article we look for.
+         */
+        $maximumParagraphsCount = 0;
         $nodeWithMaximumParagraphs = null;
 
         foreach ($parents as $item) {
             if ($item['childs'] > $maximumParagraphsCount) {
-                $maximumParagraphsCount    = $item['childs'];
+                $maximumParagraphsCount = $item['childs'];
                 $nodeWithMaximumParagraphs = $item['node'];
             }
         }
 
         /**
-        * Extract HTML-content from article node
-        */
+         * Extract HTML-content from article node
+         */
         $articleContent = self::DOMinnerHTML($nodeWithMaximumParagraphs);
 
         return $articleContent;
     }
 
     /**
-    * Compose node text-identifier
-    * @todo add another attributes. Many elements can be without classname
-    * @return string tagname@classname. Example: 'DIV@article_content'
-    */
+     * Compose node text-identifier
+     *
+     * @todo add another attributes. Many elements can be without classname
+     *
+     * @return string tagname@classname. Example: 'DIV@article_content'
+     */
     private static function getNodeIdentifier(DOMNode $node)
     {
-        $tagName   = $node->nodeName;
+        $tagName = $node->nodeName;
         $className = '';
 
         if ($classAttr = $node->attributes->getNamedItem('class')) {
@@ -173,7 +179,7 @@ class Controller_Parser extends Controller_Base_preDispatch
     private static function DOMinnerHTML(DOMNode $element)
     {
         $innerHTML = '';
-        $children  = $element->childNodes;
+        $children = $element->childNodes;
 
         foreach ($children as $child) {
             $innerHTML .= $element->ownerDocument->saveHTML($child);
@@ -184,6 +190,7 @@ class Controller_Parser extends Controller_Base_preDispatch
 
     /**
      * fetch Action
+     *
      * @public
      *
      * Returns JSON response
@@ -206,7 +213,7 @@ class Controller_Parser extends Controller_Base_preDispatch
     {
         $URL = Arr::get($_GET, 'url');
 
-        $response = array();
+        $response = [];
         $response['success'] = 0;
 
         if (empty($URL) || !filter_var($URL, FILTER_VALIDATE_URL)) {
@@ -245,22 +252,26 @@ class Controller_Parser extends Controller_Base_preDispatch
 
     /**
      * Gets information about link : params, path and so on
+     *
      * @param $URL
+     *
      * @return array
      */
     private function getLinkInfo($URL)
     {
         $URLParams = parse_url($URL);
 
-        return array(
-            'linkUrl'   => $URL,
+        return [
+            'linkUrl' => $URL,
             'linkText' => Arr::get($URLParams, 'host') . Arr::get($URLParams, 'path', ''),
-        );
+        ];
     }
 
     /**
      * Parses DOM Document
+     *
      * @param $html
+     *
      * @return array
      */
     private function getMetaFromHTML($html)
@@ -276,8 +287,8 @@ class Controller_Parser extends Controller_Base_preDispatch
         }
 
         $description = "";
-        $keywords    = "";
-        $image       = "";
+        $keywords = "";
+        $image = "";
 
         $metaData = $DOMdocument->getElementsByTagName('meta');
 
@@ -292,7 +303,7 @@ class Controller_Parser extends Controller_Base_preDispatch
                 $keywords = $data->getAttribute('content');
             }
 
-            if ($data->getAttribute('property')=='og:image') {
+            if ($data->getAttribute('property') == 'og:image') {
                 $image = $data->getAttribute('content');
             }
         }
@@ -305,10 +316,10 @@ class Controller_Parser extends Controller_Base_preDispatch
             }
         }
 
-        return array(
-            'image'         => isset($image) ? $image : '',
-            'title'         => isset($title) ? $title : '',
-            'description'   => isset($description) ? $description : '',
-        );
+        return [
+            'image' => isset($image) ? $image : '',
+            'title' => isset($title) ? $title : '',
+            'description' => isset($description) ? $description : '',
+        ];
     }
 }

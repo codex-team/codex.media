@@ -26,12 +26,12 @@
     <? if ($comments): ?>
 
         <? foreach ($comments as $index => $comment): ?>
-            <?= View::factory('templates/comments/comment', array(
+            <?= View::factory('templates/comments/comment', [
                 'user' => $user,
                 'comment' => $comment,
                 'index' => $index,
                 'isOnPage' => isset($page) ? $page : null,
-            )); ?>
+            ]); ?>
         <? endforeach ?>
 
     <? else: ?>

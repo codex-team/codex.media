@@ -4,63 +4,64 @@ use CodexEditor\CodexEditor;
 
 class Model_Page extends Model
 {
-    public $id              = 0;
-    public $status          = 0;
-    public $date            = '';
-    public $uri             = '';
+    public $id = 0;
+    public $status = 0;
+    public $date = '';
+    public $uri = '';
     public $author;
-    public $id_parent       = 0;
+    public $id_parent = 0;
 
     /**
      * Page cover URL
+     *
      * @var null
      */
     public $cover = null;
 
-    public $url             = 0;
+    public $url = 0;
 
-    public $rich_view       = 0;
+    public $rich_view = 0;
     public $dt_pin;
-    public $isPinned        = false;
-    public $feed_key        = '';
+    public $isPinned = false;
+    public $feed_key = '';
 
     public $isPageOnMain;
 
-    public $title           = '';
+    public $title = '';
     /**
      * JSON with page data
      *
      * @var string
      */
-    public $content         = '';
-    public $description     = '';
+    public $content = '';
+    public $description = '';
 
     /**
      * Array of blocks classes
      *
      * @var array
      */
-    public $blocks          = array();
+    public $blocks = [];
 
-    public $parent          = null;
-    public $children        = array();
-    public $comments        = array();
+    public $parent = null;
+    public $children = [];
+    public $comments = [];
 
-    public $commentsCount   = 0;
+    public $commentsCount = 0;
 
     public $stats;
-    public $views           = 0;
+    public $views = 0;
 
     /** post_id in the public's wall or 0  */
-    public $isPostedInVK    = 0;
+    public $isPostedInVK = 0;
 
     const STATUS_SHOWING_PAGE = 0;
-    const STATUS_HIDDEN_PAGE  = 1;
+    const STATUS_HIDDEN_PAGE = 1;
     const STATUS_REMOVED_PAGE = 2;
 
-    const LIST_PAGES_NEWS     = 1;
+    const LIST_PAGES_NEWS = 1;
     const LIST_PAGES_TEACHERS = 2;
-    const LIST_PAGES_USERS    = 3;
+    const LIST_PAGES_USERS = 3;
 
     public function __construct($id = 0, $escapeHTML = false)
     {
@@ -97,7 +98,7 @@ class Model_Page extends Model
                 }
             }
 
-            $this->uri    = $this->getPageUri();
+            $this->uri = $this->getPageUri();
             $this->author = new Model_User($page_row['author']);
             $this->isPageOnMain = $this->isPageOnMain();
 
@@ -146,7 +147,7 @@ class Model_Page extends Model
             ->set('rich_view', $this->rich_view)
             ->set('dt_pin', $this->dt_pin);
 
-        $page->clearcache('page:' . $this->id, array('site_menu'));
+        $page->clearcache('page:' . $this->id, ['site_menu']);
 
         $page->execute();
 
@@ -180,7 +181,7 @@ class Model_Page extends Model
 
     public static function rowsToModels($page_rows)
     {
-        $pages = array();
+        $pages = [];
 
         if (!empty($page_rows)) {
             foreach ($page_rows as $page_row) {
@@ -219,13 +220,13 @@ class Model_Page extends Model
         return strtolower($title);
     }
 
-
     /**
      * Return array of blocks classes from JSON object stored in $this->content
      *
-     * @param Boolean $escapeHTML  pass TRUE to escape HTML entities
+     * @param Boolean $escapeHTML pass TRUE to escape HTML entities
      *
-     * @throws Kohana_Exception  error thrown by CodeXEditor vendor module
+     * @throws Kohana_Exception error thrown by CodeXEditor vendor module
+     *
      * @return Array - list of page blocks
      */
     public function getBlocks($escapeHTML = false)
@@ -244,9 +245,11 @@ class Model_Page extends Model
     /**
      * Pass JSON with page data through CodexEditor class for validate blocks data
      *
-     * @param bool $escapeHTML  - if TRUE, escapes HTML entities
-     * @return string           - JSON with validated data
-     * @throws Kohana_Exception   if data is not valid
+     * @param bool $escapeHTML - if TRUE, escapes HTML entities
+     *
+     * @throws Kohana_Exception if data is not valid
+     *
+     * @return string - JSON with validated data
      */
     public function validateContent($escapeHTML = false)
     {
@@ -254,6 +257,7 @@ class Model_Page extends Model
 
         try {
             $CodexEditor = new CodexEditor($this->content, $config);
+
             return $CodexEditor->getData($escapeHTML);
         } catch (Exception $e) {
             throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
@@ -293,7 +297,6 @@ class Model_Page extends Model
         }
     }
 
-
     /**
      * Checks if page in site menu
      *
@@ -331,7 +334,6 @@ class Model_Page extends Model
         $this->removeFromFeed(Model_Feed_Pages::MENU);
     }
 
-
     /**
      * Функция находит первый блок paragraph и возвращает его в качестве превью
      *
@@ -355,6 +357,7 @@ class Model_Page extends Model
     /**
      * Returns comments count for current page
      * Uses cache with TAG 'comment:by:page:<PAGE_ID>' that clears in comments insertion/deletion
+     *
      * @return int comments count
      */
     public function getCommentsCount()
@@ -374,7 +377,7 @@ class Model_Page extends Model
             ->execute()
             ->count();
 
-        $cache->set($cacheKey, $count, array('comments:by:page:' . $this->id), Date::MINUTE * 5);
+        $cache->set($cacheKey, $count, ['comments:by:page:' . $this->id], Date::MINUTE * 5);
 
         return $count;
     }
@@ -399,6 +402,7 @@ class Model_Page extends Model
      * Checks if $user can modify page
      *
      * @param Model_User $user
+     *
      * @return bool
      */
     public function canModify($user)
@@ -410,7 +414,7 @@ class Model_Page extends Model
         if (!$user->id) {
             return false;
         }
-        
+
         if (!$user->isConfirmed || $user->isBanned) {
             return false;
         }

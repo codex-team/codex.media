@@ -1,10 +1,10 @@
 <div id="list_of_news" class="post-list">
 
-    <?= View::factory('templates/pages/list', array(
-        'pages'=> $user_feed,
+    <?= View::factory('templates/pages/list', [
+        'pages' => $user_feed,
         'emptyListMessage' => 'Тут появятся статьи и заметки',
         'active_tab' => 'USER_PAGES'
-    )); ?>
+    ]); ?>
 
 </div>
 

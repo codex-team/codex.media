@@ -4,10 +4,10 @@ class Dao_MySQL_Base
 {
     protected $table = 'null';
 
-    const INSERT  = 1;
-    const UPDATE  = 2;
-    const SELECT  = 3;
-    const DELETE  = 4;
+    const INSERT = 1;
+    const UPDATE = 2;
+    const SELECT = 3;
+    const DELETE = 4;
 
     protected $cache_key = 'Dao_MySQL_Base';
     protected $db_name = 'Database_Name';
@@ -16,19 +16,18 @@ class Dao_MySQL_Base
 
     private $memcache;
 
-    protected $limit     = 0;
-    protected $offset    = 0;
-    protected $lifetime  = 0;
+    protected $limit = 0;
+    protected $offset = 0;
+    protected $lifetime = 0;
     protected $keycached = null;
     protected $tagcached = null;
-    protected $where     = array();
-    protected $where_in  = array();
-    protected $order_by  = null;
-    protected $fields    = array();
-    protected $join      = array();
+    protected $where = [];
+    protected $where_in = [];
+    protected $order_by = null;
+    protected $fields = [];
+    protected $join = [];
     protected $last_join = null;
-    protected $select_fields = array();
-
+    protected $select_fields = [];
 
     /**
      * Need to get database name before using
@@ -45,6 +44,7 @@ class Dao_MySQL_Base
     {
         $self = new static();
         $self->action = self::INSERT;
+
         return $self;
     }
 
@@ -52,14 +52,16 @@ class Dao_MySQL_Base
     {
         $self = new static();
         $self->action = self::UPDATE;
+
         return $self;
     }
 
-    public static function select($select_fields = array())
+    public static function select($select_fields = [])
     {
         $self = new static();
         $self->action = self::SELECT;
         $self->select_fields = $select_fields;
+
         return $self;
     }
 
@@ -67,72 +69,84 @@ class Dao_MySQL_Base
     {
         $self = new static();
         $self->action = self::DELETE;
+
         return $self;
     }
 
     public function set($field, $value)
     {
         $this->fields[$field] = $value;
+
         return $this;
     }
 
     public function where($field, $operand, $value)
     {
         if (!$this->last_join) {
-            $this->where[$field] = array($operand => $value);
+            $this->where[$field] = [$operand => $value];
         } else {
-            $this->join[$this->last_join]['where'][] = array($field, $operand, $value);
+            $this->join[$this->last_join]['where'][] = [$field, $operand, $value];
         }
+
         return $this;
     }
 
     public function where_in($field, $value)
     {
         $this->where_in[$field] = $value;
+
         return $this;
     }
 
     public function join($table)
     {
         $this->last_join = $table;
+
         return $this;
     }
 
     public function on($column1, $operator, $column2)
     {
-        $this->join[$this->last_join]['on'] = array($column1, $operator, $column2);
+        $this->join[$this->last_join]['on'] = [$column1, $operator, $column2];
+
         return $this;
     }
 
     public function order_by($field, $value)
     {
         $this->order_by[$field] = $value;
+
         return $this;
     }
 
     /**
-    * If limit = 1 , result will be present with current() cursor,
-    * otherwise uses as_array()
-    */
+     * If limit = 1 , result will be present with current() cursor,
+     * otherwise uses as_array()
+     *
+     * @param mixed $limit
+     */
     public function limit($limit)
     {
         $this->limit = $limit;
+
         return $this;
     }
 
     public function offset($offset)
     {
         $this->offset = $offset;
+
         return $this;
     }
 
     /**
-    * Add cache to result
-    * If no $key and no $tags passed , it caches with default Kohana Database_Result_Cached object
-    * @param int $seconds - key lifetime
-    * @param string $key - if you want to cache with Memcache
-    * @param array $tags - array of Tags for multiple cached keys. Uses modules/cache/classes/Cache/Memcacheimp.php Class
-    */
+     * Add cache to result
+     * If no $key and no $tags passed , it caches with default Kohana Database_Result_Cached object
+     *
+     * @param int    $seconds - key lifetime
+     * @param string $key     - if you want to cache with Memcache
+     * @param array  $tags    - array of Tags for multiple cached keys. Uses modules/cache/classes/Cache/Memcacheimp.php Class
+     */
     public function cached($seconds, $key = null, array $tags = null)
     {
         $this->lifetime = $seconds;
@@ -142,6 +156,7 @@ class Dao_MySQL_Base
         if ($tags) {
             $this->tagcached = $tags;
         }
+
         return $this;
     }
 
@@ -151,7 +166,7 @@ class Dao_MySQL_Base
         $memcache = $this->getMemcacheInstance();
 
         if ($key) {
-            $full_key =  $this->db_name . ':' . $this->cache_key . ':' . $key;
+            $full_key = $this->db_name . ':' . $this->cache_key . ':' . $key;
             $memcache->delete(mb_strtolower($full_key));
         }
 
@@ -166,7 +181,7 @@ class Dao_MySQL_Base
 
     private function getCacheKey()
     {
-        return 't:' . $this->table.
+        return 't:' . $this->table .
         ':f:' . json_encode($this->select_fields) .
         ':w:' . json_encode($this->where) .
         ':j:' . json_encode($this->join) .
@@ -187,6 +202,7 @@ class Dao_MySQL_Base
         } elseif ($this->action == self::DELETE) {
             $result = self::deleteExecute();
         }
+
         return $result;
     }
 
@@ -196,6 +212,7 @@ class Dao_MySQL_Base
         if ($insert) {
             return current($insert);
         }
+
         return false;
     }
 
@@ -205,6 +222,7 @@ class Dao_MySQL_Base
         foreach ($this->where as $key => $value) {
             $delete->where($key, key($value), current($value));
         }
+
         return $delete->execute();
     }
 
@@ -221,6 +239,7 @@ class Dao_MySQL_Base
         if ($update) {
             return $update;
         }
+
         return false;
     }
 
@@ -249,7 +268,7 @@ class Dao_MySQL_Base
         }
 
         /** Собираем конструктор MySQL */
-        $select = DB::select_array((array)$this->select_fields)->from($this->table);
+        $select = DB::select_array((array) $this->select_fields)->from($this->table);
 
         foreach ($this->where as $key => $value) {
             $select->where($key, key($value), current($value));
@@ -296,12 +315,13 @@ class Dao_MySQL_Base
         }
 
         if ($this->lifetime && $this->keycached) {
-            $memcache->set(mb_strtolower($this->keycached), ($select ? $select : array()), $this->tagcached, $this->lifetime);
+            $memcache->set(mb_strtolower($this->keycached), ($select ? $select : []), $this->tagcached, $this->lifetime);
         }
 
         if ($select) {
-            return (array)$select;
+            return (array) $select;
         }
+
         return false;
     }
 
@@ -310,6 +330,7 @@ class Dao_MySQL_Base
         if (!$this->memcache) {
             $this->memcache = Cache::instance('memcacheimp');
         }
+
         return $this->memcache;
     }
 }

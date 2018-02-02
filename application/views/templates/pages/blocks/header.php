@@ -2,8 +2,7 @@
 
     $tag = 'h2';
 
-    if ( !empty($block['heading-styles']) ) {
-
+    if (!empty($block['heading-styles'])) {
         switch (strtoupper($block['heading-styles'])) {
             case 'H1':
                 $tag = 'h1';
@@ -23,7 +22,7 @@
             case 'H6':
                 $tag = 'h6';
                 break;
-        };
+        }
     }
 ?>
 

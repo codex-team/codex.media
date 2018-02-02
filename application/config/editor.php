@@ -1,43 +1,43 @@
 <?php
 
-return array(
-    'Paragraph' => array(
+return [
+    'Paragraph' => [
         'paragraph',
-    ),
+    ],
 
-    'Image' => array(
+    'Image' => [
         'image'
-    ),
+    ],
 
-    'Link' => array(
+    'Link' => [
         'link', 'link_embed'
-    ),
+    ],
 
-    'Lists' => array(
+    'Lists' => [
         'list'
-    ),
+    ],
 
-    'Code' => array(
+    'Code' => [
         'code', 'coding'
-    ),
+    ],
 
-    'Quote' => array(
+    'Quote' => [
         'quote', 'quote_styled'
-    ),
+    ],
 
-    'Header' => array(
+    'Header' => [
         'header', 'heading_styled'
-    ),
+    ],
 
-    'Instagram' => array(
+    'Instagram' => [
         'instagram'
-    ),
+    ],
 
-    'Tweet' => array(
+    'Tweet' => [
         'tweet', 'twitter'
-    ),
+    ],
 
-    'Embed' => array(
+    'Embed' => [
         'video_extended', 'embed'
-    )
-);
+    ]
+];

@@ -1,10 +1,10 @@
-<aside class="island main-aside <?= !empty($site_info['branding']) ?  'main-aside--offset-top' : '' ?>">
+<aside class="island main-aside <?= !empty($site_info['branding']) ? 'main-aside--offset-top' : '' ?>">
 
     <a class="site-head clear" href="/">
 
         <?
             $logoIsEmpty = empty($site_info['logo']);
-            $logoClasses  = 'site-head__logo ';
+            $logoClasses = 'site-head__logo ';
             $logoClasses .= $user->isAdmin ? 'site-head__logo--admin ' : '';
             $logoClasses .= $logoIsEmpty ? 'site-head__logo--empty' : '';
         ?>
@@ -37,7 +37,7 @@
     <div class="mobile-menu-holder" id="js-mobile-menu-holder">
 
         <? /* User badge */ ?>
-        <? if ( $user->id ): ?>
+        <? if ($user->id): ?>
             <a class="fl_r logout" href="/logout" data-title="Выйти">
 
                 <i class="icon-logout"></i>

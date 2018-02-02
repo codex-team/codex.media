@@ -11,26 +11,26 @@
 
         <h3>Регистрация</h3>
 
-        <? $regFields = array(
-            'name' => array(
+        <? $regFields = [
+            'name' => [
                 'label' => 'Фамилия, Имя',
-                'value' => isset( $inviteData['name'] ) ? $inviteData['name'] : Arr::get($_POST, 'signup_name', ''),
-            ),
-            'email' => array(
+                'value' => isset($inviteData['name']) ? $inviteData['name'] : Arr::get($_POST, 'signup_name', ''),
+            ],
+            'email' => [
                 'label' => 'Email',
-                'type'  => 'email',
-                'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'signup_email'),
-            ),
-            'password'  => array(
+                'type' => 'email',
+                'value' => isset($inviteData['mail']) ? $inviteData['mail'] : Arr::get($_POST, 'signup_email'),
+            ],
+            'password' => [
                 'label' => 'Пароль',
-                'type'  => 'password',
-            ),
-            'password_repeat' => array(
+                'type' => 'password',
+            ],
+            'password_repeat' => [
                 'label' => 'Повторите пароль',
-                'type'  => 'password',
-                'id'    => 'password_repeat'
-            )
-        ); ?>
+                'type' => 'password',
+                'id' => 'password_repeat'
+            ]
+        ]; ?>
 
         <? foreach ($regFields as $fieldName => $field): ?>
             <? if (isset($signup_error_fields[$fieldName])): ?>
@@ -43,7 +43,7 @@
         <? endforeach ?>
 
         <?= Form::hidden('csrf', Security::token()); ?>
-        <?= Form::hidden('action', 'signup' ); ?>
+        <?= Form::hidden('action', 'signup'); ?>
 
         <button class="button master">Зарегистрироваться</button>
 
@@ -69,7 +69,7 @@
 
 <script>
     <? if (!empty($signup_error_fields)): ?>
-        <? foreach($signup_error_fields as $fieldName => $errorText ): ?>
+        <? foreach ($signup_error_fields as $fieldName => $errorText): ?>
             codex.alerts.show({
                 type: 'error',
                 message: '<?= $errorText ?>'

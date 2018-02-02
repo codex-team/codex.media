@@ -6,7 +6,7 @@ class Controller_Base_preDispatch extends Controller_Template
     public $template = 'main';
 
     /** Data to pass into view */
-    public $view = array();
+    public $view = [];
 
     /**
      * The before() method is called before your controller action.
@@ -35,12 +35,12 @@ class Controller_Base_preDispatch extends Controller_Template
 
         $site = Kohana::$config->load('main.site');
 
-        $GLOBALS['SITE_NAME']        = $site['name'];
-        $GLOBALS['SITE_SLOGAN']      = $site['slogan'];
+        $GLOBALS['SITE_NAME'] = $site['name'];
+        $GLOBALS['SITE_SLOGAN'] = $site['slogan'];
         $GLOBALS['SITE_DESCRIPTION'] = $site['description'];
-        $GLOBALS['SITE_MAIL']        = $site['mail'];
-        $GLOBALS['SITE_SUPPORT']     = $site['support'];
-        $GLOBALS['FROM_ACTION']      = $this->request->action();
+        $GLOBALS['SITE_MAIL'] = $site['mail'];
+        $GLOBALS['SITE_SUPPORT'] = $site['support'];
+        $GLOBALS['FROM_ACTION'] = $this->request->action();
 
         // XSS clean in POST and GET requests
         self::XSSfilter();
@@ -50,10 +50,10 @@ class Controller_Base_preDispatch extends Controller_Template
         if ($this->auto_render) {
 
             // Initialize empty values
-            $this->template->title       = $this->title = $GLOBALS['SITE_NAME'] . ': ' . $GLOBALS['SITE_SLOGAN'];
-            $this->template->keywords    = '';
+            $this->template->title = $this->title = $GLOBALS['SITE_NAME'] . ': ' . $GLOBALS['SITE_SLOGAN'];
+            $this->template->keywords = '';
             $this->template->description = '';
-            $this->template->content     = '';
+            $this->template->content = '';
         }
     }
 
@@ -69,7 +69,7 @@ class Controller_Base_preDispatch extends Controller_Template
 
         if ($this->auto_render) {
             if ($this->title) {
-                $this->template->title       = $this->title;
+                $this->template->title = $this->title;
             }
             if ($this->description) {
                 $this->template->description = $this->description;
@@ -101,7 +101,7 @@ class Controller_Base_preDispatch extends Controller_Template
         /** Session */
         $this->session = Session::instance();
 
-        $uid  = Controller_Auth_Base::checkAuth();
+        $uid = Controller_Auth_Base::checkAuth();
         $this->user = new Model_User($uid ?: 0);
         View::set_global('user', $this->user);
     }
@@ -111,21 +111,21 @@ class Controller_Base_preDispatch extends Controller_Template
         if ($this->user->id) {
             $this->user->isOnline = 1;
 
-            if (!$this->redis->exists('user:'.$this->user->id.':online')) {
-                $this->redis->set('user:'.$this->user->id.':online', $this->user->id, Date::MINUTE);
-                $this->redis->set('user:'.$this->user->id.':online:timestamp', time());
+            if (!$this->redis->exists('user:' . $this->user->id . ':online')) {
+                $this->redis->set('user:' . $this->user->id . ':online', $this->user->id, Date::MINUTE);
+                $this->redis->set('user:' . $this->user->id . ':online:timestamp', time());
             }
         }
     }
 
-
     /**
-    * Sanitizes GET and POST params
-    * @uses HTMLPurifier
-    */
+     * Sanitizes GET and POST params
+     *
+     * @uses HTMLPurifier
+     */
     public function XSSfilter()
     {
-        $exceptions = array( 'long_desc' , 'blog_text', 'long_description' , 'content' ); // Исключения для полей с визуальным редактором
+        $exceptions = ['long_desc', 'blog_text', 'long_description', 'content']; // Исключения для полей с визуальным редактором
 
         foreach ($_POST as $key => $value) {
             $value = stripos($value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $value ;
@@ -155,7 +155,7 @@ class Controller_Base_preDispatch extends Controller_Template
         $redis_host = Arr::get($redis_config, 'host', '127.0.0.1');
         $redis_port = Arr::get($redis_config, 'port', '6379');
         $redis_pass = Arr::get($redis_config, 'password', '');
-        $redis_db   = Arr::get($redis_config, 'database', '0');
+        $redis_db = Arr::get($redis_config, 'database', '0');
 
         $redis = new Redis();
         $redis->connect($redis_host, $redis_port);

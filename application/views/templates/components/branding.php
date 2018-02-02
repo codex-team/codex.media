@@ -2,8 +2,8 @@
     $preload = '';
     $branding = '';
 
-    if ( !empty($site_info['branding']) ) {
-        $preload  = '/upload/branding/preload_' . $site_info['branding'];
+    if (!empty($site_info['branding'])) {
+        $preload = '/upload/branding/preload_' . $site_info['branding'];
         $branding = '/upload/branding/o_' . $site_info['branding'];
     }
 ?>

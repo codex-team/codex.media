@@ -1,7 +1,7 @@
 <?
     $protocol = "http" . (Arr::get($_SERVER, 'HTTPS') ? 's' : '') . "://";
-    $host     = $_SERVER['HTTP_HOST'];
-    $uri      = "/change/" . $hash;
+    $host = $_SERVER['HTTP_HOST'];
+    $uri = "/change/" . $hash;
 
     $link = $protocol . $host . $uri;
 ?>

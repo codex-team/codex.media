@@ -12,17 +12,17 @@
 
         <? endif; ?>
 
-        <? $regFields = array(
-            'password'  => array(
+        <? $regFields = [
+            'password' => [
                 'label' => 'Новый пароль',
-                'type'  => 'password',
-            ),
-            'password_repeat' => array(
+                'type' => 'password',
+            ],
+            'password_repeat' => [
                 'label' => 'Повторите пароль',
-                'type'  => 'password',
-                'id'    => 'password_repeat'
-            )
-        ); ?>
+                'type' => 'password',
+                'id' => 'password_repeat'
+            ]
+        ]; ?>
 
         <? foreach ($regFields as $fieldName => $field): ?>
             <? if (isset($reset_password_error_fields[$fieldName])): ?>
@@ -45,7 +45,7 @@
 
 <script>
     <? if (!empty($reset_password_error_fields)): ?>
-        <? foreach($reset_password_error_fields as $fieldName => $errorText ): ?>
+        <? foreach ($reset_password_error_fields as $fieldName => $errorText): ?>
             codex.alerts.show({
                 type: 'error',
                 message: '<?= $errorText ?>'

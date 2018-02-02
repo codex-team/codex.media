@@ -18,7 +18,7 @@
 
     <!-- <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700&subset=cyrillic" rel="stylesheet"> -->
 
-    <? if ( !empty($_SERVER['HAWK_TOKEN']) ): ?>
+    <? if (!empty($_SERVER['HAWK_TOKEN'])): ?>
         <script src="https://rawgit.com/codex-team/hawk.client/master/hawk.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');"></script>
     <? endif; ?>
 
@@ -44,7 +44,7 @@
 
         <div class="grid-cols-wrapper">
 
-            <? if(empty($contentOnly)): ?>
+            <? if (empty($contentOnly)): ?>
                 <? /* Left */ ?>
                 <div class="grid-col grid-col--left">
 
@@ -71,13 +71,13 @@
 
     <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>
 
-    <? if ( Kohana::$environment === Kohana::PRODUCTION ): ?>
+    <? if (Kohana::$environment === Kohana::PRODUCTION): ?>
 
-        <? if ( !empty($_SERVER['ENABLE_GOV_SITE_WIDGET']) && $_SERVER['ENABLE_GOV_SITE_WIDGET'] ): ?>
+        <? if (!empty($_SERVER['ENABLE_GOV_SITE_WIDGET']) && $_SERVER['ENABLE_GOV_SITE_WIDGET']): ?>
             <script type="text/javascript" src="https://esir.gov.spb.ru/static/widget/js/widget.js" charset="utf-8"></script>
         <? endif; ?>
 
-        <? if ( !empty($_SERVER['YANDEX_METRIKA_ID'] )): ?>
+        <? if (!empty($_SERVER['YANDEX_METRIKA_ID'])): ?>
             <!-- Yandex.Metrika counter -->
             <script type="text/javascript">
                 (function (d, w, c) {

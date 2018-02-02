@@ -6,7 +6,7 @@
             $page = new Model_Page();
         }
 
-        /** Name of object's type in genitive declension */
+    /** Name of object's type in genitive declension */
         // $object_name = $page->is_news_page ? 'новости' : 'страницы';
     ?>
 
@@ -27,8 +27,8 @@
             <?
                 $newsFeedKey = Model_Feed_Pages::MAIN;
 
-                $fromIndexPage   = !empty(Request::$current) && Request::$current->controller() == 'Index';
-                $fromNewsTab     = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
+                $fromIndexPage = !empty(Request::$current) && Request::$current->controller() == 'Index';
+                $fromNewsTab = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
                 $fromUserProfile = Request::$current->controller() == 'User_Index';
 
                 $isNews = $page->isPageOnMain || ($fromIndexPage && $fromNewsTab);
