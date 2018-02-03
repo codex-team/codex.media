@@ -25,12 +25,12 @@
     <? if ($comment->parent_comment || !$isOnPage): ?>
 
         <?
-            $target = array(
-                'text'   => isset($comment->parent_comment->text)      ? $comment->parent_comment->text      : $comment->page->title,
-                'author' => isset($comment->parent_comment->author)    ? $comment->parent_comment->author    : $comment->page->author,
-                'date'   => isset($comment->parent_comment->dt_create) ? $comment->parent_comment->dt_create : $comment->page->date,
-                'url'    => '/p/' . $comment->page->id . ( !empty($comment->parent_comment->id) ? '#comment' . $comment->parent_comment->id : ''),
-            );
+            $target = [
+                'text' => isset($comment->parent_comment->text) ? $comment->parent_comment->text : $comment->page->title,
+                'author' => isset($comment->parent_comment->author) ? $comment->parent_comment->author : $comment->page->author,
+                'date' => isset($comment->parent_comment->dt_create) ? $comment->parent_comment->dt_create : $comment->page->date,
+                'url' => '/p/' . $comment->page->id . (!empty($comment->parent_comment->id) ? '#comment' . $comment->parent_comment->id : ''),
+            ];
 
             $targetTextShort = $methods->specc_short($target['text'], 200);
         ?>
@@ -79,13 +79,13 @@
 
     <div class="comment__footer">
 
-        <?= View::factory('templates/comments/form', array(
-                'comment'   => $comment,
-                'page_id'   => $comment->page_id,
-                'user'      => $user,
+        <?= View::factory('templates/comments/form', [
+                'comment' => $comment,
+                'page_id' => $comment->page_id,
+                'user' => $user,
                 'parent_id' => $comment->id,
-                'root_id'   =>  $comment->root_id
-        )); ?>
+                'root_id' => $comment->root_id
+        ]); ?>
 
     </div>
 

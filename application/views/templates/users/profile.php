@@ -102,9 +102,9 @@
 <? endif; ?>
 
 <? if ($viewUser->isMe): ?>
-    <?= View::factory('templates/pages/form_wrapper', array(
+    <?= View::factory('templates/pages/form_wrapper', [
             'hideEditorToolbar' => true
-        )); ?>
+        ]); ?>
 <? endif ?>
 
 <div class="island tabs island--margined">

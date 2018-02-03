@@ -24,17 +24,17 @@
 
     	<h3>Вход через пароль</h3>
 
-        <? $loginFields = array(
-                'email' => array(
+        <? $loginFields = [
+                'email' => [
                     'label' => 'Email',
-                    'type'  => 'email',
-                    'value' => isset( $inviteData['mail'] ) ? $inviteData['mail'] : Arr::get($_POST, 'login_email'),
-                ),
-                'password' => array(
+                    'type' => 'email',
+                    'value' => isset($inviteData['mail']) ? $inviteData['mail'] : Arr::get($_POST, 'login_email'),
+                ],
+                'password' => [
                     'label' => 'Пароль',
-                    'type'  => 'password',
-                )
-            );
+                    'type' => 'password',
+                ]
+            ];
         ?>
 
         <? foreach ($loginFields as $fieldName => $field): ?>
@@ -47,7 +47,7 @@
         <button class="button master">Войти</button>
 
         <?= Form::hidden('csrf', Security::token()); ?>
-        <?= Form::hidden('action', 'login' ); ?>
+        <?= Form::hidden('action', 'login'); ?>
 
     </form>
 

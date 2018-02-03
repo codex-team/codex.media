@@ -1,10 +1,10 @@
 <div id="list_of_comments" class="post-list">
 
-    <?= View::factory('templates/comments/list', array(
+    <?= View::factory('templates/comments/list', [
         'user' => $user,
         'comments' => $user_feed,
         'emptyListMessage' => '<p>Пользователь не оставил ни одного комментария.</p>'
-    )); ?>
+    ]); ?>
 
 </div>
 

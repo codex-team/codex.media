@@ -2,10 +2,10 @@
 
     <? foreach ($pages as $index => $page): ?>
 
-        <? /**
-            * if the elem is the first
-            * $page === reset($pages)
-            */ ?>
+        <?/**
+ * if the elem is the first
+ * $page === reset($pages)
+ */ ?>
         <article id="js-page-<?= $page->id ?>" class="island <?= $index != 0 ? 'island--margined' : '' ?> post-list-item <?= $page->rich_view ? 'post-list-item--big' : '' ?> <?= $page->dt_pin ? 'post-list-item_pinned' : '' ?>">
 
             <div class="post-list-item__header">
@@ -91,7 +91,7 @@
                 <a class="posts-list-item__cover" style="background-image:  url('/upload/pages/covers/o_<?= $page->cover ?>');" href="/p/<?= $page->id ?>/<?= $page->uri ?>">
                     <? include(DOCROOT . "public/app/svg/camera.svg") ?>
                 </a>
-            <? elseif( $user->isAdmin) : ?>
+            <? elseif ($user->isAdmin) : ?>
                 <div class="posts-list-item__cover posts-list-item__cover--empty" onclick="codex.pages.cover.set(<?= $page->id ?>)">
                     <? include(DOCROOT . "public/app/svg/camera.svg") ?>
                 </div>

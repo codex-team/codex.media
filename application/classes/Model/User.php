@@ -2,49 +2,49 @@
 
 class Model_User extends Model
 {
-    public $id                  = 0;
-    public $name                = '';
-    public $bio                 = '';
-    public $password            = '';
-    public $photo               = '';
-    public $photo_medium        = '';
-    public $photo_big           = '';
-    public $email               = '';
-    public $isConfirmed         = false;
+    public $id = 0;
+    public $name = '';
+    public $bio = '';
+    public $password = '';
+    public $photo = '';
+    public $photo_medium = '';
+    public $photo_big = '';
+    public $email = '';
+    public $isConfirmed = false;
 
-    public $twitter             = '';
-    public $twitter_name        = '';
-    public $twitter_username    = '';
-    public $vk                  = '';
-    public $vk_name             = '';
-    public $vk_uri              = '';
-    public $facebook            = '';
-    public $facebook_name       = '';
+    public $twitter = '';
+    public $twitter_name = '';
+    public $twitter_username = '';
+    public $vk = '';
+    public $vk_name = '';
+    public $vk_uri = '';
+    public $facebook = '';
+    public $facebook_name = '';
 
-    public $role                = 0;
+    public $role = 0;
 
-    public $dt_reg              = null;
+    public $dt_reg = null;
 
     /** user's role */
-    public $isTeacher           = false;
-    public $isAdmin             = false;
+    public $isTeacher = false;
+    public $isAdmin = false;
 
     /** user's status */
-    public $isBanned            = false;
+    public $isBanned = false;
 
-    public $isOnline            = 0;
-    public $lastOnline          = 0;
+    public $isOnline = 0;
+    public $lastOnline = 0;
 
-    private $status             = 0;
+    private $status = 0;
 
     /** User role constants */
-    const ADMIN      = 3;
-    const TEACHER    = 2;
+    const ADMIN = 3;
+    const TEACHER = 2;
     const REGISTERED = 1;
-    const GUEST      = 0;
+    const GUEST = 0;
 
     /** User status constants */
-    const BANNED   = 1;
+    const BANNED = 1;
     const STANDARD = 0;
 
 
@@ -79,15 +79,15 @@ class Model_User extends Model
             }
 
             if (!$this->photo || !$this->photo_medium || !$this->photo_big) {
-                $this->photo        = '/public/app/img/default_ava_small.png';
+                $this->photo = '/public/app/img/default_ava_small.png';
                 $this->photo_medium = '/public/app/img/default_ava.png';
-                $this->photo_big    = '/public/app/img/default_ava_big.png';
+                $this->photo_big = '/public/app/img/default_ava_big.png';
             }
 
-            $this->isTeacher        = $this->isTeacher();
-            $this->isAdmin          = $this->isAdmin();
-            $this->isBanned         = $this->isBanned();
-            $this->isConfirmed      = $this->isConfirmed();
+            $this->isTeacher = $this->isTeacher();
+            $this->isAdmin = $this->isAdmin();
+            $this->isBanned = $this->isBanned();
+            $this->isConfirmed = $this->isConfirmed();
 
             // $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
             // $this->lastOnline       = self::getLastOnlineTimestamp();
@@ -134,7 +134,8 @@ class Model_User extends Model
     /**
      * @param $user_id
      * @param $fields
-     * @return boolean
+     *
+     * @return bool
      */
     public function updateUser($user_id, $fields)
     {
@@ -152,30 +153,31 @@ class Model_User extends Model
 
     public function getLastOnlineTimestamp()
     {
-        return (int)$this->redis->get('user:'.$this->id.':online:timestamp');
+        return (int) $this->redis->get('user:' . $this->id . ':online:timestamp');
     }
-
 
     public function setAuthCookie($id)
     {
-        $id = (int)$id;
+        $id = (int) $id;
         Cookie::set('uid', $id, Date::MONTH);
-        Cookie::set('hr', sha1('dfhgga23'.$id.'dfhshgf23'), Date::MONTH);
+        Cookie::set('hr', sha1('dfhgga23' . $id . 'dfhshgf23'), Date::MONTH);
     }
 
     /**
      * Updates user's photos
-     * @param  string  $filename    new photo filename
-     * @param  string  $path        file path
-     * @return Boolean              update result
+     *
+     * @param string $filename new photo filename
+     * @param string $path     file path
+     *
+     * @return Boolean update result
      */
     public function updatePhoto($filename, $path)
     {
-        $fields = array(
-            'photo'        => $path . 's_' . $filename,
+        $fields = [
+            'photo' => $path . 's_' . $filename,
             'photo_medium' => $path . 'm_' . $filename,
-            'photo_big'    => $path . 'b_' . $filename
-        );
+            'photo_big' => $path . 'b_' . $filename
+        ];
 
         return $this->updateUser($this->id, $fields);
     }
@@ -197,7 +199,6 @@ class Model_User extends Model
 
         return $this->role >= self::TEACHER;
     }
-
 
     public function getUserPages($offset = 0, $count = 0)
     {
@@ -223,7 +224,7 @@ class Model_User extends Model
         $teachers = Dao_Users::select()
             ->where('role', '>=', $role)
             ->order_by('id', 'ASC')
-            ->cached(5 * Date::MINUTE, 'users_list:' . $role, array('users'))
+            ->cached(5 * Date::MINUTE, 'users_list:' . $role, ['users'])
             ->execute();
 
         return Model_User::rowsToModels($teachers);
@@ -231,7 +232,7 @@ class Model_User extends Model
 
     public static function rowsToModels($users_rows)
     {
-        $users = array();
+        $users = [];
 
         if (!empty($users_rows)) {
             foreach ($users_rows as $user_row) {
@@ -250,6 +251,7 @@ class Model_User extends Model
      * Returns TRUE if param $pass equal to user password
      *
      * @param $pass
+     *
      * @return bool
      */
     public function checkPassword($pass)
@@ -279,7 +281,7 @@ class Model_User extends Model
     {
         return $this->status == self::BANNED;
     }
-    
+
     public function isConfirmed()
     {
         return !!$this->isConfirmed;

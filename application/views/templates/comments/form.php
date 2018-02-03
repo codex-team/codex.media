@@ -1,7 +1,7 @@
 <?
-    $parent_id = isset($comment) ? $comment->id      : '0';
-    $root_id   = isset($comment) ? $comment->root_id : '0';
-    $page_id   = isset($comment) ? $comment->page_id : $page_id;
+    $parent_id = isset($comment) ? $comment->id : '0';
+    $root_id = isset($comment) ? $comment->root_id : '0';
+    $page_id = isset($comment) ? $comment->page_id : $page_id;
 ?>
 
 <? if ($user->id): ?>

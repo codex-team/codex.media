@@ -4,13 +4,13 @@
 
         <h3><?= $header ?></h3>
 
-        <? $regFields = array(
-            'email'  => array(
+        <? $regFields = [
+            'email' => [
                 'label' => 'Ваш email',
-                'type'  => $email?'hidden':'email',
+                'type' => $email ? 'hidden' : 'email',
                 'value' => $email
-            )
-        ); ?>
+            ]
+        ]; ?>
 
         <? foreach ($regFields as $fieldName => $field): ?>
             <? if (isset($signup_error_fields[$fieldName])): ?>
@@ -34,7 +34,7 @@
 
 <script>
     <? if (!empty($reset_password_error_fields)): ?>
-        <? foreach($reset_password_error_fields as $fieldName => $errorText ): ?>
+        <? foreach ($reset_password_error_fields as $fieldName => $errorText): ?>
             codex.alerts.show({
                 type: 'error',
                 message: '<?= $errorText ?>'

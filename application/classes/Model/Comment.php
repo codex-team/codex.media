@@ -2,15 +2,15 @@
 
 class Model_Comment extends Model_preDispatch
 {
-    public $id             = 0;
-    public $author         = null;
-    public $text           = '';
-    public $page_id        = 0;
-    public $root_id        = 0;
-    public $parent_id      = 0;
+    public $id = 0;
+    public $author = null;
+    public $text = '';
+    public $page_id = 0;
+    public $root_id = 0;
+    public $parent_id = 0;
     public $parent_comment = null;
-    public $dt_create      = null;
-    public $is_removed     = 0;
+    public $dt_create = null;
+    public $is_removed = 0;
 
     const USER_COMMENTS_LIMIT_PER_PAGE = 7; # Must be > 1
 
@@ -26,6 +26,8 @@ class Model_Comment extends Model_preDispatch
     /**
      * Возвращает комментарий с указанным id из БД.
      * Иначе возвращает пустой комментарий с id = 0.
+     *
+     * @param mixed $id
      */
     public static function get($id = 0)
     {
@@ -42,19 +44,21 @@ class Model_Comment extends Model_preDispatch
 
     /**
      * Заполняет объект строкой из БД.
+     *
+     * @param mixed $comment_row
      */
     private function fillByRow($comment_row)
     {
         if (!empty($comment_row['id'])) {
-            $this->id         = $comment_row['id'];
-            $this->author     = new Model_User($comment_row['user_id']);
-            $this->text       = $comment_row['text'];
-            $this->page_id    = $comment_row['page_id'];
-            $this->root_id    = $comment_row['root_id'];
-            $this->parent_id  = $comment_row['parent_id'];
-            $this->dt_create  = $comment_row['dt_create'];
+            $this->id = $comment_row['id'];
+            $this->author = new Model_User($comment_row['user_id']);
+            $this->text = $comment_row['text'];
+            $this->page_id = $comment_row['page_id'];
+            $this->root_id = $comment_row['root_id'];
+            $this->parent_id = $comment_row['parent_id'];
+            $this->dt_create = $comment_row['dt_create'];
             $this->is_removed = $comment_row['is_removed'];
-            $this->page       = new Model_Page($this->page_id);
+            $this->page = new Model_Page($this->page_id);
         }
 
         return $this;
@@ -71,7 +75,7 @@ class Model_Comment extends Model_preDispatch
             ->set('page_id', $this->page_id)
             ->set('root_id', $this->root_id)
             ->set('parent_id', $this->parent_comment['id'])
-            ->clearcache('comments_page:' . $this->page_id, array('comments:by:page:' . $this->page_id))
+            ->clearcache('comments_page:' . $this->page_id, ['comments:by:page:' . $this->page_id])
             ->execute();
 
         if ($this->root_id == 0) {
@@ -90,7 +94,7 @@ class Model_Comment extends Model_preDispatch
             ->where('page_id', '=', $page_id)
             ->where('is_removed', '=', 0)
             ->order_by('id', 'ASC')
-            ->cached(Date::MINUTE * 5, 'comments_page:' . $page_id, array('comments:by:page:' . $page_id))
+            ->cached(Date::MINUTE * 5, 'comments_page:' . $page_id, ['comments:by:page:' . $page_id])
             ->execute();
 
         return self::rowsToModels($comment_rows, true);
@@ -120,10 +124,13 @@ class Model_Comment extends Model_preDispatch
      *
      * @var $allComments массив комментариев, где проводится поиск
      * @var $parent_id   id родительского комментария
+     *
+     * @param mixed $allComments
+     * @param mixed $parent_id
      */
     private static function getParentForCommentFromCommentsArray($allComments, $parent_id)
     {
-        $parent = array();
+        $parent = [];
 
         foreach ($allComments as $parent_row) {
             if ($parent_id == $parent_row['id']) {
@@ -140,11 +147,14 @@ class Model_Comment extends Model_preDispatch
      * Возвращает массив моделей комментариев
      *
      * @var $comment_rows
-     * @var $add_parent (boolean) добавлять ли в модели информацию о родительских комментариях
+     * @var $add_parent   (boolean) добавлять ли в модели информацию о родительских комментариях
+     *
+     * @param mixed $comment_rows
+     * @param mixed $add_parent
      */
     private static function rowsToModels($comment_rows, $add_parent = false)
     {
-        $comments = array();
+        $comments = [];
 
         if ($comment_rows) {
             foreach ($comment_rows as $comment_row) {
@@ -154,7 +164,7 @@ class Model_Comment extends Model_preDispatch
 
                 /* добавление информации о родительском комментарии */
                 if ($add_parent) {
-                    $parent = array();
+                    $parent = [];
                     $parent = self::getParentForCommentFromCommentsArray($comment_rows, $comment_row['parent_id']);
                     $comment->parent_comment = $parent;
                 }
@@ -182,6 +192,8 @@ class Model_Comment extends Model_preDispatch
 
     /**
      * Удаляет комментарий и все его подкомментарии
+     *
+     * @param mixed $with_subcomments
      */
     public function delete($with_subcomments = false)
     {
@@ -189,7 +201,7 @@ class Model_Comment extends Model_preDispatch
         Dao_Comments::update()
             ->where('id', '=', $this->id)
             ->set('is_removed', 1)
-            ->clearcache('comments_page:' . $this->page_id, array('comments:by:page:' . $this->page_id))
+            ->clearcache('comments_page:' . $this->page_id, ['comments:by:page:' . $this->page_id])
             ->execute();
 
         /* удалить подкомментарии */

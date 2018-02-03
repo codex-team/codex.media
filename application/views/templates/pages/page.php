@@ -1,18 +1,14 @@
 <article class="article island island--padded" itemscope itemtype="http://schema.org/Article">
 
-    <?  
+    <?
         $domainAndProtocol = Model_Methods::getDomainAndProtocol();
         $siteLogo = $domainAndProtocol . "/upload/logo/m_" . $site_info['logo'];
         $pageId = $domainAndProtocol . "/p/" . $page->id . "/" . $page->uri;
 
         if (!empty($page->cover)) {
-
             $articleCover = $domainAndProtocol . "/upload/pages/covers/o_" . $page->cover;
-
         } else {
-
             $articleCover = $domainAndProtocol . "/public/app/img/meta-image.png";
-
         }
 
     ?>
@@ -166,9 +162,9 @@
         <div class="article__content js-emoji-included" itemprop="articleBody">
             <? foreach ($page->blocks as $block): ?>
                 <?=
-                    View::factory('templates/pages/blocks/' . $block['type'], array(
+                    View::factory('templates/pages/blocks/' . $block['type'], [
                         'block' => $block['data']
-                    ))->render();
+                    ])->render();
                 ?>
             <? endforeach; ?>
         </div>
@@ -187,12 +183,12 @@
         </ul>
     <? endif ?>
 
-    <?= View::factory('templates/components/share', array(
+    <?= View::factory('templates/components/share', [
         'offer' => 'Если вам понравилась статья, поделитесь ссылкой на нее',
-        'url'   => 'https://' . Arr::get($_SERVER, 'HTTP_HOST', Arr::get($_SERVER, 'SERVER_NAME', 'edu.ifmo.su')) . '/p/' . $page->id,
+        'url' => 'https://' . Arr::get($_SERVER, 'HTTP_HOST', Arr::get($_SERVER, 'SERVER_NAME', 'edu.ifmo.su')) . '/p/' . $page->id,
         'title' => html_entity_decode($page->title),
-        'desc'  => ' ',
-    )); ?>
+        'desc' => ' ',
+    ]); ?>
 
 </article>
 
@@ -200,13 +196,13 @@
 <? if ($user->id): ?>
 
     <div class="comment-form__island island island--margined clearfix" id="comments">
-        <?= View::factory('templates/comments/form', array('page_id' => $page->id, 'user' => $user)); ?>
+        <?= View::factory('templates/comments/form', ['page_id' => $page->id, 'user' => $user]); ?>
     </div>
 
 <? endif ?>
 
-<?= View::factory('templates/comments/list', array(
+<?= View::factory('templates/comments/list', [
     'page' => $page,
     'user' => $user,
     'emptyListMessage' => '<p>Станьте первым, кто оставит <br/> комментарий к данному материалу.</p>'
-)); ?>
+]); ?>

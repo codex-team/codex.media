@@ -5,6 +5,7 @@
  *
  * @package    Purifier
  * @category   Security
+ *
  * @author     Kohana Team
  * @copyright  (c) 2010 Woody Gilk
  * @license    BSD
@@ -16,7 +17,7 @@ class Purifier_Security extends Kohana_Security
     const PURIFIER = '1.2.1';
 
     /**
-     * @var  HTMLPurifier  singleton instance of the HTML Purifier object
+     * @var HTMLPurifier singleton instance of the HTML Purifier object
      */
     protected static $htmlpurifier;
 
@@ -28,7 +29,7 @@ class Purifier_Security extends Kohana_Security
      *
      *     $purifier = Security::htmlpurifier();
      *
-     * @return  HTMLPurifier
+     * @return HTMLPurifier
      */
     public static function htmlpurifier()
     {
@@ -79,7 +80,8 @@ class Purifier_Security extends Kohana_Security
      * [!!] You must create an extension and overload this method to use it.
      *
      * @param   HTMLPurifier_Config  configuration object
-     * @return  HTMLPurifier_Config
+     *
+     * @return HTMLPurifier_Config
      */
     public static function configure(HTMLPurifier_Config $config)
     {
@@ -94,7 +96,9 @@ class Purifier_Security extends Kohana_Security
      * The original content is returned with all broken HTML and XSS removed.
      *
      * @param   mixed   text to clean, or an array to clean recursively
-     * @return  mixed
+     * @param mixed $str
+     *
+     * @return mixed
      */
     public static function xss_clean($str)
     {

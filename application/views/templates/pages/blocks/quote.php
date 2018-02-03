@@ -1,22 +1,22 @@
 <?
-    if ( empty($block['style']) ){
-        $block['style ']= 'simple';
+    if (empty($block['style'])) {
+        $block['style '] = 'simple';
     }
 ?>
-<? if ($block['style ']== 'simple'): ?>
+<? if ($block['style '] == 'simple'): ?>
     <!-- Simple quote -->
     <blockquote class="quoteStyle-simple--text">
         <?=$block['text']; ?>
     </blockquote>
 
-<? elseif ($block['style ']== 'withCaption') : ?>
+<? elseif ($block['style '] == 'withCaption') : ?>
     <!-- Quote with caption -->
     <blockquote data-quote-style="withCaption">
         <div class=" quoteStyle-withCaption--blockquote ce_quote--text"><?=$block['text']; ?></div>
         <div class=" quoteStyle-withCaption--author ce_quote--author"><?=$block['author']; ?></div>
     </blockquote>
 
-<? elseif ($block['style ']== 'withPhoto') : ?>
+<? elseif ($block['style '] == 'withPhoto') : ?>
     <!-- Quote with Photo -->
     <blockquote class="quoteStyle-withPhoto--wrapper" data-quote-style="withPhoto">
         <div class=" quoteStyle-withPhoto--photo authorsPhoto-wrapper">

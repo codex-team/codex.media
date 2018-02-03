@@ -2,29 +2,35 @@
 
 class Controller_Auth_Base extends Controller_Base_preDispatch
 {
-    const LOGIN_MAX_TRYING     = 5;
+    const LOGIN_MAX_TRYING = 5;
     const AUTH_PASSWORD_SALT = '4974275511a49f463986b6369217945d67518f45';
 
     const COOKIE_USER_ID = 'uid';
     const COOKIE_SESSION = 'sid';
 
     /**
-    * Generates crypted password
-    * @param string $password - original user password from input
-    * @return string password hash
-    * @author Savchenko Petr (vk.com/specc)
-    */
+     * Generates crypted password
+     *
+     * @param string $password - original user password from input
+     *
+     * @return string password hash
+     *
+     * @author Savchenko Petr (vk.com/specc)
+     */
     public static function createPasswordHash($password)
     {
         return hash('sha256', self::AUTH_PASSWORD_SALT . $password);
     }
 
     /**
-    * Opens user authentication session
-    * @param int $uid
-    * @param int $socialProvider - type of social provider ( get from config/social )
-    * @author Savchenko Petr (vk.com/specc)
-    */
+     * Opens user authentication session
+     *
+     * @param int   $uid
+     * @param int   $socialProvider - type of social provider ( get from config/social )
+     * @param mixed $autoLoginType
+     *
+     * @author Savchenko Petr (vk.com/specc)
+     */
     protected static function initAuthSession($uid, $socialProvider = 0, $autoLoginType = 0)
     {
         if (!$uid) {
@@ -37,7 +43,7 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
 
         if ($sid && $isSessionExistInDB) {
             $sessionCookie = $sid;
-            $authSession   = Dao_AuthSessions::update()->where('uid', '=', $uid)->where('cookie', '=', $sid);
+            $authSession = Dao_AuthSessions::update()->where('uid', '=', $uid)->where('cookie', '=', $sid);
         } else {
             $sessionCookie = hash('sha256', openssl_random_pseudo_bytes(30)); // генерим случайный отпечаток для распознавания сессии
             $authSession = Dao_AuthSessions::insert();
@@ -57,7 +63,7 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
             $authSession->set('autologin', $autoLoginType);
         }
 
-        $authSession    = $authSession->execute();
+        $authSession = $authSession->execute();
         $cookieLifeTime = Date::YEAR * 100;
 
         $uidSetting = Cookie::set(self::COOKIE_USER_ID, $uid, $cookieLifeTime);
@@ -65,10 +71,14 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
     }
 
     /**
-    * Inserts new user into DB. Calls from signup or social-auth.
-    * @return int $uid - inserted user id
-    * @author Savchenko Petr (vk.com/specc)
-    */
+     * Inserts new user into DB. Calls from signup or social-auth.
+     *
+     * @author Savchenko Petr (vk.com/specc)
+     *
+     * @param mixed $fields
+     *
+     * @return int $uid - inserted user id
+     */
     protected static function insertUser($fields)
     {
         $user = Dao_Users::insert();
@@ -81,15 +91,17 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
     }
 
     /**
-    * Checks user's authentication by session-cookie and uid-cookie
-    * @return int|bool - UserId or FALSE
-    * @author Savchenko Petr (vk.com/specc)
-    */
+     * Checks user's authentication by session-cookie and uid-cookie
+     *
+     * @return int|bool - UserId or FALSE
+     *
+     * @author Savchenko Petr (vk.com/specc)
+     */
     public static function checkAuth()
     {
-        $uid          = (int)Cookie::get(self::COOKIE_USER_ID, '');
-        $sid          = Cookie::get(self::COOKIE_SESSION, false);
-        $userSessions = $sid ? Dao_AuthSessions::select()->where('uid', '=', $uid)->order_by('id', 'desc')->cached(Date::DAY, $uid)->execute() : array();
+        $uid = (int) Cookie::get(self::COOKIE_USER_ID, '');
+        $sid = Cookie::get(self::COOKIE_SESSION, false);
+        $userSessions = $sid ? Dao_AuthSessions::select()->where('uid', '=', $uid)->order_by('id', 'desc')->cached(Date::DAY, $uid)->execute() : [];
 
         if ($userSessions) {
             foreach ($userSessions as $session) {
@@ -109,15 +121,19 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
 
     /**
      * Check whether to delete the social network is possible\
+     *
      * @author  Alexander Demyashev
      *
-     * @var    string   $uid
-     * @return bool     TRUE / FALSE
+     * @var string $uid
+     *
+     * @param mixed $uid
+     *
+     * @return bool TRUE / FALSE
      */
     public static function rightToUnbindSocial($uid)
     {
         $security = Dao_Users::select(['email', 'password'])->where('id', '=', $uid)->limit(1)->execute();
-        $socials  = Dao_Users::select(['twitter', 'facebook', 'vk'])->where('id', '=', $uid)->limit(1)->execute();
+        $socials = Dao_Users::select(['twitter', 'facebook', 'vk'])->where('id', '=', $uid)->limit(1)->execute();
 
         if (!empty($security['email']) && !empty($security['password'])) {
             return true;
@@ -127,9 +143,14 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
     }
 
     /**
-    * Removes auth session by id, uid or cookie
-    * @author Savchenko Petr (vk.com/specc)
-    */
+     * Removes auth session by id, uid or cookie
+     *
+     * @author Savchenko Petr (vk.com/specc)
+     *
+     * @param mixed $id
+     * @param mixed $uid
+     * @param mixed $sid
+     */
     public static function deleteSession($id = false, $uid = false, $sid = false)
     {
         if (!$id && !$uid && !$sid) {
@@ -140,11 +161,11 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
         if (! ($id || $uid || $sid)) {
 
             /** Debug */
-            $message = array(
-                'id'  => $id,
+            $message = [
+                'id' => $id,
                 'uid' => $uid,
                 'sid' => $sid
-            );
+            ];
 
             $user_id = Controller_Auth_Base::checkAuth();
 
@@ -155,7 +176,7 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
                 $path = '';
             }
             $telegramMsg = '⁉️ Trying to delete all rows from AuthSession.' . PHP_EOL;
-            $telegramMsg .= 'user_id = ' . $user_id .  PHP_EOL . PHP_EOL;
+            $telegramMsg .= 'user_id = ' . $user_id . PHP_EOL . PHP_EOL;
             $telegramMsg .= $path;
 
             Model_Services_Telegram::sendBotNotification($telegramMsg);
@@ -180,9 +201,10 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
     }
 
     /**
-    * @todo: save session-id to prolongate auth-session with login
-    * @author Savchenko Petr (vk.com/specc)
-    */
+     * @todo: save session-id to prolongate auth-session with login
+     *
+     * @author Savchenko Petr (vk.com/specc)
+     */
     protected static function clearAuthCookie()
     {
         Cookie::delete(self::COOKIE_USER_ID);

@@ -3,19 +3,18 @@
 // -- Environment setup --------------------------------------------------------
 
 // Load the core Kohana class
-require SYSPATH.'classes/Kohana/Core'.EXT;
+require SYSPATH . 'classes/Kohana/Core' . EXT;
 
-if (is_file(APPPATH.'classes/Kohana'.EXT)) {
+if (is_file(APPPATH . 'classes/Kohana' . EXT)) {
     // Application extends the core
-    require APPPATH.'classes/Kohana'.EXT;
-
+    require APPPATH . 'classes/Kohana' . EXT;
 } else {
     // Load empty core extension
-    require SYSPATH.'classes/Kohana'.EXT;
+    require SYSPATH . 'classes/Kohana' . EXT;
 }
 
 // Load Composer autoload
-require VENDORPATH.'autoload'.EXT;
+require VENDORPATH . 'autoload' . EXT;
 
 /**
  * Set the default time zone.
@@ -39,7 +38,7 @@ setlocale(LC_ALL, 'en_US.utf-8');
  * @link http://kohanaframework.org/guide/using.autoloading
  * @link http://www.php.net/manual/function.spl-autoload-register
  */
-spl_autoload_register(array('Kohana', 'auto_load'));
+spl_autoload_register(['Kohana', 'auto_load']);
 
 /**
  * Optionally, you can enable a compatibility auto-loader for use with
@@ -66,17 +65,18 @@ I18n::lang('en-us');
 
 /**
  * Load Dotenv
+ *
  * @see https://github.com/vlucas/phpdotenv
  */
-if (is_file(DOCROOT.'.env')) {
+if (is_file(DOCROOT . '.env')) {
     $dotenv = new Dotenv\Dotenv(DOCROOT);
     $dotenv->load();
 }
 
 
 /**
-* Set upload max size in Number
-*/
+ * Set upload max size in Number
+ */
 $uploadMaxSize = ini_get('upload_max_filesize');
 $uploadMaxSize = (int) substr($uploadMaxSize, 0, strlen($uploadMaxSize) - 1);
 
@@ -91,8 +91,7 @@ unset($uploadMaxSize);
  * saying "Couldn't find constant Kohana::<INVALID_ENV_NAME>"
  */
 if (isset($_SERVER['KOHANA_ENV'])) {
-
-    Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
+    Kohana::$environment = constant('Kohana::' . strtoupper($_SERVER['KOHANA_ENV']));
 }
 
 /**
@@ -101,7 +100,6 @@ if (isset($_SERVER['KOHANA_ENV'])) {
  * @link https://hawk.so/docs
  */
 if (isset($_SERVER['HAWK_TOKEN'])) {
-
     \Hawk\HawkCatcher::instance($_SERVER['HAWK_TOKEN']);
 }
 
@@ -121,21 +119,21 @@ if (isset($_SERVER['HAWK_TOKEN'])) {
  * - boolean  expose      set the X-Powered-By header                        FALSE
  */
 
-Kohana::init(array(
+Kohana::init([
     'errors' => true,
-    'base_url'   => '/',
+    'base_url' => '/',
     'index_file' => false
-));
+]);
 
 Cookie::$salt = 'asdahsdfzfcsEERfAf';
-Cookie::$httponly = TRUE;
+Cookie::$httponly = true;
 
 Cookie::$expiration = Date::WEEK;
 
 /**
  * Attach the file write to logging. Multiple writers are supported.
  */
-Kohana::$log->attach(new Log_File(APPPATH.'logs'));
+Kohana::$log->attach(new Log_File(APPPATH . 'logs'));
 
 /**
  * Attach a file reader to config. Multiple readers are supported.
@@ -145,18 +143,18 @@ Kohana::$config->attach(new Config_File);
 /**
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
-Kohana::modules(array(
+Kohana::modules([
     // 'auth'       => MODPATH.'auth',       // Basic authentication
-       'cache'      => MODPATH.'cache',      // Caching with multiple backends
+       'cache' => MODPATH . 'cache',      // Caching with multiple backends
     // 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
-       'database'   => MODPATH.'database',   // Database access
-       'image'      => MODPATH.'image',      // Image manipulation
-       'minion'     => MODPATH.'minion',     // CLI Tasks
+       'database' => MODPATH . 'database',   // Database access
+       'image' => MODPATH . 'image',      // Image manipulation
+       'minion' => MODPATH . 'minion',     // CLI Tasks
     // 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
     // 'unittest'   => MODPATH.'unittest',   // Unit testing
     // 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
-       'email'      => MODPATH.'email',
+       'email' => MODPATH . 'email',
     // 'messages'      => MODPATH.'messages',
-));
+]);
 
-require APPPATH.'routes'.EXT;
+require APPPATH . 'routes' . EXT;
