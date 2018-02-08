@@ -34,7 +34,7 @@
 </head>
 <body>
 
-    <? if (!empty($_SERVER['ENABLE_GOV_SITE_WIDGET']) && $_SERVER['ENABLE_GOV_SITE_WIDGET']): ?>
+    <? if (Arr::get($_SERVER, 'ENABLE_GOV_SITE_WIDGET')): ?>
         <?= View::factory('templates/components/esir_navigator')->render(); ?>
     <? endif ?>
 
