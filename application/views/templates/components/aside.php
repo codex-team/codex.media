@@ -1,6 +1,6 @@
 <aside class="island main-aside <?= !empty($site_info['branding']) ? 'main-aside--offset-top' : '' ?>">
 
-    <a class="site-head clear" href="/">
+    <a class="site-head site-head--in-aside clear" href="/">
 
         <?
             $logoIsEmpty = empty($site_info['logo']);

@@ -32,6 +32,13 @@
     --vkColor: #547ba5;
     --twitterColor: #5ca4f6;
     --facebookColor: #30588f;
+
+    /** Editor block inner width */
+    --article-max-width: 650px;
+
+    /** Additional fonts families */
+    --serif-font: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans";
+
 }
 
 /**

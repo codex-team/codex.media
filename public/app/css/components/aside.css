@@ -10,10 +10,13 @@
 
 .site-head {
     display: flex;
-    border-bottom: 1px solid var(--lightGrayLine);
-    padding: 23px 30px;
     line-height: 1.2em;
     font-size: 15px;
+
+    &--in-aside {
+        border-bottom: 1px solid var(--lightGrayLine);
+        padding: 23px 30px;
+    }
 }
 
 .site-head__logo {
@@ -236,9 +239,12 @@
 
 @media (--mobile) {
     .site-head {
-        padding: 12px 15px;
         line-height: 1.3em;
         font-size: 13px;
+
+        &--in-aside {
+            padding: 12px 15px;
+        }
     }
 
     .site-head__logo {

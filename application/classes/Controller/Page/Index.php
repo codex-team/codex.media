@@ -36,7 +36,8 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $this->view['page'] = $page;
 
         $this->title = $page->title;
-        $this->template->content = View::factory('templates/pages/page', $this->view);
+        $this->template->content = View::factory('templates/pages/page_wide', $this->view);
+        $this->template->contentOnly = true;
     }
 
     /**
@@ -76,5 +77,6 @@ class Controller_Page_Index extends Controller_Base_preDispatch
 
         $this->template->content = View::factory('templates/pages/writing', ['page' => $page, 'isPersonalBlog' => $isPersonalBlog]);
         $this->template->contentOnly = true;
+        $this->template->hideBranding = true;
     }
 }

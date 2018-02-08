@@ -32,11 +32,11 @@
     <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
 
 </head>
-<body>
+<body class="<?= !empty($site_info['branding']) && empty($hideBranding) ? '--with-branding' : '' ?>">
 
     <?= View::factory('templates/components/esir_navigator')->render(); ?>
 
-    <? if (empty($contentOnly)): ?>
+    <? if (empty($hideBranding)): ?>
         <?= View::factory('templates/components/branding')->render(); ?>
     <? endif; ?>
 

@@ -333,3 +333,153 @@
         height: 40px;
     }
 }
+
+/**
+ * Layout rules
+ */
+:root {
+    --entry-column-width: {
+        max-width: var(--article-max-width);
+
+        @media (--mobile) {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    };
+}
+
+/**
+ * Wide Article layout
+ */
+.article {
+    &--wide {
+        padding: 23px 30px;
+    }
+
+    .--with-branding &--wide {
+        position: relative;
+        margin-top: -112px;
+    }
+
+    &--wide &__title {
+        text-align: center;
+        margin: auto;
+
+        &-wrapper {
+            min-height: 300px;
+            display: flex;
+        }
+    }
+
+    &--wide &__author {
+        position: relative;
+        display: block;
+        overflow: visible;
+        margin-top: 10px;
+
+        img {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            left: -55px;
+            top: -3px;
+            margin: 0;
+        }
+
+        &-name {
+            font-weight: bold;
+        }
+    }
+
+    &--wide .island-settings {
+        float: right !important;
+        margin-top: -9px !important;
+        margin-left: 30px !important;
+    }
+
+    &--wide &__content {
+        font-size: 17.4px;
+        line-height: 1.62em;
+        word-wrap: break-word;
+        letter-spacing: 0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: #000000db;
+
+        &--serif {
+            font-size: 19.3px;
+            line-height: 1.6em;
+            letter-spacing: 0.1px;
+            font-family: Georgia;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid #333;
+        }
+
+        i {
+            font-family: Georgia;
+            font-style: italic;
+            letter-spacing: 0.1px;
+            font-size: 1.05em;
+        }
+
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        ul,
+        ol,
+        blockquote {
+            @apply --entry-column-width;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin: 1.6em auto 0.5em;
+            font-family: var(--serif-font);
+            letter-spacing: -0.02em;
+            line-height: 1.3em;
+            padding-top: 0;
+            padding-bottom: 0;
+
+            & + p {
+                margin-top: 0;
+            }
+        }
+
+        h2 {
+            font-size: 1.6em;
+
+            @media (--mobile) {
+                font-size: 1.2em;
+            }
+
+        }
+
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin-top: 0.8em;
+        }
+
+        p {
+            margin: 1.2em auto;
+        }
+    }
+
+    &--wide .sharing {
+        @apply --entry-column-width;
+        margin: 50px auto 30px !important;
+    }
+}
