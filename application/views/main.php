@@ -34,7 +34,9 @@
 </head>
 <body>
 
-    <?= View::factory('templates/components/esir_navigator')->render(); ?>
+    <? if (!empty($_SERVER['ENABLE_GOV_SITE_WIDGET']) && $_SERVER['ENABLE_GOV_SITE_WIDGET']): ?>
+        <?= View::factory('templates/components/esir_navigator')->render(); ?>
+    <? endif ?>
 
     <? if (empty($contentOnly)): ?>
         <?= View::factory('templates/components/branding')->render(); ?>
