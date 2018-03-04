@@ -139,7 +139,8 @@ class Model_Social_Vk extends Model_preDispatch
                 "&client_secret={$settings['client_secret']}" .
                 "&redirect_uri={$settings['redirect_uri']}" .
                 "&code={$code}" .
-                "&https={$this->https}";
+                "&https={$this->https}" .
+                "&version=5.40";
         }
     }
 
@@ -171,6 +172,7 @@ class Model_Social_Vk extends Model_preDispatch
 
         return "{$this->url_method}{$method}?{$parameters}" .
             "&access_token={$this->token}" .
-            "&https={$this->https}";
+            "&https={$this->https}".
+                "&version=5.40";
     }
 }
