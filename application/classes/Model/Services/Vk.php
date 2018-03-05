@@ -95,6 +95,7 @@ class Model_Services_Vk extends Model_preDispatch
             'owner_id' => $this->groupId,
             'from_group' => 1,
             'access_token' => $this->adminKey,
+            'version' => '5.40',
             'attachments' => $values['link']
         ];
 
@@ -134,6 +135,7 @@ class Model_Services_Vk extends Model_preDispatch
             'owner_id' => $this->groupId,
             'post_id' => $this->postId,
             'access_token' => $this->adminKey,
+            'version' => '5.40',
             'attachments' => $values['link']
         ];
 
@@ -158,6 +160,7 @@ class Model_Services_Vk extends Model_preDispatch
         $params = [
             'owner_id' => $this->groupId,
             'post_id' => $this->postId,
+            'version' => '5.40',
             'access_token' => $this->adminKey
         ];
 
