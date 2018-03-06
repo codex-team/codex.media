@@ -238,7 +238,7 @@ class Model_Page extends Model
 
             return $CodexEditor->getBlocks($escapeHTML);
         } catch (Exception $e) {
-            throw new Kohana_Exception("CodexEditor: " . $e->getMessage());
+            throw new Kohana_Exception("CodexEditor (article:" . $this->id . "): " . $e->getMessage());
         }
     }
 
