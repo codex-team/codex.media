@@ -243,7 +243,7 @@ class Model_Page extends Model
 
         $blocks = Cache::instance('memcacheimp')->get($cacheKey);
 
-        if (!$blocks) {
+        if ($blocks) {
             return $blocks;
         }
 
