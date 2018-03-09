@@ -112,7 +112,7 @@ class Cache_Memcacheimp {
      * Добавляет ключ id со значением data, метками tags.
      * Реализует метод работы с тэгами, описанный на странице http://www.smira.ru/2008/10/29/web-caching-memcached-5/
      */
-    public function set($id, $data, array $tags = NULL, $lifetime) {
+    public function set($id, $data, array $tags = NULL, $lifetime = 3600) {
         // Если заданы тэги — получаем их текущие значения в $key_tags
         if (!empty($tags)) {
             $key_tags = array();
