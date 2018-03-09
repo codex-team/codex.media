@@ -401,7 +401,7 @@ class Model_Page extends Model
                                 ->cached(Date::MINUTE * 5, $cacheKey, ['comments:by:page:' . $this->id])
                                 ->execute();
 
-        return count($comments);
+        return $comments ? count($comments) : 0;
     }
 
     public function getComments()
