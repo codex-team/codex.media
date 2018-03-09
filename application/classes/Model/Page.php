@@ -84,15 +84,11 @@ class Model_Page extends Model
 
     public function get($id = 0)
     {
-        $benchmark = Profiler::start(get_class($this), __FUNCTION__.'()');
-
         $pageRow = Dao_Pages::select()
                             ->where('id', '=', $id)
                             ->limit(1)
                             ->cached(Date::MINUTE * 5, 'page:' . $id)
                             ->execute();
-
-        Profiler::stop($benchmark);
 
         return self::fillByRow($pageRow);
     }
