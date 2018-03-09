@@ -244,16 +244,18 @@ class Model_Page extends Model
         $blocks = Cache::instance('memcacheimp')->get($cacheKey);
 
         if (!$blocks) {
-            try {
-                $CodexEditor = new CodexEditor($this->content, $config);
-
-                $blocks = $CodexEditor->getBlocks($escapeHTML);
-            } catch (Exception $e) {
-                throw new Kohana_Exception("CodexEditor (article:" . $this->id . "): " . $e->getMessage());
-            }
-
-            Cache::instance('memcacheimp')->set($cacheKey, $blocks, [$this->modelCacheKey]);
+            return $blocks;
         }
+
+        try {
+            $CodexEditor = new CodexEditor($this->content, $config);
+
+            $blocks = $CodexEditor->getBlocks($escapeHTML);
+        } catch (Exception $e) {
+            throw new Kohana_Exception("CodexEditor (article:" . $this->id . "): " . $e->getMessage());
+        }
+
+        Cache::instance('memcacheimp')->set($cacheKey, $blocks, [$this->modelCacheKey]);
 
         return $blocks;
     }
@@ -275,18 +277,20 @@ class Model_Page extends Model
 
         $content = Cache::instance('memcacheimp')->get($cacheKey);
 
-        if (!$content) {
-            try {
-                $CodexEditor = new CodexEditor($this->content, $config);
-
-                $content = $CodexEditor->getData($escapeHTML);
-            } catch (Exception $e) {
-                throw new Kohana_Exception("CodexEditor (article:" . $this->id
-                                           . "):" . $e->getMessage());
-            }
-
-            Cache::instance('memcacheimp')->set($cacheKey, $content, [$this->modelCacheKey]);
+        if ($content) {
+            return $content;
         }
+
+        try {
+            $CodexEditor = new CodexEditor($this->content, $config);
+
+            $content = $CodexEditor->getData($escapeHTML);
+        } catch (Exception $e) {
+            throw new Kohana_Exception("CodexEditor (article:" . $this->id
+                                       . "):" . $e->getMessage());
+        }
+
+        Cache::instance('memcacheimp')->set($cacheKey, $content, [$this->modelCacheKey]);
 
         return $content;
     }
