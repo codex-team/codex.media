@@ -63,11 +63,15 @@ class Model_Page extends Model
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS = 3;
 
+    private $modelCacheKey;
+
     public function __construct($id = 0, $escapeHTML = false)
     {
         if (!$id) {
             return;
         }
+
+        $this->modelCacheKey = Arr::get($_SERVER, 'DOMAIN', 'codex.media') . ':model:page:' . $id;
 
         self::get($id);
 
@@ -81,10 +85,10 @@ class Model_Page extends Model
     public function get($id = 0)
     {
         $pageRow = Dao_Pages::select()
-            ->where('id', '=', $id)
-            ->limit(1)
-            ->cached(Date::MINUTE * 5, 'page:' . $id)
-            ->execute();
+                            ->where('id', '=', $id)
+                            ->limit(1)
+                            ->cached(Date::MINUTE * 5, 'page:' . $id)
+                            ->execute();
 
         return self::fillByRow($pageRow);
     }
@@ -119,13 +123,13 @@ class Model_Page extends Model
     public function insert()
     {
         $page = Dao_Pages::insert()
-            ->set('author', $this->author->id)
-            ->set('id_parent', $this->id_parent)
-            ->set('title', $this->title)
-            ->set('content', $this->content)
-            ->set('cover', $this->cover)
-            ->set('rich_view', $this->rich_view)
-            ->set('dt_pin', $this->dt_pin);
+                         ->set('author', $this->author->id)
+                         ->set('id_parent', $this->id_parent)
+                         ->set('title', $this->title)
+                         ->set('content', $this->content)
+                         ->set('cover', $this->cover)
+                         ->set('rich_view', $this->rich_view)
+                         ->set('dt_pin', $this->dt_pin);
 
         $pageId = $page->execute();
 
@@ -137,19 +141,21 @@ class Model_Page extends Model
     public function update()
     {
         $page = Dao_Pages::update()
-            ->where('id', '=', $this->id)
-            ->set('id', $this->id)
-            ->set('status', $this->status)
-            ->set('id_parent', $this->id_parent)
-            ->set('title', $this->title)
-            ->set('cover', $this->cover)
-            ->set('content', $this->content)
-            ->set('rich_view', $this->rich_view)
-            ->set('dt_pin', $this->dt_pin);
+                         ->where('id', '=', $this->id)
+                         ->set('id', $this->id)
+                         ->set('status', $this->status)
+                         ->set('id_parent', $this->id_parent)
+                         ->set('title', $this->title)
+                         ->set('cover', $this->cover)
+                         ->set('content', $this->content)
+                         ->set('rich_view', $this->rich_view)
+                         ->set('dt_pin', $this->dt_pin);
 
         $page->clearcache('page:' . $this->id, ['site_menu']);
 
         $page->execute();
+
+        Cache::instance('memcacheimp')->delete_tag($this->modelCacheKey);
 
         return $this;
     }
@@ -203,10 +209,10 @@ class Model_Page extends Model
     public function getChildrenPages()
     {
         $query = Dao_Pages::select()
-            ->where('status', '=', self::STATUS_SHOWING_PAGE)
-            ->where('id_parent', '=', $this->id)
-            ->order_by('id', 'ASC')
-            ->execute();
+                          ->where('status', '=', self::STATUS_SHOWING_PAGE)
+                          ->where('id_parent', '=', $this->id)
+                          ->order_by('id', 'ASC')
+                          ->execute();
 
         return self::rowsToModels($query);
     }
@@ -233,13 +239,25 @@ class Model_Page extends Model
     {
         $config = Kohana::$config->load('editor');
 
+        $cacheKey = $this->modelCacheKey . ':blocks';
+
+        $blocks = Cache::instance('memcacheimp')->get($cacheKey);
+
+        if ($blocks) {
+            return $blocks;
+        }
+
         try {
             $CodexEditor = new CodexEditor($this->content, $config);
 
-            return $CodexEditor->getBlocks($escapeHTML);
+            $blocks = $CodexEditor->getBlocks($escapeHTML);
         } catch (Exception $e) {
             throw new Kohana_Exception("CodexEditor (article:" . $this->id . "): " . $e->getMessage());
         }
+
+        Cache::instance('memcacheimp')->set($cacheKey, $blocks, [$this->modelCacheKey]);
+
+        return $blocks;
     }
 
     /**
@@ -255,13 +273,26 @@ class Model_Page extends Model
     {
         $config = Kohana::$config->load('editor');
 
+        $cacheKey = $this->modelCacheKey . ':content';
+
+        $content = Cache::instance('memcacheimp')->get($cacheKey);
+
+        if ($content) {
+            return $content;
+        }
+
         try {
             $CodexEditor = new CodexEditor($this->content, $config);
 
-            return $CodexEditor->getData($escapeHTML);
+            $content = $CodexEditor->getData($escapeHTML);
         } catch (Exception $e) {
-            throw new Kohana_Exception("CodexEditor (article:" . $this->id . "):" . $e->getMessage());
+            throw new Kohana_Exception("CodexEditor (article:" . $this->id
+                                       . "):" . $e->getMessage());
         }
+
+        Cache::instance('memcacheimp')->set($cacheKey, $content, [$this->modelCacheKey]);
+
+        return $content;
     }
 
     /**
@@ -362,24 +393,15 @@ class Model_Page extends Model
      */
     public function getCommentsCount()
     {
-        $cache = Cache::instance('memcacheimp');
         $cacheKey = 'comments:count:by:page:' . $this->id;
 
-        $cached = $cache->get($cacheKey);
+        $comments = Dao_Comments::select('id')
+                                ->where('page_id', '=', $this->id)
+                                ->where('is_removed', '=', 0)
+                                ->cached(Date::MINUTE * 5, $cacheKey, ['comments:by:page:' . $this->id])
+                                ->execute();
 
-        if ($cached) {
-            return $cached;
-        }
-
-        $count = DB::select('id')->from('comments')
-            ->where('page_id', '=', $this->id)
-            ->where('is_removed', '=', 0)
-            ->execute()
-            ->count();
-
-        $cache->set($cacheKey, $count, ['comments:by:page:' . $this->id], Date::MINUTE * 5);
-
-        return $count;
+        return count($comments);
     }
 
     public function getComments()

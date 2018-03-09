@@ -11,7 +11,7 @@ class HTTP_Exception_404 extends Kohana_HTTP_Exception_404
         // We're inside an instance of Exception here, all the normal stuff is available.
         $view->message = $this->getMessage();
 
-        $response->body($view->render());
+        $response->status(404)->body($view->render());
 
         return $response;
     }
