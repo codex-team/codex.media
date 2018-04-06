@@ -27,6 +27,8 @@ class Model_Services_Vk extends Model_preDispatch
     private $postId = 0;
     private $articleId = 0;
 
+    private $apiVersion = '5.74';
+
     /**
      * This model combines artile's id and post's id on the public wall
      *
@@ -95,7 +97,7 @@ class Model_Services_Vk extends Model_preDispatch
             'owner_id' => $this->groupId,
             'from_group' => 1,
             'access_token' => $this->adminKey,
-            'version' => '5.40',
+            'version' => $this->apiVersion,
             'attachments' => $values['link']
         ];
 
@@ -135,7 +137,7 @@ class Model_Services_Vk extends Model_preDispatch
             'owner_id' => $this->groupId,
             'post_id' => $this->postId,
             'access_token' => $this->adminKey,
-            'version' => '5.40',
+            'version' => $this->apiVersion,
             'attachments' => $values['link']
         ];
 
@@ -160,7 +162,7 @@ class Model_Services_Vk extends Model_preDispatch
         $params = [
             'owner_id' => $this->groupId,
             'post_id' => $this->postId,
-            'version' => '5.40',
+            'version' => $this->apiVersion,
             'access_token' => $this->adminKey
         ];
 
