@@ -1,6 +1,6 @@
 # [CodeX Media](https://ifmo.su/media)
 
-Platform for organizations
+Platform for building UGC media
 
 ## Development and deployment
 
