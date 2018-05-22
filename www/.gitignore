@@ -2,7 +2,6 @@ application/cache/*
 application/logs/*
 
 vendor/*
-vendor/
 
 .env
 
