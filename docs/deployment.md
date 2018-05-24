@@ -55,8 +55,7 @@ codex.media (project's root directory)
 Create a directory for uploaded files e.g. editor's images and users' profile pictures.
 
 ```shell
-mkdir upload
-chmod 777 upload
+chmod -R 777 upload
 ```
 
 Then you need to go to the `application` directory. Create these two directories and set full access permissions for every user.
