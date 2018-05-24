@@ -90,6 +90,8 @@ codex.media
   ...
 ```
 
+@todo add console command
+
 ## 7. The last step is setting up config files.
 
 Go to `codex.media/www/application/config` and duplicate sample files without `.sample` in their names.
@@ -138,33 +140,8 @@ You can fill up `senderName` and `senderEmail`.
 
 ### social.php
 
+@todo add VK, FB, TW auth
 
-
-
-
-To enable authorisation via Twitter on your local site you need to create a new GitHub OAuth app.
-
-Open [https://github.com/settings/applications/new](https://github.com/settings/applications/new) and fill the form.
-
-Set any `Application name` and enter a correct link (with protocol) to your site as a `Homepage URL`.
-
-In the field `Authorization callback URL` you should type a link to your local site with `/auth/github` uri:
-
-```
-http://localhost:8080/auth/github
-```
-
-![](assets/create-a-new-github-app.png)
-
-After registering an application you will be redirected to app's settings page. Get there `Client ID` and `Client Secret` params and put then into the `APP_ID` and `APP_SECRET` fields in `oauth.php` on lines 30 and 31.
-
-```
-...
-'github' => array(
-    'APP_ID'        => '',
-    'APP_SECRET'    => '',
-...    
-```
 ### communities.php (optional feature)
 
 If you want to enable auto posting news to VK community page, then follow [this guide](https://github.com/codex-team/codex.edu/issues/119#issuecomment-296349880). You need to have rights to post anything to the community's wall as that community.
