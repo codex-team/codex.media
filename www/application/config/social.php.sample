@@ -6,7 +6,7 @@ return array
         'type'          => 1,
         'client_id'     => '',
         'client_secret' => '',
-        'redirect_uri'  => 'http'.((Arr::get($_SERVER, 'HTTPS')) ? 's' : '').'://'.Arr::get($_SERVER, 'SERVER_NAME').'/auth/vk',
+        'redirect_uri'  => 'http'.((Arr::get($_SERVER, 'HTTPS')) ? 's' : '').'://'.Arr::get($_SERVER, 'HTTP_HOST').'/auth/vk',
         'scopes'        => '',
     ),
     'facebook' => array(
