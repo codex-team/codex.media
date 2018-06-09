@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') OR die('No direct script access.');
+<?php defined('SYSPATH') or die('No direct script access.');
 /**
  *
  * @author CodeX Team
@@ -11,8 +11,8 @@
  *
  * If both project and application doesn't contain required file throw an View_Exception
  */
-class View extends Kohana_View {
-
+class View extends Kohana_View
+{
     /**
      * @var string
      */
@@ -30,17 +30,16 @@ class View extends Kohana_View {
     public function set_filename($file)
     {
         $application_path = Kohana::find_file($this->view_path, $file);
-        $project_path = Kohana::find_file( '../projects' . DIRECTORY_SEPARATOR . $_SERVER['PROJECT'] . DIRECTORY_SEPARATOR . $this->view_path, $file);
+        $project_path = Kohana::find_file('../projects' . DIRECTORY_SEPARATOR . Arr::get($_SERVER, 'PROJECT') . DIRECTORY_SEPARATOR . $this->view_path, $file);
 
-        if ( $application_path === FALSE && $project_path === FALSE )
-        {
+        if ($application_path === false && $project_path === false) {
             throw new View_Exception('The requested view :file could not be found', array(
                 ':file' => $file,
             ));
         }
 
         // Store the file path locally
-        if ($project_path === FALSE) {
+        if ($project_path === false) {
             $this->_file = $application_path;
         } else {
             $this->_file = $project_path;
@@ -48,5 +47,4 @@ class View extends Kohana_View {
 
         return $this;
     }
-
 }
