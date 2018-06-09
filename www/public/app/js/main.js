@@ -1,9 +1,4 @@
 /**
- * Require CSS build
- */
-require('../css/main.css');
-
-/**
  * Import Dispatcher for Frontend Modules initialization
  */
 import moduleDispatcher from 'module-dispatcher';

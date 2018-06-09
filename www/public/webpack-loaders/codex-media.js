@@ -9,6 +9,10 @@ const path = require('path');
 /** Check project static path to get custom script */
 module.exports = function(source, map) {
 
+    if (!map) {
+        return source;
+    }
+
     let filename = map.file,
         options = getOptions(this),
         callback = this.async();

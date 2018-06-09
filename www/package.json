@@ -5,7 +5,9 @@
   "description": "Open platform for organizations",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --progress  --display-error-details --display-entrypoints --display-reasons"
+    "build": "build_js && build_css",
+    "build_js": "webpack --config js.webpack.config.js",
+    "build_css": "webpack --config css.webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -32,7 +34,7 @@
     "codex.editor.link": "^1.0.3",
     "codex.editor.personality": "^1.0.2",
     "codex.special": "^1.4.1",
-    "css-loader": "^0.26.1",
+    "css-loader": "^0.26.4",
     "dotenv": "^6.0.0",
     "eslint": "^3.12.2",
     "eslint-loader": "^1.6.1",
@@ -53,6 +55,7 @@
     "postcss-nested-ancestors": "^1.0.0",
     "postcss-smart-import": "^0.7.4",
     "stylelint-webpack-plugin": "^0.4.2",
-    "webpack": "^3.8.1"
+    "webpack": "^3.8.1",
+    "webpack-merge": "^4.1.2"
   }
 }

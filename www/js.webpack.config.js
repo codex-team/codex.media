@@ -3,16 +3,16 @@
  */
 
 let webpack           = require('webpack');
-let ExtractTextPlugin = require("extract-text-webpack-plugin");
-let StyleLintPlugin   = require('stylelint-webpack-plugin');
 let path              = require('path');
 
 require('dotenv').load();
 
-module.exports = {
+const merge = require('webpack-merge');
+let baseConfig = require('./base.webpack.config');
+
+module.exports = merge(baseConfig, {
 
     entry: './public/app/js/main.js',
-
     output: {
         filename: './public/build/bundle.js',
         library: 'codex'
@@ -31,41 +31,7 @@ module.exports = {
     },
 
     module: {
-        rules: [
-      {
-        test : /\.(png|jpg|svg)$/,
-        use : [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[1].[ext]',
-              publicPath: '/',
-              regExp: 'node_modules/(.*)',
-              outputPath: 'public/build/assets/',
-            },
-          }
-        ]
-      },
-      {
-        /**
-         * Use for all CSS files loaders below
-         * - extract-text-webpack-plugin
-         * - postcss-loader
-         */
-        test: /\.css$/,
-        /** extract-text-webpack-plugin */
-        use: ExtractTextPlugin.extract([
-          {
-            loader: 'css-loader',
-            options: {
-              minimize: 1,
-              importLoaders: 1
-            }
-          },
-          /** postcss-loader */
-          'postcss-loader'
-        ])
-      },
+      rules: [
       {
         /**
          * Use for all JS files loaders below
@@ -115,23 +81,14 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin(),
 
         /** Вырезает CSS из JS сборки в отдельный файл */
-        new ExtractTextPlugin("public/build/bundle.css"),
+        // new ExtractTextPlugin("public/build/bundle.css"),
 
         /** Проврка синтаксиса CSS */
-        new StyleLintPlugin({
-            context : './public/app/css/',
-            files : 'main.css'
-        }),
+        // new StyleLintPlugin({
+        //     context : './public/app/css/',
+        //     files : 'main.css'
+        // }),
 
     ],
 
-    devtool: "source-map",
-
-    /** Пересборка при изменениях */
-    watch: true,
-    watchOptions: {
-
-        /* Таймаут перед пересборкой */
-        aggregateTimeout: 50
-    }
-};
+});
