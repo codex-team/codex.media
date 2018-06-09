@@ -2,10 +2,12 @@
  * Bundle config
  */
 
- let webpack           = require('webpack');
- let ExtractTextPlugin = require("extract-text-webpack-plugin");
- let StyleLintPlugin   = require('stylelint-webpack-plugin');
+let webpack           = require('webpack');
+let ExtractTextPlugin = require("extract-text-webpack-plugin");
+let StyleLintPlugin   = require('stylelint-webpack-plugin');
+let path              = require('path');
 
+require('dotenv').load();
 
 module.exports = {
 
@@ -14,6 +16,18 @@ module.exports = {
     output: {
         filename: './public/build/bundle.js',
         library: 'codex'
+    },
+
+    resolve: {
+      modules: [
+        path.resolve(__dirname, 'public/app/js'),
+        "node_modules"
+      ],
+      extensions: [".js", ".css"],
+    },
+
+    resolveLoader: {
+        modules: ['node_modules', path.resolve(__dirname, 'public/webpack-loaders')]
     },
 
     module: {
@@ -27,7 +41,7 @@ module.exports = {
               name: '[1].[ext]',
               publicPath: '/',
               regExp: 'node_modules/(.*)',
-              outputPath: 'public/build/assets/'
+              outputPath: 'public/build/assets/',
             },
           }
         ]
@@ -59,12 +73,21 @@ module.exports = {
          * - eslint-loader
          */
         test: /\.js$/,
+        include: [
+          path.resolve(__dirname, 'public/app/js')
+        ],
         use : [
+          {
+            loader: 'codex-media',
+            options: {
+              project: process.env.PROJECT
+            }
+          },
           /** Babel loader */
           {
             loader: 'babel-loader',
             options: {
-              presets: [ 'es2015' ]
+              presets: [ 'es2015' ],
             }
           },
           /** ES lint For webpack build */

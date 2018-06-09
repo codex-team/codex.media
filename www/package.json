@@ -33,6 +33,7 @@
     "codex.editor.personality": "^1.0.2",
     "codex.special": "^1.4.1",
     "css-loader": "^0.26.1",
+    "dotenv": "^6.0.0",
     "eslint": "^3.12.2",
     "eslint-loader": "^1.6.1",
     "exports-loader": "^0.6.4",
