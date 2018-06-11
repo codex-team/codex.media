@@ -1,14 +1,12 @@
 /**
- * Bundle config
+ * JS Bundle config
  */
-
-let webpack           = require('webpack');
-let path              = require('path');
-
 require('dotenv').load();
 
-const merge = require('webpack-merge');
-let baseConfig = require('./base.webpack.config');
+const webpack       = require('webpack');
+const path          = require('path');
+const merge         = require('webpack-merge');
+const baseConfig    = require('./base.webpack.config');
 
 module.exports = merge(baseConfig, {
 
@@ -79,16 +77,6 @@ module.exports = merge(baseConfig, {
 
         /** Block build if errors found */
         new webpack.NoEmitOnErrorsPlugin(),
-
-        /** Вырезает CSS из JS сборки в отдельный файл */
-        // new ExtractTextPlugin("public/build/bundle.css"),
-
-        /** Проврка синтаксиса CSS */
-        // new StyleLintPlugin({
-        //     context : './public/app/css/',
-        //     files : 'main.css'
-        // }),
-
     ],
 
 });

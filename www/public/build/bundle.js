@@ -82,13 +82,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @author Savchenko Peter <specc.dev@gmail.com>
  */
 var codex = {}; /**
-                 * Require CSS build
+                 * Import Dispatcher for Frontend Modules initialization
                  */
-// let style = require('../css/main.css');
-
-/**
- * Import Dispatcher for Frontend Modules initialization
- */
 
 
 codex = function () {

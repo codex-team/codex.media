@@ -1,1 +1,3 @@
-require('./prebundle.css');
+const css = require('./prebuild.css');
+
+module.exports = {};

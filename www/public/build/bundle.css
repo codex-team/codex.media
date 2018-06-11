@@ -1,630 +1,3757 @@
-var codex =
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports) {
+
+
+    @media all and (max-width: 980px) {
+
+        .esir__search {
+            margin-left: 0;
+            border-left: 0;
+            font-size: 0;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .esir__included {
+            display: none;
+        }
+
+        .esir {
+}
+
+        .esir {
+            font-size: 10px;
+            background-size: auto 12px;
+            padding-left: 22px;
+            padding-right: 20px;
+        }
+    }
+
+.esir__included {
+        float: right;
+        border-left: 1px solid #cfd8e1;
+        padding: 0 10px;
+}
+
+.esir__navigator {
+        float: left;
+}
+
+.esir__search {
+        display: inline-block;
+        background: url('/public/app/svg/search.svg') no-repeat 10px center;
+        height: 30px;
+        line-height: 30px;
+        padding-left: 30px;
+        margin-left: 10px;
+        border-left: 1px solid #cfd8e1;
+        color: #7b8999;
+}
+
+.esir:hover {
+        background-color: #f4f5f7;
+}
+
+.special-big .branding, .special-white .branding, .special-green .branding, .special-blue .branding {
+        display: none;
+}
+
+.special-white .button.master,
+    .special-white input[type=submit],
+    .special-green .button.master,
+    .special-green input[type=submit],
+    .special-blue .button.master,
+    .special-blue input[type=submit] {
+        background-color: #1b439c !important;
+}
+
+.special-white .button, .special-green .button, .special-blue .button {
+        background-color: #2b2c2d !important;
+        color: #fff !important;
+}
+
+.special-white .island div,
+    .special-white .island header,
+    .special-white .island footer,
+    .special-white .island form,
+    .special-green .island div,
+    .special-green .island header,
+    .special-green .island footer,
+    .special-green .island form,
+    .special-blue .island div,
+    .special-blue .island header,
+    .special-blue .island footer,
+    .special-blue .island form {
+        background: transparent !important;
+}
+
+.special-white .island, .special-green .island, .special-blue .island {
+        background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.special-white .main-aside .user_panel:hover, .special-green .main-aside .user_panel:hover, .special-blue .main-aside .user_panel:hover {
+        background: transparent !important;
+}
+
+.article__person-photo {
+        float: right;
+        width: 70px;
+        height: 70px;
+        border-radius: 3px;
+        background-color: #f6f6f9;
+        background-image: url('/public/app/svg/photo-placeholder.svg');
+        background-repeat: no-repeat;
+        background-position: center center;
+        overflow: hidden;
+        margin-left: 30px;
+}
+
+.article__person-url:hover {
+        color: #d03931 !important;
+}
+
+.article__person-url {
+        display: block;
+        margin-top: 15px;
+        border-bottom: 0 !important;
+        font-size: 11px;
+        color: #6e758a !important;
+        letter-spacing: 0.1px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 80%;
+        line-height: 1em;
+}
+
+.article__person-cite {
+        font-size: 14px;
+        margin: 10px 0;
+}
+
+.article__person-name {
+        font-size: 16px;
+        font-weight: 600;
+}
+
+.article__information .island-settings {
+        float: none;
+        margin-left: 10px;
+        vertical-align: middle;
+}
+
+.link-embed__anchor {
+        display: block;
+        margin-top: 15px;
+        font-size: 11px;
+        color: #415983 !important;
+        letter-spacing: 0.2px;
+        line-height: 1.1em;
+        text-decoration: none !important;
+        border: 0 !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 400px;
+}
+
+.link-embed__description {
+        margin-top: 11px;
+        font-size: 14px;
+        line-height: 1.5em;
+}
+
+.link-embed__title {
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 1.4em;
+}
+
+.link-embed__cover {
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+.link-embed__cover--small {
+            margin: 0 0 25px 25px;
+            background-size: auto 100%;
+            width: 70px;
+            height: 70px;
+            border-radius: 2px;
+            float: right;
+        }
+
+.link-embed__cover--big {
+            background-size: 100% auto;
+            height: 180px;
+            margin: -26px -26px 25px;
+            border-radius: 2px 2px 0 0;
+        }/**
+* Animations
+* Not for editing
+*/
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    70% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bounceIn {
+    animation-name: bounceIn;
+    animation-duration: 600ms;
+    animation-iteration-count: 1;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    animation-name: fadeIn;
+    animation-duration: 600ms;
+    animation-iteration-count: 1;
+}
+
+@keyframes wobble {
+    0% {
+        transform: translateX(0%);
+    }
+
+    15% {
+        transform: translateX(-5%) rotate(-5deg);
+    }
+
+    30% {
+        transform: translateX(10%) rotate(3deg);
+    }
+
+    45% {
+        transform: translateX(-5%) rotate(-3deg);
+    }
+
+    60% {
+        transform: translateX(10%) rotate(2deg);
+    }
+
+    75% {
+        transform: translateX(-5%) rotate(-1deg);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+.wobble {
+    animation-name: wobble;
+    animation-duration: 400ms;
+    animation-iteration-count: 1;
+}
+
+/**
+ * Loading bar
+ * @usage Add class .loader to Element
+ */
+
+@keyframes loading-bar {
+    100% { background-position: -56% 0; }
+}
+
+/**
+* CodeX Team stylesheets
+*/
+
+/**
+*
+* Base elements rules
+* ================================================
+*
+*/
+
+.hide { display: none !important; }
+
+.block { display: block; }
+
+.p_rel { position: relative; }
+
+.pointer { cursor: pointer; }
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #d03931;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/**
+* Clearfix hack
+*/
+
+.clearfix::before,
+.clearfix::after {
+    content: " ";
+    display: table;
+}
+
+.clearfix::after {
+    clear: both;
+}
+
+/**
+* Floating shorthands
+*/
+
+.fl_l {
+    float: left;
+}
+
+.fl_r {
+    float: right;
+}
+
+.constrain {
+    overflow: hidden;
+}
+
+/**
+* Forms elements
+* =========================================
+*/
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="url"],
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 2px;
+    border: 0;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    background: #f4f5f8;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+    background: #eef5fd;
+}
+
+.button,
+input[type="submit"] {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    border-radius: 30px;
+    border: 0;
+    display: inline-block;
+    padding: 12px 24px;
+    color: #3f4b63;
+    vertical-align: top;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: inherit;
+    background-color: #ecf3f9;
+    line-height: 1em;
+}
+
+.button:hover,
+input[type="submit"]:hover {
+    background-color: #4592da;
+    color: #fff;
+    text-decoration: none;
+}
+
+.form {
+    font-size: 14px;
+}
+
+.form__input {
+    max-width: 400px;
+    margin-bottom: 1em;
+}
+
+.form__label {
+    display: block;
+    margin-bottom: 0.6em;
+}
+
+.form__input--invalid {
+    background: #fff3f3 !important;
+}
+
+.form__hint {
+    display: inline-block;
+    margin-left: 1em;
+}
+
+.form__hint svg {
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: text-bottom;
+    margin-right: 0.3em;
+}
+
+.form__caption {
+    margin: 15px 0;
+    line-height: 1.6em;
+}
+
+/**
+* Loading bar class
+*/
+
+.button.loading {
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgb(187, 205, 228) 4px, #ecf3f9 8px) !important;
+    background-size: 56px 56px;
+    animation: loading-bar 600ms infinite linear;
+}
+
+/**
+* Add class 'master' to make BLUE button
+*/
+
+.button.master,
+input[type="submit"] {
+    background-color: #5c95cf;
+    color: #fff;
+}
+
+.button.master:hover,
+input[type="submit"]:hover {
+    background-color: #3c7ab9;
+    color: #fff;
+}
+
+.master.loading {
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, #7ca9d0 4px, #7ca9d0 8px) !important;
+    background-size: 56px 56px;
+    animation: loading-bar 600ms infinite linear;
+}
+
+/**
+* Styles for disabled buttons and inputs
+*/
+
+.button.disabled,
+input[disabled] {
+    background: #eaecf1;
+    color: #a9afc1;
+}
+
+.button.disabled:hover,
+input[disabled]:hover {
+    background: #eaecf1;
+    color: #a9afc1;
+}
+
+::-webkit-input-placeholder {
+    color: #6e758a;
+}
+
+:-ms-input-placeholder {
+    color: #6e758a;
+}
+
+::placeholder {
+    color: #6e758a;
+}
+
+/**
+* JS approval buttons
+*/
+
+.click-again-to-approve {
+    background-color: red;
+}
 
 /*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
+* Imrove padding on buttons with icons
 */
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-exports.i(__webpack_require__(2), "");
-exports.i(__webpack_require__(3), "");
-exports.i(__webpack_require__(4), "");
-exports.i(__webpack_require__(5), "");
-exports.i(__webpack_require__(6), "");
-exports.i(__webpack_require__(7), "");
-exports.i(__webpack_require__(8), "");
-exports.i(__webpack_require__(9), "");
-exports.i(__webpack_require__(10), "");
-exports.i(__webpack_require__(11), "");
-exports.i(__webpack_require__(12), "");
-exports.i(__webpack_require__(13), "");
-exports.i(__webpack_require__(14), "");
-exports.i(__webpack_require__(15), "");
-exports.i(__webpack_require__(16), "");
-exports.i(__webpack_require__(17), "");
-exports.i(__webpack_require__(18), "");
-exports.i(__webpack_require__(19), "");
-exports.i(__webpack_require__(20), "");
-exports.i(__webpack_require__(21), "");
-exports.i(__webpack_require__(22), "");
-exports.i(__webpack_require__(23), "");
-exports.i(__webpack_require__(24), "");
-exports.i(__webpack_require__(25), "");
-exports.i(__webpack_require__(26), "");
-exports.i(__webpack_require__(27), "");
-exports.i(__webpack_require__(28), "");
-exports.i(__webpack_require__(29), "");
-exports.i(__webpack_require__(30), "");
-exports.i(__webpack_require__(34), "");
 
-// module
-exports.push([module.i, "/** File with style-variables */\n\n/** Main styles */\n\n/**\n* Animations\n*/\n\n/**\n* Icons\n*/\n\n/**\n* Old unrefactored styles\n*/\n\n/* @import url('legacy.css'); */\n\n/**\n* Components\n*/\n\n/**\n * CodeX Editor Tools\n */\n", ""]);
+.button i {
+    margin: 0 0.74em 0 -0.3em;
+}
+
+.button--vk,
+.button--twitter,
+.button--facebook {
+    color: #fff;
+}
+
+.button--vk {
+    background: #507299;
+}
+
+.button--vk:hover {
+    background: rgb(63, 90, 120);
+}
+
+.button--facebook {
+    background: #4267b2;
+}
+
+.button--facebook:hover {
+    background: rgb(52, 82, 141);
+}
+
+.button--twitter {
+    background: #1da1f2;
+}
+
+.button--twitter:hover {
+    background: rgb(12, 132, 207);
+}
+
+.border-button {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 7px 10px;
+    color: #6e758a;
+    border: 1px solid rgba(110, 117, 138, 0.19999999999999996);
+    border-radius: 3px;
+}
+
+.border-button svg,
+.button svg {
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: text-bottom;
+    margin-right: 0.3em;
+}
+
+.border-button--twitter {
+    color: #5ca4f6;
+    border-color: rgba(92, 164, 246, 0.19999999999999996);
+}
+
+.border-button--vk {
+    color: #547ba5;
+    border-color: rgba(84, 123, 165, 0.19999999999999996);
+}
+
+.border-button--facebook {
+    color: #30588f;
+    border-color: rgba(48, 88, 143, 0.19999999999999996);
+}
+
+.border-button:hover {
+    color: #d03931;
+    border-color: rgba(208, 57, 49, 0.19999999999999996);
+}
+
+/**
+* Information message block
+*/
+
+.info_block {
+    padding: 20px;
+    margin-bottom: 30px;
+    font-size: 15px;
+    background: #f5f8fb;
+    color: #406eab;
+    border-radius: 2px;
+}
+
+/**
+* Empty items placeholder
+*/
+
+.empty-motivator {
+    text-align: center;
+    color: #6e758a;
+    padding: 35px !important;
+    font-size: 14px;
+    line-height: 1.4em;
+}
+
+.empty-motivator svg {
+    height: 45px;
+    margin-bottom: 10px;
+}
+
+.empty-motivator p {
+    margin: 5px 0 0;
+}
+
+.empty-motivator .button {
+    margin-top: 1.4em;
+}
+
+/**
+* Delete button
+*/
+
+.button-delete {
+    padding: 10px;
+    margin: -10px;
+    text-align: center;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.button-delete:hover {
+    background-color: rgb(217, 0, 0);
+    color: #fff;
+}
+
+.button-delete__ready-to-delete {
+    color: rgb(217, 0, 0);
+}
+
+/**
+ * Appender button
+ */
+
+.button--load-more {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 15px;
+    color: #566379;
+    text-decoration: none;
+ }
+
+.button--load-more:hover {
+     background-color: #edf0f8;
+     color: #607292;
+     border-color: #e3e9f6;
+ }
+
+/**
+* Cancel default list styles
+*/
+
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+}
+
+/**
+* SVG icons styles
+*/
+
+svg {
+    fill: currentColor;
+    vertical-align: middle;
+    max-height: 100%;
+}
+
+/**
+* Base site styles
+* =================================
+*/
+
+body {
+    background: #f9f9fb;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 13px;
+}
+
+/**
+* End
+* =================================
+*/
+
+/**
+* Mobile viewport styles
+* =================================
+*/
+
+@media all and (max-width: 800px) {
+    /** End of mobile viewport */
+}
+
+/**
+* Retina displays styles
+*/
+
+@media print, (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 1.25dppx), (min-resolution: 120dpi) {
+    /** HD displays overrides */
+}
+
+.file-attached {
+    display: block;
+    border: 1px solid #ecedef !important;
+    box-shadow: 0 1px 3px 0 rgba(25, 29, 45, 0.04);
+    border-radius: 3px;
+    padding: 20px 30px !important;
+    font-size: 15px;
+    margin: 10px 0;
+    color: inherit !important;
+}
+
+.file-attached__info {
+    float: right;
+    color: #6e758a;
+    -webkit-font-feature-settings: "c2sc";
+            font-feature-settings: "c2sc";
+    font-variant: small-caps;
+}
+
+/**
+ * Link tool
+ */
+
+.link-embed {
+    display: block;
+    border: 1px solid #e8e9f1 !important;
+    border-radius: 2px;
+    background: #fdfdfd;
+    box-shadow: 0 1px 3px 0 rgba(102, 85, 107, 0.04);
+    margin: 1em 0;
+    padding: 25px !important;
+    color: #1a1e25 !important
+}
+
+.link-embed:hover {
+        border-color: #e8e9f1;
+}
+
+.article__content ol,
+.article__content ul {
+
+    margin: 1em 2em;
+
+}
+
+.article__content ol li {
+    list-style-type: decimal;
+}
+
+.article__content ul li {
+    list-style-type: disc;
+}
+
+.article__content li {
+    margin: 0.6em 0;
+    padding-left: 0.8em;
+}
+
+/**
+ * Article page styles
+ */
+
+.article {
+    margin-bottom: 15px;
+    padding: 30px 45px;
+}
+
+.article__information {
+    display: -ms-flexbox;
+    display: flex;
+    color: #6e758a;
+    font-size: 14px;
+    margin-bottom: 10px
+}
+
+.article__information-right {
+        white-space: nowrap;
+}
+
+.article__time {
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.article__author {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 360px
+}
+
+.article__author img {
+        margin-left: 15px;
+        margin-right: 1em;
+        vertical-align: middle;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+}
+
+.article__views-counter {
+
+    vertical-align: middle;
+    margin-left: 5px
+}
+
+.article__views-counter svg {
+      display: inline-block;
+      height: 17px;
+      margin-top: -2px;
+      margin-right: 0.2em;
+}
+
+.article__comments-counter {
+
+    vertical-align: middle;
+    margin-left: 15px
+}
+
+.article__comments-counter svg {
+        display: inline-block;
+        margin-top: 1px;
+        margin-right: 0.2em;
+        height: 15px;
+}
+
+.article__information {
+}
+
+.article__information-right {
+        margin-left: auto;
+}
+
+@media all and (max-width: 500px) {
+    .article__comments-counter{
+        display: none;
+    }
+}
+
+.article__title {
+    margin: 0;
+    font-weight: 800;
+    font-size: 33px;
+    line-height: 1.3em;
+}
+
+.article__content {
+    font-size: 16px;
+    line-height: 1.5em;
+}
+
+.article__content--typed {
+    font-family: 'Lora';
+    font-size: 19.2px;
+    line-height: 1.64em;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.article__content a {
+    padding-bottom: 1px;
+    color: #235ccf;
+    border-bottom: 1px solid rgb(177, 198, 242);
+}
+
+.article__content a:hover {
+    color: #d03931;
+    border-bottom: 1px solid rgb(241, 195, 193);
+}
+
+.article .sharing {
+    margin-top: 20px;
+}
+
+/**
+ * Article parent
+ */
+
+.article__parent {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eceff3;
+    font-size: 13px;
+    line-height: 1.45em;
+    color: #6e758a;
+}
+
+.article__parent a {
+    position: relative;
+    display: block;
+    padding-left: 1.6em;
+}
+
+.article__parent svg {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-46%);
+}
+
+/**
+ * Children pages list
+ */
+
+.children-pages {
+    margin: 30px 0;
+}
+
+.children-pages__item {
+    position: relative;
+    padding-right: 20px;
+}
+
+.children-pages__item:not(:last-of-type) {
+    border-bottom: 1px solid #eceff3;
+}
+
+.children-pages__item::after {
+    content: '';
+    background: url('/public/app/svg/arrow-right.svg') no-repeat;
+    background-size: 9px 15px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 9px;
+    height: 15px;
+    margin-top: -7px;
+}
+
+.children-pages__link {
+    display: block;
+    padding: 15px 0;
+    font-size: 18px;
+    line-height: 1.4em;
+    font-weight: 600;
+}
+
+/**
+ * Article image block
+ */
+
+.article__image {
+    margin: 1em 0;
+}
+
+.article__image img {
+    max-width: 100%;
+}
+
+.article__image-caption {
+    color: #6e758a;
+    margin: 0.3em 0 1em;
+    font-size: 0.9em;
+    line-height: 1.5em;
+}
+
+/**
+ * Raw block
+ */
+
+.article__raw {
+    margin: 1em 0;
+}
+
+.article h2,
+.article h3,
+.article h4 {
+    line-height: 1.35em;
+}
+
+/**
+ * Personality tool
+ * ==========
+ */
+
+.article__person {
+}
+
+.article__person {
+        background: #fff;
+        border: 1px solid #e5e6ec;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+        border-radius: 3px;
+        padding: 30px;
+        margin: 0.7em 0;
+        line-height: 1.4em;
+}
+
+/**
+ * Table
+ * =========
+ */
+
+.article__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85em;
+}
+
+.article__table td {
+    border: 1px solid #eceff3;
+    padding: 10px 15px;
+}
+
+/**
+ * Termin word
+ */
+
+.article__termin {
+    display: inline-block;
+    padding: 4px 6px;
+    background: #f9f2f2;
+    color: #cc5c74;
+    line-height: 1em;
+    border-radius: 3px;
+}
+
+@media all and (max-width: 980px) {
+    .article {
+        padding: 20px;
+    }
+
+    .article__parent,
+    .article__information {
+        font-size: 12px;
+    }
+
+    .article__parent {
+        padding-bottom: 15px;
+    }
+
+    .article__title {
+        font-size: 28px;
+    }
+
+    .article__content {
+        font-size: 15px;
+    }
+
+    .children-pages__link {
+        font-size: 16px;
+    }
+
+    .article__person {
+        padding: 15px;
+    }
+
+    .article__person-photo {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.main-aside {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 15px;
+    will-change: top;
+}
+
+.main-aside--offset-top {
+    margin-top: -112px;
+}
+
+.site-head {
+    display: -ms-flexbox;
+    display: flex;
+    border-bottom: 1px solid #eceff3;
+    padding: 23px 30px;
+    line-height: 1.2em;
+    font-size: 15px;
+}
+
+.site-head__logo {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin: auto 0;
+    margin-right: 25px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.site-head__logo img {
+    width: 100%;
+    height: 100%;
+}
+
+.site-head__logo--empty {
+    background: #3997de;
+}
+
+.site-head__logo--empty img {
+    display: none;
+}
+
+.site-head__logo--empty::before {
+    content: attr(data-placeholder);
+    color: #fff;
+    line-height: 50px;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.08em
+}
+
+.site-head__logo-upload{
+    position: absolute;
+    display: none;
+    left: 50%;
+    top: 50%;
+    padding: 10px;
+    transform: translate(-50%, -45%);
+    color: #495365;
+}
+
+.site-head__logo:hover .site-head__logo-upload{
+    display: inline-block;
+}
+
+.site-head__logo--admin:hover {
+    background: #eef2f9;
+}
+
+.site-head__logo--admin:hover:before {
+    content: '';
+}
+
+.site-head__logo img {
+    border-radius: 3px;
+}
+
+.site-head__logo--admin:hover img {
+    display:none;
+}
+
+.site-head__title {
+    margin: auto 0;
+}
+
+.main-aside .menu:empty {
+    margin: 0;
+}
+
+.main-aside .menu {
+    font-size: 15px;
+    margin: 20px 0;
+}
+
+.main-aside .menu a {
+    display: block;
+    padding: 10px 30px;
+    font-size: 14px;
+    line-height: 1.5em;
+}
+
+.main-aside .menu a:hover {
+    color: #d03931;
+}
+
+.button.logout {
+    background: #2d3136;
+    color: #606469;
+}
+
+.button.logout:hover {
+    background: #202328;
+}
+
+.main-aside .user_panel {
+    display: block;
+    padding: 15px 30px;
+    border-bottom: 1px solid #eceff3;
+    font-size: 14px;
+}
+
+.main-aside .user_panel:hover {
+    background: #f6f8fa;
+}
+
+.main-aside .user_panel img {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 30px;
+    width: 26px;
+    height: 26px;
+    margin-right: 10px;
+}
+
+.user_panel__name {
+    vertical-align: middle;
+}
+
+.main-aside .logout {
+    margin-top: 21px;
+    margin-right: 20px;
+    color: #c6cad4;
+}
+
+/**
+* Email confirmation
+*/
+
+.confirm-reminder {
+    display: block;
+    box-shadow: inset 3px 0 0 0 #d03931;
+    padding: 15px 23px 15px 30px;
+    border-bottom: 1px solid #eceff3;
+    font-size: 14px;
+    cursor: pointer;
+    color: #d03931;
+}
+
+.confirm-reminder:hover {
+    background: #fbfbfc;
+}
+
+.confirm-reminder__attention {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+    margin-top: -1px;
+}
+
+.confirm-reminder__attention svg {
+    width: 18px;
+}
+
+.confirm-reminder__arrow svg {
+    height: 15px;
+}
+
+.aside-section {
+    padding: 30px;
+    border-bottom: 1px solid #eceff3;
+}
+
+.aside-section .button {
+    display: block;
+    text-align: center;
+}
+
+/**
+* Mobile menu holder and toggler
+*/
+
+.mobile-menu-toggler {
+    display: none;
+}
+
+/**
+ * Codex logo
+ */
+
+.codex {
+    display: block;
+    margin: -10px 0;
+    color: #6e758a !important;
+    font-size: 11px;
+    line-height: 1.4em;
+    cursor: pointer;
+}
+
+@media all and (max-width: 980px) {
+    .codex {
+        margin: 0;
+    }
+}
+
+.codex:hover {
+    color: #3e445d !important;
+}
+
+.codex__title {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 5px 0 3px;
+}
+
+.codex svg {
+    height: 56px;
+    float: left;
+    margin-right: 20px;
+    fill: #656e7d;
+}
+
+.codex:hover svg {
+    fill: #57606f;
+}
+
+.codex:hover svg .inner {
+    fill: #1d2033;
+}
+
+@media all and (max-width: 980px) {
+    .site-head {
+        padding: 12px 15px;
+        line-height: 1.3em;
+        font-size: 13px;
+    }
+
+    .site-head__logo {
+        width: 35px;
+        height: 35px;
+        margin-right: 15px;
+    }
+
+    .site-head__logo--empty::before {
+        line-height: 35px;
+        font-size: 18px;
+    }
+
+    .site-head__logo-upload {
+        padding: 4px;
+    }
+
+    .main-aside--offset-top {
+        margin-top: 0;
+    }
+
+    /**
+    * Mobile site menu
+    */
+    .mobile-menu-holder {
+        display: none;
+    }
+
+    .mobile-menu-holder--opened {
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .mobile-menu-toggler {
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        padding: 20px;
+        margin: -10px -15px -10px auto;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .main-aside .menu {
+        margin: 10px 0;
+    }
+
+    .main-aside .menu a {
+        padding: 10px 15px;
+    }
+
+    .main-aside li:last-of-type a {
+        padding-bottom: 0;
+    }
+
+    .main-aside .button {
+        margin: 15px;
+    }
+
+    .main-aside .user_panel {
+        padding: 13px 15px;
+    }
+}
+
+.auth-form {
+    max-width: 300px;
+    margin: 40px auto;
+}
+
+.auth-form__footer {
+    border-top: 1px solid #eceff3;
+    padding-top: 30px;
+    font-size: 14px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.auth-form__footer a {
+    display: inline-block;
+    margin-right: 1.5em;
+    color: #235ccf;
+}
+
+.auth-form__footer a:hover {
+    color: #d03931;
+}
+
+.auth-form__error {
+    margin-bottom: 12px;
+    color: #F44336;
+}
+
+.auth-field__error {
+    box-shadow: 0 0 5px #F44336;
+    border: 1px solid #F44336;
+}
+
+.privacy-policy__text {
+    font-size: 15px;
+    color: #6f7689;
+    vertical-align: middle;
+}
+
+.privacy-policy__ic svg {
+    width: 15px;
+    height: 15px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.privacy-policy__link {
+    text-decoration: underline;
+}
+
+@media all and (max-width: 980px) {
+    .auth-social .button {
+        font-size: 0;
+        padding: 13px;
+        margin: 5px;
+    }
+
+    .auth-social .button svg {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+    }
+
+}
+
+/**
+ * Cover
+ */
+
+.branding {
+    position: relative;
+    height: 180px;
+    background: #e5e7ef;
+    overflow: hidden;
+    transition: height 250ms ease-out;
+}
+
+.branding--empty {
+    background-color: #292e50;
+    height: 62px;
+}
+
+.branding,
+.branding__preloader {
+    background-size: cover;
+    background-position: center;
+}
+
+.branding__preloader {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    will-change: opacity, filter;
+    -webkit-filter: none;
+            filter: none;
+}
+
+.branding__preloader--shown {
+    opacity: 1;
+    -webkit-filter: blur(2px);
+            filter: blur(2px);
+}
+
+.branding--loading::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(255, 255, 255, 0.03) 4px, rgba(107, 118, 128, 0.19) 8px);
+    background-size: 56px 56px;
+    animation: loading-bar 1s infinite linear;
+}
+
+.branding__content {
+    position: relative;
+    height: 100%;
+}
+
+.branding__button {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 3px;
+    padding: 8px 11px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.branding__button:hover {
+    background: rgba(0, 0, 0, 1);
+}
+
+.branding__button svg {
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 0.3em;
+    vertical-align: text-bottom;
+}
+
+@media all and (max-width: 980px) {
+    .branding {
+        height: 100px;
+    }
+
+    .branding--empty {
+        display: none;
+    }
+
+    .branding__button {
+        display: none;
+    }
+}
+
+.cdx-checkbox {
+    color: #95a3ae;
+    cursor: pointer;
+}
+
+/**
+ * Styles for checkbox background
+ */
+
+.cdx-checkbox__slider {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 14px;
+    padding: 2px;
+    margin-right: 0.3em;
+    vertical-align: text-bottom;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #95a3ae;
+}
+
+/**
+ * Styles for checkbox slider
+ */
+
+.cdx-checkbox__slider::before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+/**
+ * Styles for checked state
+ */
+
+.cdx-checkbox--checked {
+    color: #4098f9;
+    cursor: pointer;
+}
+
+.cdx-checkbox:hover .cdx-checkbox__slider {
+    background-color: #556072;
+}
+
+.cdx-checkbox--checked .cdx-checkbox__slider,
+.cdx-checkbox--checked:hover .cdx-checkbox__slider {
+    background: #4098f9 !important;
+}
+
+.cdx-checkbox--checked .cdx-checkbox__slider::before {
+    transform: translateX(6px);
+}
+
+.cdx-default-checkbox--hidden {
+    display: none;
+}
+
+/**
+ * Styles for all special colors
+ */
+
+.special-white,
+.special-green,
+.special-blue {
+}
+
+.special-white aside div .codex-special__toolbar, .special-green aside div .codex-special__toolbar, .special-blue aside div .codex-special__toolbar {
+        background-color: #ffed14 !important;
+}
+
+html body aside .codex-special__toolbar {
+    padding: 15px 30px !important;
+    font-size: 14px !important;
+}
+
+/**
+ * Big version
+ */
+
+.special-big {
+}
+
+.special-big .site-footer,
+    .special-big .site-head {
+        font-size: 13px !important;
+        line-height: 1.4em;
+}
+
+/**
+ * Remove branding
+ */
+
+.special-big,
+.special-white,
+.special-green,
+.special-blue {
+}
+
+.special-big .main-aside, .special-white .main-aside, .special-green .main-aside, .special-blue .main-aside {
+        position: static;
+        margin-top: 0;
+}
+
+/**
+ * Black version
+ */
+
+.special-white {
+}
+
+.special-white .island textarea,
+    .special-white .island input {
+        background-color: #0c0c0c !important;
+}
+
+/**
+ * Blue
+ */
+
+.special-blue {
+}
+
+.special-blue .island {
+        background: rgba(255, 255, 255, 0.2) !important;
+}
+
+.codex-special__toolbar-text {
+    vertical-align: baseline !important;
+}
+
+/**
+ * Comment
+ */
+
+.comment {
+    transition: background-color 500ms ease-out;
+}
+
+.comment--highligthed {
+    background-color: #fbfbfc;
+}
+
+.comment__author-photo {
+    float: left;
+    margin-right: 15px;
+}
+
+.comment__author-photo img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+.comment__author-name {
+    display: inline-block;
+    font-size: 15px;
+    margin: 2px 0 3px;
+}
+
+.comment__time {
+    color: #6e758a;
+    font-size: 11px;
+}
+
+.comment__text {
+    margin: 10px auto 20px;
+    font-size: 15px;
+    line-height: 1.6em;
+}
+
+.comment__text a {
+    padding-bottom: 1px;
+    color: #235ccf;
+    border-bottom: 1px solid rgb(177, 198, 242);
+}
+
+.comment__text a:hover {
+    color: #d03931;
+    border-bottom: 1px solid rgb(241, 195, 193);
+}
+
+.comment__actions--button {
+    float: right;
+    padding: 5px;
+    border-radius: 2px;
+}
+
+.comment__footer {
+    margin: 0 -30px -20px;
+    padding: 10px 30px;
+    border-top: 1px solid #eceff3;
+    color: #6e758a;
+    font-size: 15px;
+    line-height: 26px;
+}
+
+@media all and (max-width: 980px) {
+    .comment__footer {
+        margin: 0 -15px -15px;
+        padding: 10px 15px;
+    }
+}
+
+/**
+ * Alone reply form
+ */
+
+.comment-form__island {
+    padding: 15px 30px;
+    margin: 15px auto;
+}
+
+@media all and (max-width: 980px) {
+    .comment-form__island {
+        padding: 15px;
+    }
+}
+
+/**
+ * Comment form
+ */
+
+.comments-form {
+    margin-top: 15px;
+}
+
+.comment-form__photo {
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+@media all and (max-width: 980px) {
+    .comment-form__photo {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.comment-form__placeholder {
+    cursor: pointer;
+    color: #6e758a;
+    font-size: 14px;
+}
+
+.comment-form__placeholder svg {
+    height: 15px;
+}
+
+.comment-form__placeholder-name {
+    display: none;
+}
+
+.comment-form__placeholder--opened .comment-form__placeholder-text {
+    display: none;
+}
+
+.comment-form__placeholder--opened .comment-form__placeholder-name {
+    display: inline-block;
+    font-weight: 500;
+}
+
+.comment-form__text {
+    width: 100%;
+    margin-top: 4px;
+    padding: 0;
+    resize: none;
+    font-size: 15px;
+    line-height: 1.5em;
+}
+
+.comment-form__text,
+.comment-form__text:focus {
+    background: none;
+}
+
+.comment-form__text:focus,
+.comment-form__text:not(:invalid) {
+    height: 7em;
+}
+
+.comment-form__button {
+    margin: 15px 0 5px;
+    font-size: 14px;
+}
+
+/**
+ * Comment target Block
+ */
+
+.comment-target {
+    border: 1px solid #eceff3;
+    margin: 15px auto 20px;
+    padding: 15px;
+    width: auto;
+    box-shadow: 0 1px 1px rgba(139, 151, 169, 0.05);
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.comment-target__text {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 15px;
+    line-height: 1.56em;
+    color: #6e758a;
+}
+
+.comment-target__text:hover {
+    color: #6e758a;
+}
+
+/**
+ * Show-more toggler in comment target block
+ */
+
+.comment-target__show-more {
+    display: inline-block;
+    color: #235ccf;
+}
+
+.comment-target__show-more::before {
+    content: attr(data-text-show);
+}
+
+.comment-target__show-more svg {
+    height: 0.5em;
+    margin-left: 0.2em;
+}
+
+.comment-target__show-more:hover {
+    color: #d03931;
+}
+
+.comment-target__text-hided {
+    display: none;
+}
+
+.show-more .comment-target__text-hided {
+    display: block;
+}
+
+.show-more .comment-target__show-more {
+    margin-left: 0;
+    margin-top: 0.7em;
+}
+
+.show-more .comment-target__show-more svg {
+    transform: rotate(180deg);
+}
+
+.show-more .comment-target__short-text {
+    display: none;
+}
+
+.show-more .comment-target__show-more::before {
+    content: attr(data-text-hide);
+}
+
+.comment-target--page .comment-target__source {
+    font-weight: 600;
+}
+
+.comment-target__author,
+.comment-target__date,
+.comment-target__page {
+    display: inline-block;
+    margin-right: 1em;
+    max-width: 45%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    vertical-align: text-bottom;
+    color: #6e758a;
+}
+
+.comment-target__arrow {
+    display: inline-block;
+    margin: 0 0.5em 0 -0.5em;
+    vertical-align: text-bottom;
+    color: #6e758a;
+}
+
+.comment-target__arrow svg {
+    height: 0.8em;
+}
+
+/**
+ * ESIR navigator placeholder
+ */
+
+body {
+    margin-top: 0 !important;
+}
+
+#widgetEsirGovSpbRu {
+    clip: rect(0, 0, 0, 0);
+    -webkit-clip-path: url(#cdx-clip-rect);
+            clip-path: url(#cdx-clip-rect);
+}
+
+.esir-showed #widgetEsirGovSpbRu {
+    clip: auto;
+    -webkit-clip-path: none;
+            clip-path: none;
+}
+
+.esir {
+}
+
+.esir {
+        background: #edf1f5 url('/public/app/svg/spb-herb.svg') no-repeat 5px center;
+        height: 30px;
+        line-height: 30px;
+        padding-left: 28px;
+        font-size: 12px;
+        color: #414e5e;
+        cursor: pointer;
+        white-space: nowrap;
+}
+
+.site-footer {
+    padding: 30px;
+    font-size: 12px;
+    color: #373f52;
+    line-height: 1.4em;
+}
+
+.site-footer a {
+    color: #235ccf;
+}
+
+.site-footer a:hover {
+    color: #d03931;
+}
+
+.site-footer__contacts {
+    display: block;
+    margin: 1em 0;
+}
+
+@media all and (max-width: 980px) {
+    .site-footer {
+        padding: 15px;
+    }
+}
+
+.island-settings {
+    position: relative;
+    float: right;
+    cursor: pointer;
+    color: #6e758a;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.island-settings:hover {
+    color: rgb(77, 77, 77);
+}
+
+.island-settings__menu {
+    position: absolute;
+    right: -9px;
+    top: calc(100% + 15px);
+    min-width: 170px;
+    z-index: 999;
+    padding: 5px 0;
+    border: 1px solid #eceff3;
+    border-radius: 3px;
+    box-shadow: 0 2px 8px 0 rgba(20, 33, 51, 0.05);
+    background: white;
+
+    /** Fade in effect */
+    opacity: 0;
+    will-change: opacity, transform;
+    transition: all 100ms ease-in;
+    transform: translateY(-10px);
+    visibility: hidden;
+}
+
+.island-settings:hover .island-settings__menu--showed {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+}
+
+.island-settings__menu::before,
+.island-settings__menu::after {
+    content: "";
+    position: absolute;
+    top: -14px;
+    right: 10px;
+    border-style: solid;
+}
+
+.island-settings__menu::before {
+    margin: -2px -1px 0;
+    border-width: 8px;
+    border-color: transparent transparent #eceff3;
+}
+
+.island-settings__menu::after {
+    border-width: 7px;
+    border-color: transparent transparent #fff;
+}
+
+.island-settings__item {
+    padding: 10px 15px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 14px;
+    color: #6e758a;
+}
+
+.island-settings__item:hover {
+    background: #fbfbfc;
+}
+
+.island-settings__item.loading {
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgb(202, 225, 246) 4px, #ecf3f9 8px) !important;
+    background-size: 56px 56px;
+    animation: loading-bar 1000ms infinite linear;
+}
+
+/**
+* Island styles
+*/
+
+.island {
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 0 #f0f3f9;
+    word-break: break-word;
+}
+
+.island--bottom-rounded {
+    border-radius: 0 0 3px 3px;
+}
+
+.island--top-rounded {
+    border-radius: 3px 3px 0 0;
+}
+
+.island.block_title {
+    border-radius: 3px 3px 0 0;
+}
+
+.island--padded {
+    padding: 20px 30px;
+}
+
+.island--margined {
+    margin-top: 15px;
+}
+
+.island--bottomed {
+    margin-bottom: 15px;
+}
+
+.island--centered {
+    text-align: center;
+}
+
+/**
+ * Island navigation
+ */
+
+.island__navigation {
+    display: -ms-flexbox;
+    display: flex;
+    margin: -20px -30px 20px;
+    padding: 0 30px;
+    border-bottom: 1px solid #eceff3;
+    line-height: 54px;
+    font-size: 15px;
+}
+
+.island__navigation-item {
+    color: #6e758a;
+}
+
+.island__navigation-item--right {
+    margin-left: auto;
+}
+
+.island__navigation-item svg {
+    margin-right: 0.6em;
+    vertical-align: text-bottom;
+}
+
+@media all and (max-width: 980px) {
+    .island--stretched {
+        margin: 0;
+        padding: 15px;
+    }
+
+    .island--padded {
+        padding: 15px;
+    }
+
+    .island__navigation {
+        margin: -20px -15px 20px;
+        padding: 0 15px;
+    }
+}
+
+/**
+* Posts list item
+*/
+
+.post-list-item {
+    padding: calc(0.7 * 30px) 30px;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+.post-list-item__header {
+    margin-bottom: 1em;
+    color: #6e758a;
+    font-size: 0.8em;
+    white-space: nowrap;
+}
+
+.post-list-item__date {
+    margin-right: 1em;
+    margin-bottom: 12px;
+    vertical-align: middle;
+}
+
+.post-list-item__author {
+    vertical-align: middle
+}
+
+.post-list-item__author img {
+        display: inline-block;
+        width: 1.2em;
+        height: 1.2em;
+        border-radius: 50%;
+        vertical-align: text-top;
+        margin-right: 0.8em;
+}
+
+.post-list-item__title {
+    margin: 0;
+    display: inline-block;
+    font-size: 1.7em;
+    line-height: 1.3em;
+    font-weight: 700;
+}
+
+.post-list-item--big .post-list-item__title {
+    font-size: 1.8em;
+}
+
+.post-list-item__body {
+    margin-top: 10px;
+    line-height: 1.65em;
+}
+
+.post-list-item__body p:first-of-type {
+    margin-top: 0;
+}
+
+.post-list-item__body p:last-of-type {
+    margin-bottom: 0;
+}
+
+.post-list-item__footer {
+    border-top: 1px solid #eceff3;
+    margin-top: calc(0.7 * 30px);
+    padding-top: calc(0.7 * 30px);
+    font-size: 0.9em;
+    color: #6e758a;
+}
+
+.post-list-item__comments:hover,
+.post-list-item__date:hover,
+.post-list-item__author:hover {
+    color: #d03931;
+}
+
+.post-list-item__comments svg {
+    margin-right: 0.5em;
+    height: 15px;
+}
+
+.post-list-item__views {
+    float: right;
+}
+
+.post-list-item__views svg {
+    display: inline-block;
+    margin-right: 0.2em;
+    margin-top: -0.15em;
+    height: 15px;
+}
+
+/**
+* Pinned post list item
+*/
+
+.post-list-item_pinned {
+    position: relative;
+}
+
+.post-list-item_pinned::after {
+    position: absolute;
+    right: 55px;
+    top: 50px;
+    display: block;
+    content: '\E811';
+    font-family: 'codex-edu';
+    color: #5e6575;
+    font-size: 15px;
+}
+
+/**
+ * Set cover button
+ */
+
+.posts-list-item__cover {
+    display: block;
+    height: 300px;
+    margin: 20px -30px -21px;
+    background-color: #fbfbfc;
+    background-size: cover;
+    background-position: center center;
+    color: #6e758a;
+    text-align: center;
+    cursor: pointer;
+    transition: height 150ms ease-in, -webkit-filter 400ms ease-in;
+    transition: height 150ms ease-in, filter 400ms ease-in;
+    transition: height 150ms ease-in, filter 400ms ease-in, -webkit-filter 400ms ease-in;
+    will-change: height, filter;
+}
+
+.posts-list-item__cover--empty {
+    height: 0;
+    background-image: none !important;
+}
+
+.posts-list-item__cover--empty-showed {
+    height: 300px;
+}
+
+.posts-list-item__cover--empty:hover {
+    color: rgb(79, 79, 79);
+}
+
+.posts-list-item__cover svg {
+    margin-top: 110px;
+    width: 100px;
+    opacity: 0;
+    transition: opacity 150ms ease;
+}
+
+.posts-list-item__cover--empty svg {
+    opacity: 1;
+}
+
+.posts-list-item__cover--preview {
+    -webkit-filter: blur(1.7px) grayscale(1);
+            filter: blur(1.7px) grayscale(1);
+}
+
+@media all and (max-width: 980px) {
+    /**
+    * Articles list - mobile
+    */
+    .post-list-item {
+        padding: 15px;
+    }
+
+    .post-list-item__title {
+        font-size: 1.15em;
+    }
+
+    .post-list-item_pinned .post-list-item__title {
+        margin-right: 22px;
+    }
+
+    .post-list-item_pinned::after {
+        top: 15px;
+        right: 15px;
+        font-size: 12px;
+    }
+
+    .post-list-item__body {
+        font-size: 14px;
+    }
+
+    .post-list-item__footer {
+        margin-top: 15px;
+        padding-top: 15px;
+    }
+
+    .post-list-item__views svg {
+        margin-top: -0.15em;
+    }
+
+    .posts-list-item__cover,
+    .posts-list-item__cover--empty-showed {
+        height: 170px;
+        margin: 20px -15px -16px -15px;
+    }
+
+    .posts-list-item__cover--empty {
+        height: 0;
+    }
+
+}
+
+.profile-settings {
+    padding: 10px 0;
+}
+
+.profile-settings form {
+    margin-bottom: 30px;
+}
+
+.logout-button {
+    color: #ca3b3b;
+}
+
+/**
+ * Photo
+ */
+
+.profile-settings__photo {
+    float: right;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px dashed #c5c7d4;
+    padding: 5px;
+    margin: -7px;
+    overflow: hidden;
+}
+
+.profile-settings__photo img {
+    width: 100%;
+    transition: -webkit-filter 100ms ease-in;
+    transition: filter 100ms ease-in;
+    transition: filter 100ms ease-in, -webkit-filter 100ms ease-in;
+    will-change: filter;
+}
+
+.profile-settings__photo,
+.profile-settings__photo-hover {
+    box-shadow: inset 0 0 0 5px #fff;
+}
+
+.profile-settings__photo,
+.profile-settings__photo img,
+.profile-settings__photo-hover {
+    border-radius: 50%;
+}
+
+.profile-settings__photo-hover {
+    display: -ms-flexbox;
+    display: flex;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background: rgba(176, 202, 231, 0.2);
+    opacity: 0;
+    cursor: pointer;
+    text-align: center;
+    transition: opacity 80ms ease-in;
+    will-change: opacity;
+}
+
+.profile-settings__photo-hover svg {
+    line-height: 100px;
+    height: 28px;
+    width: 28px;
+    fill: #fff;
+    margin: auto;
+}
+
+/** Photo hover effect  */
+
+.profile-settings__photo:hover .profile-settings__photo-hover {
+    opacity: 1;
+}
+
+.profile-settings__photo:hover img {
+    -webkit-filter: blur(5px);
+            filter: blur(5px);
+}
+
+.profile-settings__change-password-btn {
+    color: #6e758a;
+    cursor: pointer;
+}
+
+.profile-settings__change-password-btn:hover {
+    color: rgb(77, 77, 77);
+}
+
+.profile-settings__change-password-result-text {
+    margin-bottom: 15px;
+    font-size: 14px;
+    padding: 0 10%;
+    line-height: 1.6em;
+}
+
+.profile-settings__change-password-btn svg {
+    margin-right: 5px;
+    margin-top: -3px;
+}
+
+@media all and (max-width: 980px) {
+    .profile-settings__photo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .profile-settings .form__input {
+        max-width: 70%;
+    }
+}
+
+/**
+ * Profile page
+ */
+
+.profile {
+    margin-bottom: 15px;
+}
+
+.profile__content {
+    padding: 10px 0;
+}
+
+.profile__ava {
+    float: right;
+    height: 100px;
+    border-radius: 50%;
+    margin-left: 30px;
+}
+
+@media all and (max-width: 980px) {
+    .profile__ava {
+        height: 60px;
+    }
+}
+
+.profile__name {
+    margin: 0 0 0.6em;
+    font-size: 2.4em;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+@media all and (max-width: 980px) {
+    .profile__name {
+        font-size: 1.8em;
+    }
+}
+
+.profile__about {
+    margin: 0 0 20px;
+    overflow: hidden;
+    color: #6e758a;
+    font-size: 1.2em;
+    letter-spacing: 0.3px;
+    line-height: 1.5em;
+    word-wrap: break-word;
+}
+
+.profile__about svg {
+    margin-left: 0.3em;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+
+.profile__about--editable {
+    cursor: pointer;
+}
+
+.profile__about--editable:hover {
+    color: #d03931;
+}
+
+.profile__about textarea {
+    max-width: 400px;
+    line-height: 1.5em;
+}
+
+.profile__about .loading {
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(255, 255, 255, 0.03) 4px, rgba(107, 118, 128, 0.19) 8px);
+    background-size: 56px 56px;
+    animation: loading-bar 1s infinite linear;
+}
+
+.profile .island-settings {
+    margin: -10px -10px 0 0;
+}
+
+/**
+ * Verified icon
+ */
+
+.verified {
+    color: #3d94ec;
+}
+
+.verified svg {
+    width: 22px;
+    height: 22px;
+    margin-top: -0.03em;
+    margin-left: 0.1em;
+}
+
+.scroll-up {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    opacity: 0;
+    cursor: auto;
+    will-change: width;
+}
+
+.scroll-up.show {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.scroll-up__arrow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    background-image: url(/public/app/svg/arrow-up.svg);
+    background-position: center 34px;
+    background-repeat: no-repeat;
+    will-change: background-color;
+}
+
+.scroll-up:hover .scroll-up__arrow {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+@media all and (max-width: 1185px) {
+    .scroll-up {
+        display: none;
+    }
+}
+
+.sharing__button {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    color: white;
+    background: #30588f;
+    cursor: pointer;
+}
+
+.sharing__button i {
+    margin: 0 3px 0 -3px;
+}
+
+.sharing__button--twitter {
+    background-color: rgb(92, 164, 246);
+}
+
+.sharing__button--twitter:hover {
+    background-color: rgb(42, 136, 244);
+}
+
+.sharing__button--vk {
+    background-color: rgb(84, 123, 165);
+}
+
+.sharing__button--vk:hover {
+    background-color: rgb(67, 98, 132);
+}
+
+.sharing__button--facebook {
+    background-color: rgb(48, 88, 143);
+}
+
+.sharing__button--facebook:hover {
+    background-color: rgb(34, 63, 103);
+}
+
+@media all and (max-width: 980px) {
+    .sharing__button {
+        margin-right: 5px;
+        font-size: 12px;
+    }
+}
+
+.tabs {
+    display: -ms-flexbox;
+    display: flex;
+    border-bottom: 1px solid #eceff3;
+    padding: 0 30px;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.tabs__tab {
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    padding: calc(30px * 0.65) 0;
+    margin-right: 25px;
+}
+
+.tabs__tab:last-of-type {
+    margin-right: 0;
+}
+
+.tabs__tab:hover {
+    color: #d03931;
+    box-shadow: inset 0 -2px 0 0 rgb(227, 135, 130);
+}
+
+.tabs__tab--current {
+    box-shadow: inset 0 -2px 0 0 #373f52;
+}
+
+@media all and (max-width: 980px) {
+    .tabs {
+        padding: 0 15px;
+    }
+
+    .tabs__tab {
+        margin-right: 15px;
+        padding: 18px 0;
+        font-size: 13px;
+    }
+}
+
+/**
+* Стили для формы создания страницы
+*/
+
+.writing {
+    position: relative;
+    padding: 20px 30px 0;
+    margin-bottom: 15px;
+    font-size: 15px;
+    line-height: 1.6em;
+}
+
+.writing__title {
+    background: transparent !important;
+    outline: none;
+    -webkit-appearance: none;
+    padding: 0 !important;
+    font-size: 24px !important;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    resize: none;
+}
+
+.writing--fullscreen .island {
+    box-shadow: none;
+}
+
+.writing--fullscreen .writing__title {
+    font-size: 42px !important;
+}
+
+.writing__actions {
+    margin: 0 -30px;
+    padding: 20px 30px;
+    border-top: 1px solid #f5f6fb;
+    background: #fdfdfe;
+}
+
+.writing__actions-content {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: end;
+        justify-content: flex-end;
+}
+
+.writing .toggler {
+    padding: 6px;
+    margin: 8px 12px 0 0;
+    border: 1px solid #d7deec;
+    border-radius: 20px;
+    color: #6a7590;
+    cursor: pointer;
+}
+
+.writing .toggler:hover {
+    background: #fff;
+}
+
+.writing .toggler.checked {
+    background: #3b4b69;
+    border-color: #3b4b69;
+    color: #f9f9ff;
+}
+
+.writing .button {
+    margin-right: 12px;
+    font-size: 0.9em;
+}
+
+.writing-navigation__back-icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: #fbfbfc;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.writing-navigation__holder {
+    box-shadow: none;
+}
+
+.writing-navigation {
+    padding-top: 30px;
+    color: #6e758a;
+}
+
+.writing-navigation svg {
+    height: 13px;
+    margin: 0 3px 0 5px;
+}
+
+.writing-wrapper {
+    margin-bottom: 15px;
+}
+
+.writing-wrapper__placeholder {
+    padding: 15px 30px;
+    color: #6e758a;
+    font-size: 14px;
+}
+
+.writing-wrapper__photo {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.writing-wrapper__placeholder-text {
+    vertical-align: middle;
+}
+
+.writing-wrapper__placeholder-name {
+    display: none;
+}
+
+.writing-wrapper__placeholder {
+    cursor: pointer;
+}
+
+.writing-wrapper__placeholder--opened {
+    cursor: default;
+}
+
+.writing-wrapper__placeholder--opened .writing-wrapper__placeholder-text {
+    display: none;
+}
+
+.writing-wrapper__placeholder--opened .writing-wrapper__placeholder-name {
+    display: inline-block;
+    font-weight: 500;
+}
+
+.writing-wrapper .writing {
+    padding-top: 0;
+    box-shadow: none; /* 0 0 0 1px #ebeef6; */
+}
+
+/**
+* Editor styles overrides
+*/
+
+.editor-wrapper {
+    margin: 0 -15px;
+}
+
+.editor-wrapper .ce-block__content,
+.writing-navigation,
+.writing__title-wrapper,
+.writing__actions-content {
+    margin: 0 auto;
+    max-width: 590px;
+}
+
+.editor-wrapper .ce-block {
+    margin: 0;
+}
+
+.editor-wrapper a {
+    color: #235ccf;
+    padding-bottom: 1px;
+    border-bottom: 1px solid rgba(35, 92, 207, 0.30000000000000004);
+}
+
+.writing-fullscreen__button {
+    margin-left: auto;
+    color: #6e758a;
+    cursor: pointer;
+}
+
+.writing-fullscreen__button:hover {
+    color: #d03931;
+}
+
+.writing-fullscreen__button svg {
+    margin-right: 4px;
+    margin-top: -3px;
+}
+
+.writing__is-news {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.writing__vk-post {
+    margin-right: auto;
+    margin-left: 10px;
+    font-size: 1.5em;
+    margin-bottom: 2px;
+}
+
+.writing__vk-post .cdx-checkbox__slider {
+    display: none;
+}
+
+@media all and (max-width: 980px) {
+    .writing,
+    .writing-wrapper__placeholder {
+        padding: 15px;
+    }
+
+    .writing__actions {
+        margin: 0 -15px -15px -15px;
+        padding: 15px;
+    }
+
+    .writing-navigation {
+        padding: 15px 15px 0;
+    }
+
+    .writing--fullscreen .writing__title {
+        font-size: 24px !important;
+    }
+
+    .writing-fullscreen__button {
+        margin: 0;
+    }
+
+    .writing-fullscreen__text {
+        display: none;
+    }
+
+    .ce-block__content,
+    .ce-toolbar__content {
+        padding: 0 15px !important;
+    }
+
+}
+
+/**
+* Icons font
+*/
+
+@font-face {
+  font-family: 'codex-edu';
+  src: url('/public/app/fonts/codex-edu.eot?6');
+  src: url('/public/app/fonts/codex-edu.eot?6#iefix') format('embedded-opentype'),
+       url('/public/app/fonts/codex-edu.woff?6') format('woff'),
+       url('/public/app/fonts/codex-edu.ttf?6') format('truetype'),
+       url('/public/app/fonts/codex-edu.svg?6#codex-edu') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'codex-edu';
+    src: url('../font/codex-edu.svg?85817324#codex-edu') format('svg');
+  }
+}
+*/
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+    font-family: "codex-edu";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    /* opacity: .8; */
+
+    /* For safety - reset parent styles, that can break glyph codes*/
+    -webkit-font-feature-settings: normal;
+            font-feature-settings: normal;
+    font-variant: normal;
+    text-transform: none;
+
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
+
+    /* Animation center compensation - margins should be symmetric */
+    /* remove if not needed */
+    margin-left: .2em;
+
+    /* you can be more comfortable with increased icons size */
+    /* font-size: 120%; */
+
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Uncomment for 3D effect */
+    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+/**
+* Icons
+*/
+
+.icon-search:before             { content: '\E800'; }
+
+/* '' */
+
+.icon-mail:before               { content: '\E801'; }
+
+/* '' */
+
+.icon-star-empty:before         { content: '\E802'; }
+
+/* '' */
+
+.icon-star:before               { content: '\E803'; }
+
+/* '' */
+
+.icon-picture:before            { content: '\E804'; }
+
+/* '' */
+
+.icon-camera:before             { content: '\E805'; }
+
+/* '' */
+
+.icon-cancel:before             { content: '\E806'; }
+
+/* '' */
+
+.icon-ok:before                 { content: '\E807'; }
+
+/* '' */
+
+.icon-plus:before               { content: '\E808'; }
+
+/* '' */
+
+.icon-vcard:before              { content: '\E809'; }
+
+/* '' */
+
+.icon-book-open:before          { content: '\E80A'; }
+
+/* '' */
+
+.icon-cog:before                { content: '\E80B'; }
+
+/* '' */
+
+.icon-pin:before                { content: '\E80C'; }
+
+/* '' */
+
+.icon-logout:before             { content: '\E80D'; }
+
+/* '' */
+
+.icon-right-dir:before          { content: '\E80E'; }
+
+/* '' */
+
+.icon-down-dir:before           { content: '\E80F'; }
+
+/* '' */
+
+.icon-up-dir:before             { content: '\E810'; }
+
+/* '' */
+
+.icon-reply:before              { content: '\E811'; }
+
+/* '' */
+
+.icon-link:before               { content: '\E812'; }
+
+/* '' */
+
+.icon-attach:before             { content: '\E813'; }
+
+/* '' */
+
+.icon-megaphone:before          { content: '\E814'; }
+
+/* '' */
+
+.icon-pin-1:before              { content: '\E815'; }
+
+/* '' */
+
+.icon-eye:before                { content: '\E816'; }
+
+/* '' */
+
+.icon-eye-off:before            { content: '\E817'; }
+
+/* '' */
+
+.icon-font:before               { content: '\E818'; }
+
+/* '' */
+
+.icon-rss:before                { content: '\F09E'; }
+
+/* '' */
+
+.icon-vkontakte:before          { content: '\F189'; }
+
+/* '' */
+
+.icon-telegram:before           { content: '\F1D8'; }
+
+/* '' */
+
+.icon-trash:before              { content: '\F1F8'; }
+
+/* '' */
+
+.icon-twitter:before            { content: '\F309'; }
+
+/* '' */
+
+.icon-facebook:before           { content: '\F30C'; }
+
+/* '' */
+
+.icon-facebook-circled:before   { content: '\F30D'; }
+
+/* '' */
+
+/**
+* New layout
+*/
+
+.center-col {
+    max-width: 1010px;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+/**
+* Columns 300 and 650 layout
+*/
+
+.grid-cols-wrapper {
+    display: -ms-flexbox;
+    display: flex;
+    box-sizing: border-box;
+}
+
+.grid-cols-wrapper--right-aside {
+    -ms-flex-direction: row-reverse;
+        flex-direction: row-reverse;
+}
+
+.grid-col {
+    width: 300px;
+}
+
+.grid-col--left {
+    padding: 15px 15px 15px 0;
+}
+
+.grid-col--right {
+    border-left: 1px solid rgba(79, 109, 162, 0.1);
+    margin-left: 15px;
+    padding: 15px 0 15px 15px;
+}
+
+.grid-content {
+    box-sizing: border-box;
+    border-left: 1px solid rgba(79, 109, 162, 0.1);
+    padding: 15px 0 0 15px;
+    -ms-flex: 2 0%;
+        flex: 2 0%;
+}
+
+.grid-content--stretched {
+    border: none;
+    padding-left: 0;
+}
+
+@media all and (max-width: 980px) {
+    .center-col {
+        padding: 0;
+    }
+
+    .grid-col {
+        width: auto;
+        padding: 0;
+        margin: 0;
+        float: none;
+        border: 0;
+    }
+
+    .grid-content {
+        padding: 0;
+        -ms-flex: none;
+            flex: none;
+        border: 0;
+    }
+
+    .grid-cols-wrapper {
+        -ms-flex-direction: column;
+            flex-direction: column;
+    }
+}
+
+/**
+* Exception
+*/
+
+.cdx-notifies-wrapper {
+    position: fixed;
+    z-index: 2;
+    bottom: 20px;
+    left: 20px;
+}
+
+.cdx-notifies-cross {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    padding: 5px;
+    background: url(/public/app/svg/cross.svg) no-repeat center center;
+    opacity: 0.54;
+    cursor: pointer;
+}
+
+.cdx-notifies-cross:hover {
+    opacity: 1;
+}
+
+.cdx-notifies {
+    position: relative;
+    width: 220px;
+    margin-top: 15px;
+    padding: 15px 28px;
+    background: #fff;
+    box-shadow: 0 11px 17px 0 rgba(23,32,61,0.13);
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 1.5em;
+    word-wrap: break-word;
+}
+
+.cdx-notifies::before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+
+    width: 3px;
+    height: calc(100% - 6px);
+    margin: 3px;
+    border-radius: 5px;
+}
+
+.cdx-notifies--notify::before {
+    background: transparent;
+}
+
+.cdx-notifies--success {
+    background: #fafffe;
+}
+
+.cdx-notifies--success::before {
+    background: #41ffb1;
+}
+
+.cdx-notifies--error {
+    background: #fffbfb;
+}
+
+.cdx-notifies--error::before {
+    background: #fb5d5d;
+}
+
+/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
+
+/**
+ * 1. Change the default font family in all browsers (opinionated).
+ * 2. Correct the line height in all browsers.
+ * 3. Prevent adjustments of font size after orientation changes in
+ *    IE on Windows Phone and in iOS.
+ */
+
+/* Document
+   ========================================================================== */
+
+html {
+  font-family: sans-serif; /* 1 */
+  line-height: 1.15; /* 2 */
+  -ms-text-size-adjust: 100%; /* 3 */
+  -webkit-text-size-adjust: 100%; /* 3 */
+}
+
+/* Sections
+   ========================================================================== */
+
+/**
+ * Remove the margin in all browsers (opinionated).
+ */
+
+body {
+  margin: 0;
+}
+
+/**
+ * Add the correct display in IE 9-.
+ */
+
+article,
+aside,
+footer,
+header,
+nav,
+section {
+  display: block;
+}
+
+/**
+ * Correct the font size and margin on `h1` elements within `section` and
+ * `article` contexts in Chrome, Firefox, and Safari.
+ */
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+/* Grouping content
+   ========================================================================== */
+
+/**
+ * Add the correct display in IE 9-.
+ * 1. Add the correct display in IE.
+ */
+
+figcaption,
+figure,
+main { /* 1 */
+  display: block;
+}
+
+/**
+ * Add the correct margin in IE 8.
+ */
+
+figure {
+  margin: 1em 40px;
+}
+
+/**
+ * 1. Add the correct box sizing in Firefox.
+ * 2. Show the overflow in Edge and IE.
+ */
+
+hr {
+  box-sizing: content-box; /* 1 */
+  height: 0; /* 1 */
+  overflow: visible; /* 2 */
+}
+
+/**
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+
+pre {
+  font-family: monospace, monospace; /* 1 */
+  font-size: 1em; /* 2 */
+}
+
+/* Text-level semantics
+   ========================================================================== */
+
+/**
+ * 1. Remove the gray background on active links in IE 10.
+ * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
+ */
+
+a {
+  background-color: transparent; /* 1 */
+  -webkit-text-decoration-skip: objects; /* 2 */
+}
+
+/**
+ * Remove the outline on focused links when they are also active or hovered
+ * in all browsers (opinionated).
+ */
+
+a:active,
+a:hover {
+  outline-width: 0;
+}
+
+/**
+ * 1. Remove the bottom border in Firefox 39-.
+ * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+ */
+
+abbr[title] {
+  border-bottom: none; /* 1 */
+  text-decoration: underline; /* 2 */
+  text-decoration: underline dotted; /* 2 */
+}
+
+/**
+ * Prevent the duplicate application of `bolder` by the next rule in Safari 6.
+ */
+
+b,
+strong {
+  font-weight: inherit;
+}
+
+/**
+ * Add the correct font weight in Chrome, Edge, and Safari.
+ */
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/**
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+
+code,
+kbd,
+samp {
+  font-family: monospace, monospace; /* 1 */
+  font-size: 1em; /* 2 */
+}
+
+/**
+ * Add the correct font style in Android 4.3-.
+ */
+
+dfn {
+  font-style: italic;
+}
+
+/**
+ * Add the correct background and color in IE 9-.
+ */
+
+mark {
+  background-color: #ff0;
+  color: #000;
+}
+
+/**
+ * Add the correct font size in all browsers.
+ */
+
+small {
+  font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` elements from affecting the line height in
+ * all browsers.
+ */
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/* Embedded content
+   ========================================================================== */
+
+/**
+ * Add the correct display in IE 9-.
+ */
+
+audio,
+video {
+  display: inline-block;
+}
+
+/**
+ * Add the correct display in iOS 4-7.
+ */
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+/**
+ * Remove the border on images inside links in IE 10-.
+ */
+
+img {
+  border-style: none;
+}
+
+/**
+ * Hide the overflow in IE.
+ */
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+/* Forms
+   ========================================================================== */
+
+/**
+ * 1. Change the font styles in all browsers (opinionated).
+ * 2. Remove the margin in Firefox and Safari.
+ */
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: sans-serif; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+}
+
+/**
+ * Show the overflow in IE.
+ * 1. Show the overflow in Edge.
+ */
+
+button,
+input { /* 1 */
+  overflow: visible;
+}
+
+/**
+ * Remove the inheritance of text transform in Edge, Firefox, and IE.
+ * 1. Remove the inheritance of text transform in Firefox.
+ */
+
+button,
+select { /* 1 */
+  text-transform: none;
+}
+
+/**
+ * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
+ *    controls in Android 4.
+ * 2. Correct the inability to style clickable types in iOS and Safari.
+ */
+
+button,
+html [type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button; /* 2 */
+}
+
+/**
+ * Remove the inner border and padding in Firefox.
+ */
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+/**
+ * Restore the focus styles unset by the previous rule.
+ */
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+/**
+ * Change the border, margin, and padding in all browsers (opinionated).
+ */
+
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+/**
+ * 1. Correct the text wrapping in Edge and IE.
+ * 2. Correct the color inheritance from `fieldset` elements in IE.
+ * 3. Remove the padding so developers are not caught out when they zero out
+ *    `fieldset` elements in all browsers.
+ */
+
+legend {
+  box-sizing: border-box; /* 1 */
+  color: inherit; /* 2 */
+  display: table; /* 1 */
+  max-width: 100%; /* 1 */
+  padding: 0; /* 3 */
+  white-space: normal; /* 1 */
+}
+
+/**
+ * 1. Add the correct display in IE 9-.
+ * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.
+ */
+
+progress {
+  display: inline-block; /* 1 */
+  vertical-align: baseline; /* 2 */
+}
+
+/**
+ * Remove the default vertical scrollbar in IE.
+ */
+
+textarea {
+  overflow: auto;
+}
+
+/**
+ * 1. Add the correct box sizing in IE 10-.
+ * 2. Remove the padding in IE 10-.
+ */
+
+[type="checkbox"],
+[type="radio"] {
+  box-sizing: border-box; /* 1 */
+  padding: 0; /* 2 */
+}
+
+/**
+ * Correct the cursor style of increment and decrement buttons in Chrome.
+ */
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/**
+ * 1. Correct the odd appearance in Chrome and Safari.
+ * 2. Correct the outline style in Safari.
+ */
+
+[type="search"] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/**
+ * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.
+ */
+
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/**
+ * 1. Correct the inability to style clickable types in iOS and Safari.
+ * 2. Change font properties to `inherit` in Safari.
+ */
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/* Interactive
+   ========================================================================== */
+
+/*
+ * Add the correct display in IE 9-.
+ * 1. Add the correct display in Edge, IE, and Firefox.
+ */
+
+details, /* 1 */
+menu {
+  display: block;
+}
+
+/*
+ * Add the correct display in all browsers.
+ */
+
+summary {
+  display: list-item;
+}
+
+/* Scripting
+   ========================================================================== */
+
+/**
+ * Add the correct display in IE 9-.
+ */
+
+canvas {
+  display: inline-block;
+}
+
+/**
+ * Add the correct display in IE.
+ */
+
+template {
+  display: none;
+}
+
+/* Hidden
+   ========================================================================== */
+
+/**
+ * Add the correct display in IE 10-.
+ */
+
+[hidden] {
+  display: none;
+}
+
+:root {
+    /** Texts */
+
+    /** Colors */
+
+    /** Links */
+
+    /** Borders */
+
+    /** Backgrounds */
+
+    /** Bounce timing function for transition */
+
+    /** General margin size between islands */
+
+    /** Island inner padding */
+
+    /** Social networks colors */
+}
+
+/**
+* Custom media queries
+*/
 
-// exports
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ":root {\n    /** Texts */\n    --grayText: #6e758a;\n    --hoverColor: #d03931;\n    --mediumText: #373f52;\n\n    /** Colors */\n    --blueColor: #007aff;\n    --greenColor: #4cd964;\n    --redColor: #d03931;\n\n    /** Links */\n    --linkColor: #235ccf;\n\n    /** Borders */\n    --lightGrayLine: #eceff3;\n\n    /** Backgrounds */\n    --grayBackground: #f7f7f9;\n    --lightGrayBackground: #fbfbfc;\n\n    /** Bounce timing function for transition */\n    --bounceTiming: cubic-bezier(0.6, -0.28, 0.735, 0.045);\n\n    /** General margin size between islands */\n    --islandMargin: 15px;\n\n    /** Island inner padding */\n    --islandPadding: 30px;\n\n    /** Social networks colors */\n    --vkColor: #547ba5;\n    --twitterColor: #5ca4f6;\n    --facebookColor: #30588f;\n}\n\n/**\n* Custom media queries\n*/\n@custom-media --tablet all and (max-width: 1050px);\n@custom-media --mobile all and (max-width: 980px);\n@custom-media --retina all and (-webkit-min-device-pixel-ratio: 1.5);\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n\n/* Document\n   ========================================================================== */\n\nhtml {\n  font-family: sans-serif; /* 1 */\n  line-height: 1.15; /* 2 */\n  -ms-text-size-adjust: 100%; /* 3 */\n  -webkit-text-size-adjust: 100%; /* 3 */\n}\n\n/* Sections\n   ========================================================================== */\n\n/**\n * Remove the margin in all browsers (opinionated).\n */\n\nbody {\n  margin: 0;\n}\n\n/**\n * Add the correct display in IE 9-.\n */\n\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block;\n}\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\n\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0;\n}\n\n/* Grouping content\n   ========================================================================== */\n\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in IE.\n */\n\nfigcaption,\nfigure,\nmain { /* 1 */\n  display: block;\n}\n\n/**\n * Add the correct margin in IE 8.\n */\n\nfigure {\n  margin: 1em 40px;\n}\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\n\nhr {\n  box-sizing: content-box; /* 1 */\n  height: 0; /* 1 */\n  overflow: visible; /* 2 */\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\n\npre {\n  font-family: monospace, monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}\n\n/* Text-level semantics\n   ========================================================================== */\n\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\n\na {\n  background-color: transparent; /* 1 */\n  -webkit-text-decoration-skip: objects; /* 2 */\n}\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\n\na:active,\na:hover {\n  outline-width: 0;\n}\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\n\nabbr[title] {\n  border-bottom: none; /* 1 */\n  text-decoration: underline; /* 2 */\n  text-decoration: underline dotted; /* 2 */\n}\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\n\nb,\nstrong {\n  font-weight: inherit;\n}\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\n\nb,\nstrong {\n  font-weight: bolder;\n}\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\n\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}\n\n/**\n * Add the correct font style in Android 4.3-.\n */\n\ndfn {\n  font-style: italic;\n}\n\n/**\n * Add the correct background and color in IE 9-.\n */\n\nmark {\n  background-color: #ff0;\n  color: #000;\n}\n\n/**\n * Add the correct font size in all browsers.\n */\n\nsmall {\n  font-size: 80%;\n}\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\n\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\nsup {\n  top: -0.5em;\n}\n\n/* Embedded content\n   ========================================================================== */\n\n/**\n * Add the correct display in IE 9-.\n */\n\naudio,\nvideo {\n  display: inline-block;\n}\n\n/**\n * Add the correct display in iOS 4-7.\n */\n\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\n\nimg {\n  border-style: none;\n}\n\n/**\n * Hide the overflow in IE.\n */\n\nsvg:not(:root) {\n  overflow: hidden;\n}\n\n/* Forms\n   ========================================================================== */\n\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\n\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif; /* 1 */\n  font-size: 100%; /* 1 */\n  line-height: 1.15; /* 1 */\n  margin: 0; /* 2 */\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\n\nbutton,\ninput { /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\n\nbutton,\nselect { /* 1 */\n  text-transform: none;\n}\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\n\nbutton,\nhtml [type=\"button\"], /* 1 */\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button; /* 2 */\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\n\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n}\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\n\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText;\n}\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\n\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em;\n}\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\n\nlegend {\n  box-sizing: border-box; /* 1 */\n  color: inherit; /* 2 */\n  display: table; /* 1 */\n  max-width: 100%; /* 1 */\n  padding: 0; /* 3 */\n  white-space: normal; /* 1 */\n}\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\n\nprogress {\n  display: inline-block; /* 1 */\n  vertical-align: baseline; /* 2 */\n}\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\n\ntextarea {\n  overflow: auto;\n}\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n\n[type=\"search\"] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n\n/* Interactive\n   ========================================================================== */\n\n/*\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n */\n\ndetails, /* 1 */\nmenu {\n  display: block;\n}\n\n/*\n * Add the correct display in all browsers.\n */\n\nsummary {\n  display: list-item;\n}\n\n/* Scripting\n   ========================================================================== */\n\n/**\n * Add the correct display in IE 9-.\n */\n\ncanvas {\n  display: inline-block;\n}\n\n/**\n * Add the correct display in IE.\n */\n\ntemplate {\n  display: none;\n}\n\n/* Hidden\n   ========================================================================== */\n\n/**\n * Add the correct display in IE 10-.\n */\n\n[hidden] {\n  display: none;\n}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n* CodeX Team stylesheets\n*/\n\n/**\n*\n* Base elements rules\n* ================================================\n*\n*/\n\n.hide { display: none !important; }\n.block { display: block; }\n.p_rel { position: relative; }\n.pointer { cursor: pointer; }\n\na {\n    color: inherit;\n    text-decoration: none;\n}\n\na:hover {\n    color: var(--hoverColor);\n}\n\ntextarea {\n    resize: vertical;\n}\n\n/**\n* Clearfix hack\n*/\n.clearfix::before,\n.clearfix::after {\n    content: \" \";\n    display: table;\n}\n\n.clearfix::after {\n    clear: both;\n}\n\n/**\n* Floating shorthands\n*/\n.fl_l {\n    float: left;\n}\n\n.fl_r {\n    float: right;\n}\n\n.constrain {\n    overflow: hidden;\n}\n\n/**\n* Forms elements\n* =========================================\n*/\ninput[type=\"text\"],\ninput[type=\"email\"],\ninput[type=\"password\"],\ninput[type=\"search\"],\ninput[type=\"url\"],\ntextarea {\n    width: 100%;\n    box-sizing: border-box;\n    padding: 10px;\n    border-radius: 2px;\n    border: 0;\n    font-size: 15px;\n    font-family: inherit;\n    outline: none;\n    background: #f4f5f8;\n}\n\ninput[type=\"text\"]:focus,\ninput[type=\"email\"]:focus,\ninput[type=\"password\"]:focus,\ninput[type=\"search\"]:focus,\ninput[type=\"url\"]:focus,\ntextarea:focus {\n    background: #eef5fd;\n}\n\n.button,\ninput[type=\"submit\"] {\n    user-select: none;\n    border-radius: 30px;\n    border: 0;\n    display: inline-block;\n    padding: 12px 24px;\n    color: #3f4b63;\n    vertical-align: top;\n    cursor: pointer;\n    text-decoration: none;\n    font-family: inherit;\n    background-color: #ecf3f9;\n    line-height: 1em;\n}\n\n.button:hover,\ninput[type=\"submit\"]:hover {\n    background-color: #4592da;\n    color: #fff;\n    text-decoration: none;\n}\n\n.form {\n    font-size: 14px;\n}\n\n.form__input {\n    max-width: 400px;\n    margin-bottom: 1em;\n}\n\n.form__label {\n    display: block;\n    margin-bottom: 0.6em;\n}\n\n.form__input--invalid {\n    background: #fff3f3 !important;\n}\n\n.form__hint {\n    display: inline-block;\n    margin-left: 1em;\n}\n\n.form__hint svg {\n    width: 1.2em;\n    height: 1.2em;\n    vertical-align: text-bottom;\n    margin-right: 0.3em;\n}\n\n.form__caption {\n    margin: 15px 0;\n    line-height: 1.6em;\n}\n\n/**\n* Loading bar class\n*/\n.button.loading {\n    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgb(187, 205, 228) 4px, #ecf3f9 8px) !important;\n    background-size: 56px 56px;\n    animation: loading-bar 600ms infinite linear;\n}\n\n/**\n* Add class 'master' to make BLUE button\n*/\n.button.master,\ninput[type=\"submit\"] {\n    background-color: #5c95cf;\n    color: #fff;\n}\n\n.button.master:hover,\ninput[type=\"submit\"]:hover {\n    background-color: #3c7ab9;\n    color: #fff;\n}\n\n.master.loading {\n    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, #7ca9d0 4px, #7ca9d0 8px) !important;\n    background-size: 56px 56px;\n    animation: loading-bar 600ms infinite linear;\n}\n\n/**\n* Styles for disabled buttons and inputs\n*/\n.button.disabled,\ninput[disabled] {\n    background: #eaecf1;\n    color: #a9afc1;\n}\n\n.button.disabled:hover,\ninput[disabled]:hover {\n    background: #eaecf1;\n    color: #a9afc1;\n}\n\n::placeholder {\n    color: var(--grayText);\n}\n\n/**\n* JS approval buttons\n*/\n\n.click-again-to-approve {\n    background-color: red;\n}\n\n/*\n* Imrove padding on buttons with icons\n*/\n.button i {\n    margin: 0 0.74em 0 -0.3em;\n}\n\n.button--vk,\n.button--twitter,\n.button--facebook {\n    color: #fff;\n}\n\n.button--vk {\n    background: #507299;\n}\n\n.button--vk:hover {\n    background: color(#507299 lightness(-10%));\n}\n\n.button--facebook {\n    background: #4267b2;\n}\n\n.button--facebook:hover {\n    background: color(#4267b2 lightness(-10%));\n}\n\n.button--twitter {\n    background: #1da1f2;\n}\n\n.button--twitter:hover {\n    background: color(#1da1f2 lightness(-10%));\n}\n\n.border-button {\n    display: inline-block;\n    margin-right: 15px;\n    padding: 7px 10px;\n    color: var(--grayText);\n    border: 1px solid color(var(--grayText) alpha(-80%));\n    border-radius: 3px;\n}\n\n.border-button svg,\n.button svg {\n    width: 1.2em;\n    height: 1.2em;\n    vertical-align: text-bottom;\n    margin-right: 0.3em;\n}\n\n.border-button--twitter {\n    color: var(--twitterColor);\n    border-color: color(var(--twitterColor) alpha(-80%));\n}\n\n.border-button--vk {\n    color: var(--vkColor);\n    border-color: color(var(--vkColor) alpha(-80%));\n}\n\n.border-button--facebook {\n    color: var(--facebookColor);\n    border-color: color(var(--facebookColor) alpha(-80%));\n}\n\n.border-button:hover {\n    color: var(--hoverColor);\n    border-color: color(var(--hoverColor) alpha(-80%));\n}\n\n\n/**\n* Information message block\n*/\n.info_block {\n    padding: 20px;\n    margin-bottom: 30px;\n    font-size: 15px;\n    background: #f5f8fb;\n    color: #406eab;\n    border-radius: 2px;\n}\n\n/**\n* Empty items placeholder\n*/\n.empty-motivator {\n    text-align: center;\n    color: var(--grayText);\n    padding: 35px !important;\n    font-size: 14px;\n    line-height: 1.4em;\n}\n\n.empty-motivator svg {\n    height: 45px;\n    margin-bottom: 10px;\n}\n\n.empty-motivator p {\n    margin: 5px 0 0;\n}\n\n.empty-motivator .button {\n    margin-top: 1.4em;\n}\n\n/**\n* Delete button\n*/\n.button-delete {\n    padding: 10px;\n    margin: -10px;\n    text-align: center;\n    border-radius: 2px;\n    cursor: pointer;\n}\n\n.button-delete:hover {\n    background-color: rgb(217, 0, 0);\n    color: #fff;\n}\n\n.button-delete__ready-to-delete {\n    color: rgb(217, 0, 0);\n}\n\n/**\n * Appender button\n */\n .button--load-more {\n    display: block;\n    margin-bottom: var(--islandMargin);\n    font-size: 15px;\n    color: #566379;\n    text-decoration: none;\n }\n\n .button--load-more:hover {\n     background-color: #edf0f8;\n     color: #607292;\n     border-color: #e3e9f6;\n }\n\n/**\n* Cancel default list styles\n*/\nul,\nol {\n    margin: 0;\n    padding: 0;\n}\n\nli {\n    list-style: none;\n}\n\n/**\n* SVG icons styles\n*/\nsvg {\n    fill: currentColor;\n    vertical-align: middle;\n    max-height: 100%;\n}\n\n/**\n* Base site styles\n* =================================\n*/\nbody {\n    background: #f9f9fb;\n    font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;\n    font-size: 13px;\n}\n\n\n/**\n* End\n* =================================\n*/\n\n/**\n* Mobile viewport styles\n* =================================\n*/\n@media all and (max-width: 800px) {\n    /** End of mobile viewport */\n}\n\n/**\n* Retina displays styles\n*/\n@media print, (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 1.25dppx), (min-resolution: 120dpi) {\n    /** HD displays overrides */\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n* New layout\n*/\n\n.center-col {\n    max-width: 1010px;\n    margin: 0 auto;\n    padding: 0 15px;\n    box-sizing: border-box;\n}\n\n/**\n* Columns 300 and 650 layout\n*/\n.grid-cols-wrapper {\n    display: flex;\n    box-sizing: border-box;\n}\n\n.grid-cols-wrapper--right-aside {\n    flex-direction: row-reverse;\n}\n\n.grid-col {\n    width: 300px;\n}\n\n.grid-col--left {\n    padding: var(--islandMargin) var(--islandMargin) var(--islandMargin) 0;\n}\n\n.grid-col--right {\n    border-left: 1px solid rgba(79, 109, 162, 0.1);\n    margin-left: var(--islandMargin);\n    padding: var(--islandMargin) 0 var(--islandMargin) var(--islandMargin);\n}\n\n.grid-content {\n    box-sizing: border-box;\n    border-left: 1px solid rgba(79, 109, 162, 0.1);\n    padding: var(--islandMargin) 0 0 var(--islandMargin);\n    flex: 2 0%;\n}\n\n.grid-content--stretched {\n    border: none;\n    padding-left: 0;\n}\n\n@media (--mobile) {\n    .center-col {\n        padding: 0;\n    }\n\n    .grid-col {\n        width: auto;\n        padding: 0;\n        margin: 0;\n        float: none;\n        border: 0;\n    }\n\n    .grid-content {\n        padding: 0;\n        flex: none;\n        border: 0;\n    }\n\n    .grid-cols-wrapper {\n        flex-direction: column;\n    }\n}\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n* Animations\n* Not for editing\n*/\n\n@keyframes bounceIn {\n    0% {\n        opacity: 0;\n        transform: scale(0.3);\n    }\n\n    50% {\n        opacity: 1;\n        transform: scale(1.05);\n    }\n\n    70% {\n        transform: scale(0.9);\n    }\n\n    100% {\n        transform: scale(1);\n    }\n}\n\n.bounceIn {\n    animation-name: bounceIn;\n    animation-duration: 600ms;\n    animation-iteration-count: 1;\n}\n\n@keyframes fadeIn {\n    0% {\n        opacity: 0;\n    }\n\n    100% {\n        opacity: 1;\n    }\n}\n\n.fadeIn {\n    animation-name: fadeIn;\n    animation-duration: 600ms;\n    animation-iteration-count: 1;\n}\n\n@keyframes wobble {\n    0% {\n        transform: translateX(0%);\n    }\n\n    15% {\n        transform: translateX(-5%) rotate(-5deg);\n    }\n\n    30% {\n        transform: translateX(10%) rotate(3deg);\n    }\n\n    45% {\n        transform: translateX(-5%) rotate(-3deg);\n    }\n\n    60% {\n        transform: translateX(10%) rotate(2deg);\n    }\n\n    75% {\n        transform: translateX(-5%) rotate(-1deg);\n    }\n\n    100% {\n        transform: translateX(0%);\n    }\n}\n\n.wobble {\n    animation-name: wobble;\n    animation-duration: 400ms;\n    animation-iteration-count: 1;\n}\n\n/**\n * Loading bar\n * @usage Add class .loader to Element\n */\n@keyframes loading-bar {\n    100% { background-position: -56% 0; }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n* Icons font\n*/\n@font-face {\n  font-family: 'codex-edu';\n  src: url('/public/app/fonts/codex-edu.eot?6');\n  src: url('/public/app/fonts/codex-edu.eot?6#iefix') format('embedded-opentype'),\n       url('/public/app/fonts/codex-edu.woff?6') format('woff'),\n       url('/public/app/fonts/codex-edu.ttf?6') format('truetype'),\n       url('/public/app/fonts/codex-edu.svg?6#codex-edu') format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */\n/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */\n/*\n@media screen and (-webkit-min-device-pixel-ratio:0) {\n  @font-face {\n    font-family: 'codex-edu';\n    src: url('../font/codex-edu.svg?85817324#codex-edu') format('svg');\n  }\n}\n*/\n\n[class^=\"icon-\"]:before,\n[class*=\" icon-\"]:before {\n    font-family: \"codex-edu\";\n    font-style: normal;\n    font-weight: normal;\n    speak: none;\n\n    display: inline-block;\n    text-decoration: inherit;\n    width: 1em;\n    margin-right: .2em;\n    text-align: center;\n    /* opacity: .8; */\n\n    /* For safety - reset parent styles, that can break glyph codes*/\n    font-variant: normal;\n    text-transform: none;\n\n    /* fix buttons height, for twitter bootstrap */\n    line-height: 1em;\n\n    /* Animation center compensation - margins should be symmetric */\n    /* remove if not needed */\n    margin-left: .2em;\n\n    /* you can be more comfortable with increased icons size */\n    /* font-size: 120%; */\n\n    /* Font smoothing. That was taken from TWBS */\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n\n    /* Uncomment for 3D effect */\n    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */\n}\n\n/**\n* Icons\n*/\n.icon-search:before             { content: '\\E800'; } /* '' */\n.icon-mail:before               { content: '\\E801'; } /* '' */\n.icon-star-empty:before         { content: '\\E802'; } /* '' */\n.icon-star:before               { content: '\\E803'; } /* '' */\n.icon-picture:before            { content: '\\E804'; } /* '' */\n.icon-camera:before             { content: '\\E805'; } /* '' */\n.icon-cancel:before             { content: '\\E806'; } /* '' */\n.icon-ok:before                 { content: '\\E807'; } /* '' */\n.icon-plus:before               { content: '\\E808'; } /* '' */\n.icon-vcard:before              { content: '\\E809'; } /* '' */\n.icon-book-open:before          { content: '\\E80A'; } /* '' */\n.icon-cog:before                { content: '\\E80B'; } /* '' */\n.icon-pin:before                { content: '\\E80C'; } /* '' */\n.icon-logout:before             { content: '\\E80D'; } /* '' */\n.icon-right-dir:before          { content: '\\E80E'; } /* '' */\n.icon-down-dir:before           { content: '\\E80F'; } /* '' */\n.icon-up-dir:before             { content: '\\E810'; } /* '' */\n.icon-reply:before              { content: '\\E811'; } /* '' */\n.icon-link:before               { content: '\\E812'; } /* '' */\n.icon-attach:before             { content: '\\E813'; } /* '' */\n.icon-megaphone:before          { content: '\\E814'; } /* '' */\n.icon-pin-1:before              { content: '\\E815'; } /* '' */\n.icon-eye:before                { content: '\\E816'; } /* '' */\n.icon-eye-off:before            { content: '\\E817'; } /* '' */\n.icon-font:before               { content: '\\E818'; } /* '' */\n.icon-rss:before                { content: '\\F09E'; } /* '' */\n.icon-vkontakte:before          { content: '\\F189'; } /* '' */\n.icon-telegram:before           { content: '\\F1D8'; } /* '' */\n.icon-trash:before              { content: '\\F1F8'; } /* '' */\n.icon-twitter:before            { content: '\\F309'; } /* '' */\n.icon-facebook:before           { content: '\\F30C'; } /* '' */\n.icon-facebook-circled:before   { content: '\\F30D'; } /* '' */", ""]);
-
-// exports
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n * Cover\n */\n.branding {\n    position: relative;\n    height: 180px;\n    background: #e5e7ef;\n    overflow: hidden;\n    transition: height 250ms ease-out;\n}\n\n.branding--empty {\n    background-color: #292e50;\n    height: 62px;\n}\n\n.branding,\n.branding__preloader {\n    background-size: cover;\n    background-position: center;\n}\n\n.branding__preloader {\n    position: absolute;\n    height: 100%;\n    width: 100%;\n    opacity: 0;\n    transition: opacity 0.5s ease-out;\n    will-change: opacity, filter;\n    filter: none;\n}\n\n.branding__preloader--shown {\n    opacity: 1;\n    filter: blur(2px);\n}\n\n.branding--loading::before {\n    content: '';\n    position: absolute;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    right: 0;\n    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(255, 255, 255, 0.03) 4px, rgba(107, 118, 128, 0.19) 8px);\n    background-size: 56px 56px;\n    animation: loading-bar 1s infinite linear;\n}\n\n.branding__content {\n    position: relative;\n    height: 100%;\n}\n\n.branding__button {\n    position: absolute;\n    bottom: 15px;\n    right: 15px;\n    background: rgba(0, 0, 0, 0.8);\n    border-radius: 3px;\n    padding: 8px 11px;\n    color: #fff;\n    cursor: pointer;\n}\n\n.branding__button:hover {\n    background: rgba(0, 0, 0, 1);\n}\n\n.branding__button svg {\n    width: 1.2em;\n    height: 1.2em;\n    margin-right: 0.3em;\n    vertical-align: text-bottom;\n}\n\n@media (--mobile) {\n    .branding {\n        height: 100px;\n    }\n\n    .branding--empty {\n        display: none;\n    }\n\n    .branding__button {\n        display: none;\n    }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".site-footer {\n    padding: var(--islandPadding);\n    font-size: 12px;\n    color: var(--mediumText);\n    line-height: 1.4em;\n}\n\n.site-footer a {\n    color: var(--linkColor);\n}\n\n.site-footer a:hover {\n    color: var(--hoverColor);\n}\n\n.site-footer__contacts {\n    display: block;\n    margin: 1em 0;\n}\n\n@media (--mobile) {\n    .site-footer {\n        padding: 15px;\n    }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".main-aside {\n    position: sticky;\n    top: var(--islandMargin);\n    will-change: top;\n}\n\n.main-aside--offset-top {\n    margin-top: -112px;\n}\n\n.site-head {\n    display: flex;\n    border-bottom: 1px solid var(--lightGrayLine);\n    padding: 23px 30px;\n    line-height: 1.2em;\n    font-size: 15px;\n}\n\n.site-head__logo {\n    position: relative;\n    display: inline-block;\n    width: 50px;\n    height: 50px;\n    margin: auto 0;\n    margin-right: 25px;\n    border-radius: 3px;\n    text-align: center;\n}\n\n.site-head__logo img {\n    width: 100%;\n    height: 100%;\n}\n\n.site-head__logo--empty {\n    background: #3997de;\n}\n\n.site-head__logo--empty img {\n    display: none;\n}\n\n.site-head__logo--empty::before {\n    content: attr(data-placeholder);\n    color: #fff;\n    line-height: 50px;\n    font-size: 22px;\n    font-weight: 500;\n    letter-spacing: -0.08em\n}\n\n.site-head__logo-upload{\n    position: absolute;\n    display: none;\n    left: 50%;\n    top: 50%;\n    padding: 10px;\n    transform: translate(-50%, -45%);\n    color: #495365;\n}\n.site-head__logo:hover .site-head__logo-upload{\n    display: inline-block;\n}\n\n.site-head__logo--admin:hover {\n    background: #eef2f9;\n}\n\n.site-head__logo--admin:hover:before {\n    content: '';\n}\n\n.site-head__logo img {\n    border-radius: 3px;\n}\n\n.site-head__logo--admin:hover img {\n    display:none;\n}\n\n.site-head__title {\n    margin: auto 0;\n}\n\n.main-aside .menu:empty {\n    margin: 0;\n}\n\n.main-aside .menu {\n    font-size: 15px;\n    margin: 20px 0;\n}\n\n.main-aside .menu a {\n    display: block;\n    padding: 10px var(--islandPadding);\n    font-size: 14px;\n    line-height: 1.5em;\n}\n\n.main-aside .menu a:hover {\n    color: var(--hoverColor);\n}\n\n.button.logout {\n    background: #2d3136;\n    color: #606469;\n}\n\n.button.logout:hover {\n    background: #202328;\n}\n\n.main-aside .user_panel {\n    display: block;\n    padding: 15px var(--islandPadding);\n    border-bottom: 1px solid var(--lightGrayLine);\n    font-size: 14px;\n}\n\n.main-aside .user_panel:hover {\n    background: #f6f8fa;\n}\n\n.main-aside .user_panel img {\n    display: inline-block;\n    vertical-align: middle;\n    border-radius: 30px;\n    width: 26px;\n    height: 26px;\n    margin-right: 10px;\n}\n\n.user_panel__name {\n    vertical-align: middle;\n}\n\n.main-aside .logout {\n    margin-top: 21px;\n    margin-right: 20px;\n    color: #c6cad4;\n}\n\n/**\n* Email confirmation\n*/\n.confirm-reminder {\n    display: block;\n    box-shadow: inset 3px 0 0 0 var(--redColor);\n    padding: 15px 23px 15px 30px;\n    border-bottom: 1px solid var(--lightGrayLine);\n    font-size: 14px;\n    cursor: pointer;\n    color: var(--redColor);\n}\n\n.confirm-reminder:hover {\n    background: var(--lightGrayBackground);\n}\n\n.confirm-reminder__attention {\n    display: inline-block;\n    vertical-align: middle;\n    margin-right: 5px;\n    margin-top: -1px;\n}\n\n.confirm-reminder__attention svg {\n    width: 18px;\n}\n\n.confirm-reminder__arrow svg {\n    height: 15px;\n}\n\n.aside-section {\n    padding: var(--islandPadding);\n    border-bottom: 1px solid var(--lightGrayLine);\n}\n\n.aside-section .button {\n    display: block;\n    text-align: center;\n}\n\n/**\n* Mobile menu holder and toggler\n*/\n.mobile-menu-toggler {\n    display: none;\n}\n\n/**\n * Codex logo\n */\n.codex {\n    display: block;\n    margin: -10px 0;\n    color: var(--grayText) !important;\n    font-size: 11px;\n    line-height: 1.4em;\n    cursor: pointer;\n}\n\n@media (--mobile) {\n    .codex {\n        margin: 0;\n    }\n}\n\n.codex:hover {\n    color: #3e445d !important;\n}\n\n.codex__title {\n    display: block;\n    font-size: 12px;\n    font-weight: 500;\n    margin: 5px 0 3px;\n}\n\n.codex svg {\n    height: 56px;\n    float: left;\n    margin-right: 20px;\n    fill: #656e7d;\n}\n\n.codex:hover svg {\n    fill: #57606f;\n}\n\n.codex:hover svg .inner {\n    fill: #1d2033;\n}\n\n@media (--mobile) {\n    .site-head {\n        padding: 12px 15px;\n        line-height: 1.3em;\n        font-size: 13px;\n    }\n\n    .site-head__logo {\n        width: 35px;\n        height: 35px;\n        margin-right: 15px;\n    }\n\n    .site-head__logo--empty::before {\n        line-height: 35px;\n        font-size: 18px;\n    }\n\n    .site-head__logo-upload {\n        padding: 4px;\n    }\n\n    .main-aside--offset-top {\n        margin-top: 0;\n    }\n\n    /**\n    * Mobile site menu\n    */\n    .mobile-menu-holder {\n        display: none;\n    }\n\n    .mobile-menu-holder--opened {\n        display: block;\n        margin-bottom: 15px;\n    }\n\n    .mobile-menu-toggler {\n        display: inline-flex;\n        padding: 20px;\n        margin: -10px -15px -10px auto;\n        cursor: pointer;\n        z-index: 2;\n    }\n\n    .main-aside .menu {\n        margin: 10px 0;\n    }\n\n    .main-aside .menu a {\n        padding: 10px 15px;\n    }\n\n    .main-aside li:last-of-type a {\n        padding-bottom: 0;\n    }\n\n    .main-aside .button {\n        margin: 15px;\n    }\n\n    .main-aside .user_panel {\n        padding: 13px 15px;\n    }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n* Island styles\n*/\n.island {\n    background: #fff;\n    border-radius: 3px;\n    box-shadow: 0 1px 0 0 #f0f3f9;\n    word-break: break-word;\n}\n\n.island--bottom-rounded {\n    border-radius: 0 0 3px 3px;\n}\n\n.island--top-rounded {\n    border-radius: 3px 3px 0 0;\n}\n\n.island.block_title {\n    border-radius: 3px 3px 0 0;\n}\n\n.island--padded {\n    padding: 20px 30px;\n}\n\n.island--margined {\n    margin-top: var(--islandMargin);\n}\n\n.island--bottomed {\n    margin-bottom: var(--islandMargin);\n}\n\n.island--centered {\n    text-align: center;\n}\n\n/**\n * Island navigation\n */\n.island__navigation {\n    display: flex;\n    margin: -20px -var(--islandPadding) 20px;\n    padding: 0 var(--islandPadding);\n    border-bottom: 1px solid var(--lightGrayLine);\n    line-height: 54px;\n    font-size: 15px;\n}\n\n.island__navigation-item {\n    color: var(--grayText);\n}\n\n.island__navigation-item--right {\n    margin-left: auto;\n}\n\n.island__navigation-item svg {\n    margin-right: 0.6em;\n    vertical-align: text-bottom;\n}\n\n@media (--mobile) {\n    .island--stretched {\n        margin: 0;\n        padding: 15px;\n    }\n\n    .island--padded {\n        padding: 15px;\n    }\n\n    .island__navigation {\n        margin: -20px -15px 20px;\n        padding: 0 15px;\n    }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".tabs {\n    display: flex;\n    border-bottom: 1px solid var(--lightGrayLine);\n    padding: 0 var(--islandPadding);\n    white-space: nowrap;\n    font-size: 14px;\n}\n\n.tabs__tab {\n    display: inline-flex;\n    padding: calc(var(--islandPadding) * 0.65) 0;\n    margin-right: 25px;\n}\n\n.tabs__tab:last-of-type {\n    margin-right: 0;\n}\n\n.tabs__tab:hover {\n    color: var(--hoverColor);\n    box-shadow: inset 0 -2px 0 0 color(var(--hoverColor) lightness(+20%));\n}\n\n.tabs__tab--current {\n    box-shadow: inset 0 -2px 0 0 var(--mediumText);\n}\n\n@media (--mobile) {\n    .tabs {\n        padding: 0 15px;\n    }\n\n    .tabs__tab {\n        margin-right: 15px;\n        padding: 18px 0;\n        font-size: 13px;\n    }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n* Posts list item\n*/\n.post-list-item {\n    padding: calc(0.7 * var(--islandPadding)) var(--islandPadding);\n    font-size: 15px;\n    margin-bottom: var(--islandMargin);\n}\n\n.post-list-item__header {\n    margin-bottom: 1em;\n    color: var(--grayText);\n    font-size: 0.8em;\n    white-space: nowrap;\n}\n\n.post-list-item__date {\n    margin-right: 1em;\n    margin-bottom: 12px;\n    vertical-align: middle;\n}\n\n.post-list-item__author {\n    vertical-align: middle;\n\n    & img {\n        display: inline-block;\n        width: 1.2em;\n        height: 1.2em;\n        border-radius: 50%;\n        vertical-align: text-top;\n        margin-right: 0.8em;\n    }\n}\n\n.post-list-item__title {\n    margin: 0;\n    display: inline-block;\n    font-size: 1.7em;\n    line-height: 1.3em;\n    font-weight: 700;\n}\n\n.post-list-item--big .post-list-item__title {\n    font-size: 1.8em;\n}\n\n.post-list-item__body {\n    margin-top: 10px;\n    line-height: 1.65em;\n}\n\n.post-list-item__body p:first-of-type {\n    margin-top: 0;\n}\n\n.post-list-item__body p:last-of-type {\n    margin-bottom: 0;\n}\n\n.post-list-item__footer {\n    border-top: 1px solid var(--lightGrayLine);\n    margin-top: calc(0.7 * var(--islandPadding));\n    padding-top: calc(0.7 * var(--islandPadding));\n    font-size: 0.9em;\n    color: var(--grayText);\n}\n\n.post-list-item__comments:hover,\n.post-list-item__date:hover,\n.post-list-item__author:hover {\n    color: var(--hoverColor);\n}\n\n.post-list-item__comments svg {\n    margin-right: 0.5em;\n    height: 15px;\n}\n\n.post-list-item__views {\n    float: right;\n}\n.post-list-item__views svg {\n    display: inline-block;\n    margin-right: 0.2em;\n    margin-top: -0.15em;\n    height: 15px;\n}\n\n/**\n* Pinned post list item\n*/\n.post-list-item_pinned {\n    position: relative;\n}\n\n.post-list-item_pinned::after {\n    position: absolute;\n    right: 55px;\n    top: 50px;\n    display: block;\n    content: '\\E811';\n    font-family: 'codex-edu';\n    color: #5e6575;\n    font-size: 15px;\n}\n\n/**\n * Set cover button\n */\n.posts-list-item__cover {\n    display: block;\n    height: 300px;\n    margin: 20px -30px -21px;\n    background-color: var(--lightGrayBackground);\n    background-size: cover;\n    background-position: center center;\n    color: var(--grayText);\n    text-align: center;\n    cursor: pointer;\n    transition: height 150ms ease-in, filter 400ms ease-in;\n    will-change: height, filter;\n}\n\n.posts-list-item__cover--empty {\n    height: 0;\n    background-image: none !important;\n}\n\n.posts-list-item__cover--empty-showed {\n    height: 300px;\n}\n\n.posts-list-item__cover--empty:hover {\n    color: color(var(--grayText) blackness(+50%));\n}\n\n.posts-list-item__cover svg {\n    margin-top: 110px;\n    width: 100px;\n    opacity: 0;\n    transition: opacity 150ms ease;\n}\n\n.posts-list-item__cover--empty svg {\n    opacity: 1;\n}\n\n.posts-list-item__cover--preview {\n    filter: blur(1.7px) grayscale(1);\n}\n\n@media (--mobile) {\n    /**\n    * Articles list - mobile\n    */\n    .post-list-item {\n        padding: 15px;\n    }\n\n    .post-list-item__title {\n        font-size: 1.15em;\n    }\n\n    .post-list-item_pinned .post-list-item__title {\n        margin-right: 22px;\n    }\n\n    .post-list-item_pinned::after {\n        top: 15px;\n        right: 15px;\n        font-size: 12px;\n    }\n\n    .post-list-item__body {\n        font-size: 14px;\n    }\n\n    .post-list-item__footer {\n        margin-top: 15px;\n        padding-top: 15px;\n    }\n\n    .post-list-item__views svg {\n        margin-top: -0.15em;\n    }\n\n    .posts-list-item__cover,\n    .posts-list-item__cover--empty-showed {\n        height: 170px;\n        margin: 20px -15px -16px -15px;\n    }\n\n    .posts-list-item__cover--empty {\n        height: 0;\n    }\n\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".auth-form {\n    max-width: 300px;\n    margin: 40px auto;\n}\n\n.auth-form__footer {\n    border-top: 1px solid var(--lightGrayLine);\n    padding-top: var(--islandPadding);\n    font-size: 14px;\n    margin-top: var(--islandPadding);\n    margin-bottom: 10px;\n}\n\n.auth-form__footer a {\n    display: inline-block;\n    margin-right: 1.5em;\n    color: var(--linkColor);\n}\n\n.auth-form__footer a:hover {\n    color: var(--hoverColor);\n}\n\n.auth-form__error {\n    margin-bottom: 12px;\n    color: #F44336;\n}\n\n.auth-field__error {\n    box-shadow: 0 0 5px #F44336;\n    border: 1px solid #F44336;\n}\n\n.privacy-policy__text {\n    font-size: 15px;\n    color: #6f7689;\n    vertical-align: middle;\n}\n\n.privacy-policy__ic svg {\n    width: 15px;\n    height: 15px;\n    vertical-align: middle;\n    margin-right: 5px;\n}\n\n.privacy-policy__link {\n    text-decoration: underline;\n}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n * Article page styles\n */\n.article {\n    margin-bottom: var(--islandMargin);\n    padding: 30px 45px;\n}\n\n.article__information {\n    display: flex;\n    color: var(--grayText);\n    font-size: 14px;\n    margin-bottom: 10px;\n\n    &-right {\n        white-space: nowrap;\n    }\n}\n\n.article__time {\n    display: inline-block;\n    white-space: nowrap;\n    vertical-align: middle;\n}\n\n.article__author {\n    display: inline-block;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 360px;\n\n    & img {\n        margin-left: 15px;\n        margin-right: 1em;\n        vertical-align: middle;\n        width: 16px;\n        height: 16px;\n        border-radius: 50%;\n    }\n}\n\n\n.article__views-counter {\n\n    vertical-align: middle;\n    margin-left: 5px;\n\n    & svg {\n      display: inline-block;\n      height: 17px;\n      margin-top: -2px;\n      margin-right: 0.2em;\n    }\n}\n\n.article__comments-counter {\n\n    vertical-align: middle;\n    margin-left: 15px;\n\n    & svg {\n        display: inline-block;\n        margin-top: 1px;\n        margin-right: 0.2em;\n        height: 15px;\n    }\n}\n\n.article__information {\n    &-right {\n        margin-left: auto;\n    }\n\n    & .island-settings {\n        float: none;\n        margin-left: 10px;\n        vertical-align: middle;\n    }\n}\n\n@media all and (max-width: 500px) {\n    .article__comments-counter{\n        display: none;\n    }\n}\n\n.article__title {\n    margin: 0;\n    font-weight: 800;\n    font-size: 33px;\n    line-height: 1.3em;\n}\n\n.article__content {\n    font-size: 16px;\n    line-height: 1.5em;\n}\n\n.article__content--typed {\n    font-family: 'Lora';\n    font-size: 19.2px;\n    line-height: 1.64em;\n    color: rgba(0, 0, 0, 0.8);\n}\n\n.article__content a {\n    padding-bottom: 1px;\n    color: var(--linkColor);\n    border-bottom: 1px solid color(var(--linkColor) lightness(+35%));\n}\n\n.article__content a:hover {\n    color: var(--hoverColor);\n    border-bottom: 1px solid color(var(--hoverColor) lightness(+35%));\n}\n\n.article .sharing {\n    margin-top: 20px;\n}\n\n/**\n * Article parent\n */\n\n.article__parent {\n    margin-bottom: 20px;\n    padding-bottom: 20px;\n    border-bottom: 1px solid var(--lightGrayLine);\n    font-size: 13px;\n    line-height: 1.45em;\n    color: var(--grayText);\n}\n\n.article__parent a {\n    position: relative;\n    display: block;\n    padding-left: 1.6em;\n}\n\n.article__parent svg {\n    position: absolute;\n    left: 0;\n    top: 50%;\n    transform: translateY(-46%);\n}\n\n/**\n * Children pages list\n */\n.children-pages {\n    margin: 30px 0;\n}\n\n.children-pages__item {\n    position: relative;\n    padding-right: 20px;\n}\n\n.children-pages__item:not(:last-of-type) {\n    border-bottom: 1px solid var(--lightGrayLine);\n}\n\n.children-pages__item::after {\n    content: '';\n    background: url('/public/app/svg/arrow-right.svg') no-repeat;\n    background-size: 9px 15px;\n    position: absolute;\n    right: 0;\n    top: 50%;\n    width: 9px;\n    height: 15px;\n    margin-top: -7px;\n}\n\n.children-pages__link {\n    display: block;\n    padding: 15px 0;\n    font-size: 18px;\n    line-height: 1.4em;\n    font-weight: 600;\n}\n\n/**\n * Article image block\n */\n\n.article__image {\n    margin: 1em 0;\n}\n\n.article__image img {\n    max-width: 100%;\n}\n\n.article__image-caption {\n    color: var(--grayText);\n    margin: 0.3em 0 1em;\n    font-size: 0.9em;\n    line-height: 1.5em;\n}\n\n/**\n * Raw block\n */\n.article__raw {\n    margin: 1em 0;\n}\n\n.article h2,\n.article h3,\n.article h4 {\n    line-height: 1.35em;\n}\n\n/**\n * Personality tool\n * ==========\n */\n.article__person {\n    & {\n        background: #fff;\n        border: 1px solid #e5e6ec;\n        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);\n        border-radius: 3px;\n        padding: 30px;\n        margin: 0.7em 0;\n        line-height: 1.4em;\n    }\n\n    &-name {\n        font-size: 16px;\n        font-weight: 600;\n    }\n\n    &-cite {\n        font-size: 14px;\n        margin: 10px 0;\n    }\n\n    &-url {\n        display: block;\n        margin-top: 15px;\n        border-bottom: 0 !important;\n        font-size: 11px;\n        color: var(--grayText) !important;\n        letter-spacing: 0.1px;\n        overflow: hidden;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n        max-width: 80%;\n        line-height: 1em;\n    }\n\n    &-url:hover {\n        color: var(--hoverColor) !important;\n    }\n\n    &-photo {\n        float: right;\n        width: 70px;\n        height: 70px;\n        border-radius: 3px;\n        background-color: #f6f6f9;\n        background-image: url('/public/app/svg/photo-placeholder.svg');\n        background-repeat: no-repeat;\n        background-position: center center;\n        overflow: hidden;\n        margin-left: 30px;\n    }\n}\n\n/**\n * Table\n * =========\n */\n.article__table {\n    width: 100%;\n    border-collapse: collapse;\n    font-size: 0.85em;\n}\n\n.article__table td {\n    border: 1px solid var(--lightGrayLine);\n    padding: 10px 15px;\n}\n\n/**\n * Termin word\n */\n\n.article__termin {\n    display: inline-block;\n    padding: 4px 6px;\n    background: #f9f2f2;\n    color: #cc5c74;\n    line-height: 1em;\n    border-radius: 3px;\n}\n\n@media (--mobile) {\n    .article {\n        padding: 20px;\n    }\n\n    .article__parent,\n    .article__information {\n        font-size: 12px;\n    }\n\n    .article__parent {\n        padding-bottom: 15px;\n    }\n\n    .article__title {\n        font-size: 28px;\n    }\n\n    .article__content {\n        font-size: 15px;\n    }\n\n    .children-pages__link {\n        font-size: 16px;\n    }\n\n    .article__person {\n        padding: 15px;\n    }\n\n    .article__person-photo {\n        width: 40px;\n        height: 40px;\n    }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "@custom-selector :--all-special-colors\n    .special-white,\n    .special-green,\n    .special-blue;\n\n/**\n * Styles for all special colors\n */\n:\\--all-special-colors {\n    & aside div .codex-special__toolbar {\n        background-color: #ffed14 !important;\n    }\n\n    & .main-aside .user_panel:hover {\n        background: transparent !important;\n    }\n\n    & .island {\n        background: rgba(255, 255, 255, 0.04) !important;\n    }\n\n    & .island div,\n    & .island header,\n    & .island footer,\n    & .island form {\n        background: transparent !important;\n    }\n\n    & .button {\n        background-color: #2b2c2d !important;\n        color: #fff !important;\n    }\n\n    & .button.master,\n    & input[type=submit] {\n        background-color: #1b439c !important;\n    }\n}\n\nhtml body aside .codex-special__toolbar {\n    padding: 15px var(--islandPadding) !important;\n    font-size: 14px !important;\n}\n\n/**\n * Big version\n */\n.special-big {\n    & .site-footer,\n    & .site-head {\n        font-size: 13px !important;\n        line-height: 1.4em;\n    }\n}\n\n/**\n * Remove branding\n */\n.special-big,\n:\\--all-special-colors {\n    & .main-aside {\n        position: static;\n        margin-top: 0;\n    }\n\n    & .branding {\n        display: none;\n    }\n}\n\n/**\n * Black version\n */\n.special-white {\n    & .island textarea,\n    & .island input {\n        background-color: #0c0c0c !important;\n    }\n}\n\n/**\n * Blue\n */\n.special-blue {\n    & .island {\n        background: rgba(255, 255, 255, 0.2) !important;\n    }\n}\n\n.codex-special__toolbar-text {\n    vertical-align: baseline !important;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n* Стили для формы создания страницы\n*/\n.writing {\n    position: relative;\n    padding: 20px var(--islandPadding) 0;\n    margin-bottom: var(--islandMargin);\n    font-size: 15px;\n    line-height: 1.6em;\n}\n\n.writing__title {\n    background: transparent !important;\n    outline: none;\n    -webkit-appearance: none;\n    padding: 0 !important;\n    font-size: 24px !important;\n    font-weight: 700;\n    letter-spacing: 0.01em;\n    resize: none;\n}\n\n.writing--fullscreen .island {\n    box-shadow: none;\n}\n\n.writing--fullscreen .writing__title {\n    font-size: 42px !important;\n}\n\n.writing__actions {\n    margin: 0 -30px;\n    padding: 20px 30px;\n    border-top: 1px solid #f5f6fb;\n    background: #fdfdfe;\n}\n\n.writing__actions-content {\n    display: flex;\n    flex-flow: row nowrap;\n    align-items: center;\n    justify-content: flex-end;\n}\n\n.writing .toggler {\n    padding: 6px;\n    margin: 8px 12px 0 0;\n    border: 1px solid #d7deec;\n    border-radius: 20px;\n    color: #6a7590;\n    cursor: pointer;\n}\n\n.writing .toggler:hover {\n    background: #fff;\n}\n\n.writing .toggler.checked {\n    background: #3b4b69;\n    border-color: #3b4b69;\n    color: #f9f9ff;\n}\n\n.writing .button {\n    margin-right: 12px;\n    font-size: 0.9em;\n}\n\n.writing-navigation__back-icon {\n    display: inline-block;\n    width: 30px;\n    height: 30px;\n    background: var(--lightGrayBackground);\n    border-radius: 50%;\n    vertical-align: middle;\n    margin-right: 10px;\n}\n\n.writing-navigation__holder {\n    box-shadow: none;\n}\n\n.writing-navigation {\n    padding-top: 30px;\n    color: var(--grayText);\n}\n\n.writing-navigation svg {\n    height: 13px;\n    margin: 0 3px 0 5px;\n}\n\n.writing-wrapper {\n    margin-bottom: var(--islandMargin);\n}\n\n.writing-wrapper__placeholder {\n    padding: 15px var(--islandPadding);\n    color: var(--grayText);\n    font-size: 14px;\n}\n\n.writing-wrapper__photo {\n    height: 28px;\n    width: 28px;\n    border-radius: 50%;\n    margin-right: 10px;\n    vertical-align: middle;\n}\n\n.writing-wrapper__placeholder-text {\n    vertical-align: middle;\n}\n\n.writing-wrapper__placeholder-name {\n    display: none;\n}\n\n.writing-wrapper__placeholder {\n    cursor: pointer;\n}\n\n.writing-wrapper__placeholder--opened {\n    cursor: default;\n}\n\n.writing-wrapper__placeholder--opened .writing-wrapper__placeholder-text {\n    display: none;\n}\n\n.writing-wrapper__placeholder--opened .writing-wrapper__placeholder-name {\n    display: inline-block;\n    font-weight: 500;\n}\n\n.writing-wrapper .writing {\n    padding-top: 0;\n    box-shadow: none; /* 0 0 0 1px #ebeef6; */\n}\n\n/**\n* Editor styles overrides\n*/\n\n.editor-wrapper {\n    margin: 0 -15px;\n}\n\n.editor-wrapper .ce-block__content,\n.writing-navigation,\n.writing__title-wrapper,\n.writing__actions-content {\n    margin: 0 auto;\n    max-width: 590px;\n}\n\n.editor-wrapper .ce-block {\n    margin: 0;\n}\n\n.editor-wrapper a {\n    color: var(--linkColor);\n    padding-bottom: 1px;\n    border-bottom: 1px solid color(var(--linkColor) alpha(-70%));\n}\n\n.writing-fullscreen__button {\n    margin-left: auto;\n    color: var(--grayText);\n    cursor: pointer;\n}\n\n.writing-fullscreen__button:hover {\n    color: var(--hoverColor);\n}\n\n.writing-fullscreen__button svg {\n    margin-right: 4px;\n    margin-top: -3px;\n}\n\n.writing__is-news {\n    margin-right: 10px;\n    margin-left: 10px;\n}\n\n.writing__vk-post {\n    margin-right: auto;\n    margin-left: 10px;\n    font-size: 1.5em;\n    margin-bottom: 2px;\n}\n\n.writing__vk-post .cdx-checkbox__slider {\n    display: none;\n}\n\n@media (--mobile) {\n    .writing,\n    .writing-wrapper__placeholder {\n        padding: 15px;\n    }\n\n    .writing__actions {\n        margin: 0 -15px -15px -15px;\n        padding: 15px;\n    }\n\n    .writing-navigation {\n        padding: 15px 15px 0;\n    }\n\n    .writing--fullscreen .writing__title {\n        font-size: 24px !important;\n    }\n\n    .writing-fullscreen__button {\n        margin: 0;\n    }\n\n    .writing-fullscreen__text {\n        display: none;\n    }\n\n    .ce-block__content,\n    .ce-toolbar__content {\n        padding: 0 15px !important;\n    }\n\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n * Profile page\n */\n.profile {\n    margin-bottom: var(--islandMargin);\n}\n\n.profile__content {\n    padding: 10px 0;\n}\n\n.profile__ava {\n    float: right;\n    height: 100px;\n    border-radius: 50%;\n    margin-left: 30px;\n}\n\n@media (--mobile) {\n    .profile__ava {\n        height: 60px;\n    }\n}\n\n.profile__name {\n    margin: 0 0 0.6em;\n    font-size: 2.4em;\n    font-weight: 800;\n    letter-spacing: 0.3px;\n}\n\n@media (--mobile) {\n    .profile__name {\n        font-size: 1.8em;\n    }\n}\n\n.profile__about {\n    margin: 0 0 20px;\n    overflow: hidden;\n    color: var(--grayText);\n    font-size: 1.2em;\n    letter-spacing: 0.3px;\n    line-height: 1.5em;\n    word-wrap: break-word;\n}\n\n.profile__about svg {\n    margin-left: 0.3em;\n    vertical-align: middle;\n    margin-top: -2px;\n}\n\n.profile__about--editable {\n    cursor: pointer;\n}\n\n.profile__about--editable:hover {\n    color: var(--hoverColor);\n}\n\n.profile__about textarea {\n    max-width: 400px;\n    line-height: 1.5em;\n}\n\n.profile__about .loading {\n    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(255, 255, 255, 0.03) 4px, rgba(107, 118, 128, 0.19) 8px);\n    background-size: 56px 56px;\n    animation: loading-bar 1s infinite linear;\n}\n\n.profile .island-settings {\n    margin: -10px -10px 0 0;\n}\n\n/**\n * Verified icon\n */\n.verified {\n    color: #3d94ec;\n}\n\n.verified svg {\n    width: 22px;\n    height: 22px;\n    margin-top: -0.03em;\n    margin-left: 0.1em;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n * Comment\n */\n.comment {\n    transition: background-color 500ms ease-out;\n}\n\n.comment--highligthed {\n    background-color: var(--lightGrayBackground);\n}\n\n.comment__author-photo {\n    float: left;\n    margin-right: 15px;\n}\n\n.comment__author-photo img {\n    height: 40px;\n    width: 40px;\n    border-radius: 50%;\n}\n\n.comment__author-name {\n    display: inline-block;\n    font-size: 15px;\n    margin: 2px 0 3px;\n}\n\n.comment__time {\n    color: var(--grayText);\n    font-size: 11px;\n}\n\n.comment__text {\n    margin: 10px auto 20px;\n    font-size: 15px;\n    line-height: 1.6em;\n}\n\n.comment__text a {\n    padding-bottom: 1px;\n    color: var(--linkColor);\n    border-bottom: 1px solid color(var(--linkColor) lightness(+35%));\n}\n\n.comment__text a:hover {\n    color: var(--hoverColor);\n    border-bottom: 1px solid color(var(--hoverColor) lightness(+35%));\n}\n\n.comment__actions--button {\n    float: right;\n    padding: 5px;\n    border-radius: 2px;\n}\n\n.comment__footer {\n    margin: 0 -30px -20px;\n    padding: 10px 30px;\n    border-top: 1px solid var(--lightGrayLine);\n    color: var(--grayText);\n    font-size: 15px;\n    line-height: 26px;\n}\n\n@media (--mobile) {\n    .comment__footer {\n        margin: 0 -15px -15px;\n        padding: 10px 15px;\n    }\n}\n\n/**\n * Alone reply form\n */\n.comment-form__island {\n    padding: 15px var(--islandPadding);\n    margin: var(--islandMargin) auto;\n}\n\n@media (--mobile) {\n    .comment-form__island {\n        padding: 15px;\n    }\n}\n\n/**\n * Comment form\n */\n\n.comments-form {\n    margin-top: 15px;\n}\n\n.comment-form__photo {\n    height: 26px;\n    width: 26px;\n    border-radius: 50%;\n    margin-right: 10px;\n    vertical-align: middle;\n}\n\n@media (--mobile) {\n    .comment-form__photo {\n        width: 20px;\n        height: 20px;\n    }\n}\n\n.comment-form__placeholder {\n    cursor: pointer;\n    color: var(--grayText);\n    font-size: 14px;\n}\n\n.comment-form__placeholder svg {\n    height: 15px;\n}\n\n.comment-form__placeholder-name {\n    display: none;\n}\n\n.comment-form__placeholder--opened .comment-form__placeholder-text {\n    display: none;\n}\n\n.comment-form__placeholder--opened .comment-form__placeholder-name {\n    display: inline-block;\n    font-weight: 500;\n}\n\n.comment-form__text {\n    width: 100%;\n    margin-top: 4px;\n    padding: 0;\n    resize: none;\n    font-size: 15px;\n    line-height: 1.5em;\n}\n\n.comment-form__text,\n.comment-form__text:focus {\n    background: none;\n}\n\n.comment-form__text:focus,\n.comment-form__text:not(:invalid) {\n    height: 7em;\n}\n\n.comment-form__button {\n    margin: 15px 0 5px;\n    font-size: 14px;\n}\n\n/**\n * Comment target Block\n */\n.comment-target {\n    border: 1px solid var(--lightGrayLine);\n    margin: 15px auto 20px;\n    padding: 15px;\n    width: auto;\n    box-shadow: 0 1px 1px rgba(139, 151, 169, 0.05);\n    border-radius: 3px;\n    font-size: 12px;\n}\n\n.comment-target__text {\n    display: block;\n    margin-bottom: 10px;\n    font-size: 15px;\n    line-height: 1.56em;\n    color: var(--grayText);\n}\n\n.comment-target__text:hover {\n    color: var(--grayText);\n}\n\n/**\n * Show-more toggler in comment target block\n */\n.comment-target__show-more {\n    display: inline-block;\n    color: var(--linkColor);\n}\n\n.comment-target__show-more::before {\n    content: attr(data-text-show);\n}\n\n.comment-target__show-more svg {\n    height: 0.5em;\n    margin-left: 0.2em;\n}\n\n.comment-target__show-more:hover {\n    color: var(--hoverColor);\n}\n\n.comment-target__text-hided {\n    display: none;\n}\n\n.show-more .comment-target__text-hided {\n    display: block;\n}\n\n.show-more .comment-target__show-more {\n    margin-left: 0;\n    margin-top: 0.7em;\n}\n\n.show-more .comment-target__show-more svg {\n    transform: rotate(180deg);\n}\n\n.show-more .comment-target__short-text {\n    display: none;\n}\n\n.show-more .comment-target__show-more::before {\n    content: attr(data-text-hide);\n}\n\n.comment-target--page .comment-target__source {\n    font-weight: 600;\n}\n\n.comment-target__author,\n.comment-target__date,\n.comment-target__page {\n    display: inline-block;\n    margin-right: 1em;\n    max-width: 45%;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    vertical-align: text-bottom;\n    color: var(--grayText);\n}\n\n.comment-target__arrow {\n    display: inline-block;\n    margin: 0 0.5em 0 -0.5em;\n    vertical-align: text-bottom;\n    color: var(--grayText);\n}\n\n.comment-target__arrow svg {\n    height: 0.8em;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".profile-settings {\n    padding: 10px 0;\n}\n\n.profile-settings form {\n    margin-bottom: 30px;\n}\n\n.logout-button {\n    color: #ca3b3b;\n}\n\n/**\n * Photo\n */\n.profile-settings__photo {\n    float: right;\n    position: relative;\n    width: 100px;\n    height: 100px;\n    border-radius: 50%;\n    border: 2px dashed #c5c7d4;\n    padding: 5px;\n    margin: -7px;\n    overflow: hidden;\n}\n\n.profile-settings__photo img {\n    width: 100%;\n    transition: filter 100ms ease-in;\n    will-change: filter;\n}\n\n.profile-settings__photo,\n.profile-settings__photo-hover {\n    box-shadow: inset 0 0 0 5px #fff;\n}\n\n.profile-settings__photo,\n.profile-settings__photo img,\n.profile-settings__photo-hover {\n    border-radius: 50%;\n}\n\n.profile-settings__photo-hover {\n    display: flex;\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    z-index: 2;\n    background: rgba(176, 202, 231, 0.2);\n    opacity: 0;\n    cursor: pointer;\n    text-align: center;\n    transition: opacity 80ms ease-in;\n    will-change: opacity;\n}\n\n.profile-settings__photo-hover svg {\n    line-height: 100px;\n    height: 28px;\n    width: 28px;\n    fill: #fff;\n    margin: auto;\n}\n\n/** Photo hover effect  */\n.profile-settings__photo:hover .profile-settings__photo-hover {\n    opacity: 1;\n}\n\n.profile-settings__photo:hover img {\n    filter: blur(5px);\n}\n\n.profile-settings__change-password-btn {\n    color: var(--grayText);\n    cursor: pointer;\n}\n\n.profile-settings__change-password-btn:hover {\n    color: color(var(--grayText) blackness(+80%));\n}\n\n.profile-settings__change-password-result-text {\n    margin-bottom: 15px;\n    font-size: 14px;\n    padding: 0 10%;\n    line-height: 1.6em;\n}\n\n.profile-settings__change-password-btn svg {\n    margin-right: 5px;\n    margin-top: -3px;\n}\n\n@media (--mobile) {\n    .profile-settings__photo {\n        width: 60px;\n        height: 60px;\n    }\n\n    .profile-settings .form__input {\n        max-width: 70%;\n    }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".sharing__button {\n    display: inline-block;\n    margin-right: 15px;\n    padding: 6px 10px;\n    border-radius: 3px;\n    font-size: 13px;\n    color: white;\n    background: #30588f;\n    cursor: pointer;\n}\n\n.sharing__button i {\n    margin: 0 3px 0 -3px;\n}\n\n.sharing__button--twitter {\n    background-color: color(var(--twitterColor));\n}\n\n.sharing__button--twitter:hover {\n    background-color: color(var(--twitterColor) lightness(-10%));\n}\n\n.sharing__button--vk {\n    background-color: color(var(--vkColor));\n}\n\n.sharing__button--vk:hover {\n    background-color: color(var(--vkColor) lightness(-10%));\n}\n\n.sharing__button--facebook {\n    background-color: color(var(--facebookColor));\n}\n\n.sharing__button--facebook:hover {\n    background-color: color(var(--facebookColor) lightness(-10%));\n}\n\n@media (--mobile) {\n    .sharing__button {\n        margin-right: 5px;\n        font-size: 12px;\n    }\n}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".scroll-up {\n    position: fixed;\n    top: 0;\n    height: 100%;\n    opacity: 0;\n    cursor: auto;\n    will-change: width;\n}\n\n.scroll-up.show {\n    opacity: 1;\n    cursor: pointer;\n}\n\n.scroll-up__arrow {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    width: 100px;\n    background-image: url(/public/app/svg/arrow-up.svg);\n    background-position: center 34px;\n    background-repeat: no-repeat;\n    will-change: background-color;\n}\n\n.scroll-up:hover .scroll-up__arrow {\n    background-color: rgba(255, 255, 255, 0.8);\n}\n\n@media all and (max-width: 1185px) {\n    .scroll-up {\n        display: none;\n    }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".file-attached {\n    display: block;\n    border: 1px solid #ecedef !important;\n    box-shadow: 0 1px 3px 0 rgba(25, 29, 45, 0.04);\n    border-radius: 3px;\n    padding: 20px 30px !important;\n    font-size: 15px;\n    margin: 10px 0;\n    color: inherit !important;\n}\n\n.file-attached__info {\n    float: right;\n    color: var(--grayText);\n    font-variant: small-caps;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".article__content ol,\n.article__content ul {\n\n    margin: 1em 2em;\n\n}\n\n.article__content ol li {\n    list-style-type: decimal;\n}\n\n.article__content ul li {\n    list-style-type: disc;\n}\n\n.article__content li {\n    margin: 0.6em 0;\n    padding-left: 0.8em;\n}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n * Link tool\n */\n.link-embed {\n    display: block;\n    border: 1px solid #e8e9f1 !important;\n    border-radius: 2px;\n    background: #fdfdfd;\n    box-shadow: 0 1px 3px 0 rgba(102, 85, 107, 0.04);\n    margin: 1em 0;\n    padding: 25px !important;\n    color: #1a1e25 !important;\n\n    &:hover {\n        border-color: #e8e9f1;\n    }\n\n    &__cover {\n        & {\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n\n        &\\--small {\n            margin: 0 0 25px 25px;\n            background-size: auto 100%;\n            width: 70px;\n            height: 70px;\n            border-radius: 2px;\n            float: right;\n        }\n\n        &\\--big {\n            background-size: 100% auto;\n            height: 180px;\n            margin: -26px -26px 25px;\n            border-radius: 2px 2px 0 0;\n        }\n    }\n\n    &__title {\n        font-size: 17px;\n        font-weight: 500;\n        line-height: 1.4em;\n    }\n\n    &__description {\n        margin-top: 11px;\n        font-size: 14px;\n        line-height: 1.5em;\n    }\n\n    &__anchor {\n        display: block;\n        margin-top: 15px;\n        font-size: 11px;\n        color: #415983 !important;\n        letter-spacing: 0.2px;\n        line-height: 1.1em;\n        text-decoration: none !important;\n        border: 0 !important;\n        overflow: hidden;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n        max-width: 400px;\n    }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".island-settings {\n    position: relative;\n    float: right;\n    cursor: pointer;\n    color: var(--grayText);\n    user-select: none;\n}\n\n.island-settings:hover {\n    color: color(var(--grayText) blackness(+80%));\n}\n\n.island-settings__menu {\n    position: absolute;\n    right: -9px;\n    top: calc(100% + 15px);\n    min-width: 170px;\n    z-index: 999;\n    padding: 5px 0;\n    border: 1px solid var(--lightGrayLine);\n    border-radius: 3px;\n    box-shadow: 0 2px 8px 0 rgba(20, 33, 51, 0.05);\n    background: white;\n\n    /** Fade in effect */\n    opacity: 0;\n    will-change: opacity, transform;\n    transition: all 100ms ease-in;\n    transform: translateY(-10px);\n    visibility: hidden;\n}\n\n.island-settings:hover .island-settings__menu--showed {\n    opacity: 1;\n    transform: none;\n    visibility: visible;\n}\n\n.island-settings__menu::before,\n.island-settings__menu::after {\n    content: \"\";\n    position: absolute;\n    top: -14px;\n    right: 10px;\n    border-style: solid;\n}\n\n.island-settings__menu::before {\n    margin: -2px -1px 0;\n    border-width: 8px;\n    border-color: transparent transparent var(--lightGrayLine);\n}\n\n.island-settings__menu::after {\n    border-width: 7px;\n    border-color: transparent transparent #fff;\n}\n\n.island-settings__item {\n    padding: 10px 15px;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    font-size: 14px;\n    color: var(--grayText);\n}\n\n.island-settings__item:hover {\n    background: var(--lightGrayBackground);\n}\n\n.island-settings__item.loading {\n    background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgb(202, 225, 246) 4px, #ecf3f9 8px) !important;\n    background-size: 56px 56px;\n    animation: loading-bar 1000ms infinite linear;\n}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ":root {\n    --checkboxColor: #95a3ae;\n    --checkedCheckboxColor: #4098f9;\n}\n\n.cdx-checkbox {\n    color: var(--checkboxColor);\n    cursor: pointer;\n}\n\n/**\n * Styles for checkbox background\n */\n.cdx-checkbox__slider {\n    position: relative;\n    display: inline-block;\n    width: 20px;\n    height: 14px;\n    padding: 2px;\n    margin-right: 0.3em;\n    vertical-align: text-bottom;\n    border-radius: 10px;\n    cursor: pointer;\n    background: var(--checkboxColor);\n}\n\n/**\n * Styles for checkbox slider\n */\n.cdx-checkbox__slider::before {\n    content: '';\n    position: absolute;\n    width: 14px;\n    height: 14px;\n    background: #fff;\n    border-radius: 50%;\n    transition: transform 0.2s ease;\n}\n\n/**\n * Styles for checked state\n */\n.cdx-checkbox--checked {\n    color: var(--checkedCheckboxColor);\n    cursor: pointer;\n}\n\n.cdx-checkbox:hover .cdx-checkbox__slider {\n    background-color: #556072;\n}\n\n.cdx-checkbox--checked .cdx-checkbox__slider,\n.cdx-checkbox--checked:hover .cdx-checkbox__slider {\n    background: var(--checkedCheckboxColor) !important;\n}\n\n.cdx-checkbox--checked .cdx-checkbox__slider::before {\n    transform: translateX(6px);\n}\n\n.cdx-default-checkbox--hidden {\n    display: none;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "@media (--mobile) {\n    .auth-social .button {\n        font-size: 0;\n        padding: 13px;\n        margin: 5px;\n    }\n\n    .auth-social .button svg {\n        width: 16px;\n        height: 16px;\n        margin: 0;\n    }\n\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/**\n * ESIR navigator placeholder\n */\nbody {\n    margin-top: 0 !important;\n}\n\n#widgetEsirGovSpbRu {\n    clip: rect(0, 0, 0, 0);\n    clip-path: url(#cdx-clip-rect);\n}\n\n.esir-showed #widgetEsirGovSpbRu {\n    clip: auto;\n    clip-path: none;\n}\n\n.esir {\n    & {\n        background: #edf1f5 url('/public/app/svg/spb-herb.svg') no-repeat 5px center;\n        height: 30px;\n        line-height: 30px;\n        padding-left: 28px;\n        font-size: 12px;\n        color: #414e5e;\n        cursor: pointer;\n        white-space: nowrap;\n    }\n\n    &:hover {\n        background-color: #f4f5f7;\n    }\n\n    &__search {\n        display: inline-block;\n        background: url('/public/app/svg/search.svg') no-repeat 10px center;\n        height: 30px;\n        line-height: 30px;\n        padding-left: 30px;\n        margin-left: 10px;\n        border-left: 1px solid #cfd8e1;\n        color: #7b8999;\n    }\n\n    &__navigator {\n        float: left;\n    }\n\n    &__included {\n        float: right;\n        border-left: 1px solid #cfd8e1;\n        padding: 0 10px;\n    }\n\n    @media (--mobile) {\n        & {\n            font-size: 10px;\n            background-size: auto 12px;\n            padding-left: 22px;\n            padding-right: 20px;\n        }\n\n        &__included {\n            display: none;\n        }\n\n        &__search {\n            margin-left: 0;\n            border-left: 0;\n            font-size: 0;\n            position: absolute;\n            top: 0;\n            right: 0;\n        }\n    }\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".cdx-personality-icon{display:inline-block;width:13px;height:32px;background-image:url(" + __webpack_require__(31) + ");background-repeat:no-repeat;background-position:50%;background-size:contain}.ce-toolbar__tools .selected .cdx-personality-icon,.ce-toolbar__tools li:hover .cdx-personality-icon{background-image:url(" + __webpack_require__(32) + ")}.cdx-personality{background:#fff;border:1px solid #e5e6ec;box-shadow:0 1px 2px 0 rgba(0,0,0,.03);border-radius:3px;padding:30px;margin:.7em 0}.cdx-personality__cite,.cdx-personality input{outline:none;border:0;border-radius:3px;width:75%;box-sizing:border-box}.cdx-personality__name{font-size:16px;font-weight:600}.cdx-personality__cite{font-size:14px;margin:10px 0}.cdx-personality__cite p{margin:.5em 0}.cdx-personality__url{font-size:11px;color:#6e758a;letter-spacing:.1px;text-overflow:ellipsis}.cdx-personality__photo{float:right;width:70px;height:70px;border-radius:3px;background-color:#f6f6f9;background-image:url(" + __webpack_require__(33) + ");background-repeat:no-repeat;background-position:50%;cursor:pointer;overflow:hidden}.cdx-personality__photo:hover{opacity:.7}.cdx-personality__photo img{width:100%;height:100%;vertical-align:top;transition:-webkit-filter .3s ease-in;transition:filter .3s ease-in;transition:filter .3s ease-in,-webkit-filter .3s ease-in}.cdx-personality__photo--preview{filter:url('data:image/svg+xml;charset=utf-8,<svg xmlns=\"http://www.w3.org/2000/svg\"><filter id=\"filter\"><feGaussianBlur stdDeviation=\"2\" /><feColorMatrix type=\"matrix\" color-interpolation-filters=\"sRGB\" values=\"0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0\" /></filter></svg>#filter');-webkit-filter:blur(2px) grayscale(1);filter:blur(2px) grayscale(1)}.cdx-personality__cite:empty:before{content:attr(data-placeholder);color:#6e758a}.cdx-personality__cite:focus:before{display:none}.cdx-personality input::-webkit-input-placeholder{color:#6e758a!important}.cdx-personality input:-ms-input-placeholder{color:#6e758a!important}.cdx-personality input::placeholder{color:#6e758a!important}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports) {
-
-module.exports = "/public/build/assets/codex.editor.personality/assets/toolbar-icon.svg.svg";
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports) {
-
-module.exports = "/public/build/assets/codex.editor.personality/assets/toolbar-icon-hover.svg.svg";
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports) {
-
-module.exports = "/public/build/assets/codex.editor.personality/assets/photo-placeholder.svg.svg";
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".cdx-link-icon{display:inline-block;width:14px;height:32px;background-image:url(" + __webpack_require__(35) + ");background-repeat:no-repeat;background-position:50%;background-size:contain}.ce-toolbar__tools .selected .cdx-link-icon,.ce-toolbar__tools li:hover .cdx-link-icon{background-image:url(" + __webpack_require__(36) + ")}.cdx-link-tool{position:relative;margin:.7em 0;overflow:hidden}.cdx-link-tool--rendered{padding:25px;border-radius:2px;background:#fafafb;box-shadow:0 0 0 2px #fff}.cdx-link-tool input::-webkit-input-placeholder{color:#635965!important}.cdx-link-tool input:-ms-input-placeholder{color:#635965!important}.cdx-link-tool input::placeholder{color:#635965!important}.cdx-link-tool__input{width:100%;box-sizing:border-box;padding:15px 15px 15px 55px;background:#fdfdfd;border:1px solid #e8e9f1;box-shadow:inset 0 1px 3px 0 rgba(102,85,107,.04);border-radius:3px;outline:none;font-size:15px;color:#635965;letter-spacing:0;background-image:url(" + __webpack_require__(37) + ");background-repeat:no-repeat;background-position:20px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.cdx-link-tool__input--error{background-image:url(" + __webpack_require__(38) + ");background-color:#fff3f6;border-color:#f3e0e0;color:#a95a5a;box-shadow:inset 0 1px 3px 0 rgba(146,62,62,.05)}.cdx-link-tool__label{position:absolute;box-shadow:inset 0 1px 3px 0 rgba(102,85,107,.04);height:100%;width:0;background-color:#8a459b;opacity:.08;transition:width 2.5s ease}.cdx-link-tool__label--loading{width:90%}.cdx-link-tool__label--finish{width:100%}.cdx-link-tool__cover{background-position:50%;background-repeat:no-repeat}.cdx-link-tool__cover--small{margin:0 0 25px 25px;background-size:auto 100%;width:70px;height:70px;border-radius:2px;float:right}.cdx-link-tool__cover--big{margin:-25px -25px 25px;background-size:100% auto;height:180px;border-radius:2px 2px 0 0}.cdx-link-tool__title{font-size:16px;font-weight:500;line-height:1.4em}.cdx-link-tool__description{margin-top:11px;font-size:14px;line-height:1.5em}.cdx-link-tool__anchor{display:block;margin-top:15px;font-size:11px;color:#415983!important;letter-spacing:.2px;line-height:1em;text-decoration:none!important;border:0!important;padding:0!important}.link-settings__item{display:block;padding:12px 10px;line-height:1em;cursor:pointer}.link-settings__item--active,.link-settings__item:hover{background:#fafbfd}.link-settings__item--active{font-weight:700}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports) {
-
-module.exports = "/public/build/assets/codex.editor.link/assets/link.svg.svg";
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports) {
-
-module.exports = "/public/build/assets/codex.editor.link/assets/link-hover.svg.svg";
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports) {
-
-module.exports = "/public/build/assets/codex.editor.link/assets/link-input.svg.svg";
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports) {
-
-module.exports = "/public/build/assets/codex.editor.link/assets/link-error.svg.svg";
-
-/***/ })
-/******/ ]);
 /*# sourceMappingURL=bundle.css.map*/

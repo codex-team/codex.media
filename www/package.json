@@ -5,7 +5,7 @@
   "description": "Open platform for organizations",
   "main": "index.js",
   "scripts": {
-    "build": "build_js && build_css",
+    "build": "npm run build_js && npm run build_css",
     "build_js": "webpack --config js.webpack.config.js",
     "build_css": "webpack --config css.webpack.config.js"
   },

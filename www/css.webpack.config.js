@@ -1,6 +1,7 @@
 /**
- * Bundle config
+ * CSS Bundle config
  */
+require('dotenv').load();
 
 const webpack       = require('webpack');
 const merge         = require('webpack-merge');
@@ -12,21 +13,20 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const StyleLintPlugin   = require('stylelint-webpack-plugin');
 
 let applicationDirectory = path.resolve(__dirname, './public/app/css');
-let projectDirectory = path.resolve(__dirname, './projects/school332/public/css');
+let projectDirectory = path.resolve(__dirname, './projects/' + process.env.PROJECT + '/public/css');
 
 let applicationFiles = [];
 let projectFiles = [];
 let preBundle = [];
 
 function readDirFilesRecusrivelly(directory, extension, files = []) {
-
     fs.readdirSync(directory).map( (name) => {
         if (extension.test(name)) {
             files.push({
                 name: name,
                 path: path.join(directory, name)
             });
-        } else {
+        } else if (fs.statSync(directory).isDirectory()) {
             readDirFilesRecusrivelly(path.join(directory, name), extension, files);
         }
     });
@@ -55,27 +55,14 @@ preBundle.forEach( function(file) {
     preBundleContent = preBundleContent + `@import url('${file}');\n`;
 });
 
-fs.appendFileSync(path.resolve(__dirname, 'public/build/prebundle.css'), preBundleContent, function (err) {
-    if (err) throw err;
-});
+fs.writeFileSync(path.resolve(__dirname, './public/prebuild/prebuild.css'), preBundleContent);
 
 module.exports = merge(baseConfig, {
 
-    entry: './public/build/prebuild.js',
+    entry: './public/prebuild/prebuild.js',
     output: {
-        filename: './public/build/build-css.js',
+        filename: './public/prebuild/build-css.js',
         library: 'codex'
-    },
-
-    resolve: {
-      modules: [
-        "node_modules"
-      ],
-      extensions: [".css"],
-    },
-
-    resolveLoader: {
-        modules: ['node_modules', path.resolve(__dirname, 'public/webpack-loaders')]
     },
 
     module: {
@@ -102,40 +89,33 @@ module.exports = merge(baseConfig, {
          */
         test: /\.css$/,
         /** extract-text-webpack-plugin */
-        use: [
+        use: ExtractTextPlugin.extract([
             {
-                loader: 'css-loader'
+                loader: 'css-loader',
+                options: {
+                    importLoaders: true
+                }
             },
-            // {
-            //     loader: 'codex-media-css',
-            //     options: {}
-            // }
-        ]
+            'postcss-loader'
+        ])
       }
     ]},
 
     plugins: [
 
         /** Минифицируем CSS и JS */
-        // new webpack.optimize.UglifyJsPlugin({
+        new webpack.optimize.UglifyJsPlugin({
             /** Disable warning messages. Cant disable uglify for 3rd party libs such as html-janitor */
-        //     compress: {
-        //         warnings: false
-        //    }
-        // }),
+            compress: {
+                warnings: false
+           }
+        }),
 
         /** Block build if errors found */
         new webpack.NoEmitOnErrorsPlugin(),
 
         /** Вырезает CSS из JS сборки в отдельный файл */
         new ExtractTextPlugin("public/build/bundle.css"),
-
-        /** Проврка синтаксиса CSS */
-        new StyleLintPlugin({
-            context : './public/app/css/',
-            files : 'main.css'
-        }),
-
     ],
 
 });

@@ -3,7 +3,7 @@ module.exports = {
     devtool: "source-map",
 
     /** Пересборка при изменениях */
-    watch: true,
+    // watch: true,
     watchOptions: {
 
         /* Таймаут перед пересборкой */
