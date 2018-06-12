@@ -103,6 +103,9 @@ module.exports = merge(baseConfig, {
     plugins: [
         /** Вырезает CSS из JS сборки в отдельный файл */
         new ExtractTextPlugin("public/build/bundle.css"),
+
     ],
+
+    devtool: false
 
 });

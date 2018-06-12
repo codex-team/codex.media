@@ -7,7 +7,7 @@
   "scripts": {
     "build": "npm run build_js && npm run build_css",
     "build_js": "webpack --config js.webpack.config.js",
-    "build_css": "webpack --config css.webpack.config.js"
+    "build_css": "webpack --config css.webpack.config.js && rm public/build/prebuild.css && rm public/build/build-css.js"
   },
   "repository": {
     "type": "git",
