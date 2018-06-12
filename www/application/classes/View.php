@@ -30,7 +30,7 @@ class View extends Kohana_View
     public function set_filename($file)
     {
         $application_path = Kohana::find_file($this->view_path, $file);
-        $project_path = Kohana::find_file('../projects' . DIRECTORY_SEPARATOR . Arr::get($_SERVER, 'PROJECT') . DIRECTORY_SEPARATOR . $this->view_path, $file);
+        $project_path = Kohana::find_file('../projects' . DIRECTORY_SEPARATOR . Arr::get($_SERVER, 'PROJECT', '') . DIRECTORY_SEPARATOR . $this->view_path, $file);
 
         if ($application_path === false && $project_path === false) {
             throw new View_Exception('The requested view :file could not be found', array(

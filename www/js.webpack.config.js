@@ -3,7 +3,6 @@
  */
 require('dotenv').load();
 
-const webpack       = require('webpack');
 const path          = require('path');
 const merge         = require('webpack-merge');
 const baseConfig    = require('./base.webpack.config');
@@ -51,7 +50,7 @@ module.exports = merge(baseConfig, {
           {
             loader: 'babel-loader',
             options: {
-              presets: [ 'es2015' ],
+              presets: [ 'env' ],
             }
           },
           /** ES lint For webpack build */
@@ -63,20 +62,5 @@ module.exports = merge(baseConfig, {
           }
         ]
       }
-    ]},
-
-    plugins: [
-
-        /** Минифицируем CSS и JS */
-        // new webpack.optimize.UglifyJsPlugin({
-            /** Disable warning messages. Cant disable uglify for 3rd party libs such as html-janitor */
-        //     compress: {
-        //         warnings: false
-        //    }
-        // }),
-
-        /** Block build if errors found */
-        new webpack.NoEmitOnErrorsPlugin(),
-    ],
-
+    ]}
 });

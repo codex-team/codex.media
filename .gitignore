@@ -1,2 +1,6 @@
 .idea/
 .DS_Store
+.php_cs.cache
+
+./public/build/prebuild.css
+./public/build/build-css.js

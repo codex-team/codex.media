@@ -10,7 +10,6 @@ const baseConfig    = require('./base.webpack.config');
 const fs            = require('fs');
 
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const StyleLintPlugin   = require('stylelint-webpack-plugin');
 
 let applicationDirectory = path.resolve(__dirname, './public/app/css');
 let projectDirectory = path.resolve(__dirname, './projects/' + process.env.PROJECT + '/public/css');
@@ -55,13 +54,13 @@ preBundle.forEach( function(file) {
     preBundleContent = preBundleContent + `@import url('${file}');\n`;
 });
 
-fs.writeFileSync(path.resolve(__dirname, './public/prebuild/prebuild.css'), preBundleContent);
+fs.writeFileSync(path.resolve(__dirname, './public/build/prebuild.css'), preBundleContent);
 
 module.exports = merge(baseConfig, {
 
-    entry: './public/prebuild/prebuild.js',
+    entry: './public/build/prebuild-css.js',
     output: {
-        filename: './public/prebuild/build-css.js',
+        filename: './public/build/build-css.js',
         library: 'codex'
     },
 
@@ -102,18 +101,6 @@ module.exports = merge(baseConfig, {
     ]},
 
     plugins: [
-
-        /** Минифицируем CSS и JS */
-        new webpack.optimize.UglifyJsPlugin({
-            /** Disable warning messages. Cant disable uglify for 3rd party libs such as html-janitor */
-            compress: {
-                warnings: false
-           }
-        }),
-
-        /** Block build if errors found */
-        new webpack.NoEmitOnErrorsPlugin(),
-
         /** Вырезает CSS из JS сборки в отдельный файл */
         new ExtractTextPlugin("public/build/bundle.css"),
     ],
