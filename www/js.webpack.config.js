@@ -41,6 +41,10 @@ module.exports = merge(baseConfig, {
         ],
         use : [
           {
+            /**
+             * CodeX Media Loader.
+             * Loader replace project's js source that inherits application's file
+             */
             loader: 'codex-media',
             options: {
               project: process.env.PROJECT

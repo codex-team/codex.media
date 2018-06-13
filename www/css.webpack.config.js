@@ -1,61 +1,17 @@
 /**
  * CSS Bundle config
  */
-require('dotenv').load();
+// import { Builder } from  "./builder.js";
 
-const webpack       = require('webpack');
 const merge         = require('webpack-merge');
-const path          = require('path');
 const baseConfig    = require('./base.webpack.config');
-const fs            = require('fs');
-
+const Builder       = require('./builder');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-let applicationDirectory = path.resolve(__dirname, './public/app/css');
-let projectDirectory = path.resolve(__dirname, './projects/' + process.env.PROJECT + '/public/css');
+/** Build Project if exists */
+Builder.buildCss();
 
-let applicationFiles = [];
-let projectFiles = [];
-let preBundle = [];
-
-function readDirFilesRecusrivelly(directory, extension, files = []) {
-    fs.readdirSync(directory).map( (name) => {
-        if (extension.test(name)) {
-            files.push({
-                name: name,
-                path: path.join(directory, name)
-            });
-        } else if (fs.statSync(directory).isDirectory()) {
-            readDirFilesRecusrivelly(path.join(directory, name), extension, files);
-        }
-    });
-
-}
-
-readDirFilesRecusrivelly(applicationDirectory, new RegExp('.css$'), applicationFiles);
-readDirFilesRecusrivelly(projectDirectory, new RegExp('.css$'), projectFiles);
-
-for(let i = 0; i < applicationFiles.length; i++) {
-
-    let inherited = projectFiles.find( (file) => {
-       return file.name === applicationFiles[i].name;
-    });
-
-    if (!inherited) {
-        preBundle.push(applicationFiles[i].path);
-    } else {
-        preBundle.push(inherited.path);
-    }
-}
-
-let preBundleContent = '';
-
-preBundle.forEach( function(file) {
-    preBundleContent = preBundleContent + `@import url('${file}');\n`;
-});
-
-fs.writeFileSync(path.resolve(__dirname, './public/build/prebuild.css'), preBundleContent);
-
+/** Webpack Configuration */
 module.exports = merge(baseConfig, {
 
     entry: './public/build/prebuild-css.js',
