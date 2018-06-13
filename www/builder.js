@@ -58,16 +58,35 @@ class Builder {
         Builder.readDirFilesRecusrivelly(applicationDirectory, new RegExp('.css$'), applicationFiles);
         Builder.readDirFilesRecusrivelly(projectDirectory, new RegExp('.css$'), projectFiles);
 
-        for(let i = 0; i < applicationFiles.length; i++) {
+        /**
+         * Inherite default styles with project's styles
+         */
+        for (let i = 0; i < applicationFiles.length; i++) {
 
+            /**
+             * Check if project has an inherited file with styles
+             */
             let inherited = projectFiles.find( (file) => {
                 return file.name === applicationFiles[i].name;
             });
 
+            /**
+             * If inherited file does not exist then add default styles
+             * otherwise add file from project
+             */
             if (!inherited) {
                 preBundle.push(applicationFiles[i].path);
             } else {
                 preBundle.push(inherited.path);
+            }
+        }
+
+        /**
+         * Add other project's styles
+         */
+        for (let i = 0; i < projectFiles.length; i++) {
+            if (!preBundle.includes(projectFiles[i].path)) {
+                preBundle.push(projectFiles[i].path);
             }
         }
 
@@ -78,7 +97,6 @@ class Builder {
         });
 
         fs.writeFileSync(path.resolve(__dirname, './public/build/prebuild.css'), preBundleContent);
-
     }
 }
 
