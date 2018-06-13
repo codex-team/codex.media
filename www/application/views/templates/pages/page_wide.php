@@ -53,15 +53,6 @@
         <meta itemprop="url" content="<?= $siteLogo ?>" id="organizationImgUrl" />
     </div>
 
-    <? if (!empty($page->parent->id)): ?>
-        <div class="article__parent js-emoji-included">
-            <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri?>">
-                <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
-                <?= HTML::chars($page->parent->title); ?>
-            </a>
-        </div>
-    <? endif ?>
-
     <? /* Page info */ ?>
     <header class="article__information">
 
@@ -156,6 +147,16 @@
         <? endif ?>
 
     </header>
+
+    <? if (!empty($page->parent->id)): ?>
+        <div class="article__parent js-emoji-included">
+            <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri?>">
+                <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
+                <?= HTML::chars($page->parent->title); ?>
+            </a>
+        </div>
+    <? endif ?>
+
 
     <? /* Page title */ ?>
     <div class="article__title-wrapper">
