@@ -32,13 +32,24 @@
     <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
 
 </head>
-<body>
+<?
+    $bodyModifiers = array();
+
+    if (!empty($site_info['branding']) && empty($hideBranding)){
+        $bodyModifiers[] = 'body--with-branding';
+    }
+
+    if (!empty($contentOnly)){
+        $bodyModifiers[] = 'body--content-only';
+    }
+?>
+<body class="<?= implode(' ', $bodyModifiers) ?>">
 
     <? if (Arr::get($_SERVER, 'ENABLE_GOV_SITE_WIDGET')): ?>
         <?= View::factory('templates/components/esir_navigator')->render(); ?>
     <? endif ?>
 
-    <? if (empty($contentOnly)): ?>
+    <? if (empty($hideBranding)): ?>
         <?= View::factory('templates/components/branding')->render(); ?>
     <? endif; ?>
 
@@ -46,14 +57,12 @@
 
         <div class="grid-cols-wrapper">
 
-            <? if (empty($contentOnly)): ?>
-                <? /* Left */ ?>
-                <div class="grid-col grid-col--left">
+            <? /* Left */ ?>
+            <div class="grid-col grid-col--left">
 
-                    <?= View::factory('templates/components/aside')->render(); ?>
+                <?= View::factory('templates/components/aside')->render(); ?>
 
-                </div>
-            <? endif; ?>
+            </div>
 
             <? /* Main block for page */ ?>
             <div class="grid-content <?= !empty($contentOnly) ? 'grid-content--stretched' : '' ?>">

@@ -1,4 +1,4 @@
-<article class="article island island--padded" itemscope itemtype="http://schema.org/Article">
+<article class="article <?= !empty($isWide) ? 'article--wide' : '' ?> island island--padded" itemscope itemtype="http://schema.org/Article">
 
     <?
         $domainAndProtocol = Model_Methods::getDomainAndProtocol();
@@ -10,7 +10,6 @@
         } else {
             $articleCover = $domainAndProtocol . "/public/app/img/meta-image.png";
         }
-
     ?>
 
     <script type="application/ld+json">
@@ -21,7 +20,7 @@
                 "@type": "WebPage",
                 "@id": "<?= $pageId ?>"
             },
-            "headline": "<?= $page->title; ?>",
+            "headline": "<?= HTML::chars($page->title); ?>",
             "datePublished": "<?= date(DATE_ISO8601, strtotime($page->date)) ?>",
             "image": {
                 "@type": "ImageObject",
@@ -29,8 +28,8 @@
             },
             "author": {
                 "@type": "Person",
-                "name": "<?= $page->author->name ?>",
-                "image": "<?= $page->author->photo ?>"
+                "name": "<?= HTML::chars($page->author->name); ?>",
+                "image": "<?= HTML::chars($page->author->photo); ?>"
             },
             "publisher": {
                 "@type": "Organization",
@@ -54,62 +53,51 @@
         <meta itemprop="url" content="<?= $siteLogo ?>" id="organizationImgUrl" />
     </div>
 
-    <? if (!empty($page->parent->id)): ?>
-        <div class="article__parent js-emoji-included">
-            <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri?>">
-                <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
-                <?= $page->parent->title ?>
-            </a>
-        </div>
-    <? endif ?>
-
     <? /* Page info */ ?>
     <header class="article__information">
 
-        <time class="article__time">
-            <a href="<?= $page->url ?>">
-                <?= $methods->ftime(strtotime($page->date)) ?>
+        <? if (!empty($isWide)): ?>
+            <a class="site-head clear" href="/">
+                <span class="site-head__logo <?= empty($site_info['logo']) ? 'site-head__logo--empty' : ''?>" data-placeholder="<?= mb_substr($site_info['title'], 0, 1, "UTF-8"); ?>">
+                    <? if (!empty($site_info['logo'])): ?>
+                        <img id="js-site-logo" src="/upload/logo/m_<?=  $site_info['logo'] ?>">
+                    <? endif ?>
+                </span>
+                <div class="r_col site-head__title">
+                    <?= $site_info['title'] ?><br>
+                    <?= $site_info['city'] ?>
+                </div>
             </a>
-        </time>
+        <? endif; ?>
 
-        <a class="article__author" href="/user/<?= $page->author->id ?>" itemscope itemtype="http://schema.org/Person" itemprop="author">
-            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>" itemprop="image">
-            <span itemprop="name"><?= $page->author->name ?></span>
-        </a>
-
-        <div class="article__information-right">
-
-            <span class="article__views-counter">
-                <? include(DOCROOT . "public/app/svg/eye.svg") ?>
-                <?= $page->views ?>
-            </span>
-
-            <a class="article__comments-counter" href="<?= $page->url ?>#comments">
-                <? include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>
-                <? /* ?>
-                <? if ($page->commentsCount > 0): ?>
-                    <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
-                <? else: ?>
-                    Комментировать
-                <? endif ?>
-                <? */ ?>
-                <?= $page->commentsCount ?>
+        <div class="article__information-section">
+            <a class="article__author" href="/user/<?= $page->author->id ?>" itemscope itemtype="http://schema.org/Person" itemprop="author">
+                <img src="<?= $page->author->photo ?>" alt="<?= HTML::chars($page->author->name); ?>" itemprop="image">
+                <span class="article__author-name" itemprop="name">
+                    <?= HTML::chars($page->author->shortName); ?>
+                </span>
             </a>
+            <time class="article__time">
+                <a href="<?= $page->url ?>">
+                    <?= $methods->ftime(strtotime($page->date)) ?>
+                </a>
+            </time>
+        </div>
 
-            <? /* Manage page buttons */ ?>
-            <? if ($page->canModify($user)): ?>
-
-                <span class="island-settings js-page-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
-                    <module-settings hidden>
-                        {
-                            "selector" : ".js-page-settings",
-                            "items" : [{
+        <? /* Manage page buttons */ ?>
+        <? if ($page->canModify($user)): ?>
+            <span class="island-settings js-page-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
+                <module-settings hidden>
+                    {
+                        "selector" : ".js-page-settings",
+                        "items" : [
+                            {
                                 "title" : "Редактировать",
                                 "handler" : {
                                     "module" : "pages",
                                     "method" : "openWriting"
                                 }
-                            }, 
+                            },
                             {
                                 "title" : "Вложенная страница",
                                 "handler" : {
@@ -140,32 +128,37 @@
                                     "module" : "pages",
                                     "method" : "remove"
                                 }
-                            }]
-                        }
-                    </module-settings>
-                    <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
-                </span>
+                            }
+                        ]
+                    }
+                </module-settings>
+                <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
+            </span>
 
-            <? endif ?>
-
-        </div>
-
+        <? endif ?>
     </header>
 
+    <? if (!empty($page->parent->id)): ?>
+        <div class="article__parent js-emoji-included">
+            <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri?>">
+                <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
+                <?= HTML::chars($page->parent->title) ?>
+            </a>
+        </div>
+    <? endif ?>
+
     <? /* Page title */ ?>
-    <h1 class="article__title js-emoji-included" itemprop="headline">
-        <?= $page->title ?>
-    </h1>
+    <div class="article__title-wrapper">
+        <h1 class="article__title js-emoji-included" itemprop="headline">
+            <?= HTML::chars($page->title); ?>
+        </h1>
+    </div>
 
     <? /* Page content */ ?>
     <? if (!empty($page->blocks)): ?>
         <div class="article__content js-emoji-included" itemprop="articleBody">
             <? foreach ($page->blocks as $block): ?>
-                <?=
-                    View::factory('templates/pages/blocks/' . $block['type'], [
-                        'block' => $block['data']
-                    ])->render();
-                ?>
+                <?= View::factory('templates/pages/blocks/' . $block['type'], ['block' => $block['data']])->render(); ?>
             <? endforeach; ?>
         </div>
     <? endif ?>
@@ -176,7 +169,7 @@
             <? foreach ($page->children as $child): ?>
                 <li class="children-pages__item">
                     <a class="children-pages__link" href="/p/<?= $child->id ?>/<?= $child->uri ?>">
-                        <?= $child->title ?>
+                        <?= HTML::chars($child->title); ?>
                     </a>
                 </li>
             <? endforeach ?>

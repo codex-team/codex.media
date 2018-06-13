@@ -71,7 +71,7 @@
                     </a>
                 </time>
                 <a class="post-list-item__author" href="/user/<?= $page->author->id ?>">
-                    <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>"><?= $page->author->name ?>
+                    <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>"><?= $page->author->shortName ?>
                 </a>
             </div>
 

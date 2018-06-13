@@ -4,6 +4,13 @@ class Model_User extends Model
 {
     public $id = 0;
     public $name = '';
+
+    /**
+     * Short name like Ястребова А. В.
+     * @var string
+     */
+    public $shortName = '';
+
     public $bio = '';
     public $password = '';
     public $photo = '';
@@ -88,6 +95,7 @@ class Model_User extends Model
             $this->isAdmin = $this->isAdmin();
             $this->isBanned = $this->isBanned();
             $this->isConfirmed = $this->isConfirmed();
+            $this->shortName = $this->getShortName();
 
             // $this->isOnline         = $this->redis->exists('user:'.$this->id.':online') ? 1 : 0;
             // $this->lastOnline       = self::getLastOnlineTimestamp();
@@ -285,5 +293,26 @@ class Model_User extends Model
     public function isConfirmed()
     {
         return !!$this->isConfirmed;
+    }
+
+    /**
+     * Make long user name shorter
+     * Ястребова Алина Владимировна --> Ястребова А. В.
+     *
+     * @return string
+     */
+    private function getShortName()
+    {
+        $parts = explode(' ', $this->name);
+
+        if (count($parts) < 3){
+            return $this->name;
+        }
+
+        $first_name = $parts[0];
+        $second_name = mb_substr($parts[1], 0, 1, "UTF-8");
+        $third_name = mb_substr($parts[2], 0, 1, "UTF-8");
+
+        return sprintf('%s %s. %s.', $first_name, $second_name, $third_name);
     }
 }

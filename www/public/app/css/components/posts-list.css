@@ -36,9 +36,10 @@
 .post-list-item__title {
     margin: 0;
     display: inline-block;
-    font-size: 1.7em;
+    font-size: 21px;
     line-height: 1.3em;
     font-weight: 700;
+    letter-spacing: -0.3px;
 }
 
 .post-list-item--big .post-list-item__title {
@@ -59,8 +60,6 @@
 }
 
 .post-list-item__footer {
-    border-top: 1px solid var(--lightGrayLine);
-    margin-top: calc(0.7 * var(--islandPadding));
     padding-top: calc(0.7 * var(--islandPadding));
     font-size: 0.9em;
     color: var(--grayText);
