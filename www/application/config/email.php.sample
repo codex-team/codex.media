@@ -1,0 +1,12 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.');
+
+/**
+ * @see https://github.com/sendgrid/sendgrid-php - PHP Configuration
+ * @see https://sendgrid.com/docs/API_Reference/Web_API_v3/API_Keys/index.html - Getting API KEYS
+ */
+return array
+(
+    'apiKey'      => '',
+    'senderName'  => 'CodeX Media',
+    'senderEmail' => 'test@codex-media.com'
+);
