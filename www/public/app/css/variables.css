@@ -28,6 +28,9 @@
     /** Island inner padding */
     --islandPadding: 30px;
 
+    /** Site content will pulled up for this margin */
+    --branding-negative-margin: -112px;
+
     /** Social networks colors */
     --vkColor: #547ba5;
     --twitterColor: #5ca4f6;
@@ -46,4 +49,5 @@
 */
 @custom-media --tablet all and (max-width: 1050px);
 @custom-media --mobile all and (max-width: 980px);
+@custom-media --not-mobile all and (min-width: 981px);
 @custom-media --retina all and (-webkit-min-device-pixel-ratio: 1.5);

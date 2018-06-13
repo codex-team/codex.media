@@ -7,6 +7,12 @@
  */
 class Controller_Page_Index extends Controller_Base_preDispatch
 {
+
+    /**
+     * If page has many blocks, show wide article template
+     */
+    const BLOCKS_TO_WIDE = 3;
+
     /**
      * Gets page data and sends it into View template /page/pages
      *
@@ -36,8 +42,14 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $this->view['page'] = $page;
 
         $this->title = $page->title;
-        $this->template->content = View::factory('templates/pages/page_wide', $this->view);
-        $this->template->contentOnly = true;
+
+        if (count($page->blocks) > self::BLOCKS_TO_WIDE){
+            $this->template->content = View::factory('templates/pages/page_wide', $this->view);
+            $this->template->contentOnly = true;
+        } else {
+            $this->template->content = View::factory('templates/pages/page', $this->view);
+        }
+
     }
 
     /**

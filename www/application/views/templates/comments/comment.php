@@ -15,7 +15,7 @@
 
         <div class="constrain">
             <a class="comment__author-name" href="/user/<?= $comment->author->id ?>">
-                <?= $comment->author->name ?>
+                <?= $comment->author->shortName ?>
             </a><br>
             <a class="comment__time" href="/p/<?= $comment->page_id ?>#comment<?= $comment->id ?>"><?= $methods->ftime(strtotime($comment->dt_create)); ?></a>
         </div>

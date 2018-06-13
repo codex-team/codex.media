@@ -5,7 +5,9 @@
 }
 
 .main-aside--offset-top {
-    margin-top: -112px;
+    @media (--not-mobile) {
+        margin-top: var(--branding-negative-margin);
+    }
 }
 
 .site-head {
@@ -112,36 +114,6 @@
 
 .button.logout:hover {
     background: #202328;
-}
-
-.main-aside .user_panel {
-    display: block;
-    padding: 15px var(--islandPadding);
-    border-bottom: 1px solid var(--lightGrayLine);
-    font-size: 14px;
-}
-
-.main-aside .user_panel:hover {
-    background: #f6f8fa;
-}
-
-.main-aside .user_panel img {
-    display: inline-block;
-    vertical-align: middle;
-    border-radius: 30px;
-    width: 26px;
-    height: 26px;
-    margin-right: 10px;
-}
-
-.user_panel__name {
-    vertical-align: middle;
-}
-
-.main-aside .logout {
-    margin-top: 21px;
-    margin-right: 20px;
-    color: #c6cad4;
 }
 
 /**
@@ -262,10 +234,6 @@
         padding: 4px;
     }
 
-    .main-aside--offset-top {
-        margin-top: 0;
-    }
-
     /**
     * Mobile site menu
     */
@@ -302,7 +270,5 @@
         margin: 15px;
     }
 
-    .main-aside .user_panel {
-        padding: 13px 15px;
-    }
+
 }

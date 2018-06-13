@@ -58,7 +58,7 @@
         <div class="article__parent js-emoji-included">
             <a href="/p/<?= $page->parent->id ?>/<?= $page->parent->uri?>">
                 <? include(DOCROOT . "public/app/svg/arrow-left.svg") ?>
-                <?= $page->parent->title ?>
+                <?= HTML::chars($page->parent->title) ?>
             </a>
         </div>
     <? endif ?>
@@ -73,26 +73,15 @@
         </time>
 
         <a class="article__author" href="/user/<?= $page->author->id ?>" itemscope itemtype="http://schema.org/Person" itemprop="author">
-            <img src="<?= $page->author->photo ?>" alt="<?= $page->author->name ?>" itemprop="image">
-            <span itemprop="name"><?= $page->author->name ?></span>
+            <img src="<?= HTML::chars($page->author->photo) ?>" alt="<?= HTML::chars($page->author->name); ?>" itemprop="image">
+            <span itemprop="name">
+                <?= HTML::chars($page->author->shortName); ?>
+            </span>
         </a>
 
         <div class="article__information-right">
-
-            <span class="article__views-counter">
-                <? include(DOCROOT . "public/app/svg/eye.svg") ?>
-                <?= $page->views ?>
-            </span>
-
             <a class="article__comments-counter" href="<?= $page->url ?>#comments">
                 <? include(DOCROOT . "public/app/svg/comment-bubble.svg") ?>
-                <? /* ?>
-                <? if ($page->commentsCount > 0): ?>
-                    <?= $page->commentsCount . PHP_EOL . $methods->num_decline($page->commentsCount, 'комментарий', 'комментария', 'комментариев'); ?>
-                <? else: ?>
-                    Комментировать
-                <? endif ?>
-                <? */ ?>
                 <?= $page->commentsCount ?>
             </a>
 
@@ -154,7 +143,7 @@
 
     <? /* Page title */ ?>
     <h1 class="article__title js-emoji-included" itemprop="headline">
-        <?= $page->title ?>
+        <?= HTML::chars($page->title); ?>
     </h1>
 
     <? /* Page content */ ?>
@@ -176,7 +165,7 @@
             <? foreach ($page->children as $child): ?>
                 <li class="children-pages__item">
                     <a class="children-pages__link" href="/p/<?= $child->id ?>/<?= $child->uri ?>">
-                        <?= $child->title ?>
+                        <?= HTML::chars($child->title); ?>
                     </a>
                 </li>
             <? endforeach ?>
