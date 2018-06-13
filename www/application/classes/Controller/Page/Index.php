@@ -42,14 +42,13 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $this->view['page'] = $page;
 
         $this->title = $page->title;
+        $this->view['isWide'] = count($page->blocks) > self::BLOCKS_TO_WIDE;
 
-        if (count($page->blocks) > self::BLOCKS_TO_WIDE){
-            $this->template->content = View::factory('templates/pages/page_wide', $this->view);
+        if ($this->view['isWide']){
             $this->template->contentOnly = true;
-        } else {
-            $this->template->content = View::factory('templates/pages/page', $this->view);
         }
 
+        $this->template->content = View::factory('templates/pages/page', $this->view);
     }
 
     /**
