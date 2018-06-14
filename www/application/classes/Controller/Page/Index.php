@@ -7,6 +7,12 @@
  */
 class Controller_Page_Index extends Controller_Base_preDispatch
 {
+
+    /**
+     * If page has many blocks, show wide article template
+     */
+    const BLOCKS_TO_WIDE = 3;
+
     /**
      * Gets page data and sends it into View template /page/pages
      *
@@ -36,6 +42,12 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $this->view['page'] = $page;
 
         $this->title = $page->title;
+        $this->view['isWide'] = count($page->blocks) > self::BLOCKS_TO_WIDE;
+
+        if ($this->view['isWide']){
+            $this->template->contentOnly = true;
+        }
+
         $this->template->content = View::factory('templates/pages/page', $this->view);
     }
 
@@ -76,5 +88,6 @@ class Controller_Page_Index extends Controller_Base_preDispatch
 
         $this->template->content = View::factory('templates/pages/writing', ['page' => $page, 'isPersonalBlog' => $isPersonalBlog]);
         $this->template->contentOnly = true;
+        $this->template->hideBranding = true;
     }
 }

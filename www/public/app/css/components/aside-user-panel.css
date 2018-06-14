@@ -1,0 +1,38 @@
+.user-panel {
+    display: block;
+    padding: 15px var(--islandPadding);
+    border-bottom: 1px solid var(--lightGrayLine);
+    font-size: 14.2px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (--mobile){
+        padding: 13px 15px;
+    }
+
+    &:hover {
+        background: #f6f8fa;
+    }
+
+    img {
+        display: inline-block;
+        vertical-align: middle;
+        border-radius: 30px;
+        width: 26px;
+        height: 26px;
+        margin-right: 10px;
+    }
+
+    &__name {
+        vertical-align: middle;
+    }
+
+    &__logout {
+        margin-top: 5px;
+        margin-left: 15px;
+        color: #c6cad4;
+    }
+}

@@ -195,6 +195,8 @@ class Model_Page extends Model
 
                 $page->fillByRow($page_row);
 
+                $page->modelCacheKey = Arr::get($_SERVER, 'DOMAIN', 'codex.media') . ':model:page:' . $page->id;
+
                 $page->content = $page->validateContent();
                 $page->blocks = $page->getBlocks(true);
                 $page->description = $page->getDescription();
