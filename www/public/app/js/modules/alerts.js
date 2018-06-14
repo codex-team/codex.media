@@ -3,8 +3,6 @@
 */
 module.exports = (function () {
 
-    require('../../css/modules/alerts.css');
-
     var CSS_ = {
         wrapper : 'cdx-notifies-wrapper',
         notification : 'cdx-notifies',
