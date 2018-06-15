@@ -28,7 +28,7 @@ module.exports = merge(baseConfig, {
           {
             loader: 'file-loader',
             options: {
-              name: '[1].[ext]',
+              name: '[hash].[ext]',
               publicPath: '/',
               regExp: 'node_modules/(.*)',
               outputPath: 'public/build/assets/',
