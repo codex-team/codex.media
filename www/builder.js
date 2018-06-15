@@ -12,19 +12,30 @@ class Builder {
      * Util that recursively get's folders files with passed extension and fills an array
      * @param {String} directory
      * @param {String} extension
-     * @param {Array} files
+     * @param {Array} outputFiles
      */
-    static readDirFilesRecusrivelly(directory, extension, files = []) {
-        fs.readdirSync(directory).map( (name) => {
-            if (extension.test(name)) {
-                files.push({
-                    name: name,
-                    path: path.join(directory, name)
-                });
-            } else if (fs.statSync(directory).isDirectory()) {
-                Builder.readDirFilesRecusrivelly(path.join(directory, name), extension, files);
-            }
+    static readDirFilesRecusrivelly(directory, extension, outputFiles = []) {
+
+        let directoryItems = fs.readdirSync(directory);
+
+        let files = directoryItems.filter( (name) => {
+            return !fs.statSync(path.join(directory, name)).isDirectory() && extension.test(name);
         });
+
+        let folders = directoryItems.filter( (name) => {
+            return fs.statSync(path.join(directory, name)).isDirectory();
+        });
+
+        outputFiles.push(...files.map(name => {
+            return {
+                name,
+                path: path.join(directory, name)
+            }
+        }));
+
+        folders.forEach( folderName => {
+            Builder.readDirFilesRecusrivelly(path.join(directory, folderName), extension, outputFiles);
+        })
 
     }
 
