@@ -55,13 +55,8 @@ class Builder {
         let projectFiles = [];
         let preBundle = [];
 
-        if (fs.existsSync(projectDirectory) && fs.statSync(applicationDirectory).isDirectory()) {
-            Builder.readDirFilesRecusrivelly(applicationDirectory, new RegExp('.css$'), applicationFiles);
-        }
-
-        if (fs.existsSync(projectDirectory) && fs.statSync(projectDirectory).isDirectory()) {
-            Builder.readDirFilesRecusrivelly(projectDirectory, new RegExp('.css$'), projectFiles);
-        }
+        Builder.readDirFilesRecusrivelly(applicationDirectory, new RegExp('.css$'), applicationFiles);
+        Builder.readDirFilesRecusrivelly(projectDirectory, new RegExp('.css$'), projectFiles);
 
         /**
          * Inherite default styles with project's styles
