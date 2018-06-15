@@ -55,7 +55,7 @@ class Builder {
         let projectFiles = [];
         let preBundle = [];
 
-        if (fs.existsSync(projectDirectory) && fs.statSync(applicationDirectory).isDirectory()) {
+        if (fs.existsSync(applicationDirectory) && fs.statSync(applicationDirectory).isDirectory()) {
             Builder.readDirFilesRecusrivelly(applicationDirectory, new RegExp('.css$'), applicationFiles);
         }
 
