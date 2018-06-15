@@ -28,7 +28,7 @@ module.exports = merge(baseConfig, {
           {
             loader: 'file-loader',
             options: {
-              name: '[hash].[ext]',
+              name: '[name].[ext]',
               publicPath: '/',
               regExp: 'node_modules/(.*)',
               outputPath: 'public/build/assets/',
@@ -48,7 +48,8 @@ module.exports = merge(baseConfig, {
             {
                 loader: 'css-loader',
                 options: {
-                    importLoaders: true
+                    importLoaders: true,
+                    minimize: true
                 }
             },
             'postcss-loader'

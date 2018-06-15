@@ -5,9 +5,10 @@
   "description": "Open platform for organizations",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build_js && npm run build_css",
+    "build": "npm run build_js && npm run build_css && npm run clean_prebuild",
     "build_js": "webpack --config js.webpack.config.js",
-    "build_css": "webpack --config css.webpack.config.js && rm public/build/prebuild.css && rm public/build/build-css.js && rm public/build/prebuild-css.js"
+    "build_css": "webpack --config css.webpack.config.js",
+    "clean_prebuild": "rm public/build/prebuild.css && rm public/build/build-css.js && rm public/build/prebuild-css.js"
   },
   "repository": {
     "type": "git",
