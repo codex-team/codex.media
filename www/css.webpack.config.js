@@ -7,6 +7,7 @@ const merge         = require('webpack-merge');
 const baseConfig    = require('./base.webpack.config');
 const Builder       = require('./builder');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const path          = require('path');
 
 /** Build Project if exists */
 Builder.buildCss();
@@ -16,7 +17,8 @@ module.exports = merge(baseConfig, {
 
     entry: './public/build/prebuild-css.js',
     output: {
-        filename: './public/build/build-css.js',
+        path: path.join(__dirname, 'public/build'),
+        filename: 'build-css.js',
         library: 'codex'
     },
 
@@ -31,7 +33,7 @@ module.exports = merge(baseConfig, {
               name: '[name].[ext]',
               publicPath: '/',
               regExp: 'node_modules/(.*)',
-              outputPath: 'public/build/assets/',
+              outputPath: 'assets/',
             },
           }
         ]
@@ -59,7 +61,7 @@ module.exports = merge(baseConfig, {
 
     plugins: [
         /** Вырезает CSS из JS сборки в отдельный файл */
-        new ExtractTextPlugin("public/build/bundle.css"),
+        new ExtractTextPlugin('bundle.css'),
 
     ],
 

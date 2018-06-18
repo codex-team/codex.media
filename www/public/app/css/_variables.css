@@ -1,7 +1,10 @@
 :root {
+    /** Links, underlines, other brand-colored elements */
+    --actions-color: #d32b26;
+
     /** Texts */
     --grayText: #6e758a;
-    --hoverColor: #d03931;
+    --hoverColor: color(var(--actions-color) blackness(+10%));
     --mediumText: #373f52;
 
     /** Colors */
@@ -26,7 +29,7 @@
     --islandMargin: 15px;
 
     /** Island inner padding */
-    --islandPadding: 30px;
+    --islandPadding: 25px;
 
     /** Site content will pulled up for this margin */
     --branding-negative-margin: -112px;

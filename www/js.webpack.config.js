@@ -11,20 +11,21 @@ module.exports = merge(baseConfig, {
 
     entry: './public/app/js/main.js',
     output: {
-        filename: './public/build/bundle.js',
+        path: path.join(__dirname, 'public/build'),
+        filename: 'bundle.js',
         library: 'codex'
     },
 
     resolve: {
       modules: [
-        path.resolve(__dirname, 'public/app/js'),
+        path.join(__dirname, 'public', 'app', 'js'),
         "node_modules"
       ],
       extensions: [".js", ".css"],
     },
 
     resolveLoader: {
-        modules: ['node_modules', path.resolve(__dirname, 'public/webpack-loaders')]
+        modules: ['node_modules', path.join('.', 'public', 'webpack-loaders')]
     },
 
     module: {
@@ -36,9 +37,9 @@ module.exports = merge(baseConfig, {
          * - eslint-loader
          */
         test: /\.js$/,
-        include: [
-          path.resolve(__dirname, 'public/app/js')
-        ],
+        // include: [
+        //   path.join('.', 'public', 'app', 'js')
+        // ],
         use : [
           {
             /**

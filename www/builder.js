@@ -48,7 +48,7 @@ class Builder {
             "\n" +
             "module.exports = {};";
 
-        fs.writeFileSync(path.resolve(__dirname, './public/build/prebuild-css.js'), prebuildJsContest);
+        fs.writeFileSync(path.join(__dirname, 'public', 'build', 'prebuild-css.js'), prebuildJsContest);
     }
 
     /**
@@ -59,19 +59,22 @@ class Builder {
         // prepare JS file that loads prebuilded CSS
         Builder.preBuild();
 
-        let applicationDirectory = path.resolve(__dirname, './public/app/css');
-        let projectDirectory = path.resolve(__dirname, './projects/' + process.env.PROJECT + '/public/css');
-
         let applicationFiles = [];
         let projectFiles = [];
         let preBundle = [];
+
+        let applicationDirectory = path.join(__dirname, 'public', 'app', 'css');
 
         if (fs.existsSync(applicationDirectory) && fs.statSync(applicationDirectory).isDirectory()) {
             Builder.readDirFilesRecusrivelly(applicationDirectory, new RegExp('.css$'), applicationFiles);
         }
 
-        if (fs.existsSync(projectDirectory) && fs.statSync(projectDirectory).isDirectory()) {
+        if (process.env.PROJECT) {
+          let projectDirectory = path.join(__dirname, 'projects', process.env.PROJECT, 'public', 'css');
+
+          if (fs.existsSync(projectDirectory) && fs.statSync(projectDirectory).isDirectory()) {
             Builder.readDirFilesRecusrivelly(projectDirectory, new RegExp('.css$'), projectFiles);
+          }
         }
 
         /**
@@ -112,7 +115,7 @@ class Builder {
             preBundleContent = preBundleContent + `@import url('${file}');\n`;
         });
 
-        fs.writeFileSync(path.resolve(__dirname, './public/build/prebuild.css'), preBundleContent);
+        fs.writeFileSync(path.join(__dirname, 'public', 'build', 'prebuild.css'), preBundleContent);
     }
 }
 
