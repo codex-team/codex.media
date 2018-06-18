@@ -8,6 +8,8 @@ module.exports = function (cover) {
         setCover       : 'posts-list-item__cover--empty',
         setCoverShowed : 'posts-list-item__cover--empty-showed',
         preview        : 'posts-list-item__cover--preview',
+        withSmallCover : 'posts-list-item--with-small-cover',
+        withBigCover   : 'posts-list-item--with-big-cover'
     };
 
     /**
@@ -20,7 +22,7 @@ module.exports = function (cover) {
      * Menu 'set-cover' button handler
      * @this menu Element
      */
-    cover.toggleButton = function () {
+    cover.toggleButton = function (coverSizeClass) {
 
         var pageId = this.dataset.id,
             pageIsland,
@@ -35,6 +37,18 @@ module.exports = function (cover) {
         }
 
         setCoverButton = pageIsland.querySelector('.' + css.cover);
+
+        if (coverSizeClass && coverSizeClass == css.withSmallCover) {
+
+            pageIsland.classList.toggle(css.withBigCover, false);
+            pageIsland.classList.add(css.withSmallCover);
+
+        } else if (coverSizeClass && coverSizeClass == css.withBigCover) {
+
+            pageIsland.classList.toggle(css.withSmallCover, false);
+            pageIsland.classList.add(css.withBigCover);
+
+        }
 
         setCoverButton.classList.add(css.setCover);
         setCoverButton.classList.toggle(css.setCoverShowed);

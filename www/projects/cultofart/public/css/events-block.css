@@ -1,0 +1,22 @@
+.events-block {
+    background-color: #fff;
+    padding: 22px 26px;
+    margin-bottom: 15px;
+
+    &__content {
+         display: flex;
+         justify-content: space-between;
+    }
+
+     h2 {
+         margin-top: 0;
+     }
+
+     &__full-calendar {
+          display: inline-block;
+          margin-top: 25px;
+          color: #d32b26;
+          font-size: 14px;
+          letter-spacing: 0.95px;
+      }
+}

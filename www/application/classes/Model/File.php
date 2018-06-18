@@ -317,7 +317,7 @@ class Model_File extends Model
         }
 
         if (!is_dir($path)) {
-            mkdir($path);
+            mkdir($path, 0777, true);
         }
 
         $file = Upload::save($file, null, $path);
