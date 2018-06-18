@@ -1,0 +1,23 @@
+.description-block {
+    margin-bottom: 20px;
+    padding: 23px 25px;
+    font-size: 14px;
+
+    h3 {
+        font-size: 16px;
+    }
+
+    .post-list-item__body {
+        max-width: 370px;
+        line-height: 21px;
+        margin-top: 9px;
+        margin-right: auto;
+    }
+
+    &__read-more {
+         color: #D32B26;
+         display: inline-block;
+         margin-top: 15px;
+         letter-spacing: 0.95px;
+     }
+}

@@ -1,3 +1,4 @@
+<?= View::factory('templates/pages/description_block')->render(); ?>
 <?/** add form for new page */ ?>
 <? if ($user->id): ?>
 
