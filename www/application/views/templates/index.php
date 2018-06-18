@@ -10,15 +10,11 @@
 <? /***/ ?>
 
 <div class="island tabs">
-    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::MAIN ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::MAIN ?>">
-        Главное
-    </a>
-    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::TEACHERS ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::TEACHERS ?>">
-        Блоги преподавателей
-    </a>
-    <a class="tabs__tab <?= $active_tab == Model_Feed_Pages::ALL ? 'tabs__tab--current' : '' ?>" href="/<?= Model_Feed_Pages::ALL ?>">
-        Все записи
-    </a>
+    <? foreach ($tabs as $tab): ?>
+        <a class="tabs__tab <?= $active_tab == $tab['uri'] ? 'tabs__tab--current' : '' ?>" href="/<?= $tab['uri'] ?>">
+            <?= $tab['label'] ?>
+        </a>
+    <? endforeach; ?>
 </div>
 
 <?/** pages list */ ?>
