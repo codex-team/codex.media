@@ -23,7 +23,7 @@ class Model_Settings extends Model_preDispatch
     public static function getAll()
     {
         $parameterRow = Dao_Settings::select()
-            ->cached(Date::MINUTE * 30, 'settings')
+            ->cached(Date::MINUTE * 5, 'settings')
             ->execute();
 
         $siteSettings = [];

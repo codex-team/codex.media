@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
@@ -10,9 +9,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
-    <meta property="og:site_name" content="<?= $GLOBALS['SITE_NAME'] ?>" />
+    <meta property="og:site_name" content="<?= Arr::get($site_info, 'title', 'CodeX Media') ?>" />
 
-    <title><?= $title ? $title : $GLOBALS['SITE_NAME'] . ': ' . $GLOBALS['SITE_SLOGAN'] ?></title>
+    <title>
+        <?= $title ?: Arr::get($site_info, 'title', 'CodeX Media') . ': ' . Arr::get($site_info, 'description', 'Platform for building UGC media') ?>
+    </title>
 
     <base href="/" />
 
