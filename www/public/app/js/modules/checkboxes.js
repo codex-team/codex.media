@@ -34,7 +34,7 @@ module.exports = function () {
      * Custom event for checkboxes. Dispatches when checkbox clicked
      * @type {CustomEvent}
      */
-    const ToggleEvent = new window.CustomEvent('toggle')
+    const ToggleEvent = new window.CustomEvent('toggle');
 
     /**
      * Elements classes dictionary

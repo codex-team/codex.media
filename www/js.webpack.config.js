@@ -37,9 +37,9 @@ module.exports = merge(baseConfig, {
          * - eslint-loader
          */
         test: /\.js$/,
-        include: [
-          path.join('.', 'public', 'app', 'js')
-        ],
+        // include: [
+        //   path.join('.', 'public', 'app', 'js')
+        // ],
         use : [
           {
             /**

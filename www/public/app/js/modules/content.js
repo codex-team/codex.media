@@ -44,7 +44,7 @@ module.exports = (function () {
      */
     const setMobileMenuToggler = function ( id ) {
 
-      const menuToggler = document.getElementById(id);
+        const menuToggler = document.getElementById(id);
 
         if ( !menuToggler ) {
 
