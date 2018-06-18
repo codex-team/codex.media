@@ -4,15 +4,15 @@
 module.exports = (function () {
 
     /**
-    * Toggles classname on passed blocks
-    * @param {string} selector
-    * @param {string} toggled classname
-    */
-    var toggle = function ( which, marker ) {
+     * Toggles classname on passed blocks
+     * @param {string} selector
+     * @param {string} toggled classname
+     */
+    const toggle = function ( which, marker ) {
 
-        var elements = document.querySelectorAll( which );
+        const elements = document.querySelectorAll( which );
 
-        for (var i = elements.length - 1; i >= 0; i--) {
+        for (let i = elements.length - 1; i >= 0; i--) {
 
             elements[i].classList.toggle( marker );
 
@@ -22,12 +22,12 @@ module.exports = (function () {
 
 
     /**
-    * Toggles mobile menu
-    * Handles clicks on the hamburger icon in header
-    */
-    var toggleMobileMenu = function ( event ) {
+     * Toggles mobile menu
+     * Handles clicks on the hamburger icon in header
+     */
+    const toggleMobileMenu = function ( event ) {
 
-        var menu = document.getElementById('js-mobile-menu-holder'),
+        let menu = document.getElementById('js-mobile-menu-holder'),
             openedClass = 'mobile-menu-holder--opened';
 
         menu.classList.toggle(openedClass);
@@ -42,9 +42,9 @@ module.exports = (function () {
      * Create listener for mobile menu toggler
      * @param {String} id — toggler's id
      */
-    var setMobileMenuToggler = function ( id ) {
+    const setMobileMenuToggler = function ( id ) {
 
-        var menuToggler = document.getElementById(id);
+      const menuToggler = document.getElementById(id);
 
         if ( !menuToggler ) {
 
@@ -65,7 +65,7 @@ module.exports = (function () {
     *    <input type="checkbox" name="" value="1"/>
     * </span>
     */
-    var customCheckboxes = {
+    const customCheckboxes = {
 
         /**
         * This class specifies checked custom-checkbox
@@ -75,7 +75,7 @@ module.exports = (function () {
 
         init : function () {
 
-            var checkboxes = document.getElementsByClassName('js-custom-checkbox');
+            let checkboxes = document.getElementsByClassName('js-custom-checkbox');
 
             if (checkboxes.length) for (var i = checkboxes.length - 1; i >= 0; i--) {
 
@@ -87,7 +87,7 @@ module.exports = (function () {
 
         clicked : function () {
 
-            var checkbox  = this,
+            let checkbox  = this,
                 input     = this.querySelector('input'),
                 isChecked = this.classList.contains(codex.content.customCheckboxes.CHECKED_CLASS);
 
@@ -106,15 +106,15 @@ module.exports = (function () {
         }
     };
 
-    var approvalButtons = {
+    const approvalButtons = {
 
         CLICKED_CLASS : 'click-again-to-approve',
 
         init : function () {
 
-            var buttons = document.getElementsByClassName('js-approval-button');
+            let buttons = document.getElementsByClassName('js-approval-button');
 
-            if (buttons.length) for (var i = buttons.length - 1; i >= 0; i--) {
+            if (buttons.length) for (let i = buttons.length - 1; i >= 0; i--) {
 
                 buttons[i].addEventListener('click', codex.content.approvalButtons.clicked, false);
 
@@ -124,7 +124,7 @@ module.exports = (function () {
 
         clicked : function (event) {
 
-            var button    = this,
+            let button    = this,
                 isClicked = this.classList.contains(codex.content.approvalButtons.CLICKED_CLASS);
 
             if (!isClicked) {
@@ -140,13 +140,11 @@ module.exports = (function () {
     };
 
     return {
-
-        toggleMobileMenu : toggleMobileMenu,
-        setMobileMenuToggler : setMobileMenuToggler,
-        customCheckboxes : customCheckboxes,
-        approvalButtons : approvalButtons,
-        toggle : toggle
-
+        toggleMobileMenu,
+        setMobileMenuToggler,
+        customCheckboxes,
+        approvalButtons,
+        toggle
     };
 
 }());

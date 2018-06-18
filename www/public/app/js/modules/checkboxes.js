@@ -34,24 +34,25 @@ module.exports = function () {
      * Custom event for checkboxes. Dispatches when checkbox clicked
      * @type {CustomEvent}
      */
-    var ToggleEvent = new window.CustomEvent('toggle'),
+    const ToggleEvent = new window.CustomEvent('toggle')
 
-        /**
+    /**
      * Elements classes dictionary
      */
-        CLASSES    = {
-            wrapper: 'cdx-checkbox',
-            checkbox: 'cdx-checkbox__slider',
-            checked: 'cdx-checkbox--checked',
-            defaultCheckbox: 'cdx-default-checkbox--hidden'
-        },
-        /**
+    const CLASSES = {
+        wrapper: 'cdx-checkbox',
+        checkbox: 'cdx-checkbox__slider',
+        checked: 'cdx-checkbox--checked',
+        defaultCheckbox: 'cdx-default-checkbox--hidden'
+    };
+
+    /**
      * Elements names dictionary
      */
-        NAMES      = {
-            checkbox: 'cdx-custom-checkbox',
-            defaultInput: 'cdx-custom-checkbox'
-        };
+    const NAMES = {
+        checkbox: 'cdx-custom-checkbox',
+        defaultInput: 'cdx-custom-checkbox'
+    };
 
 
     /**
@@ -59,9 +60,9 @@ module.exports = function () {
      *
      * @param wrapper - element with `cdx-custom-checkbox` name
      */
-    var prepareCheckbox = function (wrapper) {
+    const prepareCheckbox = function (wrapper) {
 
-        var input      = document.createElement('INPUT'),
+        let input      = document.createElement('INPUT'),
             checkbox   = document.createElement('SPAN'),
             firstChild = wrapper.firstChild;
 
@@ -100,9 +101,9 @@ module.exports = function () {
     /**
      * Handler for click event on checkbox. Toggle checkbox state and dispatch CheckEvent
      */
-    var clicked = function () {
+    const clicked = function () {
 
-        var wrapper  = this,
+        let wrapper  = this,
             checkbox = wrapper.querySelector('.' + CLASSES.checkbox),
             input    = checkbox.querySelector('input');
 
@@ -121,16 +122,16 @@ module.exports = function () {
     /**
      * Takes all elements with `cdx-custom-checkbox` name and calls prepareCheckbox function for each one
      */
-    var init = function () {
+    const init = function () {
 
-        var checkboxes = document.getElementsByName(NAMES.checkbox);
+        let checkboxes = document.getElementsByName(NAMES.checkbox);
 
         Array.prototype.forEach.call(checkboxes, prepareCheckbox);
 
     };
 
     return {
-        init: init
+        init
     };
 
 }();

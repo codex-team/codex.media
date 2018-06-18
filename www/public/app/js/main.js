@@ -14,26 +14,26 @@ codex = function () {
     'use strict';
 
     /**
-    * Static nodes cache
-    */
+     * Static nodes cache
+     */
 
     codex.nodes = {
         content: null
     };
 
     /**
-    * @var Application settings
-    * @type {Object}
-    * @type {Number} appSettings.uploadMaxSize    - max size for Editor uploads in MB
-    */
+     * @var Application settings
+     * @type {Object}
+     * @type {Number} appSettings.uploadMaxSize    - max size for Editor uploads in MB
+     */
     codex.appSettings = {
         uploadMaxSize: 25
     };
 
     /**
-    * Initiztes application
-    * @param {Object} appSettings - initial settings
-    */
+     * Initiztes application
+     * @param {Object} appSettings - initial settings
+     */
     codex.init = function (appSettings) {
 
         /**
@@ -55,60 +55,60 @@ codex = function () {
     };
 
     /**
-    * Function responsible for modules initialization
-    * Called no earlier than document is ready
-    */
+     * Function responsible for modules initialization
+     * Called no earlier than document is ready
+     */
     function initModules() {
 
         /**
-       * Instantiate moduleDispatcher to init Modules
-       * @type {moduleDispatcher}
-       */
+         * Instantiate moduleDispatcher to init Modules
+         * @type {moduleDispatcher}
+         */
         new moduleDispatcher({
             Library : codex
         });
 
         /**
-        * CodeX Special
-        *
-        * Availiable options:
-        *    position {String} (optional) — toolbar position on screen
-        *        'top-left', 'bottom-right', 'bottom-left', 'top-right'
-        *    blockId {String} (optional) — toolbar wrapper
-        *    lang {String} (optional) — language 'ru' or 'en'. (default: 'ru')
-        */
+         * CodeX Special
+         *
+         * Availiable options:
+         *    position {String} (optional) — toolbar position on screen
+         *        'top-left', 'bottom-right', 'bottom-left', 'top-right'
+         *    blockId {String} (optional) — toolbar wrapper
+         *    lang {String} (optional) — language 'ru' or 'en'. (default: 'ru')
+         */
         codex.special.init({
             blockId: 'js-contrast-version-holder'
         });
 
         /**
-        * Stylize custom checkboxes
-        */
+         * Stylize custom checkboxes
+         */
         codex.checkboxes.init();
 
         /**
-        * Init approval buttons
-        */
+         * Init approval buttons
+         */
         codex.content.approvalButtons.init();
 
         /**
-        * Enable textarea autoresizer
-        */
+         * Enable textarea autoresizer
+         */
         codex.autoresizeTextarea.init();
 
         /**
-        * Activate scroll-up button
-        */
+         * Activate scroll-up button
+         */
         codex.scrollUp.init('js-layout-holder');
 
         /**
-        * Client is ready
-        */
+         * Client is ready
+         */
         codex.core.log('Initialized', 'CodeX', 'info');
 
         /**
-        * Initiate branding preload
-        */
+         * Initiate branding preload
+         */
         codex.branding.init();
 
         /**
@@ -116,7 +116,7 @@ codex = function () {
          */
         codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
 
-    };
+    }
 
     return codex;
 
