@@ -24,6 +24,7 @@
 
 .tabs__tab--current {
     box-shadow: inset 0 -2px 0 0 var(--tabsBorderColor);
+    font-weight: bold;
 }
 
 @media (--mobile) {
