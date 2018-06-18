@@ -22,7 +22,7 @@ module.exports = function(source, map) {
         return;
     }
 
-    let customScriptPath = path.resolve('projects/' + options.project + '/public/js/' + filename);
+    let customScriptPath = path.normalize(__dirname, '..', '..', 'projects', options.project, 'public', 'js', filename);
     this.addDependency(customScriptPath);
 
     try {
