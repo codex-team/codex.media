@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create dump page
-echo "<meta http-equiv="refresh" content="3"> Project is being updated. Wait a little bit" > install.php
+echo "<meta http-equiv="refresh" content="3"> Project is being updated. Wait a little bit." > install.php
 
 # Pull last updates from remote repository
 git pull
