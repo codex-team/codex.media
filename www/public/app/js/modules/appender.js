@@ -71,7 +71,7 @@ var appender = {
     load : function () {
 
         var requestUrl = this.settings.url + (parseInt(this.page) + 1);
-            // separator   = '<a href="' + requestUrl + '"><div class="article post-list-item w_island separator">Page ' + (parseInt(this.page) + 1) + '</div></a>';
+        // separator   = '<a href="' + requestUrl + '"><div class="article post-list-item w_island separator">Page ' + (parseInt(this.page) + 1) + '</div></a>';
 
         codex.ajax.call({
             type: 'post',

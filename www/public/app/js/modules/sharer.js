@@ -93,9 +93,9 @@ var sharer = {
          * Sanitize share params
          * @todo test for taint strings
          */
-            // for (key in window.shareData){
-            //      window.shareData[key] = encodeURIComponent(window.shareData[key]);
-            // }
+        // for (key in window.shareData){
+        //      window.shareData[key] = encodeURIComponent(window.shareData[key]);
+        // }
 
         var shareData = {
 

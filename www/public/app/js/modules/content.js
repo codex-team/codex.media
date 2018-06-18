@@ -3,7 +3,7 @@
 */
 module.exports = (function () {
 
-     /**
+    /**
     * Toggles classname on passed blocks
     * @param {string} selector
     * @param {string} toggled classname

@@ -53,11 +53,11 @@ module.exports = (function () {
         mergeSettings(initSettings);
 
         return loadEditorResources(settings.resources)
-                .then(function () {
+            .then(function () {
 
-                    editorIsReady = true;
+                editorIsReady = true;
 
-                });
+            });
 
     };
 

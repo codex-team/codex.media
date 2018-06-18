@@ -36,7 +36,7 @@ module.exports = function () {
      */
     var ToggleEvent = new window.CustomEvent('toggle'),
 
-    /**
+        /**
      * Elements classes dictionary
      */
         CLASSES    = {
@@ -45,7 +45,7 @@ module.exports = function () {
             checked: 'cdx-checkbox--checked',
             defaultCheckbox: 'cdx-default-checkbox--hidden'
         },
-    /**
+        /**
      * Elements names dictionary
      */
         NAMES      = {

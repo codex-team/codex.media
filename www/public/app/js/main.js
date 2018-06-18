@@ -13,7 +13,7 @@ codex = function () {
 
     'use strict';
 
-   /**
+    /**
     * Static nodes cache
     */
 
@@ -21,7 +21,7 @@ codex = function () {
         content: null
     };
 
-   /**
+    /**
     * @var Application settings
     * @type {Object}
     * @type {Number} appSettings.uploadMaxSize    - max size for Editor uploads in MB
@@ -30,7 +30,7 @@ codex = function () {
         uploadMaxSize: 25
     };
 
-   /**
+    /**
     * Initiztes application
     * @param {Object} appSettings - initial settings
     */
@@ -54,13 +54,13 @@ codex = function () {
 
     };
 
-   /**
+    /**
     * Function responsible for modules initialization
     * Called no earlier than document is ready
     */
     function initModules() {
 
-      /**
+        /**
        * Instantiate moduleDispatcher to init Modules
        * @type {moduleDispatcher}
        */
@@ -68,7 +68,7 @@ codex = function () {
             Library : codex
         });
 
-       /**
+        /**
         * CodeX Special
         *
         * Availiable options:
@@ -81,32 +81,32 @@ codex = function () {
             blockId: 'js-contrast-version-holder'
         });
 
-       /**
+        /**
         * Stylize custom checkboxes
         */
         codex.checkboxes.init();
 
-       /**
+        /**
         * Init approval buttons
         */
         codex.content.approvalButtons.init();
 
-       /**
+        /**
         * Enable textarea autoresizer
         */
         codex.autoresizeTextarea.init();
 
-       /**
+        /**
         * Activate scroll-up button
         */
         codex.scrollUp.init('js-layout-holder');
 
-       /**
+        /**
         * Client is ready
         */
         codex.core.log('Initialized', 'CodeX', 'info');
 
-       /**
+        /**
         * Initiate branding preload
         */
         codex.branding.init();
