@@ -1,4 +1,4 @@
-<div class="island about js-emoji-included">
+<div class="island island--padded island--bottomed js-emoji-included">
     <h3 class="island__title">
         <a href="">
             Our mission

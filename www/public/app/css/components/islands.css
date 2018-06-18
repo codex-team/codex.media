@@ -6,6 +6,29 @@
     border-radius: 3px;
     box-shadow: 0 1px 0 0 #f0f3f9;
     word-break: break-word;
+
+    &__title {
+         display: inline-block;;
+         margin: 0;
+         font-size: 16px;
+         line-height: 1.3em;
+         font-weight: 700;
+     }
+
+    &__caption {
+         max-width: 370px;
+         line-height: 21px;
+         font-size: 14px;
+         margin: 9px auto 0 0;
+     }
+
+    &__link {
+         color: var(--actions-color);
+         display: inline-block;
+         margin-top: 15px;
+         font-size: 14px;
+         letter-spacing: 0.95px;
+     }
 }
 
 .island--bottom-rounded {
