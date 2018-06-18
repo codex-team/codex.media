@@ -39,6 +39,9 @@
     /** Editor block inner width */
     --article-max-width: 650px;
 
+    /** Tabs border colors */
+    --tabsBorderColor: #d32b26;
+
     /** Additional fonts families */
     --serif-font: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans";
 
