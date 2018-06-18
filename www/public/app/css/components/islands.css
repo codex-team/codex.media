@@ -42,7 +42,7 @@
 }
 
 .island--padded {
-    padding: 20px 30px;
+    padding: calc(var(--islandPadding) * 0.65) var(--islandPadding);
 }
 
 .island--margined {

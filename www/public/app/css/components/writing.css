@@ -29,8 +29,8 @@
 }
 
 .writing__actions {
-    margin: 0 -30px;
-    padding: 20px 30px;
+    margin: 0 calc(var(--islandPadding) * -1);
+    padding: calc(var(--islandPadding) * 0.65) var(--islandPadding);
     border-top: 1px solid #f5f6fb;
     background: #fdfdfe;
 }
