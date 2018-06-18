@@ -4,10 +4,11 @@
             Our mission
         </a>
     </h3>
-     <p class="island__caption">
-         Вообще "миссия" это текст 1000 знаков. Он важен для понимания нашей деятельности и наших ценностей. Поэтому он нужен в первую очередь...
-     </p>
-     <a href="" class="island__link">
-         Read more about Culture of Art »
-     </a>
+    <div class="island__caption">
+        Вообще "миссия" это текст 1000 знаков. Он важен для понимания нашей деятельности и наших ценностей.
+        Поэтому он нужен в первую очередь...
+    </div>
+    <a href="" class="island__link">
+        Read more about Culture of Art »
+    </a>
 </div>

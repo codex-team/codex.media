@@ -9,7 +9,7 @@
 .tabs__tab {
     display: inline-flex;
     font-weight: 500;
-    padding: calc(var(--islandPadding) * 0.65) 0;
+    padding: calc(var(--islandPadding) * 0.6) 0;
     margin-right: 25px;
 }
 
@@ -24,7 +24,6 @@
 
 .tabs__tab--current {
     box-shadow: inset 0 -2px 0 0 var(--actions-color);
-    font-weight: bold;
 }
 
 @media (--mobile) {
