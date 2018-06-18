@@ -1,0 +1,41 @@
+.organizations-island {
+    background: transparent;
+    box-shadow: none;
+    margin-bottom: 25px;
+    max-width: 236px;
+    margin-left: auto;
+    position: static;
+
+    &:before {
+         display: block;
+         content: attr(data-title);
+         color: #81899C;
+         text-transform: uppercase;
+         font-weight: bold;
+         letter-spacing: 1.11px;
+         margin-bottom: 16px;
+     }
+
+    &__item {
+         font-size: 14px;
+         line-height: 17px;
+         margin: 8px 0;
+         display: flex;
+         align-items: center;
+         font-weight: 500;
+
+        &:first-of-type {
+             margin-top: 0;
+         }
+
+        &-img {
+             display: inline-block;
+             flex-shrink: 0;
+             width: 26px;
+             height: 26px;
+             border-radius: 50%;
+             background-color: #424B62;
+             margin: 0 8px;
+         }
+    }
+}

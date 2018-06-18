@@ -1,0 +1,122 @@
+.post-list-item--cltofa {
+    .post-list-item__comments {
+        &:before {
+             display: inline-block;
+             vertical-align: text-top;
+             content: '';
+             background: #cbcdd2;
+             width: 16px;
+             height: 16px;
+             border-radius: 50%;
+             margin-right: 4px;
+         }
+    }
+
+    .post-list-item__author {
+        margin-right: 20px;
+
+        img {
+            width: 20px;
+            height: 20px;
+            margin-top: -2px;
+            margin-right: 7px;
+        }
+    }
+
+    .post-list-item__header {
+        font-size: 13px;
+        color: #8c919a;
+    }
+
+}
+
+/**
+ * Set cover button
+ */
+.posts-list-item--with-small-cover {
+    .posts-list-item__cover {
+        float: right;
+        height: 90px;
+        width: 90px;
+        border-radius: 4px;
+        margin-right: 0px;
+        margin-top: 8px;
+        margin-left: 20px;
+
+        @media (--mobile) {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+        }
+
+        &.posts-list-item__cover--empty {
+            height: 90px;
+            position: relative;
+
+            @media (--mobile) {
+                height: 60px;
+                width: 60px;
+            }
+
+            svg {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                width: 60px;
+                height: 60px;
+                margin-top: 0;
+                position: absolute;
+
+                @media (--mobile) {
+                    height: 35px;
+                    width: 35px;
+                }
+            }
+        }
+    }
+}
+
+.posts-list-item--with-big-cover {
+    display: flex;
+    flex-direction: column;
+
+    .post-list-item__header {
+        order: -2;
+    }
+
+    .post-list-item__body {
+        order: -1;
+    }
+
+    .posts-list-item__cover {
+        margin-bottom: 0;
+
+        @media (--mobile) {
+            margin-bottom: -15px;
+        }
+
+        &.posts-list-item__cover--empty {
+             position: relative;
+
+            @media (--mobile) {
+                height: 170px;
+            }
+
+            svg {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                width: 100px;
+                height: 100px;
+                margin-top: 0;
+                position: absolute;
+
+                @media (--mobile) {
+                    height: 60px;
+                    width: 60px;
+                }
+            }
+         }
+    }
+}
+

@@ -1,0 +1,11 @@
+.own-organizations {
+    padding: 11px 14px;
+
+    .organizations-island__item {
+        font-size: 13px;
+        &-img {
+             width: 20px;
+             height: 20px;
+         }
+    }
+}

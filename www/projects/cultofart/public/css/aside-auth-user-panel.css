@@ -1,0 +1,53 @@
+.auth-user-panel {
+    padding: 20px 20px 16px 20px;
+
+    img {
+        display: inline-block;
+        float: left;
+        vertical-align: middle;
+        border-radius: 30px;
+        width: 26px;
+        height: 26px;
+        margin-right: 10px;
+        margin-top: 0;
+    }
+
+    &__name {
+         padding-top: 4px;
+     }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+     }
+
+     &__settings {
+        margin-top: 4px;
+        a {
+            color: #8C919A;
+            font-size: 12px;
+
+            &:first-of-type:after {
+                content: '|';
+                 margin-left: 4px;
+             }
+        }
+      }
+
+    &__add-button {
+         display: inline-block;
+         background-color: #4bc78e;
+         padding: 5px 15.5px 5px 10.5px;
+         color: #ffffff;
+         border-radius: 14.5px;
+         font-size: 13.3px;
+         line-height: 16px;
+         letter-spacing: 0.2px;
+         font-weight: bold;
+         margin: 5px auto 5px 20px;
+
+        &:last-of-type {
+             margin-bottom: 18px;
+         }
+     }
+}

@@ -1,0 +1,42 @@
+.center-col.center-col-1075 {
+    max-width: 1075px;
+}
+
+.grid-col.grid-col--organizations-aside {
+    min-width: 236px;
+    padding: 15px 30px 15px 0;
+    box-sizing: border-box;
+    border-left: 0 solid transparent;
+
+    @media (--mobile) {
+        display: none;
+    }
+}
+
+.grid-col--auth-aside {
+    min-width: 230px;
+    border-left: 0 solid transparent;
+}
+.grid-content.grid-col--content {
+    min-width: 550px;
+    border-left: 0 solid transparent;
+    box-sizing: content-box;
+
+    @media (--mobile) {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .ce-block__content {
+        max-width: 490px;
+    }
+}
+
+/** It's default **/
+.body--content-only {
+    .grid-content.grid-col--content {
+        .ce-block__content {
+            max-width: 590px;
+        }
+    }
+}
