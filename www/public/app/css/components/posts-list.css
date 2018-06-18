@@ -110,7 +110,7 @@
 .posts-list-item__cover {
     display: block;
     height: 300px;
-    margin: 20px -30px -21px;
+    margin: 20px calc(-1 * var(--islandPadding)) 0;
     background-color: var(--lightGrayBackground);
     background-size: cover;
     background-position: center center;
