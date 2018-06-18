@@ -17,8 +17,8 @@
          margin: 9px auto 0 0;
     }
 
-    &__read-more {
-         color: #D32B26;
+    &__more {
+         color: var(--actions-color);
          display: inline-block;
          margin-top: 15px;
          letter-spacing: 0.95px;
