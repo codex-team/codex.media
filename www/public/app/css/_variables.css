@@ -39,7 +39,7 @@
     /** Editor block inner width */
     --article-max-width: 650px;
 
-    /** Tabs border colors */
+    /** Links, underlines, other brand-colored elements */
     --actions-color: #d32b26;
 
     /** Additional fonts families */

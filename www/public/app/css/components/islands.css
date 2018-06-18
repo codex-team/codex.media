@@ -5,7 +5,28 @@
     background: #fff;
     border-radius: 3px;
     box-shadow: 0 1px 0 0 #f0f3f9;
+    font-size: 14px;
     word-break: break-word;
+
+    &__title {
+         margin: 0 0 9px 0;
+         font-size: 16px;
+         line-height: 1.3em;
+         font-weight: 700;
+     }
+
+    &__caption {
+         max-width: 370px;
+         line-height: 21px;
+         margin: 9px auto 0 0;
+     }
+
+    &__link {
+         color: var(--actions-color);
+         display: inline-block;
+         margin-top: 15px;
+         letter-spacing: 0.95px;
+     }
 }
 
 .island--bottom-rounded {
