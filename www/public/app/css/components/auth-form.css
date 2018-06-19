@@ -18,7 +18,7 @@
 }
 
 .auth-form__footer a:hover {
-    color: var(--hoverColor);
+    color: var(--color-hover);
 }
 
 .auth-form__error {

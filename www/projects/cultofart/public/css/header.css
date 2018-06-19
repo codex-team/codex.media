@@ -1,74 +1,70 @@
 /**
  * Header styles
  */
+:root {
+    --header-height: 50px;
+}
+
+body {
+    margin-top: var(--header-height);
+}
 
 .header {
-    height: 50px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: var(--header-height);
     background-color: #fff;
-    box-shadow: 0 1px 0 0 rgba(224, 224, 224, 0.5);
+    box-shadow: 0 1px 1px 0 rgba(224, 224, 224, 0.3);
     font-size: 13px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing:grayscale;
+    line-height: var(--header-height);
 
     &__content {
          display: flex;
          align-items: center;
          justify-content: space-between;
          height: inherit;
-         padding: 0 20px;
 
         @media (--mobile) {
             padding: 0 15px;
         }
      }
 
-     &__title {
-          font-weight: 900;
-          text-transform: uppercase;
-          letter-spacing: 0.45px;
+    &__title {
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.45px;
+    }
 
-        &:before {
-             display: inline-block;
-             content: '';
-             background-image: url("/public/app/svg/shield-logo.svg");
-             width: 25.5px;
-             height: 34px;
-             vertical-align: middle;
-             margin-top: -7px;
-             margin-right: 4px;
-         }
-      }
+    &__logo {
+        height: 23px;
+        width: 21px;
+        margin-right: 5px;
+        vertical-align: middle;
+        margin-top: -4px;
+    }
+
 
     &__button {
-         display: inline-block;
-         font-size: 13.4px;
-         line-height: 16px;
-         letter-spacing: 0.2px;
-         color: #fff;
-         background-color: #408fda;
-         border-radius: 14.5px;
-         padding: 6px 14.5px 7px;
-
-        &:hover {
-             color: #fff;
-         }
+        @apply --button;
 
         @media (--mobile) {
             display: none;
         }
-     }
+    }
 
     &__address {
-         letter-spacing: 0.4px;
-         color: #8c919a;
-         margin-left: auto;
+        letter-spacing: 0.2px;
+        color: var(--grayText);
+        margin-left: auto;
 
         @media (--mobile) {
             display: none;
         }
-     }
+    }
 
-     &__lang {
+    &__lang {
         margin: 0 25px;
 
         @media (--mobile) {
@@ -76,24 +72,22 @@
         }
 
         &-item {
-             color: #000;
-             text-transform: uppercase;
+            display: inline-block;
+            padding: 0 5px;
+            color: #000;
 
             &:hover {
-                 cursor: pointer;
-             }
+                cursor: pointer;
+                color: var(--color-hover);
+            }
+        }
+    }
 
-            &:first-of-type:after {
-                 content: '|';
-                 margin-left: 3px;
-             }
-         }
-      }
     &__mobile-menu-toggler {
         display: none;
 
         @media (--mobile) {
             display: inline-block;
         }
-     }
+    }
 }

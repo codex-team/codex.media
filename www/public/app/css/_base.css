@@ -20,7 +20,7 @@ a {
 }
 
 a:hover {
-    color: var(--hoverColor);
+    color: var(--color-hover);
 }
 
 textarea {
@@ -270,8 +270,8 @@ input[disabled]:hover {
 }
 
 .border-button:hover {
-    color: var(--hoverColor);
-    border-color: color(var(--hoverColor) alpha(-80%));
+    color: var(--color-hover);
+    border-color: color(var(--color-hover) alpha(-80%));
 }
 
 

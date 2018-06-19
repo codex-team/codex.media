@@ -10,7 +10,7 @@
 }
 
 .site-footer a:hover {
-    color: var(--hoverColor);
+    color: var(--color-hover);
 }
 
 .site-footer__contacts {

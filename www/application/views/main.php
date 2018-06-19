@@ -46,8 +46,6 @@
 ?>
 <body class="<?= implode(' ', $bodyModifiers) ?>">
 
-    <?= View::factory('templates/components/header')->render(); ?>
-
     <? if (Arr::get($_SERVER, 'ENABLE_GOV_SITE_WIDGET')): ?>
         <?= View::factory('templates/components/esir_navigator')->render(); ?>
     <? endif ?>

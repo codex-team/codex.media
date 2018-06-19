@@ -89,8 +89,8 @@
 }
 
 .article__content a:hover {
-    color: var(--hoverColor);
-    border-bottom: 1px solid color(var(--hoverColor) lightness(+35%));
+    color: var(--color-hover);
+    border-bottom: 1px solid color(var(--color-hover) lightness(+35%));
 }
 
 .article .sharing {
@@ -238,7 +238,7 @@
     }
 
     &-url:hover {
-        color: var(--hoverColor) !important;
+        color: var(--color-hover) !important;
     }
 
     &-photo {

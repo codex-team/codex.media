@@ -68,7 +68,7 @@
 .post-list-item__comments:hover,
 .post-list-item__date:hover,
 .post-list-item__author:hover {
-    color: var(--hoverColor);
+    color: var(--color-hover);
 }
 
 .post-list-item__comments svg {

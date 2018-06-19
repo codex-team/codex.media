@@ -171,7 +171,7 @@
 }
 
 .writing-fullscreen__button:hover {
-    color: var(--hoverColor);
+    color: var(--color-hover);
 }
 
 .writing-fullscreen__button svg {
