@@ -12,7 +12,9 @@
         <div class="header__lang">
             <span class="header__lang-item">RU</span>|<span class="header__lang-item">EN</span>
         </div>
-        <a href="" class="header__button">Support the Project</a>
+        <a href="" class="header__button">
+            Support the Project
+        </a>
         <span class="mobile-menu-toggler header__mobile-menu-toggler" id="js-mobile-menu-toggler">
             <? include(DOCROOT . "public/app/svg/menu.svg") ?>
         </span>

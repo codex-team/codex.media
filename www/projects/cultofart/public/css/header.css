@@ -21,10 +21,10 @@ body {
     line-height: var(--header-height);
 
     &__content {
-         display: flex;
-         align-items: center;
-         justify-content: space-between;
-         height: inherit;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: inherit;
 
         @media (--mobile) {
             padding: 0 15px;
