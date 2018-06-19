@@ -1,0 +1,7 @@
+.main-aside {
+    top: calc(var(--header-height) + 15);
+}
+
+.site-head--in-aside {
+    display: none;
+}

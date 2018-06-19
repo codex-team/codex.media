@@ -1,0 +1,15 @@
+.article {
+    &--wide .site-head {
+        display: none;
+    }
+
+    &--wide .article__information {
+        &-section {
+            margin-left: 55px;
+        }
+
+        .island-settings {
+            margin-left: auto;
+        }
+    }
+}
