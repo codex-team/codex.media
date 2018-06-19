@@ -21,7 +21,7 @@
     }
 
     &__link {
-         color: var(--actions-color);
+         color: var(--color-actions);
          display: inline-block;
          margin-top: 15px;
          letter-spacing: 0.35px;

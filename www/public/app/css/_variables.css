@@ -1,15 +1,16 @@
 :root {
     /** Links, underlines, other brand-colored elements */
-    --actions-color: #d32b26;
+    --color-actions: #d32b26;
+
+    /** Payment buttons */
+    --color-payment: #408FDA;
 
     /** Texts */
     --grayText: #6e758a;
-    --hoverColor: color(var(--actions-color) blackness(+10%));
+    --color-hover: color(var(--color-actions) blackness(+10%));
     --mediumText: #373f52;
 
     /** Colors */
-    --blueColor: #007aff;
-    --greenColor: #4cd964;
     --redColor: #d03931;
 
     /** Links */
@@ -44,6 +45,24 @@
 
     /** Additional fonts families */
     --serif-font: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans";
+
+
+    /** Default button styles */
+    --button: {
+        display: inline-block;
+        font-size: 13.4px;
+        line-height: 1em;
+        letter-spacing: 0.2px;
+        color: #fff;
+        background: var(--color-payment);
+        border-radius: 14.5px;
+        padding: 8px 15px;
+
+        &:hover {
+            color: #fff;
+            background: color(var(--color-payment) blackness(+15%));
+        }
+    }
 
 }
 

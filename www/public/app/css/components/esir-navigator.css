@@ -1,7 +1,7 @@
 /**
  * ESIR navigator placeholder
  */
-body {
+body.esir-showed {
     margin-top: 0 !important;
 }
 

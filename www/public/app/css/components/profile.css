@@ -56,7 +56,7 @@
 }
 
 .profile__about--editable:hover {
-    color: var(--hoverColor);
+    color: var(--color-hover);
 }
 
 .profile__about textarea {

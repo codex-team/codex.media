@@ -44,8 +44,8 @@
 }
 
 .comment__text a:hover {
-    color: var(--hoverColor);
-    border-bottom: 1px solid color(var(--hoverColor) lightness(+35%));
+    color: var(--color-hover);
+    border-bottom: 1px solid color(var(--color-hover) lightness(+35%));
 }
 
 .comment__actions--button {
@@ -197,7 +197,7 @@
 }
 
 .comment-target__show-more:hover {
-    color: var(--hoverColor);
+    color: var(--color-hover);
 }
 
 .comment-target__text-hided {

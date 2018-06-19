@@ -18,12 +18,12 @@
 }
 
 .tabs__tab:hover {
-    color: var(--hoverColor);
-    box-shadow: inset 0 -2px 0 0 color(var(--hoverColor) lightness(+20%));
+    color: var(--color-hover);
+    box-shadow: inset 0 -2px 0 0 color(var(--color-hover) lightness(+20%));
 }
 
 .tabs__tab--current {
-    box-shadow: inset 0 -2px 0 0 var(--actions-color);
+    box-shadow: inset 0 -2px 0 0 var(--color-actions);
 }
 
 @media (--mobile) {
