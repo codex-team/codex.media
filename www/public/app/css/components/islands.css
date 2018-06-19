@@ -6,25 +6,26 @@
     border-radius: 3px;
     box-shadow: 0 1px 0 0 #f0f3f9;
     font-size: 14px;
-    line-height: 1.5em;
     word-wrap: break-word;
 
     &__title {
-         margin: 0 0 10px 0;
-         font-size: 1.15em;
-         font-weight: 700;
+        margin: 0 0 10px 0;
+        font-size: 1.15em;
+        font-weight: 700;
+        line-height: 1.5em;
     }
 
     &__caption {
-         max-width: 370px;
-         margin-right:auto;
+        max-width: 370px;
+        margin-right:auto;
+        line-height: 1.5em;
     }
 
     &__link {
-         color: var(--color-actions);
-         display: inline-block;
-         margin-top: 15px;
-         letter-spacing: 0.35px;
+        color: var(--color-actions);
+        display: inline-block;
+        margin-top: 15px;
+        letter-spacing: 0.35px;
     }
 }
 

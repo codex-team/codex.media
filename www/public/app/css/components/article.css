@@ -455,7 +455,8 @@
         .article__image,
         .article__person,
         .article__table,
-        .file-attached {
+        .file-attached,
+        .link-embed {
             @apply --entry-column-width;
             margin-left: auto;
             margin-right: auto;
