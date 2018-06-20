@@ -33,7 +33,6 @@ class Controller_Index extends Controller_Base_preDispatch
             $this->response->headers('Content-Type', 'application/json; charset=utf-8');
             $this->response->body(json_encode($response));
         } else {
-
             $this->view['tabs'] = Kohana::$config->load('index-tabs');
             $this->view['pages'] = $pages;
             $this->view['next_page'] = $next_page;

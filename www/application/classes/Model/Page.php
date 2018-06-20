@@ -187,6 +187,7 @@ class Model_Page extends Model
 
     /**
      * @param $page_rows
+     *
      * @return array
      */
     public static function rowsToModels($page_rows)

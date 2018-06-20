@@ -13,6 +13,7 @@ class Config extends Kohana_Config
 {
     /**
      * Configs folder name
+     *
      * @var string
      */
     protected $config_path = 'config';
@@ -26,9 +27,11 @@ class Config extends Kohana_Config
      *
      * See [Kohana_Config_Group] for more info
      *
-     * @param   string  $group  configuration group name
-     * @return  Kohana_Config_Group
-     * @throws  Kohana_Exception
+     * @param string $group configuration group name
+     *
+     * @throws Kohana_Exception
+     *
+     * @return Kohana_Config_Group
      */
     public function load($group)
     {
@@ -38,7 +41,7 @@ class Config extends Kohana_Config
         /**
          * If Project's Config found, use this Config File instead of base
          */
-        if ($projectConfig !== false){
+        if ($projectConfig !== false) {
             $configFile = new Kohana_Config_File($projectConfigDir);
             $config = $configFile->load($group);
 

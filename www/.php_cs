@@ -1,6 +1,11 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()->in(__DIR__);
+$finder = PhpCsFixer\Finder::create()
+                           ->in([
+                                'application',
+                                'projects',
+                                'public'
+                            ]);
 
 $rules = [
     '@PSR2' => true,
@@ -41,6 +46,6 @@ $rules = [
 ];
 
 return PhpCsFixer\Config::create()
-    ->setUsingCache(false)
-    ->setRules($rules)
-    ->setFinder($finder);
+                        ->setUsingCache(false)
+                        ->setRules($rules)
+                        ->setFinder($finder);

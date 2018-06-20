@@ -172,7 +172,7 @@ class Model_Social_Vk extends Model_preDispatch
 
         return "{$this->url_method}{$method}?{$parameters}" .
             "&access_token={$this->token}" .
-            "&https={$this->https}".
+            "&https={$this->https}" .
                 "&version=5.40";
     }
 }

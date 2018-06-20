@@ -23,9 +23,11 @@ class View extends Kohana_View
      *
      *     $view->set_filename($file);
      *
-     * @param   string  $file   view filename
-     * @return  View
-     * @throws  View_Exception
+     * @param string $file view filename
+     *
+     * @throws View_Exception
+     *
+     * @return View
      */
     public function set_filename($file)
     {
@@ -33,9 +35,9 @@ class View extends Kohana_View
         $project_path = Kohana::find_file('../projects' . DIRECTORY_SEPARATOR . Arr::get($_SERVER, 'PROJECT', '') . DIRECTORY_SEPARATOR . $this->view_path, $file);
 
         if ($application_path === false && $project_path === false) {
-            throw new View_Exception('The requested view :file could not be found', array(
+            throw new View_Exception('The requested view :file could not be found', [
                 ':file' => $file,
-            ));
+            ]);
         }
 
         // Store the file path locally
