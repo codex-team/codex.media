@@ -97,6 +97,24 @@ if (file_exists('install' . EXT)) {
     return include 'install' . EXT;
 }
 
+// Load Composer autoload
+require VENDORPATH . 'autoload' . EXT;
+
+/**
+ * Load Dotenv
+ *
+ * @see https://github.com/vlucas/phpdotenv
+ */
+if (is_file(DOCROOT . '.env')) {
+    $dotenv = new Dotenv\Dotenv(DOCROOT);
+    $dotenv->load();
+}
+
+/**
+ * Check for maintenance dummy page
+ */
+include 'maintenance' . EXT;
+
 /**
  * Define the start time of the application, used for profiling.
  */
