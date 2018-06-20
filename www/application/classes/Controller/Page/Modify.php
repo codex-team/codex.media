@@ -261,7 +261,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         /** Take an instance of class for getting right description */
         $this->page = new Model_Page($this->page->id);
 
-        $server_name = 'http' . ((Arr::get($_SERVER, 'HTTPS')) ? 's' : '') . '://' . Arr::get($_SERVER, 'SERVER_NAME');
+        $server_name = 'http' . ((Arr::get($_SERVER, 'HTTPS')) ? 's' : '') . '://' . Arr::get($_SERVER, 'HTTP_HOST');
         $link = "{$server_name}" . "/p/{$this->page->id}/{$this->page->uri}";
 
         $description = strip_tags($this->page->description);
