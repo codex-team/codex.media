@@ -2,6 +2,8 @@
 
 /**
  * Show dummy page if project is not released yet.
+ * Add NOT_RELEASED=1 to .env file.
+ *
  * By default file public/maintenance.html will be shown.
  * If you set a project name in .env then script will try to return file
  * projects/<project_name>/public/maintenance.html.
