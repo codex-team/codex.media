@@ -92,11 +92,6 @@ define('VENDORPATH', realpath($vendor) . DIRECTORY_SEPARATOR);
 // Clean up the configuration vars
 unset($application, $modules, $system, $vendor);
 
-if (file_exists('install' . EXT)) {
-    // Load the installation check
-    return include 'install' . EXT;
-}
-
 // Load Composer autoload
 require VENDORPATH . 'autoload' . EXT;
 
@@ -114,6 +109,13 @@ if (is_file(DOCROOT . '.env')) {
  * Check for maintenance dummy page
  */
 include 'maintenance' . EXT;
+
+/**
+ * Load the installation check
+ */
+if (file_exists('install' . EXT)) {
+    return include 'install' . EXT;
+}
 
 /**
  * Define the start time of the application, used for profiling.

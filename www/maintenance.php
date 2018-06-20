@@ -20,12 +20,10 @@ $keyName = 'access';
 /**
  * Get 'access' param from query
  */
-$queryAccess =  !empty($_GET[$keyName]) ? $_GET[$keyName] : null;
-
-ob_start();
+$queryAccess =  isset($_GET[$keyName]) ? $_GET[$keyName] : null;
 
 /** Remove access cookie */
-if ($queryAccess === null) {
+if ($queryAccess === "0") {
     setcookie($keyName, null, -1);
 
 /** If query param is not set */
@@ -37,8 +35,6 @@ if ($queryAccess === null) {
 } elseif (!empty($_COOKIE[$keyName])) {
     $hasAccess = true;
 }
-
-ob_end_flush();
 
 /**
  * Show dummy page if project is not released
