@@ -12,23 +12,20 @@
     <meta property="og:site_name" content="<?= Arr::get($site_info, 'title', 'CodeX Media') ?>" />
 
     <title>
-        <?= $title ?: Arr::get($site_info, 'title', 'CodeX Media') . ': ' . Arr::get($site_info, 'description', 'Platform for building UGC media') ?>
+        <?= $title ?: Arr::get($site_info, 'title', 'CodeX Media') . ': ' . Arr::get($site_info, 'description', '') ?>
     </title>
 
     <base href="/" />
 
     <!-- <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700&subset=cyrillic" rel="stylesheet"> -->
 
-    <? if (!empty($_SERVER['HAWK_TOKEN'])): ?>
-        <script src="https://rawgit.com/codex-team/hawk.client/master/hawk.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');"></script>
-    <? endif; ?>
-
     <link rel="stylesheet" type="text/css" media="all" href="/public/build/bundle.css?v=<?= filemtime('public/build/bundle.css'); ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
 
-    <meta name="image" property="og:image"  content="https://school332.ru/public/app/img/meta-image.png" />
-    <link rel="image_src" href="https://school332.ru/public/app/img/meta-image.png" />
-
+    <? if ( !empty($site_info['meta_image']) ): ?>
+        <meta name="image" property="og:image"  content="<?= $site_info['meta_image'] ?>" />
+        <link rel="image_src" href="<?= $site_info['meta_image'] ?>" />
+    <? endif; ?>
 
     <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
 
@@ -83,6 +80,10 @@
         window.csrf = '<?= Security::token(); ?>';
 
     </script>
+
+    <? if (!empty($_SERVER['HAWK_TOKEN'])): ?>
+        <script src="https://rawgit.com/codex-team/hawk.client/master/hawk.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');"></script>
+    <? endif; ?>
 
     <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>
 
