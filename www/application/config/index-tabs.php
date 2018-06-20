@@ -1,17 +1,16 @@
-<?php defined('SYSPATH') OR die('No direct access allowed.');
+<?php defined('SYSPATH') or die('No direct access allowed.');
 
-return array
-(
-    array(
+return [
+    [
         'uri' => Model_Feed_Pages::MAIN,
         'label' => 'Главное'
-    ),
-    array(
+    ],
+    [
         'uri' => Model_Feed_Pages::TEACHERS,
         'label' => 'Блоги преподавателей'
-    ),
-    array(
+    ],
+    [
         'uri' => Model_Feed_Pages::ALL,
         'label' => 'Все записи'
-    ),
-);
+    ],
+];

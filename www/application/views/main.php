@@ -34,13 +34,13 @@
 
 </head>
 <?
-    $bodyModifiers = array();
+    $bodyModifiers = [];
 
-    if (!empty($site_info['branding']) && empty($hideBranding)){
+    if (!empty($site_info['branding']) && empty($hideBranding)) {
         $bodyModifiers[] = 'body--with-branding';
     }
 
-    if (!empty($contentOnly)){
+    if (!empty($contentOnly)) {
         $bodyModifiers[] = 'body--content-only';
     }
 ?>

@@ -44,7 +44,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $this->title = $page->title;
         $this->view['isWide'] = count($page->blocks) > self::BLOCKS_TO_WIDE;
 
-        if ($this->view['isWide']){
+        if ($this->view['isWide']) {
             $this->template->contentOnly = true;
         }
 

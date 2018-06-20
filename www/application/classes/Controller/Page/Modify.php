@@ -51,6 +51,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         if ($errors) {
             $this->ajax_response['message'] = implode(', ', $errors);
             $this->response->body(json_encode($this->ajax_response));
+
             return;
         }
 

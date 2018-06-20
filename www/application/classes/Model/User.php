@@ -7,6 +7,7 @@ class Model_User extends Model
 
     /**
      * Short name like Ястребова А. В.
+     *
      * @var string
      */
     public $shortName = '';
@@ -305,7 +306,7 @@ class Model_User extends Model
     {
         $parts = explode(' ', $this->name);
 
-        if (count($parts) < 3){
+        if (count($parts) < 3) {
             return $this->name;
         }
 
