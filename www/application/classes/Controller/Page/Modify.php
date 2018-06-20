@@ -46,15 +46,11 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $this->page->title = Arr::get($_POST, 'title', $this->page->title);
         $this->page->content = Arr::get($_POST, 'content', $this->page->content);
 
-        $error = $this->getErrors([
-            'title' => Arr::get($_POST, 'title', '')
-        ]);
+        $errors = $this->getErrors($_POST);
 
-        if ($error) {
-            $this->ajax_response['message'] = $error['message'];
-
+        if ($errors) {
+            $this->ajax_response['message'] = implode(', ', $errors);
             $this->response->body(json_encode($this->ajax_response));
-
             return;
         }
 
@@ -232,13 +228,16 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
      */
     private function getErrors($fields)
     {
+        $errors = [];
         if (!Valid::not_empty($fields['title'])) {
-            return [
-                'message' => 'Не заполнен заголовок'
-            ];
+            $errors[] = 'Не заполнен заголовок';
         }
 
-        return false;
+        if (!Valid::not_empty($fields['content'])) {
+            $errors[] = 'Некорректные данные, попробуйте обновить страницу';
+        }
+
+        return $errors ?: false;
     }
 
     /**
