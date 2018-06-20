@@ -76,12 +76,12 @@
 }
 
 .profile-settings__change-password-btn {
-    color: var(--grayText);
+    color: var(--color-gray);
     cursor: pointer;
 }
 
 .profile-settings__change-password-btn:hover {
-    color: color(var(--grayText) blackness(+80%));
+    color: color(var(--color-gray) blackness(+80%));
 }
 
 .profile-settings__change-password-result-text {

@@ -2,12 +2,12 @@
     position: relative;
     float: right;
     cursor: pointer;
-    color: var(--grayText);
+    color: var(--color-gray);
     user-select: none;
 }
 
 .island-settings:hover {
-    color: color(var(--grayText) blackness(+80%));
+    color: color(var(--color-gray) blackness(+80%));
 }
 
 .island-settings__menu {
@@ -62,7 +62,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     font-size: 14px;
-    color: var(--grayText);
+    color: var(--color-gray);
 }
 
 .island-settings__item:hover {

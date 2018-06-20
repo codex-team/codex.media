@@ -70,7 +70,7 @@
 }
 
 .island__navigation-item {
-    color: var(--grayText);
+    color: var(--color-gray);
 }
 
 .island__navigation-item--right {

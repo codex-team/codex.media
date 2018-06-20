@@ -5,3 +5,12 @@
 .center-col {
     max-width: 1100px;
 }
+
+.grid-col {
+    width: 245px;
+    box-sizing: border-box;
+}
+
+.codex-special__toolbar {
+    display: none;
+}

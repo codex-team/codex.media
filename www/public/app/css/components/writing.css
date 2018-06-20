@@ -82,7 +82,7 @@
 
 .writing-navigation {
     padding-top: 30px;
-    color: var(--grayText);
+    color: var(--color-gray);
 }
 
 .writing-navigation svg {
@@ -96,7 +96,7 @@
 
 .writing-wrapper__placeholder {
     padding: 15px var(--islandPadding);
-    color: var(--grayText);
+    color: var(--color-gray);
     font-size: 14px;
 }
 
@@ -166,7 +166,7 @@
 
 .writing-fullscreen__button {
     margin-left: auto;
-    color: var(--grayText);
+    color: var(--color-gray);
     cursor: pointer;
 }
 

@@ -38,7 +38,7 @@
 .profile__about {
     margin: 0 0 20px;
     overflow: hidden;
-    color: var(--grayText);
+    color: var(--color-gray);
     font-size: 1.2em;
     letter-spacing: 0.3px;
     line-height: 1.5em;

@@ -6,7 +6,7 @@
     --color-payment: #408FDA;
 
     /** Texts */
-    --grayText: #6e758a;
+    --color-gray: #6e758a;
     --color-hover: color(var(--color-actions) blackness(+10%));
     --mediumText: #373f52;
 

@@ -189,7 +189,7 @@ input[disabled]:hover {
 }
 
 ::placeholder {
-    color: var(--grayText);
+    color: var(--color-gray);
 }
 
 /**
@@ -241,8 +241,8 @@ input[disabled]:hover {
     display: inline-block;
     margin-right: 15px;
     padding: 7px 10px;
-    color: var(--grayText);
-    border: 1px solid color(var(--grayText) alpha(-80%));
+    color: var(--color-gray);
+    border: 1px solid color(var(--color-gray) alpha(-80%));
     border-radius: 3px;
 }
 
@@ -292,7 +292,7 @@ input[disabled]:hover {
 */
 .empty-motivator {
     text-align: center;
-    color: var(--grayText);
+    color: var(--color-gray);
     padding: 35px !important;
     font-size: 14px;
     line-height: 1.4em;

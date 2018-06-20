@@ -57,7 +57,7 @@ body {
 
     &__address {
         letter-spacing: 0.2px;
-        color: var(--grayText);
+        color: var(--color-gray);
         margin-left: auto;
 
         @media (--mobile) {
