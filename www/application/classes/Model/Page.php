@@ -185,23 +185,30 @@ class Model_Page extends Model
         return true;
     }
 
+    /**
+     * @param $page_rows
+     * @return array
+     */
     public static function rowsToModels($page_rows)
     {
         $pages = [];
 
         if (!empty($page_rows)) {
             foreach ($page_rows as $page_row) {
-                $page = new Model_Page();
+                try {
+                    $page = new Model_Page();
 
-                $page->fillByRow($page_row);
+                    $page->fillByRow($page_row);
 
-                $page->modelCacheKey = Arr::get($_SERVER, 'DOMAIN', 'codex.media') . ':model:page:' . $page->id;
+                    $page->modelCacheKey = Arr::get($_SERVER, 'DOMAIN', 'codex.media') . ':model:page:' . $page->id;
+                    $page->content = $page->validateContent();
+                    $page->blocks = $page->getBlocks(true);
+                    $page->description = $page->getDescription();
 
-                $page->content = $page->validateContent();
-                $page->blocks = $page->getBlocks(true);
-                $page->description = $page->getDescription();
-
-                array_push($pages, $page);
+                    array_push($pages, $page);
+                } catch (Exception $e) {
+                    \Hawk\HawkCatcher::catchException($e);
+                }
             }
         }
 

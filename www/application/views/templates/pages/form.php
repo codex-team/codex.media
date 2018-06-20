@@ -13,6 +13,7 @@
     <?= Form::hidden('csrf', Security::token()); ?>
     <?= Form::hidden('id', $page->id); ?>
     <?= Form::hidden('id_parent', $page->id_parent); ?>
+    <?= Form::hidden('content', !empty($page->content) ? $page->content : ''); ?>
 
     <div class="writing__title-wrapper">
         <textarea class="writing__title js-autoresizable" rows="1" name="title" placeholder="Заголовок" id="editorWritingTitle"><?= $page->title ?></textarea>
@@ -36,7 +37,13 @@
                 $vkPost = $page->isPostedInVK || ($fromIndexPage && $fromNewsTab);
             ?>
 
-            <span class="button master" onclick="codex.writing.submit(this)">Отправить</span>
+            <span class="button master" onclick="codex.writing.submit(this)">
+                <? if ($page->id): ?>
+                    Сохранить
+                <? else: ?>
+                    Опубликовать
+                <? endif; ?>
+            </span>
 
             <? if ($user->isAdmin() && !$fromUserProfile): ?>
                 <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
