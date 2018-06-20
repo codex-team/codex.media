@@ -13,9 +13,6 @@ if (is_file(APPPATH . 'classes/Kohana' . EXT)) {
     require SYSPATH . 'classes/Kohana' . EXT;
 }
 
-// Load Composer autoload
-require VENDORPATH . 'autoload' . EXT;
-
 /**
  * Set the default time zone.
  *
@@ -62,17 +59,6 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
  * Set the default language
  */
 I18n::lang('en-us');
-
-/**
- * Load Dotenv
- *
- * @see https://github.com/vlucas/phpdotenv
- */
-if (is_file(DOCROOT . '.env')) {
-    $dotenv = new Dotenv\Dotenv(DOCROOT);
-    $dotenv->load();
-}
-
 
 /**
  * Set upload max size in Number
