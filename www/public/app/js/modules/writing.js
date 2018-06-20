@@ -30,7 +30,6 @@ module.exports = (function () {
     var linkTool = require('exports-loader?cdxEditorLink!codex.editor.link');
 
     var editorIsReady = false,
-        submitButton = null,
         settings = {
             hideEditorToolbar   : false,
             titleId             : 'editorWritingTitle',
@@ -345,14 +344,6 @@ module.exports = (function () {
 
         if (!atlasForm) return;
 
-        /** CodeX.Editor */
-        var JSONinput = document.createElement('TEXTAREA');
-
-        JSONinput.name   = 'content';
-        JSONinput.id     = 'json_result';
-        JSONinput.hidden = true;
-        atlasForm.appendChild(JSONinput);
-
         /**
          * Save blocks
          */
@@ -368,10 +359,21 @@ module.exports = (function () {
      */
     var submit = function (button) {
 
+        const buttonLoadingClass = 'loading';
+
+        /**
+         * Prevent multiple submitting
+         */
+        if (button.classList.contains(buttonLoadingClass)) {
+
+            return;
+
+        }
+
         var title = document.forms.atlas.elements['title'],
             form;
 
-        if (title.value.trim() === '') {
+        if (!title.value.trim()) {
 
             codex.editor.notifications.notification({
                 type: 'warn',
@@ -384,18 +386,21 @@ module.exports = (function () {
 
         form = getForm();
 
-        submitButton = button;
-
-        submitButton.classList.add('loading');
+        button.classList.add(buttonLoadingClass);
 
         window.setTimeout(function () {
 
-            form.elements['content'].innerHTML = JSON.stringify({items: codex.editor.state.jsonOutput});
+            form.elements['content'].value = JSON.stringify({items: codex.editor.state.jsonOutput});
 
             codex.ajax.call({
                 url: '/p/save',
                 data: new FormData(form),
-                success: submitResponse,
+                success: (response) => {
+
+                    button.classList.remove(buttonLoadingClass);
+                    submitResponse(response);
+
+                },
                 type: 'POST'
             });
 
@@ -408,8 +413,6 @@ module.exports = (function () {
      * @param response
      */
     var submitResponse = function (response) {
-
-        submitButton.classList.remove('loading');
 
         response = JSON.parse(response);
 
@@ -437,7 +440,7 @@ module.exports = (function () {
 
         window.setTimeout(function () {
 
-            form.elements['content'].innerHTML = JSON.stringify({ items: codex.editor.state.jsonOutput });
+            form.elements['content'].value = JSON.stringify({ items: codex.editor.state.jsonOutput });
 
             form.submit();
 
