@@ -9,7 +9,7 @@
 
 .post-list-item__header {
     margin-bottom: 1em;
-    color: var(--grayText);
+    color: var(--color-gray);
     font-size: 0.8em;
     white-space: nowrap;
 }
@@ -62,7 +62,7 @@
 .post-list-item__footer {
     padding-top: calc(0.7 * var(--islandPadding));
     font-size: 0.9em;
-    color: var(--grayText);
+    color: var(--color-gray);
 }
 
 .post-list-item__comments:hover,
@@ -114,7 +114,7 @@
     background-color: var(--lightGrayBackground);
     background-size: cover;
     background-position: center center;
-    color: var(--grayText);
+    color: var(--color-gray);
     text-align: center;
     cursor: pointer;
     transition: height 150ms ease-in, filter 400ms ease-in;
@@ -131,7 +131,7 @@
 }
 
 .posts-list-item__cover--empty:hover {
-    color: color(var(--grayText) blackness(+50%));
+    color: color(var(--color-gray) blackness(+50%));
 }
 
 .posts-list-item__cover svg {

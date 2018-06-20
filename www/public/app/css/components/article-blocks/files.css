@@ -11,6 +11,6 @@
 
 .file-attached__info {
     float: right;
-    color: var(--grayText);
+    color: var(--color-gray);
     font-variant: small-caps;
 }

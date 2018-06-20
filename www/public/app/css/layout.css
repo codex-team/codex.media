@@ -29,7 +29,8 @@
     padding: var(--islandMargin) var(--islandMargin) var(--islandMargin) 0;
 }
 
-.body--content-only .grid-col--left {
+.body--content-only .grid-col--left,
+.body--content-only .grid-col--right{
     @media (--not-mobile) {
         display: none;
     }

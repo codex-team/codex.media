@@ -62,15 +62,16 @@
 
             <? /* Left */ ?>
             <div class="grid-col grid-col--left">
-
                 <?= View::factory('templates/components/aside')->render(); ?>
-
             </div>
 
             <? /* Main block for page */ ?>
             <div class="grid-content <?= !empty($contentOnly) ? 'grid-content--stretched' : '' ?>">
                 <?= $content ?>
             </div>
+
+            <? /* Right col */ ?>
+            <?= View::factory('templates/components/right_col')->render(); ?>
 
         </div>
 

@@ -27,7 +27,7 @@
 }
 
 .comment__time {
-    color: var(--grayText);
+    color: var(--color-gray);
     font-size: 11px;
 }
 
@@ -58,7 +58,7 @@
     margin: 0 -30px -20px;
     padding: 10px 30px;
     border-top: 1px solid var(--lightGrayLine);
-    color: var(--grayText);
+    color: var(--color-gray);
     font-size: 15px;
     line-height: 26px;
 }
@@ -109,7 +109,7 @@
 
 .comment-form__placeholder {
     cursor: pointer;
-    color: var(--grayText);
+    color: var(--color-gray);
     font-size: 14px;
 }
 
@@ -172,11 +172,11 @@
     margin-bottom: 10px;
     font-size: 15px;
     line-height: 1.56em;
-    color: var(--grayText);
+    color: var(--color-gray);
 }
 
 .comment-target__text:hover {
-    color: var(--grayText);
+    color: var(--color-gray);
 }
 
 /**
@@ -239,14 +239,14 @@
     text-overflow: ellipsis;
     overflow: hidden;
     vertical-align: text-bottom;
-    color: var(--grayText);
+    color: var(--color-gray);
 }
 
 .comment-target__arrow {
     display: inline-block;
     margin: 0 0.5em 0 -0.5em;
     vertical-align: text-bottom;
-    color: var(--grayText);
+    color: var(--color-gray);
 }
 
 .comment-target__arrow svg {

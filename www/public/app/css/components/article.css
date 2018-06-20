@@ -12,7 +12,7 @@
 
 .article__information {
     display: flex;
-    color: var(--grayText);
+    color: var(--color-gray);
     font-size: 14px;
     margin-bottom: 20px;
 
@@ -106,7 +106,7 @@
     padding-bottom: 20px;
     font-size: 15px;
     line-height: 1.45em;
-    color: var(--grayText);
+    color: var(--color-gray);
 }
 
 .article__parent a {
@@ -171,7 +171,7 @@
 }
 
 .article__image-caption {
-    color: var(--grayText);
+    color: var(--color-gray);
     margin: 0.3em 0 1em;
     font-size: 0.9em;
     line-height: 1.5em;
@@ -224,7 +224,7 @@
         margin-top: 15px;
         border-bottom: 0 !important;
         font-size: 11px;
-        color: var(--grayText) !important;
+        color: var(--color-gray) !important;
         letter-spacing: 0.1px;
         overflow: hidden;
         text-overflow: ellipsis;
