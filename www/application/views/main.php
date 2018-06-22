@@ -59,7 +59,11 @@
 
             <? /* Left */ ?>
             <div class="grid-col grid-col--left">
-                <?= View::factory('templates/components/aside')->render(); ?>
+                <? if (!empty($aside)): ?>
+                    <?= $aside ?>
+                <? else: ?>
+                    <?= View::factory('templates/components/aside')->render(); ?>
+                <? endif; ?>
             </div>
 
             <? /* Main block for page */ ?>

@@ -35,6 +35,8 @@
                 $isNews = $page->isPageOnMain || ($fromIndexPage && $fromNewsTab);
 
                 $vkPost = $page->isPostedInVK || ($fromIndexPage && $fromNewsTab);
+
+                $isCommunity = $page->is_community || 0;
             ?>
 
             <span class="button master" onclick="codex.writing.submit(this)">
@@ -46,8 +48,12 @@
             </span>
 
             <? if ($user->isAdmin() && !$fromUserProfile): ?>
-                <span name="cdx-custom-checkbox" class="writing__is-news" data-name="isNews" data-checked="<?= $isNews ?>">
+                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isNews" data-checked="<?= $isNews ?>">
                     Новость
+                </span>
+
+                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isCommunity" data-checked="<?= $isCommunity ?>">
+                    Сообщество
                 </span>
 
                 <span name="cdx-custom-checkbox" class="writing__vk-post" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">

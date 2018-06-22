@@ -1,0 +1,1 @@
+ALTER TABLE `pages` ADD `is_community` TINYINT(1) NULL DEFAULT '0' AFTER `dt_pin`;
