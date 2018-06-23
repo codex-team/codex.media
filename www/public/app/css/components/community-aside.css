@@ -1,0 +1,35 @@
+.community-aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--islandPadding);
+
+    &__cover {
+         width: 90px;
+         height: 90px;
+         border-radius: 3px;
+         border: 1px solid var(--lightGrayLine);
+         margin-bottom: 20px;
+         overflow: hidden;
+
+         img {
+             width: 100%;
+             height: 100%;
+         }
+
+         &--default {
+              background: url('/public/app/svg/community-placeholder.svg') no-repeat center / 45px ;
+
+              img {
+                  display: none;
+              }
+          }
+    }
+
+    &__title {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1.38em;
+        text-align: center;
+    }
+}

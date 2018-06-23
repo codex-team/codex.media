@@ -48,6 +48,10 @@ class Controller_Page_Index extends Controller_Base_preDispatch
             $this->template->contentOnly = true;
         }
 
+        if ($page->is_community) {
+            $this->template->aside = View::factory('templates/components/community_aside',['page' => $page]);
+        }
+
         $this->template->content = View::factory('templates/pages/page', $this->view);
     }
 

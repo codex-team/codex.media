@@ -44,6 +44,7 @@ class Controller_Base_preDispatch extends Controller_Template
             $this->template->title = $this->title = '';
             $this->template->keywords = '';
             $this->template->description = '';
+            $this->template->aside = '';
             $this->template->content = '';
         }
     }

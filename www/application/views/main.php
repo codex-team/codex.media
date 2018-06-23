@@ -33,12 +33,15 @@
 <?
     $bodyModifiers = [];
 
-    if (!empty($site_info['branding']) && empty($hideBranding)) {
-        $bodyModifiers[] = 'body--with-branding';
-    }
+    $possibleModifiers = [
+       [!empty($site_info['branding']) && empty($hideBranding), 'body--with-branding'],
+       [!empty($contentOnly), 'body--content-only']
+    ];
 
-    if (!empty($contentOnly)) {
-        $bodyModifiers[] = 'body--content-only';
+    foreach($possibleModifiers as $modifiers) {
+      if ($modifiers[0]) {
+        $bodyModifiers[] = $modifiers[1];
+      }
     }
 ?>
 <body class="<?= implode(' ', $bodyModifiers) ?>">
@@ -59,7 +62,11 @@
 
             <? /* Left */ ?>
             <div class="grid-col grid-col--left">
-                <?= View::factory('templates/components/aside')->render(); ?>
+                <? if (!empty($aside)): ?>
+                    <?= $aside ?>
+                <? else: ?>
+                    <?= View::factory('templates/components/aside')->render(); ?>
+                <? endif; ?>
             </div>
 
             <? /* Main block for page */ ?>

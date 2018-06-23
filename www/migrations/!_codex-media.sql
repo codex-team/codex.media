@@ -75,7 +75,8 @@ CREATE TABLE `pages` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `author` int(10) UNSIGNED NOT NULL,
   `rich_view` tinyint(1) DEFAULT '0',
-  `dt_pin` timestamp NULL DEFAULT NULL
+  `dt_pin` timestamp NULL DEFAULT NULL,
+  `is_community` tinyint(1) NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

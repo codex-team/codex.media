@@ -46,6 +46,12 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $this->page->title = Arr::get($_POST, 'title', $this->page->title);
         $this->page->content = Arr::get($_POST, 'content', $this->page->content);
 
+        if (Arr::get($_POST, 'isCommunity')) {
+            $this->page->is_community = 1;
+        } else {
+            $this->page->is_community = 0;
+        }
+
         $errors = $this->getErrors($_POST);
 
         if ($errors) {
