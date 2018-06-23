@@ -1,11 +1,12 @@
 <aside class="island main-aside">
     <div class="community-aside">
         <? if (!empty($page->cover)): ?>
-            <img class="community-aside__logo" src="/upload/pages/covers/b_<?= $page->cover ?>">
+            <a href="/p/<?= $page->id ?>/<?= $page->uri ?>">
+                <img class="community-aside__logo" src="/upload/pages/covers/b_<?= $page->cover ?>">
+            </a>
         <? endif; ?>
-        <div class="community-aside__title">
-            <?= $site_info['title'] ?><br>
-            <?= $site_info['city'] ?>
-        </div>
+        <a href="/p/<?= $page->id ?>/<?= $page->uri ?>" class="community-aside__title">
+            <?= $page->title ?>
+        </a>
     </div>
 </aside>

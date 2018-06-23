@@ -2,16 +2,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    line-height: 1.2em;
-    font-size: 15px;
     padding: 30px;
 
     &__logo {
-         display: block;
          width: 90px;
          height: 90px;
          border-radius: 3px;
-         border: 1px solid #e9ebef;
+         border: 1px solid var(--lightGrayLine);
          margin-bottom: 20px;
     }
 

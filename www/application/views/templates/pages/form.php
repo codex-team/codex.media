@@ -52,9 +52,11 @@
                     Новость
                 </span>
 
-                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isCommunity" data-checked="<?= $isCommunity ?>">
-                    Сообщество
-                </span>
+                <? if (isset($_GET['advanced'])): ?>
+                    <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isCommunity" data-checked="<?= $isCommunity ?>">
+                        Сообщество
+                    </span>
+                <? endif; ?>
 
                 <span name="cdx-custom-checkbox" class="writing__vk-post" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">
                     <i class="icon-vkontakte"></i>
