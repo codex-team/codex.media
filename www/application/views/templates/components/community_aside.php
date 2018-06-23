@@ -1,5 +1,5 @@
 <aside class="island main-aside">
-    <a class="community-aside" href="/">
+    <div class="community-aside">
         <? if (!empty($page->cover)): ?>
             <img class="community-aside__logo" src="/upload/pages/covers/b_<?= $page->cover ?>">
         <? endif; ?>
@@ -7,5 +7,5 @@
             <?= $site_info['title'] ?><br>
             <?= $site_info['city'] ?>
         </div>
-    </a>
+    </div>
 </aside>

@@ -13,12 +13,12 @@
          border-radius: 3px;
          border: 1px solid #e9ebef;
          margin-bottom: 20px;
-     }
+    }
 
-     &__title {
-          font-size: 16px;
-          font-weight: bold;
-          line-height: 1.38em;
-          text-align: center;
-      }
+    &__title {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1.38em;
+        text-align: center;
+    }
 }

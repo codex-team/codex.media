@@ -31,14 +31,15 @@
 
 </head>
 <?
-    $bodyModifiers = [];
+    $possibleModifiers = [
+       [!empty($site_info['branding']) && empty($hideBranding), 'body--with-branding'],
+       [!empty($contentOnly), 'body--content-only']
+    ];
 
-    if (!empty($site_info['branding']) && empty($hideBranding)) {
-        $bodyModifiers[] = 'body--with-branding';
-    }
-
-    if (!empty($contentOnly)) {
-        $bodyModifiers[] = 'body--content-only';
+    foreach($possibleModifiers as $modifiers) {
+      if ($modifiers[0]) {
+        $bodyModifiers[] = $modifiers[1];
+      }
     }
 ?>
 <body class="<?= implode(' ', $bodyModifiers) ?>">
