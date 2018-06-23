@@ -1,11 +1,14 @@
+<?
+    if (empty($page->cover)) {
+        $defaultCoverClass = "community-aside__cover--default";
+    } else {
+        $defaultCoverClass = "";
+    }
+?>
 <aside class="island main-aside">
     <div class="community-aside">
-        <a href="/p/<?= $page->id ?>/<?= $page->uri ?>">
-            <? if (!empty($page->cover)): ?>
-                <img class="community-aside__logo" src="/upload/pages/covers/b_<?= $page->cover ?>">
-            <? else: ?>
-                <img class="community-aside__logo community-aside__logo--default" src="/public/app/svg/community-placeholder.svg">
-            <? endif; ?>
+        <a href="/p/<?= $page->id ?>/<?= $page->uri ?>" class="community-aside__cover <?= $defaultCoverClass ?>">
+            <img src="/upload/pages/covers/b_<?= $page->cover ?>">
         </a>
         <a href="/p/<?= $page->id ?>/<?= $page->uri ?>" class="community-aside__title">
             <?= $page->title ?>
