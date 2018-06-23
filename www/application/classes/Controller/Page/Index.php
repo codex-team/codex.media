@@ -42,10 +42,13 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $this->view['page'] = $page;
 
         $this->title = $page->title;
-        $this->view['isWide'] = count($page->blocks) > self::BLOCKS_TO_WIDE;
 
-        if ($this->view['isWide']) {
-            $this->template->contentOnly = true;
+        if (!$page->is_community) {
+            $this->view['isWide'] = count($page->blocks) > self::BLOCKS_TO_WIDE;
+
+            if ($this->view['isWide']) {
+                $this->template->contentOnly = true;
+            }
         }
 
         if ($page->is_community) {
