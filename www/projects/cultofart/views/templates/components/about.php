@@ -1,7 +1,7 @@
 <div class="island island--padded island--bottomed js-emoji-included">
     <h3 class="island__title">
         <a href="">
-            About
+            <?= $title ?>
         </a>
     </h3>
     <div class="island__caption">

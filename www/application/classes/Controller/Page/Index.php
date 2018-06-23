@@ -50,10 +50,8 @@ class Controller_Page_Index extends Controller_Base_preDispatch
 
         if ($page->is_community) {
             $this->template->aside = View::factory('templates/components/community_aside',['page' => $page]);
-            $pageChildren = $page->getChildrenPages();
             $this->template->content = View::factory('templates/pages/community_page', [
-                'page' => $page,
-                'pageChildren' => $pageChildren
+                'page' => $page
             ]);
         } else {
             $this->template->content = View::factory('templates/pages/page', $this->view);
