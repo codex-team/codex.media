@@ -42,7 +42,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $this->view['page'] = $page;
 
         $this->title = $page->title;
-        $this->view['isWide'] = count($page->blocks) > self::BLOCKS_TO_WIDE;
+        $this->view['isWide'] = !$page->is_community && count($page->blocks) > self::BLOCKS_TO_WIDE;
 
         if ($this->view['isWide']) {
             $this->template->contentOnly = true;
@@ -50,9 +50,13 @@ class Controller_Page_Index extends Controller_Base_preDispatch
 
         if ($page->is_community) {
             $this->template->aside = View::factory('templates/components/community_aside',['page' => $page]);
+            $this->template->content = View::factory('templates/pages/community_page', [
+                'page' => $page
+            ]);
+        } else {
+            $this->template->content = View::factory('templates/pages/page', $this->view);
         }
 
-        $this->template->content = View::factory('templates/pages/page', $this->view);
     }
 
     /**

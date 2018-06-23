@@ -47,16 +47,23 @@
                 <? endif; ?>
             </span>
 
+            <?
+             if (isset($_GET['advanced'])) {
+                 $hideCommunityButton = "";
+             } else {
+                 $hideCommunityButton = "hidden";
+             }
+
+            ?>
+
             <? if ($user->isAdmin() && !$fromUserProfile): ?>
                 <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isNews" data-checked="<?= $isNews ?>">
                     Новость
                 </span>
 
-                <? if (isset($_GET['advanced'])): ?>
-                    <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isCommunity" data-checked="<?= $isCommunity ?>">
-                        Сообщество
-                    </span>
-                <? endif; ?>
+                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isCommunity" data-checked="<?= $isCommunity ?>" <?= $hideCommunityButton ?>>
+                    Сообщество
+                </span>
 
                 <span name="cdx-custom-checkbox" class="writing__vk-post" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">
                     <i class="icon-vkontakte"></i>
