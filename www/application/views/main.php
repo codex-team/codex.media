@@ -31,6 +31,8 @@
 
 </head>
 <?
+    $bodyModifiers = [];
+
     $possibleModifiers = [
        [!empty($site_info['branding']) && empty($hideBranding), 'body--with-branding'],
        [!empty($contentOnly), 'body--content-only']
