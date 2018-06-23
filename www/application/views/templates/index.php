@@ -1,4 +1,9 @@
-<?= View::factory('templates/components/about')->render(); ?>
+<?= View::factory('templates/components/about',[
+        'description'=>'Вообще "миссия" это текст 1000 знаков. Он важен для понимания нашей деятельности и наших ценностей. 
+                        Поэтому он нужен в первую очередь... ',
+        'organization_name' => 'Culture of Art'
+])->render(); ?>
+
 <?/** add form for new page */ ?>
 <? if ($user->id): ?>
 
