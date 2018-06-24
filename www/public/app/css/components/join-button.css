@@ -6,7 +6,7 @@
     padding: 12px 71px;
 
     &:hover {
-         background: var(--colorButtonSecondaryHover);
+         background: color(var(--colorButtonSecondary) blackness(+10%));
     }
 
     &-wrapper {
