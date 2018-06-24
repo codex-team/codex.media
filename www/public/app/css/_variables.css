@@ -3,8 +3,8 @@
     --color-actions: #d32b26;
 
     /** Buttons **/
-    --colorJoinButton: #4bc78e;
-    --colorJoinButtonHover: #4eb385;
+    --colorButtonSecondary: #4bc78e;
+    --colorButtonSecondaryHover: color(var(--colorButtonSecondary) blackness(+10%));
 
     /** Payment buttons */
     --color-payment: #408FDA;

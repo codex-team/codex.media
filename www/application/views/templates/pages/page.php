@@ -176,7 +176,9 @@
         </ul>
     <? endif ?>
 
-    <?= View::factory('templates/components/join-button') ?>
+    <? if ($page->is_event): ?>
+        <?= View::factory('templates/components/join-button') ?>
+    <? endif ?>
 
     <?= View::factory('templates/components/share', [
         'offer' => 'Если вам понравилась статья, поделитесь ссылкой на нее',

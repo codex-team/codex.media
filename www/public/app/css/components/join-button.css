@@ -1,12 +1,12 @@
 .join-button {
     @apply --button;
-    background: var(--colorJoinButton);
+    background: var(--colorButtonSecondary);
     font-size: 17px;
     border-radius: 43.5px;
     padding: 12px 71px;
 
     &:hover {
-         background: var(--colorJoinButtonHover);
+         background: var(--colorButtonSecondaryHover);
     }
 
     &-wrapper {
