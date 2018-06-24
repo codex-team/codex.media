@@ -11,6 +11,7 @@ class Model_Page extends Model
     public $author;
     public $id_parent = 0;
     public $is_community = 0;
+    public $is_event = 0;
 
     /**
      * Page cover URL
@@ -131,7 +132,8 @@ class Model_Page extends Model
                          ->set('cover', $this->cover)
                          ->set('rich_view', $this->rich_view)
                          ->set('dt_pin', $this->dt_pin)
-                         ->set('is_community', $this->is_community);
+                         ->set('is_community', $this->is_community)
+                         ->set('is_event', $this->is_event);
 
         $pageId = $page->execute();
 
@@ -152,7 +154,8 @@ class Model_Page extends Model
                          ->set('content', $this->content)
                          ->set('rich_view', $this->rich_view)
                          ->set('dt_pin', $this->dt_pin)
-                         ->set('is_community', $this->is_community);
+                         ->set('is_community', $this->is_community)
+                         ->set('is_event', $this->is_event);
 
         $page->clearcache('page:' . $this->id, ['site_menu']);
 

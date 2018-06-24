@@ -37,6 +37,7 @@
                 $vkPost = $page->isPostedInVK || ($fromIndexPage && $fromNewsTab);
 
                 $isCommunity = $page->is_community || 0;
+                $isEvent = $page->is_event || 0;
             ?>
 
             <span class="button master" onclick="codex.writing.submit(this)">
@@ -48,12 +49,11 @@
             </span>
 
             <?
-             if (isset($_GET['advanced'])) {
-                 $hideCommunityButton = "";
-             } else {
-                 $hideCommunityButton = "hidden";
-             }
-
+                if (isset($_GET['advanced'])) {
+                    $hidetoggleButton = "";
+                } else {
+                    $hidetoggleButton = "hidden";
+                }
             ?>
 
             <? if ($user->isAdmin() && !$fromUserProfile): ?>
@@ -61,8 +61,12 @@
                     Новость
                 </span>
 
-                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isCommunity" data-checked="<?= $isCommunity ?>" <?= $hideCommunityButton ?>>
+                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isCommunity" data-checked="<?= $isCommunity ?>" <?= $hidetoggleButton ?>>
                     Сообщество
+                </span>
+
+                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isEvent" data-checked="<?= $isEvent ?>" <?= $hidetoggleButton ?>>
+                    Событие
                 </span>
 
                 <span name="cdx-custom-checkbox" class="writing__vk-post" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">

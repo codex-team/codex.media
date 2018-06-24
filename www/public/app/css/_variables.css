@@ -2,6 +2,9 @@
     /** Links, underlines, other brand-colored elements */
     --color-actions: #d32b26;
 
+    /** Buttons **/
+    --colorButtonSecondary: #4bc78e;
+
     /** Payment buttons */
     --color-payment: #408FDA;
 
