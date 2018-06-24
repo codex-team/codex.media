@@ -49,15 +49,10 @@
             </span>
 
             <?
-                if (isset($_GET['community'])) {
-                    $hideCommunityButton = "";
-                    $hideEventButton = "hidden";
-                } elseif (isset($_GET['event'])) {
-                    $hideCommunityButton = "hidden";
-                    $hideEventButton = "";
+                if (isset($_GET['advanced'])) {
+                    $hidetoggleButton = "";
                 } else {
-                    $hideCommunityButton = "hidden";
-                    $hideEventButton = "hidden";
+                    $hidetoggleButton = "hidden";
                 }
             ?>
 
@@ -66,7 +61,11 @@
                     Новость
                 </span>
 
-                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isEvent" data-checked="<?= $isEvent ?>" <?= $hideEventButton ?>>
+                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isCommunity" data-checked="<?= $isCommunity ?>" <?= $hidetoggleButton ?>>
+                    Сообщество
+                </span>
+
+                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isEvent" data-checked="<?= $isEvent ?>" <?= $hidetoggleButton ?>>
                     Событие
                 </span>
 
