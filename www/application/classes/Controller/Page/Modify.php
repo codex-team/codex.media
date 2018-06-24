@@ -52,6 +52,12 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             $this->page->is_community = 0;
         }
 
+        if (Arr::get($_POST, 'isEvent')) {
+            $this->page->is_event = 1;
+        } else {
+            $this->page->is_event = 0;
+        }
+
         $errors = $this->getErrors($_POST);
 
         if ($errors) {

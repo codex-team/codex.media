@@ -77,6 +77,7 @@ CREATE TABLE `pages` (
   `rich_view` tinyint(1) DEFAULT '0',
   `dt_pin` timestamp NULL DEFAULT NULL,
   `is_community` tinyint(1) NULL DEFAULT '0'
+  `is_event` tinyint(1) NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

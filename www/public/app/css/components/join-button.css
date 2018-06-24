@@ -1,0 +1,20 @@
+.join-button {
+    @apply --button;
+    background: var(--colorJoinButton);
+    font-size: 17px;
+    border-radius: 43.5px;
+    padding: 12px 71px;
+
+    &:hover {
+         background: var(--colorJoinButtonHover);
+    }
+
+    &-wrapper {
+         text-align: center;
+         margin: 70px 0;
+
+         @media (--mobile) {
+             margin: 35px 0;
+         }
+    }
+}

@@ -2,6 +2,10 @@
     /** Links, underlines, other brand-colored elements */
     --color-actions: #d32b26;
 
+    /** Buttons **/
+    --colorJoinButton: #4bc78e;
+    --colorJoinButtonHover: #4eb385;
+
     /** Payment buttons */
     --color-payment: #408FDA;
 

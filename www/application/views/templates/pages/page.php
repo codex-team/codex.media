@@ -176,6 +176,8 @@
         </ul>
     <? endif ?>
 
+    <?= View::factory('templates/components/join-button') ?>
+
     <?= View::factory('templates/components/share', [
         'offer' => 'Если вам понравилась статья, поделитесь ссылкой на нее',
         'url' => 'https://' . Arr::get($_SERVER, 'HTTP_HOST', Arr::get($_SERVER, 'SERVER_NAME', 'edu.ifmo.su')) . '/p/' . $page->id,

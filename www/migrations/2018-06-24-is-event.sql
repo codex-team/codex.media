@@ -1,0 +1,1 @@
+ALTER TABLE `pages` ADD `is_event` TINYINT(1) NULL DEFAULT '0' AFTER `is_community`;
