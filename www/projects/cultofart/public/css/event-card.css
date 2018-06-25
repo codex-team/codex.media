@@ -2,28 +2,23 @@
     position: relative;
     flex-grow: 1;
     padding: 20px 20px 45px;
-    border: 1px solid var(--lightGrayLineSecondary);
+    border: 1px solid var(--lightGrayLine);
     box-shadow: 0 2px 2px 0 rgba(58, 68, 101, 0.07);
     border-radius: 4px;
     text-align: center;
 
     &__footer {
-         display: flex;
-         align-items: center;
          position: absolute;
          bottom: 12px;
          left: 12px;
          right: 12px;
          height: 16px;
          font-size: 11px;
+         line-height: 1.54em;
+         text-align: left;
          white-space: nowrap;
          overflow-x: hidden;
          text-overflow: ellipsis;
-
-        a {
-            color: var(--mediumGrayLine);
-            font-size: inherit;
-        }
      }
 
     &__cover {
@@ -57,16 +52,18 @@
         }
     }
 
-    &__photo {
-         float: left;
-         margin-right: 5px;
+    &__author {
+         color: var(--color-gray);
+         font-size: inherit;
 
-        img {
-            display: block;
-            width: 13px;
-            height: 13px;
-            border-radius: 50%;
-        }
+         img {
+             width: 13px;
+             height: 13px;
+             border-radius: 50%;
+             margin-right: 5px;
+             margin-top: 1.5px;
+             float: left;
+         }
     }
 }
 

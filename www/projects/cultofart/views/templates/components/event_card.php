@@ -1,6 +1,5 @@
 <?
-    if (empty($event->cover))
-    {
+    if (empty($event->cover)) {
         $defaultCoverClass = "event-card__cover--default";
     } else {
         $defaultCoverClass = "";
@@ -15,10 +14,8 @@
         <?= $event->title ?>
     </a>
     <footer class="event-card__footer">
-        <a class="event-card__photo" href="/user/<?= $event->author->id ?>">
+        <a class="event-card__author" href="/user/<?= $event->author->id ?>">
             <img src="<?= $event->author->photo ?>" alt="<?= $event->author->name ?>">
-        </a>
-        <a class="event-card__user-name" href="/user/<?= $event->author->id ?>">
             <?= $event->author->name ?>
         </a>
     </footer>

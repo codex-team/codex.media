@@ -9,6 +9,6 @@
     </div>
 
     <a href="" class="island__link">
-        <?= $link_text ?> »
+        <?= $link_text ?>&nbsp;»
     </a>
 </div>
