@@ -119,6 +119,7 @@
             <?= View::factory('templates/components/events_block', [
                 'title' => 'Events',
                 'events' => $events,
+                'events_uri' => $events_uri,
                 'link_text' => 'View full calendar with ' . $total_events . ' upcoming events'
             ]); ?>
         <? endif;?>

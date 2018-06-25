@@ -31,6 +31,7 @@
         'emptyListMessage' => $emptyListMessage,
         'active_tab' => $active_tab,
         'events' => $events,
+        'events_uri' => $events_uri,
         'total_events' => $total_events
     ]); ?>
 </div>

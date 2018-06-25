@@ -44,6 +44,7 @@ class Controller_Index extends Controller_Base_preDispatch
             $this->view['pages'] = $pages;
             $this->view['events'] = $events;
             $this->view['total_events'] = $total_events;
+            $this->view['events_uri'] = Model_Feed_Pages::EVENTS;
             $this->view['next_page'] = $next_page;
             $this->view['page_number'] = $page_number;
             $this->view['active_tab'] = $feed_key ?: Model_Feed_Pages::MAIN;

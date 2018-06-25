@@ -13,7 +13,7 @@
             </div>
         <? endforeach; ?>
     </div>
-    <a href="" class="island__link">
+    <a href="/<?= $events_uri ?>" class="island__link">
        <?= $link_text ?> »
     </a>
 </div>
