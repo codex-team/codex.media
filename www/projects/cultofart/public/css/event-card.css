@@ -3,7 +3,8 @@
     flex-grow: 1;
     padding: 20px 20px 45px;
     border: 1px solid var(--lightGrayLineSecondary);
-    box-shadow: 0 2px 2px 0 rgba(38, 45, 67, 0.02);
+    box-shadow: 0 2px 2px 0 rgba(58, 68, 101, 0.07);
+    border-radius: 4px
     text-align: center;
 
     &__footer {
@@ -28,7 +29,7 @@
     &__cover {
          display: block;
          height: 150px;
-         margin: -21px -21px 20px;
+         margin: -20px -20px 20px;
 
         img {
             width: 100%;
