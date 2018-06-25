@@ -1,6 +1,6 @@
 <div class="island island--padded island--bottomed js-emoji-included">
     <h3 class="island__title">
-        <a href="">
+        <a href="<?= $page_uri ?>">
             <?= $title ?>
         </a>
     </h3>
@@ -8,7 +8,7 @@
         <?= $description ?>
     </div>
 
-    <a href="" class="island__link">
+    <a href="<?= $page_uri ?>" class="island__link">
         <?= $link_text ?>&nbsp;»
     </a>
 </div>

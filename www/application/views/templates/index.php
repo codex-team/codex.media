@@ -1,8 +1,12 @@
+<?
+    $about_page_data = Model_Methods::getAboutPageData($site_info['about_page']);
+?>
+
 <?= View::factory('templates/components/about',[
-        'title' => 'Our mission',
-        'description'=>'Вообще "миссия" это текст 1000 знаков. Он важен для понимания нашей деятельности и наших ценностей. 
-                        Поэтому он нужен в первую очередь... ',
-        'link_text' => 'Read more'
+        'title' => $about_page_data['title'],
+        'description'=> $about_page_data['description'],
+        'link_text' => 'Read more',
+        'page_uri' => $about_page_data['uri']
 ])->render(); ?>
 
 <?/** add form for new page */ ?>
