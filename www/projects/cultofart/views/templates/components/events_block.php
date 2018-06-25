@@ -1,6 +1,6 @@
 <div class="island island--padded island--bottomed js-emoji-included">
     <h3 class="island__title">
-        <a href="">
+        <a href="/<?= $events_uri ?>">
             <?= $title ?>
         </a>
     </h3>
