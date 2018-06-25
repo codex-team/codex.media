@@ -3,7 +3,7 @@
     flex-grow: 1;
     padding: 20px 20px 45px;
     border: 1px solid var(--lightGrayLine);
-    box-shadow: 0 2px 2px 0 rgba(58, 68, 101, 0.07);
+    box-shadow: 0 2px 2px 0 rgba(58, 68, 101, 0.04);
     border-radius: 4px;
     text-align: center;
 
