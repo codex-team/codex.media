@@ -2,7 +2,7 @@
         'title' => 'Our mission',
         'description'=>'Вообще "миссия" это текст 1000 знаков. Он важен для понимания нашей деятельности и наших ценностей. 
                         Поэтому он нужен в первую очередь... ',
-        'link_text' => 'Read more about Culture of Art'
+        'link_text' => 'Read more'
 ])->render(); ?>
 
 <?/** add form for new page */ ?>
