@@ -4,7 +4,7 @@
     padding: 20px 20px 45px;
     border: 1px solid var(--lightGrayLineSecondary);
     box-shadow: 0 2px 2px 0 rgba(58, 68, 101, 0.07);
-    border-radius: 4px
+    border-radius: 4px;
     text-align: center;
 
     &__footer {
