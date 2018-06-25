@@ -115,7 +115,7 @@
             </div>
         </article>
 
-        <? if ($events && $index == 1):?>
+        <? if ($events && $index == 0):?>
             <?= View::factory('templates/components/events_block', [
                 'title' => 'Events',
                 'events' => $events,
