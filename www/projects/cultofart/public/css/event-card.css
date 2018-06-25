@@ -2,7 +2,8 @@
     position: relative;
     flex-grow: 1;
     padding: 20px 20px 45px;
-    border: 1px solid var(--mediumGrayLine);
+    border: 1px solid var(--lightGrayLineSecondary);
+    box-shadow: 0 2px 2px 0 rgba(38, 45, 67, 0.02);
     text-align: center;
 
     &__footer {

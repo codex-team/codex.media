@@ -14,6 +14,11 @@ class Controller_Page_Index extends Controller_Base_preDispatch
     const BLOCKS_TO_WIDE = 3;
 
     /**
+     * Number of events to show in events block
+     */
+    const PORTION_OF_EVENTS = 3;
+
+    /**
      * Gets page data and sends it into View template /page/pages
      *
      * @throws HTTP_Exception_404 if page not found
@@ -49,9 +54,17 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         }
 
         if ($page->is_community) {
+
+            $events_feed = new Model_Feed_Pages(Model_Feed_Pages::EVENTS);
+            $events = $events_feed->get(self::PORTION_OF_EVENTS);
+            $total_events = count($events_feed->get());
+
             $this->template->aside = View::factory('templates/components/community_aside',['page' => $page]);
             $this->template->content = View::factory('templates/pages/community_page', [
-                'page' => $page
+                'page' => $page,
+                'events' => $events,
+                'total_events' => $total_events,
+                'events_uri' => Model_Feed_Pages::EVENTS
             ]);
         } else {
             $this->template->content = View::factory('templates/pages/page', $this->view);

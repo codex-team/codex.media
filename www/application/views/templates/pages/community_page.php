@@ -15,5 +15,6 @@
     'emptyListMessage' => 'Тут появятся статьи и заметки',
     'active_tab' => '',
     'events' => $events,
+    'events_uri' => $events_uri,
     'total_events' => $total_events
 ]); ?>
