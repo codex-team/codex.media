@@ -71,10 +71,10 @@
         <? endif; ?>
 
         <div class="article__information-section">
-            <a class="article__author" href="/user/<?= $page->author->id ?>" itemscope itemtype="http://schema.org/Person" itemprop="author">
-                <img src="<?= $page->author->photo ?>" alt="<?= HTML::chars($page->author->name); ?>" itemprop="image">
+            <a class="article__author" href="<?= $page->owner["url"] ?>" itemscope itemtype="http://schema.org/Person" itemprop="author">
+                <img src="<?= $page->owner["photo"] ?>" alt="<?= HTML::chars($page->owner["name"]); ?>" itemprop="image">
                 <span class="article__author-name" itemprop="name">
-                    <?= HTML::chars($page->author->shortName); ?>
+                    <?= HTML::chars($page->owner["name"]); ?>
                 </span>
             </a>
             <time class="article__time">

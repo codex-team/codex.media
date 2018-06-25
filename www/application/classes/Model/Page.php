@@ -57,6 +57,9 @@ class Model_Page extends Model
     /** post_id in the public's wall or 0  */
     public $isPostedInVK = 0;
 
+    /** Owner of page, user or community */
+    public $owner = [];
+
     const STATUS_SHOWING_PAGE = 0;
     const STATUS_HIDDEN_PAGE = 1;
     const STATUS_REMOVED_PAGE = 2;
@@ -109,6 +112,18 @@ class Model_Page extends Model
             $this->isPageOnMain = $this->isPageOnMain();
 
             $this->parent = new Model_Page($this->id_parent);
+
+            $defaultCover = '/public/app/svg/community-placeholder.svg';
+
+            if ($this->is_event && $this->parent->is_community) {
+                $this->owner["name"] =  $this->parent->title;
+                $this->owner["photo"] = !empty($this->parent->cover) ? '/upload/pages/covers/b_' . $this->parent->cover : $defaultCover;
+                $this->owner["url"] =  $this->parent->url;
+            } else {
+                $this->owner["name"] = $this->author->shortName;
+                $this->owner["photo"] = $this->author->photo;
+                $this->owner["url"] =  '/user/' . $this->author->id;
+            }
 
             $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
             $this->commentsCount = $this->getCommentsCount();
