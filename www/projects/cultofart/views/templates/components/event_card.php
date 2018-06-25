@@ -7,18 +7,18 @@
     }
 ?>
 <div class="event-card">
-    <a class="event-card__cover <?= $defaultCoverClass ?>" href="">
-        <img src="/upload/pages/covers/b_<?= $event->cover ?>" alt="">
+    <a class="event-card__cover <?= $defaultCoverClass ?>" href="<?= $event->url ?>">
+        <img src="/upload/pages/covers/b_<?= $event->cover ?>" alt="<?= $event->title ?>">
     </a>
 
-    <a class="event-card__title" href="">
+    <a class="event-card__title" href="<?= $event->url ?>">
         <?= $event->title ?>
     </a>
     <footer class="event-card__footer">
-        <a class="event-card__photo" href="">
-            <img class="" src="<?= $event->author->photo ?>" alt="">
+        <a class="event-card__photo" href="/user/<?= $event->author->id ?>">
+            <img src="<?= $event->author->photo ?>" alt="<?= $event->author->name ?>">
         </a>
-        <a class="event-card__user-name" href="">
+        <a class="event-card__user-name" href="/user/<?= $event->author->id ?>">
             <?= $event->author->name ?>
         </a>
     </footer>
