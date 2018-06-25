@@ -1,7 +1,6 @@
 <? if ($pages): ?>
 
     <? foreach ($pages as $index => $page): ?>
-
         <?/**
  * if the elem is the first
  * $page === reset($pages)
@@ -20,7 +19,7 @@
                                         "module" : "pages",
                                         "method" : "openWriting"
                                     }
-                                }, 
+                                },
                                 {
                                     "title" : "Вложенная страница",
                                     "handler" : {
@@ -115,6 +114,14 @@
                 </span>
             </div>
         </article>
+
+        <? if ($events && $index == 1):?>
+            <?= View::factory('templates/components/events_block', [
+                'title' => 'Events',
+                'events' => $events,
+                'link_text' => 'View full calendar with ' . $total_events . ' upcoming events'
+            ]); ?>
+        <? endif;?>
 
     <? endforeach; ?>
 

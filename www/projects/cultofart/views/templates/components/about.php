@@ -7,7 +7,8 @@
     <div class="island__caption">
         <?= $description ?>
     </div>
+
     <a href="" class="island__link">
-        Read more about <?= $organization_name ?> »
+        <?= $link_text ?> »
     </a>
 </div>

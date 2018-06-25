@@ -3,6 +3,7 @@
 class Controller_Index extends Controller_Base_preDispatch
 {
     const NEWS_LIMIT_PER_PAGE = 7;
+    const PORTION_OF_EVENTS = 3;
 
     public function action_index()
     {
@@ -14,6 +15,12 @@ class Controller_Index extends Controller_Base_preDispatch
         $feed = new Model_Feed_Pages($feed_key);
 
         $pages = $feed->get(self::NEWS_LIMIT_PER_PAGE + 1, $offset);
+
+
+        $events_feed = new Model_Feed_Pages(Model_Feed_Pages::EVENTS);
+
+        $events = $events_feed->get(self::PORTION_OF_EVENTS);
+        $total_events = count($events_feed->get());
 
         /** Check if next page exist */
         $next_page = Model_Methods::isNextPageExist($pages, self::NEWS_LIMIT_PER_PAGE);
@@ -35,6 +42,8 @@ class Controller_Index extends Controller_Base_preDispatch
         } else {
             $this->view['tabs'] = Kohana::$config->load('index-tabs');
             $this->view['pages'] = $pages;
+            $this->view['events'] = $events;
+            $this->view['total_events'] = $total_events;
             $this->view['next_page'] = $next_page;
             $this->view['page_number'] = $page_number;
             $this->view['active_tab'] = $feed_key ?: Model_Feed_Pages::MAIN;

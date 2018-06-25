@@ -1,0 +1,29 @@
+.events-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 20px;
+
+    @media (--mobile) {
+        flex-direction: column;
+        margin-bottom: 0;
+    }
+
+    &__item {
+         width: 33.33%;
+         display: flex;
+
+        @media (--mobile) {
+            display: block;
+            width: 100%;
+        }
+
+        &:not(:last-of-type) {
+             margin-right: 25px;
+
+            @media (--mobile) {
+                margin: 0 0 20px 0;
+            }
+        }
+    }
+}

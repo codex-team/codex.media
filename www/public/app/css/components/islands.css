@@ -8,6 +8,10 @@
     font-size: 14px;
     word-wrap: break-word;
 
+    @media (--mobile) {
+        font-size: 12.4px;
+    }
+
     &__title {
         margin: 0 0 10px 0;
         font-size: 1.15em;

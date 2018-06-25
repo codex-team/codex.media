@@ -379,6 +379,7 @@ class Model_Page extends Model
         $this->removeFromFeed(Model_Feed_Pages::ALL);
         $this->removeFromFeed(Model_Feed_Pages::TEACHERS);
         $this->removeFromFeed(Model_Feed_Pages::MENU);
+        $this->removeFromFeed(Model_Feed_Pages::EVENTS);
     }
 
     /**

@@ -1,7 +1,7 @@
 <?= View::factory('templates/components/about', [
     'title'=>'About',
     'description' => $page->description,
-    'organization_name' => $page->title
+    'link_text' => 'Read more about ' . $page->title
 ])->render(); ?>
 
 <div class="island tabs island--margined">
@@ -13,5 +13,7 @@
 <?= View::factory('templates/pages/list', [
     'pages' => $page->children,
     'emptyListMessage' => 'Тут появятся статьи и заметки',
-    'active_tab' => ''
+    'active_tab' => '',
+    'events' => $events,
+    'total_events' => $total_events
 ]); ?>
