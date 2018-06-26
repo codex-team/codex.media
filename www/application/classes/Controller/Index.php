@@ -5,6 +5,26 @@ class Controller_Index extends Controller_Base_preDispatch
     const NEWS_LIMIT_PER_PAGE = 7;
     const PORTION_OF_EVENTS = 3;
 
+    /**
+     * Get from the database in table 'settings' page id with site description
+     * Fill array with title, description and uri of this page
+     *
+     * @return array - title, description and uri
+     */
+    public static function getAboutPageData()
+    {
+        $site_settings = new Model_Settings();
+        $about_page_id = $site_settings->getAboutPageId();
+        $page = new Model_Page($about_page_id);
+        $about_page_data = [];
+        if ($page) {
+            $about_page_data['title'] = $page->title;
+            $about_page_data['description'] = $page->description;
+            $about_page_data['uri'] = '/p/' . $page->id;
+        }
+        return $about_page_data;
+    }
+
     public function action_index()
     {
         $feed_key = $this->request->param('feed_key') ?: Model_Feed_Pages::MAIN;
@@ -46,6 +66,7 @@ class Controller_Index extends Controller_Base_preDispatch
             $this->view['total_events'] = $total_events;
             $this->view['events_uri'] = Model_Feed_Pages::EVENTS;
             $this->view['next_page'] = $next_page;
+            $this->view['about_page_data'] = self::getAboutPageData();
             $this->view['page_number'] = $page_number;
             $this->view['active_tab'] = $feed_key ?: Model_Feed_Pages::MAIN;
 

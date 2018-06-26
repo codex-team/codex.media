@@ -7,16 +7,16 @@
 ?>
 <div class="event-card">
     <a class="event-card__cover <?= $defaultCoverClass ?>" href="<?= $event->url ?>">
-        <img src="/upload/pages/covers/b_<?= $event->cover ?>" alt="<?= $event->title ?>">
+        <img src="/upload/pages/covers/b_<?= HTML::chars($event->cover) ?>" alt="<?= HTML::chars($event->title) ?>">
     </a>
 
-    <a class="event-card__title" href="<?= $event->url ?>">
-        <?= $event->title ?>
+    <a class="event-card__title" href="<?= HTML::chars($event->url) ?>">
+        <?= HTML::chars($event->title) ?>
     </a>
     <footer class="event-card__footer">
-        <a class="event-card__author" href="/user/<?= $event->author->id ?>">
-            <img src="<?= $event->author->photo ?>" alt="<?= $event->author->name ?>">
-            <?= $event->author->name ?>
+        <a class="event-card__author" href="/user/<?= HTML::chars($event->author->id) ?>">
+            <img src="<?= HTML::chars($event->author->photo) ?>" alt="<?= HTML::chars($event->author->name) ?>">
+            <?= HTML::chars($event->author->name) ?>
         </a>
     </footer>
 </div>

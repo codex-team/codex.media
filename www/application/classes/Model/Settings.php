@@ -15,6 +15,7 @@ class Model_Settings extends Model_preDispatch
 
     const BRANDING_KEY = 'branding';
     const LOGO_KEY = 'logo';
+    const ABOUT_PAGE_DB_FIELD = 'about_page';
 
     public function __construct()
     {
@@ -56,6 +57,23 @@ class Model_Settings extends Model_preDispatch
             ->execute();
 
         return self::fillByRow($parameterRow);
+    }
+
+    /**
+     * Get id of page with site description
+     *
+     * @return [string] - page id
+     */
+    public function getAboutPageId()
+    {
+        $parameterRow = Dao_Settings::select()
+            ->where('name', '=', self::ABOUT_PAGE_DB_FIELD)
+            ->limit(1)
+            ->cached(Date::MINUTE * 30, 'settings:' . self::ABOUT_PAGE_DB_FIELD)
+            ->execute();
+
+        $model = self::fillByRow($parameterRow);
+        return $model->value;
     }
 
     private function fillByRow($parameterRow)

@@ -1,12 +1,8 @@
-<?
-    $about_page_data = Model_Methods::getAboutPageData($site_info['about_page']);
-?>
-
 <?= View::factory('templates/components/about',[
-        'title' => $about_page_data['title'],
-        'description'=> $about_page_data['description'],
+        'title' => Arr::get($about_page_data, 'title'),
+        'description'=> Arr::get($about_page_data, 'description'),
         'link_text' => 'Read more',
-        'page_uri' => $about_page_data['uri']
+        'page_uri' => Arr::get($about_page_data, 'uri')
 ])->render(); ?>
 
 <?/** add form for new page */ ?>

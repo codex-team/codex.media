@@ -113,17 +113,7 @@ class Model_Page extends Model
 
             $this->parent = new Model_Page($this->id_parent);
 
-            $defaultCover = '/public/app/svg/community-placeholder.svg';
-
-            if ($this->is_event && $this->parent->is_community) {
-                $this->owner["name"] =  $this->parent->title;
-                $this->owner["photo"] = !empty($this->parent->cover) ? '/upload/pages/covers/b_' . $this->parent->cover : $defaultCover;
-                $this->owner["url"] =  $this->parent->url;
-            } else {
-                $this->owner["name"] = $this->author->shortName;
-                $this->owner["photo"] = $this->author->photo;
-                $this->owner["url"] =  '/user/' . $this->author->id;
-            }
+            $this->getOwner();
 
             $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
             $this->commentsCount = $this->getCommentsCount();
@@ -482,5 +472,24 @@ class Model_Page extends Model
         }
 
         return true;
+    }
+
+    /**
+     * Determines who is author of event, person or community
+     * Doesn't write anything to database
+     */
+    public function getOwner()
+    {
+        $defaultCover = '/public/app/svg/community-placeholder.svg';
+
+        if ($this->is_event && $this->parent->is_community) {
+            $this->owner["name"] =  $this->parent->title;
+            $this->owner["photo"] = !empty($this->parent->cover) ? '/upload/pages/covers/b_' . $this->parent->cover : $defaultCover;
+            $this->owner["url"] =  $this->parent->url;
+        } else {
+            $this->owner["name"] = $this->author->shortName;
+            $this->owner["photo"] = $this->author->photo;
+            $this->owner["url"] =  '/user/' . $this->author->id;
+        }
     }
 }

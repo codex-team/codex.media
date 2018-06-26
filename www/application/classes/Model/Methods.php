@@ -403,20 +403,4 @@ class Model_Methods extends Model
 
         return $response;
     }
-
-    /**
-     * @param $page_id – id of About page
-     * @return array - title, description and uri
-     */
-    public static function getAboutPageData($page_id)
-    {
-        $about_page_data = [];
-        $page = new Model_Page($page_id);
-        if ($page) {
-            $about_page_data['title'] = $page->title;
-            $about_page_data['description'] = $page->description;
-            $about_page_data['uri'] = '/p/' . $page->id;
-        }
-        return $about_page_data;
-    }
 }

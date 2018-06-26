@@ -1,6 +1,6 @@
 <div class="island island--padded island--bottomed js-emoji-included">
     <h3 class="island__title">
-        <a href="/<?= $events_uri ?>">
+        <a href="/<?= HTML::chars($events_uri) ?>">
             <?= $title ?>
         </a>
     </h3>
@@ -13,7 +13,7 @@
             </div>
         <? endforeach; ?>
     </div>
-    <a href="/<?= $events_uri ?>" class="island__link">
-       <?= $link_text ?> »
+    <a href="/<?= HTML::chars($events_uri) ?>" class="island__link">
+       <?= HTML::chars($link_text) ?> »
     </a>
 </div>
