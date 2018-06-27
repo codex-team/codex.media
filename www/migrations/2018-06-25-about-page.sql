@@ -1,1 +1,1 @@
-INSERT INTO `settings` (`name`, `value`, `label`) VALUES ('about_page', '29', 'site_info');
+INSERT INTO `settings` (`name`, `value`, `label`) VALUES ('about_page', NULL, 'site_info');

@@ -1,5 +1,5 @@
 <?= View::factory('templates/components/about',[
-        'title' => Arr::get($about_page_data, 'title'),
+        'page_title' => Arr::get($about_page_data, 'title'),
         'description'=> Arr::get($about_page_data, 'description'),
         'link_text' => 'Read more',
         'page_uri' => Arr::get($about_page_data, 'uri')

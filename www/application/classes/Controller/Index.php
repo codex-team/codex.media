@@ -14,8 +14,8 @@ class Controller_Index extends Controller_Base_preDispatch
     public static function getAboutPageData()
     {
         $site_settings = new Model_Settings();
-        $about_page_id = $site_settings->getAboutPageId();
-        $page = new Model_Page($about_page_id);
+        $site_settings = $site_settings->getAll();
+        $page = new Model_Page($site_settings['about_page']);
         $about_page_data = [];
         if ($page) {
             $about_page_data['title'] = $page->title;
