@@ -10,6 +10,10 @@
         } else {
             $articleCover = $domainAndProtocol . "/public/app/img/meta-image.png";
         }
+
+        if ($page->is_event && empty($page->parent->cover)) {
+            $page->owner["photo"] = '/public/app/svg/community-placeholder.svg';
+        }
     ?>
 
     <script type="application/ld+json">

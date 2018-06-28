@@ -484,7 +484,7 @@ class Model_Page extends Model
 
         if ($this->is_event && $this->parent->is_community) {
             $this->owner["name"] =  $this->parent->title;
-            $this->owner["photo"] = !empty($this->parent->cover) ? '/upload/pages/covers/b_' . $this->parent->cover : $defaultCover;
+            $this->owner["photo"] = !empty($this->parent->cover) ? '/upload/pages/covers/b_' . $this->parent->cover : null;
             $this->owner["url"] =  $this->parent->url;
         } else {
             $this->owner["name"] = $this->author->shortName;
