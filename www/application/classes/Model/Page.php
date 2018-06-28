@@ -483,13 +483,13 @@ class Model_Page extends Model
         $defaultCover = '/public/app/svg/community-placeholder.svg';
 
         if ($this->is_event && $this->parent->is_community) {
-            $this->owner["name"] =  $this->parent->title;
+            $this->owner["name"] = $this->parent->title;
             $this->owner["photo"] = !empty($this->parent->cover) ? '/upload/pages/covers/b_' . $this->parent->cover : null;
-            $this->owner["url"] =  $this->parent->url;
+            $this->owner["url"] = $this->parent->url;
         } else {
             $this->owner["name"] = $this->author->shortName;
             $this->owner["photo"] = $this->author->photo;
-            $this->owner["url"] =  '/user/' . $this->author->id;
+            $this->owner["url"] = '/user/' . $this->author->id;
         }
     }
 }

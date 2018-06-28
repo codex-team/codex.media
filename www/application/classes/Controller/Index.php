@@ -71,7 +71,7 @@ class Controller_Index extends Controller_Base_preDispatch
             $about_page_data['description'] = $page->description;
             $about_page_data['uri'] = '/p/' . $page->id;
         }
+
         return $about_page_data;
     }
-
 }

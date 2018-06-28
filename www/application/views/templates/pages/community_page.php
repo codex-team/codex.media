@@ -1,5 +1,5 @@
 <?= View::factory('templates/components/about', [
-    'title'=> $page->title,
+    'title' => $page->title,
     'description' => $page->description,
     'link_text' => 'Read more',
     'page_uri' => '/p/' . $page->id
