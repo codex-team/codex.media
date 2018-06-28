@@ -49,6 +49,9 @@
             </span>
 
             <?
+                /**
+                 * TODO: Get rid of this when we have adequate design for checkboxes
+                 */
                 if (isset($_GET['advanced']) && empty($community_parent_id)) {
                     $hideCommunity = "";
                     $hideEvent = "";

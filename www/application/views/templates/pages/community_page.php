@@ -1,5 +1,5 @@
 <?= View::factory('templates/components/about', [
-    'title'=>'About',
+    'title' => 'About',
     'description' => $page->description,
     'organization_name' => $page->title
 ])->render(); ?>
