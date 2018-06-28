@@ -22,7 +22,7 @@
     <link rel="stylesheet" type="text/css" media="all" href="/public/build/bundle.css?v=<?= filemtime('public/build/bundle.css'); ?>">
     <link rel="icon" type="image/png" href="/favicon.png">
 
-    <? if ( !empty($site_info['meta_image']) ): ?>
+    <? if (!empty($site_info['meta_image'])): ?>
         <meta name="image" property="og:image"  content="<?= $site_info['meta_image'] ?>" />
         <link rel="image_src" href="<?= $site_info['meta_image'] ?>" />
     <? endif; ?>
@@ -38,10 +38,10 @@
        [!empty($contentOnly), 'body--content-only']
     ];
 
-    foreach($possibleModifiers as $modifiers) {
-      if ($modifiers[0]) {
-        $bodyModifiers[] = $modifiers[1];
-      }
+    foreach ($possibleModifiers as $modifiers) {
+        if ($modifiers[0]) {
+            $bodyModifiers[] = $modifiers[1];
+        }
     }
 ?>
 <body class="<?= implode(' ', $bodyModifiers) ?>">

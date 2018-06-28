@@ -57,6 +57,9 @@ class Model_Page extends Model
     /** post_id in the public's wall or 0  */
     public $isPostedInVK = 0;
 
+    /** Owner of page, user or community */
+    public $owner = [];
+
     const STATUS_SHOWING_PAGE = 0;
     const STATUS_HIDDEN_PAGE = 1;
     const STATUS_REMOVED_PAGE = 2;
@@ -109,6 +112,8 @@ class Model_Page extends Model
             $this->isPageOnMain = $this->isPageOnMain();
 
             $this->parent = new Model_Page($this->id_parent);
+
+            $this->getOwner();
 
             $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
             $this->commentsCount = $this->getCommentsCount();
@@ -379,6 +384,7 @@ class Model_Page extends Model
         $this->removeFromFeed(Model_Feed_Pages::ALL);
         $this->removeFromFeed(Model_Feed_Pages::TEACHERS);
         $this->removeFromFeed(Model_Feed_Pages::MENU);
+        $this->removeFromFeed(Model_Feed_Pages::EVENTS);
     }
 
     /**
@@ -466,5 +472,22 @@ class Model_Page extends Model
         }
 
         return true;
+    }
+
+    /**
+     * Determines who is author of event, person or community
+     * Doesn't write anything to database
+     */
+    public function getOwner()
+    {
+        if ($this->is_event && $this->parent->is_community) {
+            $this->owner["name"] = $this->parent->title;
+            $this->owner["photo"] = !empty($this->parent->cover) ? '/upload/pages/covers/b_' . $this->parent->cover : null;
+            $this->owner["url"] = $this->parent->url;
+        } else {
+            $this->owner["name"] = $this->author->shortName;
+            $this->owner["photo"] = $this->author->photo;
+            $this->owner["url"] = '/user/' . $this->author->id;
+        }
     }
 }

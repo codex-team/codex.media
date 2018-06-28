@@ -80,6 +80,10 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                     $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
                 }
             }
+
+            if ($this->page->is_event) {
+                $this->page->addToFeed(Model_Feed_Pages::EVENTS);
+            }
         }
 
         if ($this->user->isAdmin()) {
