@@ -64,9 +64,11 @@ class Controller_Index extends Controller_Base_preDispatch
     {
         $site_settings = new Model_Settings();
         $site_settings = $site_settings->getAll();
-        $page = new Model_Page(Arr::get($site_settings, 'about_page'));
         $about_page_data = [];
-        if ($page) {
+        $about_page_id = Arr::get($site_settings, 'about_page');
+
+        if ($about_page_id) {
+            $page = new Model_Page($about_page_id);
             $about_page_data['title'] = $page->title;
             $about_page_data['description'] = $page->description;
             $about_page_data['uri'] = '/p/' . $page->id;
