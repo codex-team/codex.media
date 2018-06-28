@@ -4,11 +4,11 @@
  */
 return [
     [
-        'uri' => 'general',
+        'uri' => Model_Feed_Pages::MAIN,
         'label' => 'General'
     ],
     [
-        'uri' => 'events',
+        'uri' => Model_Feed_Pages::EVENTS,
         'label' => 'Events'
     ],
     [

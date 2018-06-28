@@ -11,6 +11,7 @@ $STRING = '[-a-zA-Z\d]+';
 $FEED_KEYS = implode('|', [
     Model_Feed_Pages::ALL,
     Model_Feed_Pages::TEACHERS,
+    Model_Feed_Pages::EVENTS,
     Model_Feed_Pages::MAIN
 ]);
 

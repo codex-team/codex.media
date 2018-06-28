@@ -8,6 +8,7 @@ class Model_Feed_Pages extends Model_Feed_Abstract
     const TEACHERS = '2';
     const MAIN = '3';
     const MENU = '4';
+    const EVENTS = '5';
 
     public function __construct($type = self::ALL, $prefix = '')
     {

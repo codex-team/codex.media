@@ -1,8 +1,8 @@
 <?= View::factory('templates/components/about', [
-        'title' => 'Our mission',
-        'description' => 'Вообще "миссия" это текст 1000 знаков. Он важен для понимания нашей деятельности и наших ценностей. 
-                        Поэтому он нужен в первую очередь... ',
-        'organization_name' => 'Culture of Art'
+        'title' => Arr::get($about_page_data, 'title'),
+        'description' => Arr::get($about_page_data, 'description'),
+        'link_text' => 'Read more',
+        'page_uri' => Arr::get($about_page_data, 'uri')
 ])->render(); ?>
 
 <?/** add form for new page */ ?>
@@ -29,7 +29,10 @@
     <?= View::factory('templates/pages/list', [
         'pages' => $pages,
         'emptyListMessage' => $emptyListMessage,
-        'active_tab' => $active_tab
+        'active_tab' => $active_tab,
+        'events' => $events,
+        'events_uri' => $events_uri,
+        'total_events' => $total_events
     ]); ?>
 </div>
 

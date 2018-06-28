@@ -55,7 +55,7 @@
                 if (isset($_GET['advanced']) && empty($community_parent_id)) {
                     $hideCommunity = "";
                     $hideEvent = "";
-                } else if (isset($_GET['advanced']) && !empty($community_parent_id)) {
+                } elseif (isset($_GET['advanced']) && !empty($community_parent_id)) {
                     $hideCommunity = "hidden";
                     $hideEvent = "";
                 } else {
