@@ -1,7 +1,7 @@
 <?= View::factory('templates/components/about', [
-    'page_title'=>'About',
+    'title'=> $page->title,
     'description' => $page->description,
-    'link_text' => 'Read more about ' . $page->title,
+    'link_text' => 'Read more',
     'page_uri' => '/p/' . $page->id
 ])->render(); ?>
 
