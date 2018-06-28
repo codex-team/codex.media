@@ -1,8 +1,3 @@
-<?
-    if (empty($community_parent_id)) {
-        $community_parent_id = 0;
-    }
-?>
 <div class="writing-wrapper island">
 
     <div class="writing-wrapper__placeholder" onclick="codex.writing.open(this, 'writingForm', 'writing-wrapper__placeholder--opened');">
@@ -14,7 +9,7 @@
     <span class="hide" id="writingForm">
         <?= View::factory('templates/pages/form', [
             'hideEditorToolbar' => true,
-            'community_parent_id' => $community_parent_id
+            'community_parent_id' => !empty($community_parent_id) ? $community_parent_id : 0
         ]); ?>
     </span>
 
