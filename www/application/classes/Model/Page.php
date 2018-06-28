@@ -480,8 +480,6 @@ class Model_Page extends Model
      */
     public function getOwner()
     {
-        $defaultCover = '/public/app/svg/community-placeholder.svg';
-
         if ($this->is_event && $this->parent->is_community) {
             $this->owner["name"] = $this->parent->title;
             $this->owner["photo"] = !empty($this->parent->cover) ? '/upload/pages/covers/b_' . $this->parent->cover : null;
