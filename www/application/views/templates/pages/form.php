@@ -97,7 +97,7 @@
         <?= Form::hidden('isPersonalBlog', isset($isPersonalBlog) ? $isPersonalBlog : '1'); ?>
     <? endif; ?>
 
-    <? if ($community_parent_id): ?>
+    <? if (!empty($community_parent_id) && $community_parent_id != 0): ?>
         <?= Form::hidden('id_parent', $community_parent_id); ?>
     <? endif; ?>
 
