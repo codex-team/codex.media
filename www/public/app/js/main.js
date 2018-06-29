@@ -154,5 +154,6 @@ codex.pages = require('./modules/pages');
 codex.checkboxes = require('./modules/checkboxes');
 codex.logo = require('./modules/logo');
 codex.special = require('codex.special');
+codex.avatarUploader = require('./modules/avatarUploader');
 
 module.exports = codex;
