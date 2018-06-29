@@ -13,12 +13,14 @@
 
     .menu {
         li {
-            display: flex;
             padding: 5px;
             font-weight: 500;
             font-size: 14px;
             padding-left: 36px;
             line-height: 26px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             img {
                 height: 26px;
@@ -30,12 +32,5 @@
                 object-fit: cover;
             }
         }
-
-        &__community-item {
-             display: block;
-             white-space: nowrap;
-             overflow: hidden;
-             text-overflow: ellipsis;
-         }
     }
 }

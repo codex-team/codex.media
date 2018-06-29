@@ -13,9 +13,7 @@
 
             <li>
                 <a href="/p/<?= HTML::chars($item->id) ?>/<?= HTML::chars($item->uri) ?>">
-                    <img src="<?= HTML::chars($cover) ?>" alt="<?= HTML::chars($item->title) ?>">
-                </a>
-                <a class="menu__community-item" href="/p/<?= HTML::chars($item->id) ?>/<?= HTML::chars($item->uri) ?>">
+                    <img class="menu__community-item" src="<?= HTML::chars($cover) ?>" alt="<?= HTML::chars($item->title) ?>">
                     <?= HTML::chars($item->title) ?>
                 </a>
             </li>
