@@ -49,10 +49,18 @@
             </span>
 
             <?
-                if (isset($_GET['advanced'])) {
-                    $hidetoggleButton = "";
+                /**
+                 * TODO: Get rid of this when we have adequate design for checkboxes
+                 */
+                if (isset($_GET['advanced']) && empty($community_parent_id)) {
+                    $hideCommunity = "";
+                    $hideEvent = "";
+                } elseif (isset($_GET['advanced']) && !empty($community_parent_id)) {
+                    $hideCommunity = "hidden";
+                    $hideEvent = "";
                 } else {
-                    $hidetoggleButton = "hidden";
+                    $hideCommunity = "hidden";
+                    $hideEvent = "hidden";
                 }
             ?>
 
@@ -61,11 +69,11 @@
                     Новость
                 </span>
 
-                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isCommunity" data-checked="<?= $isCommunity ?>" <?= $hidetoggleButton ?>>
+                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isCommunity" data-checked="<?= $isCommunity ?>" <?= $hideCommunity ?>>
                     Сообщество
                 </span>
 
-                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isEvent" data-checked="<?= $isEvent ?>" <?= $hidetoggleButton ?>>
+                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isEvent" data-checked="<?= $isEvent ?>" <?= $hideEvent ?>>
                     Событие
                 </span>
 
@@ -87,6 +95,10 @@
 
     <? if (($user->isAdmin() && $fromUserProfile) || isset($isPersonalBlog)): ?>
         <?= Form::hidden('isPersonalBlog', isset($isPersonalBlog) ? $isPersonalBlog : '1'); ?>
+    <? endif; ?>
+
+    <? if (!empty($community_parent_id) && $community_parent_id != 0): ?>
+        <?= Form::hidden('id_parent', $community_parent_id); ?>
     <? endif; ?>
 
 </form>

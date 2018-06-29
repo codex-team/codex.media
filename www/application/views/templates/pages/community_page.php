@@ -5,6 +5,17 @@
     'page_uri' => '/p/' . $page->id
 ])->render(); ?>
 
+<?/** add form for new page */ ?>
+<? if ($user->id): ?>
+
+    <?= View::factory('templates/pages/form_wrapper', [
+        'hideEditorToolbar' => true,
+        'community_parent_id' => $page->id
+    ]); ?>
+
+<? endif ?>
+<? /***/ ?>
+
 <div class="island tabs island--margined">
     <a class="tabs__tab tabs__tab--current" href="<?= $page->url ?>">
         General

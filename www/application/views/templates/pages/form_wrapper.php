@@ -8,7 +8,8 @@
 
     <span class="hide" id="writingForm">
         <?= View::factory('templates/pages/form', [
-            'hideEditorToolbar' => true
+            'hideEditorToolbar' => true,
+            'community_parent_id' => !empty($community_parent_id) ? $community_parent_id : 0
         ]); ?>
     </span>
 
