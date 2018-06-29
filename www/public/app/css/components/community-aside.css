@@ -23,7 +23,41 @@
               img {
                   display: none;
               }
-          }
+         }
+
+        &--editable {
+            position: relative;
+
+            &::before {
+                content: '';
+                background: #F9FAFC url("/public/app/svg/upload-photo.svg") no-repeat 50% 50%;
+                position: absolute;
+                left: 5px;
+                right: 5px;
+                top: 5px;
+                bottom: 5px;
+                opacity: 0;
+                transform: scale(1.1);
+                transition: all 250ms ease;
+                border-radius: 2px;
+            }
+
+            &:hover::before {
+                transform: none;
+                opacity: 1;
+            }
+        }
+
+        &.loader {
+            background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, #EDF0F5 4px, #fff 8px) !important;
+            background-size: 56px 56px;
+            animation: loading-bar 1000ms infinite linear;
+
+            img,
+            &::before {
+                opacity: 0;
+            }
+        }
     }
 
     &__title {

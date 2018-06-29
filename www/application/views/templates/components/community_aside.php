@@ -1,10 +1,3 @@
-<?
-    if (empty($page->cover)) {
-        $defaultCoverClass = "community-aside__cover--default";
-    } else {
-        $defaultCoverClass = "";
-    }
-?>
 <aside class="island main-aside">
     <div class="community-aside">
         <? /* Manage page-community buttons */ ?>
@@ -58,7 +51,38 @@
                 <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
             </span>
         <? endif ?>
-        <a href="/p/<?= $page->id ?>/<?= $page->uri ?>" class="community-aside__cover <?= $defaultCoverClass ?>">
+
+        <?
+            $userCanEdit = $page->canModify($user);
+            $coverClasses = array("community-aside__cover");
+
+            if (empty($page->cover)) {
+                $coverClasses[] = "community-aside__cover--default";
+            }
+
+            if ($userCanEdit){
+                $coverClasses[] = 'community-aside__cover--editable';
+            }
+
+            $logoAttrs = array(
+                'href' => sprintf('/p/%s/%s', $page->id, $page->uri),
+                'class' => implode(' ', $coverClasses),
+                'title' => $userCanEdit ? 'Загрузить логотип' : $page->title,
+            );
+
+            if ($userCanEdit){
+                $logoAttrs['data-module'] = 'avatarUploader';
+            }
+
+        ?>
+        <a <?= HTML::attributes($logoAttrs) ?>>
+            <? if ($userCanEdit): ?>
+                <module-settings hidden>
+                    {
+                        "pageId": <?= $page->id ?>
+                    }
+                </module-settings>
+            <? endif; ?>
             <img src="/upload/pages/covers/b_<?= $page->cover ?>">
         </a>
         <a href="/p/<?= $page->id ?>/<?= $page->uri ?>" class="community-aside__title">
