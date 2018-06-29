@@ -9,10 +9,10 @@
     <div class="community-aside">
         <? /* Manage page-community buttons */ ?>
         <? if ($page->canModify($user)): ?>
-            <span class="island-settings community-aside__island-settings js-page-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
+            <span class="island-settings community-aside__island-settings js-community-settings" data-id="<?= $page->id ?>" data-module="islandSettings">
                 <module-settings hidden>
                     {
-                        "selector" : ".js-page-settings",
+                        "selector" : ".js-community-settings",
                         "items" : [
                             {
                                 "title" : "Редактировать",
