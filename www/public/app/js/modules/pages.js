@@ -215,11 +215,11 @@ module.exports = (function () {
      */
     var updateSiteMenu = function (menu) {
 
-        var oldMenu = document.getElementById('js-site-menu'),
-            newMenu = codex.core.parseHTML(menu)[0];
+        var oldMenu = document.getElementById('js-site-menu');
 
         if (oldMenu) {
 
+            var newMenu = codex.core.parseHTML(menu)[0];
             codex.core.replace(oldMenu, newMenu);
 
         }
