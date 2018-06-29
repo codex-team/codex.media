@@ -218,7 +218,11 @@ module.exports = (function () {
         var oldMenu = document.getElementById('js-site-menu'),
             newMenu = codex.core.parseHTML(menu)[0];
 
-        codex.core.replace(oldMenu, newMenu);
+        if (oldMenu) {
+
+            codex.core.replace(oldMenu, newMenu);
+
+        }
 
     };
 
