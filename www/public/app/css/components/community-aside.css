@@ -32,4 +32,10 @@
         line-height: 1.38em;
         text-align: center;
     }
+
+     &__island-settings {
+          margin-left: auto;
+          margin-right: -3px;
+          margin-top: -10px;
+      }
 }
