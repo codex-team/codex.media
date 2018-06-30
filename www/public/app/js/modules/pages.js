@@ -220,6 +220,7 @@ module.exports = (function () {
         if (oldMenu) {
 
             var newMenu = codex.core.parseHTML(menu)[0];
+
             codex.core.replace(oldMenu, newMenu);
 
         }

@@ -1,5 +1,6 @@
 .transparent-aside {
     @media (--mobile){
+        padding: 15px;
         display: none;
     }
 
@@ -33,4 +34,8 @@
             }
         }
     }
+}
+
+.body--menu-opened .transparent-aside {
+    display: block;
 }
