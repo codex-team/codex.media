@@ -20,43 +20,6 @@ module.exports = (function () {
 
     };
 
-
-    /**
-     * Toggles mobile menu
-     * Handles clicks on the hamburger icon in header
-     */
-    const toggleMobileMenu = function ( event ) {
-
-        let menu = document.getElementById('js-mobile-menu-holder'),
-            openedClass = 'mobile-menu-holder--opened';
-
-        menu.classList.toggle(openedClass);
-
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-        event.preventDefault();
-
-    };
-
-    /**
-     * Create listener for mobile menu toggler
-     * @param {String} id — toggler's id
-     */
-    const setMobileMenuToggler = function ( id ) {
-
-        const menuToggler = document.getElementById(id);
-
-        if ( !menuToggler ) {
-
-            return;
-
-        }
-
-        menuToggler.addEventListener('click', toggleMobileMenu);
-
-    };
-
-
     /**
     * Module uses for toggle custom checkboxes
     * that has 'js-custom-checkbox' class and input[type="checkbox"] included
@@ -140,8 +103,6 @@ module.exports = (function () {
     };
 
     return {
-        toggleMobileMenu,
-        setMobileMenuToggler,
         customCheckboxes,
         approvalButtons,
         toggle

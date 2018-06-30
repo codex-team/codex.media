@@ -1,0 +1,23 @@
+.aside-menu {
+    font-size: 15px;
+    padding: 10px 0;
+
+    &:empty {
+        margin: 0;
+    }
+
+    a {
+        display: block;
+        padding: 10px var(--islandPadding);
+        font-size: 14px;
+        line-height: 1.5em;
+
+        &:hover {
+            color: var(--color-hover);
+        }
+
+        @media (--mobile) {
+            padding: 10px 15px;
+        }
+    }
+}

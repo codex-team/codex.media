@@ -56,7 +56,7 @@
         <?= View::factory('templates/components/branding')->render(); ?>
     <? endif; ?>
 
-    <div class="center-col" id="js-layout-holder">
+    <div class="center-col" id="js-layout-holder" data-module="layout">
 
         <div class="grid-cols-wrapper">
 

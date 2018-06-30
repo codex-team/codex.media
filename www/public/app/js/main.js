@@ -111,11 +111,6 @@ codex = function () {
          */
         codex.branding.init();
 
-        /**
-         * Set listener for mobile menu toggler
-         */
-        codex.content.setMobileMenuToggler('js-mobile-menu-toggler');
-
     }
 
     return codex;
@@ -155,5 +150,6 @@ codex.checkboxes = require('./modules/checkboxes');
 codex.logo = require('./modules/logo');
 codex.special = require('codex.special');
 codex.avatarUploader = require('./modules/avatarUploader');
+codex.layout = require('./modules/layout');
 
 module.exports = codex;
