@@ -69,11 +69,11 @@ class Controller_Page_Index extends Controller_Base_preDispatch
             switch ($list) {
 
                 case self::LIST_EVENTS:
-                    $communityFeed = $community_events;
+                    $communityFeed = array_reverse($community_events, true);;
                     break;
 
                 case self::LIST_PAGES:
-                    $communityFeed = $page->children;
+                    $communityFeed = array_reverse($page->children, true);
                     break;
 
                 default:
