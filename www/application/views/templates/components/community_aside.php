@@ -54,23 +54,23 @@
 
         <?
             $userCanEdit = $page->canModify($user);
-            $coverClasses = array("community-aside__cover");
+            $coverClasses = ["community-aside__cover"];
 
             if (empty($page->cover)) {
                 $coverClasses[] = "community-aside__cover--default";
             }
 
-            if ($userCanEdit){
+            if ($userCanEdit) {
                 $coverClasses[] = 'community-aside__cover--editable';
             }
 
-            $logoAttrs = array(
+            $logoAttrs = [
                 'href' => sprintf('/p/%s/%s', $page->id, $page->uri),
                 'class' => implode(' ', $coverClasses),
                 'title' => $userCanEdit ? 'Загрузить логотип' : $page->title,
-            );
+            ];
 
-            if ($userCanEdit){
+            if ($userCanEdit) {
                 $logoAttrs['data-module'] = 'avatarUploader';
             }
 
