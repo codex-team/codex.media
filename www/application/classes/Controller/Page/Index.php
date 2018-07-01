@@ -61,7 +61,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         }
 
         if ($page->is_community) {
-            $community_events = self::communityEvents($page->id);
+            $community_events = self::communityEvents($page->children);
             $total_events = count($community_events);
             $events_promo = self::communityEventsPromo($community_events);
             $list = $this->request->param('list') ?: self::LIST_PAGES;
@@ -95,19 +95,17 @@ class Controller_Page_Index extends Controller_Base_preDispatch
     }
 
     /**
-     * Get events of community with specific id
+     * Filter child events of specific community
      *
-     * @param int $community_id Community id
-     * @return Model_Page[] $community_events Array of community events
+     * @param Model_Page[] $community Community child pages
+     * @return Model_Page[] $community_events Array of community child events
      */
-    public function communityEvents($community_id)
+    public function communityEvents($community_children)
     {
         $community_events = [];
-        $events_feed = new Model_Feed_Pages(Model_Feed_Pages::EVENTS);
-        $events = $events_feed->get();
-        foreach ($events as $event) {
-            if ($event->parent->id == $community_id) {
-                $community_events[] = $event;
+        foreach ($community_children as $child) {
+            if ($child->is_event) {
+                $community_events[] = $child;
             }
         }
 
