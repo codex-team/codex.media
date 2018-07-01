@@ -97,7 +97,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
     /**
      * Filter child events of specific community
      *
-     * @param Model_Page[] $community Community child pages
+     * @param Model_Page[] $community_children Community child pages
      * @return Model_Page[] $community_events Array of community child events
      */
     public function communityEvents($community_children)
