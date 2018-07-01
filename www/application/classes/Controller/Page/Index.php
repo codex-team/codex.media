@@ -17,6 +17,13 @@ class Controller_Page_Index extends Controller_Base_preDispatch
      * Number of events to show in events block
      */
     const PORTION_OF_EVENTS = 3;
+    const MIN_NUMBER_OF_EVENTS_PROMO = 2;
+
+    /**
+     * Tabs on community page
+     */
+    const LIST_PAGES = 'pages';
+    const LIST_EVENTS = 'events';
 
     /**
      * Gets page data and sends it into View template /page/pages
@@ -54,20 +61,80 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         }
 
         if ($page->is_community) {
-            $events_feed = new Model_Feed_Pages(Model_Feed_Pages::EVENTS);
-            $events = $events_feed->get(self::PORTION_OF_EVENTS);
-            $total_events = count($events_feed->get());
+            $community_events = self::communityEvents($page->id);
+            $total_events = count($community_events);
+            $events_promo = self::communityEventsPromo($community_events);
+            $list = $this->request->param('list') ?: self::LIST_PAGES;
+
+            switch ($list) {
+
+                case self::LIST_EVENTS:
+                    $communityFeed = $community_events;
+                    break;
+
+                case self::LIST_PAGES:
+                    $communityFeed = $page->children;
+                    break;
+
+                default:
+                    $communityFeed = [];
+                    break;
+            }
 
             $this->template->aside = View::factory('templates/components/community_aside', ['page' => $page]);
             $this->template->content = View::factory('templates/pages/community_page', [
                 'page' => $page,
-                'events' => $events,
+                'events' => $events_promo,
                 'total_events' => $total_events,
-                'events_uri' => Model_Feed_Pages::EVENTS
+                'pages' => $communityFeed,
+                'list' => $list
             ]);
         } else {
             $this->template->content = View::factory('templates/pages/page', $this->view);
         }
+    }
+
+    /**
+     * Get events of community with specific id
+     *
+     * @param int $community_id Community id
+     * @return Model_Page[] $community_events Array of community events
+     */
+    public function communityEvents($community_id)
+    {
+        $community_events = [];
+        $events_feed = new Model_Feed_Pages(Model_Feed_Pages::EVENTS);
+        $events = $events_feed->get();
+        foreach ($events as $event) {
+            if ($event->parent->id == $community_id) {
+                $community_events[] = $event;
+            }
+        }
+
+        return $community_events;
+    }
+
+    /**
+     * If community has more than 2 events, show them in promo block
+     * Maximum number of events to show is 3
+     *
+     * @param Model_Page[] $community_events Array of all community events
+     * @return Model_Page[] $community_events_promo Array of events to show in promo block
+     */
+    public function communityEventsPromo($community_events)
+    {
+        $community_events_promo = [];
+
+        if (is_array($community_events) && count($community_events) >= self::MIN_NUMBER_OF_EVENTS_PROMO) {
+            foreach ($community_events as $event) {
+
+                if (count($community_events_promo) < self::PORTION_OF_EVENTS) {
+                    $community_events_promo[] = $event;
+                }
+            }
+        }
+
+        return $community_events_promo;
     }
 
     /**

@@ -17,16 +17,21 @@
 <? /***/ ?>
 
 <div class="island tabs island--margined">
-    <a class="tabs__tab tabs__tab--current" href="<?= $page->url ?>">
+    <a class="tabs__tab <?= $list == 'pages' || !$list ? 'tabs__tab--current' : '' ?>" href='<?= $page->url ?>'>
         General
+    </a>
+    <a class="tabs__tab <?= $list == 'events' ? 'tabs__tab--current' : '' ?>" href='<?= $page->url ?>/events'>
+        Events
     </a>
 </div>
 
+
 <?= View::factory('templates/pages/list', [
-    'pages' => $page->children,
+    'pages' => $pages,
     'emptyListMessage' => 'Тут появятся статьи и заметки',
     'active_tab' => '',
     'events' => $events,
-    'events_uri' => $events_uri,
-    'total_events' => $total_events
+    'events_uri' => 'p/' . $page->id . '/' . $page->uri . '/events',
+    'total_events' => $total_events,
+    'hide_event_author' => 'true'
 ]); ?>

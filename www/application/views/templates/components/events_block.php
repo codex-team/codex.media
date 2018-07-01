@@ -8,7 +8,8 @@
         <? foreach ($events as $event): ?>
             <div class="events-block__item">
                 <?= View::factory('templates/components/event_card', [
-                    'event' => $event
+                    'event' => $event,
+                    'hide_event_author' => $hide_event_author
                 ]); ?>
             </div>
         <? endforeach; ?>
