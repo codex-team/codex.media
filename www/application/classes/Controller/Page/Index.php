@@ -17,7 +17,6 @@ class Controller_Page_Index extends Controller_Base_preDispatch
      * Number of events to show in events block
      */
     const PORTION_OF_EVENTS = 3;
-    const MIN_NUMBER_OF_EVENTS_PROMO = 2;
 
     /**
      * Tabs on community page
@@ -69,11 +68,11 @@ class Controller_Page_Index extends Controller_Base_preDispatch
             switch ($list) {
 
                 case self::LIST_EVENTS:
-                    $communityFeed = array_reverse($community_events, true);
+                    $communityFeed = array_reverse($community_events, false);
                     break;
 
                 case self::LIST_PAGES:
-                    $communityFeed = array_reverse($page->children, true);
+                    $communityFeed = array_reverse($page->children, false);
                     break;
 
                 default:
@@ -114,8 +113,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
     }
 
     /**
-     * If community has more than 2 events, show them in promo block
-     * Maximum number of events to show is 3
+     * If community has more than 3 events, show them in promo block
      *
      * @param Model_Page[] $community_events Array of all community events
      *
@@ -125,7 +123,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
     {
         $community_events_promo = [];
 
-        if (is_array($community_events) && count($community_events) >= self::MIN_NUMBER_OF_EVENTS_PROMO) {
+        if (is_array($community_events) && count($community_events) >= self::PORTION_OF_EVENTS) {
             foreach ($community_events as $event) {
                 if (count($community_events_promo) < self::PORTION_OF_EVENTS) {
                     $community_events_promo[] = $event;
