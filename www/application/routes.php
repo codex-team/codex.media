@@ -21,6 +21,14 @@ $USER_FEED_LISTS = implode('|', [
 ]);
 
 /**
+ * Routes for tabs on community page
+ */
+$COMMUNITY_FEED_LISTS = implode('|', [
+    Controller_Page_Index::LIST_PAGES,
+    Controller_Page_Index::LIST_EVENTS
+]);
+
+/**
  * Static pages
  */
 Route::set('INDEX', '(<feed_key>(/))(<page_number>)', // #TODO rewrite expression for: IF <feed_key> && <page_number> THEN need this slash (/)
@@ -55,7 +63,7 @@ Route::set('SAVE_PAGE', 'p/save')->defaults([
     'action' => 'save'
 ]);
 
-Route::set('PAGE', 'p/<id>(/<uri>)', ['id' => $DIGIT, 'uri' => $STRING])->defaults([
+Route::set('PAGE', 'p/<id>(/<uri>(/<list>(/<page_number>)))', ['id' => $DIGIT, 'uri' => $STRING, 'list' => $COMMUNITY_FEED_LISTS, 'page_number' => $DIGIT])->defaults([
     'controller' => 'Page_Index',
     'action' => 'show'
 ]);

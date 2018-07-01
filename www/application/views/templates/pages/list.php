@@ -120,7 +120,8 @@
                 'title' => 'Events',
                 'events' => $events,
                 'events_uri' => $events_uri,
-                'link_text' => 'View full calendar with ' . $total_events . ' upcoming events'
+                'link_text' => 'View full calendar with ' . $total_events . ' upcoming events',
+                'hide_event_author' => !empty($hide_event_author) ? $hide_event_author : false
             ]); ?>
         <? endif;?>
 
