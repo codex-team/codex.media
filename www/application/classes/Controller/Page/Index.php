@@ -124,6 +124,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $community_events_promo = [];
 
         if (is_array($community_events) && count($community_events) >= self::PORTION_OF_EVENTS) {
+            $community_events = array_reverse($community_events, true);
             foreach ($community_events as $event) {
                 if (count($community_events_promo) < self::PORTION_OF_EVENTS) {
                     $community_events_promo[] = $event;
