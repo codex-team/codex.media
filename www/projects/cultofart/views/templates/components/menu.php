@@ -18,7 +18,7 @@
             ?>
 
             <? if ($isParent): ?>
-                <li class="community-parent">
+                <li class="menu__community-parent">
                     <a href="/p/<?= HTML::chars($item->id) ?>/<?= HTML::chars($item->uri) ?>">
                         <img src="<?= HTML::chars($cover) ?>" alt="<?= HTML::chars($item->title) ?>">
                         <?= HTML::chars($item->title) ?>

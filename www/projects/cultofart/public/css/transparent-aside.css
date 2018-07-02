@@ -27,9 +27,9 @@
                 object-fit: cover;
             }
 
-            &.community-parent {
+            &.menu__community-parent {
                  font-size: 15px;
-                 font-variant-caps: all-small-caps;
+                 font-variant-caps: small-caps;
                  margin: 10px 0;
                  color: var(--color-gray);
                  letter-spacing: 0.4px;
