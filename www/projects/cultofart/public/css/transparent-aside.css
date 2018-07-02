@@ -32,11 +32,15 @@
                  font-variant-caps: small-caps;
                  margin: 10px 0;
                  color: var(--color-gray);
+                 white-space: normal;
+                 line-height: 1.33em;
                  letter-spacing: 0.4px;
                  padding-left: 0;
 
-                > img {
-                    display: none;
+                > a {
+                    img {
+                        display: none;
+                    }
                 }
             }
         }
