@@ -6,18 +6,17 @@
 
     .menu {
         li {
+            position: relative;
             padding: 5px;
             font-weight: 500;
             font-size: 14px;
             padding-left: 36px;
             line-height: 26px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
             color: var(--mediumText);
             font-variant-caps: normal;
 
             img {
+                position: absolute;
                 height: 26px;
                 width: 26px;
                 vertical-align: middle;
@@ -25,6 +24,13 @@
                 margin-right: 7px;
                 margin-left: -36px;
                 object-fit: cover;
+            }
+
+            a {
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             &.menu__community-parent {
