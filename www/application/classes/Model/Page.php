@@ -408,6 +408,31 @@ class Model_Page extends Model
     }
 
     /**
+     * Get content blocks except for first
+     * @uses in About block
+     *
+     * @return string[] Array of text content blocks if there is more than one block
+     */
+    public function getTextContent()
+    {
+        $blocks = $this->blocks;
+        $content = [];
+
+        if ($blocks && count($blocks) > 1) {
+            foreach ($blocks as $index => $block) {
+                if ($index < 1) {
+                    continue;
+                }
+                if ($block['type'] == 'paragraph') {
+                    $content[] =  $block['data']['text'];
+                }
+            }
+        }
+
+        return $content;
+    }
+
+    /**
      * Returns comments count for current page
      * Uses cache with TAG 'comment:by:page:<PAGE_ID>' that clears in comments insertion/deletion
      *

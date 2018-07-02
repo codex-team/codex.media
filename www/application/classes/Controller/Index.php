@@ -71,6 +71,7 @@ class Controller_Index extends Controller_Base_preDispatch
             $page = new Model_Page($about_page_id);
             $about_page_data['title'] = $page->title;
             $about_page_data['description'] = $page->description;
+            $about_page_data['content_blocks'] = $page->getTextContent();
             $about_page_data['uri'] = '/p/' . $page->id;
         }
 

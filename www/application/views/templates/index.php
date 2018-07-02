@@ -1,6 +1,7 @@
 <?= View::factory('templates/components/about', [
         'title' => Arr::get($about_page_data, 'title'),
         'description' => Arr::get($about_page_data, 'description'),
+        'content_blocks' => Arr::get($about_page_data, 'content_blocks'),
         'link_text' => 'Read more',
         'page_uri' => Arr::get($about_page_data, 'uri')
 ])->render(); ?>
