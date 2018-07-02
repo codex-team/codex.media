@@ -53,6 +53,7 @@ class Model_Feed_Pages extends Model_Feed_Abstract
                 $page = new Model_Page($id, true); //sets $escapeHTML param true to escape HTML entities
 
                 $page->isPinned = $this->isPinned($id);
+                $page->children = $page->getChildrenPages();
 
                 /** if page with $id doen't exist then ignore it */
                 if (!$page->id) {

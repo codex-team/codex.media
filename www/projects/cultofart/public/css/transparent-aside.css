@@ -4,14 +4,6 @@
         display: none;
     }
 
-    &__label {
-        font-size: 15px;
-        font-variant-caps: all-small-caps;
-        margin: 10px 0;
-        color: var(--color-gray);
-        letter-spacing: 0.4px;
-    }
-
     .menu {
         li {
             padding: 5px;
@@ -22,6 +14,8 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: var(--mediumText);
+            font-variant-caps: normal;
 
             img {
                 height: 26px;
@@ -31,6 +25,19 @@
                 margin-right: 7px;
                 margin-left: -36px;
                 object-fit: cover;
+            }
+
+            &.community-parent {
+                 font-size: 15px;
+                 font-variant-caps: all-small-caps;
+                 margin: 10px 0;
+                 color: var(--color-gray);
+                 letter-spacing: 0.4px;
+                 padding-left: 0;
+
+                > img {
+                    display: none;
+                }
             }
         }
     }
