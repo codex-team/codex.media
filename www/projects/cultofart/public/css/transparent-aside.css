@@ -44,14 +44,14 @@
                  padding-left: 0;
 
                  li:first-child {
-                     margin-top: 15px;
+                     margin-top: 10px;
                  }
             }
         }
 
         > li {
             &:not(.menu__community-parent) {
-                 margin-top: 15px;
+                 margin-top: 10px;
             }
         }
     }
