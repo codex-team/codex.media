@@ -42,6 +42,12 @@
                  }
             }
         }
+
+        > li {
+            &:not(.menu__community-parent) {
+                 margin-top: 15px;
+            }
+        }
     }
 }
 
