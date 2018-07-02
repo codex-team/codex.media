@@ -5,3 +5,17 @@
 .site-head--in-aside {
     display: none;
 }
+
+.aside-auth {
+    display: none;
+
+    @media (--tablet) {
+        display: block;
+        margin-top: var(--islandMargin)
+    }
+
+    .island--padded,
+    .user-panel {
+        padding: 15px;
+    }
+}
