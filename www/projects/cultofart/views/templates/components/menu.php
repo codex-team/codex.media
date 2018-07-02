@@ -20,28 +20,38 @@
             <? if ($isParent): ?>
                 <li class="menu__community-parent">
                     <a href="/p/<?= HTML::chars($item->id) ?>/<?= HTML::chars($item->uri) ?>">
-                        <img src="<?= HTML::chars($cover) ?>" alt="<?= HTML::chars($item->title) ?>">
                         <?= HTML::chars($item->title) ?>
                     </a>
                     <? if ($item->children): ?>
-                        <? foreach ($item->children as $child): ?>
-                            <?
-                                if (!empty($child->cover)) {
-                                    $cover = '/upload/pages/covers/o_' . $child->cover;
-                                } else {
-                                    $cover = '/public/app/svg/default-page-icon.svg';
-                                }
-                            ?>
-                            <ul>
+                        <ul>
+                            <? foreach ($item->children as $child): ?>
+                                <?
+                                    if (!$child->isMenuItem()) {
+                                        continue;
+                                    }
+                                    if (!empty($child->cover)) {
+                                        $cover = '/upload/pages/covers/o_' . $child->cover;
+                                    } else {
+                                        $cover = '/public/app/svg/default-page-icon.svg';
+                                    }
+                                ?>
+
                                 <li>
                                     <a href="/p/<?= HTML::chars($child->id) ?>/<?= HTML::chars($child->uri) ?>">
                                         <img src="<?= HTML::chars($cover) ?>" alt="<?= HTML::chars($child->title) ?>">
                                         <?= HTML::chars($child->title) ?>
                                     </a>
                                 </li>
-                            </ul>
-                        <? endforeach; ?>
-                    <? endif; ?>
+                            <? endforeach; ?>
+                        </ul>
+                    <?endif;?>
+                </li>
+            <? elseif (!$isParent && !$item->parent->isMenuItem()): ?>
+                <li>
+                    <a href="/p/<?= HTML::chars($item->id) ?>/<?= HTML::chars($item->uri) ?>">
+                        <img src="<?= HTML::chars($cover) ?>" alt="<?= HTML::chars($item->title) ?>">
+                        <?= HTML::chars($item->title) ?>
+                    </a>
                 </li>
             <? endif; ?>
         <? endforeach ?>

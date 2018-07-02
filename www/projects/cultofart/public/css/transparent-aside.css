@@ -37,11 +37,9 @@
                  letter-spacing: 0.4px;
                  padding-left: 0;
 
-                > a {
-                    img {
-                        display: none;
-                    }
-                }
+                 li:first-child {
+                     margin-top: 15px;
+                 }
             }
         }
     }
