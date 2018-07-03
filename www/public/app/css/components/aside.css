@@ -77,7 +77,7 @@
             }
         }
 
-        &--upload{
+        &-upload{
             position: absolute;
             display: none;
             left: 50%;
