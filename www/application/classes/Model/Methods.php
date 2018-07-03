@@ -389,7 +389,7 @@ class Model_Methods extends Model
             ->execute('id'); // ids will used as array keys
 
         /**
-         * Get pages first level pages:
+         * Get first-level pages:
          * 1) with id_parent = 0
          * 2) with parent that does not placed in menu
          */
