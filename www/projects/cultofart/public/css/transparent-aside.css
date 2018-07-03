@@ -3,60 +3,55 @@
         padding: 15px;
         display: none;
     }
-
-    .menu {
-        li {
-            position: relative;
-            padding: 5px;
-            font-weight: 500;
-            font-size: 14px;
-            padding-left: 36px;
-            line-height: 26px;
-            color: var(--mediumText);
-            font-variant-caps: normal;
-
-            img {
-                position: absolute;
-                height: 26px;
-                width: 26px;
-                vertical-align: middle;
-                border-radius: 50%;
-                margin-right: 7px;
-                margin-left: -36px;
-                object-fit: cover;
-            }
-
-            a {
-                display: block;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            &.menu__community-parent {
-                 font-size: 15px;
-                 font-variant-caps: small-caps;
-                 margin: 10px 0;
-                 color: var(--color-gray);
-                 white-space: normal;
-                 line-height: 1.33em;
-                 letter-spacing: 0.4px;
-                 padding-left: 0;
-
-                 li:first-child {
-                     margin-top: 10px;
-                 }
-            }
-        }
-
-        > li {
-            &:not(.menu__community-parent) {
-                 margin-top: 10px;
-            }
-        }
-    }
 }
 
 .body--menu-opened .transparent-aside {
     display: block;
+}
+
+.transparent-menu {
+    &__section{
+        margin: 20px 0;
+
+        &:first-of-type {
+            margin-top: 0;
+        }
+
+        &-label {
+            color: var(--color-gray);
+            font-variant-caps: small-caps;
+            font-size: 15px;
+        }
+    }
+
+    &__subsection {
+        margin-top: 10px;
+    }
+
+    &__item {
+        display: block;
+        padding: 5px;
+        margin-left: -5px;
+        font-weight: 500;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-radius: 3px;
+
+
+        &:hover {
+            background: #fff;
+            color: initial;
+        }
+
+        img {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 3px;
+            margin-top: -2px;
+        }
+    }
 }

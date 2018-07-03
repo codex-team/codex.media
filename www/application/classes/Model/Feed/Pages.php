@@ -68,4 +68,16 @@ class Model_Feed_Pages extends Model_Feed_Abstract
 
         return false;
     }
+
+    /**
+     * Return feed ids
+     *
+     * @param int limit
+     * @param int offset
+     * @return array
+     */
+    public function ids($limit = 0, $offset = 0)
+    {
+        return parent::get($limit, $offset);
+    }
 }

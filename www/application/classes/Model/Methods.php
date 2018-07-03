@@ -381,7 +381,34 @@ class Model_Methods extends Model
     {
         $menu = new Model_Feed_Pages(Model_Feed_Pages::MENU);
 
-        return array_reverse($menu->get());
+        $ids = $menu->ids();
+
+        $pages = Dao_Pages::select(array('id', 'title', 'cover', 'id_parent'))
+            ->where_in('id', $ids)
+            ->cached(Date::MINUTE * 5, 'page:ids:' . implode('|',$ids), ['site_menu'])
+            ->execute('id'); // ids will used as array keys
+
+        /**
+         * Get pages first level pages:
+         * 1) with id_parent = 0
+         * 2) with parent that does not placed in menu
+         */
+        $firstLevel = array_filter($pages, function ($page) use ($pages) {
+            return $page['id_parent'] == 0 || !in_array($page['id_parent'], array_keys($pages));
+        });
+
+        /**
+         * Then add leftover items as children
+         */
+        $firstLevel = array_map(function($page) use ($pages)  {
+            $page['children'] = array_filter($pages, function($child) use ($page) {
+                return $child['id_parent'] == $page['id'];
+            });
+
+            return $page;
+        }, $firstLevel);
+
+        return $firstLevel;
     }
 
     public static function isNextPageExist($list = [], $limit = 0)
