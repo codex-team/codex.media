@@ -40,6 +40,10 @@
     border-left: 1px solid rgba(79, 109, 162, 0.1);
     margin-left: var(--islandMargin);
     padding: var(--islandMargin) 0 var(--islandMargin) var(--islandMargin);
+
+    @media (--tablet) {
+        display: none;
+    }
 }
 
 .grid-content {

@@ -10,6 +10,10 @@
     width: 245px;
     box-sizing: border-box;
 
+    @media (--tablet) {
+        width: 200px;
+    }
+
     @media (--mobile) {
         width: auto;
         padding: 0;
@@ -17,6 +21,8 @@
         float: none;
         border: 0;
     }
+
+
 }
 
 .codex-special__toolbar {
