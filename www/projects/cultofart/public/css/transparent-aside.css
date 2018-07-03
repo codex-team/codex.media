@@ -3,39 +3,55 @@
         padding: 15px;
         display: none;
     }
-
-    &__label {
-        font-size: 15px;
-        font-variant-caps: all-small-caps;
-        margin: 10px 0;
-        color: var(--color-gray);
-        letter-spacing: 0.4px;
-    }
-
-    .menu {
-        li {
-            padding: 5px;
-            font-weight: 500;
-            font-size: 14px;
-            padding-left: 36px;
-            line-height: 26px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
-            img {
-                height: 26px;
-                width: 26px;
-                vertical-align: middle;
-                border-radius: 50%;
-                margin-right: 7px;
-                margin-left: -36px;
-                object-fit: cover;
-            }
-        }
-    }
 }
 
 .body--menu-opened .transparent-aside {
     display: block;
+}
+
+.transparent-menu {
+    &__section{
+        margin: 20px 0;
+
+        &:first-of-type {
+            margin-top: 0;
+        }
+
+        &-label {
+            color: var(--color-gray);
+            font-variant-caps: small-caps;
+            font-size: 15px;
+        }
+    }
+
+    &__subsection {
+        margin-top: 10px;
+    }
+
+    &__item {
+        display: block;
+        padding: 5px;
+        margin-left: -5px;
+        font-weight: 500;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-radius: 3px;
+
+
+        &:hover {
+            background: #fff;
+            color: initial;
+        }
+
+        img {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 3px;
+            margin-top: -2px;
+        }
+    }
 }

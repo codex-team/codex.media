@@ -1,24 +1,24 @@
-<? if (!empty($site_menu)): ?>
-
-    <ul class="menu js-emoji-included" id="js-site-menu">
+<ul class="transparent-menu js-emoji-included" id="js-site-menu">
+    <? if (!empty($site_menu)): ?>
         <? foreach ($site_menu as $item): ?>
-
-            <?
-                if (!empty($item->cover)) {
-                    $cover = '/upload/pages/covers/o_' . $item->cover;
-                } else {
-                    $cover = '/public/app/svg/default-page-icon.svg';
-                }
-            ?>
-
-            <li>
-                <a href="/p/<?= HTML::chars($item->id) ?>/<?= HTML::chars($item->uri) ?>">
-                    <img class="menu__community-item" src="<?= HTML::chars($cover) ?>" alt="<?= HTML::chars($item->title) ?>">
-                    <?= HTML::chars($item->title) ?>
-                </a>
-            </li>
+                <li class="transparent-menu__section">
+                    <a class="transparent-menu__section-label" href="/p/<?= HTML::chars($item['id']) ?>/<?= $methods->getUriByTitle($item['title']) ?>">
+                        <?= HTML::chars($item['title']) ?>
+                    </a>
+                    <? if ($item['children']): ?>
+                        <ul class="transparent-menu__subsection">
+                            <? foreach ($item['children'] as $child): ?>
+                                <li>
+                                    <a class="transparent-menu__item" href="/p/<?= HTML::chars($child['id']) ?>/<?= $methods->getUriByTitle($child['title']) ?>">
+                                        <img src="<?= !empty($child['cover ']) ? '/upload/pages/covers/b_' . $child['cover ']: '/public/app/svg/default-page-icon.svg' ?>" alt="<?= HTML::chars($child['title']) ?>">
+                                        <?= HTML::chars($child['title']) ?>
+                                    </a>
+                                </li>
+                            <? endforeach; ?>
+                        </ul>
+                    <?endif;?>
+                </li>
         <? endforeach ?>
-    </ul>
-<? else: ?>
-    <ul class="menu" id="js-site-menu"></ul>
-<? endif; ?>
+    <? endif; ?>
+</ul>
+
