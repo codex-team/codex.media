@@ -51,7 +51,7 @@
             <label for="isCommunity">Сообщество</label>
         </div>
 
-        <span class="form-type-selector__island-settings island-settings" onclick="codex.pageTypes.toggleHeight(this)">
+        <span class="form-type-selector__island-settings island-settings">
         <? include(DOCROOT . 'public/app/svg/ellipsis.svg'); ?>
     </span>
     </div>
