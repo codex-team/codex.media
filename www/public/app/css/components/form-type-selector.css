@@ -1,53 +1,49 @@
 .form-type-selector {
     position: relative;
-    overflow: hidden;
-    max-height: 3.1em;
     padding: 16px 25px 0;
     font-size: 13px;
     color: var(--color-gray);
     background-color: var(--lightBlueBackground);
 
-    @media (--mobile) {
-        max-height: 2.4em;
-        padding: 16px 15px 0;
+    @media (--tablet) {
+        padding: 16px 45px 0 25px;
     }
 
     &__content {
          display: flex;
-         flex-wrap: wrap;
          max-width: 590px;
-         flex-grow: 1;
+         overflow-x: auto;
          margin: 0 auto;
      }
 
-    &--opened {
-         max-height: none !important;
-
-        ^&__item--selected label:after {
-            display: none;
-        }
-    }
-
     &__item {
-         display: inline-block;
+         display: flex;
+         align-items: center;
          position: relative;
-         vertical-align: middle;
-         cursor: pointer;
          flex-basis: auto;
-         margin-right: 23px;
+         margin-right: 20px;
          padding-bottom: 16px;
+         flex-shrink: 0;
+
+        &:last-of-type {
+             margin-right: 0;
+        }
+
+        &:hover {
+             color: var(--redColor);
+             cursor: pointer;
+         }
+
+        label:hover {
+            cursor: pointer;
+        }
 
         input {
             display: none;
         }
 
         svg {
-            margin-top: -2px;
             margin-right: 5px;
-        }
-
-        &:hover {
-             color: var(--redColor);
         }
 
          &-photo {
@@ -55,16 +51,14 @@
               vertical-align: middle;
               width: 20px;
               height: 20px;
-              margin-top: -2px;
               margin-right: 5px;
          }
 
         &-blog {
-             order: -2;
+             order: -1;
         }
 
         &--selected {
-            order: -1;
 
             svg {
                 color: var(--redColor);
@@ -81,7 +75,6 @@
                      height: 0;
                      width: 0;
                      position: absolute;
-                     pointer-events: none;
                      border-bottom-color: #fff;
                      border-width: 15px;
                      margin-left: -15px;
@@ -93,7 +86,9 @@
     .island-settings {
         position: absolute;
         top: 16px;
-        right: 16px;
+        right: 0;
+        background-color: var(--lightBlueBackground);
+        padding: 0 16px 0 8px;
 
         &:hover {
              color: #4d4d4d;

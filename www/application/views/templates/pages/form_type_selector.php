@@ -42,7 +42,7 @@
         <div class="form-type-selector__item form-type-selector__item-blog js-form-type-selector__item" onclick="codex.pageTypes.selectItem(this)">
             <img class="form-type-selector__item-photo" src="<?= $user->photo ?>" alt="<?= $user->name ?>">
             <input type="radio" class="js-page-type" name="isPersonalBlog" value="<?= $isPersonalBlog ?>" id="isPersonalBlog">
-            <label for="isPersonalBlog">Запись в блог</label>
+            <label for="isPersonalBlog">Блог</label>
         </div>
 
         <div class="form-type-selector__item js-form-type-selector__item" onclick="codex.pageTypes.selectItem(this)">
