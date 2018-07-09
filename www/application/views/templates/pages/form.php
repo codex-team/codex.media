@@ -15,6 +15,10 @@
     <?= Form::hidden('id_parent', $page->id_parent); ?>
     <?= Form::hidden('content', !empty($page->content) ? $page->content : ''); ?>
 
+    <?= View::factory('templates/pages/form_type_selector', [
+        'page' => $page
+    ]); ?>
+
     <div class="writing__title-wrapper">
         <textarea class="writing__title js-autoresizable" rows="1" name="title" placeholder="Заголовок" id="editorWritingTitle"><?= $page->title ?></textarea>
     </div>
@@ -48,35 +52,7 @@
                 <? endif; ?>
             </span>
 
-            <?
-                /**
-                 * TODO: Get rid of this when we have adequate design for checkboxes
-                 */
-                if (isset($_GET['advanced']) && empty($community_parent_id)) {
-                    $hideCommunity = "";
-                    $hideEvent = "";
-                } elseif (isset($_GET['advanced']) && !empty($community_parent_id)) {
-                    $hideCommunity = "hidden";
-                    $hideEvent = "";
-                } else {
-                    $hideCommunity = "hidden";
-                    $hideEvent = "hidden";
-                }
-            ?>
-
             <? if ($user->isAdmin() && !$fromUserProfile): ?>
-                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isNews" data-checked="<?= $isNews ?>">
-                    Новость
-                </span>
-
-                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isCommunity" data-checked="<?= $isCommunity ?>" <?= $hideCommunity ?>>
-                    Сообщество
-                </span>
-
-                <span name="cdx-custom-checkbox" class="writing__toggle" data-name="isEvent" data-checked="<?= $isEvent ?>" <?= $hideEvent ?>>
-                    Событие
-                </span>
-
                 <span name="cdx-custom-checkbox" class="writing__vk-post" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">
                     <i class="icon-vkontakte"></i>
                 </span>

@@ -1,4 +1,8 @@
-<div class="island island--top-rounded writing-navigation__holder">
+<?= View::factory('templates/pages/form_type_selector', [
+    'page' => $page
+]); ?>
+
+<div class="island island--bottom-rounded writing-navigation__holder">
 
     <div class="writing-navigation">
 
