@@ -151,6 +151,6 @@ codex.logo = require('./modules/logo');
 codex.special = require('codex.special');
 codex.avatarUploader = require('./modules/avatarUploader');
 codex.layout = require('./modules/layout');
-codex.pageTypes = require('./modules/pageTypes');
+codex.pageTypeSelector = require('./modules/pageTypeSelector');
 
 module.exports = codex;

@@ -24,6 +24,8 @@
 .writing--fullscreen .island {
     box-shadow: none;
 }
+
+/** Hide page type selector inside full-screen editor */
 .writing--fullscreen .writing .form-type-selector {
     display: none;
 }
@@ -154,7 +156,7 @@
 .writing__title-wrapper,
 .writing__actions-content {
     margin: 0 auto;
-    max-width: 590px;
+    max-width: var(--editor-max-width);
 }
 
 .editor-wrapper .ce-block {

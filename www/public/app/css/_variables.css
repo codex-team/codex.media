@@ -25,7 +25,6 @@
     /** Backgrounds */
     --grayBackground: #f7f7f9;
     --lightGrayBackground: #fbfbfc;
-    --lightBlueBackground: #f6f9ff;
 
     /** Bounce timing function for transition */
     --bounceTiming: cubic-bezier(0.6, -0.28, 0.735, 0.045);
@@ -46,6 +45,7 @@
 
     /** Editor block inner width */
     --article-max-width: 650px;
+    --editor-max-width: 590px;
 
     /** Additional fonts families */
     --serif-font: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans";
