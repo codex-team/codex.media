@@ -4,10 +4,6 @@
     font-size: 13px;
     color: var(--color-gray);
 
-    @media (--tablet) {
-        padding: 0 35px 0 var(--islandPadding);
-    }
-
     &__separator {
          position: absolute;
          left: 0;
