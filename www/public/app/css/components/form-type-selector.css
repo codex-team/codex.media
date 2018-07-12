@@ -15,7 +15,7 @@
 
     &__content {
          display: flex;
-         max-width: var(--article-max-width);
+         max-width: var(--editor-max-width);
          overflow-x: auto;
          overflow-y: hidden;
          margin: 0 auto;

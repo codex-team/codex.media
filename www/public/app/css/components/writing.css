@@ -160,7 +160,7 @@
 .writing__title-wrapper,
 .writing__actions-content {
     margin: 0 auto;
-    max-width: var(--article-max-width);
+    max-width: var(--editor-max-width);
 }
 
 .editor-wrapper .ce-block {
