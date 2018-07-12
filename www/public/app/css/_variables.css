@@ -45,7 +45,6 @@
 
     /** Editor block inner width */
     --article-max-width: 650px;
-    --editor-max-width: 590px;
 
     /** Additional fonts families */
     --serif-font: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans";

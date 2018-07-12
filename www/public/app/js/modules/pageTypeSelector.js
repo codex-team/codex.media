@@ -2,7 +2,9 @@
  * Page types selector in editor form
  */
 module.exports = (function () {
-
+    /**
+     * @type {HTMLCollectionOf<Element>} items - possible page type items: personal blog, event, community, page, news
+     */
     let items;
 
     /**

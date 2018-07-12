@@ -25,9 +25,13 @@
     box-shadow: none;
 }
 
-/** Hide page type selector inside full-screen editor */
+/** Page type selector in full-screen editor mode */
 .writing--fullscreen .writing .form-type-selector {
-    display: none;
+    margin-top: -20px;
+}
+
+.writing--fullscreen .writing {
+    font-size: 17.4px;
 }
 
 .writing--fullscreen .writing__title {
@@ -156,7 +160,7 @@
 .writing__title-wrapper,
 .writing__actions-content {
     margin: 0 auto;
-    max-width: var(--editor-max-width);
+    max-width: var(--article-max-width);
 }
 
 .editor-wrapper .ce-block {

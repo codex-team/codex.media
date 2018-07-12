@@ -15,7 +15,7 @@
 
     &__content {
          display: flex;
-         max-width: var(--editor-max-width);
+         max-width: var(--article-max-width);
          overflow-x: auto;
          overflow-y: hidden;
          margin: 0 auto;
@@ -49,6 +49,10 @@
 
         svg {
             margin-right: 8px;
+        }
+
+        label {
+            cursor: pointer;
         }
 
          &-photo {
