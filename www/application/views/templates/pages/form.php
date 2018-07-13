@@ -6,8 +6,23 @@
             $page = new Model_Page();
         }
 
-    /** Name of object's type in genitive declension */
+        /** Name of object's type in genitive declension */
         // $object_name = $page->is_news_page ? 'новости' : 'страницы';
+
+        $newsFeedKey = Model_Feed_Pages::MAIN;
+
+        $fromIndexPage = !empty(Request::$current) && Request::$current->controller() == 'Index';
+        $fromNewsTab = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
+        $fromUserProfile = Request::$current->controller() == 'User_Index';
+
+        $isNews = $page->isPageOnMain || ($fromIndexPage && $fromNewsTab);
+
+        $vkPost = $page->isPostedInVK || ($fromIndexPage && $fromNewsTab);
+
+        $isCommunity = $page->is_community || 0;
+        $isEvent = $page->is_event || 0;
+        $isPersonalBlog = isset($isPersonalBlog) || 0;
+        $isPage = (!$isEvent && !$isCommunity && !$isNews && !$isPersonalBlog) || 0;
     ?>
 
     <?= Form::hidden('csrf', Security::token()); ?>
@@ -16,7 +31,13 @@
     <?= Form::hidden('content', !empty($page->content) ? $page->content : ''); ?>
 
     <?= View::factory('templates/pages/form_type_selector', [
-        'page' => $page
+        'page' => $page,
+        'isNews' => $isNews,
+        'isCommunity' => $isCommunity,
+        'isEvent' => $isEvent,
+        'isPersonalBlog' => $isPersonalBlog,
+        'isPage' => $isPage,
+        'hidePageTypesBlock' => isset($hidePageTypesBlock) ? $hidePageTypesBlock : false
     ]); ?>
 
     <div class="writing__title-wrapper">
@@ -28,21 +49,6 @@
     <div class="writing__actions">
 
         <div class="writing__actions-content">
-
-            <?
-                $newsFeedKey = Model_Feed_Pages::MAIN;
-
-                $fromIndexPage = !empty(Request::$current) && Request::$current->controller() == 'Index';
-                $fromNewsTab = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
-                $fromUserProfile = Request::$current->controller() == 'User_Index';
-
-                $isNews = $page->isPageOnMain || ($fromIndexPage && $fromNewsTab);
-
-                $vkPost = $page->isPostedInVK || ($fromIndexPage && $fromNewsTab);
-
-                $isCommunity = $page->is_community || 0;
-                $isEvent = $page->is_event || 0;
-            ?>
 
             <span class="button master" onclick="codex.writing.submit(this)">
                 <? if ($page->id): ?>

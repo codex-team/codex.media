@@ -1,13 +1,5 @@
 <?
-    $newsFeedKey = Model_Feed_Pages::MAIN;
-    $fromIndexPage = !empty(Request::$current) && Request::$current->controller() == 'Index';
-    $fromNewsTab = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
-
-    $isNews = $page->isPageOnMain || ($fromIndexPage && $fromNewsTab);
-    $isCommunity = $page->is_community || 0;
-    $isEvent = $page->is_event || 0;
-    $isPersonalBlog = isset($isPersonalBlog) || 0;
-    $isPage = (!$isEvent && !$isCommunity && !$isNews && !$isPersonalBlog) || 0;
+    $hideClass = $hidePageTypesBlock ? 'hide' : '';
 ?>
 <div data-module="pageTypeSelector">
     <module-settings hidden>
@@ -16,7 +8,7 @@
         }
     </module-settings>
 </div>
-<div class="form-type-selector">
+<div class="form-type-selector <?= $hideClass ?>">
     <div class="form-type-selector__content">
 
         <span class="form-type-selector__separator"></span>
