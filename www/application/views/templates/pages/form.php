@@ -29,6 +29,7 @@
     <?= Form::hidden('id', $page->id); ?>
     <?= Form::hidden('id_parent', $page->id_parent); ?>
     <?= Form::hidden('content', !empty($page->content) ? $page->content : ''); ?>
+    <?= Form::hidden('isNews', $isNews); ?>
 
     <?= View::factory('templates/pages/form_type_selector', [
         'page' => $page,
