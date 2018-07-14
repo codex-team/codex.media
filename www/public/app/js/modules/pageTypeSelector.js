@@ -26,8 +26,23 @@ module.exports = (function () {
         for (let i = 0; i < items.length; i++) {
 
             findSelected(items[i]);
+            addListener(items[i]);
 
         }
+
+    }
+
+    /**
+     * Add event listeners to page type items
+     * @param {HTMLElement} item - page type item
+     */
+    function addListener(item) {
+
+        item.addEventListener('click', function () {
+
+            selectItem(item);
+
+        });
 
     }
 
