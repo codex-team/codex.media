@@ -105,7 +105,8 @@ INSERT INTO `settings` (`name`, `value`, `label`) VALUES
 ('fax', '580-82-49', 'site_info'),
 ('full_name', 'ГБОУ СОШ №332 Невского района', 'site_info'),
 ('phone', '580-89-08; 584-54-98', 'site_info'),
-('title', 'Школа 332', 'site_info');
+('title', 'Школа 332', 'site_info'),
+('about_page', NULL, 'site_info');
 
 -- --------------------------------------------------------
 
