@@ -38,11 +38,7 @@ module.exports = (function () {
      */
     function addListener(item) {
 
-        item.addEventListener('click', function () {
-
-            selectItem(item);
-
-        });
+        item.addEventListener('click', selectItem);
 
     }
 
@@ -64,7 +60,7 @@ module.exports = (function () {
      * Select item, change input value
      * @param {HTMLElement} item - page type item clicked
      */
-    function selectItem(item) {
+    function selectItem() {
 
         for (let i = 0; i < items.length; i++) {
 
@@ -73,15 +69,14 @@ module.exports = (function () {
 
         }
 
-        item.classList.add(CLASSES.pageTypeItemSelected);
+        this.classList.add(CLASSES.pageTypeItemSelected);
 
-        item.getElementsByTagName('input')[0].value = 1;
+        this.getElementsByTagName('input')[0].value = 1;
 
     }
 
     return {
-        init : init,
-        selectItem : selectItem
+        init : init
     };
 
 
