@@ -330,6 +330,20 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
         $request_token = $twitter_oauth->getRequestToken($settings['redirect_uri']);
 
+        /**
+         * Catch Error and send it to Hawk
+         */
+        if (empty($request_token['oauth_token']) ||
+            empty($request_token['oauth_token_secret'])) {
+            try {
+                throw new Exception('Bad response from Twitter while authorization');
+            } catch (\Exception $e) {
+                \Hawk\HawkCatcher::catchException($e, $request_token);
+            }
+
+            return false;
+        }
+
         $session->set('oauth_token', $request_token['oauth_token']);
         $session->set('oauth_token_secret', $request_token['oauth_token_secret']);
         $session->set('state', $state);
@@ -337,9 +351,9 @@ class Controller_Auth_Auth extends Controller_Auth_Base
         if ($twitter_oauth->http_code == 200) {
             $url = $twitter_oauth->getAuthorizeURL($request_token['oauth_token']);
             $this->redirect($url);
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
