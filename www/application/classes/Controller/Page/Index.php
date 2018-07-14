@@ -169,11 +169,8 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         /**
          * If Page is being edited, hide page types select block
          */
-        if ($page->id !== 0) {
-            $hidePageTypesBlock = true;
-        } else {
-            $hidePageTypesBlock = false;
-        }
+        $hidePageTypesBlock = ($page->id !== 0) ? true : false;
+
 
         $page->isPageOnMain = Arr::get($_POST, 'isNews', $page->isPageOnMain);
         $page->isPostedInVK = Arr::get($_POST, 'vkPost', $page->isPostedInVK);
