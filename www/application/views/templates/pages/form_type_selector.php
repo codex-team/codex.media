@@ -25,7 +25,7 @@
                     <? include(DOCROOT . 'public/app/svg/news-icon.svg'); ?>
                 <label for="isNews">Новость</label>
             </div>
-        
+
             <div class="form-type-selector__item js-form-type-selector__item">
                 <input type="radio" name="isPage" id="isPage" value="<?= $isPage ?>">
                 <? include(DOCROOT . 'public/app/svg/page-icon.svg'); ?>

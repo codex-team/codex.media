@@ -25,7 +25,7 @@ module.exports = (function () {
 
         for (let i = 0; i < items.length; i++) {
 
-            findSelected(items[i]);
+            selectChecked(items[i]);
             addListener(items[i]);
 
         }
@@ -50,9 +50,9 @@ module.exports = (function () {
      * Add 'selected' class to item with input value = 1
      * @param {HTMLElement} item - page type item
      */
-    function findSelected(item) {
+    function selectChecked(item) {
 
-        if (item.querySelector('input').value == 1) {
+        if (item.querySelector('input').value) {
 
             item.classList.add(CLASSES.pageTypeItemSelected);
 
