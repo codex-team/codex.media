@@ -383,6 +383,10 @@ class Model_Methods extends Model
 
         $ids = $menu->ids();
 
+        if (empty($ids)) {
+            return null;
+        }
+
         $pages = Dao_Pages::select(array('id', 'title', 'cover', 'id_parent'))
             ->where_in('id', $ids)
             ->cached(Date::MINUTE * 5, 'page:ids:' . implode('|',$ids), ['site_menu'])
