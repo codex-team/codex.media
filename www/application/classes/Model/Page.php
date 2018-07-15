@@ -67,6 +67,15 @@ class Model_Page extends Model
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS = 3;
 
+    /**
+     * Page types
+     */
+    const PAGE = 1;
+    const BLOG = 2;
+    const NEWS = 3;
+    const COMMUNITY = 4;
+    const EVENT = 5;
+
     private $modelCacheKey;
 
     public function __construct($id = 0, $escapeHTML = false)
@@ -477,7 +486,7 @@ class Model_Page extends Model
      */
     public function getOwner()
     {
-        if ($this->type == Controller_Page_Modify::EVENT && $this->parent->type == Controller_Page_Modify::COMMUNITY) {
+        if ($this->type == self::EVENT && $this->parent->type == self::COMMUNITY) {
             $this->owner["name"] = $this->parent->title;
             $this->owner["photo"] = !empty($this->parent->cover) ? '/upload/pages/covers/b_' . $this->parent->cover : null;
             $this->owner["url"] = $this->parent->url;

@@ -76,7 +76,7 @@ CREATE TABLE `pages` (
   `author` int(10) UNSIGNED NOT NULL,
   `rich_view` tinyint(1) DEFAULT '0',
   `dt_pin` timestamp NULL DEFAULT NULL,
-  `type` tinyint(1) NULL DEFAULT '1',
+  `type` tinyint(1) NULL DEFAULT '1' COMMENT '1 — page, 2 — blog, 3 - news, 4 - community, 5 - event',
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

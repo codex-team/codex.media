@@ -9,15 +9,6 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
     public $page = null;
 
     /**
-     * Page types
-     */
-    const PAGE = 1;
-    const BLOG = 2;
-    const NEWS = 3;
-    const COMMUNITY = 4;
-    const EVENT = 5;
-
-    /**
      * @var array - response for AJAX-request
      */
     public $ajax_response = [
@@ -74,23 +65,23 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
             switch ($this->page->type){
 
-                case self::PAGE:
+                case Model_Page::PAGE:
                     $this->page->addToFeed(Model_Feed_Pages::ALL);
                     break;
 
-                case self::NEWS:
+                case Model_Page::NEWS:
                     $this->page->addToFeed(Model_Feed_Pages::MAIN);
                     break;
 
-                case self::BLOG:
+                case Model_Page::BLOG:
                     $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
                     break;
 
-                case self::EVENT:
+                case Model_Page::EVENT:
                     $this->page->addToFeed(Model_Feed_Pages::EVENTS);
                     break;
 
-                case self::COMMUNITY:
+                case Model_Page::COMMUNITY:
                     $this->page->addToFeed(Model_Feed_Pages::ALL);
                     break;
 
@@ -126,7 +117,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             }
         }
 
-        if (Arr::get($_POST, 'type') == self::NEWS) {
+        if (Arr::get($_POST, 'type') == Model_Page::NEWS) {
             if (!$this->page->isPageOnMain && $this->user->isAdmin()) {
                 $this->page->addToFeed(Model_Feed_Pages::MAIN);
             }

@@ -5,19 +5,23 @@ module.exports = (function () {
 
     /**
      * @type {HTMLCollectionOf<Element>} items - possible page type items: personal blog, event, community, page, news
+     */
+    let items;
+    /**
      * @type {HTMLElement} pageTypeInput - field with item type value
+     */
+    let pageTypeInput;
+    /**
      * @type {number} pageTypeValue - page type value from database
      */
-    let items,
-        pageTypeInput,
-        pageTypeValue;
+    let pageTypeValue;
 
     /**
      * Elements classes dictionary
      */
     const CLASSES = {
         pageTypeItem: 'js-form-type-selector__item',
-        pageTypeItemSelected: 'form-type-selector__item--selected',
+        pageTypeItemSelected: 'js-form-type-selector__item--selected',
         pageTypeInput: 'js-page-type-input'
     };
 
@@ -29,8 +33,6 @@ module.exports = (function () {
         items = document.getElementsByClassName(CLASSES.pageTypeItem);
         pageTypeInput = document.getElementsByClassName(CLASSES.pageTypeInput)[0];
         pageTypeValue = settings.currentType;
-
-        console.log(pageTypeInput);
 
         for (let i = 0; i < items.length; i++) {
 
@@ -52,23 +54,27 @@ module.exports = (function () {
     }
 
     /**
-     * Add 'selected' class to item with input value = 1
+     * Add 'selected' class to item with input value same as current page type value
      * @param {HTMLElement} item - page type item
      */
     function selectChecked(item) {
 
-        if (item.querySelector('input').value === pageTypeValue) {
+        /**
+         * @type {HTMLElement} itemInputValue - input value of page type item
+         */
+        let itemInputValue = item.querySelector('input').value;
+
+        if (itemInputValue === pageTypeValue) {
 
             item.classList.add(CLASSES.pageTypeItemSelected);
-            pageTypeInput.value = item.getElementsByTagName('input')[0].value;
+            pageTypeInput.value = itemInputValue;
 
         }
 
     }
 
     /**
-     * Select item, change input value
-     * @param {HTMLElement} item - page type item clicked
+     * Select item, pass its value to hidden form input
      */
     function selectItem() {
 
@@ -80,7 +86,7 @@ module.exports = (function () {
 
         this.classList.add(CLASSES.pageTypeItemSelected);
 
-        pageTypeInput.value = this.getElementsByTagName('input')[0].value;
+        pageTypeInput.value = this.querySelector('input').value;
 
     }
 

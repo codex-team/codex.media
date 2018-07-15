@@ -53,13 +53,13 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $this->view['page'] = $page;
 
         $this->title = $page->title;
-        $this->view['isWide'] = $page->type == Controller_Page_Modify::EVENT || !$page->type == Controller_Page_Modify::COMMUNITY && count($page->blocks) > self::BLOCKS_TO_WIDE;
+        $this->view['isWide'] = $page->type == Model_Page::EVENT || !$page->type == Model_Page::COMMUNITY && count($page->blocks) > self::BLOCKS_TO_WIDE;
 
         if ($this->view['isWide']) {
             $this->template->contentOnly = true;
         }
 
-        if ($page->type == Controller_Page_Modify::COMMUNITY) {
+        if ($page->type == Model_Page::COMMUNITY) {
             $community_events = self::communityEvents($page->children);
             $total_events = count($community_events);
             $events_promo = self::communityEventsPromo($community_events);
@@ -104,7 +104,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
     {
         $community_events = [];
         foreach ($community_children as $child) {
-            if ($child->type == Controller_Page_Modify::EVENT) {
+            if ($child->type == Model_Page::EVENT) {
                 $community_events[] = $child;
             }
         }

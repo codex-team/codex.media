@@ -26,7 +26,7 @@
         } elseif ($user->isAdmin() && $fromIndexPage && $fromEventsTab) {
             $specialPageType = $eventsFeedKey;
         } elseif (!$user->isAdmin()) {
-            $specialPageType = Controller_Page_Modify::BLOG;
+            $specialPageType = Model_Feed_Pages::TEACHERS;
         } else {
             $specialPageType = 0;
         }
