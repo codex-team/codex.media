@@ -7,10 +7,12 @@ module.exports = (function () {
      * @type {HTMLCollectionOf<Element>} items - possible page type items: personal blog, event, community, page, news
      */
     let items;
+
     /**
      * @type {HTMLElement} pageTypeInput - field with item type value
      */
     let pageTypeInput;
+
     /**
      * @type {number} pageTypeValue - page type value from database
      */
@@ -93,6 +95,5 @@ module.exports = (function () {
     return {
         init : init
     };
-
 
 }());

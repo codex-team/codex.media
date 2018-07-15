@@ -25,7 +25,7 @@
             $specialPageType = $newsFeedKey;
         } elseif ($user->isAdmin() && $fromIndexPage && $fromEventsTab) {
             $specialPageType = $eventsFeedKey;
-        } elseif (!$user->isAdmin()) {
+        } elseif (!$user->isAdmin() || $fromUserProfile) {
             $specialPageType = Model_Feed_Pages::TEACHERS;
         } else {
             $specialPageType = 0;

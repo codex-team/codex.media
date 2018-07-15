@@ -10,7 +10,7 @@ class Model_Page extends Model
     public $uri = '';
     public $author;
     public $id_parent = 0;
-    public $type = 1;
+    public $type = self::PAGE;
 
     /**
      * Page cover URL
