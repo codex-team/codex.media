@@ -25,6 +25,8 @@
             $specialPageType = $newsFeedKey;
         } elseif ($fromIndexPage && $fromEventsTab) {
             $specialPageType = $eventsFeedKey;
+        } elseif (!$user->isAdmin()) {
+            $specialPageType = Controller_Page_Modify::BLOG;
         } else {
             $specialPageType = 0;
         }
