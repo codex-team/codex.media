@@ -21,9 +21,9 @@
 
         $vkPost = $page->isPostedInVK;
 
-        if ($fromIndexPage && $fromNewsTab) {
+        if ($user->isAdmin() && $fromIndexPage && $fromNewsTab) {
             $specialPageType = $newsFeedKey;
-        } elseif ($fromIndexPage && $fromEventsTab) {
+        } elseif ($user->isAdmin() && $fromIndexPage && $fromEventsTab) {
             $specialPageType = $eventsFeedKey;
         } elseif (!$user->isAdmin()) {
             $specialPageType = Controller_Page_Modify::BLOG;
