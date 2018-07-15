@@ -53,13 +53,13 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $this->view['page'] = $page;
 
         $this->title = $page->title;
-        $this->view['isWide'] = $page->is_event || !$page->is_community && count($page->blocks) > self::BLOCKS_TO_WIDE;
+        $this->view['isWide'] = $page->type == Controller_Page_Modify::EVENT || !$page->type == Controller_Page_Modify::COMMUNITY && count($page->blocks) > self::BLOCKS_TO_WIDE;
 
         if ($this->view['isWide']) {
             $this->template->contentOnly = true;
         }
 
-        if ($page->is_community) {
+        if ($page->type == Controller_Page_Modify::COMMUNITY) {
             $community_events = self::communityEvents($page->children);
             $total_events = count($community_events);
             $events_promo = self::communityEventsPromo($community_events);
@@ -104,7 +104,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
     {
         $community_events = [];
         foreach ($community_children as $child) {
-            if ($child->is_event) {
+            if ($child->type == Controller_Page_Modify::EVENT) {
                 $community_events[] = $child;
             }
         }
@@ -159,6 +159,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         if (Security::check(Arr::get($_POST, 'csrf'))) {
             $page->title = Arr::get($_POST, 'title');
             $page->content = Arr::get($_POST, 'content', '{items:[]}');
+            $page->type = Arr::get($_POST, 'type');
             $page->author = $this->user;
         }
 
@@ -166,17 +167,11 @@ class Controller_Page_Index extends Controller_Base_preDispatch
             $page->id_parent = $parent_id;
         }
 
-        /**
-         * If Page is being edited, hide page types select block
-         */
-        $hidePageTypesBlock = ($page->id !== 0) ? true : false;
-
-
         $page->isPageOnMain = Arr::get($_POST, 'isNews', $page->isPageOnMain);
         $page->isPostedInVK = Arr::get($_POST, 'vkPost', $page->isPostedInVK);
         $isPersonalBlog = Arr::get($_POST, 'isPersonalBlog', '');
 
-        $this->template->content = View::factory('templates/pages/writing', ['page' => $page, 'isPersonalBlog' => $isPersonalBlog, 'hidePageTypesBlock' => $hidePageTypesBlock]);
+        $this->template->content = View::factory('templates/pages/writing', ['page' => $page, 'isPersonalBlog' => $isPersonalBlog]);
         $this->template->contentOnly = true;
         $this->template->hideBranding = true;
     }

@@ -5,23 +5,32 @@ module.exports = (function () {
 
     /**
      * @type {HTMLCollectionOf<Element>} items - possible page type items: personal blog, event, community, page, news
+     * @type {HTMLElement} pageTypeInput - field with item type value
+     * @type {number} pageTypeValue - page type value from database
      */
-    let items;
+    let items,
+        pageTypeInput,
+        pageTypeValue;
 
     /**
      * Elements classes dictionary
      */
     const CLASSES = {
         pageTypeItem: 'js-form-type-selector__item',
-        pageTypeItemSelected: 'form-type-selector__item--selected'
+        pageTypeItemSelected: 'form-type-selector__item--selected',
+        pageTypeInput: 'js-page-type-input'
     };
 
     /**
      * Initialize module
      */
-    function init() {
+    function init(settings) {
 
         items = document.getElementsByClassName(CLASSES.pageTypeItem);
+        pageTypeInput = document.getElementsByClassName(CLASSES.pageTypeInput)[0];
+        pageTypeValue = settings.currentType;
+
+        console.log(pageTypeInput);
 
         for (let i = 0; i < items.length; i++) {
 
@@ -48,9 +57,10 @@ module.exports = (function () {
      */
     function selectChecked(item) {
 
-        if (item.querySelector('input').value) {
+        if (item.querySelector('input').value === pageTypeValue) {
 
             item.classList.add(CLASSES.pageTypeItemSelected);
+            pageTypeInput.value = item.getElementsByTagName('input')[0].value;
 
         }
 
@@ -65,13 +75,12 @@ module.exports = (function () {
         for (let i = 0; i < items.length; i++) {
 
             items[i].classList.remove(CLASSES.pageTypeItemSelected);
-            items[i].getElementsByTagName('input')[0].value = 0;
 
         }
 
         this.classList.add(CLASSES.pageTypeItemSelected);
 
-        this.getElementsByTagName('input')[0].value = 1;
+        pageTypeInput.value = this.getElementsByTagName('input')[0].value;
 
     }
 

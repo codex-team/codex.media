@@ -11,7 +11,7 @@
             $articleCover = $domainAndProtocol . "/public/app/img/meta-image.png";
         }
 
-        if ($page->is_event && empty($page->parent->cover)) {
+        if ($page->type == Controller_Page_Modify::EVENT && empty($page->parent->cover)) {
             $page->owner["photo"] = '/public/app/svg/community-placeholder.svg';
         }
     ?>
@@ -180,7 +180,7 @@
         </ul>
     <? endif ?>
 
-    <? if ($page->is_event): ?>
+    <? if ($page->type == Controller_Page_Modify::EVENT): ?>
         <?= View::factory('templates/components/join-button') ?>
     <? endif ?>
 

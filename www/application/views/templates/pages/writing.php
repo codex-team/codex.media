@@ -22,8 +22,7 @@
 
 <div class="writing--fullscreen">
     <?= View::factory('templates/pages/form', [
-        'page' => $page,
-        'hidePageTypesBlock' => $hidePageTypesBlock
+        'page' => $page
     ]); ?>
 </div>
 

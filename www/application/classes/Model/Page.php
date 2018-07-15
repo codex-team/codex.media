@@ -10,8 +10,7 @@ class Model_Page extends Model
     public $uri = '';
     public $author;
     public $id_parent = 0;
-    public $is_community = 0;
-    public $is_event = 0;
+    public $type = 1;
 
     /**
      * Page cover URL
@@ -137,8 +136,7 @@ class Model_Page extends Model
                          ->set('cover', $this->cover)
                          ->set('rich_view', $this->rich_view)
                          ->set('dt_pin', $this->dt_pin)
-                         ->set('is_community', $this->is_community)
-                         ->set('is_event', $this->is_event);
+                         ->set('type', $this->type);
 
         $pageId = $page->execute();
 
@@ -159,8 +157,7 @@ class Model_Page extends Model
                          ->set('content', $this->content)
                          ->set('rich_view', $this->rich_view)
                          ->set('dt_pin', $this->dt_pin)
-                         ->set('is_community', $this->is_community)
-                         ->set('is_event', $this->is_event);
+                         ->set('type', $this->type);
 
         $page->clearcache('page:' . $this->id, ['site_menu']);
 
@@ -480,7 +477,7 @@ class Model_Page extends Model
      */
     public function getOwner()
     {
-        if ($this->is_event && $this->parent->is_community) {
+        if ($this->type == Controller_Page_Modify::EVENT && $this->parent->type == Controller_Page_Modify::COMMUNITY) {
             $this->owner["name"] = $this->parent->title;
             $this->owner["photo"] = !empty($this->parent->cover) ? '/upload/pages/covers/b_' . $this->parent->cover : null;
             $this->owner["url"] = $this->parent->url;

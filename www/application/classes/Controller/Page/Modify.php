@@ -9,6 +9,15 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
     public $page = null;
 
     /**
+     * Page types
+     */
+    const PAGE = 1;
+    const BLOG = 2;
+    const NEWS = 3;
+    const COMMUNITY = 4;
+    const EVENT = 5;
+
+    /**
      * @var array - response for AJAX-request
      */
     public $ajax_response = [
@@ -46,17 +55,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $this->page->title = Arr::get($_POST, 'title', $this->page->title);
         $this->page->content = Arr::get($_POST, 'content', $this->page->content);
 
-        if (Arr::get($_POST, 'isCommunity')) {
-            $this->page->is_community = 1;
-        } else {
-            $this->page->is_community = 0;
-        }
-
-        if (Arr::get($_POST, 'isEvent')) {
-            $this->page->is_event = 1;
-        } else {
-            $this->page->is_event = 0;
-        }
+        $this->page->type = Arr::get($_POST, 'type', $this->page->type);
 
         $errors = $this->getErrors($_POST);
 
@@ -73,16 +72,38 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             $this->page = $this->page->insert();
             $this->page->addToFeed(Model_Feed_Pages::ALL);
 
+            switch ($this->page->type){
+
+                case self::PAGE:
+                    $this->page->addToFeed(Model_Feed_Pages::ALL);
+                    break;
+
+                case self::NEWS:
+                    $this->page->addToFeed(Model_Feed_Pages::MAIN);
+                    break;
+
+                case self::BLOG:
+                    $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
+                    break;
+
+                case self::EVENT:
+                    $this->page->addToFeed(Model_Feed_Pages::EVENTS);
+                    break;
+
+                case self::COMMUNITY:
+                    $this->page->addToFeed(Model_Feed_Pages::ALL);
+                    break;
+
+                default:
+                    break;
+            }
+
             if ($this->page->author->isTeacher()) {
                 $isPersonalBlog = Arr::get($_POST, 'isPersonalBlog', '');
 
                 if (!$this->page->author->isAdmin() || !empty($isPersonalBlog)) {
                     $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
                 }
-            }
-
-            if ($this->page->is_event) {
-                $this->page->addToFeed(Model_Feed_Pages::EVENTS);
             }
         }
 
@@ -105,7 +126,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             }
         }
 
-        if (Arr::get($_POST, 'isNews')) {
+        if (Arr::get($_POST, 'type') == self::NEWS) {
             if (!$this->page->isPageOnMain && $this->user->isAdmin()) {
                 $this->page->addToFeed(Model_Feed_Pages::MAIN);
             }

@@ -10,19 +10,24 @@
         // $object_name = $page->is_news_page ? 'новости' : 'страницы';
 
         $newsFeedKey = Model_Feed_Pages::MAIN;
+        $eventsFeedKey = Model_Feed_Pages::EVENTS;
 
         $fromIndexPage = !empty(Request::$current) && Request::$current->controller() == 'Index';
         $fromNewsTab = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
+        $fromEventsTab = Request::$current->param('feed_key', $eventsFeedKey) == $eventsFeedKey;
         $fromUserProfile = Request::$current->controller() == 'User_Index';
 
-        $isNews = $page->isPageOnMain || ($fromIndexPage && $fromNewsTab);
+        $isNews = $page->isPageOnMain;
 
-        $vkPost = $page->isPostedInVK || ($fromIndexPage && $fromNewsTab);
+        $vkPost = $page->isPostedInVK;
 
-        $isCommunity = $page->is_community || 0;
-        $isEvent = $page->is_event || 0;
-        $isPersonalBlog = isset($isPersonalBlog) || 0;
-        $isPage = (!$isEvent && !$isCommunity && !$isNews && !$isPersonalBlog) || 0;
+        if ($fromIndexPage && $fromNewsTab) {
+            $specialPageType = $newsFeedKey;
+        } elseif ($fromIndexPage && $fromEventsTab) {
+            $specialPageType = $eventsFeedKey;
+        } else {
+            $specialPageType = 0;
+        }
     ?>
 
     <?= Form::hidden('csrf', Security::token()); ?>
@@ -30,18 +35,9 @@
     <?= Form::hidden('id_parent', $page->id_parent); ?>
     <?= Form::hidden('content', !empty($page->content) ? $page->content : ''); ?>
 
-    <?= Form::hidden('isEvent', $isEvent); ?>
-    <?= Form::hidden('isNews', $isNews); ?>
-    <?= Form::hidden('isCommunity', $isCommunity); ?>
-
     <?= View::factory('templates/pages/form_type_selector', [
         'page' => $page,
-        'isNews' => $isNews,
-        'isCommunity' => $isCommunity,
-        'isEvent' => $isEvent,
-        'isPersonalBlog' => $isPersonalBlog,
-        'isPage' => $isPage,
-        'hidePageTypesBlock' => isset($hidePageTypesBlock) ? $hidePageTypesBlock : false
+        'specialPageType' => $specialPageType
     ]); ?>
 
     <div class="writing__title-wrapper">
@@ -49,6 +45,7 @@
     </div>
 
     <div class="editor-wrapper" id="placeForEditor"></div>
+    <input type="hidden" class="js-page-type-input" name="type" value="<?= $page->type ?>">
 
     <div class="writing__actions">
 
