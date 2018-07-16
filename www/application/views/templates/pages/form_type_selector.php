@@ -1,4 +1,4 @@
-<? $currentType = isset($specialPageType) && ($specialPageType != 0) ? $specialPageType : $page->type ?>
+<? $currentType = isset($selectedPageType) && ($selectedPageType != 0) ? $selectedPageType : $page->type ?>
 
 <div data-module="pageTypeSelector">
     <module-settings hidden>

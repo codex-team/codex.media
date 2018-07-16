@@ -9,12 +9,9 @@
         /** Name of object's type in genitive declension */
         // $object_name = $page->is_news_page ? 'новости' : 'страницы';
 
-        $newsFeedKey = Model_Feed_Pages::MAIN;
-        $eventsFeedKey = Model_Feed_Pages::EVENTS;
-
         $fromIndexPage = !empty(Request::$current) && Request::$current->controller() == 'Index';
-        $fromNewsTab = Request::$current->param('feed_key', $newsFeedKey) == $newsFeedKey;
-        $fromEventsTab = Request::$current->param('feed_key', $eventsFeedKey) == $eventsFeedKey;
+        $fromNewsTab = Request::$current->param('feed_key', Model_Feed_Pages::MAIN) == Model_Feed_Pages::MAIN;
+        $fromEventsTab = Request::$current->param('feed_key', Model_Feed_Pages::EVENTS) == Model_Feed_Pages::EVENTS;
         $fromUserProfile = Request::$current->controller() == 'User_Index';
 
         $isNews = $page->isPageOnMain;
@@ -22,13 +19,13 @@
         $vkPost = $page->isPostedInVK;
 
         if ($user->isAdmin() && $fromIndexPage && $fromNewsTab) {
-            $specialPageType = $newsFeedKey;
+            $selectedPageType = Model_Feed_Pages::MAIN;
         } elseif ($user->isAdmin() && $fromIndexPage && $fromEventsTab) {
-            $specialPageType = $eventsFeedKey;
+            $selectedPageType = Model_Feed_Pages::EVENTS;
         } elseif (!$user->isAdmin() || $fromUserProfile) {
-            $specialPageType = Model_Feed_Pages::TEACHERS;
+            $selectedPageType = Model_Feed_Pages::TEACHERS;
         } else {
-            $specialPageType = 0;
+            $selectedPageType = 0;
         }
     ?>
 
@@ -39,7 +36,7 @@
 
     <?= View::factory('templates/pages/form_type_selector', [
         'page' => $page,
-        'specialPageType' => $specialPageType
+        'selectedPageType' => $selectedPageType
     ]); ?>
 
     <div class="writing__title-wrapper">

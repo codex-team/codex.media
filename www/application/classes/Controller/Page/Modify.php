@@ -46,6 +46,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         $this->page->title = Arr::get($_POST, 'title', $this->page->title);
         $this->page->content = Arr::get($_POST, 'content', $this->page->content);
 
+        $old_page_type = $this->page->type;
         $this->page->type = Arr::get($_POST, 'type', $this->page->type);
 
         $errors = $this->getErrors($_POST);
@@ -59,42 +60,62 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         if ($this->page->id) {
             $this->page = $this->page->update();
-        } else {
-            $this->page = $this->page->insert();
-            $this->page->addToFeed(Model_Feed_Pages::ALL);
 
-            switch ($this->page->type){
+            switch ($old_page_type){
 
                 case Model_Page::PAGE:
-                    $this->page->addToFeed(Model_Feed_Pages::ALL);
                     break;
 
                 case Model_Page::NEWS:
-                    $this->page->addToFeed(Model_Feed_Pages::MAIN);
+                    $this->page->removeFromFeed(Model_Feed_Pages::MAIN);
                     break;
 
                 case Model_Page::BLOG:
-                    $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
                     break;
 
                 case Model_Page::EVENT:
-                    $this->page->addToFeed(Model_Feed_Pages::EVENTS);
+                    $this->page->removeFromFeed(Model_Feed_Pages::EVENTS);
                     break;
 
                 case Model_Page::COMMUNITY:
-                    $this->page->addToFeed(Model_Feed_Pages::ALL);
                     break;
 
                 default:
                     break;
             }
 
-            if ($this->page->author->isTeacher()) {
-                $isPersonalBlog = Arr::get($_POST, 'isPersonalBlog', '');
+        } else {
+            $this->page = $this->page->insert();
+            $this->page->addToFeed(Model_Feed_Pages::ALL);
+        }
 
-                if (!$this->page->author->isAdmin() || !empty($isPersonalBlog)) {
-                    $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
-                }
+        switch ($this->page->type){
+
+            case Model_Page::PAGE:
+                break;
+
+            case Model_Page::NEWS:
+                $this->page->addToFeed(Model_Feed_Pages::MAIN);
+                break;
+
+            case Model_Page::BLOG:
+                break;
+
+            case Model_Page::EVENT:
+                $this->page->addToFeed(Model_Feed_Pages::EVENTS);
+                break;
+
+            case Model_Page::COMMUNITY:
+                break;
+
+            default:
+                break;
+        }
+
+        if ($this->page->author->isTeacher()) {
+
+            if (!$this->page->author->isAdmin() || $this->page->type == Model_Page::BLOG) {
+                $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
             }
         }
 
@@ -114,16 +135,6 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                     $VkPost = $this->vkWall()->delete();
                 }
                 /***/
-            }
-        }
-
-        if (Arr::get($_POST, 'type') == Model_Page::NEWS) {
-            if (!$this->page->isPageOnMain && $this->user->isAdmin()) {
-                $this->page->addToFeed(Model_Feed_Pages::MAIN);
-            }
-        } else {
-            if ($this->user->isAdmin()) {
-                $this->page->removeFromFeed(Model_Feed_Pages::MAIN);
             }
         }
 

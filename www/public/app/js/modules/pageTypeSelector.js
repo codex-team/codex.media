@@ -4,17 +4,20 @@
 module.exports = (function () {
 
     /**
-     * @type {HTMLCollectionOf<Element>} items - possible page type items: personal blog, event, community, page, news
+     * Possible page type items: personal blog, event, community, page, news
+     * @type {HTMLCollectionOf<Element>}
      */
     let items;
 
     /**
-     * @type {HTMLElement} pageTypeInput - field with item type value
+     * Field with item type value
+     * @type {HTMLElement}
      */
     let pageTypeInput;
 
     /**
-     * @type {number} pageTypeValue - page type value from database
+     * Page type value from database
+     * @type {number}
      */
     let pageTypeValue;
 
