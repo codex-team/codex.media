@@ -44,7 +44,6 @@
     </div>
 
     <div class="editor-wrapper" id="placeForEditor"></div>
-    <input type="hidden" class="js-page-type-input" name="type" value="<?= $page->type ?>">
 
     <div class="writing__actions">
 
