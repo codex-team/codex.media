@@ -67,12 +67,12 @@ module.exports = (function () {
         /**
          * @type {HTMLElement} itemInputValue - input value of page type item
          */
-        let itemInputValue = item.querySelector('input').value;
+        let itemDataValue = item.dataset.type;
 
-        if (itemInputValue === pageTypeValue) {
+        if (itemDataValue === pageTypeValue) {
 
             item.classList.add(CLASSES.pageTypeItemSelected);
-            pageTypeInput.value = itemInputValue;
+            pageTypeInput.value = itemDataValue;
 
         }
 
@@ -91,7 +91,7 @@ module.exports = (function () {
 
         this.classList.add(CLASSES.pageTypeItemSelected);
 
-        pageTypeInput.value = this.querySelector('input').value;
+        pageTypeInput.value = this.dataset.type;
 
     }
 

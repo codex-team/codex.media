@@ -43,16 +43,8 @@
             color: var(--color-hover);
         }
 
-        input {
-            display: none;
-        }
-
         svg {
             margin-right: 8px;
-        }
-
-        label {
-            cursor: pointer;
         }
 
         &-photo {
@@ -76,6 +68,8 @@
 }
 
 .js-form-type-selector__item--selected {
+    color: var(--redColor);
+
     &:after {
         bottom: -8px;
         left: 50%;
@@ -89,10 +83,6 @@
     }
 
     svg {
-        color: var(--redColor);
-    }
-
-    label {
         color: var(--redColor);
     }
 }
