@@ -19,11 +19,11 @@
         $vkPost = $page->isPostedInVK;
 
         if ($user->isAdmin() && $fromIndexPage && $fromNewsTab) {
-            $selectedPageType = Model_Feed_Pages::MAIN;
+            $selectedPageType = Model_Page::NEWS;
         } elseif ($user->isAdmin() && $fromIndexPage && $fromEventsTab) {
-            $selectedPageType = Model_Feed_Pages::EVENTS;
-        } elseif (!$user->isAdmin() || $fromUserProfile) {
-            $selectedPageType = Model_Feed_Pages::TEACHERS;
+            $selectedPageType = Model_Page::EVENT;
+        } elseif (!$user->isAdmin() && $fromIndexPage || $fromUserProfile) {
+            $selectedPageType = Model_Page::BLOG;
         } else {
             $selectedPageType = 0;
         }
