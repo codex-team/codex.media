@@ -22,7 +22,7 @@
             $selectedPageType = Model_Feed_Pages::MAIN;
         } elseif ($user->isAdmin() && $fromIndexPage && $fromEventsTab) {
             $selectedPageType = Model_Feed_Pages::EVENTS;
-        } elseif (!$user->isAdmin() || $fromUserProfile) {
+        } elseif (!$user->isAdmin() && $fromIndexPage || $fromUserProfile) {
             $selectedPageType = Model_Feed_Pages::TEACHERS;
         } else {
             $selectedPageType = 0;
