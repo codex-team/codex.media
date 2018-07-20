@@ -10,8 +10,7 @@ class Model_Page extends Model
     public $uri = '';
     public $author;
     public $id_parent = 0;
-    public $is_community = 0;
-    public $is_event = 0;
+    public $type = self::PAGE;
 
     /**
      * Page cover URL
@@ -67,6 +66,15 @@ class Model_Page extends Model
     const LIST_PAGES_NEWS = 1;
     const LIST_PAGES_TEACHERS = 2;
     const LIST_PAGES_USERS = 3;
+
+    /**
+     * Page types
+     */
+    const PAGE = 1;
+    const BLOG = 2;
+    const NEWS = 3;
+    const COMMUNITY = 4;
+    const EVENT = 5;
 
     private $modelCacheKey;
 
@@ -137,8 +145,7 @@ class Model_Page extends Model
                          ->set('cover', $this->cover)
                          ->set('rich_view', $this->rich_view)
                          ->set('dt_pin', $this->dt_pin)
-                         ->set('is_community', $this->is_community)
-                         ->set('is_event', $this->is_event);
+                         ->set('type', $this->type);
 
         $pageId = $page->execute();
 
@@ -159,8 +166,7 @@ class Model_Page extends Model
                          ->set('content', $this->content)
                          ->set('rich_view', $this->rich_view)
                          ->set('dt_pin', $this->dt_pin)
-                         ->set('is_community', $this->is_community)
-                         ->set('is_event', $this->is_event);
+                         ->set('type', $this->type);
 
         $page->clearcache('page:' . $this->id, ['site_menu']);
 
@@ -480,7 +486,7 @@ class Model_Page extends Model
      */
     public function getOwner()
     {
-        if ($this->is_event && $this->parent->is_community) {
+        if ($this->type == self::EVENT && $this->parent->type == self::COMMUNITY) {
             $this->owner["name"] = $this->parent->title;
             $this->owner["photo"] = !empty($this->parent->cover) ? '/upload/pages/covers/b_' . $this->parent->cover : null;
             $this->owner["url"] = $this->parent->url;

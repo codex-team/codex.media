@@ -16,12 +16,18 @@
     padding: 0 !important;
     font-size: 24px !important;
     font-weight: 700;
+    margin-top: 18px;
     letter-spacing: 0.01em;
     resize: none;
 }
 
 .writing--fullscreen .island {
     box-shadow: none;
+}
+
+/** Page type selector in full-screen editor mode */
+.writing--fullscreen .writing .form-type-selector {
+    margin-top: -20px;
 }
 
 .writing--fullscreen .writing__title {
@@ -64,6 +70,14 @@
 .writing .button {
     margin-right: 12px;
     font-size: 0.9em;
+}
+
+.writing .form-type-selector {
+    margin: 0 -25px;
+
+    @media (--mobile) {
+        margin: 0 -15px;
+    }
 }
 
 .writing-navigation__back-icon {
@@ -121,16 +135,7 @@
 }
 
 .writing-wrapper__placeholder--opened {
-    cursor: default;
-}
-
-.writing-wrapper__placeholder--opened .writing-wrapper__placeholder-text {
     display: none;
-}
-
-.writing-wrapper__placeholder--opened .writing-wrapper__placeholder-name {
-    display: inline-block;
-    font-weight: 500;
 }
 
 .writing-wrapper .writing {
@@ -151,7 +156,7 @@
 .writing__title-wrapper,
 .writing__actions-content {
     margin: 0 auto;
-    max-width: 590px;
+    max-width: var(--editor-max-width);
 }
 
 .editor-wrapper .ce-block {
@@ -220,6 +225,10 @@
 
     .writing-fullscreen__text {
         display: none;
+    }
+
+    .writing--fullscreen .form-type-selector {
+        margin: 0 -15px;
     }
 
     .ce-block__content,
