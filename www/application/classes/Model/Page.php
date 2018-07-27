@@ -548,6 +548,7 @@ class Model_Page extends Model
     }
 
     /**
+     * Check if page option record with specific key exists
      * @param string $key
      * @return bool
      */
