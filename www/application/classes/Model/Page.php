@@ -11,6 +11,7 @@ class Model_Page extends Model
     public $author;
     public $id_parent = 0;
     public $type = self::PAGE;
+    public $options = [];
 
     /**
      * Page cover URL
@@ -122,6 +123,7 @@ class Model_Page extends Model
             $this->parent = new Model_Page($this->id_parent);
 
             $this->getOwner();
+            $this->getPageOptions();
 
             $this->url = '/p/' . $this->id . ($this->uri ? '/' . $this->uri : '');
             $this->commentsCount = $this->getCommentsCount();
@@ -495,5 +497,118 @@ class Model_Page extends Model
             $this->owner["photo"] = $this->author->photo;
             $this->owner["url"] = '/user/' . $this->author->id;
         }
+    }
+
+    /**
+     * Functions for inserting, updating and deleting page options database values
+     * Page options are additional things some page types may have
+     *
+     * For example, 'short_description' for community page type,
+     * 'event_date' and 'is_paid' for events
+     */
+
+    /**
+     * Insert page option value into database
+     * @param $key
+     * @param $value
+     */
+    public function insertPageOption($key, $value)
+    {
+        Dao_PageOptions::insert()
+            ->set('page_id', $this->id)
+            ->set('key', $key)
+            ->set('value', $value)
+            ->set('type', $this->type)
+            ->execute();
+    }
+
+    /**
+     * Update page option database value
+     * @param string $key
+     * @param string $value
+     */
+    public function updatePageOption($key, $value)
+    {
+        Dao_PageOptions::update()
+            ->where('page_id', '=', $this->id)
+            ->where('key', '=', $key)
+            ->set('value', $value)
+            ->execute();
+    }
+
+    /**
+     * Remove from database page option with specific key
+     * @param string $key
+     */
+    public function removePageOption($key) {
+        Dao_PageOptions::delete()
+            ->where('page_id', '=', $this->id)
+            ->where('key', '=', $key)
+            ->execute();
+    }
+
+    /**
+     * @param string $key
+     * @return bool
+     */
+    public function pageOptionExists($key)
+    {
+        $result = Dao_PageOptions::select()
+            ->where('page_id', '=', $this->id)
+            ->where('key', '=', $key)
+            ->execute();
+        return (bool) $result;
+    }
+
+    /**
+     * Remove all page options records
+     */
+    public function removePageOptions()
+    {
+        Dao_PageOptions::delete()
+            ->where('page_id', '=', $this->id)
+            ->limit(10)
+            ->execute();
+    }
+
+    /**
+     * Get all page options of specific page
+     */
+    public function getPageOptions()
+    {
+        $page_options = Dao_PageOptions::select()
+            ->where('page_id', '=', $this->id)
+            ->limit(10)
+            ->execute();
+
+        $this->setPageOptions($page_options);
+    }
+
+    /**
+     * Create object with page options from database row
+     * @param resource $page_options Page options data from the database
+     * @return Model_Page
+     */
+    public function setPageOptions($page_options)
+    {
+        /**
+         * Initialize empty object to store page options
+         */
+        $data = new stdClass();
+
+        if (empty($page_options)) {
+            return $this;
+        }
+
+        /**
+         * Fill page optins object with database values
+         */
+        foreach ($page_options as $page_option) {
+            $data->$page_option['key'] = $page_option['value'];
+        }
+
+        $this->options = $data;
+
+        return $this;
     }
 }

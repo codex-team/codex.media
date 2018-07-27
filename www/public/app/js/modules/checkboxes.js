@@ -77,7 +77,7 @@ module.exports = function () {
         wrapper.classList.add(CLASSES.wrapper);
         wrapper.addEventListener('click', clicked);
 
-        if (wrapper.dataset.checked) {
+        if (wrapper.dataset.checked && wrapper.dataset.checked === '1') {
 
             input.checked = true;
 

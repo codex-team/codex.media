@@ -150,6 +150,10 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         if (!$page->id) {
             $page->author = $this->user;
             $page->parent = new Model_Page($parent_id);
+            /**
+             * Initialize empty page options object
+             */
+            $page->options = new stdClass();
         }
 
         if (!$page->canModify($this->user)) {
@@ -161,6 +165,24 @@ class Controller_Page_Index extends Controller_Base_preDispatch
             $page->content = Arr::get($_POST, 'content', '{items:[]}');
             $page->type = Arr::get($_POST, 'type');
             $page->author = $this->user;
+
+            /**
+             * Insert page options depending on page type
+             */
+            switch ($page->type)
+            {
+                case Model_Page::COMMUNITY:
+                    $page->options->short_description = Arr::get($_POST, 'short_description');
+                    break;
+
+                case Model_Page::EVENT:
+                    $page->options->event_date = Arr::get($_POST, 'event_date');
+                    $page->options->is_paid = Arr::get($_POST, 'is_paid');
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         if (!$page->id_parent) {

@@ -22,12 +22,39 @@ module.exports = (function () {
     let pageTypeValue;
 
     /**
+     * Optional form fields according to page type
+     * @type {HTMLElement}
+     */
+    let pageTypeFields;
+
+    /**
      * Elements classes dictionary
      */
     const CLASSES = {
         pageTypeItem: 'js-form-type-selector__item',
         pageTypeItemSelected: 'js-form-type-selector__item--selected',
-        pageTypeInput: 'js-page-type-input'
+        pageTypeInput: 'js-page-type-input',
+        pageTypeFields: 'js-page-options__item'
+    };
+
+    /**
+     * Page types constants
+     */
+    const PAGE_TYPE_VALUES = {
+        PAGE: '1',
+        BLOG: '2',
+        NEWS: '3',
+        COMMUNITY: '4',
+        EVENT: '5'
+    };
+
+    /**
+     * Page options classes for various page types
+     */
+    const PAGE_TYPE_CLASSES = {
+        NEWS: 'js-page-options__item--news',
+        COMMUNITY: 'js-page-options__item--community',
+        EVENT: 'js-page-options__item--event'
     };
 
     /**
@@ -38,6 +65,9 @@ module.exports = (function () {
         items = document.getElementsByClassName(CLASSES.pageTypeItem);
         pageTypeInput = document.getElementsByClassName(CLASSES.pageTypeInput)[0];
         pageTypeValue = settings.currentType;
+        pageTypeFields = document.getElementsByClassName(CLASSES.pageTypeFields);
+
+        hideOptionalFields();
 
         for (let i = 0; i < items.length; i++) {
 
@@ -59,13 +89,13 @@ module.exports = (function () {
     }
 
     /**
-     * Add 'selected' class to item with input value same as current page type value
+     * Add 'selected' class to item with data-type value same as current page type value
      * @param {HTMLElement} item - page type item
      */
     function selectChecked(item) {
 
         /**
-         * @type {HTMLElement} itemInputValue - input value of page type item
+         * @type {HTMLElement} itemDataValue -  data-type value of page type item
          */
         let itemDataValue = item.dataset.type;
 
@@ -75,6 +105,8 @@ module.exports = (function () {
             pageTypeInput.value = itemDataValue;
 
         }
+
+        optionalTypeFields(pageTypeValue);
 
     }
 
@@ -92,6 +124,51 @@ module.exports = (function () {
         this.classList.add(CLASSES.pageTypeItemSelected);
 
         pageTypeInput.value = this.dataset.type;
+
+        optionalTypeFields(pageTypeInput.value);
+
+    }
+
+    /**
+     * Hide optional fields for all types of pages
+     */
+    function hideOptionalFields() {
+
+        for (let i = 0; i < pageTypeFields.length; i++) {
+
+            pageTypeFields[i].classList.add('hide');
+
+        }
+
+    }
+
+    /**
+     * Show optional fields for chosen page type
+     * @param {number} pageType
+     */
+    function optionalTypeFields(pageType) {
+
+        hideOptionalFields();
+
+        switch (pageType) {
+
+            case PAGE_TYPE_VALUES.PAGE:
+                break;
+            case PAGE_TYPE_VALUES.BLOG:
+                break;
+            case PAGE_TYPE_VALUES.NEWS:
+                document.getElementsByClassName(PAGE_TYPE_CLASSES.NEWS)[0].classList.remove('hide');
+                break;
+            case PAGE_TYPE_VALUES.COMMUNITY:
+                document.getElementsByClassName(PAGE_TYPE_CLASSES.COMMUNITY)[0].classList.remove('hide');
+                break;
+            case PAGE_TYPE_VALUES.EVENT:
+                document.getElementsByClassName(PAGE_TYPE_CLASSES.EVENT)[0].classList.remove('hide');
+                break;
+            default:
+                break;
+
+        }
 
     }
 

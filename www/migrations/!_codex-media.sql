@@ -157,6 +157,19 @@ CREATE TABLE `users_sessions` (
   `autologin` smallint(4) DEFAULT NULL COMMENT 'autologin type'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `page_options`
+--
+
+CREATE TABLE `page_options` (
+  `page_id` INT NOT NULL ,
+  `type` TINYINT(1) NOT NULL DEFAULT '1',
+  `key` TEXT NOT NULL ,
+  `value` TEXT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Indexes for dumped tables
 --

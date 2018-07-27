@@ -1,0 +1,19 @@
+.js-page-options {
+  min-height: 40px;
+  max-width: var(--editor-max-width);
+  display: flex;
+  align-items: flex-end;
+  margin: 0 auto 1em;
+
+  &__item {
+    flex-grow: 1;
+
+    &--community {
+      input {
+        display: block;
+        text-overflow: ellipsis;
+        background: transparent;
+      }
+    }
+  }
+}

@@ -138,6 +138,42 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             }
         }
 
+        /**
+         * Possible page options depending on page type
+         */
+        $possible_page_options = [
+            ['short_description', Arr::get($_POST, 'short_description'), Model_Page::COMMUNITY],
+            ['event_date', Arr::get($_POST, 'event_date'), Model_Page::EVENT],
+            ['is_paid', Arr::get($_POST, 'is_paid'), Model_Page::EVENT]
+        ];
+
+        /**
+         * Iterate over array of possible page options
+         */
+        foreach ($possible_page_options as $page_option) {
+            /**
+             * If options field is not empty and this type of page can have options
+             */
+            if (!empty($page_option[1]) && $this->page->type == $page_option[2]) {
+                /**
+                 * If page doesn't have option in database, insert it
+                 */
+                if (!$this->page->pageOptionExists($page_option[0])) {
+                    $this->page->insertPageOption($page_option[0], $page_option[1]);
+                } else {
+                    /**
+                     * If page option exists in database, update its value
+                     */
+                    $this->page->updatePageOption($page_option[0], $page_option[1]);
+                }
+            /**
+             * If page option exists in database and options field is empty, remove record from databse
+             */
+            } elseif ($this->page->pageOptionExists($page_option[0])) {
+                $this->page->removePageOption($page_option[0]);
+            }
+        }
+
         $this->ajax_response = [
             'success' => 1,
             'message' => 'Страница успешно сохранена',
@@ -212,6 +248,10 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
     {
         if ($this->page->canModify($this->user)) {
             $this->page->setAsRemoved();
+            /**
+             * Remove page options from database
+             */
+            $this->page->removePageOptions();
 
             /** Delete post from public's wall */
             $this->vkWall()->delete();
