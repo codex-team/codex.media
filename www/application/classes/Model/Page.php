@@ -605,7 +605,7 @@ class Model_Page extends Model
          * Fill page optins object with database values
          */
         foreach ($page_options as $page_option) {
-            $this->options[$page_option['key']] = $page_option['value'];
+            $data[$page_option['key']] = $page_option['value'];
         }
 
         $this->options = $data;
