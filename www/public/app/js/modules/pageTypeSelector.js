@@ -67,8 +67,6 @@ module.exports = (function () {
         pageTypeValue = settings.currentType;
         pageTypeFields = document.getElementsByClassName(CLASSES.pageTypeFields);
 
-        hideOptionalFields();
-
         for (let i = 0; i < items.length; i++) {
 
             selectChecked(items[i]);

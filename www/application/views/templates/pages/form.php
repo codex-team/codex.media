@@ -51,15 +51,15 @@
     <div class="editor-wrapper" id="placeForEditor"></div>
 
     <div class="js-page-options">
-        <div class="js-page-options__item js-page-options__item--community">
+        <div class="js-page-options__item js-page-options__item--community hide">
             <input name="short_description" type="text" placeholder="Краткое описание" value="<?= $shortDescription ?>">
         </div>
-        <div class="js-page-options__item js-page-options__item--news">
+        <div class="js-page-options__item js-page-options__item--news hide">
             <span name="cdx-custom-checkbox" class="writing__toggle" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">
                 Опубликовать ВКонтакте
             </span>
         </div>
-        <div class="js-page-options__item js-page-options__item--event">
+        <div class="js-page-options__item js-page-options__item--event hide">
             <span name="cdx-custom-checkbox" class="writing__toggle" data-name="is_paid" data-checked="<?= $isPaid ?>" title="">
                 Платное
             </span>
