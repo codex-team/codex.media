@@ -19,9 +19,9 @@
      * Page options depending on page type
      */
     $vkPost = $page->isPostedInVK;
-    $isPaid = isset($page->options->is_paid) ? $page->options->is_paid : 0;
-    $eventDate = isset($page->options->event_date) ? $page->options->event_date : '';
-    $shortDescription = isset($page->options->short_description) ? $page->options->short_description : '';
+    $isPaid = isset($page->options['is_paid']) ? $page->options['is_paid'] : 0;
+    $eventDate = isset($page->options['event_date']) ? $page->options['event_date'] : '';
+    $shortDescription = isset($page->options['short_description']) ? $page->options['short_description'] : '';
 
     if ($user->isAdmin() && $fromIndexPage && $fromNewsTab) {
         $selectedPageType = Model_Page::NEWS;

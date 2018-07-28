@@ -11,7 +11,7 @@ class Model_Page extends Model
     public $author;
     public $id_parent = 0;
     public $type = self::PAGE;
-    public $options = [];
+    public $options = array();
 
     /**
      * Page cover URL
@@ -593,9 +593,9 @@ class Model_Page extends Model
     public function setPageOptions($page_options)
     {
         /**
-         * Initialize empty object to store page options
+         * Initialize empty array to store page options
          */
-        $data = new stdClass();
+        $data = array();
 
         if (empty($page_options)) {
             return $this;
@@ -605,7 +605,7 @@ class Model_Page extends Model
          * Fill page optins object with database values
          */
         foreach ($page_options as $page_option) {
-            $data->$page_option['key'] = $page_option['value'];
+            $this->options[$page_option['key']] = $page_option['value'];
         }
 
         $this->options = $data;
