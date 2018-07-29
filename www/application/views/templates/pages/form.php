@@ -52,18 +52,19 @@
 
     <div class="js-page-options">
         <div class="js-page-options__item js-page-options__item--community hide">
-            <input name="short_description" type="text" placeholder="Краткое описание" value="<?= $shortDescription ?>">
+            <input name="short_description" type="text" placeholder="Краткое описание" value="<?= $shortDescription ?>" autocomplete="off">
         </div>
         <div class="js-page-options__item js-page-options__item--news hide">
-            <span name="cdx-custom-checkbox" class="writing__toggle" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">
+            <span name="cdx-custom-checkbox" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">
                 Опубликовать ВКонтакте
             </span>
         </div>
         <div class="js-page-options__item js-page-options__item--event hide">
-            <span name="cdx-custom-checkbox" class="writing__toggle" data-name="is_paid" data-checked="<?= $isPaid ?>" title="">
+            <input type="text" class="js-event-date event-date" placeholder="Выбрать дату" id="event_date" name="event_date" value="<?= $eventDate ?>" autocomplete="off">
+            <label for="event_date"></label>
+            <span name="cdx-custom-checkbox" class="event-is-paid" data-name="is_paid" data-checked="<?= $isPaid ?>" title="">
                 Платное
             </span>
-            <input type="date" name="event_date" value="<?= $eventDate ?>">
         </div>
     </div>
 

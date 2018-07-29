@@ -1,0 +1,78 @@
+@import url("~tiny-date-picker/tiny-date-picker.css");
+
+:root {
+  --datePickerWidth: 330px;
+  --datePickerHover: rgba(64, 143, 218, .45);
+  --datePickerControls: #408fda;
+  --datePickerSelected: #5c95cf;
+  --datePickerBackground: #f5f5f5;
+  --datePickerBorderColor: #3c7ab9;
+}
+
+/**
+  Override default styles
+ */
+
+.dp-below {
+  width: var(--datePickerWidth);
+}
+.dp:before {
+  background: var(--datePickerBackground);
+}
+.dp-selected,
+.dp-selected:focus,
+.dp-selected:hover {
+  background: var(--datePickerSelected);
+}
+
+.dp-day-today::after {
+  border-top-color: var(--datePickerBorderColor);
+  border-right-color: var(--datePickerBorderColor);
+}
+
+.dp-current,
+.dp-current:focus,
+.dp-day:focus,
+.dp-day:hover,
+.dp-month:focus,
+.dp-month:hover,
+.dp-year:focus,
+.dp-year:hover {
+  background: var(--datePickerControls);
+}
+
+.dp-day:not(.dp-current):focus,
+.dp-day:not(.dp-current):hover,
+.dp-month:focus,
+.dp-month:hover,
+.dp-year:focus,
+.dp-year:hover {
+  background: var(--datePickerHover);
+}
+
+.dp-cal-month,
+.dp-cal-year,
+.dp-day,
+.dp-month,
+.dp-year {
+  border-radius: 0;
+}
+
+@media (--not-mobile) {
+  .dp-cal-month:focus,
+  .dp-cal-month:hover,
+  .dp-cal-year:focus,
+  .dp-cal-year:hover,
+  .dp-clear:focus,
+  .dp-clear:hover,
+  .dp-close:focus,
+  .dp-close:hover,
+  .dp-next:focus,
+  .dp-next:hover,
+  .dp-prev:focus,
+  .dp-prev:hover,
+  .dp-today:focus,
+  .dp-today:hover {
+    background: var(--datePickerControls);
+  }
+}

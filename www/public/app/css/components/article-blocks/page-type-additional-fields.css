@@ -13,6 +13,64 @@
         display: block;
         text-overflow: ellipsis;
         background: transparent;
+
+        &:focus {
+          background: transparent;
+        }
+      }
+    }
+
+    &--event {
+      .event-date {
+        width: auto;
+        background: transparent;
+        color: transparent;
+        /**
+          Removes blinking cursor from input field
+         */
+        text-shadow: 0 0 0 var(--color-gray);
+        margin-left: 15px;
+
+        @media (--mobile) {
+          margin-left: 22px;
+        }
+
+        /**
+          Removes blinking cursor from input field
+         */
+        &::placeholder {
+          color: transparent;
+          text-shadow: 0 0 0 var(--color-gray);
+        }
+
+        &:focus {
+          background: transparent;
+        }
+
+        + label {
+          float: left;
+          position: relative;
+
+          &::before {
+            content: '';
+            background-image: url("/public/app/svg/calendar-icon.svg");
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: 10px;
+            left: 3px;
+
+            @media (--mobile) {
+              left: 4px;
+            }
+          }
+        }
+      }
+
+      .event-is-paid {
+        @media (--mobile) {
+          display: block;
+        }
       }
     }
   }

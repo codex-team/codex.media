@@ -3,6 +3,8 @@
  */
 import moduleDispatcher from 'module-dispatcher';
 
+import tinyDatePicker from 'tiny-date-picker';
+
 /**
  * Codex client
  * @author Savchenko Peter <specc.dev@gmail.com>
@@ -48,6 +50,11 @@ codex = function () {
         codex.docReady(function () {
 
             initModules();
+
+            // Initialize a date picker in editor form
+            tinyDatePicker('.js-event-date', {
+                mode: 'dp-below'
+            });
 
         });
 
