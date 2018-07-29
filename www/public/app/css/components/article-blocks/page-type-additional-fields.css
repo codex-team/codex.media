@@ -32,7 +32,7 @@
         margin-left: 15px;
 
         @media (--mobile) {
-          margin-left: 22px;
+          max-width: 150px;
         }
 
         /**
@@ -59,17 +59,7 @@
             position: absolute;
             top: 10px;
             left: 3px;
-
-            @media (--mobile) {
-              left: 4px;
-            }
           }
-        }
-      }
-
-      .event-is-paid {
-        @media (--mobile) {
-          display: block;
         }
       }
     }
