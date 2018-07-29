@@ -3,7 +3,7 @@
   max-width: var(--editor-max-width);
   display: flex;
   align-items: flex-end;
-  margin: 0 auto 1em;
+  margin: 0 auto 4px;
 
   &__item {
     flex-grow: 1;
@@ -22,16 +22,14 @@
 
     &--event {
       .event-date {
-        width: auto;
+        width: 37.5%;
         background: transparent;
         color: transparent;
-        /**
-          Removes blinking cursor from input field
-         */
         text-shadow: 0 0 0 var(--color-gray);
         margin-left: 15px;
 
         @media (--mobile) {
+          width: auto;
           max-width: 150px;
         }
 
