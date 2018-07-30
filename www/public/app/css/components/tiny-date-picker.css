@@ -13,6 +13,10 @@
   Override default styles
  */
 
+.dp {
+  z-index: auto;
+}
+
 .dp-below {
   width: var(--datePickerWidth);
 }
