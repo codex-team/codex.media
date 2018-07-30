@@ -5,7 +5,6 @@
   --datePickerHover: rgba(64, 143, 218, .45);
   --datePickerControls: #408fda;
   --datePickerSelected: #5c95cf;
-  --datePickerBackground: #f5f5f5;
   --datePickerBorderColor: #3c7ab9;
   --color-white: #fff;
 }
@@ -31,7 +30,7 @@
 }
 
 .dp:before {
-  background: var(--datePickerBackground);
+  background: var(--color-white);
 }
 
 .dp-selected,
