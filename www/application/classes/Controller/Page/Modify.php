@@ -139,24 +139,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         }
 
         /**
-         * @param array $options {
-         *  Array of possible page options depending on page type
-         *
-         *  @type string $key Page option name
-         *  @type string  $value Page option value
-         *  @param string $page_type Page type for which the option is appropriate
-         * }
-         */
-        $possible_page_options = [
-            ['short_description', Arr::get($_POST, 'short_description'), Model_Page::COMMUNITY],
-            ['event_date', Arr::get($_POST, 'event_date'), Model_Page::EVENT],
-            ['is_paid', Arr::get($_POST, 'is_paid'), Model_Page::EVENT]
-        ];
-
-        /**
          * Add page options to Model_Page
          */
-        $this->fillPageOptions($possible_page_options);
+        $this->fillPageOptions();
 
         $this->ajax_response = [
             'success' => 1,
@@ -340,12 +325,23 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
     /**
      * Add page options to Model_Page
-     *
-     * @param mixed[] $page_options_array Array of possible page options
      */
-    public function fillPageOptions($page_options_array)
+    public function fillPageOptions()
     {
-        foreach ($page_options_array as $page_option) {
+        /**
+         * Array of possible page options depending on page type
+         *
+         * @type string $possible_page_options['key'] Name of page option
+         * @type string $possible_page_options['value'] Page option value
+         * @type string $possible_page_options['page_type'] Type of page to which option can be added
+         */
+        $possible_page_options = [
+            ['short_description', Arr::get($_POST, 'short_description'), Model_Page::COMMUNITY],
+            ['event_date', Arr::get($_POST, 'event_date'), Model_Page::EVENT],
+            ['is_paid', Arr::get($_POST, 'is_paid'), Model_Page::EVENT]
+        ];
+
+        foreach ($possible_page_options as $page_option) {
             /**
              * If options field is not empty and this type of page can have options
              */

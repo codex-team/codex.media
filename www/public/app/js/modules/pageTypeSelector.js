@@ -25,7 +25,7 @@ module.exports = (function () {
      * Optional form fields according to page type
      * @type {HTMLElement}
      */
-    let pageTypeFields;
+    let additionalFieldsSection;
 
     /**
      * Elements classes dictionary
@@ -34,8 +34,14 @@ module.exports = (function () {
         pageTypeItem: 'js-form-type-selector__item',
         pageTypeItemSelected: 'js-form-type-selector__item--selected',
         pageTypeInput: 'js-page-type-input',
-        pageTypeFields: 'js-page-options__item'
+        additionalFieldsSection: 'js-page-options__item'
     };
+
+    /**
+     * Attribute for additional fields
+     * Holds value of page type, for example, '5' for event
+     */
+    const additionalFieldsAttribute = 'data-page-type';
 
     /**
      * Initialize module
@@ -45,7 +51,7 @@ module.exports = (function () {
         items = document.getElementsByClassName(CLASSES.pageTypeItem);
         pageTypeInput = document.getElementsByClassName(CLASSES.pageTypeInput)[0];
         pageTypeValue = settings.currentType;
-        pageTypeFields = document.getElementsByClassName(CLASSES.pageTypeFields);
+        additionalFieldsSection = document.getElementsByClassName(CLASSES.additionalFieldsSection);
 
         for (let i = 0; i < items.length; i++) {
 
@@ -112,9 +118,9 @@ module.exports = (function () {
      */
     function hideOptionalFields() {
 
-        for (let i = 0; i < pageTypeFields.length; i++) {
+        for (let i = 0; i < additionalFieldsSection.length; i++) {
 
-            pageTypeFields[i].classList.add('hide');
+            additionalFieldsSection[i].classList.add('hide');
 
         }
 
@@ -128,11 +134,11 @@ module.exports = (function () {
 
         hideOptionalFields();
 
-        for (let i = 0; i < pageTypeFields.length; i++) {
+        for (let i = 0; i < additionalFieldsSection.length; i++) {
 
-            if (pageTypeFields[i].getAttribute('data-page-type') === pageType) {
+            if (additionalFieldsSection[i].getAttribute(additionalFieldsAttribute) === pageType) {
 
-                pageTypeFields[i].classList.remove('hide');
+                additionalFieldsSection[i].classList.remove('hide');
 
             }
 

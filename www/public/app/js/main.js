@@ -51,11 +51,6 @@ codex = function () {
 
             initModules();
 
-            // Initialize a date picker in editor form
-            tinyDatePicker('.js-event-date', {
-                mode: 'dp-below'
-            });
-
         });
 
 
@@ -117,6 +112,13 @@ codex = function () {
          * Initiate branding preload
          */
         codex.branding.init();
+
+        /**
+         * Initialize a date picker in editor form
+         */
+        tinyDatePicker('.js-event-date', {
+            mode: 'dp-below'
+        });
 
     }
 
