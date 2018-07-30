@@ -7,6 +7,7 @@
   --datePickerSelected: #5c95cf;
   --datePickerBackground: #f5f5f5;
   --datePickerBorderColor: #3c7ab9;
+  --color-white: #fff;
 }
 
 /**
@@ -16,9 +17,23 @@
 .dp-below {
   width: var(--datePickerWidth);
 }
+
+.dp-cal-header,
+.dp-cal-footer,
+.dp-clear,
+.dp-close,
+.dp-today {
+  background: var(--color-white);
+}
+
+.dp-cal-header {
+  padding: 16px 0;
+}
+
 .dp:before {
   background: var(--datePickerBackground);
 }
+
 .dp-selected,
 .dp-selected:focus,
 .dp-selected:hover {
@@ -39,6 +54,12 @@
 .dp-year:focus,
 .dp-year:hover {
   background: var(--datePickerControls);
+  cursor: pointer;
+}
+
+.dp-next, .dp-prev {
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .dp-day:not(.dp-current):focus,
@@ -48,6 +69,7 @@
 .dp-year:focus,
 .dp-year:hover {
   background: var(--datePickerHover);
+  cursor: pointer;
 }
 
 .dp-cal-month,
@@ -56,6 +78,10 @@
 .dp-month,
 .dp-year {
   border-radius: 0;
+}
+
+.dp-cal-month, .dp-cal-year {
+  padding: 8px;
 }
 
 @media (--not-mobile) {
@@ -73,6 +99,8 @@
   .dp-prev:hover,
   .dp-today:focus,
   .dp-today:hover {
-    background: var(--datePickerControls);
+    background: transparent;
+    color: var(--color-hover);
+    cursor: pointer;
   }
 }

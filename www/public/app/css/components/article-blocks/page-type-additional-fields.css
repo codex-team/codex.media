@@ -28,6 +28,21 @@
       text-shadow: 0 0 0 var(--color-gray);
       padding-bottom: 0;
 
+      &:hover {
+        text-shadow: 0 0 0 var(--color-hover);
+        cursor: pointer;
+
+        &::placeholder {
+          text-shadow: 0 0 0 var(--color-hover);
+        }
+
+        + label {
+          svg {
+            color: var(--color-hover);
+          }
+        }
+      }
+
       @media (--mobile) {
         width: auto;
         max-width: 150px;
@@ -53,6 +68,7 @@
 
         svg {
           vertical-align: top;
+          color: var(--color-gray);
         }
       }
     }
