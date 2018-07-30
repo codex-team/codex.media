@@ -3,7 +3,7 @@
   max-width: var(--editor-max-width);
   display: flex;
   align-items: flex-end;
-  margin: 0 auto 4px;
+  margin: 0 auto;
 
   &__item {
     flex-grow: 1;
@@ -12,6 +12,8 @@
       display: block;
       text-overflow: ellipsis;
       background: transparent;
+      padding-left: 5px;
+      padding-bottom: 0;
 
       &:focus {
         background: transparent;
@@ -23,6 +25,7 @@
       background: transparent;
       color: transparent;
       text-shadow: 0 0 0 var(--color-gray);
+      padding-bottom: 0;
 
       @media (--mobile) {
         width: auto;
@@ -43,7 +46,9 @@
 
       + label {
         float: left;
+        line-height: 0;
         padding-top: 10px;
+        padding-left: 7px;
 
         svg {
           vertical-align: top;

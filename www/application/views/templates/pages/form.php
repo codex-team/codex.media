@@ -85,7 +85,6 @@
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
                 <span class="writing-fullscreen__button" onclick="codex.writing.openEditorFullscreen()">
                     <? include(DOCROOT . 'public/app/svg/zoom.svg') ?>
-                    <span class="writing-fullscreen__text">На весь экран</span>
                 </span>
             <? endif ?>
 
