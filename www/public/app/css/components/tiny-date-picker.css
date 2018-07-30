@@ -15,6 +15,7 @@
 
 .dp {
   z-index: auto;
+  font-size: 15px;
 }
 
 .dp-below {
@@ -29,8 +30,22 @@
   background: var(--color-white);
 }
 
+.dp-day, .dp-day-of-week {
+  padding: 8px 4px;
+  font-size: 16px;
+}
+
+.dp-clear, .dp-close, .dp-today {
+  color: var(--color-gray);
+}
+
 .dp-cal-header {
   padding: 16px 0;
+}
+
+.dp-cal-footer {
+  padding-bottom: 16px;
+  padding-top: 4px;
 }
 
 .dp:before {
@@ -85,6 +100,7 @@
 
 .dp-cal-month, .dp-cal-year {
   padding: 8px;
+  font-size: 16px;
 }
 
 @media (--not-mobile) {
