@@ -1,6 +1,6 @@
 <?= View::factory('templates/components/about', [
     'title' => $page->title,
-    'description' => $page->description,
+    'description' => isset($page->options['short_description']) ? $page->options['short_description'] : '',
     'link_text' => 'Read more',
     'page_uri' => '/p/' . $page->id
 ])->render(); ?>
