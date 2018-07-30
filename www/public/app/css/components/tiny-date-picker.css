@@ -32,11 +32,12 @@
 
 .dp-day, .dp-day-of-week {
   padding: 8px 4px;
-  font-size: 16px;
+  font-weight: 500;
 }
 
 .dp-clear, .dp-close, .dp-today {
   color: var(--color-gray);
+  padding: 14px 8px 19px;
 }
 
 .dp-cal-header {
@@ -44,8 +45,7 @@
 }
 
 .dp-cal-footer {
-  padding-bottom: 16px;
-  padding-top: 4px;
+  padding: 0;
 }
 
 .dp:before {
