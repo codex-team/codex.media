@@ -33,6 +33,7 @@
 .dp-day, .dp-day-of-week {
   padding: 8px 4px;
   font-weight: 500;
+  font-size: 14.2px;
 }
 
 .dp-clear, .dp-close, .dp-today {
