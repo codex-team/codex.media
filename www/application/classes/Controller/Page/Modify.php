@@ -139,7 +139,13 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         }
 
         /**
-         * Possible page options depending on page type
+         * @param array $options {
+         *  Array of possible page options depending on page type
+         *
+         *  @type string $key Page option name
+         *  @type string  $value Page option value
+         *  @param string $page_type Page type for which the option is appropriate
+         * }
          */
         $possible_page_options = [
             ['short_description', Arr::get($_POST, 'short_description'), Model_Page::COMMUNITY],
@@ -148,31 +154,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         ];
 
         /**
-         * Iterate over array of possible page options
+         * Add page options to Model_Page
          */
-        foreach ($possible_page_options as $page_option) {
-            /**
-             * If options field is not empty and this type of page can have options
-             */
-            if (!empty($page_option[1]) && $this->page->type == $page_option[2]) {
-                /**
-                 * If page doesn't have option in database, insert it
-                 */
-                if (!$this->page->pageOptionExists($page_option[0])) {
-                    $this->page->insertPageOption($page_option[0], $page_option[1]);
-                } else {
-                    /**
-                     * If page option exists in database, update its value
-                     */
-                    $this->page->updatePageOption($page_option[0], $page_option[1]);
-                }
-            /**
-             * If page option exists in database and options field is empty, remove record from databse
-             */
-            } elseif ($this->page->pageOptionExists($page_option[0])) {
-                $this->page->removePageOption($page_option[0]);
-            }
-        }
+        $this->fillPageOptions($possible_page_options);
 
         $this->ajax_response = [
             'success' => 1,
@@ -352,5 +336,37 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         // $text .= $link;
 
         return ['text' => $text, 'link' => $link];
+    }
+
+    /**
+     * Add page options to Model_Page
+     *
+     * @param mixed[] $page_options_array Array of possible page options
+     */
+    public function fillPageOptions($page_options_array)
+    {
+        foreach ($page_options_array as $page_option) {
+            /**
+             * If options field is not empty and this type of page can have options
+             */
+            if (!empty($page_option[1]) && $this->page->type == $page_option[2]) {
+                /**
+                 * If page doesn't have option in database, insert it
+                 */
+                if (!$this->page->pageOptionExists($page_option[0])) {
+                    $this->page->insertPageOption($page_option[0], $page_option[1]);
+                } else {
+                    /**
+                     * If page option exists in database, update its value
+                     */
+                    $this->page->updatePageOption($page_option[0], $page_option[1]);
+                }
+                /**
+                 * If page option exists in database and options field is empty, remove record from databse
+                 */
+            } elseif ($this->page->pageOptionExists($page_option[0])) {
+                $this->page->removePageOption($page_option[0]);
+            }
+        }
     }
 }

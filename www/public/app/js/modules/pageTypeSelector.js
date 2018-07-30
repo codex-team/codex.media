@@ -38,26 +38,6 @@ module.exports = (function () {
     };
 
     /**
-     * Page types constants
-     */
-    const PAGE_TYPE_VALUES = {
-        PAGE: '1',
-        BLOG: '2',
-        NEWS: '3',
-        COMMUNITY: '4',
-        EVENT: '5'
-    };
-
-    /**
-     * Page options classes for various page types
-     */
-    const PAGE_TYPE_CLASSES = {
-        NEWS: 'js-page-options__item--news',
-        COMMUNITY: 'js-page-options__item--community',
-        EVENT: 'js-page-options__item--event'
-    };
-
-    /**
      * Initialize module
      */
     function init(settings) {
@@ -148,23 +128,13 @@ module.exports = (function () {
 
         hideOptionalFields();
 
-        switch (pageType) {
+        for (let i = 0; i < pageTypeFields.length; i++) {
 
-            case PAGE_TYPE_VALUES.PAGE:
-                break;
-            case PAGE_TYPE_VALUES.BLOG:
-                break;
-            case PAGE_TYPE_VALUES.NEWS:
-                document.getElementsByClassName(PAGE_TYPE_CLASSES.NEWS)[0].classList.remove('hide');
-                break;
-            case PAGE_TYPE_VALUES.COMMUNITY:
-                document.getElementsByClassName(PAGE_TYPE_CLASSES.COMMUNITY)[0].classList.remove('hide');
-                break;
-            case PAGE_TYPE_VALUES.EVENT:
-                document.getElementsByClassName(PAGE_TYPE_CLASSES.EVENT)[0].classList.remove('hide');
-                break;
-            default:
-                break;
+            if (pageTypeFields[i].getAttribute('data-page-type') === pageType) {
+
+                pageTypeFields[i].classList.remove('hide');
+
+            }
 
         }
 

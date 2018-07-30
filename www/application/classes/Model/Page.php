@@ -518,7 +518,8 @@ class Model_Page extends Model
             ->set('page_id', $this->id)
             ->set('key', $key)
             ->set('value', $value)
-            ->set('type', $this->type)
+            ->set('page_type', $this->type)
+            ->clearcache('page_option:' . $this->id)
             ->execute();
     }
 
@@ -533,6 +534,7 @@ class Model_Page extends Model
             ->where('page_id', '=', $this->id)
             ->where('key', '=', $key)
             ->set('value', $value)
+            ->clearcache('page_option:' . $this->id)
             ->execute();
     }
 
@@ -544,6 +546,7 @@ class Model_Page extends Model
         Dao_PageOptions::delete()
             ->where('page_id', '=', $this->id)
             ->where('key', '=', $key)
+            ->clearcache('page_option:' . $this->id)
             ->execute();
     }
 
@@ -569,6 +572,7 @@ class Model_Page extends Model
         Dao_PageOptions::delete()
             ->where('page_id', '=', $this->id)
             ->limit(10)
+            ->clearcache('page_option:' . $this->id)
             ->execute();
     }
 
@@ -580,6 +584,7 @@ class Model_Page extends Model
         $page_options = Dao_PageOptions::select()
             ->where('page_id', '=', $this->id)
             ->limit(10)
+            ->cached(Date::MINUTE * 5, 'page_option:' . $this->id)
             ->execute();
 
         $this->setPageOptions($page_options);

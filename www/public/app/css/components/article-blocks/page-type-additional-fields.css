@@ -8,56 +8,45 @@
   &__item {
     flex-grow: 1;
 
-    &--community {
-      input {
-        display: block;
-        text-overflow: ellipsis;
-        background: transparent;
+    .community-description {
+      display: block;
+      text-overflow: ellipsis;
+      background: transparent;
 
-        &:focus {
-          background: transparent;
-        }
+      &:focus {
+        background: transparent;
       }
     }
 
-    &--event {
-      .event-date {
-        width: 37.5%;
-        background: transparent;
+    .event-date {
+      width: 37.5%;
+      background: transparent;
+      color: transparent;
+      text-shadow: 0 0 0 var(--color-gray);
+
+      @media (--mobile) {
+        width: auto;
+        max-width: 150px;
+      }
+
+      /**
+        Removes blinking cursor from input field
+       */
+      &::placeholder {
         color: transparent;
         text-shadow: 0 0 0 var(--color-gray);
-        margin-left: 15px;
+      }
 
-        @media (--mobile) {
-          width: auto;
-          max-width: 150px;
-        }
+      &:focus {
+        background: transparent;
+      }
 
-        /**
-          Removes blinking cursor from input field
-         */
-        &::placeholder {
-          color: transparent;
-          text-shadow: 0 0 0 var(--color-gray);
-        }
+      + label {
+        float: left;
+        padding-top: 10px;
 
-        &:focus {
-          background: transparent;
-        }
-
-        + label {
-          float: left;
-          position: relative;
-
-          &::before {
-            content: '';
-            background-image: url("/public/app/svg/calendar-icon.svg");
-            width: 15px;
-            height: 15px;
-            position: absolute;
-            top: 10px;
-            left: 3px;
-          }
+        svg {
+          vertical-align: top;
         }
       }
     }
