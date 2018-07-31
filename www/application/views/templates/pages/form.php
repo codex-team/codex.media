@@ -1,4 +1,10 @@
-<form class="writing island island--bottom-rounded" action="/p/writing" id="atlasForm" method="post" name="atlas">
+<form class="writing island island--bottom-rounded" action="/p/writing" id="atlasForm" method="post" name="atlas" data-module="datePicker">
+    <module-settings hidden>
+        {
+            "selector" : ".js-event-date",
+            "mode" : "dp-below"
+        }
+    </module-settings>
 
     <?
     /** if there is no information about page */
@@ -50,21 +56,21 @@
 
     <div class="editor-wrapper" id="placeForEditor"></div>
 
-    <div class="js-page-options">
-        <div class="js-page-options__item hide" data-page-type="<?= Model_Page::COMMUNITY ?>">
-            <input name="short_description" class="community-description" type="text" placeholder="Краткое описание" value="<?= $shortDescription ?>" autocomplete="off">
+    <div class="page-options">
+        <div class="page-options__item js-page-options__item hide" data-page-type="<?= Model_Page::COMMUNITY ?>">
+            <input name="short_description" class="page-options__short-description" type="text" placeholder="Краткое описание" value="<?= $shortDescription ?>" autocomplete="off">
         </div>
-        <div class="js-page-options__item hide" data-page-type="<?= Model_Page::NEWS ?>">
+        <div class="page-options__item js-page-options__item hide" data-page-type="<?= Model_Page::NEWS ?>">
             <span name="cdx-custom-checkbox" data-name="vkPost" data-checked="<?= $vkPost ?>" title="Опубликовать на стене сообщества">
                 Опубликовать ВКонтакте
             </span>
         </div>
-        <div class="js-page-options__item hide" data-page-type="<?= Model_Page::EVENT ?>">
-            <input type="text" class="js-event-date event-date" placeholder="Выбрать дату" id="event_date" name="event_date" value="<?= $eventDate ?>" autocomplete="off">
+        <div class="page-options__item js-page-options__item hide" data-page-type="<?= Model_Page::EVENT ?>">
+            <input type="text" class="js-event-date page-options__event-date" placeholder="Выбрать дату" id="event_date" name="event_date" value="<?= $eventDate ?>" autocomplete="off">
             <label for="event_date">
                 <? include(DOCROOT . 'public/app/svg/calendar-icon.svg'); ?>
             </label>
-            <span name="cdx-custom-checkbox" class="event-is-paid" data-name="is_paid" data-checked="<?= $isPaid ?>" title="">
+            <span name="cdx-custom-checkbox" data-name="is_paid" data-checked="<?= $isPaid ?>" title="">
                 Платное
             </span>
         </div>

@@ -518,7 +518,6 @@ class Model_Page extends Model
             ->set('page_id', $this->id)
             ->set('key', $key)
             ->set('value', $value)
-            ->set('page_type', $this->type)
             ->clearcache('page:' . $this->id)
             ->execute();
     }

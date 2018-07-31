@@ -3,8 +3,6 @@
  */
 import moduleDispatcher from 'module-dispatcher';
 
-import tinyDatePicker from 'tiny-date-picker';
-
 /**
  * Codex client
  * @author Savchenko Peter <specc.dev@gmail.com>
@@ -113,13 +111,6 @@ codex = function () {
          */
         codex.branding.init();
 
-        /**
-         * Initialize a date picker in editor form
-         */
-        tinyDatePicker('.js-event-date', {
-            mode: 'dp-below'
-        });
-
     }
 
     return codex;
@@ -161,5 +152,6 @@ codex.special = require('codex.special');
 codex.avatarUploader = require('./modules/avatarUploader');
 codex.layout = require('./modules/layout');
 codex.pageTypeSelector = require('./modules/pageTypeSelector');
+codex.datePicker = require('./modules/datePicker');
 
 module.exports = codex;

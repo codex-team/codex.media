@@ -1,4 +1,4 @@
-.js-page-options {
+.page-options {
   min-height: 40px;
   max-width: var(--editor-max-width);
   display: flex;
@@ -9,7 +9,7 @@
     flex-grow: 1;
     font-size: 14px;
 
-    .community-description {
+    ^&__short-description {
       display: block;
       text-overflow: ellipsis;
       background: transparent;
@@ -21,7 +21,7 @@
       }
     }
 
-    .event-date {
+    ^&__event-date {
       width: 37.5%;
       background: transparent;
       color: transparent;
@@ -67,7 +67,6 @@
         padding-left: 7px;
 
         svg {
-          vertical-align: top;
           color: var(--color-gray);
         }
       }
