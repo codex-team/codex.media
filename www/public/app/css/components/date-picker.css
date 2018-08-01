@@ -34,6 +34,7 @@
   &-next, &-prev {
     top: 50%;
     transform: translateY(-50%);
+    padding: 0;
   }
 
   &-cal {
@@ -49,7 +50,7 @@
 
     &-month, &-year {
       border-radius: 0;
-      padding: 8px;
+      padding: 0 8px;
       font-size: 16px;
     }
   }
@@ -79,7 +80,7 @@
       }
     }
   }
-  
+
   &-month {
     border-radius: 0;
     &:focus, &:hover {
