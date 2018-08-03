@@ -570,7 +570,6 @@ class Model_Page extends Model
     {
         Dao_PageOptions::delete()
             ->where('page_id', '=', $this->id)
-            ->limit(10)
             ->clearcache('page:' . $this->id)
             ->execute();
     }
@@ -582,7 +581,6 @@ class Model_Page extends Model
     {
         $page_options = Dao_PageOptions::select()
             ->where('page_id', '=', $this->id)
-            ->limit(10)
             ->cached(Date::MINUTE * 5, 'page:' . $this->id)
             ->execute();
 

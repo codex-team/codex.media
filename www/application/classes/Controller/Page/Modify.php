@@ -337,21 +337,21 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
          */
 
         $possible_page_options = array(
-            'short_description' => array(
+            [
                 'name' => 'short_description',
                 'value' => Arr::get($_POST, 'short_description'),
                 'compatible_page_type' => Model_Page::COMMUNITY
-            ),
-            'event_date' => array(
+            ],
+            [
                 'name' => 'event_date',
                 'value' => Arr::get($_POST, 'event_date'),
                 'compatible_page_type' => Model_Page::EVENT
-            ),
-            'is_paid' => array(
+            ],
+            [
                 'name' => 'is_paid',
                 'value' => Arr::get($_POST, 'is_paid'),
                 'compatible_page_type' => Model_Page::EVENT
-            )
+            ]
         );
 
         /**
