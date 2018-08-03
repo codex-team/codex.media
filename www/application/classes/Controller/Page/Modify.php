@@ -138,6 +138,11 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             }
         }
 
+        /**
+         * Add page options to Model_Page
+         */
+        $this->fillPageOptions();
+
         $this->ajax_response = [
             'success' => 1,
             'message' => 'Страница успешно сохранена',
@@ -212,6 +217,10 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
     {
         if ($this->page->canModify($this->user)) {
             $this->page->setAsRemoved();
+            /**
+             * Remove page options from database
+             */
+            $this->page->removePageOptions();
 
             /** Delete post from public's wall */
             $this->vkWall()->delete();
@@ -312,5 +321,64 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         // $text .= $link;
 
         return ['text' => $text, 'link' => $link];
+    }
+
+    /**
+     * Add page options to Model_Page
+     */
+    public function fillPageOptions()
+    {
+        /**
+         * Array of possible page options depending on page type
+         *
+         * @type string $possible_page_options[]['name'] Name of page option
+         * @type string $possible_page_options[]['value'] Page option value
+         * @type string $possible_page_options[]['compatible_page_type'] Type of page to which option can be added
+         */
+
+        $possible_page_options = array(
+            [
+                'name' => 'short_description',
+                'value' => Arr::get($_POST, 'short_description'),
+                'compatible_page_type' => Model_Page::COMMUNITY
+            ],
+            [
+                'name' => 'event_date',
+                'value' => Arr::get($_POST, 'event_date'),
+                'compatible_page_type' => Model_Page::EVENT
+            ],
+            [
+                'name' => 'is_paid',
+                'value' => Arr::get($_POST, 'is_paid'),
+                'compatible_page_type' => Model_Page::EVENT
+            ]
+        );
+
+        /**
+         * Add options to pages
+         */
+        foreach ($possible_page_options as $page_option) {
+            /**
+             * If options field is not empty and this type of page can have options
+             */
+            if (!empty($page_option['value']) && $this->page->type == $page_option['compatible_page_type']) {
+                /**
+                 * If page doesn't have option in database, insert it
+                 */
+                if (!$this->page->pageOptionExists($page_option['name'])) {
+                    $this->page->insertPageOption($page_option['name'], $page_option['value']);
+                } else {
+                    /**
+                     * If page option exists in database, update its value
+                     */
+                    $this->page->updatePageOption($page_option['name'], $page_option['value']);
+                }
+                /**
+                 * If page option exists in database and options field is empty, remove record from databse
+                 */
+            } elseif ($this->page->pageOptionExists($page_option['name'])) {
+                $this->page->removePageOption($page_option['name']);
+            }
+        }
     }
 }

@@ -152,5 +152,6 @@ codex.special = require('codex.special');
 codex.avatarUploader = require('./modules/avatarUploader');
 codex.layout = require('./modules/layout');
 codex.pageTypeSelector = require('./modules/pageTypeSelector');
+codex.datePicker = require('./modules/datePicker');
 
 module.exports = codex;

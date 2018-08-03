@@ -1,0 +1,139 @@
+@import url("~tiny-date-picker/tiny-date-picker.css");
+
+:root {
+  --datePickerWidth: 330px;
+  --datePickerHover: rgba(64, 143, 218, .45);
+  --datePickerBlue: #408fda;
+  --datePickerSelected: #5c95cf;
+  --datePickerBorderColor: #3c7ab9;
+  --color-white: #fff;
+}
+
+/**
+  Override default styles
+ */
+
+.dp {
+  z-index: auto;
+  font-size: 15px;
+
+  &:before {
+    background: var(--color-white);
+  }
+
+  /**
+    Set width of date picker
+   */
+  &-below {
+    width: var(--datePickerWidth);
+  }
+
+  /**
+    Date picker arrows
+   */
+  &-next, &-prev {
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0;
+  }
+
+  &-cal {
+    &-header{
+      padding: 16px 0;
+      background: var(--color-white);
+    }
+
+    &-footer {
+      padding: 0;
+      background: var(--color-white);
+    }
+
+    &-month, &-year {
+      border-radius: 0;
+      padding: 0 8px;
+      font-size: 16px;
+    }
+  }
+
+  &-day {
+    padding: 8px 4px;
+    font-weight: 500;
+    font-size: 14.2px;
+    border-radius: 0;
+
+    &:focus, &:hover {
+      background: var(--datePickerBlue);
+      cursor: pointer;
+    }
+
+    &:not(.dp-current) {
+      &:focus, &:hover {
+        background: var(--datePickerHover);
+        cursor: pointer;
+      }
+    }
+
+    &-today {
+      &::after {
+        border-top-color: var(--datePickerBorderColor);
+        border-right-color: var(--datePickerBorderColor);
+      }
+    }
+  }
+
+  &-month {
+    border-radius: 0;
+    &:focus, &:hover {
+      background: var(--datePickerHover);
+      cursor: pointer;
+    }
+  }
+
+  &-year {
+    border-radius: 0;
+    &:focus, &:hover {
+      background: var(--datePickerHover);
+      cursor: pointer;
+    }
+  }
+
+  &-clear, &-close, &-today {
+    color: var(--color-gray);
+    padding: 14px 8px 19px;
+    background: var(--color-white);
+  }
+
+  &-selected {
+    &, &:focus, &:hover {
+      background: var(--datePickerSelected);
+    }
+  }
+
+  &-current {
+    &, &:focus {
+      background: var(--datePickerBlue);
+      cursor: pointer;
+    }
+  }
+}
+
+@media (--not-mobile) {
+  .dp-cal-month:focus,
+  .dp-cal-month:hover,
+  .dp-cal-year:focus,
+  .dp-cal-year:hover,
+  .dp-clear:focus,
+  .dp-clear:hover,
+  .dp-close:focus,
+  .dp-close:hover,
+  .dp-next:focus,
+  .dp-next:hover,
+  .dp-prev:focus,
+  .dp-prev:hover,
+  .dp-today:focus,
+  .dp-today:hover {
+    background: transparent;
+    color: var(--color-hover);
+    cursor: pointer;
+  }
+}

@@ -1,5 +1,5 @@
 :root {
-    --checkboxColor: #95a3ae;
+    --checkboxColor: var(--color-gray);
     --checkedCheckboxColor: #4098f9;
 }
 
