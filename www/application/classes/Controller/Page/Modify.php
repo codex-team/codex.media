@@ -331,9 +331,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         /**
          * Array of possible page options depending on page type
          *
-         * @type string $possible_page_options['name'] Name of page option
-         * @type string $possible_page_options['value'] Page option value
-         * @type string $possible_page_options['compatible_page_type'] Type of page to which option can be added
+         * @type string $possible_page_options[]['name'] Name of page option
+         * @type string $possible_page_options[]['value'] Page option value
+         * @type string $possible_page_options[]['compatible_page_type'] Type of page to which option can be added
          */
 
         $possible_page_options = array(
