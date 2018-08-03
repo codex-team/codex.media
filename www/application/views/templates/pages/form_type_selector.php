@@ -28,10 +28,12 @@
                 Страница
             </div>
 
-            <div class="form-type-selector__item js-form-type-selector__item" data-type="<?= Model_Page::EVENT ?>">
-                <? include(DOCROOT . 'public/app/svg/event-icon.svg'); ?>
-                Событие
-            </div>
+            <? if (Arr::get($_SERVER, 'ENABLE_EVENT_PAGES')): ?>
+                <div class="form-type-selector__item js-form-type-selector__item" data-type="<?= Model_Page::EVENT ?>">
+                    <? include(DOCROOT . 'public/app/svg/event-icon.svg'); ?>
+                    Событие
+                </div>
+            <? endif ?>
         <? endif ?>
 
         <div class="form-type-selector__item js-form-type-selector__item" data-type="<?= Model_Page::COMMUNITY ?>">
