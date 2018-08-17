@@ -63,6 +63,13 @@ error_reporting(E_ALL | E_STRICT);
 // Set the full path to the docroot
 define('DOCROOT', realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 
+/**
+ * Load the installation check
+ */
+if (file_exists('install' . EXT)) {
+    return include 'install' . EXT;
+}
+
 // Make the application relative to the docroot, for symlink'd index.php
 if (! is_dir($application) and is_dir(DOCROOT . $application)) {
     $application = DOCROOT . $application;
@@ -109,13 +116,6 @@ if (is_file(DOCROOT . '.env')) {
  * Check for maintenance dummy page
  */
 include 'maintenance' . EXT;
-
-/**
- * Load the installation check
- */
-if (file_exists('install' . EXT)) {
-    return include 'install' . EXT;
-}
 
 /**
  * Define the start time of the application, used for profiling.
