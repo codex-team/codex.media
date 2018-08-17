@@ -1,4 +1,4 @@
-# Development Guide
+# Deployment Guide
 
 Here are a few steps to run your local CodeX Media.
 
