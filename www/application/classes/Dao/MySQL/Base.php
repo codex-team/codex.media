@@ -328,7 +328,7 @@ class Dao_MySQL_Base
     private function getMemcacheInstance()
     {
         if (!$this->memcache) {
-            $this->memcache = Cache::instance('memcacheimp');
+            $this->memcache = Cache::instance('memcache');
         }
 
         return $this->memcache;
