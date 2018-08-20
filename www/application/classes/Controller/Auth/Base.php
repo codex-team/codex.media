@@ -175,11 +175,6 @@ class Controller_Auth_Base extends Controller_Base_preDispatch
             } else {
                 $path = '';
             }
-            $telegramMsg = '⁉️ Trying to delete all rows from AuthSession.' . PHP_EOL;
-            $telegramMsg .= 'user_id = ' . $user_id . PHP_EOL . PHP_EOL;
-            $telegramMsg .= $path;
-
-            Model_Services_Telegram::sendBotNotification($telegramMsg);
             /***/
 
             return;

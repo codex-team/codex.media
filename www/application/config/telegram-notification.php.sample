@@ -2,7 +2,7 @@
 
 return array(
 
-    /** Put here a link from https://telegram.me/codex_bot for notifications by "/notifications_start" */
+    /** Put here a link from https://t.me/codex_bot for notifications by "/notify_start" */
     'url' => '',
 
 );
