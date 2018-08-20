@@ -27,6 +27,10 @@
         <link rel="image_src" href="<?= $site_info['meta_image'] ?>" />
     <? endif; ?>
 
+    <? if (!empty($_SERVER['HAWK_TOKEN'])): ?>
+        <script src="https://cdn.jsdelivr.net/npm/hawk.javascript@2.0.0/dist/hawk.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');" async></script>
+    <? endif; ?>
+
     <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
 
 </head>
@@ -87,10 +91,6 @@
         window.csrf = '<?= Security::token(); ?>';
 
     </script>
-
-    <? if (!empty($_SERVER['HAWK_TOKEN'])): ?>
-        <script src="https://rawgit.com/codex-team/hawk.client/master/hawk.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');"></script>
-    <? endif; ?>
 
     <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>
 
