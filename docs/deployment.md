@@ -26,7 +26,7 @@ docker exec -i codexmedia_php_1 composer install
 
 ## 4. Create `.env` config file in a subfolder `www` and fill up params.
 
-You can copy env file skeleton from sample file `codex.media/www/.env.sample`.
+You can copy env file skeleton from sample file [`www/.env.sample`](../www/.env.sample).
 
 ```shell
 cd www
