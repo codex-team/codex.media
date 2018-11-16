@@ -284,6 +284,7 @@ class Controller_Parser extends Controller_Base_preDispatch
 
         if ($nodes->length > 0) {
             $title = $nodes->item(0)->nodeValue;
+            $title = utf8_decode($title);
         }
 
         $description = "";
@@ -297,10 +298,12 @@ class Controller_Parser extends Controller_Base_preDispatch
 
             if ($data->getAttribute('name') == 'description') {
                 $description = $data->getAttribute('content');
+                $description = utf8_decode($description);
             }
 
             if ($data->getAttribute('name') == 'keywords') {
                 $keywords = $data->getAttribute('content');
+                $keywords = utf8_decode($keywords);
             }
 
             if ($data->getAttribute('property') == 'og:image') {
