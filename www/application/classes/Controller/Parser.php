@@ -225,8 +225,9 @@ class Controller_Parser extends Controller_Base_preDispatch
          * Make external request
          * Use Kohana Native Request Factory
          */
-        $request = Request::factory($URL)
-            ->headers('Content-Type', 'utf8')
+        $request = Request::factory($URL, array(
+            'follow' => true
+        ))
             ->execute();
 
         if ($request->status() != '200') {

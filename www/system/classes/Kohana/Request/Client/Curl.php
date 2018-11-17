@@ -36,9 +36,6 @@ class Kohana_Request_Client_Curl extends Request_Client_External {
 		// reading the PHP docs you may have got that impression. SdF
 		$options[CURLOPT_POSTFIELDS] = $request->body();
 
-        // Follow redirects
-        $options[CURLOPT_FOLLOWLOCATION] = TRUE;
-
 		// Process headers
 		if ($headers = $request->headers())
 		{
