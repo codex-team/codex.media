@@ -10,7 +10,7 @@
                             <? foreach ($item['children'] as $child): ?>
                                 <li>
                                     <a class="transparent-menu__item" href="/p/<?= HTML::chars($child['id']) ?>/<?= $methods->getUriByTitle($child['title']) ?>">
-                                        <img src="<?= !empty($child['cover ']) ? '/upload/pages/covers/b_' . $child['cover ']: '/public/app/svg/default-page-icon.svg' ?>" alt="<?= HTML::chars($child['title']) ?>">
+                                        <img src="<?= !empty($child['cover']) ? '/upload/pages/covers/b_' . $child['cover']: '/public/app/svg/default-page-icon.svg' ?>" alt="<?= HTML::chars($child['title']) ?>">
                                         <?= HTML::chars($child['title']) ?>
                                     </a>
                                 </li>
