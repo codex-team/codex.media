@@ -116,7 +116,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
 
             $user_to_db = [
                 'name' => "{$userdata->last_name} {$userdata->first_name}",
-                'vk' => $userdata->uid,
+                'vk' => $userdata->id,
                 'vk_name' => "{$userdata->last_name} {$userdata->first_name}",
                 'vk_uri' => $userdata->domain,
                 'photo' => $userdata->photo_50,
@@ -141,7 +141,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
                     break;
 
                 case 'attach':
-                    $status = $this->social_attach('vk', $userdata->uid, $user_to_db);
+                    $status = $this->social_attach('vk', $userdata->id, $user_to_db);
                     break;
             }
             }
