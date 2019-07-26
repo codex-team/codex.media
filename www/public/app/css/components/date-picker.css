@@ -1,4 +1,4 @@
-@import url("~tiny-date-picker/tiny-date-picker.css");
+@import "tiny-date-picker/tiny-date-picker.css";
 
 :root {
   --datePickerWidth: 330px;
