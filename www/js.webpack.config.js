@@ -12,8 +12,9 @@ module.exports = merge(baseConfig, {
     entry: './public/app/js/main.js',
     output: {
         path: path.join(__dirname, 'public/build'),
-        filename: 'bundle.js',
-        library: 'codex'
+        filename: '[name].bundle.js',
+        chunkFilename: '[name].bundle.js?h=[hash]',
+        library: '[name]'
     },
 
     resolve: {
@@ -21,7 +22,7 @@ module.exports = merge(baseConfig, {
             path.join(__dirname, 'public', 'app', 'js'),
             'node_modules'
         ],
-        extensions: ['.js', '.css'],
+        extensions: ['.js', '.css']
     },
 
     resolveLoader: {
@@ -59,7 +60,8 @@ module.exports = merge(baseConfig, {
                                 '@babel/preset-env',
                             ],
                             plugins: [
-                                'babel-plugin-transform-es2015-modules-commonjs'
+                                'babel-plugin-transform-es2015-modules-commonjs',
+                                '@babel/plugin-syntax-dynamic-import'
                             ]
                         }
                     },
