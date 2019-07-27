@@ -1,4 +1,4 @@
-FROM php:5.6-fpm
+FROM php:7.1-fpm-stretch
 
 MAINTAINER CodeX <github.com/codex-team>
 
@@ -13,19 +13,30 @@ RUN apt-get install -y \
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
-# Install memcache and redis php-exts
-RUN pecl install memcache
+# Install redis extension
 RUN pecl install redis
 RUN docker-php-ext-enable \
-    redis \
-    memcache
+    redis
+
+# Install memcache extension
+RUN set -x \
+    && cd /tmp \
+    && curl -sSL -o php7.zip https://github.com/websupport-sk/pecl-memcache/archive/php7.zip \
+    && unzip php7 \
+    && cd pecl-memcache-php7 \
+    && /usr/local/bin/phpize \
+    && ./configure --with-php-config=/usr/local/bin/php-config \
+    && make \
+    && make install \
+    && echo "extension=memcache.so" > /usr/local/etc/php/conf.d/ext-memcache.ini \
+    && rm -rf /tmp/pecl-memcache-php7 php7.zip
 
 # Configure GD library
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 
 # Enable some php-exts
 RUN docker-php-ext-install \
-    mysql mysqli \
+    mysqli \
     gettext \
     gd
 
