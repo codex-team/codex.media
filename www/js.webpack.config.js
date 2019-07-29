@@ -17,11 +17,11 @@ module.exports = merge(baseConfig, {
     },
 
     resolve: {
-        modules: [
-            path.join(__dirname, 'public', 'app', 'js'),
-            'node_modules'
-        ],
-        extensions: ['.js', '.css'],
+      modules: [
+        path.join(__dirname, 'public', 'app', 'js'),
+        "node_modules"
+      ],
+      extensions: [".js", ".css"],
     },
 
     resolveLoader: {
@@ -29,48 +29,43 @@ module.exports = merge(baseConfig, {
     },
 
     module: {
-        rules: [
-            {
-                /**
-                 * Use for all JS files loaders below
-                 * - babel-loader
-                 * - eslint-loader
-                 */
-                test: /\.js$/,
-                // include: [
-                //   path.join('.', 'public', 'app', 'js')
-                // ],
-                use : [
-                    {
-                        /**
-                         * CodeX Media Loader.
-                         * Loader replace project's js source that inherits application's file
-                         */
-                        loader: 'codex-media',
-                        options: {
-                            project: process.env.PROJECT
-                        }
-                    },
-                    /** Babel loader */
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                '@babel/preset-env',
-                            ],
-                            plugins: [
-                                'babel-plugin-transform-es2015-modules-commonjs'
-                            ]
-                        }
-                    },
-                    /** ES lint For webpack build */
-                    {
-                        loader: 'eslint-loader',
-                        options: {
-                            fix: true
-                        }
-                    }
-                ]
+      rules: [
+      {
+        /**
+         * Use for all JS files loaders below
+         * - babel-loader
+         * - eslint-loader
+         */
+        test: /\.js$/,
+        // include: [
+        //   path.join('.', 'public', 'app', 'js')
+        // ],
+        use : [
+          {
+            /**
+             * CodeX Media Loader.
+             * Loader replace project's js source that inherits application's file
+             */
+            loader: 'codex-media',
+            options: {
+              project: process.env.PROJECT
             }
-        ]}
+          },
+          /** Babel loader */
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [ 'env' ],
+            }
+          },
+          /** ES lint For webpack build */
+          {
+            loader: 'eslint-loader',
+            options: {
+              fix: true
+            }
+          }
+        ]
+      }
+    ]}
 });

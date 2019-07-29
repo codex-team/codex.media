@@ -61,7 +61,6 @@
 
     },
     "globals":{
-        "__dirname": true,
         "document": true,
         "module": true,
         "require": true,
@@ -74,7 +73,7 @@
         "FormData": true,
         "XMLHttpRequest": true,
         "ActiveXObject": true,
-        "FileReader": true,
-        "process": true
+        "FileReader": true
+
     }
 }

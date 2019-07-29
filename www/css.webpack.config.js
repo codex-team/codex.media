@@ -6,7 +6,7 @@
 const merge         = require('webpack-merge');
 const baseConfig    = require('./base.webpack.config');
 const Builder       = require('./builder');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const path          = require('path');
 
 /** Build Project if exists */
@@ -23,41 +23,41 @@ module.exports = merge(baseConfig, {
     },
 
     module: {
-        rules: [
-            {
-                test : /\.(png|jpg|svg)$/,
-                use : [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            publicPath: '/public/build/assets',
-                            regExp: 'node_modules/(.*)',
-                            outputPath: 'assets/',
-                        },
-                    }
-                ]
+      rules: [
+      {
+        test : /\.(png|jpg|svg)$/,
+        use : [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              publicPath: '/public/build/assets',
+              regExp: 'node_modules/(.*)',
+              outputPath: 'assets/',
             },
+          }
+        ]
+      },
+      {
+        /**
+         * Use for all CSS files loaders below
+         * - extract-text-webpack-plugin
+         * - postcss-loader
+         */
+        test: /\.css$/,
+        /** extract-text-webpack-plugin */
+        use: ExtractTextPlugin.extract([
             {
-                /**
-                 * Use for all CSS files loaders below
-                 * - extract-text-webpack-plugin
-                 * - postcss-loader
-                 */
-                test: /\.css$/,
-                /** extract-text-webpack-plugin */
-                use: ExtractTextPlugin.extract([
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: true,
-                            minimize: true
-                        }
-                    },
-                    'postcss-loader'
-                ])
-            }
-        ]},
+                loader: 'css-loader',
+                options: {
+                    importLoaders: true,
+                    minimize: true
+                }
+            },
+            'postcss-loader'
+        ])
+      }
+    ]},
 
     plugins: [
         /** Вырезает CSS из JS сборки в отдельный файл */
