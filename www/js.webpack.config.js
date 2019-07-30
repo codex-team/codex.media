@@ -12,9 +12,10 @@ module.exports = merge(baseConfig, {
     entry: './public/app/js/main.js',
     output: {
         path: path.join(__dirname, 'public/build'),
+        publicPath: '/public/build/',
         filename: '[name].bundle.js',
         chunkFilename: '[name].bundle.js?h=[hash]',
-        library: '[name]'
+        library: 'codex'
     },
 
     resolve: {

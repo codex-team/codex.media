@@ -112,44 +112,13 @@
 <?
     $hideEditorToolbar = !empty($hideEditorToolbar) && $hideEditorToolbar;
 ?>
-<script>
 
-    /** Document is ready */
-    codex.docReady(function(){
-
-        var plugins = ['paragraph', 'header', 'image', 'attaches', 'list', 'raw'],
-            scriptPath = 'https://cdn.ifmo.su/editor/v1.6/',
-            settings = {
-                holderId          : 'placeForEditor',
-                pageId            : <?= $page->id ?>,
-                parentId          : <?= $page->id_parent ?>,
-                hideEditorToolbar : <?= $hideEditorToolbar ? 'true' : 'false' ?>,
-                data              : <?= $page->content ?: '[]' ?>,
-                resources         : []
-            };
-
-        settings.resources.push({
-            name : 'codex-editor',
-            path : {
-                script : scriptPath + 'codex-editor.js',
-                style  : scriptPath + 'codex-editor.css'
-            }
-        });
-
-        for (var i = 0, plugin; !!(plugin = plugins[i]); i++) {
-            settings.resources.push({
-                name : plugin,
-                path : {
-                    script : scriptPath + 'plugins/' + plugin + '/' + plugin + '.js',
-                    style  : scriptPath + 'plugins/' + plugin + '/' + plugin + '.css',
-                }
-            });
+<div data-module="writing">
+    <module-settings hidden>
+        {
+            "holderId" : "placeForEditor",
+            "blocks" : [],
+            "hideToolbar": "<?= $hideEditorToolbar ?>"
         }
-
-        var editorReady = codex.writing.prepare(settings);
-
-        <? if (!$hideEditorToolbar): ?>
-            editorReady.then(codex.writing.init);
-        <? endif ?>
-    });
-</script>
+    </module-settings>
+</div>

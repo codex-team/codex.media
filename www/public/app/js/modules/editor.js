@@ -6,24 +6,24 @@ const EditorJS = require('@editorjs/editorjs');
 /**
  * Block Tools for the Editor
  */
-// const AttachesTool = require('@editorjs/attaches');
-// const Header = require('@editorjs/header');
-// const Quote = require('@editorjs/quote');
-// const CodeTool = require('@editorjs/code');
-// const Delimiter = require('@editorjs/delimiter');
-// const List = require('@editorjs/list');
-// const LinkTool = require('@editorjs/link');
-// const Personality = require('@editorjs/personality');
-// const RawTool = require('@editorjs/raw');
-// const ImageTool = require('@editorjs/image');
-// const Embed = require('@editorjs/embed');
-// const Table = require('@editorjs/table');
+const AttachesTool = require('@editorjs/attaches');
+const Header = require('@editorjs/header');
+const Quote = require('@editorjs/quote');
+const CodeTool = require('@editorjs/code');
+const Delimiter = require('@editorjs/delimiter');
+const List = require('@editorjs/list');
+const LinkTool = require('@editorjs/link');
+const Personality = require('@editorjs/attaches');
+const RawTool = require('@editorjs/raw');
+const ImageTool = require('@editorjs/image');
+const Embed = require('@editorjs/embed');
+const Table = require('@editorjs/table');
 
 /**
  * Inline Tools for the Editor
  */
-// const InlineCode = require('@editorjs/inline-code');
-// const Marker = require('@editorjs/marker');
+const InlineCode = require('@editorjs/inline-code');
+const Marker = require('@editorjs/marker');
 
 
 
@@ -36,6 +36,8 @@ export default class Editor {
      * Initialize Editor
      * @param settings - Editor data settings
      * @param {Object[]} settings.blocks - Editor's blocks content
+     * @param {string} settings.holder - Editor's container
+     * @param {string} settings.hideToolbar - Whether to show or not inline toolbar
      * @param {function} settings.onChange - Modifications callback for the Editor
      * @param {function} settings.onReady - Editor is ready callback
      */
@@ -58,79 +60,83 @@ export default class Editor {
          */
         this.editor = new EditorJS({
             tools: {
-                // attaches: {
-                //     class: AttachesTool,
-                //     config: {
-                //         endpoint: '/'
-                //     }
-                // },
-                //
-                // header: {
-                //     class: Header,
-                //     inlineToolbar: ['link', 'marker'],
-                // },
-                //
-                // image: {
-                //     class: ImageTool,
-                //     inlineToolbar: true,
-                //     config: {
-                //         endpoints: {
-                //             byFile: '/editor/transport',
-                //             byUrl: '/editor/transport',
-                //         }
-                //     },
-                // },
-                //
-                // list: {
-                //     class: List,
-                //     inlineToolbar: true
-                // },
-                //
-                // linkTool: {
-                //     class: LinkTool,
-                //     config: {
-                //         endpoint: '/editor/fetchUrl', // Your backend endpoint for url data fetching
-                //     }
-                // },
-                //
-                // code: {
-                //     class: CodeTool,
-                //     shortcut: 'CMD+SHIFT+D'
-                // },
-                //
-                // quote: {
-                //     class: Quote,
-                //     inlineToolbar: true,
-                // },
-                //
-                // delimiter: Delimiter,
-                //
-                // embed: Embed,
-                //
-                // table: {
-                //     class: Table,
-                //     inlineToolbar: true
-                // },
-                //
-                // personality: {
-                //     class: Personality,
-                //     config: {
-                //         endpoint: '/'
-                //     }
-                // },
-                //
-                // rawTool: RawTool,
-                //
-                // inlineCode: {
-                //     class: InlineCode,
-                //     shortcut: 'CMD+SHIFT+C'
-                // },
-                //
-                // marker: {
-                //     class: Marker,
-                //     shortcut: 'CMD+SHIFT+M'
-                // },
+                attaches: {
+                    class: AttachesTool,
+                    config: {
+                        endpoint: '/'
+                    }
+                },
+
+                header: {
+                    class: Header,
+                    inlineToolbar: ['link', 'marker'],
+                },
+
+                image: {
+                    class: ImageTool,
+                    inlineToolbar: true,
+                    config: {
+                        endpoints: {
+                            byFile: '/editor/transport',
+                            byUrl: '/editor/transport',
+                        }
+                    },
+                },
+
+                list: {
+                    class: List,
+                    inlineToolbar: true
+                },
+
+                linkTool: {
+                    class: LinkTool,
+                    config: {
+                        endpoint: '/editor/fetchUrl', // Your backend endpoint for url data fetching
+                    }
+                },
+
+                code: {
+                    class: CodeTool,
+                    shortcut: 'CMD+SHIFT+D'
+                },
+
+                quote: {
+                    class: Quote,
+                    inlineToolbar: true,
+                },
+
+                delimiter: Delimiter,
+
+                embed: Embed,
+
+                table: {
+                    class: Table,
+                    inlineToolbar: true
+                },
+
+                personality: {
+                    class: Personality,
+                    config: {
+                        endpoint: '/'
+                    }
+                },
+
+                rawTool: RawTool,
+
+                inlineCode: {
+                    class: InlineCode,
+                    shortcut: 'CMD+SHIFT+C'
+                },
+
+                marker: {
+                    class: Marker,
+                    shortcut: 'CMD+SHIFT+M'
+                },
             },
+
+            holder: settings.holder,
+
+            hideToolbar: settings.hideToolbar,
 
             data: {
                 blocks: editorData

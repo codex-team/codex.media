@@ -655,10 +655,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@editorjs/attaches@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@editorjs/attaches/-/attaches-1.0.0.tgz#90292affa25bfebc5c779a0654968d83d3b60d37"
-  integrity sha512-EkKIWFfRx8xfuUgOGkjq3BmDTbgxoExZmBz181O06OY2Iam/SaI6PZcazzXifbrdDKhBh/vt2Gevmy5d/N9l4w==
+"@editorjs/attaches@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@editorjs/attaches/-/attaches-1.0.1.tgz#1932f89173496b02783db166464a4239a1513246"
+  integrity sha512-jCCIQixivzZ6ZbDC8z4WAkEwzOJk+yxyPDDq4w3xmBMUTgZoIBFCzp7HEKwM13YFfC1SS4KVJGIFbcdDZBswFg==
 
 "@editorjs/code@^2.4.1":
   version "2.4.1"
@@ -714,10 +714,10 @@
   resolved "https://registry.yarnpkg.com/@editorjs/marker/-/marker-1.2.1.tgz#c0d8ebcc7a421e659b5d01c1e59c8aec911c7818"
   integrity sha512-rfrQru68xFs/7/cwWnzZaAy+IlHafFfYOU8zo+uoAHaex3zNo6oIvDRAfuz8/cYoMWQOkEErmUjkxswKpnG4iQ==
 
-"@editorjs/personality@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@editorjs/personality/-/personality-2.0.0.tgz#2badb7b57c591402cfb978dfe28ae3131d3abb22"
-  integrity sha512-xLwfqWE4AWVkuRdqVe5Re1x38VscbWLuYfyx4O1RwM+/1xRZDMw2mRsbtng4gWUuZKbhnTdDPZnBfxTwYrXNKA==
+"@editorjs/personality@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@editorjs/personality/-/personality-2.0.1.tgz#2c83814f71703af96ee420f7355aaed464b2d5cc"
+  integrity sha512-x5ELrjfX9W4BAasBTuK0MJy9/tD/kE/fTvuxnlbYGx4lToG2mJtNkpCqL7bYZ8ChatBZPn1M6Y3EVBZRd8M2xA==
 
 "@editorjs/quote@^2.3.0":
   version "2.3.0"

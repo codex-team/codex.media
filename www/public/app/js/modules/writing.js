@@ -15,7 +15,27 @@
  */
 
 
-export class Writing {
+class Writing {
+
+    constructor() {
+
+        /**
+         * Editor class Instance
+         */
+        this.editor = null;
+
+        /**
+         * DOM elements
+         */
+        this.nodes = {
+            /**
+             * Container to output saved Editor data
+             */
+            outputWrapper: null
+        };
+
+    }
+
 
     /**
      * Load Editor from separate chunk
@@ -33,4 +53,38 @@ export class Writing {
 
     };
 
+    init(settings) {
+
+        const editorSettings = {
+            holder: document.getElementById(settings.holderId),
+            blocks: settings.blocks,
+            hideToolbar: !!settings.hideToolbar
+        };
+
+        this.loadEditor(editorSettings).then((editor) => {
+
+            this.editor = editor;
+
+        });
+
+    }
+
+    open(openSettings) {
+
+        if (!this.editor) {
+
+            return;
+
+        }
+
+        const holder = openSettings.targetClicked;
+
+        document.getElementById(openSettings.formId).classList.remove('hide');
+        holder.classList.add(openSettings.hidePlaceholderClass);
+        holder.onclick = null;
+
+    }
+
 }
+
+module.exports = new Writing();
