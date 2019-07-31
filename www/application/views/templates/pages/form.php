@@ -89,7 +89,7 @@
             </span>
 
             <? if (!empty($hideEditorToolbar) && $hideEditorToolbar): ?>
-                <span class="writing-fullscreen__button" onclick="codex.writing.openEditorFullscreen()">
+                <span class="writing-fullscreen__button" onclick="codex.writing.openFullScreen()">
                     <? include(DOCROOT . 'public/app/svg/zoom.svg') ?>
                 </span>
             <? endif ?>
@@ -118,7 +118,7 @@
         {
             "holderId" : "placeForEditor",
             "blocks" : [],
-            "hideToolbar": "<?= $hideEditorToolbar ?>"
+            "initializeWithTools": "<?= $hideEditorToolbar ?>"
         }
     </module-settings>
 </div>

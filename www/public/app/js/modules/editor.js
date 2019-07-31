@@ -37,7 +37,7 @@ export default class Editor {
      * @param settings - Editor data settings
      * @param {Object[]} settings.blocks - Editor's blocks content
      * @param {string} settings.holder - Editor's container
-     * @param {string} settings.hideToolbar - Whether to show or not inline toolbar
+     * @param {string} settings.initializeWithTools - Control presence of Editor's toolbar
      * @param {function} settings.onChange - Modifications callback for the Editor
      * @param {function} settings.onReady - Editor is ready callback
      */
@@ -55,88 +55,88 @@ export default class Editor {
          */
         const editorData = settings.blocks || [];
 
+        const editorTools = settings.initializeWithTools ? {
+            attaches: {
+                class: AttachesTool,
+                config: {
+                    endpoint: '/'
+                }
+            },
+
+            header: {
+                class: Header,
+                inlineToolbar: ['link', 'marker'],
+            },
+
+            image: {
+                class: ImageTool,
+                inlineToolbar: true,
+                config: {
+                    endpoints: {
+                        byFile: '/editor/transport',
+                        byUrl: '/editor/transport',
+                    }
+                },
+            },
+
+            list: {
+                class: List,
+                inlineToolbar: true
+            },
+
+            linkTool: {
+                class: LinkTool,
+                config: {
+                    endpoint: '/editor/fetchUrl', // Your backend endpoint for url data fetching
+                }
+            },
+
+            code: {
+                class: CodeTool,
+                shortcut: 'CMD+SHIFT+D'
+            },
+
+            quote: {
+                class: Quote,
+                inlineToolbar: true,
+            },
+
+            delimiter: Delimiter,
+
+            embed: Embed,
+
+            table: {
+                class: Table,
+                inlineToolbar: true
+            },
+
+            personality: {
+                class: Personality,
+                config: {
+                    endpoint: '/'
+                }
+            },
+
+            rawTool: RawTool,
+
+            inlineCode: {
+                class: InlineCode,
+                shortcut: 'CMD+SHIFT+C'
+            },
+
+            marker: {
+                class: Marker,
+                shortcut: 'CMD+SHIFT+M'
+            },
+        } : {};
+
         /**
          * Instantiate new CodeX Editor with set of Tools
          */
         this.editor = new EditorJS({
-            tools: {
-                attaches: {
-                    class: AttachesTool,
-                    config: {
-                        endpoint: '/'
-                    }
-                },
-
-                header: {
-                    class: Header,
-                    inlineToolbar: ['link', 'marker'],
-                },
-
-                image: {
-                    class: ImageTool,
-                    inlineToolbar: true,
-                    config: {
-                        endpoints: {
-                            byFile: '/editor/transport',
-                            byUrl: '/editor/transport',
-                        }
-                    },
-                },
-
-                list: {
-                    class: List,
-                    inlineToolbar: true
-                },
-
-                linkTool: {
-                    class: LinkTool,
-                    config: {
-                        endpoint: '/editor/fetchUrl', // Your backend endpoint for url data fetching
-                    }
-                },
-
-                code: {
-                    class: CodeTool,
-                    shortcut: 'CMD+SHIFT+D'
-                },
-
-                quote: {
-                    class: Quote,
-                    inlineToolbar: true,
-                },
-
-                delimiter: Delimiter,
-
-                embed: Embed,
-
-                table: {
-                    class: Table,
-                    inlineToolbar: true
-                },
-
-                personality: {
-                    class: Personality,
-                    config: {
-                        endpoint: '/'
-                    }
-                },
-
-                rawTool: RawTool,
-
-                inlineCode: {
-                    class: InlineCode,
-                    shortcut: 'CMD+SHIFT+C'
-                },
-
-                marker: {
-                    class: Marker,
-                    shortcut: 'CMD+SHIFT+M'
-                },
-            },
+            tools: editorTools,
 
             holder: settings.holder,
-
-            hideToolbar: settings.hideToolbar,
 
             data: {
                 blocks: editorData

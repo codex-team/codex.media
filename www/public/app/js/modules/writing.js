@@ -14,6 +14,7 @@
  * );
  */
 
+const ajax = require('@codexteam/ajax');
 
 class Writing {
 
@@ -58,7 +59,7 @@ class Writing {
         const editorSettings = {
             holder: document.getElementById(settings.holderId),
             blocks: settings.blocks,
-            hideToolbar: !!settings.hideToolbar
+            initializeWithTools: !settings.initializeWithTools
         };
 
         this.loadEditor(editorSettings).then((editor) => {
@@ -82,6 +83,33 @@ class Writing {
         document.getElementById(openSettings.formId).classList.remove('hide');
         holder.classList.add(openSettings.hidePlaceholderClass);
         holder.onclick = null;
+
+    }
+
+    openFullScreen() {
+
+        this.form = document.forms.atlas;
+
+        /**
+         * Call Editor's save method
+         */
+        this.editor.save()
+            .then((savedData) => {
+
+                console.log(savedData);
+                /**
+                 * Send article data via ajax
+                 */
+                window.setTimeout(function () {
+
+                    ajax.post({
+                        url: '/p/save',
+                        data: this.form
+                    });
+
+                }, 500);
+
+            });
 
     }
 
