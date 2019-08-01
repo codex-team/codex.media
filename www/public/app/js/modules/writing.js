@@ -96,16 +96,18 @@ class Writing {
         this.editor.save()
             .then((savedData) => {
 
-                console.log(savedData);
+                this.form.elements['content'].value = JSON.stringify(savedData);
+
                 /**
                  * Send article data via ajax
                  */
-                window.setTimeout(function () {
+                window.setTimeout( () => {
 
                     ajax.post({
                         url: '/p/save',
                         data: this.form
-                    });
+                    }).then((response) => console.log(response))
+                        .catch((error) => console.error(error));
 
                 }, 500);
 
