@@ -1,0 +1,126 @@
+{
+  "tools": {
+    "header": {
+      "text": {
+        "type": "string",
+        "allowedTags": "a[href],mark[class]"
+      },
+      "level": [1, 2, 3, 4, 5, 6]
+    },
+    "paragraph": {
+      "text": {
+        "type": "string",
+        "allowedTags": "i,b,a[href],code[class],mark[class]"
+      }
+    },
+    "list": {
+      "style": ["ordered", "unordered"],
+      "items": {
+        "type": "array",
+        "data": {
+          "-": {
+            "type": "string",
+            "allowedTags": "i,b,a[href],code[class],mark[class]"
+          }
+        }
+      }
+    },
+    "quote": {
+      "text": {
+        "type": "string",
+        "allowedTags": "i,b,a[href],code[class],mark[class]"
+      },
+      "caption": {
+        "type": "string",
+        "allowedTags": "i,b,a[href],code[class],mark[class]"
+      },
+      "alignment": ["left", "center"]
+    },
+    "delimiter" : {
+    },
+    "code" : {
+      "code" : "string"
+    },
+    "rawTool" : {
+      "html" : {
+        "type" : "string",
+        "allowedTags": "*"
+      }
+    },
+    "linkTool" :  {
+      "link": "string",
+      "meta": {
+        "type": "array",
+        "data": {
+          "url": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "image": {
+            "type": "array",
+            "data": {
+              "url": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "image": {
+      "file": {
+        "type": "array",
+        "data": {
+          "width": {
+            "type": "integer",
+            "required": false
+          },
+          "height": {
+            "type": "integer",
+            "required": false
+          },
+          "url": "string"
+        }
+      },
+      "caption": {
+        "type": "string",
+        "allowedTags": "i,b,a[href],code[class],mark[class]"
+      },
+      "withBorder": "boolean",
+      "withBackground": "boolean",
+      "stretched": "boolean"
+    },
+    "embed": {
+      "service": "string",
+      "source": "string",
+      "embed": "string",
+      "width": "integer",
+      "height": "integer",
+      "caption": "string"
+    },
+    "table": {
+      "content": {
+        "type": "array",
+        "data": {
+          "-": {
+            "type": "array",
+            "data": {
+              "-": {
+                "type": "string",
+                "allowedTags": "i,b,a[href],code[class],mark[class]"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

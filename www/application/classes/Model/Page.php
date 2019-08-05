@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-use CodexEditor\CodexEditor;
+use \EditorJS\EditorJS;
+use \EditorJS\EditorJSException;
 
 class Model_Page extends Model
 {
@@ -266,8 +267,6 @@ class Model_Page extends Model
      */
     public function getBlocks($escapeHTML = false)
     {
-        $config = Kohana::$config->load('editor');
-
         $cacheKey = $this->modelCacheKey . ':blocks';
 
         $blocks = Cache::instance('memcacheimp')->get($cacheKey);
@@ -277,16 +276,30 @@ class Model_Page extends Model
         }
 
         try {
-            $CodexEditor = new CodexEditor($this->content, $config);
-
-            $blocks = $CodexEditor->getBlocks($escapeHTML);
+            $editor = new EditorJS($this->content, self::getEditorConfig());
         } catch (Exception $e) {
-            throw new Kohana_Exception("CodexEditor (article:" . $this->id . "): " . $e->getMessage());
+            \Hawk\HawkCatcher::catchException($e);
+            $this->sendAjaxResponse(array('message' => 'Fatal Error. Please refresh the page.', 'success' => 0));
+            return;
         }
 
         Cache::instance('memcacheimp')->set($cacheKey, $blocks, [$this->modelCacheKey]);
 
         return $blocks;
+    }
+
+    /**
+     * Gets config for CodeX Editor, containing rules for validation Editor Tools data
+     * @return string - Editor's config data
+     * @throws Exceptions_ConfigMissedException - Failed to get Editorjs config data
+     */
+    public static function getEditorConfig()
+    {
+        try {
+            return file_get_contents(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'editorjs-config.json');
+        } catch (Exception $e) {
+            throw new Exceptions_ConfigMissedException("EditorJS config not found");
+        }
     }
 
     /**
