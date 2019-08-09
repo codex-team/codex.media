@@ -26,5 +26,5 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin(),
     ],
 
-    // watch: true
+    watch: true
 };

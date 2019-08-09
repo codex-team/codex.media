@@ -80,7 +80,7 @@
 
         <div class="writing__actions-content">
 
-            <span class="button master" onclick="codex.writing.submit(this)">
+            <span class="button master" onclick="codex.writing.submitForm(this)">
                 <? if ($page->id): ?>
                     Сохранить
                 <? else: ?>
@@ -111,13 +111,14 @@
 
 <?
     $hideEditorToolbar = !empty($hideEditorToolbar) && $hideEditorToolbar;
+    $content = !empty($page->content) ? addslashes($page->content) : json_encode([]);
 ?>
 
 <div data-module="writing">
     <module-settings hidden>
         {
             "holderId" : "placeForEditor",
-            "blocks" : [],
+            "blocks" : "<?= $content ?>",
             "initializeWithTools": "<?= $hideEditorToolbar ?>"
         }
     </module-settings>

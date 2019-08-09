@@ -91,8 +91,7 @@ class Model_Page extends Model
         self::get($id);
 
         if ($this->id) {
-            $this->content = $this->validateContent();
-            $this->blocks = $this->getBlocks($escapeHTML);
+            $this->content = $this->getBlocks();
             $this->description = $this->getDescription();
         }
     }
@@ -222,8 +221,7 @@ class Model_Page extends Model
                     $page->fillByRow($page_row);
 
                     $page->modelCacheKey = Arr::get($_SERVER, 'DOMAIN', 'codex.media') . ':model:page:' . $page->id;
-                    $page->content = $page->validateContent();
-                    $page->blocks = $page->getBlocks(true);
+                    $page->content = $page->getBlocks();
                     $page->description = $page->getDescription();
 
                     array_push($pages, $page);
@@ -265,7 +263,7 @@ class Model_Page extends Model
      *
      * @return Array - list of page blocks
      */
-    public function getBlocks($escapeHTML = false)
+    public function getBlocks()
     {
         $cacheKey = $this->modelCacheKey . ':blocks';
 
@@ -277,10 +275,9 @@ class Model_Page extends Model
 
         try {
             $editor = new EditorJS($this->content, self::getEditorConfig());
+            $blocks = $editor->getBlocks();
         } catch (Exception $e) {
             \Hawk\HawkCatcher::catchException($e);
-            $this->sendAjaxResponse(array('message' => 'Fatal Error. Please refresh the page.', 'success' => 0));
-            return;
         }
 
         Cache::instance('memcacheimp')->set($cacheKey, $blocks, [$this->modelCacheKey]);
@@ -313,8 +310,6 @@ class Model_Page extends Model
      */
     public function validateContent($escapeHTML = false)
     {
-        $config = Kohana::$config->load('editor');
-
         $cacheKey = $this->modelCacheKey . ':content';
 
         $content = Cache::instance('memcacheimp')->get($cacheKey);
@@ -324,9 +319,9 @@ class Model_Page extends Model
         }
 
         try {
-            $CodexEditor = new CodexEditor($this->content, $config);
+            $editor = new EditorJS($this->content, self::getEditorConfig());
 
-            $content = $CodexEditor->getData($escapeHTML);
+            $content = $editor->getBlocks();
         } catch (Exception $e) {
             throw new Kohana_Exception("CodexEditor (article:" . $this->id
                                        . "):" . $e->getMessage());

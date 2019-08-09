@@ -58,7 +58,7 @@ class Writing {
 
         const editorSettings = {
             holder: document.getElementById(settings.holderId),
-            blocks: settings.blocks,
+            blocks: JSON.parse(settings.blocks),
             initializeWithTools: !settings.initializeWithTools
         };
 
@@ -86,13 +86,9 @@ class Writing {
 
     }
 
-    openFullScreen() {
+    submitForm() {
 
         this.form = document.forms.atlas;
-
-        /**
-         * Call Editor's save method
-         */
         this.editor.save()
             .then((savedData) => {
 
@@ -101,15 +97,38 @@ class Writing {
                 /**
                  * Send article data via ajax
                  */
-                window.setTimeout( () => {
+                window.setTimeout(() => {
 
                     ajax.post({
                         url: '/p/save',
                         data: this.form
-                    }).then((response) => console.log(response))
-                        .catch((error) => console.error(error));
+                    }).then((response) => {
+
+                        const {body} = response;
+
+                        if (body.success) {
+
+                            window.location.href = body.redirect;
+
+                        }
+
+                    }).catch((error) => console.error(error));
 
                 }, 500);
+
+            });
+
+    }
+
+    openFullScreen() {
+
+        const form = document.forms.atlas;
+
+        this.editor.save()
+            .then((savedData) => {
+
+                form.elements['content'].value = JSON.stringify(savedData.blocks);
+                form.submit();
 
             });
 

@@ -61,7 +61,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         if ($this->page->id) {
             $this->page = $this->page->update();
 
-            switch ($old_page_type){
+            switch ($old_page_type) {
 
                 case Model_Page::PAGE:
                     break;
@@ -89,7 +89,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             $this->page->addToFeed(Model_Feed_Pages::ALL);
         }
 
-        switch ($this->page->type){
+        switch ($this->page->type) {
 
             case Model_Page::PAGE:
                 break;
@@ -125,7 +125,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                 if (!$this->page->isPostedInVK) {
                     $VkPost = $this->vkWall()->post($this->buildVKPost());
                     // } else {
-                //     $VkPost = $this->vkWall()->edit($this->buildVKPost());
+                    //     $VkPost = $this->vkWall()->edit($this->buildVKPost());
                 }
                 /***/
             } else {
@@ -207,7 +207,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
 
         finish:
-            $this->response->body(json_encode($this->ajax_response));
+        $this->response->body(json_encode($this->ajax_response));
     }
 
     /**
@@ -257,8 +257,8 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         /**
          * If page id not found at request param, we should fill empty page model with data from $_POST
          */
-        $id = (int) Arr::get($_POST, 'id', 0);
-        $parent_id = (int) Arr::get($_POST, 'id_parent', 0);
+        $id = (int)Arr::get($_POST, 'id', 0);
+        $parent_id = (int)Arr::get($_POST, 'id_parent', 0);
 
         $page = new Model_Page($id);
         $page->author = $this->user;
@@ -331,9 +331,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         /**
          * Array of possible page options depending on page type
          *
-         * @type string $possible_page_options[]['name'] Name of page option
-         * @type string $possible_page_options[]['value'] Page option value
-         * @type string $possible_page_options[]['compatible_page_type'] Type of page to which option can be added
+         * @type string $possible_page_options []['name'] Name of page option
+         * @type string $possible_page_options []['value'] Page option value
+         * @type string $possible_page_options []['compatible_page_type'] Type of page to which option can be added
          */
 
         $possible_page_options = array(
