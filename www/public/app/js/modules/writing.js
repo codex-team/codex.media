@@ -58,7 +58,7 @@ class Writing {
 
         const editorSettings = {
             holder: document.getElementById(settings.holderId),
-            blocks: JSON.parse(settings.blocks),
+            blocks: settings.blocks,
             initializeWithTools: !settings.initializeWithTools
         };
 
