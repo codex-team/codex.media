@@ -111,14 +111,13 @@
 
 <?
     $hideEditorToolbar = !empty($hideEditorToolbar) && $hideEditorToolbar;
-    $content = !empty($page->content) ? addslashes($page->content) : json_encode([]);
 ?>
 
 <div data-module="writing">
     <module-settings hidden>
         {
             "holderId" : "placeForEditor",
-            "blocks" : "<?= $content ?>",
+            "blocks" : <?= $page->content ?: '[]' ?>,
             "initializeWithTools": "<?= $hideEditorToolbar ?>"
         }
     </module-settings>

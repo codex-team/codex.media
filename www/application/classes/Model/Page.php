@@ -80,7 +80,7 @@ class Model_Page extends Model
 
     private $modelCacheKey;
 
-    public function __construct($id = 0, $escapeHTML = false)
+    public function __construct($id = 0)
     {
         if (!$id) {
             return;
@@ -91,7 +91,8 @@ class Model_Page extends Model
         self::get($id);
 
         if ($this->id) {
-            $this->content = $this->getBlocks();
+            $this->content = $this->validateContent();
+            $this->blocks = $this->getBlocks();
             $this->description = $this->getDescription();
         }
     }
@@ -221,7 +222,8 @@ class Model_Page extends Model
                     $page->fillByRow($page_row);
 
                     $page->modelCacheKey = Arr::get($_SERVER, 'DOMAIN', 'codex.media') . ':model:page:' . $page->id;
-                    $page->content = $page->getBlocks();
+                    $page->content = $page->validateContent();
+                    $page->blocks = $page->getBlocks();
                     $page->description = $page->getDescription();
 
                     array_push($pages, $page);
@@ -257,8 +259,6 @@ class Model_Page extends Model
     /**
      * Return array of blocks classes from JSON object stored in $this->content
      *
-     * @param Boolean $escapeHTML pass TRUE to escape HTML entities
-     *
      * @throws Kohana_Exception error thrown by CodeXEditor vendor module
      *
      * @return Array - list of page blocks
@@ -277,7 +277,7 @@ class Model_Page extends Model
             $editor = new EditorJS($this->content, self::getEditorConfig());
             $blocks = $editor->getBlocks();
         } catch (Exception $e) {
-            \Hawk\HawkCatcher::catchException($e);
+            throw new Kohana_Exception("CodexEditor (article:" . $this->id . "): " . $e->getMessage());
         }
 
         Cache::instance('memcacheimp')->set($cacheKey, $blocks, [$this->modelCacheKey]);
@@ -321,7 +321,7 @@ class Model_Page extends Model
         try {
             $editor = new EditorJS($this->content, self::getEditorConfig());
 
-            $content = $editor->getBlocks();
+            $content = json_encode($editor->getBlocks());
         } catch (Exception $e) {
             throw new Kohana_Exception("CodexEditor (article:" . $this->id
                                        . "):" . $e->getMessage());

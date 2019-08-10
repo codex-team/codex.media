@@ -34,7 +34,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
         $id = $this->request->param('id');
         $uri = $this->request->param('uri');
 
-        $page = new Model_Page($id, true);
+        $page = new Model_Page($id);
 
         if (!$page->id || $page->status == Model_Page::STATUS_REMOVED_PAGE) {
             throw new HTTP_Exception_404();
