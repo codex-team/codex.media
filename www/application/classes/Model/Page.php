@@ -321,7 +321,7 @@ class Model_Page extends Model
         try {
             $editor = new EditorJS($this->content, self::getEditorConfig());
 
-            $content = json_encode($editor->getBlocks());
+            $content = json_encode(["blocks" => $editor->getBlocks()]);
         } catch (Exception $e) {
             throw new Kohana_Exception("CodexEditor (article:" . $this->id
                                        . "):" . $e->getMessage());
