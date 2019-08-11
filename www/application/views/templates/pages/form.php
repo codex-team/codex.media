@@ -117,7 +117,7 @@
     <module-settings hidden>
         {
             "holderId" : "placeForEditor",
-            "blocks" : <?= $page->content ?: '[]' ?>,
+            "formId": "atlasForm",
             "initializeWithTools": "<?= $hideEditorToolbar ?>"
         }
     </module-settings>

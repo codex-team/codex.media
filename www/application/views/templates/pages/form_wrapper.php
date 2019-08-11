@@ -1,9 +1,9 @@
 <div class="writing-wrapper island">
 
     <div class="writing-wrapper__placeholder" onclick="codex.writing.open({
-        targetClicked: this,
-        formId: 'writingForm',
-        hidePlaceholderClass: 'writing-wrapper__placeholder--opened'
+        wrapper: this,
+        holderId: 'writingForm',
+        wrapperOpenedClass: 'writing-wrapper__placeholder--opened'
     });">
         <img class="writing-wrapper__photo" src="<?= $user->photo ?>" alt="<?= $user->name ?>">
         <span class="writing-wrapper__placeholder-text">Написать заметку в блог</span>

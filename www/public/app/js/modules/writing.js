@@ -1,20 +1,21 @@
 /**
- * Module for load and start codex-editor
+ * Module for load and start EditorJS
  *
- * Using:
+ * Usage:
  *
- * codex.writing.prepare({
- *     holderId : 'placeForEditor',                                         // (required)
- *     hideEditorToolbar : <?= $hideEditorToolbar ? 'true' : 'false' ?>,
- *     items : <?= json_encode($page->blocks) ?: '[]' ?>,
- *     pageId   : <?= $page->id ?>,
- *     parentId : <?= $page->id_parent ?>,
- * }).then(
- *    codex.writing.init
- * );
+ * <div data-module="writing">
+ *   <module-settings hidden>
+ *     {
+ *      "holderId" : "placeForEditor",
+ *      "formId": "atlasForm",
+ *      "initializeWithTools": "<?= $hideEditorToolbar ?>"
+ *     }
+ *   </module-settings>
+ * </div>
  */
 
 const ajax = require('@codexteam/ajax');
+const notifier = require('codex-notifier');
 
 class Writing {
 
@@ -26,14 +27,9 @@ class Writing {
         this.editor = null;
 
         /**
-         * DOM elements
+         * Form with editor data
          */
-        this.nodes = {
-            /**
-             * Container to output saved Editor data
-             */
-            outputWrapper: null
-        };
+        this.form = null;
 
     }
 
@@ -54,13 +50,20 @@ class Writing {
 
     };
 
+    /**
+     * Initialize EditorJS instance
+     * @param {Object} settings - writing module settings
+     * @param {string} settings.holderId - id of editor's holder
+     * @param {string} settings.formId - id of form with editor's content
+     * @param {string} settings.initializeWithTools - whether to hide or show editor's toolbar
+     */
     init(settings) {
 
-        const blocks = settings.blocks.blocks || settings.blocks || [];
+        this.form = document.getElementById(settings.formId);
 
         const editorSettings = {
             holder: document.getElementById(settings.holderId),
-            blocks,
+            blocks: this.getPageBlocks(),
             initializeWithTools: !settings.initializeWithTools
         };
 
@@ -70,8 +73,52 @@ class Writing {
 
         });
 
+        if (!this.form) {
+
+            console.warn(`Form with id «${settings.formId}» not found`);
+
+        }
+
     }
 
+    /**
+     * Get page's blocks
+     * @return {Array} pageBlocks - page's blocks[] data
+     */
+    getPageBlocks() {
+
+        /** Page's content from form */
+        const formValue = this.form.elements['content'].getAttribute('value');
+
+        /** Page's bocks */
+        let pageBlocks = [];
+
+        if (formValue) {
+
+            /** Get content that was written before */
+            try {
+
+                pageBlocks = JSON.parse(formValue).blocks;
+
+            } catch (error) {
+
+                console.error('Errors occurred while parsing Editor data:', error.message);
+
+            }
+
+        }
+
+        return pageBlocks;
+
+    }
+
+    /**
+     * Open small version of Editor on main: hide Editor's wrapper and reveal it's contents
+     * @param openSettings
+     * @param {HTMLElement} openSettings.wrapper - element being clicked to reveal editor
+     * @param {string} openSettings.holderId - editor's contents initially hidden
+     * @param {string} openSettings.wrapperOpenedClass - class to hide writing holder
+     */
     open(openSettings) {
 
         if (!this.editor) {
@@ -80,17 +127,23 @@ class Writing {
 
         }
 
-        const holder = openSettings.targetClicked;
+        const writingWrapper = openSettings.wrapper;
+        const writingHolder = document.getElementById(openSettings.holderId);
 
-        document.getElementById(openSettings.formId).classList.remove('hide');
-        holder.classList.add(openSettings.hidePlaceholderClass);
-        holder.onclick = null;
+        writingHolder.classList.remove('hide');
+        writingWrapper.classList.add(openSettings.wrapperOpenedClass);
+        writingWrapper.onclick = null;
 
     }
 
-    submitForm() {
+    /**
+     * Send form's data via ajax
+     * @param {HTMLElement} button - submission button clicked
+     */
+    submitForm(button) {
 
-        this.form = document.forms.atlas;
+        button.classList.add('loading');
+
         this.editor.save()
             .then((savedData) => {
 
@@ -114,7 +167,12 @@ class Writing {
 
                         }
 
-                    }).catch((error) => console.error(error));
+                    }).catch((error) => {
+
+                        this.showErrorMessage(error);
+                        button.classList.remove('loading');
+
+                    });
 
                 }, 500);
 
@@ -122,15 +180,29 @@ class Writing {
 
     }
 
-    openFullScreen() {
+    /**
+     * If page's form submission via ajax failed show message with error text
+     * @param {string} error - form submission error message
+     */
+    showErrorMessage(error) {
 
-        const form = document.forms.atlas;
+        notifier.show({
+            message: error.message,
+            style: 'error'
+        });
+
+    }
+
+    /**
+     * Open Editor in fullscreen mode with toolbar
+     */
+    openFullScreen() {
 
         this.editor.save()
             .then((savedData) => {
 
-                form.elements['content'].value = JSON.stringify(savedData.blocks);
-                form.submit();
+                this.form.elements['content'].value = JSON.stringify(savedData);
+                this.form.submit();
 
             });
 
