@@ -25,7 +25,12 @@ const Table = require('@editorjs/table');
 const InlineCode = require('@editorjs/inline-code');
 const Marker = require('@editorjs/marker');
 
-
+/**
+ * Editor endpoint constants
+ */
+const EDITOR_IMAGE = 1;
+const EDITOR_FILE  = 2;
+const EDITOR_PERSONALITY  = 6;
 
 /**
  * Class for working with EditorJS
@@ -59,7 +64,8 @@ export default class Editor {
             attaches: {
                 class: AttachesTool,
                 config: {
-                    endpoint: '/'
+                    endpoint: '/upload/' + EDITOR_FILE,
+                    field: 'files'
                 }
             },
 
@@ -73,10 +79,11 @@ export default class Editor {
                 inlineToolbar: true,
                 config: {
                     endpoints: {
-                        byFile: '/editor/transport',
-                        byUrl: '/editor/transport',
-                    }
-                },
+                        byFile: '/upload/' + EDITOR_IMAGE,
+                        byUrl: '/upload/' + EDITOR_IMAGE
+                    },
+                    field: 'files'
+                }
             },
 
             list: {
@@ -87,7 +94,7 @@ export default class Editor {
             linkTool: {
                 class: LinkTool,
                 config: {
-                    endpoint: '/editor/fetchUrl', // Your backend endpoint for url data fetching
+                    endpoint: '/fetchUrl', // Your backend endpoint for url data fetching
                 }
             },
 
@@ -113,7 +120,7 @@ export default class Editor {
             personality: {
                 class: Personality,
                 config: {
-                    endpoint: '/'
+                    endpoint: '/upload/' + EDITOR_PERSONALITY,
                 }
             },
 

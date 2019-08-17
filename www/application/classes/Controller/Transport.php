@@ -36,13 +36,13 @@ class Controller_Transport extends Controller_Base_preDispatch
 
         if ($uploadedFile) {
             $this->transportResponse['success'] = 1;
-            $this->transportResponse['data'] = [
+            $this->transportResponse['file'] = [
                 'url' => $uploadedFile->filepath,
                 'title' => $uploadedFile->title,
                 'name' => $uploadedFile->file_hash_hex,
                 'extension' => $uploadedFile->extension,
                 'size' => $uploadedFile->size,
-                'target' => $uploadedFile->target
+                // 'target' => $uploadedFile->target
             ];
         } else {
             $this->transportResponse['message'] = 'Error while uploading';

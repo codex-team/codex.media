@@ -277,7 +277,7 @@ class Model_Page extends Model
             $editor = new EditorJS($this->content, self::getEditorConfig());
             $blocks = $editor->getBlocks();
         } catch (Exception $e) {
-            throw new Kohana_Exception("CodexEditor (article:" . $this->id . "): " . $e->getMessage());
+            throw new Kohana_Exception("EditorJS (article:" . $this->id . "): " . $e->getMessage());
         }
 
         Cache::instance('memcacheimp')->set($cacheKey, $blocks, [$this->modelCacheKey]);

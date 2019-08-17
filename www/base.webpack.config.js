@@ -24,7 +24,5 @@ module.exports = {
 
         /** Block build if errors found */
         new webpack.NoEmitOnErrorsPlugin(),
-    ],
-
-    watch: true
+    ]
 };

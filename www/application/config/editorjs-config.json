@@ -79,15 +79,15 @@
       "file": {
         "type": "array",
         "data": {
-          "width": {
-            "type": "integer",
+          "url": "string",
+          "name": "string",
+          "title": "string",
+          "target": {
+            "type": "array",
             "required": false
           },
-          "height": {
-            "type": "integer",
-            "required": false
-          },
-          "url": "string"
+          "extension": "string",
+          "size": "string"
         }
       },
       "caption": {
