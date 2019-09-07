@@ -94,7 +94,7 @@ export default class Editor {
             linkTool: {
                 class: LinkTool,
                 config: {
-                    endpoint: '/fetchUrl', // Your backend endpoint for url data fetching
+                    endpoint: '/fetchURL', // Your backend endpoint for url data fetching
                 }
             },
 

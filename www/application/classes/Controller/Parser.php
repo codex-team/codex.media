@@ -227,20 +227,21 @@ class Controller_Parser extends Controller_Base_preDispatch
          */
         $request = Request::factory($URL, array(
             'follow' => true
-        ))
-            ->execute();
+        ))->execute();
 
         if ($request->status() != '200') {
             $response['message'] = 'Ошибка при обработке ссылки';
             goto finish;
         } else {
             $htmlContent = $request->body();
-            $response = array_merge(
-                $this->getLinkInfo($URL),
-                $this->getMetaFromHTML($htmlContent)
+            $response = array(
+                'meta' => array_merge(
+                    $this->getLinkInfo($URL),
+                    $this->getMetaFromHTML($htmlContent)
+                )
             );
 
-            if (!trim($response['title']) && !trim($response['description'])) {
+            if (!trim($response['meta']['title']) && !trim($response['meta']['description'])) {
                 $response['message'] = 'Данные не найдены';
             } else {
                 $response['success'] = 1;
