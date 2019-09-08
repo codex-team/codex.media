@@ -13,7 +13,7 @@ const CodeTool = require('@editorjs/code');
 const Delimiter = require('@editorjs/delimiter');
 const List = require('@editorjs/list');
 const LinkTool = require('@editorjs/link');
-const Personality = require('@editorjs/attaches');
+const Personality = require('@editorjs/personality');
 const RawTool = require('@editorjs/raw');
 const ImageTool = require('@editorjs/image');
 const Embed = require('@editorjs/embed');
@@ -29,8 +29,8 @@ const Marker = require('@editorjs/marker');
  * Editor endpoint constants
  */
 const EDITOR_IMAGE = 1;
-const EDITOR_FILE  = 2;
-const EDITOR_PERSONALITY  = 6;
+const EDITOR_FILE = 2;
+const EDITOR_PERSONALITY = 6;
 
 /**
  * Class for working with EditorJS
@@ -121,6 +121,7 @@ export default class Editor {
                 class: Personality,
                 config: {
                     endpoint: '/upload/' + EDITOR_PERSONALITY,
+                    field: 'files'
                 }
             },
 
