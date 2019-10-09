@@ -70,10 +70,10 @@
       "meta": {
         "type": "array",
         "data": {
-          "url": {
+          "linkUrl": {
             "type": "string"
           },
-          "domain": {
+          "linkText": {
             "type": "string"
           },
           "title": {
@@ -82,14 +82,7 @@
           "description": {
             "type": "string"
           },
-          "image": {
-            "type": "array",
-            "data": {
-              "url": {
-                "type": "string"
-              }
-            }
-          }
+          "image":  "string"
         }
       }
     },
