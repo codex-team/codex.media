@@ -1,7 +1,7 @@
-<a class="file-attached" href="/file/<?= $block['name'] ?>">
+<a class="file-attached" href="/file/<?= $block['file']['url'] ?>">
     <span class="file-attached__info">
-        <?= $block['extension'] ?>,
-        <?= $block['size'] ?>KB
+        <?= $block['file']['extension'] ?>,
+        <?= $block['file']['size'] ?>KB
     </span>
     <?= $block['title'] ?>
 </a>

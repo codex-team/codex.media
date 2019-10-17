@@ -70,19 +70,11 @@
       "meta": {
         "type": "array",
         "data": {
-          "linkUrl": {
-            "type": "string"
-          },
-          "linkText": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "image":  "string"
+          "linkUrl": "string",
+          "linkText": "string",
+          "title": "string",
+          "description": "string",
+          "image": "string"
         }
       }
     },
