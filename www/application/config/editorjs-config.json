@@ -83,7 +83,6 @@
             "meta": {
                 "type": "array",
                 "data": {
-                    "linkUrl": "string",
                     "linkText": "string",
                     "title": "string",
                     "description": "string",

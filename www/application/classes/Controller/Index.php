@@ -14,7 +14,7 @@ class Controller_Index extends Controller_Base_preDispatch
 
         $feed = new Model_Feed_Pages($feed_key);
 
-        $pages = $feed->get(self::NEWS_LIMIT_PER_PAGE + 1, $offset);
+        $pages = $feed->get(self::NEWS_LIMIT_PER_PAGE + 2, $offset);
 
 
         $events_feed = new Model_Feed_Pages(Model_Feed_Pages::EVENTS);
