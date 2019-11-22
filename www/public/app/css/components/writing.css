@@ -148,6 +148,10 @@
 
 .editor-wrapper {
     margin: 0 -15px;
+
+    @media (--not-mobile) {
+        padding-left: 20px;
+    }
 }
 
 .editor-wrapper .ce-block__content,
