@@ -41,9 +41,16 @@ class Controller_Transport extends Controller_Base_preDispatch
                 'title' => $uploadedFile->title,
                 'name' => $uploadedFile->file_hash_hex,
                 'extension' => $uploadedFile->extension,
-                'size' => $uploadedFile->size,
-                // 'target' => $uploadedFile->target
+                'size' => $uploadedFile->size
             ];
+
+            /**
+             * EditorJS seems to be unable to validate null values
+             * Solution: make it optional and write data only if not null
+             */
+            if (!is_null($uploadedFile->target)) {
+                $this->transportResponse['file']['target'] = $uploadedFile->target;
+            }
         } else {
             $this->transportResponse['message'] = 'Error while uploading';
         }

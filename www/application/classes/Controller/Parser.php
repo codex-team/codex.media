@@ -227,7 +227,8 @@ class Controller_Parser extends Controller_Base_preDispatch
          */
         $request = Request::factory($URL, array(
             'follow' => true
-        ))->execute();
+        ))
+            ->execute();
 
         if ($request->status() != '200') {
             $response['message'] = 'Ошибка при обработке ссылки';
