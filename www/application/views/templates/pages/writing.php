@@ -32,5 +32,5 @@
  */
 ?>
 <style>
-    .esir { display: none; }
+    .schools-navigator { display: none; }
 </style>

@@ -1,21 +1,21 @@
 /**
  * ESIR navigator placeholder
  */
-body.esir-showed {
+body.navigator-shown {
     margin-top: 0 !important;
 }
 
-#widgetEsirGovSpbRu {
+#widgetNavigatorGovSpbRu {
     clip: rect(0, 0, 0, 0);
     clip-path: url(#cdx-clip-rect);
 }
 
-.esir-showed #widgetEsirGovSpbRu {
+.navigator-shown #widgetNavigatorGovSpbRu {
     clip: auto;
     clip-path: none;
 }
 
-.esir {
+.schools-navigator {
     & {
         background: #edf1f5 url('/public/app/svg/spb-herb.svg') no-repeat 5px center;
         height: 30px;
