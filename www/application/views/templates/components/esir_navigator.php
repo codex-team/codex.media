@@ -1,10 +1,10 @@
-<div class="esir" onclick="document.body.classList.add('esir-showed'); var esir = document.getElementById('widgetEsirGovSpbRu'); esir && esir.click();">
-    <div class="esir__included">
+<div class="schools-navigator" onclick="document.body.classList.add('navigator-shown'); var esir = document.getElementById('widgetNavigatorGovSpbRu'); esir && esir.click();">
+    <div class="schools-navigator__included">
         Сайт включен в каталог ЕСИР
     </div>
-    <div class="esir__navigator">
+    <div class="schools-navigator__navigator">
         Навигатор по гос. сайтам Санкт-Петербурга
     </div>
-    <div class="esir__search">Поиск по сайту</div>
+    <div class="schools-navigator__search">Поиск по сайту</div>
 </div>
 <? include(DOCROOT . 'public/app/svg/clip.svg') ?>
