@@ -1,4 +1,4 @@
-<div class="schools-navigator" onclick="document.body.classList.add('navigator-shown'); var esir = document.getElementById('widgetNavigatorGovSpbRu'); esir && esir.click();">
+<div class="schools-navigator" onclick="document.body.classList.add('navigator-shown'); var widget = document.getElementById('widgetNavigatorGovSpbRu'); widget && widget.click();">
     <div class="schools-navigator__included">
         Сайт включен в каталог ЕСИР
     </div>
