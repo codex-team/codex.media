@@ -15,7 +15,6 @@
  */
 
 const ajax = require('@codexteam/ajax');
-const notifier = require('codex-notifier');
 
 class Writing {
 
@@ -165,6 +164,11 @@ class Writing {
 
                             window.location.href = body.redirect;
 
+                        } else {
+
+                            this.showErrorMessage(body);
+                            button.classList.remove('loading');
+
                         }
 
                     }).catch((error) => {
@@ -186,9 +190,9 @@ class Writing {
      */
     showErrorMessage(error) {
 
-        notifier.show({
+        codex.alerts.show({
             message: error.message,
-            style: 'error'
+            type: 'error'
         });
 
     }

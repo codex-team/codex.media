@@ -24,7 +24,7 @@
     opacity: 1;
 }
 
-.cdx-notifies {
+.cdx-notifies-body {
     position: relative;
     width: 220px;
     margin-top: 15px;
@@ -37,7 +37,7 @@
     word-wrap: break-word;
 }
 
-.cdx-notifies::before {
+.cdx-notifies-body::before {
     content: '';
     position: absolute;
     display: block;
@@ -50,20 +50,20 @@
     border-radius: 5px;
 }
 
-.cdx-notifies--notify::before {
+.cdx-notifies-body--notify::before {
     background: transparent;
 }
 
-.cdx-notifies--success {
+.cdx-notifies-body--success {
     background: #fafffe;
 }
-.cdx-notifies--success::before {
+.cdx-notifies-body--success::before {
     background: #41ffb1;
 }
 
-.cdx-notifies--error {
+.cdx-notifies-body--error {
     background: #fffbfb;
 }
-.cdx-notifies--error::before {
+.cdx-notifies-body--error::before {
     background: #fb5d5d;
 }
