@@ -119,7 +119,7 @@ class Model_Stats extends Model
             $end = strtotime("now");
         }
 
-        $items = $this->redis->zRange($this->key, 0, -1, 'WITHSCORES');
+        $items = $this->redis->zRange($this->key, 0, -1, true);
 
         $sum = 0;
 
