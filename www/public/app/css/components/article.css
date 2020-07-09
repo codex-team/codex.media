@@ -16,6 +16,11 @@
     font-size: 14px;
     margin-bottom: 20px;
 
+    &-section {
+        display: flex;
+        align-content: baseline;
+    }
+
     .island-settings {
         margin-left: auto;
     }
@@ -688,8 +693,6 @@
 
         &-section {
             margin: auto 0 auto auto;
-            display: flex;
-            align-content: baseline;
 
             @media (--mobile) {
                 margin-left: 55px;
