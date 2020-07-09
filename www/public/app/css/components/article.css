@@ -688,6 +688,8 @@
 
         &-section {
             margin: auto 0 auto auto;
+            display: flex;
+            align-content: baseline;
 
             @media (--mobile) {
                 margin-left: 55px;
