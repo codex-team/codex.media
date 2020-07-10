@@ -15,10 +15,22 @@
             ]
         },
         "personality": {
-            "name": "string",
-            "description": "string",
-            "link": "string",
-            "photo": "string"
+            "name": {
+                "type": "string",
+                "required": false
+            },
+            "description": {
+                "type": "string",
+                "required": false
+            },
+            "link": {
+                "type": "string",
+                "required": false
+            },
+            "photo": {
+                "type": "string",
+                "required": false
+            }
         },
         "attaches": {
             "title": "string",
