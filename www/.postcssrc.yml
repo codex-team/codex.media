@@ -3,6 +3,10 @@ plugins:
     # https://github.com/postcss/postcss-import
     postcss-import: {}
 
+    # Alternative for deprecated color()
+    # https://github.com/jonathantneal/postcss-color-mod-function
+    postcss-color-mod-function: {}
+
     # Apply custom property sets via @apply rule
     # https://github.com/pascalduez/postcss-apply
     postcss-apply: {}

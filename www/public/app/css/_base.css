@@ -218,7 +218,7 @@ input[disabled]:hover {
 }
 
 .button--vk:hover {
-    background: color(#507299 lightness(-10%));
+    background: color-mod(#507299 lightness(-10%));
 }
 
 .button--facebook {
@@ -226,7 +226,7 @@ input[disabled]:hover {
 }
 
 .button--facebook:hover {
-    background: color(#4267b2 lightness(-10%));
+    background: color-mod(#4267b2 lightness(-10%));
 }
 
 .button--twitter {
@@ -234,7 +234,7 @@ input[disabled]:hover {
 }
 
 .button--twitter:hover {
-    background: color(#1da1f2 lightness(-10%));
+    background: color-mod(#1da1f2 lightness(-10%));
 }
 
 .border-button {
@@ -242,7 +242,7 @@ input[disabled]:hover {
     margin-right: 15px;
     padding: 7px 10px;
     color: var(--color-gray);
-    border: 1px solid color(var(--color-gray) alpha(-80%));
+    border: 1px solid color-mod(var(--color-gray) alpha(-80%));
     border-radius: 3px;
 }
 
@@ -256,22 +256,22 @@ input[disabled]:hover {
 
 .border-button--twitter {
     color: var(--twitterColor);
-    border-color: color(var(--twitterColor) alpha(-80%));
+    border-color: color-mod(var(--twitterColor) alpha(-80%));
 }
 
 .border-button--vk {
     color: var(--vkColor);
-    border-color: color(var(--vkColor) alpha(-80%));
+    border-color: color-mod(var(--vkColor) alpha(-80%));
 }
 
 .border-button--facebook {
     color: var(--facebookColor);
-    border-color: color(var(--facebookColor) alpha(-80%));
+    border-color: color-mod(var(--facebookColor) alpha(-80%));
 }
 
 .border-button:hover {
     color: var(--color-hover);
-    border-color: color(var(--color-hover) alpha(-80%));
+    border-color: color-mod(var(--color-hover) alpha(-80%));
 }
 
 

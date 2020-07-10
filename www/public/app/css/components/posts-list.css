@@ -131,7 +131,7 @@
 }
 
 .posts-list-item__cover--empty:hover {
-    color: color(var(--color-gray) blackness(+50%));
+    color: color-mod(var(--color-gray) blackness(+50%));
 }
 
 .posts-list-item__cover svg {

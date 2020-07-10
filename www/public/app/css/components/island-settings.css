@@ -7,7 +7,7 @@
 }
 
 .island-settings:hover {
-    color: color(var(--color-gray) blackness(+80%));
+    color: color-mod(var(--color-gray) blackness(+80%));
 }
 
 .island-settings__menu {

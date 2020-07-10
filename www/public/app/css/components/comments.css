@@ -40,12 +40,12 @@
 .comment__text a {
     padding-bottom: 1px;
     color: var(--linkColor);
-    border-bottom: 1px solid color(var(--linkColor) lightness(+35%));
+    border-bottom: 1px solid color-mod(var(--linkColor) lightness(+35%));
 }
 
 .comment__text a:hover {
     color: var(--color-hover);
-    border-bottom: 1px solid color(var(--color-hover) lightness(+35%));
+    border-bottom: 1px solid color-mod(var(--color-hover) lightness(+35%));
 }
 
 .comment__actions--button {

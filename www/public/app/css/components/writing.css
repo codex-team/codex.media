@@ -173,7 +173,7 @@
 .editor-wrapper > a {
     color: var(--linkColor);
     padding-bottom: 1px;
-    border-bottom: 1px solid color(var(--linkColor) alpha(-70%));
+    border-bottom: 1px solid color-mod(var(--linkColor) alpha(-70%));
 }
 
 .writing-fullscreen__button {

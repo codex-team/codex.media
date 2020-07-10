@@ -14,27 +14,27 @@
 }
 
 .sharing__button--twitter {
-    background-color: color(var(--twitterColor));
+    background-color: color-mod(var(--twitterColor));
 }
 
 .sharing__button--twitter:hover {
-    background-color: color(var(--twitterColor) lightness(-10%));
+    background-color: color-mod(var(--twitterColor) lightness(-10%));
 }
 
 .sharing__button--vk {
-    background-color: color(var(--vkColor));
+    background-color: color-mod(var(--vkColor));
 }
 
 .sharing__button--vk:hover {
-    background-color: color(var(--vkColor) lightness(-10%));
+    background-color: color-mod(var(--vkColor) lightness(-10%));
 }
 
 .sharing__button--facebook {
-    background-color: color(var(--facebookColor));
+    background-color: color-mod(var(--facebookColor));
 }
 
 .sharing__button--facebook:hover {
-    background-color: color(var(--facebookColor) lightness(-10%));
+    background-color: color-mod(var(--facebookColor) lightness(-10%));
 }
 
 @media (--mobile) {
