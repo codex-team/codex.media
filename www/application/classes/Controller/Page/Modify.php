@@ -125,7 +125,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                 if (!$this->page->isPostedInVK) {
                     $VkPost = $this->vkWall()->post($this->buildVKPost());
                     // } else {
-                    //     $VkPost = $this->vkWall()->edit($this->buildVKPost());
+                //     $VkPost = $this->vkWall()->edit($this->buildVKPost());
                 }
                 /***/
             } else {
@@ -207,7 +207,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
 
         finish:
-        $this->response->body(json_encode($this->ajax_response));
+            $this->response->body(json_encode($this->ajax_response));
     }
 
     /**
