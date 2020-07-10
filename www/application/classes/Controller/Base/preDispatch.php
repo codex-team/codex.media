@@ -117,15 +117,37 @@ class Controller_Base_preDispatch extends Controller_Template
      */
     public function XSSfilter()
     {
-        $exceptions = ['long_desc', 'blog_text', 'long_description', 'content']; // Исключения для полей с визуальным редактором
+        /**
+         * @var array Исключения для полей с визуальным редактором
+         */
+        $exceptions = ['long_desc', 'blog_text', 'long_description'];
+
+        /**
+         * Exception for CodeX Editor that has own sanitize methods in vendor package
+         * @var array
+         */
+        $exceptionsForCodexEditor = array('content');
 
         foreach ($_POST as $key => $value) {
-            $value = stripos($value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $value ;
+            if (is_array($value)) {
+                foreach ($value as $sub_key => $sub_value) {
+                    $sub_value = stripos($sub_value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $sub_value ;
+                    $_POST[$key][$sub_key] = Security::xss_clean(HTML::chars($sub_value));
+                }
 
-            if (in_array($key, $exceptions) === false) {
+                continue;
+            }
+
+            $value = stripos($value, 'سمَـَّوُوُحخ ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ') !== false ? '' : $value;
+
+            /**
+             * $exceptions — allow html tags (does not fire HTML Purifier)
+             * $exceptionsForCodexEditor — do nothing
+             */
+            if (!in_array($key, $exceptions) && !in_array($key, $exceptionsForCodexEditor)) {
                 $_POST[$key] = Security::xss_clean(HTML::chars($value));
-            } else {
-                $_POST[$key] = strip_tags(trim($value), '<br><em><del><p><a><b><strong><i><strike><blockquote><ul><li><ol><img><tr><table><td><th><span><h1><h2><h3><iframe>');
+            } elseif (in_array($key, $exceptionsForCodexEditor) === false) {
+                $_POST[$key] = strip_tags(trim($value), '<br><em><del><p><a><b><strong><i><strike><blockquote><ul><li><ol><img><tr><table><td><th><span><h1><h2><h3><iframe><div><code>');
             }
         }
 
