@@ -61,14 +61,6 @@ export default class Editor {
         const editorData = settings.blocks || [];
 
         const editorTools = settings.initializeWithTools ? {
-            attaches: {
-                class: AttachesTool,
-                config: {
-                    endpoint: '/upload/' + EDITOR_FILE,
-                    field: 'files'
-                }
-            },
-
             header: {
                 class: Header,
                 inlineToolbar: ['link', 'marker'],
@@ -115,6 +107,14 @@ export default class Editor {
             table: {
                 class: Table,
                 inlineToolbar: true
+            },
+
+            attaches: {
+                class: AttachesTool,
+                config: {
+                    endpoint: '/upload/' + EDITOR_FILE,
+                    field: 'files'
+                }
             },
 
             personality: {
