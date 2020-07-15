@@ -113,6 +113,8 @@
                     <?= $page->views ?>
                 </span>
             </div>
+
+            <a class="post-list-item__link" href="/p/<?= $page->id ?>/<?= $page->uri ?>"></a>
         </article>
 
         <? if (!empty($events) && $index == 0):?>

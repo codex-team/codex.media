@@ -50,6 +50,8 @@
     /** Additional fonts families */
     --serif-font: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans";
 
+    /** z-index of article link */
+    --article-link-z-index: 0;
 
     /** Default button styles */
     --button: {
