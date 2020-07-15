@@ -18,13 +18,18 @@
 }
 
 .post-list-item__header .island-settings {
-    padding: 15px 15px 0 15px;
+    padding: 15px;
     margin-right: -15px;
     margin-top: -15px;
-}
 
-.post-list-item__header .island-settings:hover {
-    color: #000;
+    &:hover {
+        color: #000;
+    }
+
+    &__menu {
+        right: 5px;
+        top: 100%;
+    }
 }
 
 .post-list-item__date {
