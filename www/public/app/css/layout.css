@@ -23,6 +23,7 @@
 
 .grid-col {
     width: 300px;
+    flex-shrink: 0;
 }
 
 .grid-col--left {
