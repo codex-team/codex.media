@@ -148,6 +148,10 @@
 
 .editor-wrapper {
     margin: 0 -15px;
+
+    @media (--not-mobile) {
+        padding-left: 20px;
+    }
 }
 
 .editor-wrapper .ce-block__content,
@@ -162,10 +166,14 @@
     margin: 0;
 }
 
-.editor-wrapper a {
+.editor-wrapper li {
+    list-style: inherit;
+}
+
+.editor-wrapper > a {
     color: var(--linkColor);
     padding-bottom: 1px;
-    border-bottom: 1px solid color(var(--linkColor) alpha(-70%));
+    border-bottom: 1px solid color-mod(var(--linkColor) alpha(-70%));
 }
 
 .writing-fullscreen__button {

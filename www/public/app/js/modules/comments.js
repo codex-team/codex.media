@@ -305,7 +305,10 @@ module.exports = (function () {
 
         }
 
-        codex.islandSettings.prepareToggler(menuToggler, menuTogglerSelector);
+        /**
+         * First param is activated islands length. See islandSettings#init
+         */
+        codex.islandSettings.prepareToggler(0, menuToggler);
 
     }
 

@@ -10,7 +10,7 @@
 
     /** Texts */
     --color-gray: #6e758a;
-    --color-hover: color(var(--color-actions) blackness(+10%));
+    --color-hover: color-mod(var(--color-actions) blackness(+10%));
     --mediumText: #373f52;
 
     /** Colors */
@@ -66,7 +66,7 @@
 
         &:hover {
             color: #fff;
-            background: color(var(--color-payment) blackness(+15%));
+            background: color-mod(var(--color-payment) blackness(+15%));
         }
     }
 

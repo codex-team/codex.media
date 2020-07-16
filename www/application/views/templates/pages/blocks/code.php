@@ -1,5 +1,3 @@
-<div class="article__code-wrapper">
-    <code class="article__code">
-        <?=$block['text']; ?>
-    </code>
+<div class="article-code">
+    <code class="article-code__content"><?= $block['code']; ?></code>
 </div>

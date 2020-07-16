@@ -27,7 +27,7 @@
         <link rel="image_src" href="<?= $site_info['meta_image'] ?>" />
     <? endif; ?>
 
-    <script src="/public/build/bundle.js?v=<?= filemtime('public/build/bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
+    <script src="/public/build/main.bundle.js?v=<?= filemtime('public/build/main.bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
 
 </head>
 <?

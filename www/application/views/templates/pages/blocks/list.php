@@ -2,12 +2,12 @@
 
     $tag = 'ul';
 
-    if (!empty($block['type']) && $block['type'] == 'OL') {
+    if (!empty($block['style']) && $block['style'] == 'ordered') {
         $tag = 'ol';
     }
 
 ?>
-<<?=$tag; ?>>
+<<?= $tag ?> class="article-list">
     <? for ($i = 0; $i < count($block['items']); $i++) : ?>
         <li><?=$block['items'][$i]; ?></li>
     <? endfor; ?>

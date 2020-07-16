@@ -1,459 +1,217 @@
 /**
- * Module for load and start codex-editor
+ * Module for load and start EditorJS
  *
- * Using:
+ * Usage:
  *
- * codex.writing.prepare({
- *     holderId : 'placeForEditor',                                         // (required)
- *     hideEditorToolbar : <?= $hideEditorToolbar ? 'true' : 'false' ?>,
- *     items : <?= json_encode($page->blocks) ?: '[]' ?>,
- *     pageId   : <?= $page->id ?>,
- *     parentId : <?= $page->id_parent ?>,
- * }).then(
- *    codex.writing.init
- * );
+ * <div data-module="writing">
+ *   <module-settings hidden>
+ *     {
+ *      "holderId" : "placeForEditor",
+ *      "formId": "atlasForm",
+ *      "initializeWithTools": "<?= $hideEditorToolbar ?>"
+ *     }
+ *   </module-settings>
+ * </div>
  */
 
+const ajax = require('@codexteam/ajax');
 
-module.exports = (function () {
+class Writing {
+
+    constructor() {
+
+        /**
+         * Editor class Instance
+         */
+        this.editor = null;
+
+        /**
+         * Form with editor data
+         */
+        this.form = null;
+
+    }
+
 
     /**
-     * CodeX Editor Personality-tool
-     * @see  https://github.com/codex-editor/personality
+     * Load Editor from separate chunk
+     * @param {Object} settings - settings for Editor initialization
+     * @return {Promise<Editor>} - CodeX Editor promise
      */
-    var personalityTool = require('exports-loader?cdxEditorPersonality!codex.editor.personality');
+    loadEditor(settings) {
+
+        return import(/* webpackChunkName: "editor" */ 'modules/editor')
+            .then(({default: Editor}) => {
+
+                return new Editor(settings);
+
+            });
+
+    };
 
     /**
-     * CodeX Editor link embed tool
-     * @see  https://github.com/codex-editor/link
+     * Initialize EditorJS instance
+     * @param {Object} settings - writing module settings
+     * @param {string} settings.holderId - id of editor's holder
+     * @param {string} settings.formId - id of form with editor's content
+     * @param {string} settings.initializeWithTools - whether to hide or show editor's toolbar
      */
-    var linkTool = require('exports-loader?cdxEditorLink!codex.editor.link');
+    init(settings) {
 
-    var editorIsReady = false,
-        settings = {
-            hideEditorToolbar   : false,
-            titleId             : 'editorWritingTitle',
-            initialBlockPlugin  : 'paragraph',
-            data                : {items: []},
-            resources           : [],
-            holderId            : null,
-            pageId              : 0,
-            parentId            : 0,
+        this.form = document.getElementById(settings.formId);
+
+        const editorSettings = {
+            holder: document.getElementById(settings.holderId),
+            blocks: this.getPageBlocks(),
+            initializeWithTools: !settings.initializeWithTools
         };
 
-    /**
-     * Prepare editor's resourses
-     *
-     * @param  {Object} initSettings    base settings for editor
-     * @return {Promise}            all editor's resources are ready
-     */
-    var prepare = function (initSettings) {
+        this.loadEditor(editorSettings).then((editor) => {
 
-        mergeSettings(initSettings);
+            this.editor = editor;
 
-        return loadEditorResources(settings.resources)
-            .then(function () {
-
-                editorIsReady = true;
-
-            });
-
-    };
-
-    /**
-     * Fill module's settings by settings from params
-     *
-     * @param  {Object} initSettings  list of params from init
-     */
-    function mergeSettings(initSettings) {
-
-        for (var key in initSettings) {
-
-            settings[key] = initSettings[key];
-
-        }
-
-    }
-
-    /**
-     * Run editor
-     */
-    function startEditor() {
-
-        /**
-         * @todo get from server
-         */
-        var EDITOR_IMAGE = 1;
-        var EDITOR_FILE  = 2;
-        var EDITOR_PERSONALITY  = 6;
-
-        codex.editor.start({
-
-            holderId:  settings.holderId,
-            initialBlockPlugin : settings.initialBlockPlugin,
-            hideToolbar: settings.hideEditorToolbar,
-            sanitizer: {
-                tags : {
-                    p : {},
-                    a : {
-                        href: true,
-                        target: '_blank'
-                    }
-                }
-            },
-            tools : {
-                paragraph: {
-                    type               : 'paragraph',
-                    iconClassname      : 'ce-icon-paragraph',
-                    render             : window.paragraph.render,
-                    validate           : window.paragraph.validate,
-                    save               : window.paragraph.save,
-                    allowedToPaste     : true,
-                    showInlineToolbar  : true,
-                    destroy            : window.paragraph.destroy,
-                    allowRenderOnPaste : true
-                },
-                header: {
-                    type             : 'header',
-                    iconClassname    : 'ce-icon-header',
-                    appendCallback   : window.header.appendCallback,
-                    makeSettings     : window.header.makeSettings,
-                    render           : window.header.render,
-                    validate         : window.header.validate,
-                    save             : window.header.save,
-                    destroy          : window.header.destroy,
-                    displayInToolbox : true
-                },
-                image: {
-                    type                  : 'image',
-                    iconClassname         : 'ce-icon-picture',
-                    appendCallback        : window.image.appendCallback,
-                    prepare               : window.image.prepare,
-                    makeSettings          : window.image.makeSettings,
-                    render                : window.image.render,
-                    save                  : window.image.save,
-                    destroy               : window.image.destroy,
-                    isStretched           : true,
-                    showInlineToolbar     : true,
-                    displayInToolbox      : true,
-                    renderOnPastePatterns : window.image.pastePatterns,
-                    config: {
-                        uploadImage : '/upload/' + EDITOR_IMAGE,
-                        uploadFromUrl : ''
-                    }
-                },
-                attaches: {
-                    type             : 'attaches',
-                    displayInToolbox : true,
-                    iconClassname    : 'cdx-attaches__icon',
-                    prepare          : window.cdxAttaches.prepare,
-                    render           : window.cdxAttaches.render,
-                    save             : window.cdxAttaches.save,
-                    validate         : window.cdxAttaches.validate,
-                    destroy          : window.cdxAttaches.destroy,
-                    appendCallback   : window.cdxAttaches.appendCallback,
-                    config: {
-                        fetchUrl: '/upload/' + EDITOR_FILE,
-                        maxSize: codex.appSettings.uploadMaxSize * 1000,
-                    }
-                },
-                list: {
-                    type: 'list',
-                    iconClassname: 'ce-icon-list-bullet',
-                    make: window.list.make,
-                    appendCallback: null,
-                    makeSettings: window.list.makeSettings,
-                    render: window.list.render,
-                    validate: window.list.validate,
-                    save: window.list.save,
-                    destroy: window.list.destroy,
-                    displayInToolbox: true,
-                    showInlineToolbar: true,
-                    enableLineBreaks: true,
-                    allowedToPaste: true
-                },
-                link: {
-                    type             : 'link',
-                    iconClassname    : 'cdx-link-icon',
-                    displayInToolbox : true,
-                    prepare          : linkTool.prepare,
-                    render           : linkTool.render,
-                    makeSettings     : linkTool.settings,
-                    save             : linkTool.save,
-                    destroy          : linkTool.destroy,
-                    validate         : linkTool.validate,
-                    config           : {
-                        fetchURL         : '/fetchURL',
-                        defaultStyle     : 'smallCover'
-                    }
-                },
-                raw : {
-                    type: 'raw',
-                    displayInToolbox: true,
-                    iconClassname: 'raw-plugin-icon',
-                    render: window.rawPlugin.render,
-                    save: window.rawPlugin.save,
-                    validate: window.rawPlugin.validate,
-                    destroy: window.rawPlugin.destroy,
-                    enableLineBreaks: true,
-                    allowPasteHTML: true
-                },
-                personality: {
-                    type             : 'personality',
-                    displayInToolbox : true,
-                    iconClassname    : 'cdx-personality-icon',
-                    prepare          : personalityTool.prepare,
-                    render           : personalityTool.render,
-                    save             : personalityTool.save,
-                    validate         : personalityTool.validate,
-                    destroy          : personalityTool.destroy,
-                    enableLineBreaks : true,
-                    showInlineToolbar: true,
-                    config: {
-                        uploadURL: '/upload/' + EDITOR_PERSONALITY,
-                    }
-                }
-            },
-
-            data : settings.data
         });
 
-        var titleInput = document.getElementById(settings.titleId);
+        if (!this.form) {
 
-        /**
-         * Focus at the title
-         */
-        titleInput.focus();
-        titleInput.addEventListener('keydown', titleKeydownHandler );
+            console.warn(`Form with id «${settings.formId}» not found`);
+
+        }
 
     }
 
     /**
-     * Title input keydowns
-     * @description  By ENTER, sets focus on editor
-     * @param  {Event} event  - keydown event
+     * Get page's blocks
+     * @return {Array} pageBlocks - page's blocks[] data
      */
-    var titleKeydownHandler = function (event) {
+    getPageBlocks() {
 
-        /* Set focus on Editor by Enter     */
-        if ( event.keyCode == codex.core.keys.ENTER ) {
+        /** Page's content from form */
+        const formValue = this.form.elements['content'].getAttribute('value');
 
-            event.preventDefault();
+        /** Page's bocks */
+        let pageBlocks = [];
 
-            focusRedactor();
+        if (formValue) {
+
+            /** Get content that was written before */
+            try {
+
+                pageBlocks = JSON.parse(formValue).blocks;
+
+            } catch (error) {
+
+                console.error('Errors occurred while parsing Editor data:', error.message);
+
+            }
 
         }
 
-    };
-
-    /**
-     * Temporary scheme to focus Codex Editor first-block
-     */
-    var focusRedactor = function () {
-
-        var firstBlock       = codex.editor.nodes.redactor.firstChild,
-            contentHolder    = firstBlock.firstChild,
-            firstToolWrapper = contentHolder.firstChild,
-            aloneTextNode;
-
-        /**
-         * Caret will not be placed in empty textNode, so we need textNode with zero-width char
-         */
-        aloneTextNode = document.createTextNode('\u200B');
-
-        /**
-         * We need to append manually created textnode before returning
-         */
-        firstToolWrapper.appendChild(aloneTextNode);
-
-        codex.editor.caret.set(firstToolWrapper, 0, 0);
-
-    };
-
-    /**
-     * Public function for run editor
-     */
-    var init = function () {
-
-        if (!editorIsReady) return;
-
-        startEditor();
-
-    };
-
-    /**
-     * Show form and hide placeholder
-     *
-     * @param  {Element} targetClicked       placeholder with wrapper
-     * @param  {String}  formId               remove 'hide' from this form by id
-     * @param  {String}  hidePlaceholderClass add this class to placeholder
-     */
-    var open = function (targetClicked, formId, hidePlaceholderClass) {
-
-        if (!editorIsReady) return;
-
-        var holder = targetClicked;
-
-        document.getElementById(formId).classList.remove('hide');
-        holder.classList.add(hidePlaceholderClass);
-        holder.onclick = null;
-
-        init();
-
-    };
-
-    /**
-     * Load editor resources and append block with them to body
-     *
-     * @param  {Array} resources list of resources which should be loaded
-     * @return {Promise}
-     */
-    var loadEditorResources = function (resources) {
-
-        return Promise.all(
-            resources.map(loadResource)
-        );
-
-    };
-
-    /**
-     * Loads resource
-     *
-     * @param  {Object} resource name and paths for js and css
-     * @return {Promise}
-     */
-    function loadResource(resource) {
-
-        var name      = resource.name,
-            scriptUrl = resource.path.script,
-            styleUrl  = resource.path.style;
-
-        return Promise.all([
-            codex.loader.importScript(scriptUrl, name),
-            codex.loader.importStyle(styleUrl, name)
-        ]);
+        return pageBlocks;
 
     }
 
     /**
-    * Prepares form to submit
-    */
-    var getForm = function () {
+     * Open small version of Editor on main: hide Editor's wrapper and reveal it's contents
+     * @param openSettings
+     * @param {HTMLElement} openSettings.wrapper - element being clicked to reveal editor
+     * @param {string} openSettings.holderId - editor's contents initially hidden
+     * @param {string} openSettings.wrapperOpenedClass - class to hide writing holder
+     */
+    open(openSettings) {
 
-        var atlasForm = document.forms.atlas;
+        if (!this.editor) {
 
-        if (!atlasForm) return;
+            return;
 
-        /**
-         * Save blocks
-         */
-        codex.editor.saver.saveBlocks();
+        }
 
-        return atlasForm;
+        const writingWrapper = openSettings.wrapper;
+        const writingHolder = document.getElementById(openSettings.holderId);
 
-    };
+        writingHolder.classList.remove('hide');
+        writingWrapper.classList.add(openSettings.wrapperOpenedClass);
+        writingWrapper.onclick = null;
+
+    }
 
     /**
-     * Send ajax request with writing form data
-     * @param button - submit button (needed to add loading animation)
+     * Send form's data via ajax
+     * @param {HTMLElement} button - submission button clicked
      */
-    var submit = function (button) {
+    submitForm(button) {
 
-        const buttonLoadingClass = 'loading';
+        button.classList.add('loading');
 
-        /**
-         * Prevent multiple submitting
-         */
-        if (button.classList.contains(buttonLoadingClass)) {
+        this.editor.save()
+            .then((savedData) => {
 
-            return;
+                this.form.elements['content'].value = JSON.stringify(savedData);
 
-        }
+                /**
+                 * Send article data via ajax
+                 */
+                window.setTimeout(() => {
 
-        var title = document.forms.atlas.elements['title'],
-            form;
+                    ajax.post({
+                        url: '/p/save',
+                        data: this.form
+                    }).then((response) => {
 
-        if (!title.value.trim()) {
+                        const {body} = response;
 
-            codex.editor.notifications.notification({
-                type: 'warn',
-                message: 'Заполните заголовок'
+                        if (body.success) {
+
+                            window.location.href = body.redirect;
+
+                        } else {
+
+                            this.showErrorMessage(body);
+                            button.classList.remove('loading');
+
+                        }
+
+                    }).catch((error) => {
+
+                        this.showErrorMessage(error);
+                        button.classList.remove('loading');
+
+                    });
+
+                }, 500);
+
             });
 
-            return;
-
-        }
-
-        form = getForm();
-
-        button.classList.add(buttonLoadingClass);
-
-        window.setTimeout(function () {
-
-            form.elements['content'].value = JSON.stringify({items: codex.editor.state.jsonOutput});
-
-            codex.ajax.call({
-                url: '/p/save',
-                data: new FormData(form),
-                success: (response) => {
-
-                    button.classList.remove(buttonLoadingClass);
-                    submitResponse(response);
-
-                },
-                type: 'POST'
-            });
-
-        }, 500);
-
-    };
+    }
 
     /**
-     * Response handler for page saving
-     * @param response
+     * If page's form submission via ajax failed show message with error text
+     * @param {string} error - form submission error message
      */
-    var submitResponse = function (response) {
+    showErrorMessage(error) {
 
-        response = JSON.parse(response);
-
-        if (response.success) {
-
-            window.location = response.redirect;
-            return;
-
-        }
-
-        codex.editor.notifications.notification({
-            type: 'warn',
-            message: response.message
+        codex.alerts.show({
+            message: error.message,
+            type: 'error'
         });
 
-    };
+    }
 
     /**
-    * Submits writing form for opening in full-screan page without saving
-    */
-    var openEditorFullscreen = function () {
+     * Open Editor in fullscreen mode with toolbar
+     */
+    openFullScreen() {
 
+        this.editor.save()
+            .then((savedData) => {
 
-        var form = getForm();
+                this.form.elements['content'].value = JSON.stringify(savedData);
+                this.form.submit();
 
-        window.setTimeout(function () {
+            });
 
-            form.elements['content'].value = JSON.stringify({ items: codex.editor.state.jsonOutput });
+    }
 
-            form.submit();
+}
 
-        }, 500);
-
-    };
-
-    return {
-        init    : init,
-        prepare : prepare,
-        open    : open,
-        openEditorFullscreen : openEditorFullscreen,
-        submit               : submit,
-    };
-
-})();
+module.exports = new Writing();

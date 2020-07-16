@@ -5,7 +5,7 @@ module.exports = (function () {
 
     var CSS_ = {
         wrapper : 'cdx-notifies-wrapper',
-        notification : 'cdx-notifies',
+        notification : 'cdx-notifies-body',
         crossBtn: 'cdx-notifies-cross'
     };
 

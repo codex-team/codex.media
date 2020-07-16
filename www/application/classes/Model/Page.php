@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-use CodexEditor\CodexEditor;
+use \EditorJS\EditorJS;
+use \EditorJS\EditorJSException;
 
 class Model_Page extends Model
 {
@@ -79,7 +80,7 @@ class Model_Page extends Model
 
     private $modelCacheKey;
 
-    public function __construct($id = 0, $escapeHTML = false)
+    public function __construct($id = 0)
     {
         if (!$id) {
             return;
@@ -91,7 +92,7 @@ class Model_Page extends Model
 
         if ($this->id) {
             $this->content = $this->validateContent();
-            $this->blocks = $this->getBlocks($escapeHTML);
+            $this->blocks = $this->getBlocks();
             $this->description = $this->getDescription();
         }
     }
@@ -222,7 +223,7 @@ class Model_Page extends Model
 
                     $page->modelCacheKey = Arr::get($_SERVER, 'DOMAIN', 'codex.media') . ':model:page:' . $page->id;
                     $page->content = $page->validateContent();
-                    $page->blocks = $page->getBlocks(true);
+                    $page->blocks = $page->getBlocks();
                     $page->description = $page->getDescription();
 
                     array_push($pages, $page);
@@ -258,16 +259,12 @@ class Model_Page extends Model
     /**
      * Return array of blocks classes from JSON object stored in $this->content
      *
-     * @param Boolean $escapeHTML pass TRUE to escape HTML entities
-     *
      * @throws Kohana_Exception error thrown by CodeXEditor vendor module
      *
      * @return Array - list of page blocks
      */
-    public function getBlocks($escapeHTML = false)
+    public function getBlocks()
     {
-        $config = Kohana::$config->load('editor');
-
         $cacheKey = $this->modelCacheKey . ':blocks';
 
         $blocks = Cache::instance('memcacheimp')->get($cacheKey);
@@ -277,16 +274,29 @@ class Model_Page extends Model
         }
 
         try {
-            $CodexEditor = new CodexEditor($this->content, $config);
-
-            $blocks = $CodexEditor->getBlocks($escapeHTML);
+            $editor = new EditorJS($this->content, self::getEditorConfig());
+            $blocks = $editor->getBlocks();
         } catch (Exception $e) {
-            throw new Kohana_Exception("CodexEditor (article:" . $this->id . "): " . $e->getMessage());
+            throw new Kohana_Exception("EditorJS (article:" . $this->id . "): " . $e->getMessage());
         }
 
         Cache::instance('memcacheimp')->set($cacheKey, $blocks, [$this->modelCacheKey]);
 
         return $blocks;
+    }
+
+    /**
+     * Gets config for CodeX Editor, containing rules for validation Editor Tools data
+     * @return string - Editor's config data
+     * @throws Exceptions_ConfigMissedException - Failed to get Editorjs config data
+     */
+    public static function getEditorConfig()
+    {
+        try {
+            return file_get_contents(APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'editorjs-config.json');
+        } catch (Exception $e) {
+            throw new Exceptions_ConfigMissedException("EditorJS config not found");
+        }
     }
 
     /**
@@ -300,8 +310,6 @@ class Model_Page extends Model
      */
     public function validateContent($escapeHTML = false)
     {
-        $config = Kohana::$config->load('editor');
-
         $cacheKey = $this->modelCacheKey . ':content';
 
         $content = Cache::instance('memcacheimp')->get($cacheKey);
@@ -311,9 +319,9 @@ class Model_Page extends Model
         }
 
         try {
-            $CodexEditor = new CodexEditor($this->content, $config);
+            $editor = new EditorJS($this->content, self::getEditorConfig());
 
-            $content = $CodexEditor->getData($escapeHTML);
+            $content = json_encode(["blocks" => $editor->getBlocks()]);
         } catch (Exception $e) {
             throw new Kohana_Exception("CodexEditor (article:" . $this->id
                                        . "):" . $e->getMessage());

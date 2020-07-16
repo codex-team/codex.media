@@ -50,7 +50,7 @@ class Model_Feed_Pages extends Model_Feed_Abstract
             $models_list = [];
 
             foreach ($items as $id) {
-                $page = new Model_Page($id, true); //sets $escapeHTML param true to escape HTML entities
+                $page = new Model_Page($id);
 
                 $page->isPinned = $this->isPinned($id);
 
