@@ -2,16 +2,34 @@
 * Posts list item
 */
 .post-list-item {
+    position: relative;
     padding: calc(0.7 * var(--islandPadding)) var(--islandPadding);
     font-size: 15px;
     margin-bottom: var(--islandMargin);
 }
 
 .post-list-item__header {
+    position: relative;
     margin-bottom: 1em;
     color: var(--color-gray);
     font-size: 0.8em;
     white-space: nowrap;
+    z-index: calc(var(--article-link-z-index) + 1);
+}
+
+.post-list-item__header .island-settings {
+    padding: 15px;
+    margin-right: -15px;
+    margin-top: -15px;
+
+    &:hover {
+        color: #000;
+    }
+
+    &__menu {
+        right: 5px;
+        top: 100%;
+    }
 }
 
 .post-list-item__date {
@@ -147,6 +165,15 @@
 
 .posts-list-item__cover--preview {
     filter: blur(1.7px) grayscale(1);
+}
+
+.post-list-item__link {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: var(--article-link-z-index);
 }
 
 @media (--mobile) {
