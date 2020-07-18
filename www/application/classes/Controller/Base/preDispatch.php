@@ -173,7 +173,7 @@ class Controller_Base_preDispatch extends Controller_Template
 
         $redis = new Redis();
         $redis->connect($redis_host, $redis_port);
-        $redis->auth($redis_pass);
+        # $redis->auth($redis_pass);
         $redis->select($redis_db);
 
         return $redis;
