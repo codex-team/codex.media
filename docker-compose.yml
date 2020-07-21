@@ -39,7 +39,5 @@ services:
     ports:
       - '8091:80'
     environment:
+      UPLOAD_LIMIT: 10000000
       PMA_ARBITRARY: 1
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
