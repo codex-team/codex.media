@@ -7,13 +7,15 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
   memcached:
-    image: 'memcached:alpine'
+    image: 'memcached:1.6.6-alpine'
     ports:
       - '11211:11211'
+
   redis:
-    image: 'redis:alpine'
+    image: 'redis:6.0.5-alpine'
     ports:
       - '6379:6379'
+
   php:
     build: docker/php
     links:
@@ -22,8 +24,9 @@ services:
       - redis
     volumes:
       - './www:/var/www/codex.media'
+
   nginx:
-    image: 'nginx:latest'
+    image: 'nginx:1.19.1-alpine'
     ports:
       - '8090:8080'
     links:
@@ -32,6 +35,7 @@ services:
       - './docker/nginx-codex.conf:/etc/nginx/conf.d/codex.conf'
     volumes_from:
       - php
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     links:
