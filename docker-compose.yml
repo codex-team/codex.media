@@ -4,6 +4,9 @@ services:
     image: 'mysql:5.7'
     ports:
       - '3306:3306'
+    volumes:
+      - "./dump/mysql/:/dump"
+      - mysqldata:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
 
@@ -16,6 +19,8 @@ services:
     image: 'redis:6.0.5-alpine'
     ports:
       - '6379:6379'
+    volumes:
+      - "./dump/redis/:/data"
 
   php:
     build: docker/php
@@ -46,3 +51,6 @@ services:
     environment:
       UPLOAD_LIMIT: 10000000
       PMA_ARBITRARY: 1
+
+volumes:
+  mysqldata:
