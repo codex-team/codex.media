@@ -6,6 +6,7 @@ services:
       - '3306:3306'
     environment:
       MYSQL_ROOT_PASSWORD: root
+
   memcached:
     image: 'memcached:1.6.6-alpine'
     ports:
