@@ -23,7 +23,9 @@ services:
       - "./dump/redis/:/data"
 
   php:
-    build: docker/php
+    build:
+      dockerfile: 'docker/php/Dockerfile'
+      context: '.'
     links:
       - mysql
       - memcached

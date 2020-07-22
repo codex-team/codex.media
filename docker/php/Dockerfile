@@ -1,6 +1,11 @@
-FROM php:7.1-fpm-stretch
+FROM node:14-alpine as builder
 
-MAINTAINER CodeX <github.com/codex-team>
+COPY ./www/package.json ./www/yarn.lock /tmp/
+RUN cd /tmp && yarn
+COPY ./www /var/www/codex.media
+RUN cd /var/www/codex.media && mv /tmp/node_modules ./node_modules && yarn build
+
+FROM php:7.1-fpm-stretch
 
 RUN apt-get update
 RUN apt-get install -y \
@@ -56,3 +61,5 @@ RUN ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 RUN "date"
 
 WORKDIR /var/www/codex.media
+COPY --from=builder /var/www/codex.media/public/build/* /var/www/codex.media/public/build/
+
