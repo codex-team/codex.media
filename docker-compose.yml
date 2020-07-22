@@ -32,6 +32,7 @@ services:
       - redis
     volumes:
       - './www:/var/www/codex.media'
+      - '/var/www/codex.media/public/build'
 
   nginx:
     image: 'nginx:1.19.1-alpine'
