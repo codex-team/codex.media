@@ -18,7 +18,7 @@ services:
 
   php:
     build:
-      dockerfile: 'docker/php/Dockerfile.prod'
+      dockerfile: 'docker/php/prod.Dockerfile'
       context: '.'
     links:
       - mysql
@@ -35,7 +35,7 @@ services:
     links:
       - php
     volumes:
-      - './docker/nginx-codex.conf:/etc/nginx/conf.d/codex.conf'
+      - './docker/codex-media.conf:/etc/nginx/conf.d/codex.conf'
     volumes_from:
       - php
 
@@ -46,7 +46,7 @@ services:
     ports:
       - "127.0.0.1:${PMA_PORT}:80"
     environment:
-      UPLOAD_LIMIT: 10000000
+      UPLOAD_LIMIT: 52428800
       PMA_ARBITRARY: 1
 
 
