@@ -6,30 +6,32 @@ services:
       - "./dump/mysql/:/dump"
       - mysqldata:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
 
   memcached:
-    image: 'memcached:alpine'
+    image: 'memcached:1.6.6-alpine'
+
   redis:
+    image: 'redis:6.0.5-alpine'
     volumes:
       - "./dump/redis/:/data"
-    image: 'redis:alpine'
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
 
   php:
-    build: docker/php
+    build:
+      dockerfile: 'docker/php/Dockerfile.prod'
+      context: '.'
     links:
       - mysql
       - memcached
       - redis
     volumes:
       - './www:/var/www/codex.media'
+      - '/var/www/codex.media/public/build'
 
   nginx:
-    image: 'nginx:latest'
+    image: 'nginx:1.19.1-alpine'
     ports:
-      - '127.0.0.1:8090:8080'
+      - "127.0.0.1:${APP_PORT}:8080"
     links:
       - php
     volumes:
@@ -42,12 +44,12 @@ services:
     links:
       - mysql
     ports:
-      - '127.0.0.1:8091:80'
+      - "127.0.0.1:${PMA_PORT}:80"
     environment:
+      UPLOAD_LIMIT: 10000000
       PMA_ARBITRARY: 1
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
+
+
 
 volumes:
   mysqldata:
