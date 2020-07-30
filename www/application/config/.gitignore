@@ -1,8 +1,6 @@
 oauth.php
 database.php
 social.php
-redis.php
 email.php
 telegram-notification.php
 communities.php
-cache.php
