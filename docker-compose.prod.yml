@@ -52,3 +52,5 @@ services:
 
 volumes:
   mysqldata:
+  elasticsearch-data:
+    driver: local

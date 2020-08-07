@@ -5,7 +5,8 @@
     "sendgrid/sendgrid": "^5.4",
     "codex-team/hawk.php": "^1.0",
     "friendsofphp/php-cs-fixer": "^2.10",
-    "ext-json": "*"
+    "ext-json": "*",
+    "elasticsearch/elasticsearch": "^7.8"
   },
   "scripts": {
     "csfix" : "vendor/bin/php-cs-fixer fix --verbose"
