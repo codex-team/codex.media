@@ -3,19 +3,23 @@ services:
   mysql:
     image: 'mysql:5.7'
     volumes:
-      - "./dump/mysql:/dump"
+      - ./dump/mysql:/dump
       - mysqldata:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: root
 
   memcached:
     image: 'memcached:1.6.6-alpine'
+    ports:
+      - "11211:11211"
 
   redis:
     image: 'redis:6.0.5-alpine'
     command: ["redis-server", "--save 900 1", "--save 300 10", "--save 60 10000"]
     volumes:
       - ./dump/redis:/data
+    ports:
+      - "6379:6379"
 
   php:
     build:
@@ -27,12 +31,11 @@ services:
       - redis
     volumes:
       - './www:/var/www/codex.media'
-      - '/var/www/codex.media/public/build'
 
   nginx:
     image: 'nginx:1.19.1-alpine'
     ports:
-      - "127.0.0.1:${APP_PORT}:8080"
+      - "8880:8080"
     links:
       - php
     volumes:
@@ -45,10 +48,13 @@ services:
     links:
       - mysql
     ports:
-      - "127.0.0.1:${PMA_PORT}:80"
+      - "8881:80"
     environment:
       UPLOAD_LIMIT: 52428800
       PMA_ARBITRARY: 1
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
 
 volumes:
   mysqldata:
