@@ -40,6 +40,15 @@ class Task_MigrateToEditorjs2 extends Minion_Task
             $oldContent = json_decode($page['content']);
 
             /**
+             * If cannot decode json content then clear data
+             */
+            if ($oldContent === null && json_last_error() !== JSON_ERROR_NONE) {
+                echo "[Warning] Page " . $page['id'] . " has bad json content that will be erased on converting.\n";
+                $newPagesContent[$page['id']] = '{"blocks":[]}';
+                continue;
+            }
+
+            /**
              * Check if pages has been already converted
              */
             if (property_exists($oldContent, 'blocks')) {
@@ -83,6 +92,11 @@ class Task_MigrateToEditorjs2 extends Minion_Task
          */
         if (!$noErrorsFlag) {
             throw new Error('Cannot convert database.');
+        } else {
+            echo "\n";
+            echo "Ready to convert database.\n";
+            echo "Relaunch script with an 'apply' key.\n\n";
+            echo "./minion migratetoeditorjs2 apply\n\n";
         }
 
         /**
