@@ -1,4 +1,4 @@
-FROM node:14-alpine as builder
+FROM node:14.7.0-slim as builder
 
 COPY ./www/package.json ./www/yarn.lock /tmp/
 RUN cd /tmp && yarn

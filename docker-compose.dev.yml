@@ -24,7 +24,7 @@ services:
       - "6379:6379"
 
   elasticsearch:
-    image: elasticsearch:7.4.0
+    image: 'elasticsearch:7.4.0'
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node

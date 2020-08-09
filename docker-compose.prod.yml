@@ -17,6 +17,23 @@ services:
     volumes:
       - ./dump/redis:/data
 
+  elasticsearch:
+    image: 'elasticsearch:7.4.0'
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+
   php:
     build:
       dockerfile: 'docker/php/prod.Dockerfile'
@@ -25,6 +42,7 @@ services:
       - mysql
       - memcached
       - redis
+      - elasticsearch
     volumes:
       - './www:/var/www/codex.media'
       - '/var/www/codex.media/public/build'
@@ -49,6 +67,9 @@ services:
     environment:
       UPLOAD_LIMIT: 52428800
       PMA_ARBITRARY: 1
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
 
 volumes:
   mysqldata:
