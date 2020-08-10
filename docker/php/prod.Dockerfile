@@ -14,6 +14,7 @@ RUN apt-get install -y \
     libz-dev \
     wget \
     unzip \
+    nano \
     libjpeg-dev libpng-dev libfreetype6-dev
 
 # Install Composer
@@ -60,6 +61,8 @@ RUN sed -i -e 's/# ru_RU ISO-8859-5/ru_RU ISO-8859-5/' /etc/locale.gen && \
 RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.zip
 RUN unzip phpMyAdmin-5.0.2-all-languages.zip
 RUN mv phpMyAdmin-5.0.2-all-languages /usr/share/phpmyadmin
+RUN cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php && \
+    sed -i "s/['host'] = 'localhost'/['host'] = 'mysql'/" /usr/share/phpmyadmin/config.inc.php
 
 # Set timezone
 RUN rm /etc/localtime
@@ -67,5 +70,5 @@ RUN ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 RUN "date"
 
 WORKDIR /var/www/codex.media
-#COPY --from=builder /var/www/codex.media/public/build /var/www/codex.media/public/build
+COPY --from=builder /var/www/codex.media/public/build /var/www/codex.media/public/build
 

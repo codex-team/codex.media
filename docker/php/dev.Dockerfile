@@ -5,6 +5,9 @@ RUN apt-get install -y \
     git \
     zip \
     libz-dev \
+    wget \
+    unzip \
+    nano \
     libjpeg-dev libpng-dev libfreetype6-dev
 
 # Install Composer
@@ -47,6 +50,12 @@ RUN sed -i -e 's/# ru_RU ISO-8859-5/ru_RU ISO-8859-5/' /etc/locale.gen && \
     update-locale LANG=ru_RU.UTF-8 && \
     echo "LANGUAGE=ru_RU.UTF-8" >> /etc/default/locale && \
     echo "LC_ALL=ru_RU.UTF-8" >> /etc/default/locale
+
+RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.zip
+RUN unzip phpMyAdmin-5.0.2-all-languages.zip
+RUN mv phpMyAdmin-5.0.2-all-languages /usr/share/phpmyadmin
+RUN cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php && \
+    sed -i "s/['host'] = 'localhost'/['host'] = 'mysql'/" /usr/share/phpmyadmin/config.inc.php
 
 # Set timezone
 RUN rm /etc/localtime

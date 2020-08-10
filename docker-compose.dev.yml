@@ -54,6 +54,7 @@ services:
       - elasticsearch
     volumes:
       - './www:/var/www/codex.media'
+      - '/usr/share'
 
   nginx:
     image: 'nginx:1.19.1-alpine'
@@ -65,19 +66,6 @@ services:
       - './docker/codex-media.conf:/etc/nginx/conf.d/codex.conf'
     volumes_from:
       - php
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    links:
-      - mysql
-    ports:
-      - "8881:80"
-    environment:
-      UPLOAD_LIMIT: 52428800
-      PMA_ARBITRARY: 1
-      PMA_HOST: mysql
-      PMA_USER: root
-      PMA_PASSWORD: root
 
 volumes:
   mysqldata:

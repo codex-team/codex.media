@@ -46,6 +46,7 @@ services:
     volumes:
       - './www:/var/www/codex.media'
       - '/var/www/codex.media/public/build'
+      - '/usr/share'
 
   nginx:
     image: 'nginx:1.19.1-alpine'
@@ -57,16 +58,6 @@ services:
       - './docker/codex-media.conf:/etc/nginx/conf.d/codex.conf'
     volumes_from:
       - php
-
-#  phpmyadmin:
-#    image: phpmyadmin/phpmyadmin
-#    links:
-#      - mysql
-#    ports:
-#      - "127.0.0.1:${PMA_PORT}:80"
-#    environment:
-#      UPLOAD_LIMIT: 52428800
-#      PMA_ARBITRARY: 1
 
 volumes:
   mysqldata:
