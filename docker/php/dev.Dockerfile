@@ -55,7 +55,7 @@ RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-lang
 RUN unzip phpMyAdmin-5.0.2-all-languages.zip
 RUN mv phpMyAdmin-5.0.2-all-languages /usr/share/phpmyadmin
 RUN cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php && \
-    sed -i "s/['host'] = 'localhost'/['host'] = 'mysql'/" /usr/share/phpmyadmin/config.inc.php
+    sed -i "s/\['host'\] = 'localhost'/\['host'\] = 'mysql'/" /usr/share/phpmyadmin/config.inc.php
 
 # Set timezone
 RUN rm /etc/localtime
