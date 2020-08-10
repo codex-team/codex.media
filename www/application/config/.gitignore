@@ -6,3 +6,4 @@ email.php
 telegram-notification.php
 communities.php
 cache.php
+elastic.php

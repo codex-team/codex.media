@@ -5,31 +5,17 @@ use \EditorJS\EditorJS;
 
 class Task_Elastic extends Minion_Task
 {
-    private $client;
-
-    protected function __construct()
-    {
-        parent::__construct();
-        $this->client = ClientBuilder::create()->setHosts(
-            ['elasticsearch:9200']
-        )->build();
-    }
+    private $index = "pages";
+    private $type = "page";
 
     protected function _execute(array $params)
     {
-        $this->cleanUp();
-        $this->client = ClientBuilder::create()->setHosts(
-            ['elasticsearch:9200']
-        )->build();
+        Elastic::deleteAllOfType($this->index, $this->type);
 
         $pages = Dao_Pages::select()->execute();
 
         foreach ($pages as $page) {
-            $this->client->index([
-                'index' => 'pages',
-                'type' => 'page',
-                'body' => $this->transformPageData($page),
-            ]);
+            Elastic::create($this->index, $this->type, $this->transformPageData($page));
         }
 
         /**
@@ -37,16 +23,13 @@ class Task_Elastic extends Minion_Task
          */
     }
 
-    private function cleanUp() {
-        $this->client->deleteByQuery([
-            'index' => 'pages',
-            'type' => 'page',
-            'body' => [
-                'query' => [
-                    'match_all' => (object)[]
-                ]
-            ]
-        ]);
+    private function getListData($items) {
+        $data = [];
+        foreach ($items as $item) {
+            array_push($data, $item);
+        }
+
+        return $data;
     }
 
     private function transformPageData($page_data)
@@ -56,13 +39,25 @@ class Task_Elastic extends Minion_Task
 
         $text = [];
         foreach ($content as $content_block) {
-            if ($content_block['type'] == 'paragraph') {
-                array_push($text, $content_block['data']['text']);
+            switch ($content_block['type']) {
+                case 'list':
+                    array_push(
+                        $text,
+                        implode("\n", self::getListData($content_block['data']['items']))
+                    );
+                    break;
+                case 'paragraph':
+                case 'header':
+                    array_push($text, $content_block['data']['text']);
+                    break;
+                default:
+                    break;
             }
         }
 
         return [
             'title' => $page_data['title'],
+            'id' => $page_data['id'],
             'text' => empty($text) ? "" : implode("\n", $text)
         ];
     }
