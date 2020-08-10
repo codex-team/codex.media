@@ -59,7 +59,7 @@ services:
   nginx:
     image: 'nginx:1.19.1-alpine'
     ports:
-      - "8880:8080"
+      - "${APP_PORT}:8080"
     links:
       - php
     volumes:
