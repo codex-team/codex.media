@@ -1,9 +1,9 @@
-#FROM node:14.7.0-slim as builder
-#
-#COPY ./www/package.json ./www/yarn.lock /tmp/
-#RUN cd /tmp && yarn
-#COPY ./www /var/www/codex.media
-#RUN cd /var/www/codex.media && mv /tmp/node_modules ./node_modules && yarn build
+FROM node:14.7.0-slim as builder
+
+COPY ./www/package.json ./www/yarn.lock /tmp/
+RUN cd /tmp && yarn
+COPY ./www /var/www/codex.media
+RUN cd /var/www/codex.media && mv /tmp/node_modules ./node_modules && yarn build
 
 FROM php:7.1-fpm-stretch
 
