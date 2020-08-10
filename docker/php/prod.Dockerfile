@@ -1,9 +1,9 @@
-FROM node:14.7.0-slim as builder
-
-COPY ./www/package.json ./www/yarn.lock /tmp/
-RUN cd /tmp && yarn
-COPY ./www /var/www/codex.media
-RUN cd /var/www/codex.media && mv /tmp/node_modules ./node_modules && yarn build
+#FROM node:14.7.0-slim as builder
+#
+#COPY ./www/package.json ./www/yarn.lock /tmp/
+#RUN cd /tmp && yarn
+#COPY ./www /var/www/codex.media
+#RUN cd /var/www/codex.media && mv /tmp/node_modules ./node_modules && yarn build
 
 FROM php:7.1-fpm-stretch
 
@@ -12,6 +12,8 @@ RUN apt-get install -y \
     git \
     zip \
     libz-dev \
+    wget \
+    unzip \
     libjpeg-dev libpng-dev libfreetype6-dev
 
 # Install Composer
@@ -55,11 +57,15 @@ RUN sed -i -e 's/# ru_RU ISO-8859-5/ru_RU ISO-8859-5/' /etc/locale.gen && \
     echo "LANGUAGE=ru_RU.UTF-8" >> /etc/default/locale && \
     echo "LC_ALL=ru_RU.UTF-8" >> /etc/default/locale
 
+RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.zip
+RUN unzip phpMyAdmin-5.0.2-all-languages.zip
+RUN mv phpMyAdmin-5.0.2-all-languages /usr/share/phpmyadmin
+
 # Set timezone
 RUN rm /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 RUN "date"
 
 WORKDIR /var/www/codex.media
-COPY --from=builder /var/www/codex.media/public/build /var/www/codex.media/public/build
+#COPY --from=builder /var/www/codex.media/public/build /var/www/codex.media/public/build
 

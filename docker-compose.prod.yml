@@ -58,15 +58,15 @@ services:
     volumes_from:
       - php
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    links:
-      - mysql
-    ports:
-      - "127.0.0.1:${PMA_PORT}:80"
-    environment:
-      UPLOAD_LIMIT: 52428800
-      PMA_ARBITRARY: 1
+#  phpmyadmin:
+#    image: phpmyadmin/phpmyadmin
+#    links:
+#      - mysql
+#    ports:
+#      - "127.0.0.1:${PMA_PORT}:80"
+#    environment:
+#      UPLOAD_LIMIT: 52428800
+#      PMA_ARBITRARY: 1
 
 volumes:
   mysqldata:
