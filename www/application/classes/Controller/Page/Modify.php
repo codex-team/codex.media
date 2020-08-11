@@ -60,6 +60,15 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         if ($this->page->id) {
             $this->page = $this->page->update();
+            Elastic::update(
+                'pages',
+                'page',
+                $this->page->id,
+                Model_Page::toElasticFormat(
+                    /* Need to access instance with updated 'blocks' */
+                    new Model_Page($this->page->id)
+                )
+            );
 
             switch ($old_page_type){
 
@@ -86,6 +95,14 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         } else {
             $this->page = $this->page->insert();
+            Elastic::create(
+                'pages',
+                'page',
+                $this->page->id,
+                Model_Page::toElasticFormat(
+                    $this->page
+                )
+            );
             $this->page->addToFeed(Model_Feed_Pages::ALL);
         }
 
@@ -225,6 +242,8 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             /** Delete post from public's wall */
             $this->vkWall()->delete();
             /***/
+
+            Elastic::delete('pages', $this->page->id);
 
             $this->ajax_response = [
                 'success' => 1,

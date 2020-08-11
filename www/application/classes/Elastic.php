@@ -34,11 +34,12 @@ class Elastic
         return self::$instance;
     }
 
-    public static function create($index, $type, $entity) {
+    public static function create($index, $type, $id, $entity) {
         $client = self::getInstance();
         $client->index([
             'index' => $index,
             'type' => $type,
+            'id' => $id,
             'body' => $entity,
         ]);
     }
@@ -59,15 +60,9 @@ class Elastic
         ]);
     }
 
-    public static function update($index, $id, $entity) {
-        $client = self::getInstance();
-        $client->update([
-            'index' => $index,
-            'id'    => $id,
-            'body'  => [
-                'doc' => $entity
-            ]
-        ]);
+    public static function update($index, $type, $id, $entity) {
+        self::delete($index, $id);
+        self::create($index, $type, $id, $entity);
     }
 
     public static function deleteAllOfType($index, $type) {

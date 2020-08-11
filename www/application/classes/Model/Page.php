@@ -622,4 +622,39 @@ class Model_Page extends Model
 
         return $this;
     }
+
+    private static function getListData($items) {
+        $data = [];
+        foreach ($items as $item) {
+            array_push($data, $item);
+        }
+
+        return $data;
+    }
+
+    public static function toElasticFormat($page)
+    {
+        $text = [];
+        foreach ($page->blocks as $content_block) {
+            switch ($content_block['type']) {
+                case 'list':
+                    array_push(
+                        $text,
+                        implode("\n", self::getListData($content_block['data']['items']))
+                    );
+                    break;
+                case 'paragraph':
+                case 'header':
+                    array_push($text, $content_block['data']['text']);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return [
+            'title' => $page->title,
+            'text' => empty($text) ? "" : implode("\n", $text)
+        ];
+    }
 }
