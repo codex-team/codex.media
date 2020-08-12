@@ -37,22 +37,26 @@ class Model_Elastic extends Model
     }
 
     /**
+     * @param $type - entity type (table in elastic db)
      * @param $id - entity id
      * @return array - found entity with provided id
      */
-    public function get($id) {
+    public function get($type, $id) {
         return $this->client->get([
             'index' => $this->index,
+            'type' => $type,
             'id'    => $id
         ]);
     }
 
     /**
+     * @param $type - entity type (table in elastic db)
      * @param $id - entity id to delete
      */
-    public function delete($id) {
+    public function delete($type, $id) {
         $this->client->delete([
             'index' => $this->index,
+            'type' => $type,
             'id' => $id,
         ]);
     }
@@ -63,7 +67,7 @@ class Model_Elastic extends Model
      * @param $entity - entity content to update
      */
     public function update($type, $id, $entity) {
-        $this->delete($id);
+        $this->delete($type, $id);
         $this->create($type, $id, $entity);
     }
 

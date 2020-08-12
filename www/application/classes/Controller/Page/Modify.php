@@ -246,6 +246,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
              * Delete page from Elastic db
              */
             $this->elastic->delete(
+                Model_Page::ELASTIC_TYPE,
                 $this->page->id
             );
 
