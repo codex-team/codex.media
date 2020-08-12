@@ -23,6 +23,8 @@ class Task_Elastic extends Minion_Task
          */
         $pages_data = Dao_Pages::select('id')->execute();
 
+        /**
+         * Construct page models, convert them to Elastic format and fill Elastic db
          */
         foreach ($pages_data as $page_data) {
             $page = new Model_Page($page_data['id']);
