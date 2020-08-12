@@ -60,6 +60,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         if ($this->page->id) {
             $this->page = $this->page->update();
+            /**
+             * Update page contents in Elastic db
+             */
             $this->elastic->update(
                 Model_Page::ELASTIC_TYPE,
                 $this->page->id,
@@ -91,6 +94,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         } else {
             $this->page = $this->page->insert();
+            /**
+             * Put new page contents to Elastic db
+             */
             $this->elastic->create(
                 Model_Page::ELASTIC_TYPE,
                 $this->page->id,
@@ -236,6 +242,9 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             $this->vkWall()->delete();
             /***/
 
+            /**
+             * Delete page from Elastic db
+             */
             $this->elastic->delete(
                 $this->page->id
             );

@@ -625,24 +625,22 @@ class Model_Page extends Model
         return $this;
     }
 
-    private function getListData($items) {
-        $data = [];
-        foreach ($items as $item) {
-            array_push($data, $item);
-        }
-
-        return $data;
-    }
-
+    /**
+     * This transforms page content to store in Elastic db
+     * Take paragraphs, headers and lists and glue them in search string, 'text'
+     * @return array ['title', 'text'] - page in Elastic db format
+     * @throws Exception - error thrown by EditorJS vendor module
+     */
     public function toElasticFormat()
     {
         $text = [];
-        foreach ($this->blocks as $content_block) {
+        /** Use $this->getBlocks() to rebuild 'blocks' from fresh 'content' */
+        foreach ($this->getBlocks() as $content_block) {
             switch ($content_block['type']) {
                 case 'list':
                     array_push(
                         $text,
-                        implode("\n", $this->getListData($content_block['data']['items']))
+                        implode("\n", $content_block['data']['items'])
                     );
                     break;
                 case 'paragraph':
