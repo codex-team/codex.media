@@ -78,6 +78,8 @@ class Model_Page extends Model
     const COMMUNITY = 4;
     const EVENT = 5;
 
+    const ELASTIC_TYPE = 'page';
+
     private $modelCacheKey;
 
     public function __construct($id = 0)
@@ -623,7 +625,7 @@ class Model_Page extends Model
         return $this;
     }
 
-    private static function getListData($items) {
+    private function getListData($items) {
         $data = [];
         foreach ($items as $item) {
             array_push($data, $item);
@@ -632,15 +634,15 @@ class Model_Page extends Model
         return $data;
     }
 
-    public static function toElasticFormat($page)
+    public function toElasticFormat()
     {
         $text = [];
-        foreach ($page->blocks as $content_block) {
+        foreach ($this->blocks as $content_block) {
             switch ($content_block['type']) {
                 case 'list':
                     array_push(
                         $text,
-                        implode("\n", self::getListData($content_block['data']['items']))
+                        implode("\n", $this->getListData($content_block['data']['items']))
                     );
                     break;
                 case 'paragraph':
@@ -653,7 +655,7 @@ class Model_Page extends Model
         }
 
         return [
-            'title' => $page->title,
+            'title' => $this->title,
             'text' => empty($text) ? "" : implode("\n", $text)
         ];
     }

@@ -3,5 +3,6 @@
 return array
 (
     'host'     => 'elasticsearch',
-    'port'     => '9200'
+    'port'     => '9200',
+    'index'    => 'codex-media'
 );
