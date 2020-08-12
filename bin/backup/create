@@ -3,6 +3,13 @@
 # Define vars
 SECONDS=0
 BASEDIR=$(dirname "$0")/../..
+
+# Normalize BASEDIR
+CURRENT_DIR=$(pwd)
+cd $BASEDIR
+BASEDIR=$(pwd)
+cd $CURRENT_DIR
+
 BACKUPDIR=$BASEDIR/backup
 TEMPDIR=$BACKUPDIR/temp
 
@@ -55,7 +62,7 @@ echo -e "Compressing backup... \c"
   NOW=`date +"%Y-%m-%d_%H-%M-%S"`
   FILENAME="backup_$NOW.tar.gz"
   FILEPATH="$BACKUPDIR/$FILENAME"
-  tar -zcf $FILEPATH $TEMPDIR
+  tar -zcf $FILEPATH -C $TEMPDIR .
   SIZE=$(($(fileSize $FILEPATH) / 1000000))
 echo "OK"
 
