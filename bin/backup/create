@@ -11,7 +11,7 @@ BASEDIR=$(pwd)
 cd $CURRENT_DIR
 
 BACKUPDIR=$BASEDIR/backup
-TEMPDIR=$BACKUPDIR/temp
+TEMPDIR=$BACKUPDIR/last-backup
 
 # Load env variables
 export $(grep -v '#.*' $BASEDIR/.env | xargs)
@@ -32,7 +32,9 @@ echo "OK"
 echo -e "Getting backup files... \c"
   # get mysql backup
   mkdir -p $TEMPDIR/mysql
-  docker-compose -f $BASEDIR/docker-compose.prod.yml exec mysql /bin/bash -c "mysqldump -u root --password=$MYSQL_PASSWORD codex-media" > $TEMPDIR/mysql/codex-media.sql
+  MYSQLDUMPPATH=$TEMPDIR/mysql/codex-media.sql
+  docker-compose -f $BASEDIR/docker-compose.prod.yml exec mysql /bin/bash -c "mysqldump -u root --password=$MYSQL_PASSWORD codex-media" > $MYSQLDUMPPATH
+  tail -n +2 "$MYSQLDUMPPATH" > "$MYSQLDUMPPATH.tmp" && mv "$MYSQLDUMPPATH.tmp" "$MYSQLDUMPPATH"
 
   # get redis backup
   mkdir -p $TEMPDIR/redis
@@ -47,14 +49,14 @@ echo -e "Getting backup files... \c"
 
   # get www/upload directory
   mkdir -p $TEMPDIR/upload
-  cp -R $BASEDIR/www/upload $TEMPDIR/upload
+  cp -R $BASEDIR/www/upload $TEMPDIR/
 
   # get config files
   mkdir -p $TEMPDIR/www/application/config/
-  cp $BASEDIR/www/application/config/database.php $TEMPDIR/www/application/config/  2>/dev/null
-  cp $BASEDIR/www/application/config/email.php $TEMPDIR/www/application/config/  2>/dev/null
-  cp $BASEDIR/www/application/config/social.php $TEMPDIR/www/application/config/  2>/dev/null
-  cp $BASEDIR/www/application/config/telegram-notification.php $TEMPDIR/www/application/config/  2>/dev/null
+  cp $BASEDIR/www/application/config/database.php $TEMPDIR/www/application/config/ 2>/dev/null
+  cp $BASEDIR/www/application/config/email.php $TEMPDIR/www/application/config/ 2>/dev/null
+  cp $BASEDIR/www/application/config/social.php $TEMPDIR/www/application/config/ 2>/dev/null
+  cp $BASEDIR/www/application/config/telegram-notification.php $TEMPDIR/www/application/config/ 2>/dev/null
 echo "OK"
 
 # Compress backup
