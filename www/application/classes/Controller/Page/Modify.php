@@ -60,6 +60,14 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         if ($this->page->id) {
             $this->page = $this->page->update();
+            /**
+             * Update page contents in Elastic db
+             */
+            $this->elastic->update(
+                Model_Page::ELASTIC_TYPE,
+                $this->page->id,
+                $this->page->toElasticFormat()
+            );
 
             switch ($old_page_type){
 
@@ -86,6 +94,14 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
 
         } else {
             $this->page = $this->page->insert();
+            /**
+             * Put new page contents to Elastic db
+             */
+            $this->elastic->create(
+                Model_Page::ELASTIC_TYPE,
+                $this->page->id,
+                $this->page->toElasticFormat()
+            );
             $this->page->addToFeed(Model_Feed_Pages::ALL);
         }
 
@@ -225,6 +241,14 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             /** Delete post from public's wall */
             $this->vkWall()->delete();
             /***/
+
+            /**
+             * Delete page from Elastic db
+             */
+            $this->elastic->delete(
+                Model_Page::ELASTIC_TYPE,
+                $this->page->id
+            );
 
             $this->ajax_response = [
                 'success' => 1,

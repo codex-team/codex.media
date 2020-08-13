@@ -90,6 +90,9 @@ class Controller_Base_preDispatch extends Controller_Template
         $this->memcache = $memcache = Cache::instance('memcacheimp');
         View::set_global('memcache', $memcache);
 
+        /** Elastic */
+        $this->elastic = new Model_Elastic();
+
         /** Session */
         $this->session = Session::instance();
 
