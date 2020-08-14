@@ -1,8 +1,7 @@
-<?php defined('SYSPATH') OR die('No direct access allowed.');
+<?php defined('SYSPATH') or die('No direct access allowed.');
 
-return array
-(
-    'host'     => 'elasticsearch',
-    'port'     => '9200',
-    'index'    => 'codex-media'
-);
+return [
+    'host' => 'elasticsearch',
+    'port' => '9200',
+    'index' => 'codex-media'
+];

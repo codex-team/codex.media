@@ -583,6 +583,8 @@ class OAuthServer
     /**
      * process a request_token request
      * returns the request token on success
+     *
+     * @param mixed $request
      */
     public function fetch_request_token(&$request)
     {
@@ -605,6 +607,8 @@ class OAuthServer
     /**
      * process an access_token request
      * returns the access token on success
+     *
+     * @param mixed $request
      */
     public function fetch_access_token(&$request)
     {
@@ -626,6 +630,8 @@ class OAuthServer
 
     /**
      * verify an api call, checks all the parameters
+     *
+     * @param mixed $request
      */
     public function verify_request(&$request)
     {
@@ -641,6 +647,8 @@ class OAuthServer
 
     /**
      * version 1
+     *
+     * @param mixed $request
      */
     private function get_version(&$request)
     {
@@ -659,6 +667,8 @@ class OAuthServer
 
     /**
      * figure out the signature with some defaults
+     *
+     * @param mixed $request
      */
     private function get_signature_method(&$request)
     {
@@ -685,6 +695,8 @@ class OAuthServer
 
     /**
      * try to find the consumer for the provided request's consumer key
+     *
+     * @param mixed $request
      */
     private function get_consumer(&$request)
     {
@@ -706,6 +718,7 @@ class OAuthServer
      *
      * @param mixed $consumer
      * @param mixed $token_type
+     * @param mixed $request
      */
     private function get_token(&$request, $consumer, $token_type = "access")
     {
@@ -726,6 +739,7 @@ class OAuthServer
      *
      * @param mixed $consumer
      * @param mixed $token
+     * @param mixed $request
      */
     private function check_signature(&$request, $consumer, $token)
     {

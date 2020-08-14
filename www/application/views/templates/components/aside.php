@@ -32,7 +32,7 @@
     <div class="mobile-menu-holder" id="js-mobile-menu-holder">
 
         <? if ($user->id): ?>
-            <?= View::factory('templates/components/user_panel', array('showAuth' => false))->render(); ?>
+            <?= View::factory('templates/components/user_panel', ['showAuth' => false])->render(); ?>
         <? endif ?>
 
         <? /* Email confirmation */ ?>

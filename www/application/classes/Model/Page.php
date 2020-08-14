@@ -1,7 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-use \EditorJS\EditorJS;
-use \EditorJS\EditorJSException;
+use EditorJS\EditorJS;
 
 class Model_Page extends Model
 {
@@ -12,7 +11,7 @@ class Model_Page extends Model
     public $author;
     public $id_parent = 0;
     public $type = self::PAGE;
-    public $options = array();
+    public $options = [];
 
     /**
      * Page cover URL
@@ -289,8 +288,10 @@ class Model_Page extends Model
 
     /**
      * Gets config for CodeX Editor, containing rules for validation Editor Tools data
-     * @return string - Editor's config data
+     *
      * @throws Exceptions_ConfigMissedException - Failed to get Editorjs config data
+     *
+     * @return string - Editor's config data
      */
     public static function getEditorConfig()
     {
@@ -515,10 +516,14 @@ class Model_Page extends Model
      *
      * For example, 'short_description' for community page type,
      * 'event_date' and 'is_paid' for events
+     *
+     * @param mixed $key
+     * @param mixed $value
      */
 
     /**
      * Insert page option value into database
+     *
      * @param $key
      * @param $value
      */
@@ -534,6 +539,7 @@ class Model_Page extends Model
 
     /**
      * Update page option database value
+     *
      * @param string $key
      * @param string $value
      */
@@ -549,9 +555,11 @@ class Model_Page extends Model
 
     /**
      * Remove from database page option with specific key
+     *
      * @param string $key
      */
-    public function removePageOption($key) {
+    public function removePageOption($key)
+    {
         Dao_PageOptions::delete()
             ->where('page_id', '=', $this->id)
             ->where('key', '=', $key)
@@ -561,7 +569,9 @@ class Model_Page extends Model
 
     /**
      * Check if page option record with specific key exists
+     *
      * @param string $key
+     *
      * @return bool
      */
     public function pageOptionExists($key)
@@ -570,6 +580,7 @@ class Model_Page extends Model
             ->where('page_id', '=', $this->id)
             ->where('key', '=', $key)
             ->execute();
+
         return (bool) $result;
     }
 
@@ -599,7 +610,9 @@ class Model_Page extends Model
 
     /**
      * Create object with page options from database row
+     *
      * @param resource $page_options Page options data from the database
+     *
      * @return Model_Page
      */
     public function setPageOptions($page_options)
@@ -607,7 +620,7 @@ class Model_Page extends Model
         /**
          * Initialize empty array to store page options
          */
-        $data = array();
+        $data = [];
 
         if (empty($page_options)) {
             return $this;
@@ -628,8 +641,10 @@ class Model_Page extends Model
     /**
      * This transforms page content to store in Elastic db
      * Take paragraphs, headers and lists and glue them in search string, 'text'
-     * @return array ['title', 'text'] - page in Elastic db format
+     *
      * @throws Exception - error thrown by EditorJS vendor module
+     *
+     * @return array ['title', 'text'] - page in Elastic db format
      */
     public function toElasticFormat()
     {

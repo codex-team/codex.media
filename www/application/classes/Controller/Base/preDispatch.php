@@ -127,9 +127,10 @@ class Controller_Base_preDispatch extends Controller_Template
 
         /**
          * Exception for CodeX Editor that has own sanitize methods in vendor package
+         *
          * @var array
          */
-        $exceptionsForCodexEditor = array('content');
+        $exceptionsForCodexEditor = ['content'];
 
         foreach ($_POST as $key => $value) {
             if (is_array($value)) {

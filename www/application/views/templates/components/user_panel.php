@@ -12,7 +12,7 @@
             </a>
         </div>
     </div>
-<? elseif (empty($showAuth) || $showAuth !== false ): ?>
+<? elseif (empty($showAuth) || $showAuth !== false): ?>
     <div class="island island--padded">
         <a class="button master" href="/auth">Войти на сайт</a>
     </div>

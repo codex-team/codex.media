@@ -15,7 +15,7 @@
         default:
             $tag = 'h2';
             break;
-    };
+    }
 ?>
 
 <!-- Create block tag -->

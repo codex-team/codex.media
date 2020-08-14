@@ -73,6 +73,9 @@ class Model_Feed_Pages extends Model_Feed_Abstract
      *
      * @param int limit
      * @param int offset
+     * @param mixed $limit
+     * @param mixed $offset
+     *
      * @return array
      */
     public function ids($limit = 0, $offset = 0)

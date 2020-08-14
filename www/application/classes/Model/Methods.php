@@ -387,9 +387,9 @@ class Model_Methods extends Model
             return null;
         }
 
-        $pages = Dao_Pages::select(array('id', 'title', 'cover', 'id_parent'))
+        $pages = Dao_Pages::select(['id', 'title', 'cover', 'id_parent'])
             ->where_in('id', $ids)
-            ->cached(Date::MINUTE * 5, 'page:ids:' . implode('|',$ids), ['site_menu'])
+            ->cached(Date::MINUTE * 5, 'page:ids:' . implode('|', $ids), ['site_menu'])
             ->execute('id'); // ids will used as array keys
 
         /**
@@ -404,8 +404,8 @@ class Model_Methods extends Model
         /**
          * Then add leftover items as children
          */
-        $firstLevel = array_map(function($page) use ($pages)  {
-            $page['children'] = array_filter($pages, function($child) use ($page) {
+        $firstLevel = array_map(function ($page) use ($pages) {
+            $page['children'] = array_filter($pages, function ($child) use ($page) {
                 return $child['id_parent'] == $page['id'];
             });
 

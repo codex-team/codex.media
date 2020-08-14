@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-use \EditorJS\EditorJS;
+use EditorJS\EditorJS;
 
 class Task_MigrateToEditorjs2 extends Minion_Task
 {
@@ -27,7 +27,7 @@ class Task_MigrateToEditorjs2 extends Minion_Task
         /**
          * List of pages to be converted
          */
-        $newPagesContent = array();
+        $newPagesContent = [];
 
         /**
          * For each page we need to convert its content to keep up
@@ -127,6 +127,7 @@ class Task_MigrateToEditorjs2 extends Minion_Task
      * Convert page's content
      *
      * @param stdClass $oldContent - old page's content
+     *
      * @return false|string - new encoded content
      */
     private function convertContent($oldContent)
@@ -134,9 +135,9 @@ class Task_MigrateToEditorjs2 extends Minion_Task
         /**
          * Converted data
          */
-        $newContent = array(
-            'blocks' => array()
-        );
+        $newContent = [
+            'blocks' => []
+        ];
 
         /**
          * Convert each block
@@ -157,6 +158,7 @@ class Task_MigrateToEditorjs2 extends Minion_Task
      * Convert block's params
      *
      * @param stdClass $oldBlock - old block's data
+     *
      * @return array - converted block's data
      */
     private function convertBlock($oldBlock)
@@ -169,55 +171,55 @@ class Task_MigrateToEditorjs2 extends Minion_Task
              * Paragraph - https://github.com/editor-js/paragraph#output-data
              */
             case 'paragraph':
-                $data = array(
+                $data = [
                     'text' => $data->text,
-                );
+                ];
                 break;
 
             /**
              * Header - https://github.com/editor-js/header#output-data
              */
             case 'header':
-                $data = array(
+                $data = [
                     'text' => $data->text,
                     'level' => substr($data->{'heading-styles'}, -1)
-                );
+                ];
                 break;
 
             /**
              * List - https://github.com/editor-js/list#output-data
              */
             case 'list':
-                $data = array(
+                $data = [
                     'style' => $data->type == 'OL' ? 'ordered' : 'unordered',
                     'items' => $data->items
-                );
+                ];
                 break;
 
             /**
              * Image - https://github.com/editor-js/image#output-data
              */
             case 'image':
-                $data = array(
-                    'file' => array(
+                $data = [
+                    'file' => [
                         'url' => $data->url,
                         'width' => $data->width,
                         'height' => $data->height
-                    ),
+                    ],
                     'caption' => $data->caption,
                     'withBorder' => $data->border,
                     'withBackground' => $data->background,
                     'stretched' => $data->isstretch,
-                );
+                ];
                 break;
 
             /**
              * Code - https://github.com/editor-js/code#output-data
              */
             case 'code':
-                $data = array(
-                    'code' =>$data->text
-                );
+                $data = [
+                    'code' => $data->text
+                ];
                 break;
 
             /**
@@ -225,20 +227,20 @@ class Task_MigrateToEditorjs2 extends Minion_Task
              */
             case 'raw':
                 $type = 'rawTool';
-                $data = array(
+                $data = [
                     'html' => $data->raw
-                );
+                ];
                 break;
 
             /**
              * Quote - https://github.com/editor-js/quote#output-data
              */
             case 'quote':
-                $data = array(
+                $data = [
                     'text' => $data->text,
                     'caption' => $data->cite || '',
                     'alignment' => 'left'
-                );
+                ];
                 break;
 
             /**
@@ -246,58 +248,59 @@ class Task_MigrateToEditorjs2 extends Minion_Task
              */
             case 'link':
                 $type = 'linkTool';
-                $data = array(
+                $data = [
                     'link' => $data->linkUrl,
-                    'meta' => array(
+                    'meta' => [
                         'title' => $data->title,
                         'linkText' => $data->linkText,
                         'description' => $data->description,
                         'image' => $data->image
-                    )
-                );
+                    ]
+                ];
                 break;
 
             /**
              * Personality - https://github.com/editor-js/personality#output-data
              */
             case 'personality':
-                $data = array(
+                $data = [
                     'name' => $data->name,
                     'description' => $data->cite,
                     'link' => $data->url,
                     'photo' => $data->photo ?: ''
-                );
+                ];
                 break;
 
             /**
              * Attaches - https://github.com/editor-js/attaches#output-data
              */
             case 'attaches':
-                $data = array(
-                    'file' => array(
+                $data = [
+                    'file' => [
                         'url' => $data->url,
                         'size' => $data->size,
                         'name' => $data->name,
                         'extension' => $data->extension
-                    ),
+                    ],
                     'title' => $data->title
-                );
+                ];
                 break;
 
             default:
                 throw new Error('Undefined block type: ' . $type);
         }
 
-        return array(
+        return [
             'type' => $type,
             'data' => $data
-        );
+        ];
     }
 
     /**
      * Create an EditorJS class to check for errors in content
      *
      * @param string $contentString - article's data
+     *
      * @throws Exceptions_ConfigMissedException
      * @throws \EditorJS\EditorJSException
      */
@@ -310,8 +313,9 @@ class Task_MigrateToEditorjs2 extends Minion_Task
     /**
      * Get EditorJS config
      *
-     * @return false|string - EditorJs config data
      * @throws Exceptions_ConfigMissedException
+     *
+     * @return false|string - EditorJs config data
      */
     private function getEditorConfig()
     {
