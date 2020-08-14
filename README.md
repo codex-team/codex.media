@@ -1,8 +1,10 @@
 # CodeX Media
 
-Open source platform for building UGC media
+Open source platform for building UGC media.
 
-https://codex.so/media
+Build your own community via pages, personal blogs and comments. Powered by [Editor.js](https://editorjs.io).
+
+[codex.so/media](https://codex.so/media)
 
 ![](docs/assets/readme/01-main-page.png)
 
@@ -30,7 +32,7 @@ Know how to fix any bugs? Open a pull request with changes.
 
 We are glad to introduce a couple of sites that are pleasured to use CodeX Media engine.
 
-- https://school332.ru — School 332 — Saint-Petersburg, Russia
-- https://school181.ru — School 181 — Saint-Petersburg, Russia
+- https://school332.ru — School №332 — Saint-Petersburg, Russia
+- https://school181.ru — School №181 — Saint-Petersburg, Russia
 
 Join this list! For any help you can write to us [team@codex.so](mailto:team@codex.so)
