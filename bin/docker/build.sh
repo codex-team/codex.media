@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Building codex.media..."
+
 BASEDIR=$(dirname "$0")
 
 ENV=prod
