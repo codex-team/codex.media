@@ -78,6 +78,8 @@ class Model_Page extends Model
     const COMMUNITY = 4;
     const EVENT = 5;
 
+    const ELASTIC_TYPE = 'page';
+
     private $modelCacheKey;
 
     public function __construct($id = 0)
@@ -621,5 +623,38 @@ class Model_Page extends Model
         $this->options = $data;
 
         return $this;
+    }
+
+    /**
+     * This transforms page content to store in Elastic db
+     * Take paragraphs, headers and lists and glue them in search string, 'text'
+     * @return array ['title', 'text'] - page in Elastic db format
+     * @throws Exception - error thrown by EditorJS vendor module
+     */
+    public function toElasticFormat()
+    {
+        $text = [];
+        /** Use $this->getBlocks() to rebuild 'blocks' from fresh 'content' */
+        foreach ($this->getBlocks() as $content_block) {
+            switch ($content_block['type']) {
+                case 'list':
+                    array_push(
+                        $text,
+                        implode("\n", $content_block['data']['items'])
+                    );
+                    break;
+                case 'paragraph':
+                case 'header':
+                    array_push($text, $content_block['data']['text']);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return [
+            'title' => $this->title,
+            'text' => empty($text) ? "" : implode("\n", $text)
+        ];
     }
 }
