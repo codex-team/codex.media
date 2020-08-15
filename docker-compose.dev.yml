@@ -3,8 +3,9 @@ services:
   mysql:
     image: 'mysql:5.7'
     volumes:
-      - ./dump/mysql:/dump
-      - mysqldata:/var/lib/mysql
+      - './dump/mysql:/dump'
+      - './www/migrations/!_codex-media.sql:/docker-entrypoint-initdb.d/codex-media.sql'
+      - 'mysqldata:/var/lib/mysql'
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
