@@ -19,7 +19,7 @@ return array
 			 * Ports and sockets may be appended to the hostname.
 			 */
 			'hostname'   => 'mysql',
-			'database'   => 'codex-media',
+			'database'   => 'codexmedia',
 			'username'   => 'root',
 			'password'   => 'root_password',
 			'persistent' => FALSE,

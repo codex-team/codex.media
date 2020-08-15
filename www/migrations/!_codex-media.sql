@@ -20,7 +20,6 @@ SET time_zone = "+00:00";
 -- Database: `codex-media`
 --
 
-CREATE DATABASE `codex-media`;
 
 -- --------------------------------------------------------
 
