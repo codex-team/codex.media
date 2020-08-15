@@ -54,6 +54,7 @@ echo -e "Copy database config file... \c"
 echo "OK"
 
 echo "Setting up a docker environment"
+  $BASEDIR/bin/docker/build.sh prod
   $BASEDIR/bin/docker/up.sh prod
 
   docker-compose -f $BASEDIR/docker-compose.prod.yml exec php composer install
