@@ -2,10 +2,10 @@ version: '2'
 services:
   mysql:
     image: 'mysql:5.7'
-    command: --init-file /data/application/init.sql
+    #command: --init-file /data/application/init.sql
     volumes:
       - './dump/mysql:/dump'
-      - './www/migrations/!_codex-media.sql:/data/application/init.sql'
+     # - './www/migrations/!_codex-media.sql:/data/application/init.sql'
       - 'mysqldata:/var/lib/mysql'
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
