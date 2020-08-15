@@ -71,6 +71,8 @@ class Controller_Auth_Signup extends Controller_Auth_Base
     {
         /** Check for CSRF token*/
         if (!Security::check(Arr::get($_POST, 'csrf', ''))) {
+            $this->view['signup_error_text'] = 'CSRF токен не прошел проверку';
+
             return false;
         }
 
