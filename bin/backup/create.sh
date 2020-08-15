@@ -45,7 +45,7 @@ echo -e "Getting backup files... \c"
 
   # get www/.env file
   mkdir -p $TEMPDIR/www
-  cp $BASEDIR/www/.env $TEMPDIR/www
+  cp $BASEDIR/www/.env $TEMPDIR/www/
 
   # get www/upload directory
   mkdir -p $TEMPDIR/upload

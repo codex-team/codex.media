@@ -42,7 +42,7 @@ echo -e "Putting back config files... \c"
 
   # restore www/.env file
   rm $TEMPDIR/www/.env 2>/dev/null
-  cp $TEMPDIR/www/.env $BASEDIR/www 2>/dev/null
+  cp $TEMPDIR/www/.env $BASEDIR/www/ 2>/dev/null
 
   # restore config files
   #rm $BASEDIR/www/application/config/database.php 2>/dev/null
