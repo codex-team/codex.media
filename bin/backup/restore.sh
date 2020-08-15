@@ -53,9 +53,6 @@ echo -e "Putting back config files... \c"
 
   rm $BASEDIR/www/application/config/social.php 2>/dev/null
   cp $TEMPDIR/www/application/config/social.php $BASEDIR/www/application/config/ 2>/dev/null
-
-  rm $BASEDIR/www/application/config/telegram-notification.php 2>/dev/null
-  cp $TEMPDIR/www/application/config/telegram-notification.php $BASEDIR/www/application/config/ 2>/dev/null
 echo "OK"
 
 echo -e "Putting back upload directory... \c"

@@ -56,7 +56,6 @@ echo -e "Getting backup files... \c"
   cp $BASEDIR/www/application/config/database.php $TEMPDIR/www/application/config/ 2>/dev/null
   cp $BASEDIR/www/application/config/email.php $TEMPDIR/www/application/config/ 2>/dev/null
   cp $BASEDIR/www/application/config/social.php $TEMPDIR/www/application/config/ 2>/dev/null
-  cp $BASEDIR/www/application/config/telegram-notification.php $TEMPDIR/www/application/config/ 2>/dev/null
 echo "OK"
 
 # Compress backup
