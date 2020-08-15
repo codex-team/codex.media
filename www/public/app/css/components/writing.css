@@ -21,6 +21,13 @@
     resize: none;
 }
 
+/**
+ * Hide toolbar in mini-editor
+ */
+.writing-form .writing .ce-toolbar {
+    display: none;
+}
+
 .writing--fullscreen .island {
     box-shadow: none;
 }
@@ -150,16 +157,21 @@
     margin: 0 -15px;
 
     @media (--not-mobile) {
-        padding-left: 20px;
+        margin: 0 auto;
+        max-width: var(--article-max-width);
+        padding-left: 60px;
     }
 }
 
-.editor-wrapper .ce-block__content,
 .writing-navigation,
 .writing__title-wrapper,
 .writing__actions-content {
     margin: 0 auto;
     max-width: var(--editor-max-width);
+}
+
+.ce-rawtool__textarea:focus {
+    background: #1e2128;
 }
 
 .editor-wrapper .ce-block {
