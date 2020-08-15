@@ -25,7 +25,7 @@ fi
 
 # Recreate a target directory for unpacking
 echo -e "Recreating a temp directory for backup data... \c"
-  rm -rf $TEMPDIR
+  rm -rf $TEMPDIR 2>/dev/null
   mkdir $TEMPDIR
 echo "OK"
 
@@ -37,16 +37,16 @@ echo "OK"
 # put files
 echo -e "Putting back config files... \c"
   # restore .env file
-  rm $BASEDIR/.env 2>/dev/null
-  cp $TEMPDIR/.env $BASEDIR/ 2>/dev/null
+  #rm $BASEDIR/.env 2>/dev/null
+  #cp $TEMPDIR/.env $BASEDIR/ 2>/dev/null
 
   # restore www/.env file
   rm $TEMPDIR/www/.env 2>/dev/null
   cp $TEMPDIR/www/.env $BASEDIR/www 2>/dev/null
 
   # restore config files
-  rm $BASEDIR/www/application/config/database.php 2>/dev/null
-  cp $TEMPDIR/www/application/config/database.php $BASEDIR/www/application/config/ 2>/dev/null
+  #rm $BASEDIR/www/application/config/database.php 2>/dev/null
+  #cp $TEMPDIR/www/application/config/database.php $BASEDIR/www/application/config/ 2>/dev/null
 
   rm $BASEDIR/www/application/config/email.php 2>/dev/null
   cp $TEMPDIR/www/application/config/email.php $BASEDIR/www/application/config/ 2>/dev/null

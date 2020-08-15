@@ -25,7 +25,7 @@ fileSize() {
 
 # Recreate temp directory
 echo -e "Recreating a temp file for backup... \c"
-  rm -rf $TEMPDIR
+  rm -rf $TEMPDIR 2>/dev/null
   mkdir $TEMPDIR
 echo "OK"
 
