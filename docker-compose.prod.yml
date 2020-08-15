@@ -6,7 +6,7 @@ services:
     volumes:
       - './dump/mysql:/dump'
      # - './www/migrations/!_codex-media.sql:/data/application/init.sql'
-      - 'mysqldata:/var/lib/mysql'
+      - mysqldata:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
 
