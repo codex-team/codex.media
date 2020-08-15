@@ -55,7 +55,9 @@ class Controller_Auth_Signup extends Controller_Auth_Base
                 $this->redirect(self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH);
             }
         } else {
-            echo "неуспех";
+            echo '<pre>';
+            var_dump($this->view);
+            echo '</pre>';
         }
     }
 
