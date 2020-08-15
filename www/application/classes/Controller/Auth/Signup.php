@@ -40,6 +40,8 @@ class Controller_Auth_Signup extends Controller_Auth_Base
                 'isConfirmed' => 0
             ]);
 
+            var_dump($userId);
+
             if ($userId) {
                 parent::initAuthSession($userId);
 
