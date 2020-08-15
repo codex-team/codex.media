@@ -42,7 +42,7 @@ echo -e "Setting up rights for upload directory... \c"
   chmod -R 777 $BASEDIR/www/upload
 echo "OK"
 
-echo -e "Copy database config file... \c"
+echo -e "Copy config files... \c"
   cp $BASEDIR/www/application/config/database.sample.php $BASEDIR/www/application/config/database.php
 
   if [[ $(uname) =~ Darwin|BSD ]]
@@ -51,6 +51,10 @@ echo -e "Copy database config file... \c"
   else
     sed -i "s/root_password/$GENERATED_MYSQL_PASSWORD/g" $BASEDIR/www/application/config/database.php
   fi
+
+  cp $BASEDIR/www/application/config/communities.sample.php $BASEDIR/www/application/config/communities.php
+  cp $BASEDIR/www/application/config/email.sample.php $BASEDIR/www/application/config/email.php
+  cp $BASEDIR/www/application/config/social.sample.php $BASEDIR/www/application/config/social.php
 echo "OK"
 
 echo "Setting up a docker environment"
@@ -66,4 +70,13 @@ echo "Done"
 
 echo ""
 echo "MySQL root's password: $GENERATED_MYSQL_PASSWORD"
+echo ""
+echo "Set up the rest config file by yourself:"
+echo " - ./www/application/config/communities.php"
+echo " - ./www/application/config/email.php"
+echo " - ./www/application/config/social.php"
+echo ""
+echo "Copy nginx config to run web-server:"
+echo "- ./tools/nginx.conf"
+
 
