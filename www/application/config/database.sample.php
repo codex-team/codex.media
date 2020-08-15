@@ -21,7 +21,7 @@ return array
 			'hostname'   => 'mysql',
 			'database'   => 'codex-media',
 			'username'   => 'root',
-			'password'   => '',
+			'password'   => 'root_password',
 			'persistent' => FALSE,
 		),
 		'table_prefix' => '',
