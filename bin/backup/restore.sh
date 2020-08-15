@@ -41,7 +41,7 @@ echo -e "Putting back config files... \c"
   #cp $TEMPDIR/.env $BASEDIR/ 2>/dev/null
 
   # restore www/.env file
-  rm $TEMPDIR/www/.env 2>/dev/null
+  rm $BASEDIR/www/.env 2>/dev/null
   cp $TEMPDIR/www/.env $BASEDIR/www/ 2>/dev/null
 
   # restore config files
