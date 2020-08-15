@@ -17,8 +17,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `codex-org`
+-- Database: `codex-media`
 --
+
+CREATE DATABASE `codex-media`;
 
 -- --------------------------------------------------------
 
