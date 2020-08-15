@@ -67,7 +67,7 @@ echo "OK"
 
 # restore mysql database
 echo "Restoring mysql database..."
-docker-compose -f $BASEDIR/docker-compose.prod.yml exec -T mysql /bin/bash -c "mysql -u root --password=$MYSQL_PASSWORD codexmedia" < $TEMPDIR/mysql/codex-media.sql
+docker-compose -f $BASEDIR/docker-compose.prod.yml exec -T mysql /bin/bash -c "mysql -u root --password=$MYSQL_PASSWORD codexmedia" < $TEMPDIR/mysql/codexmedia.sql
 
 # stop redis container
 docker-compose -f $BASEDIR/docker-compose.prod.yml stop redis
