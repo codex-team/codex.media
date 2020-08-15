@@ -54,8 +54,8 @@ echo -e "Copy database config file... \c"
 echo "OK"
 
 echo "Setting up a docker environment"
-  ./bin/docker/build prod
-  ./bin/docker/up prod
+  $BASEDIR/bin/docker/build.sh prod
+  $BASEDIR/bin/docker/up.sh prod
 
   docker-compose -f $BASEDIR/docker-compose.prod.yml exec php composer install
   docker-compose -f $BASEDIR/docker-compose.prod.yml exec -T mysql /bin/bash -c "mysql -u root --password=$GENERATED_MYSQL_PASSWORD codex-media" < $BASEDIR/www/migrations/\!_codex-media.sql
