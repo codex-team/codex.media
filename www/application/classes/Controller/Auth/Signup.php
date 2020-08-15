@@ -40,8 +40,6 @@ class Controller_Auth_Signup extends Controller_Auth_Base
                 'isConfirmed' => 0
             ]);
 
-            var_dump($userId);
-
             if ($userId) {
                 parent::initAuthSession($userId);
 
@@ -56,6 +54,8 @@ class Controller_Auth_Signup extends Controller_Auth_Base
                 /** Redirect user after succeeded auth */
                 $this->redirect(self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH);
             }
+        } else {
+            echo "неуспех";
         }
     }
 
