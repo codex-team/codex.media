@@ -74,5 +74,4 @@ RUN ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 RUN "date"
 
 WORKDIR /var/www/codex.media
-COPY --from=builder /var/www/codex.media/public/build /var/www/codex.media/public/build
 
