@@ -157,9 +157,7 @@
     margin: 0 -15px;
 
     @media (--not-mobile) {
-        margin: 0 auto;
-        max-width: var(--article-max-width);
-        padding-left: 60px;
+        padding-left: 20px;
     }
 }
 
@@ -203,6 +201,14 @@
 .writing-fullscreen__button svg {
     margin-right: 4px;
     margin-top: -3px;
+}
+
+.writing--fullscreen .editor-wrapper {
+    @media (--not-mobile) {
+        padding-left: 60px;
+        margin: 0 auto;
+        max-width: var(--article-max-width);
+    }
 }
 
 .writing__toggle {
