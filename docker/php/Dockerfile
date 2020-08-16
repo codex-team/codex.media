@@ -1,12 +1,6 @@
-FROM node:14.7.0-slim as builder
-
-COPY ./www/package.json ./www/yarn.lock /tmp/
-RUN cd /tmp && yarn
-COPY ./www /var/www/codex.media
-RUN cd /var/www/codex.media && mv /tmp/node_modules ./node_modules && yarn build
-
 FROM php:7.1-fpm-stretch
 
+# Update lists
 RUN apt-get update
 RUN apt-get install -y \
     git \
@@ -58,11 +52,21 @@ RUN sed -i -e 's/# ru_RU ISO-8859-5/ru_RU ISO-8859-5/' /etc/locale.gen && \
     echo "LANGUAGE=ru_RU.UTF-8" >> /etc/default/locale && \
     echo "LC_ALL=ru_RU.UTF-8" >> /etc/default/locale
 
+# Install phpMyAdmin
 RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.zip
 RUN unzip phpMyAdmin-5.0.2-all-languages.zip
 RUN mv phpMyAdmin-5.0.2-all-languages /usr/share/phpmyadmin
 RUN cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php && \
     sed -i "s/\['host'\] = 'localhost'/\['host'\] = 'mysql'/" /usr/share/phpmyadmin/config.inc.php
+
+# Install Node.js and Yarn
+RUN curl https://deb.nodesource.com/setup_14.x | bash
+RUN curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install -y nodejs yarn
+RUN echo "Node.js version: $(node --version)"
+RUN echo "NPM version: $(npm --version)"
+RUN echo "Yarn version: $(yarn --version)"
 
 # Set timezone
 RUN rm /etc/localtime

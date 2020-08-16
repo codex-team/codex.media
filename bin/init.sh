@@ -72,6 +72,11 @@ echo "Setting up a docker environment"
   # install composer dependencies
   docker-compose -f $BASEDIR/docker-compose.yml exec php composer install
 
+  # install node dependencies
+  docker-compose -f $BASEDIR/docker-compose.yml exec php yarn
+  # build public static files
+  docker-compose -f $BASEDIR/docker-compose.yml exec php yarn build
+
   # wait mysql container start
   sleep 3
 

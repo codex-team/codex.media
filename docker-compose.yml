@@ -45,8 +45,6 @@ services:
       - elasticsearch
     volumes:
       - './www:/var/www/codex.media'
-      - '/var/www/codex.media/public/build'
-      - '/usr/share'
 
   nginx:
     image: 'nginx:1.19.1-alpine'
