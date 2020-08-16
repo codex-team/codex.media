@@ -12,19 +12,19 @@ Build your own community via pages, personal blogs and comments. Powered by [Edi
 
 ![](docs/assets/readme/03-writing.png)
 
-## How to run
+## Docs
 
-Check out [deployment](docs/deployment.md) guide to run your own site on the engine.
- 
-If you want to contribute CodeX Media see [development](docs/development.md) guide. 
+- [General installation](docs/general-installation.md) — run your own site on the engine
+- [Creating and restoring backups](docs/creating-and-restoring-backups.md) — set up backups
+- [Features development](docs/features-development.md) — development tips for contributing
 
 ## Contributing
 
 This open source project is created and maintained by enthusiasts. 
 
-Feel free to report any problems to [issues](https://github.com/codex-team/codex.media/issues/new).
+Feel free to report problems to [issues](https://github.com/codex-team/codex.media/issues/new).
 
-For a new feature requesting also create an issue to discuss and prove the need. 
+For a new feature requesting also create an issue to discuss the need. 
 
 Know how to fix any bugs? Open a pull request with changes.
 

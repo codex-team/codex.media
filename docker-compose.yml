@@ -36,7 +36,7 @@ services:
 
   php:
     build:
-      dockerfile: 'docker/php/prod.Dockerfile'
+      dockerfile: 'docker/php/Dockerfile'
       context: '.'
     links:
       - mysql

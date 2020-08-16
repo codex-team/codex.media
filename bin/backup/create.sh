@@ -33,7 +33,7 @@ echo -e "Getting backup files... \c"
   # get mysql backup
   mkdir -p $TEMPDIR/mysql
   MYSQLDUMPPATH=$TEMPDIR/mysql/codexmedia.sql
-  docker-compose -f $BASEDIR/docker-compose.prod.yml exec mysql /bin/bash -c "mysqldump -u root --password=$MYSQL_PASSWORD codexmedia" > $MYSQLDUMPPATH
+  docker-compose -f $BASEDIR/docker-compose.yml exec mysql /bin/bash -c "mysqldump -u root --password=$MYSQL_PASSWORD codexmedia" > $MYSQLDUMPPATH
   tail -n +2 "$MYSQLDUMPPATH" > "$MYSQLDUMPPATH.tmp" && mv "$MYSQLDUMPPATH.tmp" "$MYSQLDUMPPATH"
 
   # get redis backup

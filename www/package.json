@@ -2,7 +2,9 @@
   "scripts": {
     "build": "npm run build_js && npm run build_css && npm run clean_prebuild",
     "build_js": "webpack --config js.webpack.config.js --mode=production",
+    "build_js:watch": "webpack --config js.webpack.config.js --mode=development --watch",
     "build_css": "webpack --config css.webpack.config.js --mode=production",
+    "build_css:watch": "webpack --config css.webpack.config.js --mode=development --watch",
     "clean_prebuild": "rm public/build/prebuild.css && rm public/build/build-css.js && rm public/build/prebuild-css.js"
   },
   "devDependencies": {

@@ -64,20 +64,20 @@ echo "OK"
 
 # restore mysql database
 echo "Restoring mysql database..."
-docker-compose -f $BASEDIR/docker-compose.prod.yml exec -T mysql /bin/bash -c "mysql -u root --password=$MYSQL_PASSWORD codexmedia" < $TEMPDIR/mysql/codexmedia.sql
+docker-compose -f $BASEDIR/docker-compose.yml exec -T mysql /bin/bash -c "mysql -u root --password=$MYSQL_PASSWORD codexmedia" < $TEMPDIR/mysql/codexmedia.sql
 
 # stop redis container
-docker-compose -f $BASEDIR/docker-compose.prod.yml stop redis
+docker-compose -f $BASEDIR/docker-compose.yml stop redis
 # import redis db
 echo "Restoring redis database..."
 rm $BASEDIR/dump/redis/dump.rdb
 cp $TEMPDIR/redis/dump.rdb $BASEDIR/dump/redis/
 # start redis container
-docker-compose -f $BASEDIR/docker-compose.prod.yml start redis
+docker-compose -f $BASEDIR/docker-compose.yml start redis
 
 echo "Restarting memcached container..."
 # reload memcached container
-docker-compose -f $BASEDIR/docker-compose.prod.yml restart memcached
+docker-compose -f $BASEDIR/docker-compose.yml restart memcached
 
 echo ""
 echo "Backup $ARCHIVE has been restored successfully"
