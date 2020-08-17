@@ -47,7 +47,6 @@ services:
       - redis
       - mysql
       - elasticsearch
-      - nginx
     links:
       - mysql
       - memcached
