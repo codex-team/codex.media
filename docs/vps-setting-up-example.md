@@ -51,7 +51,7 @@ Building public files requests at least 1 GB RAM (2 GB of course will be better)
 If your VPS has not enough memory then create a swap partition.
 
 ```bash
-fallocate -l 1G /swapfile
+fallocate -l 2G /swapfile
 chmod 600 /swapfile
 mkswap /swapfile
 swapon /swapfile
@@ -60,13 +60,13 @@ echo "/swapfile swap swap defaults 0 0" > /etc/fstab
 
 You can find any other guide for a swap partition creating.
 
-Check result vie `free` command. For example we have 500 MB RAM and 1 GB swap:
+Check result vie `free` command. For example we have 500 MB RAM and 2 GB swap:
 
 ```bash
 root@stormy-zimba:~# free
               total        used        free      shared  buff/cache   available
 Mem:         489444      222836       16384         396      250224      252020
-Swap:       1048572      312124      736448
+Swap:       2097148     1434156      662992
 ``` 
 
 ### Initialize the project
@@ -110,7 +110,7 @@ server {
 For a fresh VPS you can use the following command to copy and use config file.
 
 ```bash
-rm /etc/nginx/sites-available/default
+rm /etc/nginx/sites-enabled/default
 cp tools/nginx.conf /etc/nginx/sites-available/codex-media.conf
 ln -s /etc/nginx/sites-available/codex-media.conf /etc/nginx/sites-enabled/codex-media.conf
 ```
