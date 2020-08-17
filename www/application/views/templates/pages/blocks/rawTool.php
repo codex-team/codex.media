@@ -1,1 +1,1 @@
-<?= $block['html']; ?>
+<?= $block['html'];

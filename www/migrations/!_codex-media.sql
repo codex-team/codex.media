@@ -17,8 +17,9 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `codex-org`
+-- Database: `codex-media`
 --
+
 
 -- --------------------------------------------------------
 
@@ -70,7 +71,7 @@ CREATE TABLE `pages` (
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0 - show, 1 - hide , 2 - removed',
   `id_parent` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL,
-  `content` text,
+  `content` longtext,
   `cover` varchar(255) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `author` int(10) UNSIGNED NOT NULL,

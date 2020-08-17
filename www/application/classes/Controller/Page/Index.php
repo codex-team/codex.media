@@ -165,8 +165,7 @@ class Controller_Page_Index extends Controller_Base_preDispatch
             /**
              * Insert page options depending on page type
              */
-            switch ($page->type)
-            {
+            switch ($page->type) {
                 case Model_Page::COMMUNITY:
                     $page->options['short_description'] = Arr::get($_POST, 'short_description');
                     break;

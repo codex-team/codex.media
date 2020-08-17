@@ -7,7 +7,7 @@ return [
         'compression' => false,              // Use Zlib compression (can cause issues with integers)
         'servers' => [
             'local' => [
-                'host' => 'localhost',  // Memcache Server
+                'host' => 'memcached',  // Memcache Server
                 'port' => 11211,        // Memcache port number
                 'persistent' => false,        // Persistent connection
                 'weight' => 1,

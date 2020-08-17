@@ -1,5 +1,5 @@
 <?
-    $classes = array();
+    $classes = [];
     if (!empty($block['stretched']) && $block['stretched'] == 'true') {
         $classes[] = 'article-image--stretched';
     }

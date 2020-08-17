@@ -225,9 +225,9 @@ class Controller_Parser extends Controller_Base_preDispatch
          * Make external request
          * Use Kohana Native Request Factory
          */
-        $request = Request::factory($URL, array(
+        $request = Request::factory($URL, [
             'follow' => true
-        ))
+        ])
             ->execute();
 
         if ($request->status() != '200') {
@@ -235,12 +235,12 @@ class Controller_Parser extends Controller_Base_preDispatch
             goto finish;
         } else {
             $htmlContent = $request->body();
-            $response = array(
+            $response = [
                 'meta' => array_merge(
                     $this->getLinkInfo($URL),
                     $this->getMetaFromHTML($htmlContent)
                 )
-            );
+            ];
 
             if (!trim($response['meta']['title']) && !trim($response['meta']['description'])) {
                 $response['message'] = 'Данные не найдены';

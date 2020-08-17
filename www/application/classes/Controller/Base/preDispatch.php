@@ -127,9 +127,10 @@ class Controller_Base_preDispatch extends Controller_Template
 
         /**
          * Exception for CodeX Editor that has own sanitize methods in vendor package
+         *
          * @var array
          */
-        $exceptionsForCodexEditor = array('content');
+        $exceptionsForCodexEditor = ['content'];
 
         foreach ($_POST as $key => $value) {
             if (is_array($value)) {
@@ -176,7 +177,11 @@ class Controller_Base_preDispatch extends Controller_Template
 
         $redis = new Redis();
         $redis->connect($redis_host, $redis_port);
-        $redis->auth($redis_pass);
+
+        if ($redis_pass != '') {
+            $redis->auth($redis_pass);
+        }
+
         $redis->select($redis_db);
 
         return $redis;

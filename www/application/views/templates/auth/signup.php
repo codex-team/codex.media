@@ -76,5 +76,12 @@
             });
         <? endforeach; ?>
     <? endif; ?>
+
+    <? if (!empty($signup_error_text)): ?>
+        codex.alerts.show({
+            type: 'error',
+            message: '<?= $signup_error_text ?>'
+        });
+    <? endif; ?>
 </script>
 

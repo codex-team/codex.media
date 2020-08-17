@@ -18,10 +18,10 @@ return array
 			 *
 			 * Ports and sockets may be appended to the hostname.
 			 */
-			'hostname'   => '127.0.0.1',
-			'database'   => 'codex-media',
+			'hostname'   => 'mysql',
+			'database'   => 'codexmedia',
 			'username'   => 'root',
-			'password'   => '',
+			'password'   => 'root_password',
 			'persistent' => FALSE,
 		),
 		'table_prefix' => '',

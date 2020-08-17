@@ -7,7 +7,8 @@ class Model_Elastic extends Model
     private $client;
     public $index;
 
-    public function __construct() {
+    public function __construct()
+    {
         $elastic_config = Kohana::$config->load('elastic');
 
         $elastic_host = Arr::get($elastic_config, 'host', 'elasticsearch');
@@ -27,7 +28,8 @@ class Model_Elastic extends Model
      * @param $id - entity id
      * @param $entity - entity content to store
      */
-    public function create($type, $id, $entity) {
+    public function create($type, $id, $entity)
+    {
         $this->client->index([
             'index' => $this->index,
             'type' => $type,
@@ -39,13 +41,15 @@ class Model_Elastic extends Model
     /**
      * @param $type - entity type (table in elastic db)
      * @param $id - entity id
+     *
      * @return array - found entity with provided id
      */
-    public function get($type, $id) {
+    public function get($type, $id)
+    {
         return $this->client->get([
             'index' => $this->index,
             'type' => $type,
-            'id'    => $id
+            'id' => $id
         ]);
     }
 
@@ -53,7 +57,8 @@ class Model_Elastic extends Model
      * @param $type - entity type (table in elastic db)
      * @param $id - entity id to delete
      */
-    public function delete($type, $id) {
+    public function delete($type, $id)
+    {
         $this->client->delete([
             'index' => $this->index,
             'type' => $type,
@@ -66,22 +71,25 @@ class Model_Elastic extends Model
      * @param $id - entity id
      * @param $entity - entity content to update
      */
-    public function update($type, $id, $entity) {
+    public function update($type, $id, $entity)
+    {
         $this->delete($type, $id);
         $this->create($type, $id, $entity);
     }
 
     /**
      * This deletes all entities of specified type
+     *
      * @param $type - entity type (table in elastic db)
      */
-    public function deleteAllOfType($type) {
+    public function deleteAllOfType($type)
+    {
         $this->client->deleteByQuery([
             'index' => $this->index,
             'type' => $type,
             'body' => [
                 'query' => [
-                    'match_all' => (object)[]
+                    'match_all' => (object) []
                 ]
             ]
         ]);

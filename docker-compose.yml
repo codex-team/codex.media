@@ -2,51 +2,27 @@ version: '2'
 services:
   mysql:
     image: 'mysql:5.7'
-    ports:
-      - '3306:3306'
+    restart: always
+    volumes:
+      - './dump/mysql:/dump'
+      - mysqldata:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+
   memcached:
-    image: 'memcached:alpine'
-    ports:
-      - '11211:11211'
+    restart: always
+    image: 'memcached:1.6.6-alpine'
+
   redis:
-    image: 'redis:alpine'
-    ports:
-      - '6379:6379'
-  php:
-    build: docker/php
-    links:
-      - mysql
-      - memcached
-      - redis
+    image: 'redis:6.0.5-alpine'
+    restart: always
+    command: ["redis-server", "--save 900 1", "--save 300 10", "--save 60 10000"]
     volumes:
-      - './www:/var/www/codex.media'
-  nginx:
-    image: 'nginx:latest'
-    ports:
-      - '8090:8080'
-    links:
-      - php
-    volumes:
-      - './docker/nginx-codex.conf:/etc/nginx/conf.d/codex.conf'
-    volumes_from:
-      - php
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    links:
-      - mysql
-    ports:
-      - '8091:80'
-    environment:
-      PMA_ARBITRARY: 1
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
+      - ./dump/redis:/data
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
-    container_name: elasticsearch
+    image: 'elasticsearch:7.4.0'
+    restart: always
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
@@ -61,10 +37,37 @@ services:
       - IPC_LOCK
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
+
+  php:
+    build:
+      dockerfile: 'docker/php/Dockerfile'
+      context: '.'
+    restart: always
+    depends_on:
+      - redis
+      - mysql
+      - elasticsearch
+    links:
+      - mysql
+      - memcached
+      - redis
+      - elasticsearch
+    volumes:
+      - './www:/var/www/codex.media'
+
+  nginx:
+    image: 'nginx:1.19.1-alpine'
+    restart: always
     ports:
-      - 9200:9200
-      - 9300:9300
+      - "127.0.0.1:${APP_PORT}:8080"
+    links:
+      - php
+    volumes:
+      - './docker/codex-media.conf:/etc/nginx/conf.d/codex.conf'
+    volumes_from:
+      - php
 
 volumes:
+  mysqldata:
   elasticsearch-data:
     driver: local

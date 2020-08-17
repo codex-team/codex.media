@@ -1,29 +1,12 @@
 {
-  "name": "codex.media",
-  "version": "1.1.0",
-  "description": "Open platform for organizations",
-  "main": "index.js",
   "scripts": {
     "build": "npm run build_js && npm run build_css && npm run clean_prebuild",
     "build_js": "webpack --config js.webpack.config.js --mode=production",
+    "build_js:watch": "webpack --config js.webpack.config.js --mode=development --watch",
     "build_css": "webpack --config css.webpack.config.js --mode=production",
+    "build_css:watch": "webpack --config css.webpack.config.js --mode=development --watch",
     "clean_prebuild": "rm public/build/prebuild.css && rm public/build/build-css.js && rm public/build/prebuild-css.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/codex-team/codex.media.git"
-  },
-  "keywords": [
-    "codex",
-    "organizations",
-    "education"
-  ],
-  "author": "CodeX Team",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/codex-team/codex.media/issues"
-  },
-  "homepage": "https://github.com/codex-team/codex.media#readme",
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",

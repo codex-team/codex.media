@@ -54,6 +54,10 @@ class Controller_Auth_Signup extends Controller_Auth_Base
                 /** Redirect user after succeeded auth */
                 $this->redirect(self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH);
             }
+        } else {
+            echo '<pre>';
+            var_dump($this->view);
+            echo '</pre>';
         }
     }
 
@@ -71,6 +75,8 @@ class Controller_Auth_Signup extends Controller_Auth_Base
     {
         /** Check for CSRF token*/
         if (!Security::check(Arr::get($_POST, 'csrf', ''))) {
+            $this->view['signup_error_text'] = 'CSRF токен не прошел проверку';
+
             return false;
         }
 

@@ -37,12 +37,12 @@
 </div>
 
 <? if ($next_page): ?>
-    <a class="button button--load-more island island--padded island--centered island--stretched" href="/<?= $page_number + 1 ?>" data-module="appender">
+    <a class="button button--load-more island island--padded island--centered island--stretched" href="/<?= $active_tab ?>/<?= $page_number + 1 ?>" data-module="appender">
         Показать больше записей
         <module-settings hidden>
             {
                 "currentPage" : "<?= $page_number ?>",
-                "url" : "<?= $active_tab ? "/" . $active_tab . "/" : "/" ?>",
+                "url" : "<?= "/" . $active_tab . "/" ?>",
                 "targetBlockId" : "list_of_news",
                 "autoLoading" : "true",
                 "dontWaitFirstClick" : "true"

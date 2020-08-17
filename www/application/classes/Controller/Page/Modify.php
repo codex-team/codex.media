@@ -69,7 +69,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                 $this->page->toElasticFormat()
             );
 
-            switch ($old_page_type){
+            switch ($old_page_type) {
 
                 case Model_Page::PAGE:
                     break;
@@ -91,7 +91,6 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                 default:
                     break;
             }
-
         } else {
             $this->page = $this->page->insert();
             /**
@@ -105,7 +104,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
             $this->page->addToFeed(Model_Feed_Pages::ALL);
         }
 
-        switch ($this->page->type){
+        switch ($this->page->type) {
 
             case Model_Page::PAGE:
                 break;
@@ -129,7 +128,6 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
         }
 
         if ($this->page->author->isTeacher()) {
-
             if (!$this->page->author->isAdmin() || $this->page->type == Model_Page::BLOG) {
                 $this->page->addToFeed(Model_Feed_Pages::TEACHERS);
             }
@@ -360,7 +358,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
          * @type string $possible_page_options[]['compatible_page_type'] Type of page to which option can be added
          */
 
-        $possible_page_options = array(
+        $possible_page_options = [
             [
                 'name' => 'short_description',
                 'value' => Arr::get($_POST, 'short_description'),
@@ -376,7 +374,7 @@ class Controller_Page_Modify extends Controller_Base_preDispatch
                 'value' => Arr::get($_POST, 'is_paid'),
                 'compatible_page_type' => Model_Page::EVENT
             ]
-        );
+        ];
 
         /**
          * Add options to pages
