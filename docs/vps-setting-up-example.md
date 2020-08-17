@@ -82,7 +82,7 @@ Initialize project
 
 ```bash
 cd codex.media
-./bin/init
+./bin/init.sh
 ```
 
 For the setting up the rest config files read [deployment guide](general-installation.md).
