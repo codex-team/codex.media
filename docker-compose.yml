@@ -19,6 +19,7 @@ services:
 
   elasticsearch:
     image: 'elasticsearch:7.4.0'
+    restart: always
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
@@ -38,6 +39,10 @@ services:
     build:
       dockerfile: 'docker/php/Dockerfile'
       context: '.'
+    depends_on:
+      - redis
+      - mysql
+      - elasticsearch
     links:
       - mysql
       - memcached
