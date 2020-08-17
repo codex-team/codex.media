@@ -2,6 +2,7 @@
  * Article page styles
  */
 .article {
+    @apply --entry-column-width;
     margin-bottom: var(--islandMargin);
     padding: 30px 45px;
 
