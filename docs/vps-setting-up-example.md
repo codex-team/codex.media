@@ -46,7 +46,7 @@ chmod +x /usr/local/bin/docker-compose
 
 ### Create a swap partition
 
-Building public files requests at least 1 GB RAM.
+Building public files requests at least 1 GB RAM (2 GB of course will be better).
 
 If your VPS has not enough memory then create a swap partition.
 
