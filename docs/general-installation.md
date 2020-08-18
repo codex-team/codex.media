@@ -116,3 +116,46 @@ Changes will be applied in 5 minutes because of caching to reduce the database l
 ## Backups 
  
 Read: [Creating and restoring backups](creating-and-restoring-backups.md)
+
+## Apply updates
+
+To upgrade the project on your server follow the deploy steps on [releases page](https://github.com/codex-team/codex.media/releases).
+
+### Example
+
+Usually you just need to pull changes and rebuild static files:
+
+```bash
+# Pull changes
+git pull
+
+# Install new node.js dependencies
+docker-compose exec php yarn
+
+# Build static files
+docker-compose exec php yarn build
+```
+
+But sometimes you also need to rebuild the containers:
+
+```bash
+# Stop containers
+./bin/docker/down.sh
+
+# Pull changes
+git pull
+
+# Build containers
+./bin/docker/build.sh
+
+# Run containers
+./bin/docker/up.sh
+
+# Install new node.js dependencies
+docker-compose exec php yarn
+
+# Build static files
+docker-compose exec php yarn build
+```
+
+You may need to apply mysql database migrations.
