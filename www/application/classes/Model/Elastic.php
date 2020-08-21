@@ -55,6 +55,32 @@ class Model_Elastic extends Model
 
     /**
      * @param $type - entity type (table in elastic db)
+     * @param $size - maximum search results to return
+     * @param $field - in what entity field to search
+     * @param $word - occurrence of what word to search
+     *
+     * @return array - search result
+     */
+    public function searchByField($type, $size, $field, $word)
+    {
+        return $this->client->search(
+            [
+                'index' => $this->index,
+                'size' => $size,
+                'type' => $type,
+                'body'  => [
+                    'query' => [
+                        'match' => [
+                            $field => '*' . $word . '*'
+                        ]
+                    ]
+                ]
+            ]
+        );
+    }
+
+    /**
+     * @param $type - entity type (table in elastic db)
      * @param $id - entity id to delete
      */
     public function delete($type, $id)

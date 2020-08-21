@@ -124,6 +124,11 @@ Route::set('CHANGE_USER_EMAIL', 'user/changeEmail')->defaults([
     'action' => 'changeEmail'
 ]);
 
+Route::set('SEARCH', 'search')->defaults([
+    'controller' => 'Search',
+    'action' => 'search'
+]);
+
 /**
  * Downloading files
  */

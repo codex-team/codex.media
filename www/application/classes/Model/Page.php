@@ -77,7 +77,11 @@ class Model_Page extends Model
     const COMMUNITY = 4;
     const EVENT = 5;
 
+    /**
+     * Elastic search related stuff
+     */
     const ELASTIC_TYPE = 'page';
+    const ELASTIC_SEARCH_FIELD = 'text';
 
     private $modelCacheKey;
 
