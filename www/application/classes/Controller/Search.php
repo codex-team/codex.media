@@ -13,14 +13,14 @@ class Controller_Search extends Controller_Base_preDispatch
         $this->response->headers('Content-Type', 'application/json; charset=utf-8');
 
         /**
-         * Perform search for specified phrase using *word* pattern
+         * Perform search for specified phrase using *query* pattern
          */
-        $word = Arr::get($_GET, 'word', '');
+        $query = htmlspecialchars(Arr::get($_GET, 'query', ''));
         $response = $this->elastic->searchByField(
             Model_Page::ELASTIC_TYPE,
             self::MAX_SEARCH_RESULTS,
             Model_Page::ELASTIC_SEARCH_FIELD,
-            $word
+            $query
         );
 
         /**

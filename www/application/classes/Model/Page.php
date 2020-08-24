@@ -78,9 +78,12 @@ class Model_Page extends Model
     const EVENT = 5;
 
     /**
-     * Elastic search related stuff
+     * Type used for Page in elastic db
      */
     const ELASTIC_TYPE = 'page';
+    /**
+     * Field in elastic db used to store searchable page content: paragraphs, headings and lists
+     */
     const ELASTIC_SEARCH_FIELD = 'text';
 
     private $modelCacheKey;
