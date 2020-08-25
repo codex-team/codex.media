@@ -12,11 +12,15 @@ class Task_Elastic extends Minion_Task
 
     protected function _execute(array $params)
     {
-        /**
-         * Perform Elastic database cleanup before MySQL -> Elastic articles conversion
-         * Delete all instances of 'page' type
-         */
-        $this->elastic->deleteAllOfType(Model_Page::ELASTIC_TYPE);
+        try {
+            /**
+             * Perform Elastic database cleanup before MySQL -> Elastic articles conversion
+             * Delete all instances of 'page' type
+             */
+            $this->elastic->deleteAllOfType(Model_Page::ELASTIC_TYPE);
+        } catch (Exception $e) {
+            Minion_CLI::write('No elastic data');
+        }
 
         /**
          * Get pages ids from database
