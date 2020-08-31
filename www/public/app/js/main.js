@@ -153,5 +153,6 @@ codex.avatarUploader = require('./modules/avatarUploader');
 codex.layout = require('./modules/layout');
 codex.pageTypeSelector = require('./modules/pageTypeSelector');
 codex.datePicker = require('./modules/datePicker');
+codex.search = require('./modules/search');
 
 module.exports = codex;
