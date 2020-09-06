@@ -2,12 +2,12 @@
 
 use EditorJS\EditorJS;
 
-class Task_03FixMissingLinkInPersonality extends Minion_Task
+class Task_03FixMissingFieldsInPersonality extends Minion_Task
 {
     /**
      * Main function to be run
      *
-     * @example ./minion 03fixmissinglinkinpersonality
+     * @example ./minion 03fixmissingfieldsinpersonality
      *
      * @param array $params
      */
@@ -34,18 +34,6 @@ class Task_03FixMissingLinkInPersonality extends Minion_Task
             try {
                 $this->validateNewContent($oldContentString);
             } catch (Exception $e) {
-                /**
-                 * Define excepted error
-                 */
-                $exceptedError = 'Not found required param `link`';
-
-                /**
-                 * For other errors skip article
-                 */
-                if ($e->getMessage() != $exceptedError) {
-                    return;
-                }
-
                 echo "Article " . $page['id'] . " needs to be fixed. Converting... ";
 
                 /**
@@ -61,9 +49,9 @@ class Task_03FixMissingLinkInPersonality extends Minion_Task
                 $this->validateNewContent($newContentString);
 
                 Dao_Pages::update()
-                ->where('id', '=', $page['id'])
-                ->set('content', $newContentString)
-                ->execute();
+                    ->where('id', '=', $page['id'])
+                    ->set('content', $newContentString)
+                    ->execute();
 
                 echo "Ok\n";
             }
@@ -117,10 +105,10 @@ class Task_03FixMissingLinkInPersonality extends Minion_Task
 
         if ($type == 'personality') {
             $data = [
-                'name' => $data->name,
-                'description' => $data->description,
-                'link' => '',
-                'photo' => $data->photo
+                'name' => isset($data->name) ? $data->name : '',
+                'description' => isset($data->description) ? $data->description : '',
+                'link' => isset($data->link) ? $data->link : '',
+                'photo' => isset($data->photo) ? $data->photo : ''
             ];
         }
 

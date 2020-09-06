@@ -977,10 +977,10 @@
   resolved "https://registry.yarnpkg.com/@editorjs/marker/-/marker-1.2.2.tgz#d9261a257436bf70179c0fa1e766ab85c823c96b"
   integrity sha512-BN/IHbVKKahGnMAiBOV5U7XUjfF6JkIkTZ6qNLxtTr7PUPM8UsJV8G8pyll9CX+XRUYYZyokA2kEBHTS4vUyyw==
 
-"@editorjs/personality@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@editorjs/personality/-/personality-2.0.1.tgz#2c83814f71703af96ee420f7355aaed464b2d5cc"
-  integrity sha512-x5ELrjfX9W4BAasBTuK0MJy9/tD/kE/fTvuxnlbYGx4lToG2mJtNkpCqL7bYZ8ChatBZPn1M6Y3EVBZRd8M2xA==
+"@editorjs/personality@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@editorjs/personality/-/personality-2.0.2.tgz#f45444f6f872bd662efdc8b3954a97401af929f9"
+  integrity sha512-CnQ15cW14bHQrjUT6qWQHJJOrTyAbTlIOeARQcQ1COU3OFWuJOmMsWFUFYpz5POMmQk30Cgi9qdFyyFfZf0asA==
 
 "@editorjs/quote@^2.3.0":
   version "2.3.0"

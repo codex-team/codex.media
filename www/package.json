@@ -23,7 +23,7 @@
     "@editorjs/link": "^2.2.1",
     "@editorjs/list": "^1.5.0",
     "@editorjs/marker": "^1.2.2",
-    "@editorjs/personality": "^2.0.1",
+    "@editorjs/personality": "^2.0.2",
     "@editorjs/quote": "^2.3.0",
     "@editorjs/raw": "^2.1.2",
     "@editorjs/table": "^1.2.2",
