@@ -16,8 +16,14 @@
         },
         "personality": {
             "name": "string",
-            "description": "string",
-            "link": "string",
+            "description": {
+                "type": "string",
+                "required": false
+            },
+            "link": {
+                "type": "string",
+                "required": false
+            },
             "photo": {
                 "type": "string",
                 "required": false
