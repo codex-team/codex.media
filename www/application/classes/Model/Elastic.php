@@ -85,11 +85,13 @@ class Model_Elastic extends Model
      */
     public function delete($type, $id)
     {
-        $this->client->delete([
-            'index' => $this->index,
-            'type' => $type,
-            'id' => $id,
-        ]);
+        try {
+            $this->client->delete([
+                'index' => $this->index,
+                'type' => $type,
+                'id' => $id,
+            ]);
+        } catch (Exception $e) {}
     }
 
     /**

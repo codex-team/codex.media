@@ -7,8 +7,8 @@ class Task_MigrateToEditorjs2 extends Minion_Task
     /**
      * Main function to be run
      *
-     * @example ./minion migratetoeditorjs2
-     * @example ./minion migratetoeditorjs2 apply
+     * @example ./minion 02migratetoeditorjs2
+     * @example ./minion 02migratetoeditorjs2 apply
      *
      * @param array $params
      */
@@ -266,7 +266,7 @@ class Task_MigrateToEditorjs2 extends Minion_Task
                 $data = [
                     'name' => $data->name,
                     'description' => $data->cite,
-                    'link' => $data->url,
+                    'link' => $data->url ?: '',
                     'photo' => $data->photo ?: ''
                 ];
                 break;
