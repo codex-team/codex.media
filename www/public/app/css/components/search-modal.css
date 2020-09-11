@@ -28,7 +28,8 @@
         }
 
         &-data {
-            padding: 10px 0;
+            padding-top: 10px;
+            max-height: 315px;
             overflow-y: scroll;
         }
     }

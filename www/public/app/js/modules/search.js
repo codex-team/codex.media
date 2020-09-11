@@ -3,9 +3,6 @@ const ajax = require('@codexteam/ajax');
 const MIN_SEARCH_LENGTH = 3;
 const SEARCH_TIMEOUT = 1000;
 
-const SEARCH_PLACEHOLDER = 'Начните вводить поисковый запрос';
-const NO_RESULTS_PLACEHOLDER = 'Ничего не найдено';
-
 const search = {
 
     elements: {
@@ -50,7 +47,8 @@ const search = {
         this.elements.modal.setAttribute('hidden', true);
         document.body.style.overflow = 'auto';
 
-        this.elements.searchResults.innerHTML = SEARCH_PLACEHOLDER;
+        this.elements.searchResults.setAttribute('hidden', true);
+        this.elements.placeholder.removeAttribute('hidden');
         this.elements.input.value = '';
 
     },
@@ -76,11 +74,7 @@ const search = {
                 this.elements.searchResults.removeAttribute('hidden');
                 this.elements.searchResults.innerHTML = response.body['html'];
 
-                this.elements.placeholder.hidden = true;
-
-            } else {
-
-                this.elements.placeholder.innerText = NO_RESULTS_PLACEHOLDER;
+                this.elements.placeholder.setAttribute('hidden', true);
 
             }
 
