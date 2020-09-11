@@ -44,7 +44,11 @@ class Controller_Search extends Controller_Base_preDispatch
 
             $search_result['html'] = View::factory(
                 'templates/pages/list',
-                array('pages' => $result, 'active_tab' => Model_Feed_Pages::ALL)
+                array(
+                    'pages' => $result,
+                    'active_tab' => Model_Feed_Pages::ALL,
+                    'emptyListMessage' => 'Ничего не найдено'
+                )
             )->render();
         } else {
             $search_result['error'] = $error;
