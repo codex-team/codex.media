@@ -35,6 +35,10 @@
 
             .post-list-item {
                 border-radius: 8px;
+
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
             }
 
             &.loading {
