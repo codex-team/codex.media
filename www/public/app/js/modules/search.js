@@ -11,6 +11,7 @@ const search = {
         input: null,
         searchResults: null,
         closer: null,
+        loader: null,
     },
 
     init: function ({elementId, closerId, inputId, resultsId, placeholderId}) {
@@ -20,6 +21,7 @@ const search = {
         this.elements.input = document.getElementById(inputId);
         this.elements.searchResults = document.getElementById(resultsId);
         this.elements.placeholder = document.getElementById(placeholderId);
+        this.elements.loader = this.createLoader();
 
     },
 
@@ -44,6 +46,16 @@ const search = {
 
     },
 
+    createLoader: function () {
+
+        const loader = document.createElement('div');
+
+        loader.classList.add('loader');
+
+        return loader;
+
+    },
+
     hide: function () {
 
         this.elements.modal.setAttribute('hidden', true);
@@ -63,6 +75,11 @@ const search = {
 
         }
 
+        this.elements.placeholder.setAttribute('hidden', true);
+        this.elements.searchResults.removeAttribute('hidden');
+        this.elements.searchResults.classList.add('loading');
+        this.elements.searchResults.appendChild(this.elements.loader);
+
         ajax.get({
             url: '/search',
             data: {
@@ -73,10 +90,8 @@ const search = {
 
             if (response.body['html']) {
 
-                this.elements.searchResults.removeAttribute('hidden');
                 this.elements.searchResults.innerHTML = response.body['html'];
-
-                this.elements.placeholder.setAttribute('hidden', true);
+                this.elements.searchResults.classList.remove('loading');
 
             }
 
