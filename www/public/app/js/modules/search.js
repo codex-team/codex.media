@@ -1,7 +1,7 @@
 const ajax = require('@codexteam/ajax');
 
 const MIN_SEARCH_LENGTH = 3;
-const SEARCH_TIMEOUT = 1000;
+const SEARCH_TIMEOUT = 500;
 
 const search = {
 
@@ -35,11 +35,11 @@ const search = {
         this.elements.closer && this.elements.closer.addEventListener('click', () => this.hide());
 
         const delayedSearch = codex.core.throttle(
-            (value) => this.search(value), SEARCH_TIMEOUT, true
+            (value) => this.search(value), SEARCH_TIMEOUT, false
         );
 
         this.elements.input && this.elements.input.addEventListener(
-            'keydown', (event) => delayedSearch(event.target.value)
+            'input', (event) => delayedSearch(event.target.value)
         );
 
     },
