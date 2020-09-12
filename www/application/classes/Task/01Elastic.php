@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Task_Elastic extends Minion_Task
+class Task_01Elastic extends Minion_Task
 {
     private $elastic;
 
