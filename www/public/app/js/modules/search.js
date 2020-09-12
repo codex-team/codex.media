@@ -13,8 +13,6 @@ const search = {
         closer: null,
     },
 
-    wait: false,
-
     init: function ({elementId, closerId, inputId, resultsId, placeholderId}) {
 
         this.elements.modal = document.getElementById(elementId);
@@ -36,8 +34,12 @@ const search = {
 
         this.elements.closer && this.elements.closer.addEventListener('click', () => this.hide());
 
+        const delayedSearch = codex.core.throttle(
+            (value) => this.search(value), SEARCH_TIMEOUT, true
+        );
+
         this.elements.input && this.elements.input.addEventListener(
-            'keydown', (event) => this.search(event.target.value)
+            'keydown', (event) => delayedSearch(event.target.value)
         );
 
     },
@@ -55,7 +57,7 @@ const search = {
 
     search: function (value) {
 
-        if (value.length < MIN_SEARCH_LENGTH || this.wait) {
+        if (value.length < MIN_SEARCH_LENGTH) {
 
             return;
 
@@ -79,10 +81,6 @@ const search = {
             }
 
         });
-
-        this.wait = true;
-
-        setTimeout(() => this.wait = false, SEARCH_TIMEOUT);
 
     }
 };
