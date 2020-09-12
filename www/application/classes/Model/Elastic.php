@@ -70,8 +70,8 @@ class Model_Elastic extends Model
                 'type' => $type,
                 'body'  => [
                     'query' => [
-                        'match' => [
-                            $field => '*' . $query . '*'
+                        'prefix' => [
+                            $field => $query
                         ]
                     ]
                 ]
