@@ -25,7 +25,7 @@ class Controller_Search extends Controller_Base_preDispatch
             $response = $this->elastic->searchByField(
                 Model_Page::ELASTIC_TYPE,
                 self::MAX_SEARCH_RESULTS,
-                Model_Page::ELASTIC_SEARCH_FIELD,
+                Model_Page::ELASTIC_SEARCH_FIELDS,
                 $query
             );
 
@@ -41,6 +41,13 @@ class Controller_Search extends Controller_Base_preDispatch
             $result = array_map(function ($item) {
                 return new Model_Page($item['_id']);
             }, $response['hits']['hits']);
+
+            /**
+             * Sort by date: display newest first
+             */
+            usort($result, function($first, $second){
+                return $first->date < $second->date;
+            });
 
             $search_result['html'] = View::factory(
                 'templates/pages/list',

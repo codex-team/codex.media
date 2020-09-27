@@ -56,12 +56,12 @@ class Model_Elastic extends Model
     /**
      * @param $type - entity type (table in elastic db)
      * @param $size - maximum search results to return
-     * @param $field - in what entity field to search
+     * @param $fields - in what entity fields to search
      * @param $query - what occurrence to search
      *
      * @return array - search result
      */
-    public function searchByField($type, $size, $field, $query)
+    public function searchByField($type, $size, $fields, $query)
     {
         return $this->client->search(
             [
@@ -70,8 +70,9 @@ class Model_Elastic extends Model
                 'type' => $type,
                 'body'  => [
                     'query' => [
-                        'prefix' => [
-                            $field => $query
+                        'simple_query_string' => [
+                            'query' => $query . '*',
+                            'fields' => $fields
                         ]
                     ]
                 ]

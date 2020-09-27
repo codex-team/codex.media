@@ -84,7 +84,7 @@ class Model_Page extends Model
     /**
      * Field in elastic db used to store searchable page content: paragraphs, headings and lists
      */
-    const ELASTIC_SEARCH_FIELD = 'text';
+    const ELASTIC_SEARCH_FIELDS = ['text', 'title'];
 
     private $modelCacheKey;
 
