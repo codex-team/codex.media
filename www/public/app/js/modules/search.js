@@ -3,18 +3,33 @@ const ajax = require('@codexteam/ajax');
 const MIN_SEARCH_LENGTH = 3;
 const SEARCH_TIMEOUT = 500;
 
-const search = {
+export default class Search {
 
-    elements: {
-        modal: null,
-        placeholder: null,
-        input: null,
-        searchResults: null,
-        closer: null,
-        loader: null,
-    },
+    constructor() {
 
-    init: function ({elementId, closerId, inputId, resultsId, placeholderId}) {
+        /**
+         * DOM elements involved in search process
+         */
+        this.elements = {
+            modal: null,
+            placeholder: null,
+            input: null,
+            searchResults: null,
+            closer: null,
+            loader: null,
+        };
+
+    }
+
+    /**
+     * Prepare DOM elements to work with
+     * @param elementId     - search modal id
+     * @param closerId      - modal close button id
+     * @param inputId       - search input id
+     * @param resultsId     - search results element id
+     * @param placeholderId - search placeholder id
+     */
+    init({elementId, closerId, inputId, resultsId, placeholderId}) {
 
         this.elements.modal = document.getElementById(elementId);
         this.elements.closer = document.getElementById(closerId);
@@ -23,9 +38,12 @@ const search = {
         this.elements.placeholder = document.getElementById(placeholderId);
         this.elements.loader = this.createLoader();
 
-    },
+    }
 
-    show: function () {
+    /**
+     * Reveals search modal to user & sets up event listeners
+     */
+    show() {
 
         if (this.elements.modal) {
 
@@ -36,7 +54,7 @@ const search = {
 
         this.elements.closer && this.elements.closer.addEventListener('click', () => this.hide());
 
-        const delayedSearch = codex.core.throttle(
+        const delayedSearch = codex.core.debounce(
             (value) => this.search(value), SEARCH_TIMEOUT, false
         );
 
@@ -44,9 +62,13 @@ const search = {
             'input', (event) => delayedSearch(event.target.value)
         );
 
-    },
+    };
 
-    createLoader: function () {
+    /**
+     * Creates loader to show while search is in progress
+     * @returns {HTMLDivElement}
+     */
+    createLoader() {
 
         const loader = document.createElement('div');
 
@@ -54,9 +76,12 @@ const search = {
 
         return loader;
 
-    },
+    };
 
-    hide: function () {
+    /**
+     * Hide modal and reset related DOM elements appearance
+     */
+    hide() {
 
         this.elements.modal.setAttribute('hidden', true);
         document.body.style.overflow = 'auto';
@@ -65,16 +90,26 @@ const search = {
         this.elements.placeholder.removeAttribute('hidden');
         this.elements.input.value = '';
 
-    },
+    };
 
-    search: function (value) {
+    /**
+     * Perform search on user input
+     * @param value
+     */
+    search(value) {
 
+        /**
+         * Don't search if input is too short
+         */
         if (value.length < MIN_SEARCH_LENGTH) {
 
             return;
 
         }
 
+        /**
+         * Adjust related DOM elements appearance
+         */
         this.elements.placeholder.setAttribute('hidden', true);
         this.elements.searchResults.removeAttribute('hidden');
         this.elements.searchResults.classList.add('loading');
@@ -88,6 +123,9 @@ const search = {
             type: ajax.contentType.FORM
         }).then(response => {
 
+            /**
+             * Show search results to user
+             */
             if (response.body['html']) {
 
                 this.elements.searchResults.innerHTML = response.body['html'];
@@ -97,7 +135,6 @@ const search = {
 
         });
 
-    }
-};
+    };
 
-module.exports = search;
+}

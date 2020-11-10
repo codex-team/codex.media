@@ -317,15 +317,15 @@ module.exports = {
     },
 
     /**
-     * Throttling method
+     * Debounce method
      * Call method after passed time
      *
-     * @param {Function} func - function that we're throttling
+     * @param {Function} func - function which call is delayed
      * @param {Number} wait - time in milliseconds
      * @param {Boolean} immediate - call now
      * @return {Function}
      */
-    throttle: function (func, wait, immediate) {
+    debounce: function (func, wait, immediate) {
 
         let timeout;
 
