@@ -1,8 +1,17 @@
 const ajax = require('@codexteam/ajax');
 
+/**
+ * Allow text search starting from the following input length
+ */
 const MIN_SEARCH_LENGTH = 3;
+/**
+ * Search debounce timeout — prevents from sending search requests during user input
+ */
 const SEARCH_TIMEOUT = 500;
 
+/**
+ * This allows the user to perform a text search on the site's articles.
+ */
 export default class Search {
 
     constructor() {
@@ -94,7 +103,7 @@ export default class Search {
 
     /**
      * Perform search on user input
-     * @param value
+     * @param value - input string to search for
      */
     search(value) {
 

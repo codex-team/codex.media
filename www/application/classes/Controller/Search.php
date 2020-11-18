@@ -36,7 +36,7 @@ class Controller_Search extends Controller_Base_preDispatch
 
         if ($success) {
             /**
-             * Return Model_Page[] to user
+             * Return pages search result to user
              */
             $result = array_map(function ($item) {
                 return new Model_Page($item['_id']);
