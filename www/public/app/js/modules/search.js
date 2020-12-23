@@ -9,6 +9,15 @@ const MIN_SEARCH_LENGTH = 3;
  */
 const SEARCH_TIMEOUT = 500;
 
+const OVERFLOW = {
+    HIDDEN: 'hidden',
+    AUTO: 'auto'
+};
+
+const CSS = {
+    loader: 'loader'
+};
+
 /**
  * This allows the user to perform a text search on the site's articles.
  */
@@ -20,6 +29,7 @@ export default class Search {
          * DOM elements involved in search process
          */
         this.elements = {
+            holder: null,
             modal: null,
             placeholder: null,
             input: null,
@@ -32,36 +42,34 @@ export default class Search {
 
     /**
      * Prepare DOM elements to work with
-     * @param elementId     - search modal id
+     * @param elementId     - search wrapper id
+     * @param modalId       - modal id
      * @param closerId      - modal close button id
      * @param inputId       - search input id
      * @param resultsId     - search results element id
      * @param placeholderId - search placeholder id
      */
-    init({elementId, closerId, inputId, resultsId, placeholderId}) {
+    init({elementId, modalId, closerId, inputId, resultsId, placeholderId}) {
 
-        this.elements.modal = document.getElementById(elementId);
+        this.elements.holder = document.getElementById(elementId);
+        this.elements.modal = document.getElementById(modalId);
         this.elements.closer = document.getElementById(closerId);
         this.elements.input = document.getElementById(inputId);
         this.elements.searchResults = document.getElementById(resultsId);
         this.elements.placeholder = document.getElementById(placeholderId);
-        this.elements.loader = this.createLoader();
+        this.elements.loader = this.makeElement('div', CSS.loader);
 
     }
 
-    /**
-     * Reveals search modal to user & sets up event listeners
-     */
-    show() {
+    toggleOverflow() {
 
-        if (this.elements.modal) {
+        const currentValue = document.body.style.overflow;
 
-            this.elements.modal.removeAttribute('hidden');
-            document.body.style.overflow = 'hidden';
+        document.body.style.overflow = (currentValue === OVERFLOW.HIDDEN) ? OVERFLOW.AUTO : OVERFLOW.HIDDEN;
 
-        }
+    }
 
-        this.elements.closer && this.elements.closer.addEventListener('click', () => this.hide());
+    addListeners() {
 
         const delayedSearch = codex.core.debounce(
             (value) => this.search(value), SEARCH_TIMEOUT, false
@@ -71,32 +79,54 @@ export default class Search {
             'input', (event) => delayedSearch(event.target.value)
         );
 
-    };
+        this.elements.closer && this.elements.closer.addEventListener('click', () => this.hide());
+
+    }
 
     /**
-     * Creates loader to show while search is in progress
-     * @returns {HTMLDivElement}
+     * Reveals search modal to user & sets up event listeners
      */
-    createLoader() {
+    show() {
 
-        const loader = document.createElement('div');
-
-        loader.classList.add('loader');
-
-        return loader;
+        this.elements.holder && this.elements.holder.removeAttribute('hidden');
+        this.toggleOverflow();
+        this.addListeners();
 
     };
+
+    makeElement(tag, classes, attributes = {}) {
+
+        const element = document.createElement(tag);
+
+        if (Array.isArray(classes)) {
+
+            element.classList.add(...classes);
+
+        } else {
+
+            element.classList.add(classes);
+
+        }
+
+        for (let key in attributes) {
+
+            element.setAttribute(key, attributes[key]);
+
+        }
+
+        return element;
+
+    }
 
     /**
      * Hide modal and reset related DOM elements appearance
      */
     hide() {
 
-        this.elements.modal.setAttribute('hidden', true);
-        document.body.style.overflow = 'auto';
+        this.elements.holder.setAttribute('hidden', true);
+        this.toggleOverflow();
 
-        this.elements.searchResults.setAttribute('hidden', true);
-        this.elements.placeholder.removeAttribute('hidden');
+        this.elements.modal.class = 'search-modal';
         this.elements.input.value = '';
 
     };
@@ -119,10 +149,8 @@ export default class Search {
         /**
          * Adjust related DOM elements appearance
          */
-        this.elements.placeholder.setAttribute('hidden', true);
-        this.elements.searchResults.removeAttribute('hidden');
-        this.elements.searchResults.classList.add('loading');
         this.elements.searchResults.appendChild(this.elements.loader);
+        this.elements.modal.classList.add('search-modal--search-in-progress');
 
         ajax.get({
             url: '/search',
@@ -138,7 +166,7 @@ export default class Search {
             if (response.body['html']) {
 
                 this.elements.searchResults.innerHTML = response.body['html'];
-                this.elements.searchResults.classList.remove('loading');
+                this.elements.modal.class = 'search-modal search-modal--search-with-results';
 
             }
 

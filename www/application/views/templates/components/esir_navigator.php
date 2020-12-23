@@ -5,7 +5,8 @@
 >
     <module-settings hidden>
         {
-        "elementId": "search-modal",
+        "elementId": "search-wrapper",
+        "modalId": "search-modal",
         "closerId": "search-exit",
         "inputId": "search-input",
         "resultsId": "search-results",
