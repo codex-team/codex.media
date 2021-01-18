@@ -83,14 +83,26 @@
             "meta": {
                 "type": "array",
                 "data": {
-                    "linkUrl": {
-                        "type": "string",
-                        "required": false
+                    "url": {
+                        "type": "string"
                     },
-                    "linkText": "string",
-                    "title": "string",
-                    "description": "string",
-                    "image": "string"
+                    "domain": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "array",
+                        "data": {
+                            "url": {
+                                "type": "string"
+                            }
+                        }
+                    }
                 }
             }
         },
