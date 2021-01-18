@@ -83,10 +83,7 @@
             "meta": {
                 "type": "array",
                 "data": {
-                    "url": {
-                        "type": "string"
-                    },
-                    "domain": {
+                    "link": {
                         "type": "string"
                     },
                     "title": {
@@ -96,12 +93,7 @@
                         "type": "string"
                     },
                     "image": {
-                        "type": "array",
-                        "data": {
-                            "url": {
-                                "type": "string"
-                            }
-                        }
+                        "type": "string"
                     }
                 }
             }
