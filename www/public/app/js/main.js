@@ -154,4 +154,8 @@ codex.layout = require('./modules/layout');
 codex.pageTypeSelector = require('./modules/pageTypeSelector');
 codex.datePicker = require('./modules/datePicker');
 
+const SearchModule = require('./modules/search').default;
+
+codex.search = new SearchModule();
+
 module.exports = codex;

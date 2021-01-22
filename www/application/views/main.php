@@ -50,6 +50,7 @@
 
     <? if (Arr::get($_SERVER, 'ENABLE_GOV_SITE_WIDGET')): ?>
         <?= View::factory('templates/components/esir_navigator')->render(); ?>
+        <?= View::factory('templates/components/search')->render(); ?>
     <? endif ?>
 
     <? if (empty($hideBranding)): ?>

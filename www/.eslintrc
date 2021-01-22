@@ -76,6 +76,7 @@
         "XMLHttpRequest": true,
         "ActiveXObject": true,
         "FileReader": true,
-        "process": true
+        "process": true,
+        "setTimeout": true
     }
 }

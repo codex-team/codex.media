@@ -2,7 +2,7 @@ version: '2'
 services:
   mysql:
     image: 'mysql:5.7'
-    restart: always
+    restart: unless-stopped
     volumes:
       - './dump/mysql:/dump'
       - mysqldata:/var/lib/mysql
@@ -15,14 +15,14 @@ services:
 
   redis:
     image: 'redis:6.0.5-alpine'
-    restart: always
+    restart: unless-stopped
     command: ["redis-server", "--save 900 1", "--save 300 10", "--save 60 10000"]
     volumes:
       - ./dump/redis:/data
 
   elasticsearch:
     image: 'elasticsearch:7.4.0'
-    restart: always
+    restart: unless-stopped
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
@@ -42,7 +42,7 @@ services:
     build:
       dockerfile: 'docker/php/Dockerfile'
       context: '.'
-    restart: always
+    restart: unless-stopped
     depends_on:
       - redis
       - mysql
@@ -58,7 +58,7 @@ services:
 
   nginx:
     image: 'nginx:1.19.1-alpine'
-    restart: always
+    restart: unless-stopped
     ports:
       - "127.0.0.1:${APP_PORT}:8080"
     links:
