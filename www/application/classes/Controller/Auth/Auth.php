@@ -338,7 +338,7 @@ class Controller_Auth_Auth extends Controller_Auth_Base
             try {
                 throw new Exception('Bad response from Twitter while authorization');
             } catch (\Exception $e) {
-                \Hawk\HawkCatcher::catchException($e, $request_token);
+                \Hawk\Catcher::get()->sendException($e);
             }
 
             return false;
