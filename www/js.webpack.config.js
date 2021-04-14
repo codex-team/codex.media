@@ -8,14 +8,17 @@ const merge         = require('webpack-merge');
 const baseConfig    = require('./base.webpack.config');
 
 module.exports = merge(baseConfig, {
+    entry: {
+        codex: './public/app/js/main.js',
+        HawkCatcher: './public/app/js/modules/hawk.js'
+    },
 
-    entry: './public/app/js/main.js',
     output: {
         path: path.join(__dirname, 'public/build'),
         publicPath: '/public/build/',
         filename: '[name].bundle.js',
         chunkFilename: '[name].bundle.js?h=[hash]',
-        library: 'codex'
+        library: '[name]'
     },
 
     resolve: {
