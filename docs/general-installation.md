@@ -18,7 +18,7 @@ Initialize project
 
 ```bash
 cd codex.media
-./bin/init
+./bin/init.sh
 ```
 
 You may want to know what this script does. Here is a [source code](/bin/init.sh) with comments.
