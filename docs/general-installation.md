@@ -136,6 +136,12 @@ docker-compose exec php yarn
 docker-compose exec php yarn build
 ```
 
+You may need update the composer packages:
+
+```bash
+docker-compose exec php composer install
+```
+
 But sometimes you also need to rebuild the containers:
 
 ```bash
