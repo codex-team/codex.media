@@ -236,7 +236,7 @@ class Model_Page extends Model
 
                     array_push($pages, $page);
                 } catch (Exception $e) {
-                    \Hawk\HawkCatcher::catchException($e);
+                    \Hawk\Catcher::get()->sendException($e);
                 }
             }
         }

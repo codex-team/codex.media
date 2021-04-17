@@ -86,7 +86,9 @@ if (isset($_SERVER['KOHANA_ENV'])) {
  * @link https://hawk.so/docs
  */
 if (isset($_SERVER['HAWK_TOKEN'])) {
-    \Hawk\HawkCatcher::instance($_SERVER['HAWK_TOKEN']);
+    \Hawk\Catcher::init([
+        'integrationToken' => $_SERVER['HAWK_TOKEN']
+    ]);
 }
 
 /**

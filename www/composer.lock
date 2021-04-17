@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "41cc334cd0265d2f4e2bb78d4caf656c",
+    "content-hash": "e082fa4623e4e17f488c4785bfb2e4d1",
     "packages": [
         {
             "name": "codex-team/editor.js",
@@ -49,27 +49,30 @@
         },
         {
             "name": "codex-team/hawk.php",
-            "version": "v1.2.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codex-team/hawk.php.git",
-                "reference": "5ca215037696fd7736df708bcb2b95398d76175b"
+                "reference": "18cdaf6e1f583f07914817d14ac7c4e0f5baed7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codex-team/hawk.php/zipball/5ca215037696fd7736df708bcb2b95398d76175b",
-                "reference": "5ca215037696fd7736df708bcb2b95398d76175b",
+                "url": "https://api.github.com/repos/codex-team/hawk.php/zipball/18cdaf6e1f583f07914817d14ac7c4e0f5baed7a",
+                "reference": "18cdaf6e1f583f07914817d14ac7c4e0f5baed7a",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "php": ">=5.3"
+                "ext-json": "*",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "phpunit/phpunit": "^8.2",
+                "symfony/var-dumper": "^5.2"
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "src/Hawk.php"
-                ],
                 "psr-4": {
                     "Hawk\\": "src/"
                 }
@@ -79,7 +82,18 @@
                 "MIT"
             ],
             "description": "PHP errors Catcher module for Hawk.so",
-            "time": "2018-06-05T23:52:20+00:00"
+            "keywords": [
+                "catcher",
+                "error",
+                "hawk",
+                "monolog",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/codex-team/hawk.php/issues",
+                "source": "https://github.com/codex-team/hawk.php/tree/v2.0.0"
+            },
+            "time": "2021-04-05T18:02:59+00:00"
         },
         {
             "name": "composer/semver",
@@ -2159,5 +2173,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }

@@ -18,7 +18,7 @@ Initialize project
 
 ```bash
 cd codex.media
-./bin/init
+./bin/init.sh
 ```
 
 You may want to know what this script does. Here is a [source code](/bin/init.sh) with comments.
@@ -134,6 +134,12 @@ docker-compose exec php yarn
 
 # Build static files
 docker-compose exec php yarn build
+```
+
+You may need update the composer packages:
+
+```bash
+docker-compose exec php composer install
 ```
 
 But sometimes you also need to rebuild the containers:

@@ -27,8 +27,9 @@
         <link rel="image_src" href="<?= $site_info['meta_image'] ?>" />
     <? endif; ?>
 
-    <script src="/public/build/main.bundle.js?v=<?= filemtime('public/build/main.bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
-
+    <? if (!empty($_SERVER['HAWK_TOKEN'])): ?>
+        <script src="/public/build/HawkCatcher.bundle.js?v=<?= filemtime('public/build/HawkCatcher.bundle.js'); ?>" onload="new HawkCatcher({token: '<?= $_SERVER['HAWK_TOKEN'] ?>'});"></script>
+    <? endif; ?>
 </head>
 <?
     $bodyModifiers = [];
@@ -45,7 +46,6 @@
     }
 ?>
 <body class="<?= implode(' ', $bodyModifiers) ?>">
-
     <?= View::factory('templates/components/header')->render(); ?>
 
     <? if (Arr::get($_SERVER, 'ENABLE_GOV_SITE_WIDGET')): ?>
@@ -57,9 +57,7 @@
     <? endif; ?>
 
     <div class="center-col" id="js-layout-holder" data-module="layout">
-
         <div class="grid-cols-wrapper">
-
             <? /* Left */ ?>
             <div class="grid-col grid-col--left">
                 <? if (!empty($aside)): ?>
@@ -76,22 +74,11 @@
 
             <? /* Right col */ ?>
             <?= View::factory('templates/components/right_col')->render(); ?>
-
         </div>
-
     </div>
 
-
-    <script>
-
-        window.csrf = '<?= Security::token(); ?>';
-
-    </script>
-
-    <? if (!empty($_SERVER['HAWK_TOKEN'])): ?>
-        <script src="https://cdn.jsdelivr.net/npm/hawk.javascript@2.0.0/dist/hawk.min.js" onload="hawk.init('<?= $_SERVER['HAWK_TOKEN'] ?>');"></script>
-    <? endif; ?>
-
+    <script>window.csrf = '<?= Security::token(); ?>';</script>
+    <script src="/public/build/codex.bundle.js?v=<?= filemtime('public/build/codex.bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
     <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>
 
     <? if (Kohana::$environment === Kohana::PRODUCTION): ?>
@@ -130,8 +117,6 @@
             <noscript><div><img src="https://mc.yandex.ru/watch/<?= $_SERVER['YANDEX_METRIKA_ID'] ?>" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
             <!-- /Yandex.Metrika counter -->
         <? endif; ?>
-
     <? endif; ?>
-
 </body>
 </html>
