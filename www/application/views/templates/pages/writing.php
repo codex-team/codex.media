@@ -25,12 +25,3 @@
         'page' => $page
     ]); ?>
 </div>
-
-<?
-/**
- * Hide ESIR-navigator
- */
-?>
-<style>
-    .schools-navigator { display: none; }
-</style>
