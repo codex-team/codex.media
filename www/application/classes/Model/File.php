@@ -385,7 +385,7 @@ class Model_File extends Model
          *   Проверки на  Upload::valid($file) OR Upload::not_empty($file) OR Upload::size($file, '8M') делаются в контроллере.
          */
         if (!is_dir($path)) {
-            mkdir($path);
+            mkdir($path, 0777, true);
         }
 
         $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
