@@ -220,7 +220,21 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
             array(
                 new HTMLPurifier_AttrDef_CSS_Length('0'),
                 new HTMLPurifier_AttrDef_CSS_Percentage(true),
-                new HTMLPurifier_AttrDef_Enum(array('auto'))
+                new HTMLPurifier_AttrDef_Enum(array('auto', 'initial', 'inherit'))
+            )
+        );
+        $trusted_min_wh = new HTMLPurifier_AttrDef_CSS_Composite(
+            array(
+                new HTMLPurifier_AttrDef_CSS_Length('0'),
+                new HTMLPurifier_AttrDef_CSS_Percentage(true),
+                new HTMLPurifier_AttrDef_Enum(array('initial', 'inherit'))
+            )
+        );
+        $trusted_max_wh = new HTMLPurifier_AttrDef_CSS_Composite(
+            array(
+                new HTMLPurifier_AttrDef_CSS_Length('0'),
+                new HTMLPurifier_AttrDef_CSS_Percentage(true),
+                new HTMLPurifier_AttrDef_Enum(array('none', 'initial', 'inherit'))
             )
         );
         $max = $config->get('CSS.MaxImgLength');
@@ -240,6 +254,38 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
                     ),
                     // For everyone else:
                     $trusted_wh
+                );
+        $this->info['min-width'] =
+        $this->info['min-height'] =
+            $max === null ?
+                $trusted_min_wh :
+                new HTMLPurifier_AttrDef_Switch(
+                    'img',
+                    // For img tags:
+                    new HTMLPurifier_AttrDef_CSS_Composite(
+                        array(
+                            new HTMLPurifier_AttrDef_CSS_Length('0', $max),
+                            new HTMLPurifier_AttrDef_Enum(array('initial', 'inherit'))
+                        )
+                    ),
+                    // For everyone else:
+                    $trusted_min_wh
+                );
+        $this->info['max-width'] =
+        $this->info['max-height'] =
+            $max === null ?
+                $trusted_max_wh :
+                new HTMLPurifier_AttrDef_Switch(
+                    'img',
+                    // For img tags:
+                    new HTMLPurifier_AttrDef_CSS_Composite(
+                        array(
+                            new HTMLPurifier_AttrDef_CSS_Length('0', $max),
+                            new HTMLPurifier_AttrDef_Enum(array('none', 'initial', 'inherit'))
+                        )
+                    ),
+                    // For everyone else:
+                    $trusted_max_wh
                 );
 
         $this->info['text-decoration'] = new HTMLPurifier_AttrDef_CSS_TextDecoration();
@@ -350,8 +396,7 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
         $this->info['scrollbar-highlight-color'] = new HTMLPurifier_AttrDef_CSS_Color();
         $this->info['scrollbar-shadow-color'] = new HTMLPurifier_AttrDef_CSS_Color();
 
-        // technically not proprietary, but CSS3, and no one supports it
-        $this->info['opacity'] = new HTMLPurifier_AttrDef_CSS_AlphaValue();
+        // vendor specific prefixes of opacity
         $this->info['-moz-opacity'] = new HTMLPurifier_AttrDef_CSS_AlphaValue();
         $this->info['-khtml-opacity'] = new HTMLPurifier_AttrDef_CSS_AlphaValue();
 
@@ -370,6 +415,19 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
             )
         );
         $this->info['page-break-inside'] = new HTMLPurifier_AttrDef_Enum(array('auto', 'avoid'));
+
+        $border_radius = new HTMLPurifier_AttrDef_CSS_Composite(
+            array(
+                new HTMLPurifier_AttrDef_CSS_Percentage(true), // disallow negative
+                new HTMLPurifier_AttrDef_CSS_Length('0') // disallow negative
+            ));
+
+        $this->info['border-top-left-radius'] =
+        $this->info['border-top-right-radius'] =
+        $this->info['border-bottom-right-radius'] =
+        $this->info['border-bottom-left-radius'] = new HTMLPurifier_AttrDef_CSS_Multiple($border_radius, 2);
+        // TODO: support SLASH syntax
+        $this->info['border-radius'] = new HTMLPurifier_AttrDef_CSS_Multiple($border_radius, 4);
 
     }
 
@@ -404,6 +462,7 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
             array('visible', 'hidden', 'collapse')
         );
         $this->info['overflow'] = new HTMLPurifier_AttrDef_Enum(array('visible', 'hidden', 'auto', 'scroll'));
+        $this->info['opacity'] = new HTMLPurifier_AttrDef_CSS_AlphaValue();
     }
 
     /**
