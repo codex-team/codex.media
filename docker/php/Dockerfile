@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-stretch
+FROM php:7.2-fpm
 
 # Update lists
 RUN apt-get update
@@ -64,14 +64,10 @@ RUN curl https://deb.nodesource.com/setup_14.x | bash
 RUN curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update && apt-get install -y nodejs yarn
-RUN echo "Node.js version: $(node --version)"
-RUN echo "NPM version: $(npm --version)"
-RUN echo "Yarn version: $(yarn --version)"
 
 # Set timezone
 RUN rm /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
-RUN "date"
 
 WORKDIR /var/www/codex.media
 
