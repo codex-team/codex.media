@@ -78,10 +78,8 @@
     <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>
 
     <? if (Kohana::$environment === Kohana::PRODUCTION): ?>
-
-        <? if (!empty($_SERVER['ENABLE_GOV_SITE_WIDGET']) && $_SERVER['ENABLE_GOV_SITE_WIDGET']): ?>
-            <script type="text/javascript" src="https://esir.gov.spb.ru/static/widget/js/widget.js" charset="utf-8"></script>
-        <? endif; ?>
+        <?= View::factory('templates/components/gov/esir')->render(); ?>
+        <?= View::factory('templates/components/gov/gosuslugi-feedback')->render(); ?>
 
         <? if (!empty($_SERVER['YANDEX_METRIKA_ID'])): ?>
             <!-- Yandex.Metrika counter -->
