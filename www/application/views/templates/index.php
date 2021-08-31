@@ -45,7 +45,7 @@
                 "url" : "<?= "/" . $active_tab . "/" ?>",
                 "targetBlockId" : "list_of_news",
                 "autoLoading" : true,
-                "dontWaitFirstClick" : true
+                "dontWaitFirstClick" : false
             }
         </module-settings>
     </a>
