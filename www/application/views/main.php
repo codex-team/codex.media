@@ -46,6 +46,10 @@
     }
 ?>
 <body class="<?= implode(' ', $bodyModifiers) ?>">
+    <? if (Kohana::$environment === Kohana::PRODUCTION): ?>
+        <?= View::factory('templates/components/gov/gosuslugi-feedback')->render(); ?>
+    <? endif ?>
+
     <?= View::factory('templates/components/header')->render(); ?>
 
     <? if (empty($hideBranding)): ?>
@@ -79,7 +83,6 @@
 
     <? if (Kohana::$environment === Kohana::PRODUCTION): ?>
         <?= View::factory('templates/components/gov/esir')->render(); ?>
-        <?= View::factory('templates/components/gov/gosuslugi-feedback')->render(); ?>
 
         <? if (!empty($_SERVER['YANDEX_METRIKA_ID'])): ?>
             <!-- Yandex.Metrika counter -->
