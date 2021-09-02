@@ -28,7 +28,26 @@
     <? endif; ?>
 
     <? if (!empty($_SERVER['HAWK_TOKEN'])): ?>
-        <script src="/public/build/HawkCatcher.bundle.js?v=<?= filemtime('public/build/HawkCatcher.bundle.js'); ?>" onload="new HawkCatcher({token: '<?= $_SERVER['HAWK_TOKEN'] ?>'});"></script>
+        <?
+            $release = '';
+
+            try {
+                $releaseConfig = file_get_contents(PUBLICPATH . DIRECTORY_SEPARATOR . 'build' . DIRECTORY_SEPARATOR . 'release.json');
+
+                $releaseConfig = json_decode($releaseConfig, true);
+
+                $release = $releaseConfig['release'];
+            } catch (Exception $e) {
+                throw new Error ('release.json file is missing. Rebuild frontend scripts, please.');
+            }
+
+            $config = [
+                'token' => $_SERVER['HAWK_TOKEN'],
+                'release' => $release,
+            ];
+        ?>
+
+        <script src="/public/build/HawkCatcher.bundle.js?v=<?= filemtime('public/build/HawkCatcher.bundle.js'); ?>" onload="new HawkCatcher({ token: '<?= $config['token'] ?>', release: '<?= $config['release'] ?>' });"></script>
     <? endif; ?>
 </head>
 <?

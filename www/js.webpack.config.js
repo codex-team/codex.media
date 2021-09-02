@@ -3,6 +3,8 @@
  */
 require('dotenv').load();
 
+const HawkWebpackPlugin = require('@hawk.so/webpack-plugin');
+
 const path          = require('path');
 const merge         = require('webpack-merge');
 const baseConfig    = require('./base.webpack.config');
@@ -78,5 +80,14 @@ module.exports = merge(baseConfig, {
                     }
                 ]
             }
-        ]}
+        ]
+    },
+
+    plugins: [
+        new HawkWebpackPlugin({
+            integrationToken: process.env.HAWK_TOKEN
+        })
+    ],
+
+    devtool: 'hidden-source-map',
 });
