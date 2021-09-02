@@ -31,8 +31,3 @@
     </span>
 
 </div>
-
-
-<script>
-    codex.sharer.init();
-</script>

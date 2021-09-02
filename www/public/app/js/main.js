@@ -111,6 +111,11 @@ codex = function () {
          */
         codex.branding.init();
 
+        /**
+         * Initiate pages sharing
+         */
+        codex.sharer.init();
+
     }
 
     return codex;
