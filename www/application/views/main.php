@@ -38,7 +38,7 @@
 
                 $release = $releaseConfig['release'];
             } catch (Exception $e) {
-                throw new Error ('release.json file is missing. Rebuild frontend scripts, please.');
+                // throw new Error ('release.json file is missing. Rebuild frontend scripts, please.');
             }
 
             $config = [
