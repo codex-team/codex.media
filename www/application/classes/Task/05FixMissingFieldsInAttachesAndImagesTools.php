@@ -133,7 +133,6 @@ class Task_05FixMissingFieldsInAttachesAndImagesTools extends Minion_Task
                     'height' => isset($data->file->height) ? $data->file->height : 0,
                     'name' => isset($data->file->name) ? $data->file->name : '',
                     'title' => isset($data->file->title) ? $data->file->title : '',
-                    'target' => isset($data->file->target) ? $data->file->target : array(),
                     'extension' => isset($data->file->extension) ? $data->file->extension : '',
                     'size' => isset($data->file->size) ? $data->file->size : ''
 
