@@ -129,8 +129,8 @@ class Task_05FixMissingFieldsInAttachesAndImagesTools extends Minion_Task
             $data = [
                 'file' => [
                     'url' => isset($data->file->url) ? $data->file->url : '',
-                    'width' => isset($data->file->width) ? $data->file->width : null,
-                    'height' => isset($data->file->height) ? $data->file->height : null,
+                    'width' => isset($data->file->width) ? $data->file->width : 0,
+                    'height' => isset($data->file->height) ? $data->file->height : 0,
                     'name' => isset($data->file->name) ? $data->file->name : '',
                     'title' => isset($data->file->title) ? $data->file->title : '',
                     'target' => isset($data->file->target) ? $data->file->target : array(),
