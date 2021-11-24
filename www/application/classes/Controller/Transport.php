@@ -28,7 +28,9 @@ class Controller_Transport extends Controller_Base_preDispatch
 
         $file = new Model_File();
 
-        if (!$this->check()) {
+        $success = $this->check();
+
+        if (!$success) {
             goto finish;
         }
 
@@ -58,6 +60,7 @@ class Controller_Transport extends Controller_Base_preDispatch
         finish:
         $response = @json_encode($this->transportResponse);
 
+        $this->response->status($success ? 200 : 400);
         $this->auto_render = false;
         $this->response->body($response);
     }
@@ -90,7 +93,7 @@ class Controller_Transport extends Controller_Base_preDispatch
         }
 
         if (!Upload::size($this->files, UPLOAD_MAX_SIZE . "M")) {
-            $this->transportResponse['message'] = 'File size exceeded limit';
+            $this->transportResponse['message'] = 'File size exceeded limit: '.UPLOAD_MAX_SIZE.' MB';
 
             return false;
         }

@@ -938,10 +938,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@editorjs/attaches@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@editorjs/attaches/-/attaches-1.1.1.tgz#fd8b7f9480692deeb8e43a56001ec05c0d43a3a7"
-  integrity sha512-1tBqJiOouJvc8Bg/2xu8wr5xu4JJb7znLnJrPglfNFxalL6P6cCj1tPEc4COjsTlwOM/+wq1JWovQJfE8IF8mg==
+"@editorjs/attaches@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@editorjs/attaches/-/attaches-1.2.1.tgz#c32a7e9cfdf692f2971009ab613598af1b8f44bd"
+  integrity sha512-akmi6/vWsPw57miOL8C2uNmdhGQnJEWAC/JCJEoxxqDTyBZi5DGABavgkVBQdFC0+HPwnLLCYkgtmsYxO1SDQg==
 
 "@editorjs/code@^2.7.0":
   version "2.7.0"
@@ -972,10 +972,10 @@
   resolved "https://registry.yarnpkg.com/@editorjs/header/-/header-2.6.1.tgz#454a46e4dbb32ae3aa1db4d22b0ddf2cc36c3134"
   integrity sha512-EsnyVFv5uThpU9tbQ/dUPFCQoa/sBFy2n+9tN3wOXJGx7sjea4fdcacJ2UYhO+7pCgZ+aSgmMOyGLYHUFbchvA==
 
-"@editorjs/image@^2.6.1":
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/@editorjs/image/-/image-2.6.1.tgz#43cea656e0db30aa03a01fadcb9d8143f2cb936e"
-  integrity sha512-ZGQJAW4gzkVGjXGbY1Rl13Wt8q/mQuk+fPn3kNFspL/m9TNjpK19vBqWN3NTCe+nVF97X9WBev/qmsBzuE3Ipg==
+"@editorjs/image@^2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@editorjs/image/-/image-2.6.2.tgz#2fc23666807ae20e937d08bf65589f0b1f424aed"
+  integrity sha512-lai6LFJ8m3qRmSjio66o0CX7/75OupC3FQ5JWrV/biRT6GvUHtRNWKaMowKcC2ndXtfs4w6WwRxcXlB4WhUAdg==
 
 "@editorjs/inline-code@^1.3.1":
   version "1.3.1"
