@@ -938,10 +938,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@editorjs/attaches@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@editorjs/attaches/-/attaches-1.2.1.tgz#c32a7e9cfdf692f2971009ab613598af1b8f44bd"
-  integrity sha512-akmi6/vWsPw57miOL8C2uNmdhGQnJEWAC/JCJEoxxqDTyBZi5DGABavgkVBQdFC0+HPwnLLCYkgtmsYxO1SDQg==
+"@editorjs/attaches@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@editorjs/attaches/-/attaches-1.2.2.tgz#d13a094e7668714b62fac64cab4e65cd5960b1f4"
+  integrity sha512-20/0PoII5FjIiH5LUuj4nAP5lYX1X+tkp3vkZhdeadR7bn2Umd8409fNj8okYvH0VgZtxxvOe6xEj6V9p5/Acg==
 
 "@editorjs/code@^2.7.0":
   version "2.7.0"
@@ -953,19 +953,19 @@
   resolved "https://registry.yarnpkg.com/@editorjs/delimiter/-/delimiter-1.2.0.tgz#5075f1a3e68765cfb6aec8694b316d81e2b41607"
   integrity sha512-GKsCFPk85vH5FuCuVQ48NTLc9hk0T3DsBH9zABaicTYIJayFcUa8N4/Y+L3i4tduzDqqyvoxkv+5n43GmC5gEA==
 
-"@editorjs/editorjs@^2.24.1":
-  version "2.24.1"
-  resolved "https://registry.yarnpkg.com/@editorjs/editorjs/-/editorjs-2.24.1.tgz#73125dd164c6e89f1ed8c1fb425a660a1d58d58f"
-  integrity sha512-NlYrDXCOSv+qmokD9G+QgQqF9R2kcQYdFl3tQW/askrgjCErh4vPtcgsFC15WFyy6m/ZOXIuiUZjs/oLfGSc1Q==
+"@editorjs/editorjs@^2.25.0":
+  version "2.25.0"
+  resolved "https://registry.yarnpkg.com/@editorjs/editorjs/-/editorjs-2.25.0.tgz#d0dc445260fa8f4f02f26da9b7b592f479e8b4e4"
+  integrity sha512-TEu7h7EPh6Lx2VGIM1jVn2dky23TbpVJBd3AGvXcam1lyHuJwZ1iydbsQGF9pFkHSCiaQptTfIjZ8Y24v47Wag==
   dependencies:
     codex-notifier "^1.1.2"
     codex-tooltip "^1.0.5"
     nanoid "^3.1.22"
 
-"@editorjs/embed@^2.5.1":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@editorjs/embed/-/embed-2.5.1.tgz#e03e56d880df7816e34f5419b4ed0e8059885173"
-  integrity sha512-QoBvC6upo5ubO0toGlt5b1Upcq15MC4eqejxcjcm291Ww5cO+lKhSFY6KNk3ldL9PnWKtORxFCd6pAawtkkijA==
+"@editorjs/embed@^2.5.2":
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/@editorjs/embed/-/embed-2.5.2.tgz#25ebdd35c70124af14512582914bd2bf70cc84b8"
+  integrity sha512-l+knGtiWwmAjasZARGhFJkQZU2A2kGvPN1orJAtNWLOj7r52IKxFQxHE2FfcYX0lTq15p4iUQAxaY1DwZJF+gw==
 
 "@editorjs/header@^2.6.2":
   version "2.6.2"
@@ -1014,10 +1014,10 @@
   resolved "https://registry.yarnpkg.com/@editorjs/raw/-/raw-2.3.1.tgz#3788d407cab83e1305545fc04b492c27ac117b7f"
   integrity sha512-pMPsgzlmdMGR1A2K9Opky5JimO/YC71GGSAYvAlLNGFZZ+2I9K/64jo7MS6E0g9WVks2JRI+X5CF8qk2V9Ok2A==
 
-"@editorjs/table@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@editorjs/table/-/table-2.0.2.tgz#eb4aa3a7428bb23c95fa6bb3251a4aaa44ab3fb9"
-  integrity sha512-Ws5c9kmYsbWTBJ1WKSZRN+ATrqFFzjf/zggVu8AI/mVcNvSYUiEVqibLtbh5RLHiDGkELRZ9Bw5PQfVCg7yuBw==
+"@editorjs/table@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@editorjs/table/-/table-2.0.4.tgz#37a44e3200cbb884d14fa6b62367650a22210343"
+  integrity sha512-2VLdm9724Q8rup3ukv95yjcjGvOwTtC4+aN2Lrd5U5ozEHSwdwg+kmGMUsq9ev2x2WmfUCBM/hj5s8TjGTA84g==
 
 "@hawk.so/javascript@^3.0.0":
   version "3.0.0"
