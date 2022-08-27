@@ -7,7 +7,7 @@ class Task_06FixMissingFieldsInTableTool extends Minion_Task
     /**
      * Main function to be run
      *
-     * @example ./minion 05fixmissingfieldsintabletool
+     * @example ./minion 06fixmissingfieldsintabletool
      *
      * @param array $params
      */
