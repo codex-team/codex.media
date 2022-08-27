@@ -106,10 +106,6 @@ class Task_06FixMissingFieldsInTableTool extends Minion_Task
         $data = $oldBlock->data;
 
         if ($type == 'table') {
-            if (!isset($data->file->url)) {
-                return false;
-            }
-
             $data = [
                 'withHeadings' => isset($data->withHeadings) ? $data->withHeadings : false,
                 'content' => isset($data->content) ? $data->content : [],
