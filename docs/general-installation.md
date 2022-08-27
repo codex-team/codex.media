@@ -164,4 +164,10 @@ docker-compose exec php yarn
 docker-compose exec php yarn build
 ```
 
-You may need to apply mysql database migrations.
+You may need to apply mysql database migrations from `./www/migrations` directory.
+
+If you need to run updates via Minion use docker exec command with a target task name:
+
+```bash
+docker-compose exec php ./minion 06fixmissingfieldsintabletool
+```

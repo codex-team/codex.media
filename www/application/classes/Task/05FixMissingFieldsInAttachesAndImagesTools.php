@@ -7,7 +7,7 @@ class Task_05FixMissingFieldsInAttachesAndImagesTools extends Minion_Task
     /**
      * Main function to be run
      *
-     * @example ./minion 05fixmissingfieldsinattachesandimagestools
+     * @example ./minion 05FixMissingFieldsInAttachesAndImagesTools
      *
      * @param array $params
      */

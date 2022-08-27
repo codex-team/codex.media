@@ -2,12 +2,12 @@
 
 use EditorJS\EditorJS;
 
-class Task_04FixMissingFieldsInLinkTool extends Minion_Task
+class Task_06FixMissingFieldsInTableTool extends Minion_Task
 {
     /**
      * Main function to be run
      *
-     * @example ./minion 04FixMissingFieldsInLinkTool
+     * @example ./minion 06FixMissingFieldsInTableTool
      *
      * @param array $params
      */
@@ -82,7 +82,9 @@ class Task_04FixMissingFieldsInLinkTool extends Minion_Task
         foreach ($oldContent->blocks as $block) {
             $newBlock = $this->convertBlock($block);
 
-            array_push($newContent['blocks'], $newBlock);
+            if ($newBlock) {
+                array_push($newContent['blocks'], $newBlock);
+            }
         }
 
         /**
@@ -96,24 +98,21 @@ class Task_04FixMissingFieldsInLinkTool extends Minion_Task
      *
      * @param stdClass $oldBlock - old block's data
      *
-     * @return array - converted block's data
+     * @return array|boolean - converted block's data
      */
     private function convertBlock($oldBlock)
     {
         $type = $oldBlock->type;
         $data = $oldBlock->data;
 
-        if ($type == 'linkTool') {
+        if ($type == 'table') {
+            if (!isset($data->file->url)) {
+                return false;
+            }
 
             $data = [
-                'link' => isset($data->link) ? $data->link : '',
-                'meta' => [
-                    'linkUrl' => isset($data->meta->linkUrl) ? $data->meta->linkUrl : '',
-                    'linkText' => isset($data->meta->linkText) ? $data->meta->linkText : '',
-                    'title' => isset($data->meta->title) ? $data->meta->title : '',
-                    'description' => isset($data->meta->description) ? $data->meta->description : '',
-                    'image' => isset($data->meta->image) ? $data->meta->image : ''
-                ]
+                'withHeadings' => isset($data->withHeadings) ? $data->withHeadings : false,
+                'content' => isset($data->content) ? $data->content : [],
             ];
         }
 
