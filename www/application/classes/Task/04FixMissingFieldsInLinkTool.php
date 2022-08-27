@@ -7,7 +7,7 @@ class Task_04FixMissingFieldsInLinkTool extends Minion_Task
     /**
      * Main function to be run
      *
-     * @example ./minion 04fixmissingfieldsinlinktool
+     * @example ./minion 04FixMissingFieldsInLinkTool
      *
      * @param array $params
      */

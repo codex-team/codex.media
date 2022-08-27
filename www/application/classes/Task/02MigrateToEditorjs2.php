@@ -2,13 +2,13 @@
 
 use EditorJS\EditorJS;
 
-class Task_MigrateToEditorjs2 extends Minion_Task
+class Task_02MigrateToEditorjs2 extends Minion_Task
 {
     /**
      * Main function to be run
      *
-     * @example ./minion 02migratetoeditorjs2
-     * @example ./minion 02migratetoeditorjs2 apply
+     * @example ./minion 02MigrateToEditorjs2
+     * @example ./minion 02MigrateToEditorjs2 apply
      *
      * @param array $params
      */

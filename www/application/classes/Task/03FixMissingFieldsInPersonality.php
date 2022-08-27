@@ -7,7 +7,7 @@ class Task_03FixMissingFieldsInPersonality extends Minion_Task
     /**
      * Main function to be run
      *
-     * @example ./minion 03fixmissingfieldsinpersonality
+     * @example ./minion 03FixMissingFieldsInPersonality
      *
      * @param array $params
      */
