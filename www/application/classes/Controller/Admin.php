@@ -6,7 +6,7 @@ class Controller_Admin extends Controller_Base_preDispatch
 
     public function action_index()
     {
-        if (!$this->user->id) {
+        if (!$this->user->isAdmin) {
             $this->redirect('/');
         }
 
