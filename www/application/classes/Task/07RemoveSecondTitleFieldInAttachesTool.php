@@ -2,12 +2,12 @@
 
 use EditorJS\EditorJS;
 
-class Task_07RemoveSecondFieldInAttachesTool extends Minion_Task
+class Task_07RemoveSecondTitleFieldInAttachesTool extends Minion_Task
 {
     /**
      * Main function to be run
      *
-     * @example ./minion 07RemoveSecondFieldInAttachesTool
+     * @example ./minion 07RemoveSecondTitleFieldInAttachesTool
      *
      * @param array $params
      */
