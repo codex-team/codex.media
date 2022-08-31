@@ -40,6 +40,7 @@ class Controller_Transport extends Controller_Base_preDispatch
             $this->transportResponse['success'] = 1;
             $this->transportResponse['file'] = [
                 'url' => $uploadedFile->filepath,
+                'title' => $uploadedFile->title,
                 'name' => $uploadedFile->file_hash_hex,
                 'extension' => $uploadedFile->extension,
                 'size' => $uploadedFile->size
