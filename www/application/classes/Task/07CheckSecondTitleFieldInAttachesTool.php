@@ -2,12 +2,12 @@
 
 use EditorJS\EditorJS;
 
-class Task_07RemoveSecondTitleFieldInAttachesTool extends Minion_Task
+class Task_07CheckSecondTitleFieldInAttachesTool extends Minion_Task
 {
     /**
      * Main function to be run
      *
-     * @example ./minion 07RemoveSecondTitleFieldInAttachesTool
+     * @example ./minion 07CheckSecondTitleFieldInAttachesTool
      *
      * @param array $params
      */
@@ -109,6 +109,7 @@ class Task_07RemoveSecondTitleFieldInAttachesTool extends Minion_Task
             $data = [
                 'title' => isset($data->title) ? $data->title : $data->file->title,
                 'file' => [
+                    'title' => isset($data->title) ? $data->title : $data->file->title,
                     'url' => isset($data->file->url) ? $data->file->url : '',
                     'name' => isset($data->file->name) ? $data->file->name : '',
                     'extension' => isset($data->file->extension) ? $data->file->extension : '',
