@@ -25,6 +25,7 @@
             "file": {
                 "type": "array",
                 "data": {
+                    "title": "string",
                     "url": "string",
                     "size": "string",
                     "name": "string",
