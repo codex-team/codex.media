@@ -2,7 +2,7 @@
 
     <?
         $domainAndProtocol = Model_Methods::getDomainAndProtocol();
-        $siteLogo = !empty($site_info['logo']) ? $domainAndProtocol . "/upload/logo/m_" . $site_info['logo'] : 'https://capella.pics/6161256a-324d-40fd-9f37-4efd9db84adc';
+        $siteLogo = !empty($site_info['logo']) ? $domainAndProtocol . "/upload/logo/m_" . $site_info['logo'] : 'https://static.codex.so/upload/editor/6161256a-324d-40fd-9f37-4efd9db84adc.jpeg';
         $pageId = $domainAndProtocol . "/p/" . $page->id . "/" . $page->uri;
 
         if (!empty($page->cover)) {
