@@ -41,7 +41,7 @@
             "authors": [
                 {
                     "name": "CodeX Team",
-                    "email": "team@ifmo.su"
+                    "email": "team@codex.so"
                 }
             ],
             "description": "PHP backend implementation for the Editor.js",
