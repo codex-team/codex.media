@@ -66,4 +66,4 @@ codexSpecial.init({
 
 ## Разработка
 Репозиторий — https://github.com/codex-team/codex.special
-Codex Team — https://ifmo.su
+Codex Team — https://codex.so

@@ -25,4 +25,4 @@ DOMAIN=`sed -n 's/^ *DOMAIN *= *//p' .env`
 MESSAGE="CodeX Media has been deployed to the production environment on $DOMAIN"
 
 # Send notification
-curl -X POST https://notify.bot.ifmo.su/u/G96UXE0H -d "message=$MESSAGE"
+curl -X POST https://notify.bot.codex.so/u/G96UXE0H -d "message=$MESSAGE"
