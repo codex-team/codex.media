@@ -38,6 +38,7 @@
             <?= !$user->vk ? 'Привязать' : ($user->vk_name ?: $user->vk_uri) ?>
         </a>
 
+        <? /*
         <a class="border-button <?= !$user->facebook ? 'border-button--facebook' : '' ?>" href="/auth/fb?state=<?= !$user->facebook ? 'attach' : 'remove' ?>">
             <? include(DOCROOT . "public/app/svg/facebook-circle.svg") ?>
             <?= !$user->facebook ? 'Привязать' : $user->facebook_name ?>
@@ -47,6 +48,7 @@
             <? include(DOCROOT . "public/app/svg/twitter.svg") ?>
             <?= !$user->twitter ? 'Привязать' : $user->twitter_name ?>
         </a>
+        */ ?>
 
     </section>
 

@@ -22,7 +22,7 @@
                                 "handler" : {
                                     "module" : "user",
                                     "method" : "promote",
-                                    "submethod" : "status" 
+                                    "submethod" : "status"
                                 },
                                 "arguments" : {
                                     "value" : <?= $viewUser->isBanned ? 0 : 1; ?>
@@ -33,7 +33,7 @@
                                 "handler" : {
                                     "module" : "user",
                                     "method" : "promote",
-                                    "submethod" : "role" 
+                                    "submethod" : "role"
                                 },
                                 "arguments" : {
                                     "value" : <?= !$viewUser->isTeacher ? Model_User::TEACHER : Model_User::REGISTERED; ?>
@@ -74,6 +74,7 @@
             </a>
         <? endif; ?>
 
+        <? /*
         <? if ($viewUser->facebook): ?>
             <a class="border-button border-button--facebook" href="//fb.com/<?= $viewUser->facebook ?>" target="_blank">
                 <? include(DOCROOT . "public/app/svg/facebook-circle.svg") ?>
@@ -87,6 +88,7 @@
                 <?= $viewUser->twitter_name ?: $viewUser->name ?>
             </a>
         <? endif ?>
+        */ ?>
 
     </div>
 

@@ -9,6 +9,7 @@
             <? include(DOCROOT . "public/app/svg/vk.svg") ?>
             ВКонтакте
         </a>
+        <? /*
         <a class="button button--facebook" href="/auth/fb">
             <? include(DOCROOT . "public/app/svg/facebook-circle.svg") ?>
             Facebook
@@ -17,6 +18,7 @@
             <? include(DOCROOT . "public/app/svg/twitter.svg") ?>
             Twitter
         </a>
+        */ ?>
 
     </div>
 

@@ -4,8 +4,10 @@
     <p class="desc">Вы можете войти на сайт через аккаунт в социальной сети</p>
 
     <a class="button button--vk" href="/auth/vk"><i class="icon-vkontakte"></i>ВКонтакте</a>
+    <? /*
     <a class="button button--facebook" href="/auth/fb"><i class="icon-facebook"></i>Facebook</a>
     <a class="button button--twitter" href="/auth/tw"><i class="icon-twitter"></i>Twitter</a>
+    */ ?>
 
     <form class="auth-form" action="/signup" method="post">
 
