@@ -2,3 +2,7 @@ User-agent: *
 
 Disallow: /upload/
 Disallow: /file/
+
+Disallow: /auth
+Disallow: /signup
+Disallow: /reset
