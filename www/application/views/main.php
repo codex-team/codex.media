@@ -98,6 +98,7 @@
 
     <? if (Kohana::$environment === Kohana::PRODUCTION): ?>
         <?= View::factory('templates/components/gov/esir')->render(); ?>
+        <?= View::factory('templates/components/gov/banners')->render(); ?>
         <?= View::factory('templates/components/gov/gosuslugi-feedback')->render(); ?>
 
         <? if (!empty($_SERVER['YANDEX_METRIKA_ID'])): ?>
