@@ -1,4 +1,4 @@
-<? if (!empty($_SERVER['ENABLE_GOV_FOOTER_BANNERS']) && $_SERVER['ENABLE_GOSUSLUGI_FEEDBACENABLE_GOV_FOOTER_BANNERSK_WIDGET']): ?>
+<? if (!empty($_SERVER['ENABLE_GOV_FOOTER_BANNERS']) && $_SERVER['ENABLE_GOV_FOOTER_BANNERS']): ?>
   <style>
     .gov-footer-banners {
       display: flex;
