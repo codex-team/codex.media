@@ -46,5 +46,24 @@
         })()
     </script>
 
-    <script>Widget("https://pos.gosuslugi.ru/form", <?= $_SERVER['ENABLE_GOSUSLUGI_FEEDBACK_WIDGET'] ?>)</script>
+    <script>
+        (function initWidget(attempt = 0) {
+            const MAX_ATTEMPTS = 20;
+            const DELAY = 500;
+
+            if (typeof window.Widget === 'function') {
+                Widget(
+                    "https://pos.gosuslugi.ru/form",
+                    <?= (int)$_SERVER['ENABLE_GOSUSLUGI_FEEDBACK_WIDGET'] ?>
+                );
+                return;
+            }
+
+            if (attempt < MAX_ATTEMPTS) {
+                setTimeout(() => initWidget(attempt + 1), DELAY);
+            } else {
+                console.error('Госуслуги Widget не загрузился');
+            }
+        })();
+    </script>
 <? endif; ?>
