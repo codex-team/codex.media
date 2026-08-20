@@ -47,7 +47,7 @@
             ];
         ?>
 
-        <script src="/public/build/HawkCatcher.bundle.js?v=<?= filemtime('public/build/HawkCatcher.bundle.js'); ?>" onload="new HawkCatcher({ token: '<?= $config['token'] ?>', release: '<?= $config['release'] ?>' });"></script>
+        <script src="/public/build/HawkCatcher.bundle.js?v=<?= filemtime('public/build/HawkCatcher.bundle.js'); ?>" onload="new HawkCatcher({ token: '<?= $config['token'] ?>', release: '<?= $config['release'] ?>', beforeSend: (event) => { const titleIgnorePatterns = ['Script error.']; if (titleIgnorePatterns.includes(event.title.trim())) { return false; } return event; } });"></script>
     <? endif; ?>
 </head>
 <?
