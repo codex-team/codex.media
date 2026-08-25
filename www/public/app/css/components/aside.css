@@ -1,8 +1,9 @@
 .main-aside {
-    position: sticky;
-    top: var(--islandMargin);
-    will-change: top;
-    z-index: 2;
+    position: relative;
+    /* position: sticky; */
+    /* top: var(--islandMargin); */
+    /* will-change: top; */
+    /* z-index: 2; */
 
     &--offset-top {
         @media (--not-mobile) {
