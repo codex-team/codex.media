@@ -94,7 +94,7 @@
 
     <script>window.csrf = '<?= Security::token(); ?>';</script>
     <script src="/public/build/codex.bundle.js?v=<?= filemtime('public/build/codex.bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
-    <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script>
+    <!-- <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script> -->
 
     <? if (Kohana::$environment === Kohana::PRODUCTION): ?>
         <?= View::factory('templates/components/gov/esir')->render(); ?>
