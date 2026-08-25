@@ -10,7 +10,10 @@ class Controller_Auth_Signup extends Controller_Auth_Base
         $this->title = 'Регистрация';
         $this->description = 'Страница для регистрации пользователей';
 
-        $this->signup();
+        // If POST request, then we should check for correct-filling form and save new user
+        if ($this->request->method() === Request::POST) {
+            $this->signup();
+        }
 
         $this->template->content = View::factory('/templates/auth/signup', $this->view);
     }
@@ -53,11 +56,11 @@ class Controller_Auth_Signup extends Controller_Auth_Base
 
                 /** Redirect user after succeeded auth */
                 $this->redirect(self::URL_TO_REDIRECT_AFTER_SUCCES_AUTH);
+            } else {
+                $this->view['signup_error_text'] = 'Ошибка при регистрации. Попробуйте еще раз';
+
+                $this->template->content = View::factory('/templates/auth/signup', $this->view);
             }
-        } else {
-            echo '<pre>';
-            var_dump($this->view);
-            echo '</pre>';
         }
     }
 
