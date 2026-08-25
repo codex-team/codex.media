@@ -49,6 +49,9 @@
 
         <script src="/public/build/HawkCatcher.bundle.js?v=<?= filemtime('public/build/HawkCatcher.bundle.js'); ?>" onload="new HawkCatcher({ token: '<?= $config['token'] ?>', release: '<?= $config['release'] ?>', beforeSend: (event) => { const titleIgnorePatterns = ['Script error.', 'VK is not defined', 'Unknown']; if (titleIgnorePatterns.includes(event.title.trim())) { return false; } return event; } });"></script>
     <? endif; ?>
+
+    <script>window.csrf = '<?= Security::token(); ?>';</script>
+    <script src="/public/build/codex.bundle.js?v=<?= filemtime('public/build/codex.bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
 </head>
 <?
     $bodyModifiers = [];
@@ -91,10 +94,6 @@
             <?= View::factory('templates/components/right_col')->render(); ?>
         </div>
     </div>
-
-    <script>window.csrf = '<?= Security::token(); ?>';</script>
-    <script src="/public/build/codex.bundle.js?v=<?= filemtime('public/build/codex.bundle.js'); ?>" onload="codex.init({uploadMaxSize : <?= UPLOAD_MAX_SIZE ?>})"></script>
-    <!-- <script src="/public/extensions/emoji-parser/specc-emoji.js?v=<?= filemtime('public/extensions/emoji-parser/specc-emoji.js') ?>" onload="Emoji.parse()"></script> -->
 
     <? if (Kohana::$environment === Kohana::PRODUCTION): ?>
         <?= View::factory('templates/components/gov/esir')->render(); ?>
