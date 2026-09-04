@@ -1,4 +1,4 @@
-var banner = function () {
+var banner = (function () {
     var bannerElement;
     var storageKey = "cookie-banner-accepted";
     var styleId = "cookie-banner-styles";
@@ -144,5 +144,4 @@ var banner = function () {
     return {
         init: init
     };
-};
-module.exports = banner;
+})({});
