@@ -1,4 +1,4 @@
-var banner = (function () {
+module.exports = (function () {
     var bannerElement;
     var storageKey = "cookie-banner-accepted";
     var styleId = "cookie-banner-styles";
