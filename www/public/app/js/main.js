@@ -68,6 +68,8 @@ codex = function () {
             Library : codex
         });
 
+        codex.bannerWeUseCookies.init();
+
         /**
          * CodeX Special
          *
@@ -158,5 +160,6 @@ codex.avatarUploader = require('./modules/avatarUploader');
 codex.layout = require('./modules/layout');
 codex.pageTypeSelector = require('./modules/pageTypeSelector');
 codex.datePicker = require('./modules/datePicker');
+codex.bannerWeUseCookies = require('./modules/banner-we-use-cookies');
 
 module.exports = codex;
