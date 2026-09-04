@@ -101,6 +101,10 @@
         <?= View::factory('templates/components/gov/gosuslugi-feedback')->render(); ?>
 
         <? if (!empty($_SERVER['YANDEX_METRIKA_ID'])): ?>
+            <script type="text/javascript">
+                codex.bannerWeUseCookies.init();
+            </script>
+
             <!-- Yandex.Metrika counter -->
             <script type="text/javascript">
                 (function (d, w, c) {

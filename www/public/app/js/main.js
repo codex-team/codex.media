@@ -68,8 +68,6 @@ codex = function () {
             Library : codex
         });
 
-        codex.bannerWeUseCookies.init();
-
         /**
          * CodeX Special
          *
