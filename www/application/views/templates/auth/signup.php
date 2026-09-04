@@ -45,9 +45,8 @@
         <? endforeach ?>
         <? if (!empty($site_info['privacy_policy_url'])): ?>
         <p>
-            <input type="checkbox" name="signup_privacy_policy" required />
-            <label for="signup_privacy_policy">
-                Я согласен с <a href="<?= $site_info['privacy_policy_url'] ?>" target="_blank">политикой конфиденциальности</a>
+            <label for="signup_privacy_policy" style="width: 100%; display: block; font-size: 14px; line-height: 1.5em;">
+                <input type="checkbox" name="signup_privacy_policy" required />Я согласен с <a href="<?= $site_info['privacy_policy_url'] ?>" target="_blank">политикой конфиденциальности</a>
             </label>
         </p>
         <? endif; ?>
