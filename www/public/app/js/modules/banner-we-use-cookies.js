@@ -4,7 +4,7 @@ var banner = function () {
     var styleId = "cookie-banner-styles";
 
     function init() {
-        if (localStorage.getItem(storageKey)) {
+        if (window.localStorage.getItem(storageKey)) {
             return;
         }
 
@@ -25,7 +25,7 @@ var banner = function () {
             bannerElement = null;
         }
 
-        localStorage.setItem(storageKey, "true");
+        window.localStorage.setItem(storageKey, "true");
     }
 
     function renderBanner() {
