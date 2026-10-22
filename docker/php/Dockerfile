@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:8.5.12-fpm
 
 # Update lists
 RUN apt-get update
@@ -21,20 +21,19 @@ RUN docker-php-ext-enable \
     redis
 
 # Install memcache extension
-RUN set -x \
-    && cd /tmp \
-    && curl -sSL -o php7.zip https://github.com/websupport-sk/pecl-memcache/archive/php7.zip \
-    && unzip php7 \
-    && cd pecl-memcache-php7 \
-    && /usr/local/bin/phpize \
+RUN mkdir -p /tmp/memcache \
+    && curl -fsSL https://codeload.github.com/websupport-sk/pecl-memcache/tar.gz/ac8e8c521a18aae14c8f2859694536ead304ce97 \
+        | tar -xz --strip-components=1 -C /tmp/memcache \
+    && cd /tmp/memcache \
+    && phpize \
     && ./configure --with-php-config=/usr/local/bin/php-config \
     && make \
     && make install \
-    && echo "extension=memcache.so" > /usr/local/etc/php/conf.d/ext-memcache.ini \
-    && rm -rf /tmp/pecl-memcache-php7 php7.zip
+    && docker-php-ext-enable memcache \
+    && rm -rf /tmp/memcache
 
 # Configure GD library
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
 # Enable some php-exts
 RUN docker-php-ext-install \
@@ -53,21 +52,19 @@ RUN sed -i -e 's/# ru_RU ISO-8859-5/ru_RU ISO-8859-5/' /etc/locale.gen && \
     echo "LC_ALL=ru_RU.UTF-8" >> /etc/default/locale
 
 # Install phpMyAdmin
-RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.zip
-RUN unzip phpMyAdmin-5.0.2-all-languages.zip
-RUN mv phpMyAdmin-5.0.2-all-languages /usr/share/phpmyadmin
+RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.2.3/phpMyAdmin-5.2.3-all-languages.zip
+RUN unzip phpMyAdmin-5.2.3-all-languages.zip
+RUN mv phpMyAdmin-5.2.3-all-languages /usr/share/phpmyadmin
 RUN cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php && \
     sed -i "s/\['host'\] = 'localhost'/\['host'\] = 'mysql'/" /usr/share/phpmyadmin/config.inc.php
 
 # Install Node.js and Yarn
-RUN curl https://deb.nodesource.com/setup_14.x | bash
-RUN curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install -y nodejs yarn
+RUN curl https://deb.nodesource.com/setup_16.x | bash
+RUN apt-get update && apt-get install -y nodejs \
+    && npm install --global yarn@1.22.22
 
 # Set timezone
 RUN rm /etc/localtime
 RUN ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 
 WORKDIR /var/www/codex.media
-

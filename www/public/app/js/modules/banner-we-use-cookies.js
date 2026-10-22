@@ -1,37 +1,51 @@
 module.exports = (function () {
+
     var bannerElement;
-    var storageKey = "cookie-banner-accepted";
-    var styleId = "cookie-banner-styles";
+    var storageKey = 'cookie-banner-accepted';
+    var styleId = 'cookie-banner-styles';
 
     function init() {
+
         if (window.localStorage.getItem(storageKey)) {
+
             return;
+
         }
 
         addStyles();
         renderBanner();
         showBanner();
+
     }
 
     function showBanner() {
+
         if (bannerElement) {
-            bannerElement.style.display = "block";
+
+            bannerElement.style.display = 'block';
+
         }
+
     }
 
     function hideBanner() {
+
         if (bannerElement) {
+
             bannerElement.remove();
             bannerElement = null;
+
         }
 
-        window.localStorage.setItem(storageKey, "true");
+        window.localStorage.setItem(storageKey, 'true');
+
     }
 
     function renderBanner() {
-        bannerElement = document.createElement("div");
 
-        bannerElement.className = "cookie-banner";
+        bannerElement = document.createElement('div');
+
+        bannerElement.className = 'cookie-banner';
 
         bannerElement.innerHTML = `
       <div class="cookie-banner__content">
@@ -58,17 +72,21 @@ module.exports = (function () {
 
         document.body.appendChild(bannerElement);
 
-        var button = bannerElement.querySelector(".cookie-banner__button");
+        var button = bannerElement.querySelector('.cookie-banner__button');
 
-        button.addEventListener("click", hideBanner);
+        button.addEventListener('click', hideBanner);
+
     }
 
     function addStyles() {
+
         if (document.getElementById(styleId)) {
+
             return;
+
         }
 
-        var styleElement = document.createElement("style");
+        var styleElement = document.createElement('style');
 
         styleElement.id = styleId;
 
@@ -139,9 +157,11 @@ module.exports = (function () {
     `;
 
         document.head.appendChild(styleElement);
+
     }
 
     return {
         init: init
     };
+
 })({});

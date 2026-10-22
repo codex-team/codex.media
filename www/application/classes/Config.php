@@ -35,6 +35,15 @@ class Config extends Kohana_Config
      */
     public function load($group)
     {
+        // Paths like "group.key" must be resolved here: Config_Group is an ArrayObject,
+        // which Arr::path() cannot handle on PHP 8 (array_key_exists requires an array)
+        if (strpos($group, '.') !== false) {
+            $path = explode('.', $group);
+            $name = array_shift($path);
+
+            return Arr::path($this->load($name)->getArrayCopy(), $path);
+        }
+
         $projectConfigDir = '../projects' . DIRECTORY_SEPARATOR . Arr::get($_SERVER, 'PROJECT', '') . DIRECTORY_SEPARATOR . $this->config_path;
         $projectConfig = Kohana::find_file($projectConfigDir, $group);
 
