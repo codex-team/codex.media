@@ -101,7 +101,7 @@ class Kohana_Arr {
 		}
 		else
 		{
-			if (array_key_exists($path, $array))
+			if (isset($array[$path]) OR (is_array($array) ? array_key_exists($path, $array) : $array->offsetExists($path)))
 			{
 				// No need to do extra processing
 				return $array[$path];

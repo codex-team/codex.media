@@ -124,11 +124,21 @@ class Kohana_Image_GD extends Image {
 	 */
 	public function __destruct()
 	{
-		if (is_resource($this->_image))
+		if ($this->_is_image_loaded())
 		{
 			// Free all resources
 			imagedestroy($this->_image);
 		}
+	}
+
+	/**
+	 * GD returns GdImage objects since PHP 8.0 and resources before.
+	 *
+	 * @return  boolean
+	 */
+	protected function _is_image_loaded()
+	{
+		return is_resource($this->_image) OR $this->_image instanceof GdImage;
 	}
 
 	/**
@@ -138,7 +148,7 @@ class Kohana_Image_GD extends Image {
 	 */
 	protected function _load_image()
 	{
-		if ( ! is_resource($this->_image))
+		if ( ! $this->_is_image_loaded())
 		{
 			// Gets create function
 			$create = $this->_create_function;
@@ -259,7 +269,7 @@ class Kohana_Image_GD extends Image {
 		$transparent = imagecolorallocatealpha($this->_image, 0, 0, 0, 127);
 
 		// Rotate, setting the transparent color
-		$image = imagerotate($this->_image, 360 - $degrees, $transparent, 1);
+		$image = imagerotate($this->_image, 360 - $degrees, $transparent);
 
 		// Save the alpha of the rotated image
 		imagesavealpha($image, TRUE);
