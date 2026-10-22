@@ -56,6 +56,7 @@ class Controller_User_Index extends Controller_Base_preDispatch
         $this->view['user_feed'] = $userFeed;
         $this->view['next_page'] = $nextPage;
         $this->view['page_number'] = $pageNumber;
+        $this->view['total_page_views'] = $viewUser->getTotalPageViews();
 
         $this->view['list'] = $list;
         $this->view['listFactory'] = View::factory('/templates/users/' . $list, $this->view);

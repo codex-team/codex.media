@@ -228,6 +228,23 @@ class Model_User extends Model
         return $models;
     }
 
+    public function getTotalPageViews()
+    {
+        $pages = Dao_Pages::select('id')
+            ->where('author', '=', $this->id)
+            ->where('status', '=', Model_Page::STATUS_SHOWING_PAGE)
+            ->execute();
+
+        $totalViews = 0;
+
+        foreach ($pages ?: [] as $page) {
+            $stats = new Model_Stats(Model_Stats::PAGE_VIEWS, $page['id']);
+            $totalViews += $stats->get();
+        }
+
+        return $totalViews;
+    }
+
     public static function getUsersList($role)
     {
         $teachers = Dao_Users::select()

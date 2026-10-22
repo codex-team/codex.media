@@ -67,6 +67,8 @@
             <? endif ?>
         </div>
 
+        <!-- <div>Просмотров записей: <?= $total_page_views ?></div> -->
+
         <? if ($viewUser->vk): ?>
             <a class="border-button border-button--vk" href="//vk.com/<?= $viewUser->vk_uri ?>" target="_blank">
                 <? include(DOCROOT . "public/app/svg/vk.svg") ?>
